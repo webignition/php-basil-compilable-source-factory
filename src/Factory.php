@@ -2,6 +2,8 @@
 
 namespace webignition\BasilCompilableSourceFactory;
 
+use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
+use webignition\BasilCompilableSourceFactory\Transpiler\TranspilerInterface;
 use webignition\BasilCompilationSource\SourceInterface;
 
 class Factory implements FactoryInterface

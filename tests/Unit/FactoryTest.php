@@ -7,7 +7,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
 use webignition\BasilCompilableSourceFactory\Factory;
-use webignition\BasilCompilableSourceFactory\NonTranspilableModelException;
+use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
 
 class FactoryTest extends \PHPUnit\Framework\TestCase
 {

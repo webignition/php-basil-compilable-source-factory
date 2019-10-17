@@ -1,7 +1,8 @@
 <?php declare(strict_types=1);
 
-namespace webignition\BasilCompilableSourceFactory;
+namespace webignition\BasilCompilableSourceFactory\Transpiler;
 
+use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
 use webignition\BasilCompilationSource\SourceInterface;
 
 interface TranspilerInterface
