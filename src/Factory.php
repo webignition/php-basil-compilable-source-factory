@@ -4,13 +4,16 @@ namespace webignition\BasilCompilableSourceFactory;
 
 use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
 use webignition\BasilCompilableSourceFactory\Transpiler\TranspilerInterface;
+use webignition\BasilCompilableSourceFactory\Transpiler\Value\ScalarValueTranspiler;
 use webignition\BasilCompilationSource\SourceInterface;
 
 class Factory extends AbstractDelegator implements DelegatorInterface, FactoryInterface
 {
     public static function createFactory(): FactoryInterface
     {
-        return new Factory();
+        return new Factory([
+            ScalarValueTranspiler::createTranspiler(),
+        ]);
     }
 
     public function isAllowedHandler(HandlerInterface $handler): bool
