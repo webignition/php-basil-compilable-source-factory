@@ -1,6 +1,6 @@
 <?php declare(strict_types=1);
 
-namespace webignition\BasilCompilableSourceFactory;
+namespace webignition\BasilCompilableSourceFactory\Exception;
 
 class NonTranspilableModelException extends \Exception
 {

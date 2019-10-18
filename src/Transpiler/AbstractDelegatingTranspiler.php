@@ -1,21 +1,15 @@
 <?php declare(strict_types=1);
 
-namespace webignition\BasilCompilableSourceFactory;
+namespace webignition\BasilCompilableSourceFactory\Transpiler;
 
+use webignition\BasilCompilableSourceFactory\AbstractDelegator;
+use webignition\BasilCompilableSourceFactory\DelegatorInterface;
 use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
-use webignition\BasilCompilableSourceFactory\Transpiler\TranspilerInterface;
-use webignition\BasilCompilableSourceFactory\Transpiler\Value\ScalarValueTranspiler;
+use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilationSource\SourceInterface;
 
-class Factory extends AbstractDelegator implements DelegatorInterface, FactoryInterface
+abstract class AbstractDelegatingTranspiler extends AbstractDelegator implements DelegatorInterface, TranspilerInterface
 {
-    public static function createFactory(): FactoryInterface
-    {
-        return new Factory([
-            ScalarValueTranspiler::createTranspiler(),
-        ]);
-    }
-
     public function isAllowedHandler(HandlerInterface $handler): bool
     {
         return $handler instanceof TranspilerInterface;
@@ -28,7 +22,7 @@ class Factory extends AbstractDelegator implements DelegatorInterface, FactoryIn
      *
      * @throws NonTranspilableModelException
      */
-    public function createSource(object $model): SourceInterface
+    public function transpile(object $model): SourceInterface
     {
         $handler = $this->findHandler($model);
 

@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
+namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Exception;
 
-use webignition\BasilCompilableSourceFactory\NonTranspilableModelException;
+use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
 
 class NonTranspilableModelExceptionTest extends \PHPUnit\Framework\TestCase
 {
