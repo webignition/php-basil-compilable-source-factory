@@ -9,6 +9,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Transpiler;
 use webignition\BasilCompilableSourceFactory\Transpiler\ClassDependencyTranspiler;
 use webignition\BasilCompilableSourceFactory\Transpiler\TranspilerInterface;
 use webignition\BasilCompilationSource\ClassDependency;
+use webignition\BasilCompilationSource\Metadata;
 
 class ClassDependencyTranspilerTest extends AbstractTranspilerTest
 {
@@ -29,5 +30,36 @@ class ClassDependencyTranspilerTest extends AbstractTranspilerTest
         $model = new \stdClass();
 
         $this->assertFalse($this->transpiler->handles($model));
+    }
+
+    /**
+     * @dataProvider transpileDataProvider
+     */
+    public function testTranspile(
+        ClassDependency $classDependency,
+        array $expectedStatements
+    ) {
+        $source = $this->transpiler->transpile($classDependency);
+
+        $this->assertEquals($expectedStatements, $source->getStatements());
+        $this->assertEquals(new Metadata(), $source->getMetadata());
+    }
+
+    public function transpileDataProvider(): array
+    {
+        return [
+            'without alias' => [
+                'classDependency' => new ClassDependency(ClassDependency::class),
+                'expectedStatements' => [
+                    'use webignition\BasilCompilationSource\ClassDependency',
+                ]
+            ],
+            'with alias' => [
+                'classDependency' => new ClassDependency(ClassDependency::class, 'CD'),
+                'expectedStatements' => [
+                    'use webignition\BasilCompilationSource\ClassDependency as CD',
+                ]
+            ],
+        ];
     }
 }

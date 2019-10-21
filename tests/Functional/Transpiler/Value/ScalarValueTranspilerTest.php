@@ -10,9 +10,6 @@ use webignition\BasilCompilableSourceFactory\Tests\Functional\Transpiler\Abstrac
 use webignition\BasilCompilableSourceFactory\Transpiler\TranspilerInterface;
 use webignition\BasilCompilableSourceFactory\Transpiler\Value\ScalarValueTranspiler;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Metadata;
-use webignition\BasilCompilationSource\MetadataInterface;
-use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Value\ObjectValue;
 use webignition\BasilModel\Value\ObjectValueType;
 use webignition\BasilModel\Value\ValueInterface;
@@ -30,26 +27,18 @@ class ScalarValueTranspilerTest extends AbstractTranspilerTest
     public function testTranspile(
         string $fixture,
         ValueInterface $model,
-        MetadataInterface $expectedMetadata,
         callable $resultAssertions,
-        array $additionalVariableIdentifiers = [],
-        array $additionalSetupStatements = [],
-        ?MetadataInterface $additionalMetadata = null
+        array $additionalVariableIdentifiers = []
     ) {
         $source = $this->transpiler->transpile($model);
 
-        $this->assertEquals($expectedMetadata, $source->getMetadata());
+        $additionalSetupStatements = [];
 
-        $executableCall = $this->createExecutableCallWithReturn(
-            $source,
+        $executableCall = $this->createExecutableCallForRequestWithReturn(
             $fixture,
-            array_merge(
-                self::VARIABLE_IDENTIFIERS,
-                $additionalVariableIdentifiers
-            ),
+            $source,
             $additionalSetupStatements,
-            [],
-            $additionalMetadata
+            $additionalVariableIdentifiers
         );
 
         $resultAssertions(eval($executableCall));
@@ -61,26 +50,17 @@ class ScalarValueTranspilerTest extends AbstractTranspilerTest
             'browser property: size' => [
                 'fixture' => '/empty.html',
                 'model' => new ObjectValue(ObjectValueType::BROWSER_PROPERTY, '$browser.size', 'size'),
-                'expectedMetadata' => (new Metadata())
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::PANTHER_CLIENT,
-                    ]))->withVariableExports(VariablePlaceholderCollection::createCollection([
-                        'WEBDRIVER_DIMENSION',
-                    ])),
                 'resultAssertions' => function ($result) {
                     $this->assertEquals('1200x1100', $result);
                 },
                 'additionalVariableIdentifiers' => [
+                    VariableNames::PANTHER_CLIENT => 'self::$client',
                     'WEBDRIVER_DIMENSION' => '$webDriverDimension',
                 ],
             ],
             'page property: title' => [
                 'fixture' => '/index.html',
                 'model' => new ObjectValue(ObjectValueType::PAGE_PROPERTY, '$page.title', 'title'),
-                'expectedMetadata' => (new Metadata())
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::PANTHER_CLIENT,
-                    ])),
                 'resultAssertions' => function ($result) {
                     $this->assertEquals('Test fixture web server default document', $result);
                 },
@@ -88,10 +68,6 @@ class ScalarValueTranspilerTest extends AbstractTranspilerTest
             'page property: url' => [
                 'fixture' => '/index.html',
                 'model' => new ObjectValue(ObjectValueType::PAGE_PROPERTY, '$page.url', 'url'),
-                'expectedMetadata' => (new Metadata())
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::PANTHER_CLIENT,
-                    ])),
                 'resultAssertions' => function ($result) {
                     $this->assertEquals('http://127.0.0.1:9080/index.html', $result);
                 },

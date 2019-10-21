@@ -2,10 +2,10 @@
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Transpiler;
 
-use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractTestCase;
+use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Transpiler\TranspilerInterface;
 
-abstract class AbstractTranspilerTest extends AbstractTestCase
+abstract class AbstractTranspilerTest extends AbstractBrowserTestCase
 {
     /**
      * @var TranspilerInterface
