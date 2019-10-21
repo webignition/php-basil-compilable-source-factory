@@ -18,6 +18,9 @@ abstract class AbstractBrowserTestCase extends AbstractTestCase
     const FIXTURES_HTML_RELATIVE_PATH = '/html';
 
     const PANTHER_CLIENT_VARIABLE_NAME = 'self::$client';
+    const PHPUNIT_TEST_CASE_VARIABLE_NAME = '$this';
+    const DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME = '$navigator';
+    const WEBDRIVER_ELEMENT_INSPECTOR_VARIABLE_NAME = '$inspector';
 
     /**
      * @var Client
@@ -64,5 +67,12 @@ abstract class AbstractBrowserTestCase extends AbstractTestCase
             [],
             $metadata
         );
+    }
+
+    protected function addNavigatorToMetadata(MetadataInterface $metadata): MetadataInterface
+    {
+        return $metadata->withAdditionalClassDependencies(new ClassDependencyCollection([
+            new ClassDependency(Navigator::class),
+        ]));
     }
 }

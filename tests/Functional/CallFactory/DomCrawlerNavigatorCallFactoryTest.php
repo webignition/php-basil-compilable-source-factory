@@ -43,13 +43,10 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
         $source = $this->factory->createFindCall($identifier);
 
         $variableIdentifiers = [
-            VariableNames::DOM_CRAWLER_NAVIGATOR => '$navigator',
+            VariableNames::DOM_CRAWLER_NAVIGATOR => self::DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME,
         ];
 
-        $metadata = (new Metadata())
-            ->withClassDependencies(new ClassDependencyCollection([
-                new ClassDependency(Navigator::class),
-            ]));
+        $metadata = $this->addNavigatorToMetadata(new Metadata());
 
         $executableCall = $this->createExecutableCallForRequestWithReturn(
             $fixture,

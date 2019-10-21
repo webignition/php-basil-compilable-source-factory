@@ -54,7 +54,7 @@ class ScalarValueTranspilerTest extends AbstractTranspilerTest
                     $this->assertEquals('1200x1100', $result);
                 },
                 'additionalVariableIdentifiers' => [
-                    VariableNames::PANTHER_CLIENT => 'self::$client',
+                    VariableNames::PANTHER_CLIENT => self::PANTHER_CLIENT_VARIABLE_NAME,
                     'WEBDRIVER_DIMENSION' => '$webDriverDimension',
                 ],
             ],
