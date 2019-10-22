@@ -100,7 +100,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     '{{ EXPECTED_VALUE }} = "value" ?? null',
                     '{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}',
                     '{{ WEBDRIVER_DIMENSION }} = {{ PANTHER_CLIENT }}->getWebDriver()->manage()->window()->getSize()',
-                    '{{ EXAMINED_VALUE }} = (string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . (string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null',
+                    '{{ EXAMINED_VALUE }} = (string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
+                    .'(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null',
                     '{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}',
                     '{{ PHPUNIT_TEST_CASE }}->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})',
                 ],
@@ -171,7 +172,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     '{{ EXPECTED_VALUE }} = {{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ EXPECTED_VALUE }}) ?? null',
                     '{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}',
                     '{{ WEBDRIVER_DIMENSION }} = {{ PANTHER_CLIENT }}->getWebDriver()->manage()->window()->getSize()',
-                    '{{ EXAMINED_VALUE }} = (string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . (string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null',
+                    '{{ EXAMINED_VALUE }} = (string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
+                    .'(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null',
                     '{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}',
                     '{{ PHPUNIT_TEST_CASE }}->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})',
                 ],
@@ -206,7 +208,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     '{{ EXPECTED_VALUE }} = {{ EXPECTED_VALUE }}->getAttribute(\'attribute_name\') ?? null',
                     '{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}',
                     '{{ WEBDRIVER_DIMENSION }} = {{ PANTHER_CLIENT }}->getWebDriver()->manage()->window()->getSize()',
-                    '{{ EXAMINED_VALUE }} = (string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . (string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null',
+                    '{{ EXAMINED_VALUE }} = (string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
+                    .'(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null',
                     '{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}',
                     '{{ PHPUNIT_TEST_CASE }}->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})',
                 ],
@@ -237,7 +240,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     '{{ EXPECTED_VALUE }} = {{ ENVIRONMENT_VARIABLE_ARRAY }}[\'KEY\'] ?? null',
                     '{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}',
                     '{{ WEBDRIVER_DIMENSION }} = {{ PANTHER_CLIENT }}->getWebDriver()->manage()->window()->getSize()',
-                    '{{ EXAMINED_VALUE }} = (string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . (string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null',
+                    '{{ EXAMINED_VALUE }} = (string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
+                    .'(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null',
                     '{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}',
                     '{{ PHPUNIT_TEST_CASE }}->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})',
                 ],
@@ -264,7 +268,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     '{{ EXPECTED_VALUE }} = {{ PANTHER_CLIENT }}->getCurrentURL() ?? null',
                     '{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}',
                     '{{ WEBDRIVER_DIMENSION }} = {{ PANTHER_CLIENT }}->getWebDriver()->manage()->window()->getSize()',
-                    '{{ EXAMINED_VALUE }} = (string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . (string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null',
+                    '{{ EXAMINED_VALUE }} = (string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
+                    .'(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null',
                     '{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}',
                     '{{ PHPUNIT_TEST_CASE }}->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})',
                 ],

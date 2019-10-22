@@ -32,7 +32,8 @@ trait CreateFromExcludesAssertionDataProviderTrait
                     '{{ EXAMINED_VALUE }} = {{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
                     '{{ EXAMINED_VALUE }} = {{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ EXAMINED_VALUE }}) ?? null',
                     '{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}',
-                    '{{ PHPUNIT_TEST_CASE }}->assertStringNotContainsString((string) {{ EXPECTED_VALUE }}, (string) {{ EXAMINED_VALUE }})',
+                    '{{ PHPUNIT_TEST_CASE }}'.
+                    '->assertStringNotContainsString((string) {{ EXPECTED_VALUE }}, (string) {{ EXAMINED_VALUE }})',
                 ],
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -61,7 +62,8 @@ trait CreateFromExcludesAssertionDataProviderTrait
                     '{{ EXAMINED_VALUE }} = {{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
                     '{{ EXAMINED_VALUE }} = {{ EXAMINED_VALUE }}->getAttribute(\'attribute_name\') ?? null',
                     '{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}',
-                    '{{ PHPUNIT_TEST_CASE }}->assertStringNotContainsString((string) {{ EXPECTED_VALUE }}, (string) {{ EXAMINED_VALUE }})',
+                    '{{ PHPUNIT_TEST_CASE }}'.
+                    '->assertStringNotContainsString((string) {{ EXPECTED_VALUE }}, (string) {{ EXAMINED_VALUE }})',
                 ],
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
