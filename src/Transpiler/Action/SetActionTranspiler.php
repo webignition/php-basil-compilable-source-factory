@@ -90,6 +90,10 @@ class SetActionTranspiler implements HandlerInterface, TranspilerInterface
             $valueAccessor = $this->namedDomIdentifierTranspiler->transpile(
                 new NamedDomIdentifierValue($value, $valuePlaceholder)
             );
+
+            $valueAccessor->mutateStatement(3, function ($statement) use ($valuePlaceholder) {
+                return str_replace((string) $valuePlaceholder . ' = ', '', $statement);
+            });
         } else {
             $valueAccessor = $this->scalarValueTranspiler->transpile($value);
         }
