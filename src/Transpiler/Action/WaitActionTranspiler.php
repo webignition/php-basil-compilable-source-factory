@@ -70,6 +70,10 @@ class WaitActionTranspiler implements HandlerInterface, TranspilerInterface
             $durationAccessor = $this->namedDomIdentifierTranspiler->transpile(
                 new NamedDomIdentifierValue($duration, $durationPlaceholder)
             );
+
+            $durationAccessor->mutateStatement(3, function ($statement) use ($durationPlaceholder) {
+                return str_replace((string) $durationPlaceholder . ' = ', '', $statement);
+            });
         } else {
             $durationAccessor = $this->scalarValueTranspiler->transpile($duration);
         }
