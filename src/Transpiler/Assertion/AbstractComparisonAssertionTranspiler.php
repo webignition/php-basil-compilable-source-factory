@@ -56,6 +56,10 @@ abstract class AbstractComparisonAssertionTranspiler implements HandlerInterface
             $examinedValueAccessor = $this->namedDomIdentifierTranspiler->transpile(
                 new NamedDomIdentifierValue($examinedValue, $examinedValuePlaceholder)
             );
+
+            $examinedValueAccessor->mutateStatement(3, function ($statement) use ($examinedValuePlaceholder) {
+                return str_replace((string) $examinedValuePlaceholder . ' = ', '', $statement);
+            });
         } else {
             $examinedValueAccessor = $this->scalarValueTranspiler->transpile($examinedValue);
         }
@@ -64,6 +68,10 @@ abstract class AbstractComparisonAssertionTranspiler implements HandlerInterface
             $expectedValueAccessor = $this->namedDomIdentifierTranspiler->transpile(
                 new NamedDomIdentifierValue($expectedValue, $expectedValuePlaceholder)
             );
+
+            $expectedValueAccessor->mutateStatement(3, function ($statement) use ($expectedValuePlaceholder) {
+                return str_replace((string) $expectedValuePlaceholder . ' = ', '', $statement);
+            });
         } else {
             $expectedValueAccessor = $this->scalarValueTranspiler->transpile($expectedValue);
         }

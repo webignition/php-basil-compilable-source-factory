@@ -34,7 +34,6 @@ trait CreateFromIsAssertionDataProviderTrait
             (new DomIdentifier('.selector'))->withAttributeName('attribute_name')
         );
 
-
         return [
             'is comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionFactory->createFromAssertionString(
@@ -46,7 +45,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
                     '{{ EXAMINED_VALUE }} = {{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
-                    '{{ EXAMINED_VALUE }} = {{ EXAMINED_VALUE }} = {{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ EXAMINED_VALUE }}) ?? null',
+                    '{{ EXAMINED_VALUE }} = {{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ EXAMINED_VALUE }}) ?? null',
                     '{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}',
                     '{{ PHPUNIT_TEST_CASE }}->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})',
                 ],
@@ -75,7 +74,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
                     '{{ EXAMINED_VALUE }} = {{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
-                    '{{ EXAMINED_VALUE }} = {{ EXAMINED_VALUE }} = {{ EXAMINED_VALUE }}->getAttribute(\'attribute_name\') ?? null',
+                    '{{ EXAMINED_VALUE }} = {{ EXAMINED_VALUE }}->getAttribute(\'attribute_name\') ?? null',
                     '{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}',
                     '{{ PHPUNIT_TEST_CASE }}->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})',
                 ],
@@ -169,7 +168,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
                     '{{ EXPECTED_VALUE }} = {{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
-                    '{{ EXPECTED_VALUE }} = {{ EXPECTED_VALUE }} = {{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ EXPECTED_VALUE }}) ?? null',
+                    '{{ EXPECTED_VALUE }} = {{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ EXPECTED_VALUE }}) ?? null',
                     '{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}',
                     '{{ WEBDRIVER_DIMENSION }} = {{ PANTHER_CLIENT }}->getWebDriver()->manage()->window()->getSize()',
                     '{{ EXAMINED_VALUE }} = (string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . (string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null',
@@ -204,7 +203,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
                     '{{ EXPECTED_VALUE }} = {{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
-                    '{{ EXPECTED_VALUE }} = {{ EXPECTED_VALUE }} = {{ EXPECTED_VALUE }}->getAttribute(\'attribute_name\') ?? null',
+                    '{{ EXPECTED_VALUE }} = {{ EXPECTED_VALUE }}->getAttribute(\'attribute_name\') ?? null',
                     '{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}',
                     '{{ WEBDRIVER_DIMENSION }} = {{ PANTHER_CLIENT }}->getWebDriver()->manage()->window()->getSize()',
                     '{{ EXAMINED_VALUE }} = (string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . (string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null',
