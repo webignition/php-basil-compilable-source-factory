@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Transpiler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\ExcludesAssertionFunctionalDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\ExistsAssertionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\Transpiler\AbstractTranspilerTest;
 use webignition\BasilCompilableSourceFactory\Transpiler\Assertion\AssertionTranspiler;
 use webignition\BasilCompilableSourceFactory\Transpiler\TranspilerInterface;
@@ -17,6 +18,7 @@ use webignition\BasilModel\Assertion\AssertionInterface;
 class AssertionTranspilerPassingAssertionsTest extends AbstractTranspilerTest
 {
     use ExcludesAssertionFunctionalDataProviderTrait;
+    use ExistsAssertionFunctionalDataProviderTrait;
 
     protected function createTranspiler(): TranspilerInterface
     {
@@ -25,6 +27,7 @@ class AssertionTranspilerPassingAssertionsTest extends AbstractTranspilerTest
 
     /**
      * @dataProvider excludesAssertionFunctionalDataProvider
+     * @dataProvider existsAssertionFunctionalDataProvider
      */
     public function testTranspile(
         string $fixture,
