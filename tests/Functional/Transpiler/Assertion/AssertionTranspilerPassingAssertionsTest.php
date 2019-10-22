@@ -14,6 +14,7 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\Inclus
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\IsAssertionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\IsNotAssertionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\MatchesAssertionFunctionalDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\NotExistsAssertionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\Transpiler\AbstractTranspilerTest;
 use webignition\BasilCompilableSourceFactory\Transpiler\Assertion\AssertionTranspiler;
 use webignition\BasilCompilableSourceFactory\Transpiler\TranspilerInterface;
@@ -31,6 +32,7 @@ class AssertionTranspilerPassingAssertionsTest extends AbstractTranspilerTest
     use IsAssertionFunctionalDataProviderTrait;
     use IsNotAssertionFunctionalDataProviderTrait;
     use MatchesAssertionFunctionalDataProviderTrait;
+    use NotExistsAssertionFunctionalDataProviderTrait;
 
     protected function createTranspiler(): TranspilerInterface
     {
@@ -44,6 +46,7 @@ class AssertionTranspilerPassingAssertionsTest extends AbstractTranspilerTest
      * @dataProvider isAssertionFunctionalDataProvider
      * @dataProvider isNotAssertionFunctionalDataProvider
      * @dataProvider matchesAssertionFunctionalDataProvider
+     * @dataProvider notExistsAssertionFunctionalDataProvider
      */
     public function testTranspile(
         string $fixture,
@@ -68,8 +71,6 @@ class AssertionTranspilerPassingAssertionsTest extends AbstractTranspilerTest
             $variableIdentifiers,
             $metadata
         );
-
-//        echo $executableCall . "\n\n";
 
         eval($executableCall);
     }
