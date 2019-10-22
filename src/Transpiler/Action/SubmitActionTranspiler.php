@@ -2,12 +2,15 @@
 
 namespace webignition\BasilCompilableSourceFactory\Transpiler\Action;
 
+use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
+use webignition\BasilCompilableSourceFactory\HandlerInterface;
+use webignition\BasilCompilableSourceFactory\Transpiler\NamedDomIdentifierTranspiler;
+use webignition\BasilCompilableSourceFactory\Transpiler\TranspilerInterface;
 use webignition\BasilModel\Action\ActionTypes;
-use webignition\BasilTranspiler\CallFactory\VariableAssignmentFactory;
-use webignition\BasilTranspiler\NamedDomIdentifierTranspiler;
-use webignition\BasilTranspiler\TranspilerInterface;
 
-class SubmitActionTranspiler extends AbstractInteractionActionTranspiler implements TranspilerInterface
+class SubmitActionTranspiler extends AbstractInteractionActionTranspiler implements
+    HandlerInterface,
+    TranspilerInterface
 {
     public static function createTranspiler(): SubmitActionTranspiler
     {
