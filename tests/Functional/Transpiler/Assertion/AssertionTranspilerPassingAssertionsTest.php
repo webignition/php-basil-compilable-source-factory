@@ -68,6 +68,7 @@ class AssertionTranspilerPassingAssertionsTest extends AbstractTranspilerTest
             $fixture,
             $source,
             $additionalSetupStatements,
+            [],
             $variableIdentifiers,
             $metadata
         );
