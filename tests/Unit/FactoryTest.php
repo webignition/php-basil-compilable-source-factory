@@ -8,6 +8,14 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
 use webignition\BasilCompilableSourceFactory\Factory;
 use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\CreateFromBackActionDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\CreateFromClickActionDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\CreateFromForwardActionDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\CreateFromReloadActionDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\CreateFromSetActionDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\CreateFromSubmitActionDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\CreateFromWaitActionDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\CreateFromWaitForActionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromExcludesAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromExistsAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromIncludesAssertionDataProviderTrait;
@@ -30,6 +38,14 @@ class FactoryTest extends \PHPUnit\Framework\TestCase
     use CreateFromIsNotAssertionDataProviderTrait;
     use CreateFromMatchesAssertionDataProviderTrait;
     use CreateFromNotExistsAssertionDataProviderTrait;
+    use CreateFromBackActionDataProviderTrait;
+    use CreateFromForwardActionDataProviderTrait;
+    use CreateFromReloadActionDataProviderTrait;
+    use CreateFromClickActionDataProviderTrait;
+    use CreateFromSetActionDataProviderTrait;
+    use CreateFromSubmitActionDataProviderTrait;
+    use CreateFromWaitActionDataProviderTrait;
+    use CreateFromWaitForActionDataProviderTrait;
     use UnhandledValueDataProviderTrait;
 
     private $factory;
@@ -49,6 +65,14 @@ class FactoryTest extends \PHPUnit\Framework\TestCase
      * @dataProvider createFromIsNotAssertionDataProvider
      * @dataProvider createFromMatchesAssertionDataProvider
      * @dataProvider createFromNotExistsAssertionDataProvider
+     * @dataProvider createFromBackActionDataProvider
+     * @dataProvider createFromForwardActionDataProvider
+     * @dataProvider createFromReloadActionDataProvider
+     * @dataProvider createFromClickActionDataProvider
+     * @dataProvider createFromSetActionDataProvider
+     * @dataProvider createFromSubmitActionDataProvider
+     * @dataProvider createFromWaitActionDataProvider
+     * @dataProvider createFromWaitForActionDataProvider
      */
     public function testCreateSourceSuccess(
         object $model,
