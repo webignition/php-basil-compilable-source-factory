@@ -21,11 +21,16 @@ abstract class AbstractBrowserTestCase extends AbstractTestCase
     const PHPUNIT_TEST_CASE_VARIABLE_NAME = '$this';
     const DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME = '$navigator';
     const WEBDRIVER_ELEMENT_INSPECTOR_VARIABLE_NAME = '$inspector';
+    const WEBDRIVER_ELEMENT_MUTATOR_VARIABLE_NAME = '$mutator';
     const EXAMINED_VALUE_VARIABLE_NAME = '$examinedValue';
     const EXPECTED_VALUE_VARIABLE_NAME = '$expectedValue';
     const HAS_VARIABLE_NAME = '$has';
     const ENVIRONMENT_VARIABLE_ARRAY_VARIABLE_NAME = '$_ENV';
     const WEBDRIVER_DIMENSION_VARIABLE_NAME = '$webDriverDimension';
+    const PANTHER_CRAWLER_VARIABLE_NAME = '$crawler';
+    const ELEMENT_VARIABLE_NAME = '$element';
+    const COLLECTION_VARIABLE_NAME = '$collection';
+    const VALUE_VARIABLE_NAME = '$value';
 
     /**
      * @var Client
@@ -46,6 +51,7 @@ abstract class AbstractBrowserTestCase extends AbstractTestCase
         string $fixture,
         SourceInterface $source,
         array $additionalSetupStatements = [],
+        array $teardownStatements = [],
         array $additionalVariableIdentifiers = [],
         ?MetadataInterface $metadata = null
     ) {
@@ -69,7 +75,7 @@ abstract class AbstractBrowserTestCase extends AbstractTestCase
             $source,
             $variableIdentifiers,
             $setupStatements,
-            [],
+            $teardownStatements,
             $metadata
         );
     }
