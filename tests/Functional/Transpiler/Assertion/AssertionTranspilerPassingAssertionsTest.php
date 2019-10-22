@@ -13,6 +13,7 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\Includ
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\InclusionAssertionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\IsAssertionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\IsNotAssertionFunctionalDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\MatchesAssertionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\Transpiler\AbstractTranspilerTest;
 use webignition\BasilCompilableSourceFactory\Transpiler\Assertion\AssertionTranspiler;
 use webignition\BasilCompilableSourceFactory\Transpiler\TranspilerInterface;
@@ -29,6 +30,7 @@ class AssertionTranspilerPassingAssertionsTest extends AbstractTranspilerTest
     use IncludesAssertionFunctionalDataProviderTrait;
     use IsAssertionFunctionalDataProviderTrait;
     use IsNotAssertionFunctionalDataProviderTrait;
+    use MatchesAssertionFunctionalDataProviderTrait;
 
     protected function createTranspiler(): TranspilerInterface
     {
@@ -41,6 +43,7 @@ class AssertionTranspilerPassingAssertionsTest extends AbstractTranspilerTest
      * @dataProvider includesAssertionFunctionalDataProvider
      * @dataProvider isAssertionFunctionalDataProvider
      * @dataProvider isNotAssertionFunctionalDataProvider
+     * @dataProvider matchesAssertionFunctionalDataProvider
      */
     public function testTranspile(
         string $fixture,
