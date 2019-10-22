@@ -14,6 +14,7 @@ use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Source;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
+use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Assertion\AssertionComparison;
 use webignition\BasilModel\Assertion\ExaminationAssertionInterface;
 use webignition\BasilModel\Value\DomIdentifierValueInterface;
@@ -87,6 +88,11 @@ class ExistsComparisonTranspiler implements HandlerInterface, TranspilerInterfac
 
             $assignment = clone $accessor;
             $assignment->prependStatement(-1, $valuePlaceholder . ' = ');
+            $assignment = $assignment->withMetadata(
+                $assignment->getMetadata()->withAdditionalVariableExports(new VariablePlaceholderCollection([
+                    $valuePlaceholder,
+                ]))
+            );
 
             $existence = (new Source())
                 ->withPredecessors([$assignment])
@@ -105,6 +111,11 @@ class ExistsComparisonTranspiler implements HandlerInterface, TranspilerInterfac
 
                 $assignment = clone $accessor;
                 $assignment->prependStatement(-1, $valuePlaceholder . ' = ');
+                $assignment = $assignment->withMetadata(
+                    $assignment->getMetadata()->withAdditionalVariableExports(new VariablePlaceholderCollection([
+                        $valuePlaceholder,
+                    ]))
+                );
 
                 return $this->createAssertionCall($model->getComparison(), $assignment, $valuePlaceholder);
             }
