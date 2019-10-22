@@ -21,6 +21,11 @@ abstract class AbstractBrowserTestCase extends AbstractTestCase
     const PHPUNIT_TEST_CASE_VARIABLE_NAME = '$this';
     const DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME = '$navigator';
     const WEBDRIVER_ELEMENT_INSPECTOR_VARIABLE_NAME = '$inspector';
+    const EXAMINED_VALUE_VARIABLE_NAME = '$examinedValue';
+    const EXPECTED_VALUE_VARIABLE_NAME = '$expectedValue';
+    const HAS_VARIABLE_NAME = '$has';
+    const ENVIRONMENT_VARIABLE_ARRAY_VARIABLE_NAME = '$_ENV';
+    const WEBDRIVER_DIMENSION_VARIABLE_NAME = '$webDriverDimension';
 
     /**
      * @var Client
@@ -35,6 +40,38 @@ abstract class AbstractBrowserTestCase extends AbstractTestCase
 
         self::$client = self::createPantherClient();
         self::$client->getWebDriver()->manage()->window()->setSize(new WebDriverDimension(1200, 1100));
+    }
+
+    protected function createExecutableCallForRequest(
+        string $fixture,
+        SourceInterface $source,
+        array $additionalSetupStatements = [],
+        array $additionalVariableIdentifiers = [],
+        ?MetadataInterface $metadata = null
+    ) {
+        $setupStatements = array_merge(
+            [
+                '$crawler = self::$client->request(\'GET\', \'' . $fixture . '\'); ',
+            ],
+            $additionalSetupStatements
+        );
+
+        $variableIdentifiers = array_merge(
+            [
+                VariableNames::PANTHER_CLIENT => self::PANTHER_CLIENT_VARIABLE_NAME,
+            ],
+            $additionalVariableIdentifiers
+        );
+
+        $metadata = $metadata ?? new Metadata();
+
+        return $this->executableCallFactory->create(
+            $source,
+            $variableIdentifiers,
+            $setupStatements,
+            [],
+            $metadata
+        );
     }
 
     protected function createExecutableCallForRequestWithReturn(
