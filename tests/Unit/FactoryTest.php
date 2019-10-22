@@ -8,6 +8,13 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
 use webignition\BasilCompilableSourceFactory\Factory;
 use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromExcludesAssertionDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromExistsAssertionDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromIncludesAssertionDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromIsAssertionDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromIsNotAssertionDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromMatchesAssertionDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromNotExistsAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Value\CreateFromValueDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Value\UnhandledValueDataProviderTrait;
 use webignition\BasilCompilationSource\MetadataInterface;
@@ -16,6 +23,13 @@ use webignition\BasilCompilationSource\SourceInterface;
 class FactoryTest extends \PHPUnit\Framework\TestCase
 {
     use CreateFromValueDataProviderTrait;
+    use CreateFromExcludesAssertionDataProviderTrait;
+    use CreateFromExistsAssertionDataProviderTrait;
+    use CreateFromIncludesAssertionDataProviderTrait;
+    use CreateFromIsAssertionDataProviderTrait;
+    use CreateFromIsNotAssertionDataProviderTrait;
+    use CreateFromMatchesAssertionDataProviderTrait;
+    use CreateFromNotExistsAssertionDataProviderTrait;
     use UnhandledValueDataProviderTrait;
 
     private $factory;
@@ -28,7 +42,13 @@ class FactoryTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @dataProvider createFromValueDataProvider
+     * @dataProvider createFromExcludesAssertionDataProvider
+     * @dataProvider createFromExistsAssertionDataProvider
+     * @dataProvider createFromIncludesAssertionDataProvider
+     * @dataProvider createFromIsAssertionDataProvider
+     * @dataProvider createFromIsNotAssertionDataProvider
+     * @dataProvider createFromMatchesAssertionDataProvider
+     * @dataProvider createFromNotExistsAssertionDataProvider
      */
     public function testCreateSourceSuccess(
         object $model,
