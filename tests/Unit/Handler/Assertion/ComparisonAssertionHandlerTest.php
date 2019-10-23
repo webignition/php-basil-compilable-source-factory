@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
+use webignition\BasilCompilableSourceFactory\Handler\Assertion\ComparisonAssertionHandler;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\ExcludesAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\ExistsAssertionDataProviderTrait;
@@ -17,12 +18,11 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\Matche
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\NotExistsAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\UnhandledAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\AbstractHandlerTest;
-use webignition\BasilCompilableSourceFactory\Handler\Assertion\IncludesComparisonHandler;
 use webignition\BasilModel\Assertion\AssertionInterface;
-use webignition\BasilModel\Assertion\ComparisonAssertion;
+use webignition\BasilModel\Assertion\ExaminationAssertion;
 use webignition\BasilModelFactory\AssertionFactory;
 
-class IncludesComparisonHandlerTest extends AbstractHandlerTest
+class ComparisonAssertionHandlerTest extends AbstractHandlerTest
 {
     use ExcludesAssertionDataProviderTrait;
     use ExistsAssertionDataProviderTrait;
@@ -35,12 +35,15 @@ class IncludesComparisonHandlerTest extends AbstractHandlerTest
 
     protected function createHandler(): HandlerInterface
     {
-        return IncludesComparisonHandler::createHandler();
+        return ComparisonAssertionHandler::createHandler();
     }
 
     /**
      * @dataProvider excludesAssertionDataProvider
      * @dataProvider includesAssertionDataProvider
+     * @dataProvider isAssertionDataProvider
+     * @dataProvider isNotAssertionDataProvider
+     * @dataProvider matchesAssertionDataProvider
      */
     public function testHandlesDoesHandle(AssertionInterface $model)
     {
@@ -49,9 +52,6 @@ class IncludesComparisonHandlerTest extends AbstractHandlerTest
 
     /**
      * @dataProvider existsAssertionDataProvider
-     * @dataProvider isAssertionDataProvider
-     * @dataProvider isNotAssertionDataProvider
-     * @dataProvider matchesAssertionDataProvider
      * @dataProvider notExistsAssertionDataProvider
      */
     public function testHandlesDoesNotHandle(object $model)
@@ -62,10 +62,10 @@ class IncludesComparisonHandlerTest extends AbstractHandlerTest
     public function testTranspileWrongComparisonType()
     {
         $assertionFactory = AssertionFactory::createFactory();
-        $model = $assertionFactory->createFromAssertionString('".selector" is "value"');
+        $model = $assertionFactory->createFromAssertionString('".selector" exists');
 
         $this->expectException(NonTranspilableModelException::class);
-        $this->expectExceptionMessage('Non-transpilable model "' . ComparisonAssertion::class . '"');
+        $this->expectExceptionMessage('Non-transpilable model "' . ExaminationAssertion::class . '"');
 
         $this->handler->createSource($model);
     }

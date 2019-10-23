@@ -5,16 +5,35 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
 use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
+use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
+use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
+use webignition\BasilModel\Assertion\AssertionComparison;
 use webignition\BasilModel\Assertion\ComparisonAssertionInterface;
 use webignition\BasilModel\Value\DomIdentifierValueInterface;
 
-abstract class AbstractComparisonAssertionHandler implements HandlerInterface
+class ComparisonAssertionHandler implements HandlerInterface
 {
+    const HANDLED_COMPARISONS = [
+        AssertionComparison::INCLUDES,
+        AssertionComparison::EXCLUDES,
+        AssertionComparison::IS,
+        AssertionComparison::IS_NOT,
+        AssertionComparison::MATCHES,
+    ];
+
+    const COMPARISON_TO_ASSERTION_TEMPLATE_MAP = [
+        AssertionComparison::INCLUDES => AssertionCallFactory::ASSERT_STRING_CONTAINS_STRING_TEMPLATE,
+        AssertionComparison::EXCLUDES => AssertionCallFactory::ASSERT_STRING_NOT_CONTAINS_STRING_TEMPLATE,
+        AssertionComparison::IS => AssertionCallFactory::ASSERT_EQUALS_TEMPLATE,
+        AssertionComparison::IS_NOT => AssertionCallFactory::ASSERT_NOT_EQUALS_TEMPLATE,
+        AssertionComparison::MATCHES => AssertionCallFactory::ASSERT_MATCHES_TEMPLATE,
+    ];
+
     protected $assertionCallFactory;
     private $variableAssignmentFactory;
     private $scalarValueHandler;
@@ -32,7 +51,37 @@ abstract class AbstractComparisonAssertionHandler implements HandlerInterface
         $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
     }
 
-    abstract protected function getAssertionTemplate(ComparisonAssertionInterface $assertion): string;
+    public static function createHandler(): HandlerInterface
+    {
+        return new ComparisonAssertionHandler(
+            AssertionCallFactory::createFactory(),
+            VariableAssignmentFactory::createFactory(),
+            ScalarValueHandler::createHandler(),
+            NamedDomIdentifierHandler::createHandler()
+        );
+    }
+
+    public function handles(object $model): bool
+    {
+        if (!$model instanceof ComparisonAssertionInterface) {
+            return false;
+        }
+
+        return in_array($model->getComparison(), self::HANDLED_COMPARISONS);
+    }
+
+    public function createSource(object $model): SourceInterface
+    {
+        if (!$model instanceof ComparisonAssertionInterface) {
+            throw new NonTranspilableModelException($model);
+        }
+
+        if (!in_array($model->getComparison(), self::HANDLED_COMPARISONS)) {
+            throw new NonTranspilableModelException($model);
+        }
+
+        return $this->doTranspile($model);
+    }
 
     /**
      * @param ComparisonAssertionInterface $assertion
@@ -88,7 +137,7 @@ abstract class AbstractComparisonAssertionHandler implements HandlerInterface
             $examinedValueAssignment,
             $expectedValuePlaceholder,
             $examinedValuePlaceholder,
-            $this->getAssertionTemplate($assertion)
+            self::COMPARISON_TO_ASSERTION_TEMPLATE_MAP[$assertion->getComparison()]
         );
     }
 }
