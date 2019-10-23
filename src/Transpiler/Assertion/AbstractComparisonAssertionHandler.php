@@ -13,7 +13,7 @@ use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilModel\Assertion\ComparisonAssertionInterface;
 use webignition\BasilModel\Value\DomIdentifierValueInterface;
 
-abstract class AbstractComparisonAssertionTranspiler implements HandlerInterface
+abstract class AbstractComparisonAssertionHandler implements HandlerInterface
 {
     protected $assertionCallFactory;
     private $variableAssignmentFactory;

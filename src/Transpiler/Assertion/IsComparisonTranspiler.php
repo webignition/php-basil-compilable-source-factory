@@ -12,7 +12,7 @@ use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilModel\Assertion\AssertionComparison;
 use webignition\BasilModel\Assertion\ComparisonAssertionInterface;
 
-class IsComparisonTranspiler extends AbstractComparisonAssertionTranspiler implements HandlerInterface
+class IsComparisonTranspiler extends AbstractComparisonAssertionHandler implements HandlerInterface
 {
     public static function createHandler(): HandlerInterface
     {
