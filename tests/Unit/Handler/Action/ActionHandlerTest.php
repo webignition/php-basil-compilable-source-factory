@@ -9,6 +9,14 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Action;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\BackActionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\ClickActionDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\CreateFromBackActionDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\CreateFromClickActionDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\CreateFromForwardActionDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\CreateFromReloadActionDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\CreateFromSetActionDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\CreateFromSubmitActionDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\CreateFromWaitActionDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\CreateFromWaitForActionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\ForwardActionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\ReloadActionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\SetActionDataProviderTrait;
@@ -18,6 +26,7 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\WaitActio
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\WaitForActionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\AbstractHandlerTest;
+use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\BasilModel\Action\ActionInterface;
 
@@ -32,6 +41,15 @@ class ActionHandlerTest extends AbstractHandlerTest
     use ClickActionDataProviderTrait;
     use SubmitActionDataProviderTrait;
     use SetActionDataProviderTrait;
+
+    use CreateFromBackActionDataProviderTrait;
+    use CreateFromClickActionDataProviderTrait;
+    use CreateFromForwardActionDataProviderTrait;
+    use CreateFromReloadActionDataProviderTrait;
+    use CreateFromSetActionDataProviderTrait;
+    use CreateFromSubmitActionDataProviderTrait;
+    use CreateFromWaitActionDataProviderTrait;
+    use CreateFromWaitForActionDataProviderTrait;
 
     protected function createHandler(): HandlerInterface
     {
@@ -62,18 +80,23 @@ class ActionHandlerTest extends AbstractHandlerTest
     }
 
     /**
-     * @dataProvider waitActionDataProvider
-     * @dataProvider waitForActionDataProvider
-     * @dataProvider backActionDataProvider
-     * @dataProvider forwardActionDataProvider
-     * @dataProvider reloadActionDataProvider
-     * @dataProvider clickActionDataProvider
-     * @dataProvider setActionDataProvider
+     * @dataProvider createFromBackActionDataProvider
+     * @dataProvider createFromClickActionDataProvider
+     * @dataProvider createFromForwardActionDataProvider
+     * @dataProvider createFromReloadActionDataProvider
+     * @dataProvider createFromSetActionDataProvider
+     * @dataProvider createFromSubmitActionDataProvider
+     * @dataProvider createFromWaitActionDataProvider
+     * @dataProvider createFromWaitForActionDataProvider
      */
-    public function testTranspileDoesNotFail(ActionInterface $model)
-    {
-        $statementList = $this->handler->createStatementList($model);
+    public function testCreateStatementList(
+        ActionInterface $action,
+        array $expectedStatements,
+        MetadataInterface $expectedMetadata
+    ) {
+        $statementList = $this->handler->createStatementList($action);
 
-        $this->assertInstanceOf(StatementListInterface::class, $statementList);
+        $this->assertEquals($expectedStatements, $statementList->getStatements());
+        $this->assertEquals($expectedMetadata, $statementList->getMetadata());
     }
 }
