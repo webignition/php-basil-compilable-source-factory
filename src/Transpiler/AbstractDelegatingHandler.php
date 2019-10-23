@@ -8,7 +8,7 @@ use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelExcep
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilationSource\SourceInterface;
 
-abstract class AbstractDelegatingTranspiler extends AbstractDelegator implements DelegatorInterface, HandlerInterface
+abstract class AbstractDelegatingHandler extends AbstractDelegator implements DelegatorInterface, HandlerInterface
 {
     public function isAllowedHandler(HandlerInterface $handler): bool
     {
