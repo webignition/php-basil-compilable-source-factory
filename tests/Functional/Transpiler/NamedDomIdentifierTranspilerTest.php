@@ -26,7 +26,7 @@ class NamedDomIdentifierTranspilerTest extends AbstractTranspilerTest
 {
     protected function createTranspiler(): HandlerInterface
     {
-        return NamedDomIdentifierTranspiler::createTranspiler();
+        return NamedDomIdentifierTranspiler::createFactory();
     }
     /**
      * @dataProvider transpileDataProvider

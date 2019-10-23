@@ -17,7 +17,7 @@ class BrowserPropertyTranspiler implements HandlerInterface
 {
     const PROPERTY_NAME_SIZE = 'size';
 
-    public static function createTranspiler(): BrowserPropertyTranspiler
+    public static function createFactory(): BrowserPropertyTranspiler
     {
         return new BrowserPropertyTranspiler();
     }

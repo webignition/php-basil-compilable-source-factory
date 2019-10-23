@@ -15,7 +15,7 @@ class ClassDependencyTranspilerTest extends AbstractTranspilerTest
 {
     protected function createTranspiler(): HandlerInterface
     {
-        return ClassDependencyTranspiler::createTranspiler();
+        return ClassDependencyTranspiler::createFactory();
     }
 
     public function testHandlesDoesHandle()

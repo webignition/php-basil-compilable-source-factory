@@ -26,7 +26,7 @@ class EnvironmentParameterValueTranspilerTest extends AbstractTranspilerTest
 
     protected function createTranspiler(): HandlerInterface
     {
-        return EnvironmentParameterValueTranspiler::createTranspiler();
+        return EnvironmentParameterValueTranspiler::createFactory();
     }
 
     /**

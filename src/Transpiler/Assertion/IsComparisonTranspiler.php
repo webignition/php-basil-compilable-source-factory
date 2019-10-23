@@ -14,13 +14,13 @@ use webignition\BasilModel\Assertion\ComparisonAssertionInterface;
 
 class IsComparisonTranspiler extends AbstractComparisonAssertionTranspiler implements HandlerInterface
 {
-    public static function createTranspiler(): IsComparisonTranspiler
+    public static function createFactory(): IsComparisonTranspiler
     {
         return new IsComparisonTranspiler(
             AssertionCallFactory::createFactory(),
             VariableAssignmentFactory::createFactory(),
-            ScalarValueTranspiler::createTranspiler(),
-            NamedDomIdentifierTranspiler::createTranspiler()
+            ScalarValueTranspiler::createFactory(),
+            NamedDomIdentifierTranspiler::createFactory()
         );
     }
 

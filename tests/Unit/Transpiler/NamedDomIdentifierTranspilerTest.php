@@ -34,7 +34,7 @@ class NamedDomIdentifierTranspilerTest extends \PHPUnit\Framework\TestCase
     {
         parent::setUp();
 
-        $this->transpiler = NamedDomIdentifierTranspiler::createTranspiler();
+        $this->transpiler = NamedDomIdentifierTranspiler::createFactory();
     }
 
     /**

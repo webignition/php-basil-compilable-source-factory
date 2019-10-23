@@ -14,13 +14,13 @@ use webignition\BasilModel\Assertion\ComparisonAssertionInterface;
 
 class MatchesComparisonTranspiler extends AbstractComparisonAssertionTranspiler implements HandlerInterface
 {
-    public static function createTranspiler(): MatchesComparisonTranspiler
+    public static function createFactory(): MatchesComparisonTranspiler
     {
         return new MatchesComparisonTranspiler(
             AssertionCallFactory::createFactory(),
             VariableAssignmentFactory::createFactory(),
-            ScalarValueTranspiler::createTranspiler(),
-            NamedDomIdentifierTranspiler::createTranspiler()
+            ScalarValueTranspiler::createFactory(),
+            NamedDomIdentifierTranspiler::createFactory()
         );
     }
 

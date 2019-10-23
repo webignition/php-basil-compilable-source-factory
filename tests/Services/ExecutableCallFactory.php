@@ -27,7 +27,7 @@ class ExecutableCallFactory
     public static function createFactory(): ExecutableCallFactory
     {
         return new ExecutableCallFactory(
-            ClassDependencyTranspiler::createTranspiler(),
+            ClassDependencyTranspiler::createFactory(),
             new VariablePlaceholderResolver()
         );
     }

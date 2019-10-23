@@ -33,12 +33,12 @@ class WaitActionTranspiler implements HandlerInterface
         $this->namedDomIdentifierTranspiler = $namedDomIdentifierTranspiler;
     }
 
-    public static function createTranspiler(): WaitActionTranspiler
+    public static function createFactory(): WaitActionTranspiler
     {
         return new WaitActionTranspiler(
             VariableAssignmentFactory::createFactory(),
-            ScalarValueTranspiler::createTranspiler(),
-            NamedDomIdentifierTranspiler::createTranspiler()
+            ScalarValueTranspiler::createFactory(),
+            NamedDomIdentifierTranspiler::createFactory()
         );
     }
 

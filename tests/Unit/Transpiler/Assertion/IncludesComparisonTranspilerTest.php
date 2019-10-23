@@ -35,7 +35,7 @@ class IncludesComparisonTranspilerTest extends AbstractTranspilerTest
 
     protected function createTranspiler(): HandlerInterface
     {
-        return IncludesComparisonTranspiler::createTranspiler();
+        return IncludesComparisonTranspiler::createFactory();
     }
 
     /**

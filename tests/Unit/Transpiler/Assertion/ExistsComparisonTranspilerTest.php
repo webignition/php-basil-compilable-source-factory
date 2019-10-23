@@ -36,7 +36,7 @@ class ExistsComparisonTranspilerTest extends AbstractTranspilerTest
 
     protected function createTranspiler(): HandlerInterface
     {
-        return ExistsComparisonTranspiler::createTranspiler();
+        return ExistsComparisonTranspiler::createFactory();
     }
 
     /**

@@ -29,7 +29,7 @@ class BrowserPropertyTranspilerTest extends AbstractTranspilerTest
 
     protected function createTranspiler(): HandlerInterface
     {
-        return BrowserPropertyTranspiler::createTranspiler();
+        return BrowserPropertyTranspiler::createFactory();
     }
 
     /**

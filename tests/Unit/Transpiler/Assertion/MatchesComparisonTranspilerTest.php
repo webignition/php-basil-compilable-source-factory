@@ -35,7 +35,7 @@ class MatchesComparisonTranspilerTest extends AbstractTranspilerTest
 
     protected function createTranspiler(): HandlerInterface
     {
-        return MatchesComparisonTranspiler::createTranspiler();
+        return MatchesComparisonTranspiler::createFactory();
     }
 
     /**

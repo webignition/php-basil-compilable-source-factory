@@ -13,7 +13,7 @@ class ClassDependencyTranspiler implements HandlerInterface
     const CLASS_NAME_ONLY_TEMPLATE = 'use %s';
     const WITH_ALIAS_TEMPLATE = self::CLASS_NAME_ONLY_TEMPLATE . ' as %s';
 
-    public static function createTranspiler(): ClassDependencyTranspiler
+    public static function createFactory(): ClassDependencyTranspiler
     {
         return new ClassDependencyTranspiler();
     }

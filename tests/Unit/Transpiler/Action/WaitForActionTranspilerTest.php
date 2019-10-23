@@ -34,7 +34,7 @@ class WaitForActionTranspilerTest extends AbstractTranspilerTest
 
     protected function createTranspiler(): HandlerInterface
     {
-        return WaitForActionTranspiler::createTranspiler();
+        return WaitForActionTranspiler::createFactory();
     }
 
     /**

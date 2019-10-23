@@ -8,7 +8,7 @@ use webignition\BasilCompilationSource\SourceInterface;
 interface HandlerInterface
 {
     // TranspileInterface methods
-    public static function createTranspiler();
+    public static function createFactory();
 
     /**
      * @param object $model

@@ -14,7 +14,7 @@ use webignition\BasilModel\Value\ObjectValueType;
 
 class EnvironmentParameterValueTranspiler implements HandlerInterface
 {
-    public static function createTranspiler(): EnvironmentParameterValueTranspiler
+    public static function createFactory(): EnvironmentParameterValueTranspiler
     {
         return new EnvironmentParameterValueTranspiler();
     }

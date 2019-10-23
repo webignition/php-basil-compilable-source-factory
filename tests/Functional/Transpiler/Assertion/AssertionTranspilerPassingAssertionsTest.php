@@ -36,7 +36,7 @@ class AssertionTranspilerPassingAssertionsTest extends AbstractTranspilerTest
 
     protected function createTranspiler(): HandlerInterface
     {
-        return AssertionTranspiler::createTranspiler();
+        return AssertionTranspiler::createFactory();
     }
 
     /**

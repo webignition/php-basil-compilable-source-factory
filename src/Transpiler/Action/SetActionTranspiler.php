@@ -36,13 +36,13 @@ class SetActionTranspiler implements HandlerInterface
         $this->namedDomIdentifierTranspiler = $namedDomIdentifierTranspiler;
     }
 
-    public static function createTranspiler(): SetActionTranspiler
+    public static function createFactory(): SetActionTranspiler
     {
         return new SetActionTranspiler(
             VariableAssignmentFactory::createFactory(),
             WebDriverElementMutatorCallFactory::createFactory(),
-            ScalarValueTranspiler::createTranspiler(),
-            NamedDomIdentifierTranspiler::createTranspiler()
+            ScalarValueTranspiler::createFactory(),
+            NamedDomIdentifierTranspiler::createFactory()
         );
     }
 

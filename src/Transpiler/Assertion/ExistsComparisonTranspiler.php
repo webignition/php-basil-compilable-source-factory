@@ -40,13 +40,13 @@ class ExistsComparisonTranspiler implements HandlerInterface
         $this->namedDomIdentifierTranspiler = $namedDomIdentifierTranspiler;
     }
 
-    public static function createTranspiler(): ExistsComparisonTranspiler
+    public static function createFactory(): ExistsComparisonTranspiler
     {
         return new ExistsComparisonTranspiler(
             AssertionCallFactory::createFactory(),
-            ScalarValueTranspiler::createTranspiler(),
+            ScalarValueTranspiler::createFactory(),
             DomCrawlerNavigatorCallFactory::createFactory(),
-            NamedDomIdentifierTranspiler::createTranspiler()
+            NamedDomIdentifierTranspiler::createFactory()
         );
     }
 

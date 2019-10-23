@@ -13,9 +13,9 @@ class Factory extends AbstractDelegator implements DelegatorInterface, FactoryIn
     public static function createFactory(): FactoryInterface
     {
         return new Factory([
-            ScalarValueTranspiler::createTranspiler(),
-            AssertionTranspiler::createTranspiler(),
-            ActionTranspiler::createTranspiler(),
+            ScalarValueTranspiler::createFactory(),
+            AssertionTranspiler::createFactory(),
+            ActionTranspiler::createFactory(),
         ]);
     }
 

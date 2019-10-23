@@ -9,11 +9,11 @@ use webignition\BasilModel\Action\ActionTypes;
 
 class ClickActionTranspiler extends AbstractInteractionActionTranspiler implements HandlerInterface
 {
-    public static function createTranspiler(): ClickActionTranspiler
+    public static function createFactory(): ClickActionTranspiler
     {
         return new ClickActionTranspiler(
             VariableAssignmentFactory::createFactory(),
-            NamedDomIdentifierTranspiler::createTranspiler()
+            NamedDomIdentifierTranspiler::createFactory()
         );
     }
 

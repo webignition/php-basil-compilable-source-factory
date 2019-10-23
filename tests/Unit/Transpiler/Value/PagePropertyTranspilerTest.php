@@ -29,7 +29,7 @@ class PagePropertyTranspilerTest extends AbstractTranspilerTest
 
     protected function createTranspiler(): HandlerInterface
     {
-        return PagePropertyTranspiler::createTranspiler();
+        return PagePropertyTranspiler::createFactory();
     }
 
     /**

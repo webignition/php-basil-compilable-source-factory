@@ -9,13 +9,13 @@ use webignition\BasilModel\Value\ValueInterface;
 
 class ScalarValueTranspiler extends AbstractDelegatingTranspiler implements DelegatorInterface, HandlerInterface
 {
-    public static function createTranspiler(): ScalarValueTranspiler
+    public static function createFactory(): ScalarValueTranspiler
     {
         return new ScalarValueTranspiler([
-            BrowserPropertyTranspiler::createTranspiler(),
-            EnvironmentParameterValueTranspiler::createTranspiler(),
-            LiteralValueTranspiler::createTranspiler(),
-            PagePropertyTranspiler::createTranspiler(),
+            BrowserPropertyTranspiler::createFactory(),
+            EnvironmentParameterValueTranspiler::createFactory(),
+            LiteralValueTranspiler::createFactory(),
+            PagePropertyTranspiler::createFactory(),
         ]);
     }
 

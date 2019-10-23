@@ -9,16 +9,16 @@ use webignition\BasilModel\Action\ActionInterface;
 
 class ActionTranspiler extends AbstractDelegatingTranspiler implements DelegatorInterface, HandlerInterface
 {
-    public static function createTranspiler(): ActionTranspiler
+    public static function createFactory(): ActionTranspiler
     {
         return new ActionTranspiler(
             [
-                WaitActionTranspiler::createTranspiler(),
-                WaitForActionTranspiler::createTranspiler(),
-                BrowserOperationActionTranspiler::createTranspiler(),
-                ClickActionTranspiler::createTranspiler(),
-                SubmitActionTranspiler::createTranspiler(),
-                SetActionTranspiler::createTranspiler(),
+                WaitActionTranspiler::createFactory(),
+                WaitForActionTranspiler::createFactory(),
+                BrowserOperationActionTranspiler::createFactory(),
+                ClickActionTranspiler::createFactory(),
+                SubmitActionTranspiler::createFactory(),
+                SetActionTranspiler::createFactory(),
             ]
         );
     }

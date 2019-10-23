@@ -10,7 +10,7 @@ use webignition\BasilModel\Value\LiteralValueInterface;
 
 class LiteralValueTranspiler implements HandlerInterface
 {
-    public static function createTranspiler(): LiteralValueTranspiler
+    public static function createFactory(): LiteralValueTranspiler
     {
         return new LiteralValueTranspiler();
     }
