@@ -15,7 +15,7 @@ class ScalarValueTranspiler extends AbstractDelegatingHandler implements Delegat
             BrowserPropertyHandler::createHandler(),
             EnvironmentValueHandler::createHandler(),
             LiteralValueHandler::createHandler(),
-            PagePropertyTranspiler::createHandler(),
+            PagePropertyHandler::createHandler(),
         ]);
     }
 

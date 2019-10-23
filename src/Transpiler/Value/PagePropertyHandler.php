@@ -13,7 +13,7 @@ use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Value\ObjectValueInterface;
 use webignition\BasilModel\Value\ObjectValueType;
 
-class PagePropertyTranspiler implements HandlerInterface
+class PagePropertyHandler implements HandlerInterface
 {
     const PROPERTY_NAME_TITLE = 'title';
     const PROPERTY_NAME_URL = 'url';
@@ -35,7 +35,7 @@ class PagePropertyTranspiler implements HandlerInterface
 
     public static function createHandler(): HandlerInterface
     {
-        return new PagePropertyTranspiler();
+        return new PagePropertyHandler();
     }
 
     public function handles(object $model): bool
