@@ -20,9 +20,9 @@ abstract class AbstractDelegator implements DelegatorInterface
 
     public function findHandler(object $model): ?HandlerInterface
     {
-        foreach ($this->handlers as $transpiler) {
-            if ($transpiler->handles($model)) {
-                return $transpiler;
+        foreach ($this->handlers as $handler) {
+            if ($handler->handles($model)) {
+                return $handler;
             }
         }
 

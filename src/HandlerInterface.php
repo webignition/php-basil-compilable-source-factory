@@ -2,7 +2,9 @@
 
 namespace webignition\BasilCompilableSourceFactory;
 
-interface HandlerInterface
+interface HandlerInterface extends SourceProducerInterface
 {
+    public static function createHandler(): HandlerInterface;
+
     public function handles(object $model): bool;
 }
