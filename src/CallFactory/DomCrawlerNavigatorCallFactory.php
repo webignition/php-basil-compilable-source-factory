@@ -3,8 +3,8 @@
 namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Source;
-use webignition\BasilCompilationSource\SourceInterface;
+use webignition\BasilCompilationSource\StatementList;
+use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Identifier\DomIdentifierInterface;
@@ -25,22 +25,22 @@ class DomCrawlerNavigatorCallFactory
         );
     }
 
-    public function createFindCall(DomIdentifierInterface $identifier): SourceInterface
+    public function createFindCall(DomIdentifierInterface $identifier): StatementListInterface
     {
         return $this->createElementCall($identifier, 'find');
     }
 
-    public function createFindOneCall(DomIdentifierInterface $identifier): SourceInterface
+    public function createFindOneCall(DomIdentifierInterface $identifier): StatementListInterface
     {
         return $this->createElementCall($identifier, 'findOne');
     }
 
-    public function createHasCall(DomIdentifierInterface $identifier): SourceInterface
+    public function createHasCall(DomIdentifierInterface $identifier): StatementListInterface
     {
         return $this->createElementCall($identifier, 'has');
     }
 
-    public function createHasOneCall(DomIdentifierInterface $identifier): SourceInterface
+    public function createHasOneCall(DomIdentifierInterface $identifier): StatementListInterface
     {
         return $this->createElementCall($identifier, 'hasOne');
     }
@@ -48,7 +48,7 @@ class DomCrawlerNavigatorCallFactory
     private function createElementCall(
         DomIdentifierInterface $identifier,
         string $methodName
-    ): SourceInterface {
+    ): StatementListInterface {
         $arguments = $this->createElementCallArguments($identifier);
 
         $variableDependencies = new VariablePlaceholderCollection();
@@ -63,14 +63,14 @@ class DomCrawlerNavigatorCallFactory
             (string) $arguments
         );
 
-        return (new Source())
+        return (new StatementList())
             ->withStatements([$createStatement])
             ->withMetadata($metadata);
     }
 
-    private function createElementCallArguments(DomIdentifierInterface $elementIdentifier): SourceInterface
+    private function createElementCallArguments(DomIdentifierInterface $elementIdentifier): StatementListInterface
     {
-        $source = $this->elementLocatorCallFactory->createConstructorCall($elementIdentifier);
+        $statementList = $this->elementLocatorCallFactory->createConstructorCall($elementIdentifier);
 
         $parentIdentifier = $elementIdentifier->getParentIdentifier();
         if ($parentIdentifier instanceof DomIdentifierInterface) {
@@ -79,21 +79,21 @@ class DomCrawlerNavigatorCallFactory
             );
 
             $metadata = (new Metadata())->merge([
-                $source->getMetadata(),
+                $statementList->getMetadata(),
                 $parentElementLocatorConstructorCall->getMetadata(),
             ]);
 
-            $source = (new Source())
+            $statementList = (new StatementList())
                 ->withStatements([
                     sprintf(
                         '%s, %s',
-                        (string) $source,
+                        (string) $statementList,
                         (string) $parentElementLocatorConstructorCall
                     ),
                 ])
                 ->withMetadata($metadata);
         }
 
-        return $source;
+        return $statementList;
     }
 }

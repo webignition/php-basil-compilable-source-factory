@@ -10,8 +10,8 @@ use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelExcep
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierInterface;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
-use webignition\BasilCompilationSource\Source;
-use webignition\BasilCompilationSource\SourceInterface;
+use webignition\BasilCompilationSource\StatementList;
+use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
@@ -53,7 +53,7 @@ class NamedDomIdentifierHandler implements HandlerInterface
         return $model instanceof NamedDomIdentifierInterface;
     }
 
-    public function createSource(object $model): SourceInterface
+    public function createSource(object $model): StatementListInterface
     {
         if (!$model instanceof NamedDomIdentifierInterface) {
             throw new NonTranspilableModelException($model);
@@ -111,7 +111,7 @@ class NamedDomIdentifierHandler implements HandlerInterface
 
         if ($model->includeValue()) {
             if ($hasAttribute) {
-                $valueAssignment = (new Source())
+                $valueAssignment = (new StatementList())
                     ->withStatements([
                         sprintf(
                             '%s = %s->getAttribute(\'%s\')',
@@ -130,7 +130,7 @@ class NamedDomIdentifierHandler implements HandlerInterface
             $predecessors[] = $valueAssignment;
         }
 
-        return (new Source())
+        return (new StatementList())
             ->withPredecessors($predecessors);
     }
 }

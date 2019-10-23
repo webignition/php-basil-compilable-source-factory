@@ -10,8 +10,8 @@ use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MetadataInterface;
-use webignition\BasilCompilationSource\Source;
-use webignition\BasilCompilationSource\SourceInterface;
+use webignition\BasilCompilationSource\StatementList;
+use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
@@ -33,15 +33,15 @@ class AssertionCallFactoryTest extends \PHPUnit\Framework\TestCase
      * @dataProvider createValueComparisonAssertionCallDataProvider
      */
     public function testCreateValueComparisonAssertionCall(
-        SourceInterface $expectedValueCall,
-        SourceInterface $actualValueCall,
+        StatementListInterface $expectedValueCall,
+        StatementListInterface $actualValueCall,
         VariablePlaceholder $expectedValuePlaceholder,
         VariablePlaceholder $actualValuePlaceholder,
         string $assertionTemplate,
         array $expectedStatements,
         MetadataInterface $expectedMetadata
     ) {
-        $source = $this->factory->createValueComparisonAssertionCall(
+        $statementList = $this->factory->createValueComparisonAssertionCall(
             $expectedValueCall,
             $actualValueCall,
             $expectedValuePlaceholder,
@@ -49,9 +49,9 @@ class AssertionCallFactoryTest extends \PHPUnit\Framework\TestCase
             $assertionTemplate
         );
 
-        $this->assertInstanceOf(SourceInterface::class, $source);
-        $this->assertEquals($expectedStatements, $source->getStatements());
-        $this->assertEquals($expectedMetadata, $source->getMetadata());
+        $this->assertInstanceOf(StatementListInterface::class, $statementList);
+        $this->assertEquals($expectedStatements, $statementList->getStatements());
+        $this->assertEquals($expectedMetadata, $statementList->getMetadata());
     }
 
     public function createValueComparisonAssertionCallDataProvider(): array
@@ -59,14 +59,14 @@ class AssertionCallFactoryTest extends \PHPUnit\Framework\TestCase
         $expectedValuePlaceholder = new VariablePlaceholder(VariableNames::EXPECTED_VALUE);
         $examinedValuePlaceholder = new VariablePlaceholder(VariableNames::EXAMINED_VALUE);
 
-        $expectedValueCall = (new Source())
+        $expectedValueCall = (new StatementList())
             ->withStatements([$expectedValuePlaceholder . ' = "expected value"'])
             ->withMetadata(
                 (new Metadata())
                     ->withVariableExports(new VariablePlaceholderCollection([$expectedValuePlaceholder]))
             );
 
-        $actualValueCall = (new Source())
+        $actualValueCall = (new StatementList())
             ->withStatements([$examinedValuePlaceholder . ' = "actual value"'])
             ->withMetadata(
                 (new Metadata())
@@ -194,28 +194,28 @@ class AssertionCallFactoryTest extends \PHPUnit\Framework\TestCase
      * @dataProvider createValueExistenceAssertionCallDataProvider
      */
     public function testCreateValueExistenceAssertionCall(
-        SourceInterface $assignmentCall,
+        StatementListInterface $assignmentCall,
         VariablePlaceholder $variablePlaceholder,
         string $assertionTemplate,
         array $expectedStatements,
         MetadataInterface $expectedMetadata
     ) {
-        $source = $this->factory->createValueExistenceAssertionCall(
+        $statementList = $this->factory->createValueExistenceAssertionCall(
             $assignmentCall,
             $variablePlaceholder,
             $assertionTemplate
         );
 
-        $this->assertInstanceOf(SourceInterface::class, $source);
-        $this->assertEquals($expectedStatements, $source->getStatements());
-        $this->assertEquals($expectedMetadata, $source->getMetadata());
+        $this->assertInstanceOf(StatementListInterface::class, $statementList);
+        $this->assertEquals($expectedStatements, $statementList->getStatements());
+        $this->assertEquals($expectedMetadata, $statementList->getMetadata());
     }
 
     public function createValueExistenceAssertionCallDataProvider(): array
     {
         $examinedValuePlaceholder = new VariablePlaceholder(VariableNames::EXAMINED_VALUE);
 
-        $assignmentCall = (new Source())
+        $assignmentCall = (new StatementList())
             ->withStatements([$examinedValuePlaceholder . ' = "value" !== null'])
             ->withMetadata(
                 (new Metadata())

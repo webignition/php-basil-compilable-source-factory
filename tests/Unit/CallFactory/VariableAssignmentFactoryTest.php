@@ -9,8 +9,8 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ExecutableCallFactory;
 use webignition\BasilCompilationSource\Metadata;
-use webignition\BasilCompilationSource\Source;
-use webignition\BasilCompilationSource\SourceInterface;
+use webignition\BasilCompilationSource\StatementList;
+use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
@@ -38,7 +38,7 @@ class VariableAssignmentFactoryTest extends \PHPUnit\Framework\TestCase
      * @dataProvider createForValueAccessorDataProvider
      */
     public function testCreateForValueAccessor(
-        SourceInterface $accessor,
+        StatementListInterface $accessor,
         string $type,
         array $expectedStatements,
         $expectedAssignedValue
@@ -50,16 +50,16 @@ class VariableAssignmentFactoryTest extends \PHPUnit\Framework\TestCase
                 $placeholder,
             ]));
 
-        $source = $this->factory->createForValueAccessor($accessor, $placeholder, $type);
+        $statementList = $this->factory->createForValueAccessor($accessor, $placeholder, $type);
 
-        $this->assertEquals($expectedStatements, $source->getStatements());
-        $this->assertEquals($expectedMetadata, $source->getMetadata());
+        $this->assertEquals($expectedStatements, $statementList->getStatements());
+        $this->assertEquals($expectedMetadata, $statementList->getMetadata());
 
         $variableIdentifiers = [
             'VALUE' => '$value',
         ];
 
-        $executableCall = $this->executableCallFactory->createWithReturn($source, $variableIdentifiers);
+        $executableCall = $this->executableCallFactory->createWithReturn($statementList, $variableIdentifiers);
 
         $assignedValue = eval($executableCall);
 
@@ -70,7 +70,7 @@ class VariableAssignmentFactoryTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'string value cast to string' => [
-                'accessor' => (new Source())->withStatements([
+                'accessor' => (new StatementList())->withStatements([
                     '"value"',
                 ]),
                 'type' => 'string',
@@ -81,7 +81,7 @@ class VariableAssignmentFactoryTest extends \PHPUnit\Framework\TestCase
                 'expectedAssignedValue' => 'value',
             ],
             'null value cast to string' => [
-                'accessor' => (new Source())->withStatements([
+                'accessor' => (new StatementList())->withStatements([
                     'null',
                 ]),
                 'type' => 'string',
@@ -92,7 +92,7 @@ class VariableAssignmentFactoryTest extends \PHPUnit\Framework\TestCase
                 'expectedAssignedValue' => '',
             ],
             'int value cast to string' => [
-                'accessor' => (new Source())->withStatements([
+                'accessor' => (new StatementList())->withStatements([
                     '30',
                 ]),
                 'type' => 'string',
@@ -103,7 +103,7 @@ class VariableAssignmentFactoryTest extends \PHPUnit\Framework\TestCase
                 'expectedAssignedValue' => '30',
             ],
             'string value cast to int' => [
-                'accessor' => (new Source())->withStatements([
+                'accessor' => (new StatementList())->withStatements([
                     '"value"',
                 ]),
                 'type' => 'int',
@@ -114,7 +114,7 @@ class VariableAssignmentFactoryTest extends \PHPUnit\Framework\TestCase
                 'expectedAssignedValue' => 0,
             ],
             'int value cast to int' => [
-                'accessor' => (new Source())->withStatements([
+                'accessor' => (new StatementList())->withStatements([
                     '30',
                 ]),
                 'type' => 'int',
@@ -125,7 +125,7 @@ class VariableAssignmentFactoryTest extends \PHPUnit\Framework\TestCase
                 'expectedAssignedValue' => 30,
             ],
             'null value cast to int' => [
-                'accessor' => (new Source())->withStatements([
+                'accessor' => (new StatementList())->withStatements([
                     'null',
                 ]),
                 'type' => 'int',

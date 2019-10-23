@@ -9,8 +9,8 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 use webignition\BasilCompilableSourceFactory\Handler\ClassDependencyHandler;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilationSource\MetadataInterface;
-use webignition\BasilCompilationSource\Source;
-use webignition\BasilCompilationSource\SourceInterface;
+use webignition\BasilCompilationSource\StatementList;
+use webignition\BasilCompilationSource\StatementListInterface;
 
 class ExecutableCallFactory
 {
@@ -34,23 +34,23 @@ class ExecutableCallFactory
     }
 
     public function create(
-        SourceInterface $source,
+        StatementListInterface $statementList,
         array $variableIdentifiers = [],
         array $setupStatements = [],
         array $teardownStatements = [],
         ?MetadataInterface $additionalMetadata = null
     ): string {
         if (null !== $additionalMetadata) {
-            $metadata = $source->getMetadata();
+            $metadata = $statementList->getMetadata();
             $metadata = $metadata->merge([
                 $metadata,
                 $additionalMetadata
             ]);
 
-            $source = $source->withMetadata($metadata);
+            $statementList = $statementList->withMetadata($metadata);
         }
 
-        $metadata = $source->getMetadata();
+        $metadata = $statementList->getMetadata();
         $classDependencies = $metadata->getClassDependencies();
 
         $executableCall = '';
@@ -63,7 +63,7 @@ class ExecutableCallFactory
             $executableCall .= $statement . "\n";
         }
 
-        $statements = $source->getStatements();
+        $statements = $statementList->getStatements();
 
         array_walk($statements, function (string &$statement) {
             $statement .= ';';
@@ -85,24 +85,24 @@ class ExecutableCallFactory
     }
 
     public function createWithReturn(
-        SourceInterface $source,
+        StatementListInterface $statementList,
         array $variableIdentifiers = [],
         array $setupStatements = [],
         array $teardownStatements = [],
         ?MetadataInterface $additionalMetadata = null
     ): string {
-        $statements = $source->getStatements();
+        $statements = $statementList->getStatements();
         $lastStatementPosition = count($statements) - 1;
         $lastStatement = $statements[$lastStatementPosition];
         $lastStatement = 'return ' . $lastStatement;
         $statements[$lastStatementPosition] = $lastStatement;
 
-        $sourceWithReturn = (new Source())
+        $statementListWithReturn = (new StatementList())
             ->withStatements($statements)
-            ->withMetadata($source->getMetadata());
+            ->withMetadata($statementList->getMetadata());
 
         return $this->create(
-            $sourceWithReturn,
+            $statementListWithReturn,
             $variableIdentifiers,
             $setupStatements,
             $teardownStatements,

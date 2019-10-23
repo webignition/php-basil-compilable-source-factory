@@ -7,8 +7,8 @@ use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyExce
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Metadata;
-use webignition\BasilCompilationSource\Source;
-use webignition\BasilCompilationSource\SourceInterface;
+use webignition\BasilCompilationSource\StatementList;
+use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Value\ObjectValueInterface;
 use webignition\BasilModel\Value\ObjectValueType;
@@ -30,12 +30,12 @@ class BrowserPropertyHandler implements HandlerInterface
     /**
      * @param object $model
      *
-     * @return SourceInterface
+     * @return StatementListInterface
      *
      * @throws NonTranspilableModelException
      * @throws UnknownObjectPropertyException
      */
-    public function createSource(object $model): SourceInterface
+    public function createSource(object $model): StatementListInterface
     {
         if (!$this->handles($model) || !$model instanceof ObjectValueInterface) {
             throw new NonTranspilableModelException($model);
@@ -52,7 +52,7 @@ class BrowserPropertyHandler implements HandlerInterface
         $variableDependencies = new VariablePlaceholderCollection();
         $pantherClientPlaceholder = $variableDependencies->create(VariableNames::PANTHER_CLIENT);
 
-        $dimensionAssignment = (new Source())
+        $dimensionAssignment = (new StatementList())
             ->withStatements([
                 sprintf(
                     '%s = %s->getWebDriver()->manage()->window()->getSize()',
@@ -69,12 +69,12 @@ class BrowserPropertyHandler implements HandlerInterface
         $getWidthCall = $webDriverDimensionPlaceholder . '->getWidth()';
         $getHeightCall = $webDriverDimensionPlaceholder . '->getHeight()';
 
-        $dimensionConcatenation = (new Source())
+        $dimensionConcatenation = (new StatementList())
             ->withStatements([
                 '(string) ' . $getWidthCall . ' . \'x\' . (string) ' . $getHeightCall,
             ]);
 
-        return (new Source())
+        return (new StatementList())
             ->withPredecessors([$dimensionAssignment, $dimensionConcatenation]);
     }
 }

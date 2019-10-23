@@ -26,7 +26,7 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\Create
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Value\CreateFromValueDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Value\UnhandledValueDataProviderTrait;
 use webignition\BasilCompilationSource\MetadataInterface;
-use webignition\BasilCompilationSource\SourceInterface;
+use webignition\BasilCompilationSource\StatementListInterface;
 
 class FactoryTest extends \PHPUnit\Framework\TestCase
 {
@@ -79,11 +79,11 @@ class FactoryTest extends \PHPUnit\Framework\TestCase
         array $expectedStatements,
         MetadataInterface $expectedMetadata
     ) {
-        $source = $this->factory->createSource($model);
+        $statementList = $this->factory->createSource($model);
 
-        $this->assertInstanceOf(SourceInterface::class, $source);
-        $this->assertEquals($expectedStatements, $source->getStatements());
-        $this->assertEquals($expectedMetadata, $source->getMetadata());
+        $this->assertInstanceOf(StatementListInterface::class, $statementList);
+        $this->assertEquals($expectedStatements, $statementList->getStatements());
+        $this->assertEquals($expectedMetadata, $statementList->getMetadata());
     }
 
     /**
