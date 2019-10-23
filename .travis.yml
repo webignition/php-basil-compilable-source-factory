@@ -9,6 +9,7 @@ install:
   - composer install --prefer-dist
 
 script:
+  - cd vendor/symfony/panther/chromedriver-bin && ./update.sh && cd ../../../..
   - composer ci
 
 cache:
