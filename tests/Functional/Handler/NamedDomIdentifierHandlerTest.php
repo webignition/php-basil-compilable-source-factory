@@ -39,7 +39,7 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
         array $additionalVariableIdentifiers = [],
         ?MetadataInterface $additionalMetadata = null
     ) {
-        $statementList = $this->handler->createSource($namedDomIdentifier);
+        $statementList = $this->handler->createStatementList($namedDomIdentifier);
 
         $setupStatements = array_merge(
             [

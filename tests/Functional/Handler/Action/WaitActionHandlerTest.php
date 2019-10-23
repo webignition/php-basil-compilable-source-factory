@@ -35,7 +35,7 @@ class WaitActionHandlerTest extends AbstractHandlerTest
         MetadataInterface $metadata,
         int $expectedDuration
     ) {
-        $statementList = $this->handler->createSource($action);
+        $statementList = $this->handler->createStatementList($action);
 
         $expectedDurationThreshold = $expectedDuration + 1;
 

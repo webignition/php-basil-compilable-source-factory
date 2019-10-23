@@ -34,7 +34,7 @@ class SubmitActionHandlerTest extends AbstractHandlerTest
         array $additionalVariableIdentifiers,
         ?MetadataInterface $metadata = null
     ) {
-        $statementList = $this->handler->createSource($action);
+        $statementList = $this->handler->createStatementList($action);
 
         $variableIdentifiers = array_merge(
             [

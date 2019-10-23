@@ -8,6 +8,13 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromExcludesAssertionDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromExistsAssertionDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromIncludesAssertionDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromIsAssertionDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromIsNotAssertionDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromMatchesAssertionDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromNotExistsAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\ExcludesAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\ExistsAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\IncludesAssertionDataProviderTrait;
@@ -18,7 +25,7 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\NotExi
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\UnhandledAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\AbstractHandlerTest;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
-use webignition\BasilCompilationSource\StatementListInterface;
+use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilModel\Assertion\AssertionInterface;
 
 class AssertionHandlerTest extends AbstractHandlerTest
@@ -31,6 +38,14 @@ class AssertionHandlerTest extends AbstractHandlerTest
     use MatchesAssertionDataProviderTrait;
     use NotExistsAssertionDataProviderTrait;
     use UnhandledAssertionDataProviderTrait;
+
+    use CreateFromExcludesAssertionDataProviderTrait;
+    use CreateFromExistsAssertionDataProviderTrait;
+    use CreateFromIncludesAssertionDataProviderTrait;
+    use CreateFromIsAssertionDataProviderTrait;
+    use CreateFromIsNotAssertionDataProviderTrait;
+    use CreateFromMatchesAssertionDataProviderTrait;
+    use CreateFromNotExistsAssertionDataProviderTrait;
 
     protected function createHandler(): HandlerInterface
     {
@@ -60,18 +75,22 @@ class AssertionHandlerTest extends AbstractHandlerTest
     }
 
     /**
-     * @dataProvider excludesAssertionDataProvider
-     * @dataProvider existsAssertionDataProvider
-     * @dataProvider includesAssertionDataProvider
-     * @dataProvider isAssertionDataProvider
-     * @dataProvider isNotAssertionDataProvider
-     * @dataProvider matchesAssertionDataProvider
-     * @dataProvider notExistsAssertionDataProvider
+     * @dataProvider createFromExcludesAssertionDataProvider
+     * @dataProvider createFromExistsAssertionDataProvider
+     * @dataProvider createFromIncludesAssertionDataProvider
+     * @dataProvider createFromIsAssertionDataProvider
+     * @dataProvider createFromIsNotAssertionDataProvider
+     * @dataProvider createFromMatchesAssertionDataProvider
+     * @dataProvider createFromNotExistsAssertionDataProvider
      */
-    public function testTranspileDoesNotFail(AssertionInterface $model)
-    {
-        $statementList = $this->handler->createSource($model);
+    public function testCreateStatementList(
+        AssertionInterface $assertion,
+        array $expectedStatements,
+        MetadataInterface $expectedMetadata
+    ) {
+        $statementList = $this->handler->createStatementList($assertion);
 
-        $this->assertInstanceOf(StatementListInterface::class, $statementList);
+        $this->assertEquals($expectedStatements, $statementList->getStatements());
+        $this->assertEquals($expectedMetadata, $statementList->getMetadata());
     }
 }
