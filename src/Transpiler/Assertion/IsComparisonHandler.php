@@ -12,11 +12,11 @@ use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilModel\Assertion\AssertionComparison;
 use webignition\BasilModel\Assertion\ComparisonAssertionInterface;
 
-class MatchesComparisonTranspiler extends AbstractComparisonAssertionHandler implements HandlerInterface
+class IsComparisonHandler extends AbstractComparisonAssertionHandler implements HandlerInterface
 {
     public static function createHandler(): HandlerInterface
     {
-        return new MatchesComparisonTranspiler(
+        return new IsComparisonHandler(
             AssertionCallFactory::createFactory(),
             VariableAssignmentFactory::createFactory(),
             ScalarValueHandler::createHandler(),
@@ -30,7 +30,7 @@ class MatchesComparisonTranspiler extends AbstractComparisonAssertionHandler imp
             return false;
         }
 
-        return AssertionComparison::MATCHES === $model->getComparison();
+        return in_array($model->getComparison(), [AssertionComparison::IS, AssertionComparison::IS_NOT]);
     }
 
     /**
@@ -46,15 +46,16 @@ class MatchesComparisonTranspiler extends AbstractComparisonAssertionHandler imp
             throw new NonTranspilableModelException($model);
         }
 
-        if (AssertionComparison::MATCHES !== $model->getComparison()) {
+        if (!in_array($model->getComparison(), [AssertionComparison::IS, AssertionComparison::IS_NOT])) {
             throw new NonTranspilableModelException($model);
         }
-
         return $this->doTranspile($model);
     }
 
     protected function getAssertionTemplate(ComparisonAssertionInterface $assertion): string
     {
-        return AssertionCallFactory::ASSERT_MATCHES_TEMPLATE;
+        return AssertionComparison::IS === $assertion->getComparison()
+            ? AssertionCallFactory::ASSERT_EQUALS_TEMPLATE
+            : AssertionCallFactory::ASSERT_NOT_EQUALS_TEMPLATE;
     }
 }

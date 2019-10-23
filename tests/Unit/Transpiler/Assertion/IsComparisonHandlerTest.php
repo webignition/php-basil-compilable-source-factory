@@ -17,12 +17,12 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\Matche
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\NotExistsAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\UnhandledAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Transpiler\AbstractTranspilerTest;
-use webignition\BasilCompilableSourceFactory\Transpiler\Assertion\IncludesComparisonTranspiler;
+use webignition\BasilCompilableSourceFactory\Transpiler\Assertion\IsComparisonHandler;
 use webignition\BasilModel\Assertion\AssertionInterface;
 use webignition\BasilModel\Assertion\ComparisonAssertion;
 use webignition\BasilModelFactory\AssertionFactory;
 
-class IncludesComparisonTranspilerTest extends AbstractTranspilerTest
+class IsComparisonHandlerTest extends AbstractTranspilerTest
 {
     use ExcludesAssertionDataProviderTrait;
     use ExistsAssertionDataProviderTrait;
@@ -35,12 +35,12 @@ class IncludesComparisonTranspilerTest extends AbstractTranspilerTest
 
     protected function createTranspiler(): HandlerInterface
     {
-        return IncludesComparisonTranspiler::createHandler();
+        return IsComparisonHandler::createHandler();
     }
 
     /**
-     * @dataProvider excludesAssertionDataProvider
-     * @dataProvider includesAssertionDataProvider
+     * @dataProvider isAssertionDataProvider
+     * @dataProvider isNotAssertionDataProvider
      */
     public function testHandlesDoesHandle(AssertionInterface $model)
     {
@@ -48,9 +48,9 @@ class IncludesComparisonTranspilerTest extends AbstractTranspilerTest
     }
 
     /**
+     * @dataProvider excludesAssertionDataProvider
      * @dataProvider existsAssertionDataProvider
-     * @dataProvider isAssertionDataProvider
-     * @dataProvider isNotAssertionDataProvider
+     * @dataProvider includesAssertionDataProvider
      * @dataProvider matchesAssertionDataProvider
      * @dataProvider notExistsAssertionDataProvider
      */
@@ -62,7 +62,7 @@ class IncludesComparisonTranspilerTest extends AbstractTranspilerTest
     public function testTranspileWrongComparisonType()
     {
         $assertionFactory = AssertionFactory::createFactory();
-        $model = $assertionFactory->createFromAssertionString('".selector" is "value"');
+        $model = $assertionFactory->createFromAssertionString('".selector" includes "value"');
 
         $this->expectException(NonTranspilableModelException::class);
         $this->expectExceptionMessage('Non-transpilable model "' . ComparisonAssertion::class . '"');

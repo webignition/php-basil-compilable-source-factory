@@ -17,13 +17,13 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\Matche
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\NotExistsAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\UnhandledAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Transpiler\AbstractTranspilerTest;
-use webignition\BasilCompilableSourceFactory\Transpiler\Assertion\ExistsComparisonTranspiler;
+use webignition\BasilCompilableSourceFactory\Transpiler\Assertion\ExistsComparisonHandler;
 use webignition\BasilModel\Assertion\AssertionInterface;
 use webignition\BasilModel\Assertion\ComparisonAssertion;
 use webignition\BasilModel\Assertion\ExaminationAssertion;
 use webignition\BasilModelFactory\AssertionFactory;
 
-class ExistsComparisonTranspilerTest extends AbstractTranspilerTest
+class ExistsComparisonHandlerTest extends AbstractTranspilerTest
 {
     use ExcludesAssertionDataProviderTrait;
     use ExistsAssertionDataProviderTrait;
@@ -36,7 +36,7 @@ class ExistsComparisonTranspilerTest extends AbstractTranspilerTest
 
     protected function createTranspiler(): HandlerInterface
     {
-        return ExistsComparisonTranspiler::createHandler();
+        return ExistsComparisonHandler::createHandler();
     }
 
     /**

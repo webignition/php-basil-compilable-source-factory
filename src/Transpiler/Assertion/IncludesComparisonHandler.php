@@ -12,11 +12,11 @@ use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilModel\Assertion\AssertionComparison;
 use webignition\BasilModel\Assertion\ComparisonAssertionInterface;
 
-class IncludesComparisonTranspiler extends AbstractComparisonAssertionHandler implements HandlerInterface
+class IncludesComparisonHandler extends AbstractComparisonAssertionHandler implements HandlerInterface
 {
     public static function createHandler(): HandlerInterface
     {
-        return new IncludesComparisonTranspiler(
+        return new IncludesComparisonHandler(
             AssertionCallFactory::createFactory(),
             VariableAssignmentFactory::createFactory(),
             ScalarValueHandler::createHandler(),
