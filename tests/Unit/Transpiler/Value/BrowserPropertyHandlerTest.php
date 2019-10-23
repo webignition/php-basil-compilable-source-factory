@@ -14,12 +14,12 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Value\LiteralVal
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Value\PagePropertyProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Value\UnhandledValueDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Transpiler\AbstractTranspilerTest;
-use webignition\BasilCompilableSourceFactory\Transpiler\Value\BrowserPropertyTranspiler;
+use webignition\BasilCompilableSourceFactory\Transpiler\Value\BrowserPropertyHandler;
 use webignition\BasilModel\Value\ObjectValue;
 use webignition\BasilModel\Value\ObjectValueType;
 use webignition\BasilModel\Value\ValueInterface;
 
-class BrowserPropertyTranspilerTest extends AbstractTranspilerTest
+class BrowserPropertyHandlerTest extends AbstractTranspilerTest
 {
     use BrowserPropertyDataProviderTrait;
     use EnvironmentParameterValueDataProviderTrait;
@@ -29,7 +29,7 @@ class BrowserPropertyTranspilerTest extends AbstractTranspilerTest
 
     protected function createTranspiler(): HandlerInterface
     {
-        return BrowserPropertyTranspiler::createHandler();
+        return BrowserPropertyHandler::createHandler();
     }
 
     /**

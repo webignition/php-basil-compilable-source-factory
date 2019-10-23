@@ -12,7 +12,7 @@ class ScalarValueTranspiler extends AbstractDelegatingHandler implements Delegat
     public static function createHandler(): HandlerInterface
     {
         return new ScalarValueTranspiler([
-            BrowserPropertyTranspiler::createHandler(),
+            BrowserPropertyHandler::createHandler(),
             EnvironmentParameterValueTranspiler::createHandler(),
             LiteralValueTranspiler::createHandler(),
             PagePropertyTranspiler::createHandler(),

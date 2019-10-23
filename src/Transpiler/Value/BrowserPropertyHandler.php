@@ -13,13 +13,13 @@ use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Value\ObjectValueInterface;
 use webignition\BasilModel\Value\ObjectValueType;
 
-class BrowserPropertyTranspiler implements HandlerInterface
+class BrowserPropertyHandler implements HandlerInterface
 {
     const PROPERTY_NAME_SIZE = 'size';
 
     public static function createHandler(): HandlerInterface
     {
-        return new BrowserPropertyTranspiler();
+        return new BrowserPropertyHandler();
     }
 
     public function handles(object $model): bool
