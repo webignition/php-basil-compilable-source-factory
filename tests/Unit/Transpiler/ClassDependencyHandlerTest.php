@@ -7,15 +7,15 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Transpiler;
 
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
-use webignition\BasilCompilableSourceFactory\Transpiler\ClassDependencyTranspiler;
+use webignition\BasilCompilableSourceFactory\Transpiler\ClassDependencyHandler;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\Metadata;
 
-class ClassDependencyTranspilerTest extends AbstractTranspilerTest
+class ClassDependencyHandlerTest extends AbstractTranspilerTest
 {
     protected function createTranspiler(): HandlerInterface
     {
-        return ClassDependencyTranspiler::createHandler();
+        return ClassDependencyHandler::createHandler();
     }
 
     public function testHandlesDoesHandle()

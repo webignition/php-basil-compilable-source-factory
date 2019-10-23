@@ -7,28 +7,28 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
-use webignition\BasilCompilableSourceFactory\Transpiler\ClassDependencyTranspiler;
+use webignition\BasilCompilableSourceFactory\Transpiler\ClassDependencyHandler;
 use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilCompilationSource\Source;
 use webignition\BasilCompilationSource\SourceInterface;
 
 class ExecutableCallFactory
 {
-    private $classDependencyTranspiler;
+    private $classDependencyHandler;
     private $variablePlaceholderResolver;
 
     public function __construct(
-        HandlerInterface $classDependencyTranspiler,
+        HandlerInterface $classDependencyHandler,
         VariablePlaceholderResolver $variablePlaceholderResolver
     ) {
-        $this->classDependencyTranspiler = $classDependencyTranspiler;
+        $this->classDependencyHandler = $classDependencyHandler;
         $this->variablePlaceholderResolver = $variablePlaceholderResolver;
     }
 
     public static function createFactory(): ExecutableCallFactory
     {
         return new ExecutableCallFactory(
-            ClassDependencyTranspiler::createHandler(),
+            ClassDependencyHandler::createHandler(),
             new VariablePlaceholderResolver()
         );
     }
@@ -56,7 +56,7 @@ class ExecutableCallFactory
         $executableCall = '';
 
         foreach ($classDependencies as $key => $value) {
-            $executableCall .= (string) $this->classDependencyTranspiler->createSource($value) . ";\n";
+            $executableCall .= (string) $this->classDependencyHandler->createSource($value) . ";\n";
         }
 
         foreach ($setupStatements as $statement) {
