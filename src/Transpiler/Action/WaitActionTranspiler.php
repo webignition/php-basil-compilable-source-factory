@@ -6,7 +6,7 @@ use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFacto
 use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
-use webignition\BasilCompilableSourceFactory\Transpiler\NamedDomIdentifierTranspiler;
+use webignition\BasilCompilableSourceFactory\Transpiler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Transpiler\Value\ScalarValueTranspiler;
 use webignition\BasilCompilationSource\Source;
 use webignition\BasilCompilationSource\SourceInterface;
@@ -21,16 +21,16 @@ class WaitActionTranspiler implements HandlerInterface
 
     private $variableAssignmentFactory;
     private $scalarValueTranspiler;
-    private $namedDomIdentifierTranspiler;
+    private $namedDomIdentifierHandler;
 
     public function __construct(
         VariableAssignmentFactory $variableAssignmentFactory,
         HandlerInterface $scalarValueTranspiler,
-        HandlerInterface $namedDomIdentifierTranspiler
+        HandlerInterface $namedDomIdentifierHandler
     ) {
         $this->variableAssignmentFactory = $variableAssignmentFactory;
         $this->scalarValueTranspiler = $scalarValueTranspiler;
-        $this->namedDomIdentifierTranspiler = $namedDomIdentifierTranspiler;
+        $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
     }
 
     public static function createHandler(): HandlerInterface
@@ -38,7 +38,7 @@ class WaitActionTranspiler implements HandlerInterface
         return new WaitActionTranspiler(
             VariableAssignmentFactory::createFactory(),
             ScalarValueTranspiler::createHandler(),
-            NamedDomIdentifierTranspiler::createHandler()
+            NamedDomIdentifierHandler::createHandler()
         );
     }
 
@@ -66,7 +66,7 @@ class WaitActionTranspiler implements HandlerInterface
         $duration = $model->getDuration();
 
         if ($duration instanceof DomIdentifierValueInterface) {
-            $durationAccessor = $this->namedDomIdentifierTranspiler->createSource(
+            $durationAccessor = $this->namedDomIdentifierHandler->createSource(
                 new NamedDomIdentifierValue($duration, $durationPlaceholder)
             );
 

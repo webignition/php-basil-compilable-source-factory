@@ -5,7 +5,7 @@ namespace webignition\BasilCompilableSourceFactory\Transpiler\Action;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
 use webignition\BasilCompilableSourceFactory\FactoryInterface;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
-use webignition\BasilCompilableSourceFactory\Transpiler\NamedDomIdentifierTranspiler;
+use webignition\BasilCompilableSourceFactory\Transpiler\NamedDomIdentifierHandler;
 use webignition\BasilModel\Action\ActionTypes;
 
 class SubmitActionTranspiler extends AbstractInteractionActionTranspiler implements HandlerInterface
@@ -14,7 +14,7 @@ class SubmitActionTranspiler extends AbstractInteractionActionTranspiler impleme
     {
         return new SubmitActionTranspiler(
             VariableAssignmentFactory::createFactory(),
-            NamedDomIdentifierTranspiler::createHandler()
+            NamedDomIdentifierHandler::createHandler()
         );
     }
 

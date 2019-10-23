@@ -11,7 +11,7 @@ use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifier;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
-use webignition\BasilCompilableSourceFactory\Transpiler\NamedDomIdentifierTranspiler;
+use webignition\BasilCompilableSourceFactory\Transpiler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
@@ -24,11 +24,11 @@ use webignition\BasilModel\Value\DomIdentifierValue;
 use webignition\BasilModel\Value\ValueInterface;
 use webignition\DomElementLocator\ElementLocator;
 
-class NamedDomIdentifierTranspilerTest extends AbstractTranspilerTest
+class NamedDomIdentifierHandlerTest extends AbstractTranspilerTest
 {
     protected function createTranspiler(): HandlerInterface
     {
-        return NamedDomIdentifierTranspiler::createHandler();
+        return NamedDomIdentifierHandler::createHandler();
     }
 
     /**

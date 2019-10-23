@@ -6,7 +6,7 @@ use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
 use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
-use webignition\BasilCompilableSourceFactory\Transpiler\NamedDomIdentifierTranspiler;
+use webignition\BasilCompilableSourceFactory\Transpiler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Transpiler\Value\ScalarValueTranspiler;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilModel\Assertion\AssertionComparison;
@@ -20,7 +20,7 @@ class MatchesComparisonTranspiler extends AbstractComparisonAssertionTranspiler 
             AssertionCallFactory::createFactory(),
             VariableAssignmentFactory::createFactory(),
             ScalarValueTranspiler::createHandler(),
-            NamedDomIdentifierTranspiler::createHandler()
+            NamedDomIdentifierHandler::createHandler()
         );
     }
 

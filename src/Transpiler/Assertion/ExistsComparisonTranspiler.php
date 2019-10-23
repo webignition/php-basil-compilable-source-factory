@@ -7,7 +7,7 @@ use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCall
 use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
-use webignition\BasilCompilableSourceFactory\Transpiler\NamedDomIdentifierTranspiler;
+use webignition\BasilCompilableSourceFactory\Transpiler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Transpiler\Value\ScalarValueTranspiler;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Source;
@@ -26,18 +26,18 @@ class ExistsComparisonTranspiler implements HandlerInterface
     private $assertionCallFactory;
     private $scalarValueTranspiler;
     private $domCrawlerNavigatorCallFactory;
-    private $namedDomIdentifierTranspiler;
+    private $namedDomIdentifierHandler;
 
     public function __construct(
         AssertionCallFactory $assertionCallFactory,
         HandlerInterface $scalarValueTranspiler,
         DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory,
-        HandlerInterface $namedDomIdentifierTranspiler
+        HandlerInterface $namedDomIdentifierHandler
     ) {
         $this->assertionCallFactory = $assertionCallFactory;
         $this->scalarValueTranspiler = $scalarValueTranspiler;
         $this->domCrawlerNavigatorCallFactory = $domCrawlerNavigatorCallFactory;
-        $this->namedDomIdentifierTranspiler = $namedDomIdentifierTranspiler;
+        $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
     }
 
     public static function createHandler(): HandlerInterface
@@ -46,7 +46,7 @@ class ExistsComparisonTranspiler implements HandlerInterface
             AssertionCallFactory::createFactory(),
             ScalarValueTranspiler::createHandler(),
             DomCrawlerNavigatorCallFactory::createFactory(),
-            NamedDomIdentifierTranspiler::createHandler()
+            NamedDomIdentifierHandler::createHandler()
         );
     }
 
@@ -119,7 +119,7 @@ class ExistsComparisonTranspiler implements HandlerInterface
                 return $this->createAssertionCall($model->getComparison(), $assignment, $valuePlaceholder);
             }
 
-            $accessor = $this->namedDomIdentifierTranspiler->createSource(
+            $accessor = $this->namedDomIdentifierHandler->createSource(
                 new NamedDomIdentifierValue($value, $valuePlaceholder)
             );
 

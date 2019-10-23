@@ -18,18 +18,18 @@ abstract class AbstractComparisonAssertionTranspiler implements HandlerInterface
     protected $assertionCallFactory;
     private $variableAssignmentFactory;
     private $scalarValueTranspiler;
-    private $namedDomIdentifierTranspiler;
+    private $namedDomIdentifierHandler;
 
     public function __construct(
         AssertionCallFactory $assertionCallFactory,
         VariableAssignmentFactory $variableAssignmentFactory,
         HandlerInterface $scalarValueTranspiler,
-        HandlerInterface $namedDomIdentifierTranspiler
+        HandlerInterface $namedDomIdentifierHandler
     ) {
         $this->assertionCallFactory = $assertionCallFactory;
         $this->variableAssignmentFactory = $variableAssignmentFactory;
         $this->scalarValueTranspiler = $scalarValueTranspiler;
-        $this->namedDomIdentifierTranspiler = $namedDomIdentifierTranspiler;
+        $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
     }
 
     abstract protected function getAssertionTemplate(ComparisonAssertionInterface $assertion): string;
@@ -50,7 +50,7 @@ abstract class AbstractComparisonAssertionTranspiler implements HandlerInterface
         $expectedValue = $assertion->getExpectedValue();
 
         if ($examinedValue instanceof DomIdentifierValueInterface) {
-            $examinedValueAccessor = $this->namedDomIdentifierTranspiler->createSource(
+            $examinedValueAccessor = $this->namedDomIdentifierHandler->createSource(
                 new NamedDomIdentifierValue($examinedValue, $examinedValuePlaceholder)
             );
 
@@ -62,7 +62,7 @@ abstract class AbstractComparisonAssertionTranspiler implements HandlerInterface
         }
 
         if ($expectedValue instanceof DomIdentifierValueInterface) {
-            $expectedValueAccessor = $this->namedDomIdentifierTranspiler->createSource(
+            $expectedValueAccessor = $this->namedDomIdentifierHandler->createSource(
                 new NamedDomIdentifierValue($expectedValue, $expectedValuePlaceholder)
             );
 

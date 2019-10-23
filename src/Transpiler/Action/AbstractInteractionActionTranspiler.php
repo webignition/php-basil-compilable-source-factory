@@ -15,14 +15,14 @@ use webignition\BasilModel\Identifier\DomIdentifierInterface;
 abstract class AbstractInteractionActionTranspiler implements HandlerInterface
 {
     private $variableAssignmentFactory;
-    private $namedDomIdentifierTranspiler;
+    private $namedDomIdentifierHandler;
 
     public function __construct(
         VariableAssignmentFactory $variableAssignmentFactory,
-        HandlerInterface $namedDomIdentifierTranspiler
+        HandlerInterface $namedDomIdentifierHandler
     ) {
         $this->variableAssignmentFactory = $variableAssignmentFactory;
-        $this->namedDomIdentifierTranspiler = $namedDomIdentifierTranspiler;
+        $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
     }
 
     abstract protected function getHandledActionType(): string;
@@ -59,7 +59,7 @@ abstract class AbstractInteractionActionTranspiler implements HandlerInterface
         $variableExports = new VariablePlaceholderCollection();
         $elementPlaceholder = $variableExports->create('ELEMENT');
 
-        $accessor = $this->namedDomIdentifierTranspiler->createSource(new NamedDomElementIdentifier(
+        $accessor = $this->namedDomIdentifierHandler->createSource(new NamedDomElementIdentifier(
             $identifier,
             $elementPlaceholder
         ));

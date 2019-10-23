@@ -15,7 +15,7 @@ use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
-class NamedDomIdentifierTranspiler implements HandlerInterface
+class NamedDomIdentifierHandler implements HandlerInterface
 {
     private $domCrawlerNavigatorCallFactory;
     private $elementLocatorCallFactory;
@@ -39,7 +39,7 @@ class NamedDomIdentifierTranspiler implements HandlerInterface
 
     public static function createHandler(): HandlerInterface
     {
-        return new NamedDomIdentifierTranspiler(
+        return new NamedDomIdentifierHandler(
             DomCrawlerNavigatorCallFactory::createFactory(),
             ElementLocatorCallFactory::createFactory(),
             AssertionCallFactory::createFactory(),
