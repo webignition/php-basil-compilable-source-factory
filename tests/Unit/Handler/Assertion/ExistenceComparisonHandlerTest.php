@@ -17,13 +17,13 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\Matche
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\NotExistsAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\UnhandledAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\AbstractHandlerTest;
-use webignition\BasilCompilableSourceFactory\Handler\Assertion\ExistsComparisonHandler;
+use webignition\BasilCompilableSourceFactory\Handler\Assertion\ExistenceComparisonHandler;
 use webignition\BasilModel\Assertion\AssertionInterface;
 use webignition\BasilModel\Assertion\ComparisonAssertion;
 use webignition\BasilModel\Assertion\ExaminationAssertion;
 use webignition\BasilModelFactory\AssertionFactory;
 
-class ExistsComparisonHandlerTest extends AbstractHandlerTest
+class ExistenceComparisonHandlerTest extends AbstractHandlerTest
 {
     use ExcludesAssertionDataProviderTrait;
     use ExistsAssertionDataProviderTrait;
@@ -36,7 +36,7 @@ class ExistsComparisonHandlerTest extends AbstractHandlerTest
 
     protected function createHandler(): HandlerInterface
     {
-        return ExistsComparisonHandler::createHandler();
+        return ExistenceComparisonHandler::createHandler();
     }
 
     /**

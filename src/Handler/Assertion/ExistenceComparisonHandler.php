@@ -21,7 +21,7 @@ use webignition\BasilModel\Value\ObjectValueInterface;
 use webignition\BasilModel\Value\ObjectValueType;
 use webignition\BasilModel\Value\ValueInterface;
 
-class ExistsComparisonHandler implements HandlerInterface
+class ExistenceComparisonHandler implements HandlerInterface
 {
     private $assertionCallFactory;
     private $scalarValueHandler;
@@ -42,7 +42,7 @@ class ExistsComparisonHandler implements HandlerInterface
 
     public static function createHandler(): HandlerInterface
     {
-        return new ExistsComparisonHandler(
+        return new ExistenceComparisonHandler(
             AssertionCallFactory::createFactory(),
             ScalarValueHandler::createHandler(),
             DomCrawlerNavigatorCallFactory::createFactory(),
