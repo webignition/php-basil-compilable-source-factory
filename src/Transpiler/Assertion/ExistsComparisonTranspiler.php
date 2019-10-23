@@ -30,9 +30,9 @@ class ExistsComparisonTranspiler implements HandlerInterface
 
     public function __construct(
         AssertionCallFactory $assertionCallFactory,
-        ScalarValueTranspiler $scalarValueTranspiler,
+        HandlerInterface $scalarValueTranspiler,
         DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory,
-        NamedDomIdentifierTranspiler $namedDomIdentifierTranspiler
+        HandlerInterface $namedDomIdentifierTranspiler
     ) {
         $this->assertionCallFactory = $assertionCallFactory;
         $this->scalarValueTranspiler = $scalarValueTranspiler;
@@ -40,13 +40,13 @@ class ExistsComparisonTranspiler implements HandlerInterface
         $this->namedDomIdentifierTranspiler = $namedDomIdentifierTranspiler;
     }
 
-    public static function createFactory(): ExistsComparisonTranspiler
+    public static function createHandler(): HandlerInterface
     {
         return new ExistsComparisonTranspiler(
             AssertionCallFactory::createFactory(),
-            ScalarValueTranspiler::createFactory(),
+            ScalarValueTranspiler::createHandler(),
             DomCrawlerNavigatorCallFactory::createFactory(),
-            NamedDomIdentifierTranspiler::createFactory()
+            NamedDomIdentifierTranspiler::createHandler()
         );
     }
 

@@ -18,7 +18,7 @@ class ScalarValueTranspilerTest extends AbstractTranspilerTest
 {
     protected function createTranspiler(): HandlerInterface
     {
-        return ScalarValueTranspiler::createFactory();
+        return ScalarValueTranspiler::createHandler();
     }
 
     /**

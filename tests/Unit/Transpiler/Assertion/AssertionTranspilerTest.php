@@ -34,7 +34,7 @@ class AssertionTranspilerTest extends AbstractTranspilerTest
 
     protected function createTranspiler(): HandlerInterface
     {
-        return AssertionTranspiler::createFactory();
+        return AssertionTranspiler::createHandler();
     }
 
     /**

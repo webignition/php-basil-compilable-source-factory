@@ -24,7 +24,7 @@ class BrowserOperationActionTranspilerTest extends AbstractTranspilerTest
 
     protected function createTranspiler(): HandlerInterface
     {
-        return BrowserOperationActionTranspiler::createFactory();
+        return BrowserOperationActionTranspiler::createHandler();
     }
 
     /**

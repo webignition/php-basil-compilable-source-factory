@@ -10,14 +10,14 @@ use webignition\BasilModel\Assertion\ExaminationAssertionInterface;
 
 class AssertionTranspiler extends AbstractDelegatingTranspiler implements DelegatorInterface, HandlerInterface
 {
-    public static function createFactory(): AssertionTranspiler
+    public static function createHandler(): HandlerInterface
     {
         return new AssertionTranspiler(
             [
-                ExistsComparisonTranspiler::createFactory(),
-                IsComparisonTranspiler::createFactory(),
-                IncludesComparisonTranspiler::createFactory(),
-                MatchesComparisonTranspiler::createFactory(),
+                ExistsComparisonTranspiler::createHandler(),
+                IsComparisonTranspiler::createHandler(),
+                IncludesComparisonTranspiler::createHandler(),
+                MatchesComparisonTranspiler::createHandler(),
             ]
         );
     }

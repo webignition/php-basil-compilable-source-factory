@@ -26,7 +26,7 @@ class LiteralValueTranspilerTest extends AbstractTranspilerTest
 
     protected function createTranspiler(): HandlerInterface
     {
-        return LiteralValueTranspiler::createFactory();
+        return LiteralValueTranspiler::createHandler();
     }
 
     /**

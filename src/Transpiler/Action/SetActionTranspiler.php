@@ -27,8 +27,8 @@ class SetActionTranspiler implements HandlerInterface
     public function __construct(
         VariableAssignmentFactory $variableAssignmentFactory,
         WebDriverElementMutatorCallFactory $webDriverElementMutatorCallFactory,
-        ScalarValueTranspiler $scalarValueTranspiler,
-        NamedDomIdentifierTranspiler $namedDomIdentifierTranspiler
+        HandlerInterface $scalarValueTranspiler,
+        HandlerInterface $namedDomIdentifierTranspiler
     ) {
         $this->variableAssignmentFactory = $variableAssignmentFactory;
         $this->webDriverElementMutatorCallFactory = $webDriverElementMutatorCallFactory;
@@ -36,13 +36,13 @@ class SetActionTranspiler implements HandlerInterface
         $this->namedDomIdentifierTranspiler = $namedDomIdentifierTranspiler;
     }
 
-    public static function createFactory(): SetActionTranspiler
+    public static function createHandler(): HandlerInterface
     {
         return new SetActionTranspiler(
             VariableAssignmentFactory::createFactory(),
             WebDriverElementMutatorCallFactory::createFactory(),
-            ScalarValueTranspiler::createFactory(),
-            NamedDomIdentifierTranspiler::createFactory()
+            ScalarValueTranspiler::createHandler(),
+            NamedDomIdentifierTranspiler::createHandler()
         );
     }
 

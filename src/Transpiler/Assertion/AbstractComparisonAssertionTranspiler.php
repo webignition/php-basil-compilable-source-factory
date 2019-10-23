@@ -7,8 +7,6 @@ use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFacto
 use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
-use webignition\BasilCompilableSourceFactory\Transpiler\NamedDomIdentifierTranspiler;
-use webignition\BasilCompilableSourceFactory\Transpiler\Value\ScalarValueTranspiler;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
@@ -25,8 +23,8 @@ abstract class AbstractComparisonAssertionTranspiler implements HandlerInterface
     public function __construct(
         AssertionCallFactory $assertionCallFactory,
         VariableAssignmentFactory $variableAssignmentFactory,
-        ScalarValueTranspiler $scalarValueTranspiler,
-        NamedDomIdentifierTranspiler $namedDomIdentifierTranspiler
+        HandlerInterface $scalarValueTranspiler,
+        HandlerInterface $namedDomIdentifierTranspiler
     ) {
         $this->assertionCallFactory = $assertionCallFactory;
         $this->variableAssignmentFactory = $variableAssignmentFactory;

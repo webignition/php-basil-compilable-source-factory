@@ -23,7 +23,7 @@ class WaitForActionTranspiler implements HandlerInterface
         $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
     }
 
-    public static function createFactory(): WaitForActionTranspiler
+    public static function createHandler(): HandlerInterface
     {
         return new WaitForActionTranspiler(SingleQuotedStringEscaper::create());
     }

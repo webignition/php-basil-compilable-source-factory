@@ -6,6 +6,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
+use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Transpiler\ClassDependencyTranspiler;
 use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilCompilationSource\Source;
@@ -17,7 +18,7 @@ class ExecutableCallFactory
     private $variablePlaceholderResolver;
 
     public function __construct(
-        ClassDependencyTranspiler $classDependencyTranspiler,
+        HandlerInterface $classDependencyTranspiler,
         VariablePlaceholderResolver $variablePlaceholderResolver
     ) {
         $this->classDependencyTranspiler = $classDependencyTranspiler;
@@ -27,7 +28,7 @@ class ExecutableCallFactory
     public static function createFactory(): ExecutableCallFactory
     {
         return new ExecutableCallFactory(
-            ClassDependencyTranspiler::createFactory(),
+            ClassDependencyTranspiler::createHandler(),
             new VariablePlaceholderResolver()
         );
     }

@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Transpiler;
 
 use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
+use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifier;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
@@ -23,18 +24,11 @@ use webignition\BasilModel\Value\DomIdentifierValue;
 use webignition\BasilModel\Value\ValueInterface;
 use webignition\DomElementLocator\ElementLocator;
 
-class NamedDomIdentifierTranspilerTest extends \PHPUnit\Framework\TestCase
+class NamedDomIdentifierTranspilerTest extends AbstractTranspilerTest
 {
-    /**
-     * @var NamedDomIdentifierTranspiler
-     */
-    private $transpiler;
-
-    protected function setUp(): void
+    protected function createTranspiler(): HandlerInterface
     {
-        parent::setUp();
-
-        $this->transpiler = NamedDomIdentifierTranspiler::createFactory();
+        return NamedDomIdentifierTranspiler::createHandler();
     }
 
     /**

@@ -13,9 +13,9 @@ class Factory extends AbstractDelegator implements DelegatorInterface, FactoryIn
     public static function createFactory(): FactoryInterface
     {
         return new Factory([
-            ScalarValueTranspiler::createFactory(),
-            AssertionTranspiler::createFactory(),
-            ActionTranspiler::createFactory(),
+            ScalarValueTranspiler::createHandler(),
+            AssertionTranspiler::createHandler(),
+            ActionTranspiler::createHandler(),
         ]);
     }
 
@@ -35,7 +35,7 @@ class Factory extends AbstractDelegator implements DelegatorInterface, FactoryIn
     {
         $handler = $this->findHandler($model);
 
-        if ($handler instanceof HandlerInterface) {
+        if ($handler instanceof SourceProducerInterface) {
             return $handler->createSource($model);
         }
 

@@ -34,7 +34,7 @@ class ClickActionTranspilerTest extends AbstractTranspilerTest
 
     protected function createTranspiler(): HandlerInterface
     {
-        return ClickActionTranspiler::createFactory();
+        return ClickActionTranspiler::createHandler();
     }
 
     /**

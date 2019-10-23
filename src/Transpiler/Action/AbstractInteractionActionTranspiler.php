@@ -6,7 +6,6 @@ use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFacto
 use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomElementIdentifier;
-use webignition\BasilCompilableSourceFactory\Transpiler\NamedDomIdentifierTranspiler;
 use webignition\BasilCompilationSource\Source;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
@@ -20,7 +19,7 @@ abstract class AbstractInteractionActionTranspiler implements HandlerInterface
 
     public function __construct(
         VariableAssignmentFactory $variableAssignmentFactory,
-        NamedDomIdentifierTranspiler $namedDomIdentifierTranspiler
+        HandlerInterface $namedDomIdentifierTranspiler
     ) {
         $this->variableAssignmentFactory = $variableAssignmentFactory;
         $this->namedDomIdentifierTranspiler = $namedDomIdentifierTranspiler;

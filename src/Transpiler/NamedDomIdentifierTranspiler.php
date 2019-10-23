@@ -37,7 +37,7 @@ class NamedDomIdentifierTranspiler implements HandlerInterface
         $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
     }
 
-    public static function createFactory(): NamedDomIdentifierTranspiler
+    public static function createHandler(): HandlerInterface
     {
         return new NamedDomIdentifierTranspiler(
             DomCrawlerNavigatorCallFactory::createFactory(),

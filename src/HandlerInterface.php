@@ -2,23 +2,9 @@
 
 namespace webignition\BasilCompilableSourceFactory;
 
-use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
-use webignition\BasilCompilationSource\SourceInterface;
-
-interface HandlerInterface
+interface HandlerInterface extends SourceProducerInterface
 {
-    // TranspileInterface methods
-    public static function createFactory();
+    public static function createHandler(): HandlerInterface;
 
-    /**
-     * @param object $model
-     *
-     * @return SourceInterface
-     *
-     * @throws NonTranspilableModelException
-     */
-    public function createSource(object $model): SourceInterface;
-
-    // HandlerInterface methods
     public function handles(object $model): bool;
 }

@@ -20,7 +20,7 @@ class BrowserOperationActionTranspiler implements HandlerInterface
         ActionTypes::RELOAD,
     ];
 
-    public static function createFactory(): BrowserOperationActionTranspiler
+    public static function createHandler(): HandlerInterface
     {
         return new BrowserOperationActionTranspiler();
     }

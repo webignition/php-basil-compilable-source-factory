@@ -35,7 +35,7 @@ class ActionTranspilerTest extends AbstractTranspilerTest
 
     protected function createTranspiler(): HandlerInterface
     {
-        return ActionTranspiler::createFactory();
+        return ActionTranspiler::createHandler();
     }
 
     /**

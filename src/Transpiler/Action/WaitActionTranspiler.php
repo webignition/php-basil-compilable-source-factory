@@ -25,20 +25,20 @@ class WaitActionTranspiler implements HandlerInterface
 
     public function __construct(
         VariableAssignmentFactory $variableAssignmentFactory,
-        ScalarValueTranspiler $scalarValueTranspiler,
-        NamedDomIdentifierTranspiler $namedDomIdentifierTranspiler
+        HandlerInterface $scalarValueTranspiler,
+        HandlerInterface $namedDomIdentifierTranspiler
     ) {
         $this->variableAssignmentFactory = $variableAssignmentFactory;
         $this->scalarValueTranspiler = $scalarValueTranspiler;
         $this->namedDomIdentifierTranspiler = $namedDomIdentifierTranspiler;
     }
 
-    public static function createFactory(): WaitActionTranspiler
+    public static function createHandler(): HandlerInterface
     {
         return new WaitActionTranspiler(
             VariableAssignmentFactory::createFactory(),
-            ScalarValueTranspiler::createFactory(),
-            NamedDomIdentifierTranspiler::createFactory()
+            ScalarValueTranspiler::createHandler(),
+            NamedDomIdentifierTranspiler::createHandler()
         );
     }
 

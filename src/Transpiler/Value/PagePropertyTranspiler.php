@@ -33,7 +33,7 @@ class PagePropertyTranspiler implements HandlerInterface
         ];
     }
 
-    public static function createFactory(): PagePropertyTranspiler
+    public static function createHandler(): HandlerInterface
     {
         return new PagePropertyTranspiler();
     }
