@@ -15,9 +15,7 @@ class AssertionHandler extends AbstractDelegatingHandler implements DelegatorInt
         return new AssertionHandler(
             [
                 ExistsComparisonHandler::createHandler(),
-                IsComparisonHandler::createHandler(),
-                IncludesComparisonHandler::createHandler(),
-                MatchesComparisonHandler::createHandler(),
+                ComparisonAssertionHandler::createHandler(),
             ]
         );
     }
