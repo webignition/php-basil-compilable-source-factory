@@ -32,7 +32,7 @@ class BrowserOperationActionHandlerTest extends AbstractHandlerTest
     use SubmitActionDataProviderTrait;
     use SetActionDataProviderTrait;
 
-    protected function createTranspiler(): HandlerInterface
+    protected function createHandler(): HandlerInterface
     {
         return BrowserOperationActionHandler::createHandler();
     }
@@ -44,7 +44,7 @@ class BrowserOperationActionHandlerTest extends AbstractHandlerTest
      */
     public function testHandlesDoesHandle(ActionInterface $model)
     {
-        $this->assertTrue($this->transpiler->handles($model));
+        $this->assertTrue($this->handler->handles($model));
     }
 
     /**
@@ -57,6 +57,6 @@ class BrowserOperationActionHandlerTest extends AbstractHandlerTest
      */
     public function testHandlesDoesNotHandle(object $model)
     {
-        $this->assertFalse($this->transpiler->handles($model));
+        $this->assertFalse($this->handler->handles($model));
     }
 }

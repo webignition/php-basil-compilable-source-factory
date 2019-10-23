@@ -21,7 +21,7 @@ use webignition\SymfonyDomCrawlerNavigator\Navigator;
 
 class AssertionHandlerFailingAssertionsTest extends AbstractHandlerTest
 {
-    protected function createTranspiler(): HandlerInterface
+    protected function createHandler(): HandlerInterface
     {
         return AssertionHandler::createHandler();
     }
@@ -37,7 +37,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractHandlerTest
         array $additionalVariableIdentifiers = [],
         ?MetadataInterface $metadata = null
     ) {
-        $source = $this->transpiler->createSource($assertion);
+        $source = $this->handler->createSource($assertion);
 
         $variableIdentifiers = array_merge(
             [

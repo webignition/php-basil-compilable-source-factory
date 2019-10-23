@@ -13,16 +13,16 @@ abstract class AbstractHandlerTest extends \PHPUnit\Framework\TestCase
     /**
      * @var HandlerInterface
      */
-    protected $transpiler;
+    protected $handler;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->transpiler = $this->createTranspiler();
+        $this->handler = $this->createHandler();
     }
 
-    abstract protected function createTranspiler(): HandlerInterface;
+    abstract protected function createHandler(): HandlerInterface;
 
     public function testTranspileNonTranspilableModel()
     {
@@ -31,11 +31,11 @@ abstract class AbstractHandlerTest extends \PHPUnit\Framework\TestCase
 
         $model = new \stdClass();
 
-        $this->transpiler->createSource($model);
+        $this->handler->createSource($model);
     }
 
     public function testHandlesUnhandledModel()
     {
-        $this->assertFalse($this->transpiler->handles(new \stdClass()));
+        $this->assertFalse($this->handler->handles(new \stdClass()));
     }
 }

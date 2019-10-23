@@ -40,7 +40,7 @@ class ActionHandlerTest extends AbstractHandlerTest
     use SubmitActionFunctionalDataProviderTrait;
     use SetActionFunctionalDataProviderTrait;
 
-    protected function createTranspiler(): HandlerInterface
+    protected function createHandler(): HandlerInterface
     {
         return ActionHandler::createHandler();
     }
@@ -56,7 +56,7 @@ class ActionHandlerTest extends AbstractHandlerTest
         array $additionalVariableIdentifiers,
         ?MetadataInterface $metadata = null
     ) {
-        $source = $this->transpiler->createSource($action);
+        $source = $this->handler->createSource($action);
 
         $variableIdentifiers = array_merge(
             [
@@ -99,7 +99,7 @@ class ActionHandlerTest extends AbstractHandlerTest
         array $variableIdentifiers,
         string $expectedExpectationFailedExceptionMessage
     ) {
-        $source = $this->transpiler->createSource($action);
+        $source = $this->handler->createSource($action);
 
         $setupStatements = [
             '$navigator = Navigator::create($crawler);',

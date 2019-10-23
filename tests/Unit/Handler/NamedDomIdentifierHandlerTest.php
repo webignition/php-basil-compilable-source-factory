@@ -26,7 +26,7 @@ use webignition\DomElementLocator\ElementLocator;
 
 class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
 {
-    protected function createTranspiler(): HandlerInterface
+    protected function createHandler(): HandlerInterface
     {
         return NamedDomIdentifierHandler::createHandler();
     }
@@ -36,7 +36,7 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
      */
     public function testHandlesDoesHandle(NamedDomIdentifierInterface $model)
     {
-        $this->assertTrue($this->transpiler->handles($model));
+        $this->assertTrue($this->handler->handles($model));
     }
 
     public function handlesDoesHandleDataProvider(): array
@@ -65,7 +65,7 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
         array $expectedStatements,
         MetadataInterface $expectedMetadata
     ) {
-        $source = $this->transpiler->createSource($model);
+        $source = $this->handler->createSource($model);
 
         $this->assertEquals($expectedStatements, $source->getStatements());
         $this->assertEquals($expectedMetadata, $source->getMetadata());
@@ -194,6 +194,6 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
 
         $model = new \stdClass();
 
-        $this->transpiler->createSource($model);
+        $this->handler->createSource($model);
     }
 }

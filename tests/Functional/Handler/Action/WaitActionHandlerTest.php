@@ -18,7 +18,7 @@ class WaitActionHandlerTest extends AbstractHandlerTest
 {
     use WaitActionFunctionalDataProviderTrait;
 
-    protected function createTranspiler(): HandlerInterface
+    protected function createHandler(): HandlerInterface
     {
         return WaitActionHandler::createHandler();
     }
@@ -35,7 +35,7 @@ class WaitActionHandlerTest extends AbstractHandlerTest
         MetadataInterface $metadata,
         int $expectedDuration
     ) {
-        $source = $this->transpiler->createSource($action);
+        $source = $this->handler->createSource($action);
 
         $expectedDurationThreshold = $expectedDuration + 1;
 

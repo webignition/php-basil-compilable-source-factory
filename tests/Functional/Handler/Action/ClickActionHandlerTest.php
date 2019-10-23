@@ -18,7 +18,7 @@ class ClickActionHandlerTest extends AbstractHandlerTest
 {
     use ClickActionFunctionalDataProviderTrait;
 
-    protected function createTranspiler(): HandlerInterface
+    protected function createHandler(): HandlerInterface
     {
         return ClickActionHandler::createHandler();
     }
@@ -34,7 +34,7 @@ class ClickActionHandlerTest extends AbstractHandlerTest
         array $additionalVariableIdentifiers,
         ?MetadataInterface $metadata = null
     ) {
-        $source = $this->transpiler->createSource($action);
+        $source = $this->handler->createSource($action);
 
         $variableIdentifiers = array_merge(
             [

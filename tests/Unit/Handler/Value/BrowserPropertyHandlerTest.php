@@ -27,7 +27,7 @@ class BrowserPropertyHandlerTest extends AbstractHandlerTest
     use PagePropertyProviderTrait;
     use UnhandledValueDataProviderTrait;
 
-    protected function createTranspiler(): HandlerInterface
+    protected function createHandler(): HandlerInterface
     {
         return BrowserPropertyHandler::createHandler();
     }
@@ -37,7 +37,7 @@ class BrowserPropertyHandlerTest extends AbstractHandlerTest
      */
     public function testHandlesDoesHandle(ValueInterface $model)
     {
-        $this->assertTrue($this->transpiler->handles($model));
+        $this->assertTrue($this->handler->handles($model));
     }
 
     /**
@@ -48,7 +48,7 @@ class BrowserPropertyHandlerTest extends AbstractHandlerTest
      */
     public function testHandlesDoesNotHandle(ValueInterface $model)
     {
-        $this->assertFalse($this->transpiler->handles($model));
+        $this->assertFalse($this->handler->handles($model));
     }
 
     public function testTranspileThrowsUnknownObjectPropertyException()
@@ -58,6 +58,6 @@ class BrowserPropertyHandlerTest extends AbstractHandlerTest
         $this->expectException(UnknownObjectPropertyException::class);
         $this->expectExceptionMessage('Unknown object property "foo"');
 
-        $this->transpiler->createSource($model);
+        $this->handler->createSource($model);
     }
 }

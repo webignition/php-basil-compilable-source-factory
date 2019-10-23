@@ -24,7 +24,7 @@ use webignition\WebDriverElementInspector\Inspector;
 
 class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
 {
-    protected function createTranspiler(): HandlerInterface
+    protected function createHandler(): HandlerInterface
     {
         return NamedDomIdentifierHandler::createHandler();
     }
@@ -39,7 +39,7 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
         array $additionalVariableIdentifiers = [],
         ?MetadataInterface $additionalMetadata = null
     ) {
-        $source = $this->transpiler->createSource($namedDomIdentifier);
+        $source = $this->handler->createSource($namedDomIdentifier);
 
         $setupStatements = array_merge(
             [

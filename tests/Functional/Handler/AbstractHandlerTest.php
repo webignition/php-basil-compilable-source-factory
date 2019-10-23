@@ -10,14 +10,14 @@ abstract class AbstractHandlerTest extends AbstractBrowserTestCase
     /**
      * @var HandlerInterface
      */
-    protected $transpiler;
+    protected $handler;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->transpiler = $this->createTranspiler();
+        $this->handler = $this->createHandler();
     }
 
-    abstract protected function createTranspiler(): HandlerInterface;
+    abstract protected function createHandler(): HandlerInterface;
 }

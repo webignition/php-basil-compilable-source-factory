@@ -33,7 +33,7 @@ class IsComparisonHandlerTest extends AbstractHandlerTest
     use NotExistsAssertionDataProviderTrait;
     use UnhandledAssertionDataProviderTrait;
 
-    protected function createTranspiler(): HandlerInterface
+    protected function createHandler(): HandlerInterface
     {
         return IsComparisonHandler::createHandler();
     }
@@ -44,7 +44,7 @@ class IsComparisonHandlerTest extends AbstractHandlerTest
      */
     public function testHandlesDoesHandle(AssertionInterface $model)
     {
-        $this->assertTrue($this->transpiler->handles($model));
+        $this->assertTrue($this->handler->handles($model));
     }
 
     /**
@@ -56,7 +56,7 @@ class IsComparisonHandlerTest extends AbstractHandlerTest
      */
     public function testHandlesDoesNotHandle(object $model)
     {
-        $this->assertFalse($this->transpiler->handles($model));
+        $this->assertFalse($this->handler->handles($model));
     }
 
     public function testTranspileWrongComparisonType()
@@ -67,6 +67,6 @@ class IsComparisonHandlerTest extends AbstractHandlerTest
         $this->expectException(NonTranspilableModelException::class);
         $this->expectExceptionMessage('Non-transpilable model "' . ComparisonAssertion::class . '"');
 
-        $this->transpiler->createSource($model);
+        $this->handler->createSource($model);
     }
 }

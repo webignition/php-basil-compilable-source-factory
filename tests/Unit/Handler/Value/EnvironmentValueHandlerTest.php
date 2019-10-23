@@ -24,7 +24,7 @@ class EnvironmentValueHandlerTest extends AbstractHandlerTest
     use PagePropertyProviderTrait;
     use UnhandledValueDataProviderTrait;
 
-    protected function createTranspiler(): HandlerInterface
+    protected function createHandler(): HandlerInterface
     {
         return EnvironmentValueHandler::createHandler();
     }
@@ -34,7 +34,7 @@ class EnvironmentValueHandlerTest extends AbstractHandlerTest
      */
     public function testHandlesDoesHandle(ValueInterface $model)
     {
-        $this->assertTrue($this->transpiler->handles($model));
+        $this->assertTrue($this->handler->handles($model));
     }
 
     /**
@@ -45,6 +45,6 @@ class EnvironmentValueHandlerTest extends AbstractHandlerTest
      */
     public function testHandlesDoesNotHandle(ValueInterface $model)
     {
-        $this->assertFalse($this->transpiler->handles($model));
+        $this->assertFalse($this->handler->handles($model));
     }
 }

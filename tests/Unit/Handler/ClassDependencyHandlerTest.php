@@ -13,7 +13,7 @@ use webignition\BasilCompilationSource\Metadata;
 
 class ClassDependencyHandlerTest extends AbstractHandlerTest
 {
-    protected function createTranspiler(): HandlerInterface
+    protected function createHandler(): HandlerInterface
     {
         return ClassDependencyHandler::createHandler();
     }
@@ -22,14 +22,14 @@ class ClassDependencyHandlerTest extends AbstractHandlerTest
     {
         $model = new ClassDependency(ClassDependency::class);
 
-        $this->assertTrue($this->transpiler->handles($model));
+        $this->assertTrue($this->handler->handles($model));
     }
 
     public function testHandlesDoesNotHandle()
     {
         $model = new \stdClass();
 
-        $this->assertFalse($this->transpiler->handles($model));
+        $this->assertFalse($this->handler->handles($model));
     }
 
     /**
@@ -39,7 +39,7 @@ class ClassDependencyHandlerTest extends AbstractHandlerTest
         ClassDependency $classDependency,
         array $expectedStatements
     ) {
-        $source = $this->transpiler->createSource($classDependency);
+        $source = $this->handler->createSource($classDependency);
 
         $this->assertEquals($expectedStatements, $source->getStatements());
         $this->assertEquals(new Metadata(), $source->getMetadata());

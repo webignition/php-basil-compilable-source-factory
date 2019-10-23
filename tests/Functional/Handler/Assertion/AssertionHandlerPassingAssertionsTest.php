@@ -34,7 +34,7 @@ class AssertionHandlerPassingAssertionsTest extends AbstractHandlerTest
     use MatchesAssertionFunctionalDataProviderTrait;
     use NotExistsAssertionFunctionalDataProviderTrait;
 
-    protected function createTranspiler(): HandlerInterface
+    protected function createHandler(): HandlerInterface
     {
         return AssertionHandler::createHandler();
     }
@@ -55,7 +55,7 @@ class AssertionHandlerPassingAssertionsTest extends AbstractHandlerTest
         array $additionalVariableIdentifiers = [],
         ?MetadataInterface $metadata = null
     ) {
-        $source = $this->transpiler->createSource($model);
+        $source = $this->handler->createSource($model);
 
         $variableIdentifiers = array_merge(
             [

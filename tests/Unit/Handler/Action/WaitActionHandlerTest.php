@@ -35,7 +35,7 @@ class WaitActionHandlerTest extends AbstractHandlerTest
     use SubmitActionDataProviderTrait;
     use SetActionDataProviderTrait;
 
-    protected function createTranspiler(): HandlerInterface
+    protected function createHandler(): HandlerInterface
     {
         return WaitActionHandler::createHandler();
     }
@@ -45,7 +45,7 @@ class WaitActionHandlerTest extends AbstractHandlerTest
      */
     public function testHandlesDoesHandle(ActionInterface $model)
     {
-        $this->assertTrue($this->transpiler->handles($model));
+        $this->assertTrue($this->handler->handles($model));
     }
 
     /**
@@ -60,7 +60,7 @@ class WaitActionHandlerTest extends AbstractHandlerTest
      */
     public function testHandlesDoesNotHandle(object $model)
     {
-        $this->assertFalse($this->transpiler->handles($model));
+        $this->assertFalse($this->handler->handles($model));
     }
 
     public function testTranspileWithNonTranspilableValue()
@@ -76,6 +76,6 @@ class WaitActionHandlerTest extends AbstractHandlerTest
 
         $this->expectException(NonTranspilableModelException::class);
 
-        $this->transpiler->createSource($action);
+        $this->handler->createSource($action);
     }
 }

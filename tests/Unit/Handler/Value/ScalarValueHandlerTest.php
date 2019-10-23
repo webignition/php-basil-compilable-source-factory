@@ -27,7 +27,7 @@ class ScalarValueHandlerTest extends AbstractHandlerTest
     use PagePropertyProviderTrait;
     use UnhandledValueDataProviderTrait;
 
-    protected function createTranspiler(): HandlerInterface
+    protected function createHandler(): HandlerInterface
     {
         return ScalarValueHandler::createHandler();
     }
@@ -40,7 +40,7 @@ class ScalarValueHandlerTest extends AbstractHandlerTest
      */
     public function testHandlesDoesHandle(ValueInterface $model)
     {
-        $this->assertTrue($this->transpiler->handles($model));
+        $this->assertTrue($this->handler->handles($model));
     }
 
     /**
@@ -48,7 +48,7 @@ class ScalarValueHandlerTest extends AbstractHandlerTest
      */
     public function testHandlesDoesNotHandle(object $model)
     {
-        $this->assertFalse($this->transpiler->handles($model));
+        $this->assertFalse($this->handler->handles($model));
     }
 
     /**
@@ -59,7 +59,7 @@ class ScalarValueHandlerTest extends AbstractHandlerTest
         array $expectedStatements,
         MetadataInterface $expectedMetadata
     ) {
-        $source = $this->transpiler->createSource($model);
+        $source = $this->handler->createSource($model);
 
         $this->assertEquals($expectedStatements, $source->getStatements());
         $this->assertEquals($expectedMetadata, $source->getMetadata());

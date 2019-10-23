@@ -16,7 +16,7 @@ use webignition\BasilModel\Value\ValueInterface;
 
 class ScalarValueHandlerTest extends AbstractHandlerTest
 {
-    protected function createTranspiler(): HandlerInterface
+    protected function createHandler(): HandlerInterface
     {
         return ScalarValueHandler::createHandler();
     }
@@ -30,7 +30,7 @@ class ScalarValueHandlerTest extends AbstractHandlerTest
         callable $resultAssertions,
         array $additionalVariableIdentifiers = []
     ) {
-        $source = $this->transpiler->createSource($model);
+        $source = $this->handler->createSource($model);
 
         $additionalSetupStatements = [];
 

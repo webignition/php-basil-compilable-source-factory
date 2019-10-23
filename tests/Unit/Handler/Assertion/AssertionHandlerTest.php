@@ -32,7 +32,7 @@ class AssertionHandlerTest extends AbstractHandlerTest
     use NotExistsAssertionDataProviderTrait;
     use UnhandledAssertionDataProviderTrait;
 
-    protected function createTranspiler(): HandlerInterface
+    protected function createHandler(): HandlerInterface
     {
         return AssertionHandler::createHandler();
     }
@@ -48,7 +48,7 @@ class AssertionHandlerTest extends AbstractHandlerTest
      */
     public function testHandlesDoesHandle(AssertionInterface $model)
     {
-        $this->assertTrue($this->transpiler->handles($model));
+        $this->assertTrue($this->handler->handles($model));
     }
 
     /**
@@ -56,7 +56,7 @@ class AssertionHandlerTest extends AbstractHandlerTest
      */
     public function testHandlesDoesNotHandle(object $model)
     {
-        $this->assertFalse($this->transpiler->handles($model));
+        $this->assertFalse($this->handler->handles($model));
     }
 
     /**
@@ -70,7 +70,7 @@ class AssertionHandlerTest extends AbstractHandlerTest
      */
     public function testTranspileDoesNotFail(AssertionInterface $model)
     {
-        $source = $this->transpiler->createSource($model);
+        $source = $this->handler->createSource($model);
 
         $this->assertInstanceOf(SourceInterface::class, $source);
     }

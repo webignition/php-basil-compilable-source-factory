@@ -17,7 +17,7 @@ class WaitForActionHandlerTest extends AbstractHandlerTest
 {
     use WaitForActionFunctionalDataProviderTrait;
 
-    protected function createTranspiler(): HandlerInterface
+    protected function createHandler(): HandlerInterface
     {
         return WaitForActionHandler::createHandler();
     }
@@ -32,7 +32,7 @@ class WaitForActionHandlerTest extends AbstractHandlerTest
         array $teardownStatements,
         array $additionalVariableIdentifiers
     ) {
-        $source = $this->transpiler->createSource($action);
+        $source = $this->handler->createSource($action);
 
         $variableIdentifiers = array_merge(
             [

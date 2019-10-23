@@ -18,7 +18,7 @@ class SetActionHandlerTest extends AbstractHandlerTest
 {
     use SetActionFunctionalDataProviderTrait;
 
-    protected function createTranspiler(): HandlerInterface
+    protected function createHandler(): HandlerInterface
     {
         return SetActionHandler::createHandler();
     }
@@ -34,7 +34,7 @@ class SetActionHandlerTest extends AbstractHandlerTest
         array $additionalVariableIdentifiers,
         ?MetadataInterface $metadata = null
     ) {
-        $source = $this->transpiler->createSource($action);
+        $source = $this->handler->createSource($action);
 
         $variableIdentifiers = array_merge(
             [
