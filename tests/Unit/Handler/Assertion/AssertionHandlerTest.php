@@ -18,7 +18,7 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\NotExi
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\UnhandledAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\AbstractHandlerTest;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
-use webignition\BasilCompilationSource\SourceInterface;
+use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\BasilModel\Assertion\AssertionInterface;
 
 class AssertionHandlerTest extends AbstractHandlerTest
@@ -70,8 +70,8 @@ class AssertionHandlerTest extends AbstractHandlerTest
      */
     public function testTranspileDoesNotFail(AssertionInterface $model)
     {
-        $source = $this->handler->createSource($model);
+        $statementList = $this->handler->createSource($model);
 
-        $this->assertInstanceOf(SourceInterface::class, $source);
+        $this->assertInstanceOf(StatementListInterface::class, $statementList);
     }
 }

@@ -3,8 +3,8 @@
 namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Source;
-use webignition\BasilCompilationSource\SourceInterface;
+use webignition\BasilCompilationSource\StatementList;
+use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
@@ -34,12 +34,12 @@ class AssertionCallFactory
     }
 
     public function createValueComparisonAssertionCall(
-        SourceInterface $expectedValueCall,
-        SourceInterface $actualValueCall,
+        StatementListInterface $expectedValueCall,
+        StatementListInterface $actualValueCall,
         VariablePlaceholder $expectedValuePlaceholder,
         VariablePlaceholder $actualValuePlaceholder,
         string $assertionTemplate
-    ): SourceInterface {
+    ): StatementListInterface {
         $variableDependencies = new VariablePlaceholderCollection();
         $variableDependencies = $variableDependencies->withAdditionalItems([
             $this->phpUnitTestCasePlaceholder,
@@ -54,17 +54,17 @@ class AssertionCallFactory
             $actualValuePlaceholder
         );
 
-        return (new Source())
+        return (new StatementList())
             ->withPredecessors([$expectedValueCall, $actualValueCall])
             ->withStatements([$assertionStatement])
             ->withMetadata($metadata);
     }
 
     public function createValueExistenceAssertionCall(
-        SourceInterface $assignmentCall,
+        StatementListInterface $assignmentCall,
         VariablePlaceholder $variablePlaceholder,
         string $assertionTemplate
-    ): SourceInterface {
+    ): StatementListInterface {
         $assertionStatement = sprintf(
             $assertionTemplate,
             (string) $this->phpUnitTestCasePlaceholder,
@@ -74,7 +74,7 @@ class AssertionCallFactory
         $metadata = (new Metadata())
             ->withVariableDependencies($this->variableDependencies);
 
-        return (new Source())
+        return (new StatementList())
             ->withMetadata($metadata)
             ->withStatements([$assertionStatement])
             ->withPredecessors([$assignmentCall]);

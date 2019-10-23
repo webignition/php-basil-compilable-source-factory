@@ -3,8 +3,8 @@
 namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Source;
-use webignition\BasilCompilationSource\SourceInterface;
+use webignition\BasilCompilationSource\StatementList;
+use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
@@ -19,7 +19,7 @@ class WebDriverElementMutatorCallFactory
     public function createSetValueCall(
         VariablePlaceholder $collectionPlaceholder,
         VariablePlaceholder $valuePlaceholder
-    ): SourceInterface {
+    ): StatementListInterface {
         $variableExports = new VariablePlaceholderCollection();
         $variableExports = $variableExports->withAdditionalItems([
             $collectionPlaceholder,
@@ -37,7 +37,7 @@ class WebDriverElementMutatorCallFactory
             ->withVariableDependencies($variableDependencies)
             ->withVariableExports($variableExports);
 
-        return (new Source())
+        return (new StatementList())
             ->withStatements($statements)
             ->withMetadata($metadata);
     }

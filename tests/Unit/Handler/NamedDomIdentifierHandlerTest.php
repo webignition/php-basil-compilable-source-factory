@@ -65,10 +65,10 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
         array $expectedStatements,
         MetadataInterface $expectedMetadata
     ) {
-        $source = $this->handler->createSource($model);
+        $statementList = $this->handler->createSource($model);
 
-        $this->assertEquals($expectedStatements, $source->getStatements());
-        $this->assertEquals($expectedMetadata, $source->getMetadata());
+        $this->assertEquals($expectedStatements, $statementList->getStatements());
+        $this->assertEquals($expectedMetadata, $statementList->getMetadata());
     }
 
     public function transpileDataProvider(): array

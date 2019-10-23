@@ -9,7 +9,7 @@ use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MetadataInterface;
-use webignition\BasilCompilationSource\SourceInterface;
+use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\SymfonyDomCrawlerNavigator\Navigator;
 
 abstract class AbstractBrowserTestCase extends AbstractTestCase
@@ -49,7 +49,7 @@ abstract class AbstractBrowserTestCase extends AbstractTestCase
 
     protected function createExecutableCallForRequest(
         string $fixture,
-        SourceInterface $source,
+        StatementListInterface $statementList,
         array $additionalSetupStatements = [],
         array $teardownStatements = [],
         array $additionalVariableIdentifiers = [],
@@ -72,7 +72,7 @@ abstract class AbstractBrowserTestCase extends AbstractTestCase
         $metadata = $metadata ?? new Metadata();
 
         return $this->executableCallFactory->create(
-            $source,
+            $statementList,
             $variableIdentifiers,
             $setupStatements,
             $teardownStatements,
@@ -82,7 +82,7 @@ abstract class AbstractBrowserTestCase extends AbstractTestCase
 
     protected function createExecutableCallForRequestWithReturn(
         string $fixture,
-        SourceInterface $source,
+        StatementListInterface $statementList,
         array $additionalSetupStatements = [],
         array $additionalVariableIdentifiers = [],
         ?MetadataInterface $metadata = null
@@ -104,7 +104,7 @@ abstract class AbstractBrowserTestCase extends AbstractTestCase
         $metadata = $metadata ?? new Metadata();
 
         return $this->executableCallFactory->createWithReturn(
-            $source,
+            $statementList,
             $variableIdentifiers,
             $setupStatements,
             [],

@@ -10,7 +10,7 @@ use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Metadata;
-use webignition\BasilCompilationSource\Source;
+use webignition\BasilCompilationSource\StatementList;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
@@ -39,21 +39,21 @@ class AssertionCallFactoryTest extends AbstractTestCase
         $expectedValuePlaceholder = new VariablePlaceholder(VariableNames::EXPECTED_VALUE);
         $examinedValuePlaceholder = new VariablePlaceholder(VariableNames::EXAMINED_VALUE);
 
-        $expectedValueCall = (new Source())
+        $expectedValueCall = (new StatementList())
             ->withStatements([$expectedValuePlaceholder . ' = "' . $expectedValue . '"'])
             ->withMetadata(
                 (new Metadata())
                     ->withVariableExports(new VariablePlaceholderCollection([$expectedValuePlaceholder]))
             );
 
-        $actualValueCall = (new Source())
+        $actualValueCall = (new StatementList())
             ->withStatements([$examinedValuePlaceholder . ' = "' . $actualValue . '"'])
             ->withMetadata(
                 (new Metadata())
                     ->withVariableExports(new VariablePlaceholderCollection([$examinedValuePlaceholder]))
             );
 
-        $source = $this->factory->createValueComparisonAssertionCall(
+        $statementList = $this->factory->createValueComparisonAssertionCall(
             $expectedValueCall,
             $actualValueCall,
             $expectedValuePlaceholder,
@@ -67,7 +67,7 @@ class AssertionCallFactoryTest extends AbstractTestCase
             VariableNames::PHPUNIT_TEST_CASE => '$this',
         ];
 
-        $executableCall = $this->executableCallFactory->create($source, $variableIdentifiers);
+        $executableCall = $this->executableCallFactory->create($statementList, $variableIdentifiers);
 
         eval($executableCall);
     }
@@ -110,14 +110,14 @@ class AssertionCallFactoryTest extends AbstractTestCase
     {
         $examinedValuePlaceholder = new VariablePlaceholder(VariableNames::EXAMINED_VALUE);
 
-        $assignmentCall = (new Source())
+        $assignmentCall = (new StatementList())
             ->withStatements([$examinedValuePlaceholder . ' = ' . $examinedValue . ' !== null'])
             ->withMetadata(
                 (new Metadata())
                     ->withVariableExports(new VariablePlaceholderCollection([$examinedValuePlaceholder]))
             );
 
-        $source = $this->factory->createValueExistenceAssertionCall(
+        $statementList = $this->factory->createValueExistenceAssertionCall(
             $assignmentCall,
             $examinedValuePlaceholder,
             $assertionTemplate
@@ -128,7 +128,7 @@ class AssertionCallFactoryTest extends AbstractTestCase
             VariableNames::PHPUNIT_TEST_CASE => '$this',
         ];
 
-        $executableCall = $this->executableCallFactory->create($source, $variableIdentifiers);
+        $executableCall = $this->executableCallFactory->create($statementList, $variableIdentifiers);
 
         eval($executableCall);
     }

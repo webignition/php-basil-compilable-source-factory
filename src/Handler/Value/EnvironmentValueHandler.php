@@ -6,8 +6,8 @@ use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelExcep
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Metadata;
-use webignition\BasilCompilationSource\Source;
-use webignition\BasilCompilationSource\SourceInterface;
+use webignition\BasilCompilationSource\StatementList;
+use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Value\ObjectValueInterface;
 use webignition\BasilModel\Value\ObjectValueType;
@@ -27,11 +27,11 @@ class EnvironmentValueHandler implements HandlerInterface
     /**
      * @param object $model
      *
-     * @return SourceInterface
+     * @return StatementListInterface
      *
      * @throws NonTranspilableModelException
      */
-    public function createSource(object $model): SourceInterface
+    public function createSource(object $model): StatementListInterface
     {
         if ($this->handles($model) && $model instanceof ObjectValueInterface) {
             $variableDependencies = new VariablePlaceholderCollection();
@@ -46,7 +46,7 @@ class EnvironmentValueHandler implements HandlerInterface
 
             $metadata = (new Metadata())->withVariableDependencies($variableDependencies);
 
-            return (new Source())
+            return (new StatementList())
                 ->withStatements([$statement])
                 ->withMetadata($metadata);
         }

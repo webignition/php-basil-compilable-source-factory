@@ -3,16 +3,16 @@
 namespace webignition\BasilCompilableSourceFactory;
 
 use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
-use webignition\BasilCompilationSource\SourceInterface;
+use webignition\BasilCompilationSource\StatementListInterface;
 
 interface SourceProducerInterface
 {
     /**
      * @param object $model
      *
-     * @return SourceInterface
+     * @return StatementListInterface
      *
      * @throws NonTranspilableModelException
      */
-    public function createSource(object $model): SourceInterface;
+    public function createSource(object $model): StatementListInterface;
 }

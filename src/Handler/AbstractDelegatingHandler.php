@@ -6,7 +6,7 @@ use webignition\BasilCompilableSourceFactory\AbstractDelegator;
 use webignition\BasilCompilableSourceFactory\DelegatorInterface;
 use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
-use webignition\BasilCompilationSource\SourceInterface;
+use webignition\BasilCompilationSource\StatementListInterface;
 
 abstract class AbstractDelegatingHandler extends AbstractDelegator implements DelegatorInterface, HandlerInterface
 {
@@ -18,11 +18,11 @@ abstract class AbstractDelegatingHandler extends AbstractDelegator implements De
     /**
      * @param object $model
      *
-     * @return SourceInterface
+     * @return StatementListInterface
      *
      * @throws NonTranspilableModelException
      */
-    public function createSource(object $model): SourceInterface
+    public function createSource(object $model): StatementListInterface
     {
         $handler = $this->findHandler($model);
 

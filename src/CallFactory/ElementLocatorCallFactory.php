@@ -6,8 +6,8 @@ use webignition\BasilCompilableSourceFactory\PlaceholderFactory;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
-use webignition\BasilCompilationSource\Source;
-use webignition\BasilCompilationSource\SourceInterface;
+use webignition\BasilCompilationSource\StatementList;
+use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilModel\Identifier\DomIdentifierInterface;
 use webignition\DomElementLocator\ElementLocator;
@@ -38,9 +38,9 @@ class ElementLocatorCallFactory
     /**
      * @param DomIdentifierInterface $elementIdentifier
      *
-     * @return SourceInterface
+     * @return StatementListInterface
      */
-    public function createConstructorCall(DomIdentifierInterface $elementIdentifier): SourceInterface
+    public function createConstructorCall(DomIdentifierInterface $elementIdentifier): StatementListInterface
     {
         $elementLocator = $elementIdentifier->getLocator();
 
@@ -57,7 +57,7 @@ class ElementLocatorCallFactory
             new ClassDependency(ElementLocator::class),
         ]));
 
-        return (new Source())
+        return (new StatementList())
             ->withStatements([$statement])
             ->withMetadata($metadata);
     }

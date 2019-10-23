@@ -18,7 +18,7 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\WaitActio
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\WaitForActionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\AbstractHandlerTest;
-use webignition\BasilCompilationSource\SourceInterface;
+use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\BasilModel\Action\ActionInterface;
 
 class ActionHandlerTest extends AbstractHandlerTest
@@ -72,8 +72,8 @@ class ActionHandlerTest extends AbstractHandlerTest
      */
     public function testTranspileDoesNotFail(ActionInterface $model)
     {
-        $source = $this->handler->createSource($model);
+        $statementList = $this->handler->createSource($model);
 
-        $this->assertInstanceOf(SourceInterface::class, $source);
+        $this->assertInstanceOf(StatementListInterface::class, $statementList);
     }
 }

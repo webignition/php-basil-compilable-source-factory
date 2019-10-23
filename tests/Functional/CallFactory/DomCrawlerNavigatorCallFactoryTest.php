@@ -40,7 +40,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
         DomIdentifierInterface $identifier,
         callable $assertions
     ) {
-        $source = $this->factory->createFindCall($identifier);
+        $statementList = $this->factory->createFindCall($identifier);
 
         $variableIdentifiers = [
             VariableNames::DOM_CRAWLER_NAVIGATOR => self::DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME,
@@ -50,7 +50,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
 
         $executableCall = $this->createExecutableCallForRequestWithReturn(
             $fixture,
-            $source,
+            $statementList,
             [
                 '$navigator = Navigator::create($crawler);',
             ],

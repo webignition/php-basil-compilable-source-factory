@@ -3,8 +3,8 @@
 namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Source;
-use webignition\BasilCompilationSource\SourceInterface;
+use webignition\BasilCompilationSource\StatementList;
+use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
@@ -16,7 +16,7 @@ class WebDriverElementInspectorCallFactory
         return new WebDriverElementInspectorCallFactory();
     }
 
-    public function createGetValueCall(VariablePlaceholder $collectionPlaceholder): SourceInterface
+    public function createGetValueCall(VariablePlaceholder $collectionPlaceholder): StatementListInterface
     {
         $variableExports = new VariablePlaceholderCollection();
         $variableExports = $variableExports->withAdditionalItems([
@@ -30,12 +30,12 @@ class WebDriverElementInspectorCallFactory
             ->withAdditionalVariableDependencies($variableDependencies)
             ->withVariableExports($variableExports);
 
-        $source = (new Source())
+        $statementList = (new StatementList())
             ->withStatements([
                 $inspectorPlaceholder . '->getValue(' . $collectionPlaceholder . ')',
             ])
             ->withMetadata($metadata);
 
-        return $source;
+        return $statementList;
     }
 }

@@ -35,7 +35,7 @@ class WaitActionHandlerTest extends AbstractHandlerTest
         MetadataInterface $metadata,
         int $expectedDuration
     ) {
-        $source = $this->handler->createSource($action);
+        $statementList = $this->handler->createSource($action);
 
         $expectedDurationThreshold = $expectedDuration + 1;
 
@@ -48,7 +48,7 @@ class WaitActionHandlerTest extends AbstractHandlerTest
 
         $executableCall = $this->createExecutableCallForRequest(
             $fixture,
-            $source,
+            $statementList,
             $additionalSetupStatements,
             $teardownStatements,
             $variableIdentifiers,
