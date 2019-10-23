@@ -4,7 +4,7 @@ namespace webignition\BasilCompilableSourceFactory;
 
 use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
 use webignition\BasilCompilableSourceFactory\Transpiler\Action\ActionTranspiler;
-use webignition\BasilCompilableSourceFactory\Transpiler\Assertion\AssertionTranspiler;
+use webignition\BasilCompilableSourceFactory\Transpiler\Assertion\AssertionHandler;
 use webignition\BasilCompilableSourceFactory\Transpiler\Value\ScalarValueHandler;
 use webignition\BasilCompilationSource\SourceInterface;
 
@@ -14,7 +14,7 @@ class Factory extends AbstractDelegator implements DelegatorInterface, FactoryIn
     {
         return new Factory([
             ScalarValueHandler::createHandler(),
-            AssertionTranspiler::createHandler(),
+            AssertionHandler::createHandler(),
             ActionTranspiler::createHandler(),
         ]);
     }

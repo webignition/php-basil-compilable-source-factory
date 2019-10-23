@@ -8,11 +8,11 @@ use webignition\BasilCompilableSourceFactory\Transpiler\AbstractDelegatingHandle
 use webignition\BasilModel\Assertion\ComparisonAssertionInterface;
 use webignition\BasilModel\Assertion\ExaminationAssertionInterface;
 
-class AssertionTranspiler extends AbstractDelegatingHandler implements DelegatorInterface, HandlerInterface
+class AssertionHandler extends AbstractDelegatingHandler implements DelegatorInterface, HandlerInterface
 {
     public static function createHandler(): HandlerInterface
     {
-        return new AssertionTranspiler(
+        return new AssertionHandler(
             [
                 ExistsComparisonTranspiler::createHandler(),
                 IsComparisonTranspiler::createHandler(),

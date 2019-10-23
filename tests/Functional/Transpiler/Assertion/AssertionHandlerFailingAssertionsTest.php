@@ -9,7 +9,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Transpiler\A
 use PHPUnit\Framework\ExpectationFailedException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\Transpiler\AbstractTranspilerTest;
-use webignition\BasilCompilableSourceFactory\Transpiler\Assertion\AssertionTranspiler;
+use webignition\BasilCompilableSourceFactory\Transpiler\Assertion\AssertionHandler;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
@@ -19,11 +19,11 @@ use webignition\BasilModel\Assertion\AssertionInterface;
 use webignition\BasilModelFactory\AssertionFactory;
 use webignition\SymfonyDomCrawlerNavigator\Navigator;
 
-class AssertionTranspilerFailingAssertionsTest extends AbstractTranspilerTest
+class AssertionHandlerFailingAssertionsTest extends AbstractTranspilerTest
 {
     protected function createTranspiler(): HandlerInterface
     {
-        return AssertionTranspiler::createHandler();
+        return AssertionHandler::createHandler();
     }
 
     /**

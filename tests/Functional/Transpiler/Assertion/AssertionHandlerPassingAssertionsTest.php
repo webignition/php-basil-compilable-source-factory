@@ -17,12 +17,12 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\IsNotA
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\MatchesAssertionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\NotExistsAssertionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\Transpiler\AbstractTranspilerTest;
-use webignition\BasilCompilableSourceFactory\Transpiler\Assertion\AssertionTranspiler;
+use webignition\BasilCompilableSourceFactory\Transpiler\Assertion\AssertionHandler;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilModel\Assertion\AssertionInterface;
 
-class AssertionTranspilerPassingAssertionsTest extends AbstractTranspilerTest
+class AssertionHandlerPassingAssertionsTest extends AbstractTranspilerTest
 {
     use EqualityAssertionFunctionalDataProviderTrait;
     use InclusionAssertionFunctionalDataProviderTrait;
@@ -36,7 +36,7 @@ class AssertionTranspilerPassingAssertionsTest extends AbstractTranspilerTest
 
     protected function createTranspiler(): HandlerInterface
     {
-        return AssertionTranspiler::createHandler();
+        return AssertionHandler::createHandler();
     }
 
     /**
