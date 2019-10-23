@@ -34,7 +34,7 @@ class ClickActionTranspilerTest extends AbstractTranspilerTest
         array $additionalVariableIdentifiers,
         ?MetadataInterface $metadata = null
     ) {
-        $source = $this->transpiler->transpile($action);
+        $source = $this->transpiler->createSource($action);
 
         $variableIdentifiers = array_merge(
             [

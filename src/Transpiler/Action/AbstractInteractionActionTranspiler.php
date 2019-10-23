@@ -41,7 +41,7 @@ abstract class AbstractInteractionActionTranspiler implements HandlerInterface
      *
      * @throws NonTranspilableModelException
      */
-    public function transpile(object $model): SourceInterface
+    public function createSource(object $model): SourceInterface
     {
         if (!$model instanceof InteractionActionInterface) {
             throw new NonTranspilableModelException($model);
@@ -60,7 +60,7 @@ abstract class AbstractInteractionActionTranspiler implements HandlerInterface
         $variableExports = new VariablePlaceholderCollection();
         $elementPlaceholder = $variableExports->create('ELEMENT');
 
-        $accessor = $this->namedDomIdentifierTranspiler->transpile(new NamedDomElementIdentifier(
+        $accessor = $this->namedDomIdentifierTranspiler->createSource(new NamedDomElementIdentifier(
             $identifier,
             $elementPlaceholder
         ));

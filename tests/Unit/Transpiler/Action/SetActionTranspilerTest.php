@@ -79,6 +79,6 @@ class SetActionTranspilerTest extends AbstractTranspilerTest
 
         $this->expectException(NonTranspilableModelException::class);
 
-        $this->transpiler->transpile($action);
+        $this->transpiler->createSource($action);
     }
 }

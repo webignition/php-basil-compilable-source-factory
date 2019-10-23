@@ -37,7 +37,7 @@ class AssertionTranspilerFailingAssertionsTest extends AbstractTranspilerTest
         array $additionalVariableIdentifiers = [],
         ?MetadataInterface $metadata = null
     ) {
-        $source = $this->transpiler->transpile($assertion);
+        $source = $this->transpiler->createSource($assertion);
 
         $variableIdentifiers = array_merge(
             [

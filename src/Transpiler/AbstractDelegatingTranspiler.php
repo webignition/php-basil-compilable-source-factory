@@ -22,12 +22,12 @@ abstract class AbstractDelegatingTranspiler extends AbstractDelegator implements
      *
      * @throws NonTranspilableModelException
      */
-    public function transpile(object $model): SourceInterface
+    public function createSource(object $model): SourceInterface
     {
         $handler = $this->findHandler($model);
 
         if ($handler instanceof HandlerInterface) {
-            return $handler->transpile($model);
+            return $handler->createSource($model);
         }
 
         throw new NonTranspilableModelException($model);

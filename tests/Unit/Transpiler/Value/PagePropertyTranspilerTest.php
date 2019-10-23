@@ -58,6 +58,6 @@ class PagePropertyTranspilerTest extends AbstractTranspilerTest
         $this->expectException(UnknownObjectPropertyException::class);
         $this->expectExceptionMessage('Unknown object property "foo"');
 
-        $this->transpiler->transpile($model);
+        $this->transpiler->createSource($model);
     }
 }

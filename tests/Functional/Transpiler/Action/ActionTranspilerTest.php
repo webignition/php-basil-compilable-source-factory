@@ -56,7 +56,7 @@ class ActionTranspilerTest extends AbstractTranspilerTest
         array $additionalVariableIdentifiers,
         ?MetadataInterface $metadata = null
     ) {
-        $source = $this->transpiler->transpile($action);
+        $source = $this->transpiler->createSource($action);
 
         $variableIdentifiers = array_merge(
             [
@@ -99,7 +99,7 @@ class ActionTranspilerTest extends AbstractTranspilerTest
         array $variableIdentifiers,
         string $expectedExpectationFailedExceptionMessage
     ) {
-        $source = $this->transpiler->transpile($action);
+        $source = $this->transpiler->createSource($action);
 
         $setupStatements = [
             '$navigator = Navigator::create($crawler);',

@@ -31,7 +31,7 @@ class EnvironmentParameterValueTranspiler implements HandlerInterface
      *
      * @throws NonTranspilableModelException
      */
-    public function transpile(object $model): SourceInterface
+    public function createSource(object $model): SourceInterface
     {
         if ($this->handles($model) && $model instanceof ObjectValueInterface) {
             $variableDependencies = new VariablePlaceholderCollection();

@@ -40,7 +40,7 @@ class MatchesComparisonTranspiler extends AbstractComparisonAssertionTranspiler 
      *
      * @throws NonTranspilableModelException
      */
-    public function transpile(object $model): SourceInterface
+    public function createSource(object $model): SourceInterface
     {
         if (!$model instanceof ComparisonAssertionInterface) {
             throw new NonTranspilableModelException($model);

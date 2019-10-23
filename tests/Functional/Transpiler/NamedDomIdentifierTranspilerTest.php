@@ -39,7 +39,7 @@ class NamedDomIdentifierTranspilerTest extends AbstractTranspilerTest
         array $additionalVariableIdentifiers = [],
         ?MetadataInterface $additionalMetadata = null
     ) {
-        $source = $this->transpiler->transpile($namedDomIdentifier);
+        $source = $this->transpiler->createSource($namedDomIdentifier);
 
         $setupStatements = array_merge(
             [

@@ -36,7 +36,7 @@ class Factory extends AbstractDelegator implements DelegatorInterface, FactoryIn
         $handler = $this->findHandler($model);
 
         if ($handler instanceof HandlerInterface) {
-            return $handler->transpile($model);
+            return $handler->createSource($model);
         }
 
         throw new NonTranspilableModelException($model);

@@ -32,7 +32,7 @@ class WaitForActionTranspilerTest extends AbstractTranspilerTest
         array $teardownStatements,
         array $additionalVariableIdentifiers
     ) {
-        $source = $this->transpiler->transpile($action);
+        $source = $this->transpiler->createSource($action);
 
         $variableIdentifiers = array_merge(
             [

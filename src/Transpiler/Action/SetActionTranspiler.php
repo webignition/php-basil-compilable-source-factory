@@ -58,7 +58,7 @@ class SetActionTranspiler implements HandlerInterface
      *
      * @throws NonTranspilableModelException
      */
-    public function transpile(object $model): SourceInterface
+    public function createSource(object $model): SourceInterface
     {
         if (!$model instanceof InputActionInterface) {
             throw new NonTranspilableModelException($model);
@@ -78,7 +78,7 @@ class SetActionTranspiler implements HandlerInterface
         $collectionPlaceholder = $variableExports->create('COLLECTION');
         $valuePlaceholder = $variableExports->create('VALUE');
 
-        $collectionAssignment = $this->namedDomIdentifierTranspiler->transpile(new NamedDomIdentifier(
+        $collectionAssignment = $this->namedDomIdentifierTranspiler->createSource(new NamedDomIdentifier(
             $identifier,
             $collectionPlaceholder
         ));
@@ -86,7 +86,7 @@ class SetActionTranspiler implements HandlerInterface
         $value = $model->getValue();
 
         if ($value instanceof DomIdentifierValueInterface) {
-            $valueAccessor = $this->namedDomIdentifierTranspiler->transpile(
+            $valueAccessor = $this->namedDomIdentifierTranspiler->createSource(
                 new NamedDomIdentifierValue($value, $valuePlaceholder)
             );
 
@@ -94,7 +94,7 @@ class SetActionTranspiler implements HandlerInterface
                 return str_replace((string) $valuePlaceholder . ' = ', '', $statement);
             });
         } else {
-            $valueAccessor = $this->scalarValueTranspiler->transpile($value);
+            $valueAccessor = $this->scalarValueTranspiler->createSource($value);
         }
 
         $valueAssignment = $this->variableAssignmentFactory->createForValueAccessor($valueAccessor, $valuePlaceholder);

@@ -30,7 +30,7 @@ class ScalarValueTranspilerTest extends AbstractTranspilerTest
         callable $resultAssertions,
         array $additionalVariableIdentifiers = []
     ) {
-        $source = $this->transpiler->transpile($model);
+        $source = $this->transpiler->createSource($model);
 
         $additionalSetupStatements = [];
 

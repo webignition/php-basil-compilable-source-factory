@@ -31,7 +31,7 @@ abstract class AbstractTranspilerTest extends \PHPUnit\Framework\TestCase
 
         $model = new \stdClass();
 
-        $this->transpiler->transpile($model);
+        $this->transpiler->createSource($model);
     }
 
     public function testHandlesUnhandledModel()

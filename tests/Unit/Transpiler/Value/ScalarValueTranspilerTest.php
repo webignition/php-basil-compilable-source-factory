@@ -59,7 +59,7 @@ class ScalarValueTranspilerTest extends AbstractTranspilerTest
         array $expectedStatements,
         MetadataInterface $expectedMetadata
     ) {
-        $source = $this->transpiler->transpile($model);
+        $source = $this->transpiler->createSource($model);
 
         $this->assertEquals($expectedStatements, $source->getStatements());
         $this->assertEquals($expectedMetadata, $source->getMetadata());

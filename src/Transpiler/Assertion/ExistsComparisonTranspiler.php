@@ -66,7 +66,7 @@ class ExistsComparisonTranspiler implements HandlerInterface
      *
      * @throws NonTranspilableModelException
      */
-    public function transpile(object $model): SourceInterface
+    public function createSource(object $model): SourceInterface
     {
         if (!$model instanceof ExaminationAssertionInterface) {
             throw new NonTranspilableModelException($model);
@@ -82,7 +82,7 @@ class ExistsComparisonTranspiler implements HandlerInterface
         $existence = null;
 
         if ($this->isScalarValue($value)) {
-            $accessor = $this->scalarValueTranspiler->transpile($value);
+            $accessor = $this->scalarValueTranspiler->createSource($value);
             $accessor->appendStatement(0, ' ?? null');
 
             $assignment = clone $accessor;
@@ -119,7 +119,7 @@ class ExistsComparisonTranspiler implements HandlerInterface
                 return $this->createAssertionCall($model->getComparison(), $assignment, $valuePlaceholder);
             }
 
-            $accessor = $this->namedDomIdentifierTranspiler->transpile(
+            $accessor = $this->namedDomIdentifierTranspiler->createSource(
                 new NamedDomIdentifierValue($value, $valuePlaceholder)
             );
 

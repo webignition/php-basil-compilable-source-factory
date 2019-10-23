@@ -67,6 +67,6 @@ class IsComparisonTranspilerTest extends AbstractTranspilerTest
         $this->expectException(NonTranspilableModelException::class);
         $this->expectExceptionMessage('Non-transpilable model "' . ComparisonAssertion::class . '"');
 
-        $this->transpiler->transpile($model);
+        $this->transpiler->createSource($model);
     }
 }

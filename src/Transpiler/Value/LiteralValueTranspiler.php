@@ -20,7 +20,7 @@ class LiteralValueTranspiler implements HandlerInterface
         return $model instanceof LiteralValueInterface;
     }
 
-    public function transpile(object $model): SourceInterface
+    public function createSource(object $model): SourceInterface
     {
         if ($this->handles($model)) {
             return (new Source())->withStatements([

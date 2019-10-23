@@ -71,7 +71,7 @@ class NamedDomIdentifierTranspilerTest extends \PHPUnit\Framework\TestCase
         array $expectedStatements,
         MetadataInterface $expectedMetadata
     ) {
-        $source = $this->transpiler->transpile($model);
+        $source = $this->transpiler->createSource($model);
 
         $this->assertEquals($expectedStatements, $source->getStatements());
         $this->assertEquals($expectedMetadata, $source->getMetadata());
@@ -200,6 +200,6 @@ class NamedDomIdentifierTranspilerTest extends \PHPUnit\Framework\TestCase
 
         $model = new \stdClass();
 
-        $this->transpiler->transpile($model);
+        $this->transpiler->createSource($model);
     }
 }

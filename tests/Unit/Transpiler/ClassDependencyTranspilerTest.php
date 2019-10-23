@@ -39,7 +39,7 @@ class ClassDependencyTranspilerTest extends AbstractTranspilerTest
         ClassDependency $classDependency,
         array $expectedStatements
     ) {
-        $source = $this->transpiler->transpile($classDependency);
+        $source = $this->transpiler->createSource($classDependency);
 
         $this->assertEquals($expectedStatements, $source->getStatements());
         $this->assertEquals(new Metadata(), $source->getMetadata());

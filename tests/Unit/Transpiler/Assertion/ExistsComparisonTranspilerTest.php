@@ -68,7 +68,7 @@ class ExistsComparisonTranspilerTest extends AbstractTranspilerTest
         $this->expectException(NonTranspilableModelException::class);
         $this->expectExceptionMessage('Non-transpilable model "' . ComparisonAssertion::class . '"');
 
-        $this->transpiler->transpile($model);
+        $this->transpiler->createSource($model);
     }
 
     /**
@@ -79,7 +79,7 @@ class ExistsComparisonTranspilerTest extends AbstractTranspilerTest
         $this->expectException(NonTranspilableModelException::class);
         $this->expectExceptionMessage($expectedExceptionMessage);
 
-        $this->transpiler->transpile($model);
+        $this->transpiler->createSource($model);
     }
 
     public function transpileWrongValueTypeDataProvider(): array

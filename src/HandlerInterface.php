@@ -17,7 +17,7 @@ interface HandlerInterface
      *
      * @throws NonTranspilableModelException
      */
-    public function transpile(object $model): SourceInterface;
+    public function createSource(object $model): SourceInterface;
 
     // HandlerInterface methods
     public function handles(object $model): bool;

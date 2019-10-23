@@ -53,7 +53,7 @@ class NamedDomIdentifierTranspiler implements HandlerInterface
         return $model instanceof NamedDomIdentifierInterface;
     }
 
-    public function transpile(object $model): SourceInterface
+    public function createSource(object $model): SourceInterface
     {
         if (!$model instanceof NamedDomIdentifierInterface) {
             throw new NonTranspilableModelException($model);

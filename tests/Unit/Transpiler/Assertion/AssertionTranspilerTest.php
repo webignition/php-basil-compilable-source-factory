@@ -70,7 +70,7 @@ class AssertionTranspilerTest extends AbstractTranspilerTest
      */
     public function testTranspileDoesNotFail(AssertionInterface $model)
     {
-        $source = $this->transpiler->transpile($model);
+        $source = $this->transpiler->createSource($model);
 
         $this->assertInstanceOf(SourceInterface::class, $source);
     }

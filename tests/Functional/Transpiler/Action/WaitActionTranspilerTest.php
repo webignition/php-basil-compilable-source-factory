@@ -35,7 +35,7 @@ class WaitActionTranspilerTest extends AbstractTranspilerTest
         MetadataInterface $metadata,
         int $expectedDuration
     ) {
-        $source = $this->transpiler->transpile($action);
+        $source = $this->transpiler->createSource($action);
 
         $expectedDurationThreshold = $expectedDuration + 1;
 
