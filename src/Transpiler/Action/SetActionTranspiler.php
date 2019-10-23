@@ -9,7 +9,7 @@ use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifier;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Transpiler\NamedDomIdentifierHandler;
-use webignition\BasilCompilableSourceFactory\Transpiler\Value\ScalarValueTranspiler;
+use webignition\BasilCompilableSourceFactory\Transpiler\Value\ScalarValueHandler;
 use webignition\BasilCompilationSource\Source;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
@@ -21,18 +21,18 @@ class SetActionTranspiler implements HandlerInterface
 {
     private $variableAssignmentFactory;
     private $webDriverElementMutatorCallFactory;
-    private $scalarValueTranspiler;
+    private $scalarValueHandler;
     private $namedDomIdentifierHandler;
 
     public function __construct(
         VariableAssignmentFactory $variableAssignmentFactory,
         WebDriverElementMutatorCallFactory $webDriverElementMutatorCallFactory,
-        HandlerInterface $scalarValueTranspiler,
+        HandlerInterface $scalarValueHandler,
         HandlerInterface $namedDomIdentifierHandler
     ) {
         $this->variableAssignmentFactory = $variableAssignmentFactory;
         $this->webDriverElementMutatorCallFactory = $webDriverElementMutatorCallFactory;
-        $this->scalarValueTranspiler = $scalarValueTranspiler;
+        $this->scalarValueHandler = $scalarValueHandler;
         $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
     }
 
@@ -41,7 +41,7 @@ class SetActionTranspiler implements HandlerInterface
         return new SetActionTranspiler(
             VariableAssignmentFactory::createFactory(),
             WebDriverElementMutatorCallFactory::createFactory(),
-            ScalarValueTranspiler::createHandler(),
+            ScalarValueHandler::createHandler(),
             NamedDomIdentifierHandler::createHandler()
         );
     }
@@ -94,7 +94,7 @@ class SetActionTranspiler implements HandlerInterface
                 return str_replace((string) $valuePlaceholder . ' = ', '', $statement);
             });
         } else {
-            $valueAccessor = $this->scalarValueTranspiler->createSource($value);
+            $valueAccessor = $this->scalarValueHandler->createSource($value);
         }
 
         $valueAssignment = $this->variableAssignmentFactory->createForValueAccessor($valueAccessor, $valuePlaceholder);

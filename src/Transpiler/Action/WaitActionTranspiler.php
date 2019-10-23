@@ -7,7 +7,7 @@ use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelExcep
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Transpiler\NamedDomIdentifierHandler;
-use webignition\BasilCompilableSourceFactory\Transpiler\Value\ScalarValueTranspiler;
+use webignition\BasilCompilableSourceFactory\Transpiler\Value\ScalarValueHandler;
 use webignition\BasilCompilationSource\Source;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
@@ -20,16 +20,16 @@ class WaitActionTranspiler implements HandlerInterface
     const MICROSECONDS_PER_MILLISECOND = 1000;
 
     private $variableAssignmentFactory;
-    private $scalarValueTranspiler;
+    private $scalarValueHandler;
     private $namedDomIdentifierHandler;
 
     public function __construct(
         VariableAssignmentFactory $variableAssignmentFactory,
-        HandlerInterface $scalarValueTranspiler,
+        HandlerInterface $scalarValueHandler,
         HandlerInterface $namedDomIdentifierHandler
     ) {
         $this->variableAssignmentFactory = $variableAssignmentFactory;
-        $this->scalarValueTranspiler = $scalarValueTranspiler;
+        $this->scalarValueHandler = $scalarValueHandler;
         $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
     }
 
@@ -37,7 +37,7 @@ class WaitActionTranspiler implements HandlerInterface
     {
         return new WaitActionTranspiler(
             VariableAssignmentFactory::createFactory(),
-            ScalarValueTranspiler::createHandler(),
+            ScalarValueHandler::createHandler(),
             NamedDomIdentifierHandler::createHandler()
         );
     }
@@ -74,7 +74,7 @@ class WaitActionTranspiler implements HandlerInterface
                 return str_replace((string) $durationPlaceholder . ' = ', '', $statement);
             });
         } else {
-            $durationAccessor = $this->scalarValueTranspiler->createSource($duration);
+            $durationAccessor = $this->scalarValueHandler->createSource($duration);
         }
 
         $durationAssignment = $this->variableAssignmentFactory->createForValueAccessor(

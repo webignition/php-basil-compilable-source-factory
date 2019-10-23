@@ -17,18 +17,18 @@ abstract class AbstractComparisonAssertionTranspiler implements HandlerInterface
 {
     protected $assertionCallFactory;
     private $variableAssignmentFactory;
-    private $scalarValueTranspiler;
+    private $scalarValueHandler;
     private $namedDomIdentifierHandler;
 
     public function __construct(
         AssertionCallFactory $assertionCallFactory,
         VariableAssignmentFactory $variableAssignmentFactory,
-        HandlerInterface $scalarValueTranspiler,
+        HandlerInterface $scalarValueHandler,
         HandlerInterface $namedDomIdentifierHandler
     ) {
         $this->assertionCallFactory = $assertionCallFactory;
         $this->variableAssignmentFactory = $variableAssignmentFactory;
-        $this->scalarValueTranspiler = $scalarValueTranspiler;
+        $this->scalarValueHandler = $scalarValueHandler;
         $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
     }
 
@@ -58,7 +58,7 @@ abstract class AbstractComparisonAssertionTranspiler implements HandlerInterface
                 return str_replace((string) $examinedValuePlaceholder . ' = ', '', $statement);
             });
         } else {
-            $examinedValueAccessor = $this->scalarValueTranspiler->createSource($examinedValue);
+            $examinedValueAccessor = $this->scalarValueHandler->createSource($examinedValue);
         }
 
         if ($expectedValue instanceof DomIdentifierValueInterface) {
@@ -70,7 +70,7 @@ abstract class AbstractComparisonAssertionTranspiler implements HandlerInterface
                 return str_replace((string) $expectedValuePlaceholder . ' = ', '', $statement);
             });
         } else {
-            $expectedValueAccessor = $this->scalarValueTranspiler->createSource($expectedValue);
+            $expectedValueAccessor = $this->scalarValueHandler->createSource($expectedValue);
         }
 
         $examinedValueAssignment = $this->variableAssignmentFactory->createForValueAccessor(

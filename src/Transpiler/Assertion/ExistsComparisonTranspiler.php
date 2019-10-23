@@ -8,7 +8,7 @@ use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelExcep
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Transpiler\NamedDomIdentifierHandler;
-use webignition\BasilCompilableSourceFactory\Transpiler\Value\ScalarValueTranspiler;
+use webignition\BasilCompilableSourceFactory\Transpiler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Source;
 use webignition\BasilCompilationSource\SourceInterface;
@@ -24,18 +24,18 @@ use webignition\BasilModel\Value\ValueInterface;
 class ExistsComparisonTranspiler implements HandlerInterface
 {
     private $assertionCallFactory;
-    private $scalarValueTranspiler;
+    private $scalarValueHandler;
     private $domCrawlerNavigatorCallFactory;
     private $namedDomIdentifierHandler;
 
     public function __construct(
         AssertionCallFactory $assertionCallFactory,
-        HandlerInterface $scalarValueTranspiler,
+        HandlerInterface $scalarValueHandler,
         DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory,
         HandlerInterface $namedDomIdentifierHandler
     ) {
         $this->assertionCallFactory = $assertionCallFactory;
-        $this->scalarValueTranspiler = $scalarValueTranspiler;
+        $this->scalarValueHandler = $scalarValueHandler;
         $this->domCrawlerNavigatorCallFactory = $domCrawlerNavigatorCallFactory;
         $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
     }
@@ -44,7 +44,7 @@ class ExistsComparisonTranspiler implements HandlerInterface
     {
         return new ExistsComparisonTranspiler(
             AssertionCallFactory::createFactory(),
-            ScalarValueTranspiler::createHandler(),
+            ScalarValueHandler::createHandler(),
             DomCrawlerNavigatorCallFactory::createFactory(),
             NamedDomIdentifierHandler::createHandler()
         );
@@ -82,7 +82,7 @@ class ExistsComparisonTranspiler implements HandlerInterface
         $existence = null;
 
         if ($this->isScalarValue($value)) {
-            $accessor = $this->scalarValueTranspiler->createSource($value);
+            $accessor = $this->scalarValueHandler->createSource($value);
             $accessor->appendStatement(0, ' ?? null');
 
             $assignment = clone $accessor;

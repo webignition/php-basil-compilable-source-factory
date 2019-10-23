@@ -7,11 +7,11 @@ use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Transpiler\AbstractDelegatingHandler;
 use webignition\BasilModel\Value\ValueInterface;
 
-class ScalarValueTranspiler extends AbstractDelegatingHandler implements DelegatorInterface, HandlerInterface
+class ScalarValueHandler extends AbstractDelegatingHandler implements DelegatorInterface, HandlerInterface
 {
     public static function createHandler(): HandlerInterface
     {
-        return new ScalarValueTranspiler([
+        return new ScalarValueHandler([
             BrowserPropertyHandler::createHandler(),
             EnvironmentValueHandler::createHandler(),
             LiteralValueHandler::createHandler(),

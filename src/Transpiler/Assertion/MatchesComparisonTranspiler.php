@@ -7,7 +7,7 @@ use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFacto
 use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Transpiler\NamedDomIdentifierHandler;
-use webignition\BasilCompilableSourceFactory\Transpiler\Value\ScalarValueTranspiler;
+use webignition\BasilCompilableSourceFactory\Transpiler\Value\ScalarValueHandler;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilModel\Assertion\AssertionComparison;
 use webignition\BasilModel\Assertion\ComparisonAssertionInterface;
@@ -19,7 +19,7 @@ class MatchesComparisonTranspiler extends AbstractComparisonAssertionTranspiler 
         return new MatchesComparisonTranspiler(
             AssertionCallFactory::createFactory(),
             VariableAssignmentFactory::createFactory(),
-            ScalarValueTranspiler::createHandler(),
+            ScalarValueHandler::createHandler(),
             NamedDomIdentifierHandler::createHandler()
         );
     }

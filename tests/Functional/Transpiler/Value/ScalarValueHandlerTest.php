@@ -8,17 +8,17 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Transpiler\V
 
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\Transpiler\AbstractTranspilerTest;
-use webignition\BasilCompilableSourceFactory\Transpiler\Value\ScalarValueTranspiler;
+use webignition\BasilCompilableSourceFactory\Transpiler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModel\Value\ObjectValue;
 use webignition\BasilModel\Value\ObjectValueType;
 use webignition\BasilModel\Value\ValueInterface;
 
-class ScalarValueTranspilerTest extends AbstractTranspilerTest
+class ScalarValueHandlerTest extends AbstractTranspilerTest
 {
     protected function createTranspiler(): HandlerInterface
     {
-        return ScalarValueTranspiler::createHandler();
+        return ScalarValueHandler::createHandler();
     }
 
     /**
