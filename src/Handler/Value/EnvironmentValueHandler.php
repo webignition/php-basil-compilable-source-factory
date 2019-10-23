@@ -31,7 +31,7 @@ class EnvironmentValueHandler implements HandlerInterface
      *
      * @throws NonTranspilableModelException
      */
-    public function createSource(object $model): StatementListInterface
+    public function createStatementList(object $model): StatementListInterface
     {
         if ($this->handles($model) && $model instanceof ObjectValueInterface) {
             $variableDependencies = new VariablePlaceholderCollection();

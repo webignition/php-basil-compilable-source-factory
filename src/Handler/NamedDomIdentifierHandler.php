@@ -53,7 +53,7 @@ class NamedDomIdentifierHandler implements HandlerInterface
         return $model instanceof NamedDomIdentifierInterface;
     }
 
-    public function createSource(object $model): StatementListInterface
+    public function createStatementList(object $model): StatementListInterface
     {
         if (!$model instanceof NamedDomIdentifierInterface) {
             throw new NonTranspilableModelException($model);

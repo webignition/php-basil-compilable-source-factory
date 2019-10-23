@@ -22,12 +22,12 @@ abstract class AbstractDelegatingHandler extends AbstractDelegator implements De
      *
      * @throws NonTranspilableModelException
      */
-    public function createSource(object $model): StatementListInterface
+    public function createStatementList(object $model): StatementListInterface
     {
         $handler = $this->findHandler($model);
 
         if ($handler instanceof HandlerInterface) {
-            return $handler->createSource($model);
+            return $handler->createStatementList($model);
         }
 
         throw new NonTranspilableModelException($model);

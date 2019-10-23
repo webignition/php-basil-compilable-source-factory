@@ -58,6 +58,6 @@ class PagePropertyHandlerTest extends AbstractHandlerTest
         $this->expectException(UnknownObjectPropertyException::class);
         $this->expectExceptionMessage('Unknown object property "foo"');
 
-        $this->handler->createSource($model);
+        $this->handler->createStatementList($model);
     }
 }

@@ -51,7 +51,7 @@ class PagePropertyHandler implements HandlerInterface
      * @throws NonTranspilableModelException
      * @throws UnknownObjectPropertyException
      */
-    public function createSource(object $model): StatementListInterface
+    public function createStatementList(object $model): StatementListInterface
     {
         if ($this->handles($model) && $model instanceof ObjectValueInterface) {
             $transpiledValue = $this->transpiledValueMap[$model->getProperty()] ?? null;

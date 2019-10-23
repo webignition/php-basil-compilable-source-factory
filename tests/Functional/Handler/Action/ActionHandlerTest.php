@@ -56,7 +56,7 @@ class ActionHandlerTest extends AbstractHandlerTest
         array $additionalVariableIdentifiers,
         ?MetadataInterface $metadata = null
     ) {
-        $statementList = $this->handler->createSource($action);
+        $statementList = $this->handler->createStatementList($action);
 
         $variableIdentifiers = array_merge(
             [
@@ -99,7 +99,7 @@ class ActionHandlerTest extends AbstractHandlerTest
         array $variableIdentifiers,
         string $expectedExpectationFailedExceptionMessage
     ) {
-        $statementList = $this->handler->createSource($action);
+        $statementList = $this->handler->createStatementList($action);
 
         $setupStatements = [
             '$navigator = Navigator::create($crawler);',

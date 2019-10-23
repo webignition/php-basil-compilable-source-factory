@@ -54,7 +54,7 @@ class WaitActionHandler implements HandlerInterface
      *
      * @throws NonTranspilableModelException
      */
-    public function createSource(object $model): StatementListInterface
+    public function createStatementList(object $model): StatementListInterface
     {
         if (!$model instanceof WaitActionInterface) {
             throw new NonTranspilableModelException($model);
@@ -66,7 +66,7 @@ class WaitActionHandler implements HandlerInterface
         $duration = $model->getDuration();
 
         if ($duration instanceof DomIdentifierValueInterface) {
-            $durationAccessor = $this->namedDomIdentifierHandler->createSource(
+            $durationAccessor = $this->namedDomIdentifierHandler->createStatementList(
                 new NamedDomIdentifierValue($duration, $durationPlaceholder)
             );
 
@@ -74,7 +74,7 @@ class WaitActionHandler implements HandlerInterface
                 return str_replace((string) $durationPlaceholder . ' = ', '', $statement);
             });
         } else {
-            $durationAccessor = $this->scalarValueHandler->createSource($duration);
+            $durationAccessor = $this->scalarValueHandler->createStatementList($duration);
         }
 
         $durationAssignment = $this->variableAssignmentFactory->createForValueAccessor(

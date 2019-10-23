@@ -3,42 +3,25 @@
 namespace webignition\BasilCompilableSourceFactory;
 
 use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
-use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
-use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
-use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
-use webignition\BasilCompilationSource\StatementListInterface;
+use webignition\BasilCompilationSource\SourceInterface;
+use webignition\BasilModel\Test\TestInterface;
 
-class Factory extends AbstractDelegator implements DelegatorInterface, FactoryInterface
+class Factory implements FactoryInterface
 {
     public static function createFactory(): FactoryInterface
     {
-        return new Factory([
-            ScalarValueHandler::createHandler(),
-            AssertionHandler::createHandler(),
-            ActionHandler::createHandler(),
-        ]);
-    }
-
-    public function isAllowedHandler(HandlerInterface $handler): bool
-    {
-        return $handler instanceof HandlerInterface;
+        return new Factory();
     }
 
     /**
-     * @param object $model
+     * @param TestInterface $test
      *
-     * @return StatementListInterface
+     * @return SourceInterface
      *
      * @throws NonTranspilableModelException
      */
-    public function createSource(object $model): StatementListInterface
+    public function createSource(TestInterface $test): SourceInterface
     {
-        $handler = $this->findHandler($model);
-
-        if ($handler instanceof SourceProducerInterface) {
-            return $handler->createSource($model);
-        }
-
-        throw new NonTranspilableModelException($model);
+        throw new NonTranspilableModelException($test);
     }
 }

@@ -72,7 +72,7 @@ class ActionHandlerTest extends AbstractHandlerTest
      */
     public function testTranspileDoesNotFail(ActionInterface $model)
     {
-        $statementList = $this->handler->createSource($model);
+        $statementList = $this->handler->createStatementList($model);
 
         $this->assertInstanceOf(StatementListInterface::class, $statementList);
     }

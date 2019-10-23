@@ -70,7 +70,7 @@ class AssertionHandlerTest extends AbstractHandlerTest
      */
     public function testTranspileDoesNotFail(AssertionInterface $model)
     {
-        $statementList = $this->handler->createSource($model);
+        $statementList = $this->handler->createStatementList($model);
 
         $this->assertInstanceOf(StatementListInterface::class, $statementList);
     }

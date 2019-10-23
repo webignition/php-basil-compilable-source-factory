@@ -66,7 +66,7 @@ class ExistenceComparisonHandler implements HandlerInterface
      *
      * @throws NonTranspilableModelException
      */
-    public function createSource(object $model): StatementListInterface
+    public function createStatementList(object $model): StatementListInterface
     {
         if (!$model instanceof ExaminationAssertionInterface) {
             throw new NonTranspilableModelException($model);
@@ -82,7 +82,7 @@ class ExistenceComparisonHandler implements HandlerInterface
         $existence = null;
 
         if ($this->isScalarValue($value)) {
-            $accessor = $this->scalarValueHandler->createSource($value);
+            $accessor = $this->scalarValueHandler->createStatementList($value);
             $accessor->appendStatement(0, ' ?? null');
 
             $assignment = clone $accessor;
@@ -119,7 +119,7 @@ class ExistenceComparisonHandler implements HandlerInterface
                 return $this->createAssertionCall($model->getComparison(), $assignment, $valuePlaceholder);
             }
 
-            $accessor = $this->namedDomIdentifierHandler->createSource(
+            $accessor = $this->namedDomIdentifierHandler->createStatementList(
                 new NamedDomIdentifierValue($value, $valuePlaceholder)
             );
 
