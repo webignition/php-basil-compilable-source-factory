@@ -6,8 +6,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
+use webignition\BasilCompilableSourceFactory\Handler\ClassDependencyHandler;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
-use webignition\BasilCompilableSourceFactory\Transpiler\ClassDependencyHandler;
 use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilCompilationSource\Source;
 use webignition\BasilCompilationSource\SourceInterface;
