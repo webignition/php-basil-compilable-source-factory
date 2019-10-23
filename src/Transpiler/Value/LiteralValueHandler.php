@@ -8,11 +8,11 @@ use webignition\BasilCompilationSource\Source;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilModel\Value\LiteralValueInterface;
 
-class LiteralValueTranspiler implements HandlerInterface
+class LiteralValueHandler implements HandlerInterface
 {
     public static function createHandler(): HandlerInterface
     {
-        return new LiteralValueTranspiler();
+        return new LiteralValueHandler();
     }
 
     public function handles(object $model): bool
