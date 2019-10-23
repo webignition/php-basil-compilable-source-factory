@@ -12,11 +12,11 @@ use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Value\ObjectValueInterface;
 use webignition\BasilModel\Value\ObjectValueType;
 
-class EnvironmentParameterValueTranspiler implements HandlerInterface
+class EnvironmentValueHandler implements HandlerInterface
 {
     public static function createHandler(): HandlerInterface
     {
-        return new EnvironmentParameterValueTranspiler();
+        return new EnvironmentValueHandler();
     }
 
     public function handles(object $model): bool
