@@ -5,7 +5,6 @@ namespace webignition\BasilCompilableSourceFactory\Transpiler\Action;
 use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
-use webignition\BasilCompilableSourceFactory\Transpiler\TranspilerInterface;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Source;
 use webignition\BasilCompilationSource\SourceInterface;
@@ -15,7 +14,7 @@ use webignition\BasilModel\Action\ActionTypes;
 use webignition\BasilModel\Action\InteractionActionInterface;
 use webignition\BasilModel\Identifier\DomIdentifierInterface;
 
-class WaitForActionTranspiler implements HandlerInterface, TranspilerInterface
+class WaitForActionTranspiler implements HandlerInterface
 {
     private $singleQuotedStringEscaper;
 

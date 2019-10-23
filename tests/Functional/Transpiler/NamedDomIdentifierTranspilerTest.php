@@ -6,11 +6,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Transpiler;
 
+use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifier;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Transpiler\NamedDomIdentifierTranspiler;
-use webignition\BasilCompilableSourceFactory\Transpiler\TranspilerInterface;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
@@ -24,7 +24,7 @@ use webignition\WebDriverElementInspector\Inspector;
 
 class NamedDomIdentifierTranspilerTest extends AbstractTranspilerTest
 {
-    protected function createTranspiler(): TranspilerInterface
+    protected function createTranspiler(): HandlerInterface
     {
         return NamedDomIdentifierTranspiler::createTranspiler();
     }

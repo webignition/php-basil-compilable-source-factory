@@ -6,10 +6,10 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Transpiler\Action;
 
+use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\SetActionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\Transpiler\AbstractTranspilerTest;
 use webignition\BasilCompilableSourceFactory\Transpiler\Action\SetActionTranspiler;
-use webignition\BasilCompilableSourceFactory\Transpiler\TranspilerInterface;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilModel\Action\ActionInterface;
@@ -18,7 +18,7 @@ class SetActionTranspilerTest extends AbstractTranspilerTest
 {
     use SetActionFunctionalDataProviderTrait;
 
-    protected function createTranspiler(): TranspilerInterface
+    protected function createTranspiler(): HandlerInterface
     {
         return SetActionTranspiler::createTranspiler();
     }

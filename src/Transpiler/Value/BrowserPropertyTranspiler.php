@@ -5,7 +5,6 @@ namespace webignition\BasilCompilableSourceFactory\Transpiler\Value;
 use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
 use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
-use webignition\BasilCompilableSourceFactory\Transpiler\TranspilerInterface;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\Source;
@@ -14,7 +13,7 @@ use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Value\ObjectValueInterface;
 use webignition\BasilModel\Value\ObjectValueType;
 
-class BrowserPropertyTranspiler implements HandlerInterface, TranspilerInterface
+class BrowserPropertyTranspiler implements HandlerInterface
 {
     const PROPERTY_NAME_SIZE = 'size';
 

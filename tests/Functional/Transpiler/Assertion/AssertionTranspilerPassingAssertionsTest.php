@@ -6,6 +6,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Transpiler\Assertion;
 
+use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\EqualityAssertionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\ExcludesAssertionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\ExistsAssertionFunctionalDataProviderTrait;
@@ -17,7 +18,6 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\Matche
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\NotExistsAssertionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\Transpiler\AbstractTranspilerTest;
 use webignition\BasilCompilableSourceFactory\Transpiler\Assertion\AssertionTranspiler;
-use webignition\BasilCompilableSourceFactory\Transpiler\TranspilerInterface;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilModel\Assertion\AssertionInterface;
@@ -34,7 +34,7 @@ class AssertionTranspilerPassingAssertionsTest extends AbstractTranspilerTest
     use MatchesAssertionFunctionalDataProviderTrait;
     use NotExistsAssertionFunctionalDataProviderTrait;
 
-    protected function createTranspiler(): TranspilerInterface
+    protected function createTranspiler(): HandlerInterface
     {
         return AssertionTranspiler::createTranspiler();
     }

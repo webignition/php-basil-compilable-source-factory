@@ -2,13 +2,13 @@
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Transpiler;
 
+use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
-use webignition\BasilCompilableSourceFactory\Transpiler\TranspilerInterface;
 
 abstract class AbstractTranspilerTest extends AbstractBrowserTestCase
 {
     /**
-     * @var TranspilerInterface
+     * @var HandlerInterface
      */
     protected $transpiler;
 
@@ -19,5 +19,5 @@ abstract class AbstractTranspilerTest extends AbstractBrowserTestCase
         $this->transpiler = $this->createTranspiler();
     }
 
-    abstract protected function createTranspiler(): TranspilerInterface;
+    abstract protected function createTranspiler(): HandlerInterface;
 }

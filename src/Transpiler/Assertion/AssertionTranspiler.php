@@ -5,14 +5,10 @@ namespace webignition\BasilCompilableSourceFactory\Transpiler\Assertion;
 use webignition\BasilCompilableSourceFactory\DelegatorInterface;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Transpiler\AbstractDelegatingTranspiler;
-use webignition\BasilCompilableSourceFactory\Transpiler\TranspilerInterface;
 use webignition\BasilModel\Assertion\ComparisonAssertionInterface;
 use webignition\BasilModel\Assertion\ExaminationAssertionInterface;
 
-class AssertionTranspiler extends AbstractDelegatingTranspiler implements
-    DelegatorInterface,
-    HandlerInterface,
-    TranspilerInterface
+class AssertionTranspiler extends AbstractDelegatingTranspiler implements DelegatorInterface, HandlerInterface
 {
     public static function createTranspiler(): AssertionTranspiler
     {

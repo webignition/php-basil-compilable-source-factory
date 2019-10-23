@@ -3,11 +3,12 @@
 namespace webignition\BasilCompilableSourceFactory\Transpiler;
 
 use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
+use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\Source;
 use webignition\BasilCompilationSource\SourceInterface;
 
-class ClassDependencyTranspiler implements TranspilerInterface
+class ClassDependencyTranspiler implements HandlerInterface
 {
     const CLASS_NAME_ONLY_TEMPLATE = 'use %s';
     const WITH_ALIAS_TEMPLATE = self::CLASS_NAME_ONLY_TEMPLATE . ' as %s';

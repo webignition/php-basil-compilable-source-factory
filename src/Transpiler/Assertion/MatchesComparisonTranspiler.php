@@ -7,15 +7,12 @@ use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFacto
 use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Transpiler\NamedDomIdentifierTranspiler;
-use webignition\BasilCompilableSourceFactory\Transpiler\TranspilerInterface;
 use webignition\BasilCompilableSourceFactory\Transpiler\Value\ScalarValueTranspiler;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilModel\Assertion\AssertionComparison;
 use webignition\BasilModel\Assertion\ComparisonAssertionInterface;
 
-class MatchesComparisonTranspiler extends AbstractComparisonAssertionTranspiler implements
-    HandlerInterface,
-    TranspilerInterface
+class MatchesComparisonTranspiler extends AbstractComparisonAssertionTranspiler implements HandlerInterface
 {
     public static function createTranspiler(): MatchesComparisonTranspiler
     {

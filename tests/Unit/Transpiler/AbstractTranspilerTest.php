@@ -6,12 +6,12 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Transpiler;
 
 use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
-use webignition\BasilCompilableSourceFactory\Transpiler\TranspilerInterface;
+use webignition\BasilCompilableSourceFactory\HandlerInterface;
 
 abstract class AbstractTranspilerTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var TranspilerInterface
+     * @var HandlerInterface
      */
     protected $transpiler;
 
@@ -22,7 +22,7 @@ abstract class AbstractTranspilerTest extends \PHPUnit\Framework\TestCase
         $this->transpiler = $this->createTranspiler();
     }
 
-    abstract protected function createTranspiler(): TranspilerInterface;
+    abstract protected function createTranspiler(): HandlerInterface;
 
     public function testTranspileNonTranspilableModel()
     {

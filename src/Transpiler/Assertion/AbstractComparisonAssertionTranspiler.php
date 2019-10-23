@@ -8,7 +8,6 @@ use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelExcep
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Transpiler\NamedDomIdentifierTranspiler;
-use webignition\BasilCompilableSourceFactory\Transpiler\TranspilerInterface;
 use webignition\BasilCompilableSourceFactory\Transpiler\Value\ScalarValueTranspiler;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\SourceInterface;
@@ -16,7 +15,7 @@ use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilModel\Assertion\ComparisonAssertionInterface;
 use webignition\BasilModel\Value\DomIdentifierValueInterface;
 
-abstract class AbstractComparisonAssertionTranspiler implements HandlerInterface, TranspilerInterface
+abstract class AbstractComparisonAssertionTranspiler implements HandlerInterface
 {
     protected $assertionCallFactory;
     private $variableAssignmentFactory;

@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Transpiler\Action;
 
 use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
+use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\BackActionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\ClickActionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\ForwardActionDataProviderTrait;
@@ -18,7 +19,6 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\WaitActio
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\WaitForActionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Transpiler\AbstractTranspilerTest;
 use webignition\BasilCompilableSourceFactory\Transpiler\Action\WaitActionTranspiler;
-use webignition\BasilCompilableSourceFactory\Transpiler\TranspilerInterface;
 use webignition\BasilModel\Action\ActionInterface;
 use webignition\BasilModel\Action\WaitAction;
 use webignition\BasilModel\Value\PageElementReference;
@@ -35,7 +35,7 @@ class WaitActionTranspilerTest extends AbstractTranspilerTest
     use SubmitActionDataProviderTrait;
     use SetActionDataProviderTrait;
 
-    protected function createTranspiler(): TranspilerInterface
+    protected function createTranspiler(): HandlerInterface
     {
         return WaitActionTranspiler::createTranspiler();
     }

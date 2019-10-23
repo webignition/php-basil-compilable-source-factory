@@ -7,14 +7,13 @@ use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelExcep
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomElementIdentifier;
 use webignition\BasilCompilableSourceFactory\Transpiler\NamedDomIdentifierTranspiler;
-use webignition\BasilCompilableSourceFactory\Transpiler\TranspilerInterface;
 use webignition\BasilCompilationSource\Source;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Action\InteractionActionInterface;
 use webignition\BasilModel\Identifier\DomIdentifierInterface;
 
-abstract class AbstractInteractionActionTranspiler implements HandlerInterface, TranspilerInterface
+abstract class AbstractInteractionActionTranspiler implements HandlerInterface
 {
     private $variableAssignmentFactory;
     private $namedDomIdentifierTranspiler;

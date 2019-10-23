@@ -7,6 +7,7 @@ use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCall
 use webignition\BasilCompilableSourceFactory\CallFactory\ElementLocatorCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\WebDriverElementInspectorCallFactory;
 use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
+use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierInterface;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilationSource\Source;
@@ -14,7 +15,7 @@ use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
-class NamedDomIdentifierTranspiler implements TranspilerInterface
+class NamedDomIdentifierTranspiler implements HandlerInterface
 {
     private $domCrawlerNavigatorCallFactory;
     private $elementLocatorCallFactory;

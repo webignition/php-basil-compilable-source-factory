@@ -6,13 +6,13 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Transpiler\Value;
 
+use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Value\BrowserPropertyDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Value\EnvironmentParameterValueDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Value\LiteralValueDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Value\PagePropertyProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Value\UnhandledValueDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Transpiler\AbstractTranspilerTest;
-use webignition\BasilCompilableSourceFactory\Transpiler\TranspilerInterface;
 use webignition\BasilCompilableSourceFactory\Transpiler\Value\EnvironmentParameterValueTranspiler;
 use webignition\BasilModel\Value\ValueInterface;
 
@@ -24,7 +24,7 @@ class EnvironmentParameterValueTranspilerTest extends AbstractTranspilerTest
     use PagePropertyProviderTrait;
     use UnhandledValueDataProviderTrait;
 
-    protected function createTranspiler(): TranspilerInterface
+    protected function createTranspiler(): HandlerInterface
     {
         return EnvironmentParameterValueTranspiler::createTranspiler();
     }

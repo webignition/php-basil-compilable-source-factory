@@ -5,13 +5,9 @@ namespace webignition\BasilCompilableSourceFactory\Transpiler\Value;
 use webignition\BasilCompilableSourceFactory\DelegatorInterface;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Transpiler\AbstractDelegatingTranspiler;
-use webignition\BasilCompilableSourceFactory\Transpiler\TranspilerInterface;
 use webignition\BasilModel\Value\ValueInterface;
 
-class ScalarValueTranspiler extends AbstractDelegatingTranspiler implements
-    DelegatorInterface,
-    HandlerInterface,
-    TranspilerInterface
+class ScalarValueTranspiler extends AbstractDelegatingTranspiler implements DelegatorInterface, HandlerInterface
 {
     public static function createTranspiler(): ScalarValueTranspiler
     {

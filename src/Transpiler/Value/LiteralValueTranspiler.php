@@ -4,12 +4,11 @@ namespace webignition\BasilCompilableSourceFactory\Transpiler\Value;
 
 use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
-use webignition\BasilCompilableSourceFactory\Transpiler\TranspilerInterface;
 use webignition\BasilCompilationSource\Source;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilModel\Value\LiteralValueInterface;
 
-class LiteralValueTranspiler implements HandlerInterface, TranspilerInterface
+class LiteralValueTranspiler implements HandlerInterface
 {
     public static function createTranspiler(): LiteralValueTranspiler
     {

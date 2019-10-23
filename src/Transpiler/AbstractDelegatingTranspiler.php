@@ -8,11 +8,11 @@ use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelExcep
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilationSource\SourceInterface;
 
-abstract class AbstractDelegatingTranspiler extends AbstractDelegator implements DelegatorInterface, TranspilerInterface
+abstract class AbstractDelegatingTranspiler extends AbstractDelegator implements DelegatorInterface, HandlerInterface
 {
     public function isAllowedHandler(HandlerInterface $handler): bool
     {
-        return $handler instanceof TranspilerInterface;
+        return $handler instanceof HandlerInterface;
     }
 
     /**
@@ -26,7 +26,7 @@ abstract class AbstractDelegatingTranspiler extends AbstractDelegator implements
     {
         $handler = $this->findHandler($model);
 
-        if ($handler instanceof TranspilerInterface) {
+        if ($handler instanceof HandlerInterface) {
             return $handler->transpile($model);
         }
 

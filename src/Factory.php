@@ -5,7 +5,6 @@ namespace webignition\BasilCompilableSourceFactory;
 use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
 use webignition\BasilCompilableSourceFactory\Transpiler\Action\ActionTranspiler;
 use webignition\BasilCompilableSourceFactory\Transpiler\Assertion\AssertionTranspiler;
-use webignition\BasilCompilableSourceFactory\Transpiler\TranspilerInterface;
 use webignition\BasilCompilableSourceFactory\Transpiler\Value\ScalarValueTranspiler;
 use webignition\BasilCompilationSource\SourceInterface;
 
@@ -22,7 +21,7 @@ class Factory extends AbstractDelegator implements DelegatorInterface, FactoryIn
 
     public function isAllowedHandler(HandlerInterface $handler): bool
     {
-        return $handler instanceof TranspilerInterface;
+        return $handler instanceof HandlerInterface;
     }
 
     /**
@@ -36,7 +35,7 @@ class Factory extends AbstractDelegator implements DelegatorInterface, FactoryIn
     {
         $handler = $this->findHandler($model);
 
-        if ($handler instanceof TranspilerInterface) {
+        if ($handler instanceof HandlerInterface) {
             return $handler->transpile($model);
         }
 

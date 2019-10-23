@@ -5,13 +5,9 @@ namespace webignition\BasilCompilableSourceFactory\Transpiler\Action;
 use webignition\BasilCompilableSourceFactory\DelegatorInterface;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Transpiler\AbstractDelegatingTranspiler;
-use webignition\BasilCompilableSourceFactory\Transpiler\TranspilerInterface;
 use webignition\BasilModel\Action\ActionInterface;
 
-class ActionTranspiler extends AbstractDelegatingTranspiler implements
-    DelegatorInterface,
-    HandlerInterface,
-    TranspilerInterface
+class ActionTranspiler extends AbstractDelegatingTranspiler implements DelegatorInterface, HandlerInterface
 {
     public static function createTranspiler(): ActionTranspiler
     {

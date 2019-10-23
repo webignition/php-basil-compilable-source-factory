@@ -4,7 +4,6 @@ namespace webignition\BasilCompilableSourceFactory\Transpiler\Action;
 
 use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
-use webignition\BasilCompilableSourceFactory\Transpiler\TranspilerInterface;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Source;
 use webignition\BasilCompilationSource\SourceInterface;
@@ -13,7 +12,7 @@ use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Action\ActionTypes;
 use webignition\BasilModel\Action\NoArgumentsAction;
 
-class BrowserOperationActionTranspiler implements HandlerInterface, TranspilerInterface
+class BrowserOperationActionTranspiler implements HandlerInterface
 {
     const HANDLED_ACTION_TYPES = [
         ActionTypes::BACK,

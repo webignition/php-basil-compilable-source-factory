@@ -7,9 +7,9 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Transpiler\Assertion;
 
 use PHPUnit\Framework\ExpectationFailedException;
+use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\Transpiler\AbstractTranspilerTest;
 use webignition\BasilCompilableSourceFactory\Transpiler\Assertion\AssertionTranspiler;
-use webignition\BasilCompilableSourceFactory\Transpiler\TranspilerInterface;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
@@ -21,7 +21,7 @@ use webignition\SymfonyDomCrawlerNavigator\Navigator;
 
 class AssertionTranspilerFailingAssertionsTest extends AbstractTranspilerTest
 {
-    protected function createTranspiler(): TranspilerInterface
+    protected function createTranspiler(): HandlerInterface
     {
         return AssertionTranspiler::createTranspiler();
     }
