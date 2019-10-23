@@ -17,7 +17,7 @@ use webignition\BasilModel\Action\InputActionInterface;
 use webignition\BasilModel\Identifier\DomIdentifierInterface;
 use webignition\BasilModel\Value\DomIdentifierValueInterface;
 
-class SetActionTranspiler implements HandlerInterface
+class SetActionHandler implements HandlerInterface
 {
     private $variableAssignmentFactory;
     private $webDriverElementMutatorCallFactory;
@@ -38,7 +38,7 @@ class SetActionTranspiler implements HandlerInterface
 
     public static function createHandler(): HandlerInterface
     {
-        return new SetActionTranspiler(
+        return new SetActionHandler(
             VariableAssignmentFactory::createFactory(),
             WebDriverElementMutatorCallFactory::createFactory(),
             ScalarValueHandler::createHandler(),

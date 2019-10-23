@@ -17,7 +17,7 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\SubmitAct
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\WaitActionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\WaitForActionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\Transpiler\AbstractTranspilerTest;
-use webignition\BasilCompilableSourceFactory\Transpiler\Action\ActionTranspiler;
+use webignition\BasilCompilableSourceFactory\Transpiler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
@@ -29,7 +29,7 @@ use webignition\BasilModel\Identifier\DomIdentifier;
 use webignition\BasilModel\Value\DomIdentifierValue;
 use webignition\SymfonyDomCrawlerNavigator\Navigator;
 
-class ActionTranspilerTest extends AbstractTranspilerTest
+class ActionHandlerTest extends AbstractTranspilerTest
 {
     use WaitActionFunctionalDataProviderTrait;
     use WaitForActionFunctionalDataProviderTrait;
@@ -42,7 +42,7 @@ class ActionTranspilerTest extends AbstractTranspilerTest
 
     protected function createTranspiler(): HandlerInterface
     {
-        return ActionTranspiler::createHandler();
+        return ActionHandler::createHandler();
     }
 
     /**

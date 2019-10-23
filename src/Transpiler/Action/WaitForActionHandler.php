@@ -14,7 +14,7 @@ use webignition\BasilModel\Action\ActionTypes;
 use webignition\BasilModel\Action\InteractionActionInterface;
 use webignition\BasilModel\Identifier\DomIdentifierInterface;
 
-class WaitForActionTranspiler implements HandlerInterface
+class WaitForActionHandler implements HandlerInterface
 {
     private $singleQuotedStringEscaper;
 
@@ -25,7 +25,7 @@ class WaitForActionTranspiler implements HandlerInterface
 
     public static function createHandler(): HandlerInterface
     {
-        return new WaitForActionTranspiler(SingleQuotedStringEscaper::create());
+        return new WaitForActionHandler(SingleQuotedStringEscaper::create());
     }
 
     public function handles(object $model): bool

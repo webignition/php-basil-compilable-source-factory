@@ -14,7 +14,7 @@ use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Action\WaitActionInterface;
 use webignition\BasilModel\Value\DomIdentifierValueInterface;
 
-class WaitActionTranspiler implements HandlerInterface
+class WaitActionHandler implements HandlerInterface
 {
     const DURATION_PLACEHOLDER = 'DURATION';
     const MICROSECONDS_PER_MILLISECOND = 1000;
@@ -35,7 +35,7 @@ class WaitActionTranspiler implements HandlerInterface
 
     public static function createHandler(): HandlerInterface
     {
-        return new WaitActionTranspiler(
+        return new WaitActionHandler(
             VariableAssignmentFactory::createFactory(),
             ScalarValueHandler::createHandler(),
             NamedDomIdentifierHandler::createHandler()

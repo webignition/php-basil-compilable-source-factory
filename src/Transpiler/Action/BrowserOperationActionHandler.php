@@ -12,7 +12,7 @@ use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Action\ActionTypes;
 use webignition\BasilModel\Action\NoArgumentsAction;
 
-class BrowserOperationActionTranspiler implements HandlerInterface
+class BrowserOperationActionHandler implements HandlerInterface
 {
     const HANDLED_ACTION_TYPES = [
         ActionTypes::BACK,
@@ -22,7 +22,7 @@ class BrowserOperationActionTranspiler implements HandlerInterface
 
     public static function createHandler(): HandlerInterface
     {
-        return new BrowserOperationActionTranspiler();
+        return new BrowserOperationActionHandler();
     }
 
     public function handles(object $model): bool

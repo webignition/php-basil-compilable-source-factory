@@ -7,24 +7,24 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Transpiler\Action;
 
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
-use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\ClickActionFunctionalDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\SubmitActionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\Transpiler\AbstractTranspilerTest;
-use webignition\BasilCompilableSourceFactory\Transpiler\Action\ClickActionTranspiler;
+use webignition\BasilCompilableSourceFactory\Transpiler\Action\SubmitActionHandler;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilModel\Action\ActionInterface;
 
-class ClickActionTranspilerTest extends AbstractTranspilerTest
+class SubmitActionHandlerTest extends AbstractTranspilerTest
 {
-    use ClickActionFunctionalDataProviderTrait;
+    use SubmitActionFunctionalDataProviderTrait;
 
     protected function createTranspiler(): HandlerInterface
     {
-        return ClickActionTranspiler::createHandler();
+        return SubmitActionHandler::createHandler();
     }
 
     /**
-     * @dataProvider clickActionFunctionalDataProvider
+     * @dataProvider submitActionFunctionalDataProvider
      */
     public function testTranspileForExecutableActions(
         string $fixture,

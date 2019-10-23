@@ -7,18 +7,18 @@ use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Transpiler\AbstractDelegatingHandler;
 use webignition\BasilModel\Action\ActionInterface;
 
-class ActionTranspiler extends AbstractDelegatingHandler implements DelegatorInterface, HandlerInterface
+class ActionHandler extends AbstractDelegatingHandler implements DelegatorInterface, HandlerInterface
 {
     public static function createHandler(): HandlerInterface
     {
-        return new ActionTranspiler(
+        return new ActionHandler(
             [
-                WaitActionTranspiler::createHandler(),
-                WaitForActionTranspiler::createHandler(),
-                BrowserOperationActionTranspiler::createHandler(),
-                ClickActionTranspiler::createHandler(),
-                SubmitActionTranspiler::createHandler(),
-                SetActionTranspiler::createHandler(),
+                WaitActionHandler::createHandler(),
+                WaitForActionHandler::createHandler(),
+                BrowserOperationActionHandler::createHandler(),
+                ClickActionHandler::createHandler(),
+                SubmitActionHandler::createHandler(),
+                SetActionHandler::createHandler(),
             ]
         );
     }

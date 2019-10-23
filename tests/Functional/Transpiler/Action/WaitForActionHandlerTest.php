@@ -7,32 +7,30 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Transpiler\Action;
 
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
-use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\SubmitActionFunctionalDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\WaitForActionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\Transpiler\AbstractTranspilerTest;
-use webignition\BasilCompilableSourceFactory\Transpiler\Action\SubmitActionTranspiler;
+use webignition\BasilCompilableSourceFactory\Transpiler\Action\WaitForActionHandler;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilModel\Action\ActionInterface;
 
-class SubmitActionTranspilerTest extends AbstractTranspilerTest
+class WaitForActionHandlerTest extends AbstractTranspilerTest
 {
-    use SubmitActionFunctionalDataProviderTrait;
+    use WaitForActionFunctionalDataProviderTrait;
 
     protected function createTranspiler(): HandlerInterface
     {
-        return SubmitActionTranspiler::createHandler();
+        return WaitForActionHandler::createHandler();
     }
 
     /**
-     * @dataProvider submitActionFunctionalDataProvider
+     * @dataProvider waitForActionFunctionalDataProvider
      */
     public function testTranspileForExecutableActions(
         string $fixture,
         ActionInterface $action,
         array $additionalSetupStatements,
         array $teardownStatements,
-        array $additionalVariableIdentifiers,
-        ?MetadataInterface $metadata = null
+        array $additionalVariableIdentifiers
     ) {
         $source = $this->transpiler->createSource($action);
 
@@ -48,9 +46,20 @@ class SubmitActionTranspilerTest extends AbstractTranspilerTest
             $source,
             $additionalSetupStatements,
             $teardownStatements,
-            $variableIdentifiers,
-            $metadata
+            $variableIdentifiers
         );
+
+        $executableCallStatements = explode("\n", $executableCall);
+        $waitForStatement = array_pop($executableCallStatements);
+
+        $executableCallStatements = array_merge($executableCallStatements, [
+            '$before = microtime(true);',
+            $waitForStatement,
+            '$executionDurationInMilliseconds = (microtime(true) - $before) * 1000;',
+            '$this->assertGreaterThan(100, $executionDurationInMilliseconds);',
+        ]);
+
+        $executableCall = implode("\n", $executableCallStatements);
 
         eval($executableCall);
     }

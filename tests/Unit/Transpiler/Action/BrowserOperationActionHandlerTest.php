@@ -17,10 +17,10 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\Unhandled
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\WaitActionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\WaitForActionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Transpiler\AbstractTranspilerTest;
-use webignition\BasilCompilableSourceFactory\Transpiler\Action\WaitForActionTranspiler;
+use webignition\BasilCompilableSourceFactory\Transpiler\Action\BrowserOperationActionHandler;
 use webignition\BasilModel\Action\ActionInterface;
 
-class WaitForActionTranspilerTest extends AbstractTranspilerTest
+class BrowserOperationActionHandlerTest extends AbstractTranspilerTest
 {
     use WaitActionDataProviderTrait;
     use WaitForActionDataProviderTrait;
@@ -34,11 +34,13 @@ class WaitForActionTranspilerTest extends AbstractTranspilerTest
 
     protected function createTranspiler(): HandlerInterface
     {
-        return WaitForActionTranspiler::createHandler();
+        return BrowserOperationActionHandler::createHandler();
     }
 
     /**
-     * @dataProvider waitForActionDataProvider
+     * @dataProvider backActionDataProvider
+     * @dataProvider forwardActionDataProvider
+     * @dataProvider reloadActionDataProvider
      */
     public function testHandlesDoesHandle(ActionInterface $model)
     {
@@ -46,10 +48,8 @@ class WaitForActionTranspilerTest extends AbstractTranspilerTest
     }
 
     /**
+     * @dataProvider waitForActionDataProvider
      * @dataProvider waitActionDataProvider
-     * @dataProvider backActionDataProvider
-     * @dataProvider forwardActionDataProvider
-     * @dataProvider reloadActionDataProvider
      * @dataProvider clickActionDataProvider
      * @dataProvider submitActionDataProvider
      * @dataProvider setActionDataProvider

@@ -9,18 +9,18 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Transpiler\A
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\SetActionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\Transpiler\AbstractTranspilerTest;
-use webignition\BasilCompilableSourceFactory\Transpiler\Action\SetActionTranspiler;
+use webignition\BasilCompilableSourceFactory\Transpiler\Action\SetActionHandler;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilModel\Action\ActionInterface;
 
-class SetActionTranspilerTest extends AbstractTranspilerTest
+class SetActionHandlerTest extends AbstractTranspilerTest
 {
     use SetActionFunctionalDataProviderTrait;
 
     protected function createTranspiler(): HandlerInterface
     {
-        return SetActionTranspiler::createHandler();
+        return SetActionHandler::createHandler();
     }
 
     /**

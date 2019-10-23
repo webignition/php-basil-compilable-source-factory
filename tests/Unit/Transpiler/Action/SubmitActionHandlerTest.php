@@ -17,11 +17,10 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\Unhandled
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\WaitActionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\WaitForActionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Transpiler\AbstractTranspilerTest;
-use webignition\BasilCompilableSourceFactory\Transpiler\Action\ActionTranspiler;
-use webignition\BasilCompilationSource\SourceInterface;
+use webignition\BasilCompilableSourceFactory\Transpiler\Action\SubmitActionHandler;
 use webignition\BasilModel\Action\ActionInterface;
 
-class ActionTranspilerTest extends AbstractTranspilerTest
+class SubmitActionHandlerTest extends AbstractTranspilerTest
 {
     use WaitActionDataProviderTrait;
     use WaitForActionDataProviderTrait;
@@ -35,18 +34,11 @@ class ActionTranspilerTest extends AbstractTranspilerTest
 
     protected function createTranspiler(): HandlerInterface
     {
-        return ActionTranspiler::createHandler();
+        return SubmitActionHandler::createHandler();
     }
 
     /**
-     * @dataProvider waitActionDataProvider
-     * @dataProvider waitForActionDataProvider
-     * @dataProvider backActionDataProvider
-     * @dataProvider forwardActionDataProvider
-     * @dataProvider reloadActionDataProvider
-     * @dataProvider clickActionDataProvider
      * @dataProvider submitActionDataProvider
-     * @dataProvider setActionDataProvider
      */
     public function testHandlesDoesHandle(ActionInterface $model)
     {
@@ -54,26 +46,17 @@ class ActionTranspilerTest extends AbstractTranspilerTest
     }
 
     /**
+     * @dataProvider waitActionDataProvider
+     * @dataProvider backActionDataProvider
+     * @dataProvider forwardActionDataProvider
+     * @dataProvider reloadActionDataProvider
+     * @dataProvider clickActionDataProvider
+     * @dataProvider waitForActionDataProvider
+     * @dataProvider setActionDataProvider
      * @dataProvider unhandledActionsDataProvider
      */
     public function testHandlesDoesNotHandle(object $model)
     {
         $this->assertFalse($this->transpiler->handles($model));
-    }
-
-    /**
-     * @dataProvider waitActionDataProvider
-     * @dataProvider waitForActionDataProvider
-     * @dataProvider backActionDataProvider
-     * @dataProvider forwardActionDataProvider
-     * @dataProvider reloadActionDataProvider
-     * @dataProvider clickActionDataProvider
-     * @dataProvider setActionDataProvider
-     */
-    public function testTranspileDoesNotFail(ActionInterface $model)
-    {
-        $source = $this->transpiler->createSource($model);
-
-        $this->assertInstanceOf(SourceInterface::class, $source);
     }
 }

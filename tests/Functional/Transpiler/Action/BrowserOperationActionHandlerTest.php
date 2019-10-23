@@ -7,30 +7,38 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Transpiler\Action;
 
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
-use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\WaitForActionFunctionalDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\BackActionFunctionalDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\ForwardActionFunctionalDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\ReloadActionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\Transpiler\AbstractTranspilerTest;
-use webignition\BasilCompilableSourceFactory\Transpiler\Action\WaitForActionTranspiler;
+use webignition\BasilCompilableSourceFactory\Transpiler\Action\BrowserOperationActionHandler;
 use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilModel\Action\ActionInterface;
 
-class WaitForActionTranspilerTest extends AbstractTranspilerTest
+class BrowserOperationActionHandlerTest extends AbstractTranspilerTest
 {
-    use WaitForActionFunctionalDataProviderTrait;
+    use BackActionFunctionalDataProviderTrait;
+    use ForwardActionFunctionalDataProviderTrait;
+    use ReloadActionFunctionalDataProviderTrait;
 
     protected function createTranspiler(): HandlerInterface
     {
-        return WaitForActionTranspiler::createHandler();
+        return BrowserOperationActionHandler::createHandler();
     }
 
     /**
-     * @dataProvider waitForActionFunctionalDataProvider
+     * @dataProvider backActionFunctionalDataProvider
+     * @dataProvider forwardActionFunctionalDataProvider
+     * @dataProvider reloadActionFunctionalDataProvider
      */
     public function testTranspileForExecutableActions(
         string $fixture,
         ActionInterface $action,
         array $additionalSetupStatements,
         array $teardownStatements,
-        array $additionalVariableIdentifiers
+        array $additionalVariableIdentifiers,
+        ?MetadataInterface $metadata = null
     ) {
         $source = $this->transpiler->createSource($action);
 
@@ -46,20 +54,9 @@ class WaitForActionTranspilerTest extends AbstractTranspilerTest
             $source,
             $additionalSetupStatements,
             $teardownStatements,
-            $variableIdentifiers
+            $variableIdentifiers,
+            $metadata
         );
-
-        $executableCallStatements = explode("\n", $executableCall);
-        $waitForStatement = array_pop($executableCallStatements);
-
-        $executableCallStatements = array_merge($executableCallStatements, [
-            '$before = microtime(true);',
-            $waitForStatement,
-            '$executionDurationInMilliseconds = (microtime(true) - $before) * 1000;',
-            '$this->assertGreaterThan(100, $executionDurationInMilliseconds);',
-        ]);
-
-        $executableCall = implode("\n", $executableCallStatements);
 
         eval($executableCall);
     }

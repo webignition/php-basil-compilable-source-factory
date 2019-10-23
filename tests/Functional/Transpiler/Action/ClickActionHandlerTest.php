@@ -7,30 +7,24 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Transpiler\Action;
 
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
-use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\BackActionFunctionalDataProviderTrait;
-use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\ForwardActionFunctionalDataProviderTrait;
-use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\ReloadActionFunctionalDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\ClickActionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\Transpiler\AbstractTranspilerTest;
-use webignition\BasilCompilableSourceFactory\Transpiler\Action\BrowserOperationActionTranspiler;
+use webignition\BasilCompilableSourceFactory\Transpiler\Action\ClickActionHandler;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilModel\Action\ActionInterface;
 
-class BrowserOperationActionTranspilerTest extends AbstractTranspilerTest
+class ClickActionHandlerTest extends AbstractTranspilerTest
 {
-    use BackActionFunctionalDataProviderTrait;
-    use ForwardActionFunctionalDataProviderTrait;
-    use ReloadActionFunctionalDataProviderTrait;
+    use ClickActionFunctionalDataProviderTrait;
 
     protected function createTranspiler(): HandlerInterface
     {
-        return BrowserOperationActionTranspiler::createHandler();
+        return ClickActionHandler::createHandler();
     }
 
     /**
-     * @dataProvider backActionFunctionalDataProvider
-     * @dataProvider forwardActionFunctionalDataProvider
-     * @dataProvider reloadActionFunctionalDataProvider
+     * @dataProvider clickActionFunctionalDataProvider
      */
     public function testTranspileForExecutableActions(
         string $fixture,

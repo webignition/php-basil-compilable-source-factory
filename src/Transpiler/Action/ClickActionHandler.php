@@ -3,16 +3,15 @@
 namespace webignition\BasilCompilableSourceFactory\Transpiler\Action;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
-use webignition\BasilCompilableSourceFactory\FactoryInterface;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Transpiler\NamedDomIdentifierHandler;
 use webignition\BasilModel\Action\ActionTypes;
 
-class SubmitActionTranspiler extends AbstractInteractionActionTranspiler implements HandlerInterface
+class ClickActionHandler extends AbstractInteractionActionHandler implements HandlerInterface
 {
     public static function createHandler(): HandlerInterface
     {
-        return new SubmitActionTranspiler(
+        return new ClickActionHandler(
             VariableAssignmentFactory::createFactory(),
             NamedDomIdentifierHandler::createHandler()
         );
@@ -20,11 +19,11 @@ class SubmitActionTranspiler extends AbstractInteractionActionTranspiler impleme
 
     protected function getHandledActionType(): string
     {
-        return ActionTypes::SUBMIT;
+        return ActionTypes::CLICK;
     }
 
     protected function getElementActionMethod(): string
     {
-        return 'submit';
+        return 'click';
     }
 }

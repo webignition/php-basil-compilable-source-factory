@@ -12,7 +12,7 @@ use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Action\InteractionActionInterface;
 use webignition\BasilModel\Identifier\DomIdentifierInterface;
 
-abstract class AbstractInteractionActionTranspiler implements HandlerInterface
+abstract class AbstractInteractionActionHandler implements HandlerInterface
 {
     private $variableAssignmentFactory;
     private $namedDomIdentifierHandler;

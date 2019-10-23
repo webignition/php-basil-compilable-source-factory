@@ -6,7 +6,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Transpiler\Action;
 
-use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\BackActionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\ClickActionDataProviderTrait;
@@ -18,12 +17,11 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\Unhandled
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\WaitActionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\WaitForActionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Transpiler\AbstractTranspilerTest;
-use webignition\BasilCompilableSourceFactory\Transpiler\Action\WaitActionTranspiler;
+use webignition\BasilCompilableSourceFactory\Transpiler\Action\ActionHandler;
+use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilModel\Action\ActionInterface;
-use webignition\BasilModel\Action\WaitAction;
-use webignition\BasilModel\Value\PageElementReference;
 
-class WaitActionTranspilerTest extends AbstractTranspilerTest
+class ActionHandlerTest extends AbstractTranspilerTest
 {
     use WaitActionDataProviderTrait;
     use WaitForActionDataProviderTrait;
@@ -37,18 +35,11 @@ class WaitActionTranspilerTest extends AbstractTranspilerTest
 
     protected function createTranspiler(): HandlerInterface
     {
-        return WaitActionTranspiler::createHandler();
+        return ActionHandler::createHandler();
     }
 
     /**
      * @dataProvider waitActionDataProvider
-     */
-    public function testHandlesDoesHandle(ActionInterface $model)
-    {
-        $this->assertTrue($this->transpiler->handles($model));
-    }
-
-    /**
      * @dataProvider waitForActionDataProvider
      * @dataProvider backActionDataProvider
      * @dataProvider forwardActionDataProvider
@@ -56,6 +47,13 @@ class WaitActionTranspilerTest extends AbstractTranspilerTest
      * @dataProvider clickActionDataProvider
      * @dataProvider submitActionDataProvider
      * @dataProvider setActionDataProvider
+     */
+    public function testHandlesDoesHandle(ActionInterface $model)
+    {
+        $this->assertTrue($this->transpiler->handles($model));
+    }
+
+    /**
      * @dataProvider unhandledActionsDataProvider
      */
     public function testHandlesDoesNotHandle(object $model)
@@ -63,19 +61,19 @@ class WaitActionTranspilerTest extends AbstractTranspilerTest
         $this->assertFalse($this->transpiler->handles($model));
     }
 
-    public function testTranspileWithNonTranspilableValue()
+    /**
+     * @dataProvider waitActionDataProvider
+     * @dataProvider waitForActionDataProvider
+     * @dataProvider backActionDataProvider
+     * @dataProvider forwardActionDataProvider
+     * @dataProvider reloadActionDataProvider
+     * @dataProvider clickActionDataProvider
+     * @dataProvider setActionDataProvider
+     */
+    public function testTranspileDoesNotFail(ActionInterface $model)
     {
-        $action = new WaitAction(
-            'wait 30',
-            new PageElementReference(
-                'page_import_name.elements.element_name',
-                'page_import_name',
-                'element_name'
-            )
-        );
+        $source = $this->transpiler->createSource($model);
 
-        $this->expectException(NonTranspilableModelException::class);
-
-        $this->transpiler->createSource($action);
+        $this->assertInstanceOf(SourceInterface::class, $source);
     }
 }
