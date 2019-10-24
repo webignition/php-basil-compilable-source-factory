@@ -3,6 +3,8 @@
 namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
 use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilCompilationSource\SourceInterface;
+use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\StatementList;
 use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\BasilCompilationSource\Metadata;
@@ -34,8 +36,8 @@ class AssertionCallFactory
     }
 
     public function createValueComparisonAssertionCall(
-        StatementListInterface $expectedValueAssignment,
-        StatementListInterface $actualValueAssignment,
+        SourceInterface $expectedValueAssignment,
+        SourceInterface $actualValueAssignment,
         VariablePlaceholder $expectedValuePlaceholder,
         VariablePlaceholder $actualValuePlaceholder,
         string $assertionTemplate
@@ -47,25 +49,28 @@ class AssertionCallFactory
 
         $metadata = (new Metadata())->withVariableDependencies($variableDependencies);
 
-        $assertionStatement = sprintf(
+        $assertionStatementContent = sprintf(
             $assertionTemplate,
             $this->phpUnitTestCasePlaceholder,
             $expectedValuePlaceholder,
             $actualValuePlaceholder
         );
 
-        return (new StatementList())
-            ->withPredecessors([$expectedValueAssignment, $actualValueAssignment])
-            ->withStatements([$assertionStatement])
-            ->withMetadata($metadata);
+        return new StatementList(array_merge(
+            $expectedValueAssignment->getStatementObjects(),
+            $actualValueAssignment->getStatementObjects(),
+            [
+                new Statement($assertionStatementContent, $metadata)
+            ]
+        ));
     }
 
     public function createValueExistenceAssertionCall(
-        StatementListInterface $assignmentCall,
+        SourceInterface $assignment,
         VariablePlaceholder $variablePlaceholder,
         string $assertionTemplate
     ): StatementListInterface {
-        $assertionStatement = sprintf(
+        $assertionStatementContent = sprintf(
             $assertionTemplate,
             (string) $this->phpUnitTestCasePlaceholder,
             (string) $variablePlaceholder
@@ -74,9 +79,11 @@ class AssertionCallFactory
         $metadata = (new Metadata())
             ->withVariableDependencies($this->variableDependencies);
 
-        return (new StatementList())
-            ->withMetadata($metadata)
-            ->withStatements([$assertionStatement])
-            ->withPredecessors([$assignmentCall]);
+        return new StatementList(array_merge(
+            $assignment->getStatementObjects(),
+            [
+                new Statement($assertionStatementContent, $metadata)
+            ]
+        ));
     }
 }
