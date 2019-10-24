@@ -12,7 +12,7 @@ use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MetadataInterface;
-use webignition\BasilCompilationSource\StatementListInterface;
+use webignition\BasilCompilationSource\StatementInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Identifier\DomIdentifier;
 use webignition\BasilModel\Identifier\DomIdentifierInterface;
@@ -40,11 +40,11 @@ class DomCrawlerNavigatorCallFactoryTest extends \PHPUnit\Framework\TestCase
         array $expectedStatements,
         MetadataInterface $expectedMetadata
     ) {
-        $statementList = $this->factory->createFindCall($identifier);
+        $statement = $this->factory->createFindCall($identifier);
 
-        $this->assertInstanceOf(StatementListInterface::class, $statementList);
-        $this->assertEquals($expectedStatements, $statementList->getStatements());
-        $this->assertEquals($expectedMetadata, $statementList->getMetadata());
+        $this->assertInstanceOf(StatementInterface::class, $statement);
+        $this->assertEquals($expectedStatements, $statement->getStatements());
+        $this->assertEquals($expectedMetadata, $statement->getMetadata());
     }
 
     public function createFindCallDataProvider(): array
@@ -60,11 +60,11 @@ class DomCrawlerNavigatorCallFactoryTest extends \PHPUnit\Framework\TestCase
         array $expectedStatements,
         MetadataInterface $expectedMetadata
     ) {
-        $statementList = $this->factory->createFindOneCall($identifier);
+        $statement = $this->factory->createFindOneCall($identifier);
 
-        $this->assertInstanceOf(StatementListInterface::class, $statementList);
-        $this->assertEquals($expectedStatements, $statementList->getStatements());
-        $this->assertEquals($expectedMetadata, $statementList->getMetadata());
+        $this->assertInstanceOf(StatementInterface::class, $statement);
+        $this->assertEquals($expectedStatements, $statement->getStatements());
+        $this->assertEquals($expectedMetadata, $statement->getMetadata());
     }
 
     public function createFindOneCallDataProvider(): array
@@ -80,11 +80,11 @@ class DomCrawlerNavigatorCallFactoryTest extends \PHPUnit\Framework\TestCase
         array $expectedStatements,
         MetadataInterface $expectedMetadata
     ) {
-        $statementList = $this->factory->createHasCall($identifier);
+        $statement = $this->factory->createHasCall($identifier);
 
-        $this->assertInstanceOf(StatementListInterface::class, $statementList);
-        $this->assertEquals($expectedStatements, $statementList->getStatements());
-        $this->assertEquals($expectedMetadata, $statementList->getMetadata());
+        $this->assertInstanceOf(StatementInterface::class, $statement);
+        $this->assertEquals($expectedStatements, $statement->getStatements());
+        $this->assertEquals($expectedMetadata, $statement->getMetadata());
     }
 
     public function createHasCallDataProvider(): array
@@ -100,11 +100,11 @@ class DomCrawlerNavigatorCallFactoryTest extends \PHPUnit\Framework\TestCase
         array $expectedStatements,
         MetadataInterface $expectedMetadata
     ) {
-        $statementList = $this->factory->createHasOneCall($identifier);
+        $statement = $this->factory->createHasOneCall($identifier);
 
-        $this->assertInstanceOf(StatementListInterface::class, $statementList);
-        $this->assertEquals($expectedStatements, $statementList->getStatements());
-        $this->assertEquals($expectedMetadata, $statementList->getMetadata());
+        $this->assertInstanceOf(StatementInterface::class, $statement);
+        $this->assertEquals($expectedStatements, $statement->getStatements());
+        $this->assertEquals($expectedMetadata, $statement->getMetadata());
     }
 
     public function createHasOneCallDataProvider(): array

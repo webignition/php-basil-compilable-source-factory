@@ -3,8 +3,8 @@
 namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\StatementList;
-use webignition\BasilCompilationSource\StatementListInterface;
+use webignition\BasilCompilationSource\Statement;
+use webignition\BasilCompilationSource\StatementInterface;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Identifier\DomIdentifierInterface;
@@ -25,75 +25,66 @@ class DomCrawlerNavigatorCallFactory
         );
     }
 
-    public function createFindCall(DomIdentifierInterface $identifier): StatementListInterface
+    public function createFindCall(DomIdentifierInterface $identifier): StatementInterface
     {
         return $this->createElementCall($identifier, 'find');
     }
 
-    public function createFindOneCall(DomIdentifierInterface $identifier): StatementListInterface
+    public function createFindOneCall(DomIdentifierInterface $identifier): StatementInterface
     {
         return $this->createElementCall($identifier, 'findOne');
     }
 
-    public function createHasCall(DomIdentifierInterface $identifier): StatementListInterface
+    public function createHasCall(DomIdentifierInterface $identifier): StatementInterface
     {
         return $this->createElementCall($identifier, 'has');
     }
 
-    public function createHasOneCall(DomIdentifierInterface $identifier): StatementListInterface
+    public function createHasOneCall(DomIdentifierInterface $identifier): StatementInterface
     {
         return $this->createElementCall($identifier, 'hasOne');
     }
 
-    private function createElementCall(
-        DomIdentifierInterface $identifier,
-        string $methodName
-    ): StatementListInterface {
+    private function createElementCall(DomIdentifierInterface $identifier, string $methodName): StatementInterface
+    {
         $arguments = $this->createElementCallArguments($identifier);
 
         $variableDependencies = new VariablePlaceholderCollection();
         $domCrawlerNavigatorPlaceholder = $variableDependencies->create(VariableNames::DOM_CRAWLER_NAVIGATOR);
 
-        $metadata = (new Metadata())
-            ->merge([$arguments->getMetadata()])
-            ->withAdditionalVariableDependencies($variableDependencies);
+        $metadata = new Metadata();
+        $metadata->add($arguments->getMetadata());
+        $metadata->addVariableDependencies($variableDependencies);
 
-        $createStatement = sprintf(
+        $statementContent = sprintf(
             (string) $domCrawlerNavigatorPlaceholder . '->' . $methodName . '(%s)',
             (string) $arguments
         );
 
-        return (new StatementList())
-            ->withStatements([$createStatement])
-            ->withMetadata($metadata);
+        return new Statement($statementContent, $metadata);
     }
 
-    private function createElementCallArguments(DomIdentifierInterface $elementIdentifier): StatementListInterface
+    private function createElementCallArguments(DomIdentifierInterface $elementIdentifier): StatementInterface
     {
-        $statementList = $this->elementLocatorCallFactory->createConstructorCall($elementIdentifier);
+        $elementConstructorStatement = $this->elementLocatorCallFactory->createConstructorCall($elementIdentifier);
 
         $parentIdentifier = $elementIdentifier->getParentIdentifier();
         if ($parentIdentifier instanceof DomIdentifierInterface) {
-            $parentElementLocatorConstructorCall = $this->elementLocatorCallFactory->createConstructorCall(
-                $parentIdentifier
+            $parentConstructorStatement = $this->elementLocatorCallFactory->createConstructorCall($parentIdentifier);
+
+            $metadata = new Metadata();
+            $metadata->add($elementConstructorStatement->getMetadata());
+            $metadata->add($parentConstructorStatement->getMetadata());
+
+            $statementContent = sprintf(
+                '%s, %s',
+                (string) $elementConstructorStatement,
+                (string) $parentConstructorStatement
             );
 
-            $metadata = (new Metadata())->merge([
-                $statementList->getMetadata(),
-                $parentElementLocatorConstructorCall->getMetadata(),
-            ]);
-
-            $statementList = (new StatementList())
-                ->withStatements([
-                    sprintf(
-                        '%s, %s',
-                        (string) $statementList,
-                        (string) $parentElementLocatorConstructorCall
-                    ),
-                ])
-                ->withMetadata($metadata);
+            return new Statement($statementContent, $metadata);
         }
 
-        return $statementList;
+        return $elementConstructorStatement;
     }
 }
