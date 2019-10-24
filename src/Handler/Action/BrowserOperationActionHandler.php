@@ -5,6 +5,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\StatementList;
 use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\BasilCompilationSource\Metadata;
@@ -53,15 +54,16 @@ class BrowserOperationActionHandler implements HandlerInterface
 
         $metadata = (new Metadata())->withVariableDependencies($variableDependencies);
 
-        return (new StatementList())
-            ->withStatements([
+        return new StatementList([
+            new Statement(
                 sprintf(
                     '%s = %s->%s()',
                     $pantherCrawlerPlaceholder,
                     $pantherClientPlaceholder,
                     $model->getType()
                 ),
-            ])
-            ->withMetadata($metadata);
+                $metadata
+            )
+        ]);
     }
 }

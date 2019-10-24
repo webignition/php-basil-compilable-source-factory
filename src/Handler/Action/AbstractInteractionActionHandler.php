@@ -6,6 +6,7 @@ use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFacto
 use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomElementIdentifier;
+use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\StatementList;
 use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
@@ -64,12 +65,15 @@ abstract class AbstractInteractionActionHandler implements HandlerInterface
             $elementPlaceholder
         ));
 
-        return (new StatementList())
-            ->withPredecessors([$accessor])
-            ->withStatements([sprintf(
-                '%s->%s()',
-                (string) $elementPlaceholder,
-                $this->getElementActionMethod()
-            )]);
+        return new StatementList(array_merge(
+            $accessor->getStatementObjects(),
+            [
+                new Statement(sprintf(
+                    '%s->%s()',
+                    (string) $elementPlaceholder,
+                    $this->getElementActionMethod()
+                ))
+            ]
+        ));
     }
 }

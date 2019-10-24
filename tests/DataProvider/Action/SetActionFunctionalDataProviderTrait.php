@@ -39,7 +39,7 @@ trait SetActionFunctionalDataProviderTrait
     private function createSetActionFunctionalMetadata(): MetadataInterface
     {
         return (new Metadata())
-            ->withAdditionalClassDependencies(new ClassDependencyCollection([
+            ->withClassDependencies(new ClassDependencyCollection([
                 new ClassDependency(Mutator::class),
                 new ClassDependency(Navigator::class),
             ]));
@@ -48,6 +48,11 @@ trait SetActionFunctionalDataProviderTrait
     public function setActionFunctionalDataProvider(): array
     {
         $actionFactory = ActionFactory::createFactory();
+
+        $inputActionElementIdentifierElementValueMetadata = $this->createSetActionFunctionalMetadata();
+        $inputActionElementIdentifierElementValueMetadata->addClassDependencies(new ClassDependencyCollection([
+            new ClassDependency(Inspector::class),
+        ]));
 
         return array_merge(
             $this->setActionForTextInputFunctionalDataProvider(),
@@ -75,10 +80,7 @@ trait SetActionFunctionalDataProviderTrait
                     'additionalVariableIdentifiers' => array_merge($this->setActionFunctionalVariableIdentifiers, [
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR => self::WEBDRIVER_ELEMENT_INSPECTOR_VARIABLE_NAME,
                     ]),
-                    'metadata' => $this->createSetActionFunctionalMetadata()
-                        ->withAdditionalClassDependencies(new ClassDependencyCollection([
-                            new ClassDependency(Inspector::class),
-                        ])),
+                    'metadata' => $inputActionElementIdentifierElementValueMetadata,
                 ],
                 'input action, element identifier, attribute value' => [
                     'fixture' => $this->setActionFunctionalFixture,

@@ -8,6 +8,7 @@ use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
+use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\StatementList;
 use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
@@ -70,8 +71,8 @@ class WaitActionHandler implements HandlerInterface
                 new NamedDomIdentifierValue($duration, $durationPlaceholder)
             );
 
-            $durationAccessor->mutateStatement(3, function ($statement) use ($durationPlaceholder) {
-                return str_replace((string) $durationPlaceholder . ' = ', '', $statement);
+            $durationAccessor->mutateLastStatement(function (string $content) use ($durationPlaceholder) {
+                return str_replace((string) $durationPlaceholder . ' = ', '', $content);
             });
         } else {
             $durationAccessor = $this->scalarValueHandler->createStatementList($duration);
@@ -84,14 +85,15 @@ class WaitActionHandler implements HandlerInterface
             '0'
         );
 
-        $waitStatement = sprintf(
-            'usleep(%s * %s)',
-            (string) $durationPlaceholder,
-            self::MICROSECONDS_PER_MILLISECOND
-        );
-
-        return (new StatementList())
-            ->withPredecessors([$durationAssignment])
-            ->withStatements([$waitStatement]);
+        return new StatementList(array_merge(
+            $durationAssignment->getStatementObjects(),
+            [
+                new Statement(sprintf(
+                    'usleep(%s * %s)',
+                    (string) $durationPlaceholder,
+                    self::MICROSECONDS_PER_MILLISECOND
+                ))
+            ]
+        ));
     }
 }

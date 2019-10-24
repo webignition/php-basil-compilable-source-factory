@@ -6,6 +6,7 @@ use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelExcep
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\StatementList;
 use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\BasilCompilationSource\Metadata;
@@ -68,15 +69,16 @@ class WaitForActionHandler implements HandlerInterface
 
         $metadata = (new Metadata())->withVariableDependencies($variableDependencies);
 
-        return (new StatementList())
-            ->withStatements([
+        return new StatementList([
+            new Statement(
                 sprintf(
                     '%s = %s->waitFor(\'%s\')',
                     $pantherCrawlerPlaceholder,
                     $pantherClientPlaceholder,
                     $this->singleQuotedStringEscaper->escape($elementLocator)
                 ),
-            ])
-            ->withMetadata($metadata);
+                $metadata
+            )
+        ]);
     }
 }
