@@ -10,9 +10,9 @@ use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelExcep
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierInterface;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
+use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\StatementList;
 use webignition\BasilCompilationSource\StatementListInterface;
-use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
 class NamedDomIdentifierHandler implements HandlerInterface
@@ -74,14 +74,8 @@ class NamedDomIdentifierHandler implements HandlerInterface
         $hasPlaceholder = $hasAssignmentVariableExports->create('HAS');
 
         $hasAssignment = clone $hasCall;
-        $hasAssignment->prependStatement(-1, $hasPlaceholder . ' = ');
-        $hasAssignment = $hasAssignment->withMetadata(
-            (new Metadata())
-                ->merge([
-                    $hasCall->getMetadata(),
-                ])
-                ->withVariableExports($hasAssignmentVariableExports)
-        );
+        $hasAssignment = $hasAssignment->prepend($hasPlaceholder . ' = ');
+        $hasAssignment->getMetadata()->addVariableExports($hasAssignmentVariableExports);
 
         $elementPlaceholder = $model->getPlaceholder();
         $collectionAssignmentVariableExports = new VariablePlaceholderCollection([
@@ -89,14 +83,8 @@ class NamedDomIdentifierHandler implements HandlerInterface
         ]);
 
         $elementOrCollectionAssignment = clone $findCall;
-        $elementOrCollectionAssignment->prependStatement(-1, $elementPlaceholder . ' = ');
-        $elementOrCollectionAssignment = $elementOrCollectionAssignment->withMetadata(
-            (new Metadata())
-                ->merge([
-                    $findCall->getMetadata(),
-                ])
-                ->withVariableExports($collectionAssignmentVariableExports)
-        );
+        $elementOrCollectionAssignment = $elementOrCollectionAssignment->prepend($elementPlaceholder . ' = ');
+        $elementOrCollectionAssignment->getMetadata()->addVariableExports($collectionAssignmentVariableExports);
 
         $elementExistsAssertion = $this->assertionCallFactory->createValueExistenceAssertionCall(
             $hasAssignment,
@@ -104,33 +92,29 @@ class NamedDomIdentifierHandler implements HandlerInterface
             AssertionCallFactory::ASSERT_TRUE_TEMPLATE
         );
 
-        $predecessors = [
-            $elementExistsAssertion,
-            $elementOrCollectionAssignment,
-        ];
+        $statements = array_merge(
+            $elementExistsAssertion->getStatementObjects(),
+            $elementOrCollectionAssignment->getStatementObjects()
+        );
 
         if ($model->includeValue()) {
             if ($hasAttribute) {
-                $valueAssignment = (new StatementList())
-                    ->withStatements([
-                        sprintf(
-                            '%s = %s->getAttribute(\'%s\')',
-                            $elementPlaceholder,
-                            $elementPlaceholder,
-                            $this->singleQuotedStringEscaper->escape((string) $identifier->getAttributeName())
-                        )
-                    ]);
+                $valueAssignment = new Statement(sprintf(
+                    '%s = %s->getAttribute(\'%s\')',
+                    $elementPlaceholder,
+                    $elementPlaceholder,
+                    $this->singleQuotedStringEscaper->escape((string) $identifier->getAttributeName())
+                ));
             } else {
                 $getValueCall = $this->webDriverElementInspectorCallFactory->createGetValueCall($elementPlaceholder);
 
                 $valueAssignment = clone $getValueCall;
-                $valueAssignment->prependStatement(-1, $elementPlaceholder . ' = ');
+                $valueAssignment = $valueAssignment->prepend($elementPlaceholder . ' = ');
             }
 
-            $predecessors[] = $valueAssignment;
+            $statements = array_merge($statements, $valueAssignment->getStatementObjects());
         }
 
-        return (new StatementList())
-            ->withPredecessors($predecessors);
+        return new StatementList($statements);
     }
 }

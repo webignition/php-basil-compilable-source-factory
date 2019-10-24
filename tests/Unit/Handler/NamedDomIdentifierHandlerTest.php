@@ -90,8 +90,8 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                         new ClassDependency(ElementLocator::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
@@ -119,8 +119,8 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                         new ClassDependency(ElementLocator::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
@@ -146,8 +146,8 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                         new ClassDependency(ElementLocator::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
                         'HAS',
@@ -176,8 +176,8 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                         new ClassDependency(ElementLocator::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
                         'HAS',
