@@ -9,6 +9,7 @@ use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MetadataInterface;
+use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\SymfonyDomCrawlerNavigator\Navigator;
 
@@ -82,7 +83,7 @@ abstract class AbstractBrowserTestCase extends AbstractTestCase
 
     protected function createExecutableCallForRequestWithReturn(
         string $fixture,
-        StatementListInterface $statementList,
+        SourceInterface $source,
         array $additionalSetupStatements = [],
         array $additionalVariableIdentifiers = [],
         ?MetadataInterface $metadata = null
@@ -104,7 +105,7 @@ abstract class AbstractBrowserTestCase extends AbstractTestCase
         $metadata = $metadata ?? new Metadata();
 
         return $this->executableCallFactory->createWithReturn(
-            $statementList,
+            $source,
             $variableIdentifiers,
             $setupStatements,
             [],
@@ -114,8 +115,10 @@ abstract class AbstractBrowserTestCase extends AbstractTestCase
 
     protected function addNavigatorToMetadata(MetadataInterface $metadata): MetadataInterface
     {
-        return $metadata->withAdditionalClassDependencies(new ClassDependencyCollection([
+        $metadata->addClassDependencies(new ClassDependencyCollection([
             new ClassDependency(Navigator::class),
         ]));
+
+        return $metadata;
     }
 }

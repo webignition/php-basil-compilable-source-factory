@@ -10,12 +10,9 @@ use Facebook\WebDriver\WebDriverElement;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\ClassDependency;
-use webignition\BasilCompilationSource\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilModel\Identifier\DomIdentifier;
 use webignition\BasilModel\Identifier\DomIdentifierInterface;
-use webignition\SymfonyDomCrawlerNavigator\Navigator;
 use webignition\WebDriverElementCollection\WebDriverElementCollectionInterface;
 
 class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
