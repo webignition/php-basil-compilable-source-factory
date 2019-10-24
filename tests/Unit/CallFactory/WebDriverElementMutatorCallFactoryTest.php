@@ -6,12 +6,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 
-use webignition\BasilCompilableSourceFactory\CallFactory\WebDriverElementInspectorCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\WebDriverElementMutatorCallFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MetadataInterface;
-use webignition\BasilCompilationSource\StatementListInterface;
+use webignition\BasilCompilationSource\StatementInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
@@ -38,11 +37,11 @@ class WebDriverElementMutatorCallFactoryTest extends \PHPUnit\Framework\TestCase
         array $expectedStatements,
         MetadataInterface $expectedMetadata
     ) {
-        $statementList = $this->factory->createSetValueCall($collectionPlaceholder, $valuePlaceholder);
+        $statement = $this->factory->createSetValueCall($collectionPlaceholder, $valuePlaceholder);
 
-        $this->assertInstanceOf(StatementListInterface::class, $statementList);
-        $this->assertEquals($expectedStatements, $statementList->getStatements());
-        $this->assertEquals($expectedMetadata, $statementList->getMetadata());
+        $this->assertInstanceOf(StatementInterface::class, $statement);
+        $this->assertEquals($expectedStatements, $statement->getStatements());
+        $this->assertEquals($expectedMetadata, $statement->getMetadata());
     }
 
     public function createSetValueCallDataProvider(): array

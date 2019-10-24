@@ -3,8 +3,8 @@
 namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\StatementList;
-use webignition\BasilCompilationSource\StatementListInterface;
+use webignition\BasilCompilationSource\Statement;
+use webignition\BasilCompilationSource\StatementInterface;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
@@ -19,26 +19,20 @@ class WebDriverElementMutatorCallFactory
     public function createSetValueCall(
         VariablePlaceholder $collectionPlaceholder,
         VariablePlaceholder $valuePlaceholder
-    ): StatementListInterface {
+    ): StatementInterface {
         $variableExports = new VariablePlaceholderCollection();
-        $variableExports = $variableExports->withAdditionalItems([
-            $collectionPlaceholder,
-            $valuePlaceholder,
-        ]);
+        $variableExports = $variableExports->withAdditionalItems([$collectionPlaceholder, $valuePlaceholder]);
 
         $variableDependencies = new VariablePlaceholderCollection();
         $mutatorPlaceholder = $variableDependencies->create(VariableNames::WEBDRIVER_ELEMENT_MUTATOR);
 
-        $statements = [
+        $metadata = new Metadata();
+        $metadata->addVariableDependencies($variableDependencies);
+        $metadata->addVariableExports($variableExports);
+
+        return new Statement(
             $mutatorPlaceholder . '->setValue(' . $collectionPlaceholder . ', ' . $valuePlaceholder . ')',
-        ];
-
-        $metadata = (new Metadata())
-            ->withVariableDependencies($variableDependencies)
-            ->withVariableExports($variableExports);
-
-        return (new StatementList())
-            ->withStatements($statements)
-            ->withMetadata($metadata);
+            $metadata
+        );
     }
 }
