@@ -54,8 +54,8 @@ trait CreateFromIsAssertionDataProviderTrait
                         new ClassDependency(ElementLocator::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
@@ -83,8 +83,8 @@ trait CreateFromIsAssertionDataProviderTrait
                         new ClassDependency(ElementLocator::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
                         VariableNames::EXPECTED_VALUE,
@@ -107,8 +107,8 @@ trait CreateFromIsAssertionDataProviderTrait
                 ],
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::PANTHER_CLIENT,
+                        VariableNames::PHPUNIT_TEST_CASE,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
                         VariableNames::EXPECTED_VALUE,
@@ -129,8 +129,8 @@ trait CreateFromIsAssertionDataProviderTrait
                 ],
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
+                        VariableNames::PHPUNIT_TEST_CASE,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
                         VariableNames::EXPECTED_VALUE,
@@ -150,8 +150,8 @@ trait CreateFromIsAssertionDataProviderTrait
                 ],
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::PANTHER_CLIENT,
+                        VariableNames::PHPUNIT_TEST_CASE,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
                         VariableNames::EXPECTED_VALUE,
@@ -182,8 +182,8 @@ trait CreateFromIsAssertionDataProviderTrait
                         new ClassDependency(ElementLocator::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
                         VariableNames::PANTHER_CLIENT,
                     ]))
@@ -218,8 +218,8 @@ trait CreateFromIsAssertionDataProviderTrait
                         new ClassDependency(ElementLocator::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::PANTHER_CLIENT,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
@@ -247,9 +247,9 @@ trait CreateFromIsAssertionDataProviderTrait
                 ],
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
                         VariableNames::PANTHER_CLIENT,
+                        VariableNames::PHPUNIT_TEST_CASE,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
                         VariableNames::EXPECTED_VALUE,
@@ -275,8 +275,8 @@ trait CreateFromIsAssertionDataProviderTrait
                 ],
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::PANTHER_CLIENT,
+                        VariableNames::PHPUNIT_TEST_CASE,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
                         VariableNames::EXPECTED_VALUE,

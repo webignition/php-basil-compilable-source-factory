@@ -5,6 +5,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler;
 use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilationSource\ClassDependency;
+use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\StatementList;
 use webignition\BasilCompilationSource\StatementListInterface;
 
@@ -38,10 +39,12 @@ class ClassDependencyHandler implements HandlerInterface
 
         $alias = $model->getAlias();
 
-        $statement = null === $alias
+        $content = null === $alias
             ? sprintf(self::CLASS_NAME_ONLY_TEMPLATE, $model->getClassName())
             : sprintf(self::WITH_ALIAS_TEMPLATE, $model->getClassName(), $model->getAlias());
 
-        return (new StatementList())->withStatements([$statement]);
+        return new StatementList([
+            new Statement($content),
+        ]);
     }
 }

@@ -9,6 +9,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ExecutableCallFactory;
 use webignition\BasilCompilationSource\Metadata;
+use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\StatementList;
 use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
@@ -70,8 +71,8 @@ class VariableAssignmentFactoryTest extends \PHPUnit\Framework\TestCase
     {
         return [
             'string value cast to string' => [
-                'accessor' => (new StatementList())->withStatements([
-                    '"value"',
+                'accessor' => new StatementList([
+                    new Statement('"value"'),
                 ]),
                 'type' => 'string',
                 'expectedStatements' => [
@@ -81,8 +82,8 @@ class VariableAssignmentFactoryTest extends \PHPUnit\Framework\TestCase
                 'expectedAssignedValue' => 'value',
             ],
             'null value cast to string' => [
-                'accessor' => (new StatementList())->withStatements([
-                    'null',
+                'accessor' => new StatementList([
+                    new Statement('null'),
                 ]),
                 'type' => 'string',
                 'expectedStatements' => [
@@ -92,8 +93,8 @@ class VariableAssignmentFactoryTest extends \PHPUnit\Framework\TestCase
                 'expectedAssignedValue' => '',
             ],
             'int value cast to string' => [
-                'accessor' => (new StatementList())->withStatements([
-                    '30',
+                'accessor' => new StatementList([
+                    new Statement('30'),
                 ]),
                 'type' => 'string',
                 'expectedStatements' => [
@@ -103,8 +104,8 @@ class VariableAssignmentFactoryTest extends \PHPUnit\Framework\TestCase
                 'expectedAssignedValue' => '30',
             ],
             'string value cast to int' => [
-                'accessor' => (new StatementList())->withStatements([
-                    '"value"',
+                'accessor' => new StatementList([
+                    new Statement('"value"'),
                 ]),
                 'type' => 'int',
                 'expectedStatements' => [
@@ -114,8 +115,8 @@ class VariableAssignmentFactoryTest extends \PHPUnit\Framework\TestCase
                 'expectedAssignedValue' => 0,
             ],
             'int value cast to int' => [
-                'accessor' => (new StatementList())->withStatements([
-                    '30',
+                'accessor' => new StatementList([
+                    new Statement('30'),
                 ]),
                 'type' => 'int',
                 'expectedStatements' => [
@@ -125,8 +126,8 @@ class VariableAssignmentFactoryTest extends \PHPUnit\Framework\TestCase
                 'expectedAssignedValue' => 30,
             ],
             'null value cast to int' => [
-                'accessor' => (new StatementList())->withStatements([
-                    'null',
+                'accessor' => new StatementList([
+                    new Statement('null'),
                 ]),
                 'type' => 'int',
                 'expectedStatements' => [
@@ -134,6 +135,23 @@ class VariableAssignmentFactoryTest extends \PHPUnit\Framework\TestCase
                     '{{ VALUE }} = (int) {{ VALUE }}',
                 ],
                 'expectedAssignedValue' => 0,
+            ],
+            'only last statement is modified' => [
+                'accessor' => new StatementList([
+                    new Statement('$a = "content"'),
+                    new Statement('$b = $a'),
+                    new Statement('$c = $b'),
+                    new Statement('$c'),
+                ]),
+                'type' => 'string',
+                'expectedStatements' => [
+                    '$a = "content"',
+                    '$b = $a',
+                    '$c = $b',
+                    '{{ VALUE }} = $c ?? null',
+                    '{{ VALUE }} = (string) {{ VALUE }}',
+                ],
+                'expectedAssignedValue' => 'content',
             ],
         ];
     }

@@ -59,7 +59,7 @@ trait WaitActionFunctionalDataProviderTrait
                     VariableNames::WEBDRIVER_ELEMENT_INSPECTOR => self::WEBDRIVER_ELEMENT_INSPECTOR_VARIABLE_NAME,
                 ],
                 'metadata' => (new Metadata())
-                    ->withAdditionalClassDependencies(new ClassDependencyCollection([
+                    ->withClassDependencies(new ClassDependencyCollection([
                         new ClassDependency(Inspector::class),
                         new ClassDependency(Navigator::class),
                     ])),
@@ -84,7 +84,7 @@ trait WaitActionFunctionalDataProviderTrait
                     VariableNames::PHPUNIT_TEST_CASE => self::PHPUNIT_TEST_CASE_VARIABLE_NAME,
                 ],
                 'metadata' => (new Metadata())
-                    ->withAdditionalClassDependencies(new ClassDependencyCollection([
+                    ->withClassDependencies(new ClassDependencyCollection([
                         new ClassDependency(Navigator::class),
                     ])),
                 'expectedDuration' => 30,
@@ -109,7 +109,7 @@ trait WaitActionFunctionalDataProviderTrait
                     VariableNames::PHPUNIT_TEST_CASE => self::PHPUNIT_TEST_CASE_VARIABLE_NAME,
                 ],
                 'metadata' => (new Metadata())
-                    ->withAdditionalClassDependencies(new ClassDependencyCollection([
+                    ->withClassDependencies(new ClassDependencyCollection([
                         new ClassDependency(Inspector::class),
                         new ClassDependency(Navigator::class),
                     ])),

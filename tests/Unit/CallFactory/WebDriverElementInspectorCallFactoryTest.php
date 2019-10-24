@@ -10,7 +10,7 @@ use webignition\BasilCompilableSourceFactory\CallFactory\WebDriverElementInspect
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MetadataInterface;
-use webignition\BasilCompilationSource\StatementListInterface;
+use webignition\BasilCompilationSource\StatementInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
@@ -36,11 +36,11 @@ class WebDriverElementInspectorCallFactoryTest extends \PHPUnit\Framework\TestCa
         array $expectedStatements,
         MetadataInterface $expectedMetadata
     ) {
-        $statementList = $this->factory->createGetValueCall($collectionPlaceholder);
+        $statement = $this->factory->createGetValueCall($collectionPlaceholder);
 
-        $this->assertInstanceOf(StatementListInterface::class, $statementList);
-        $this->assertEquals($expectedStatements, $statementList->getStatements());
-        $this->assertEquals($expectedMetadata, $statementList->getMetadata());
+        $this->assertInstanceOf(StatementInterface::class, $statement);
+        $this->assertEquals($expectedStatements, $statement->getStatements());
+        $this->assertEquals($expectedMetadata, $statement->getMetadata());
     }
 
     public function createGetValueCallDataProvider(): array

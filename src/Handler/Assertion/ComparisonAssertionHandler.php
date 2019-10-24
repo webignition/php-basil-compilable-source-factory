@@ -91,8 +91,8 @@ class ComparisonAssertionHandler implements HandlerInterface
                 new NamedDomIdentifierValue($examinedValue, $examinedValuePlaceholder)
             );
 
-            $examinedValueAccessor->mutateStatement(3, function ($statement) use ($examinedValuePlaceholder) {
-                return str_replace((string) $examinedValuePlaceholder . ' = ', '', $statement);
+            $examinedValueAccessor->mutateLastStatement(function (string $content) use ($examinedValuePlaceholder) {
+                return str_replace((string) $examinedValuePlaceholder . ' = ', '', $content);
             });
         } else {
             $examinedValueAccessor = $this->scalarValueHandler->createStatementList($examinedValue);
@@ -103,8 +103,8 @@ class ComparisonAssertionHandler implements HandlerInterface
                 new NamedDomIdentifierValue($expectedValue, $expectedValuePlaceholder)
             );
 
-            $expectedValueAccessor->mutateStatement(3, function ($statement) use ($expectedValuePlaceholder) {
-                return str_replace((string) $expectedValuePlaceholder . ' = ', '', $statement);
+            $expectedValueAccessor->mutateLastStatement(function (string $content) use ($expectedValuePlaceholder) {
+                return str_replace((string) $expectedValuePlaceholder . ' = ', '', $content);
             });
         } else {
             $expectedValueAccessor = $this->scalarValueHandler->createStatementList($expectedValue);

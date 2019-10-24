@@ -90,8 +90,8 @@ class SetActionHandler implements HandlerInterface
                 new NamedDomIdentifierValue($value, $valuePlaceholder)
             );
 
-            $valueAccessor->mutateStatement(3, function ($statement) use ($valuePlaceholder) {
-                return str_replace((string) $valuePlaceholder . ' = ', '', $statement);
+            $valueAccessor->mutateLastStatement(function (string $content) use ($valuePlaceholder) {
+                return str_replace((string) $valuePlaceholder . ' = ', '', $content);
             });
         } else {
             $valueAccessor = $this->scalarValueHandler->createStatementList($value);
@@ -104,7 +104,10 @@ class SetActionHandler implements HandlerInterface
             $valuePlaceholder
         );
 
-        return (new StatementList())
-            ->withPredecessors([$collectionAssignment, $valueAssignment, $mutationCall]);
+        return new StatementList(array_merge(
+            $collectionAssignment->getStatementObjects(),
+            $valueAssignment->getStatementObjects(),
+            $mutationCall->getStatementObjects()
+        ));
     }
 }

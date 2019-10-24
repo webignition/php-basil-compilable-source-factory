@@ -41,10 +41,10 @@ trait SubmitActionFunctionalDataProviderTrait
             VariableNames::PHPUNIT_TEST_CASE => self::PHPUNIT_TEST_CASE_VARIABLE_NAME,
         ];
 
-        $metadata = (new Metadata())
-            ->withAdditionalClassDependencies(new ClassDependencyCollection([
-                new ClassDependency(Navigator::class),
-            ]));
+        $metadata = new Metadata();
+        $metadata->addClassDependencies(new ClassDependencyCollection([
+            new ClassDependency(Navigator::class),
+        ]));
 
         return [
             'interaction action (submit), form submit button' => [

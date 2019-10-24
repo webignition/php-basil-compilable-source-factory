@@ -6,6 +6,7 @@ use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelExcep
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Metadata;
+use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\StatementList;
 use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
@@ -39,16 +40,16 @@ class EnvironmentValueHandler implements HandlerInterface
                 VariableNames::ENVIRONMENT_VARIABLE_ARRAY
             );
 
-            $statement = sprintf(
+            $statementContent = sprintf(
                 (string) $environmentVariableArrayPlaceholder . '[\'%s\']',
                 $model->getProperty()
             );
 
             $metadata = (new Metadata())->withVariableDependencies($variableDependencies);
 
-            return (new StatementList())
-                ->withStatements([$statement])
-                ->withMetadata($metadata);
+            return new StatementList([
+                new Statement($statementContent, $metadata),
+            ]);
         }
 
         throw new NonTranspilableModelException($model);

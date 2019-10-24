@@ -8,7 +8,10 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
 use webignition\BasilCompilableSourceFactory\Handler\ClassDependencyHandler;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
+use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MetadataInterface;
+use webignition\BasilCompilationSource\SourceInterface;
+use webignition\BasilCompilationSource\StatementInterface;
 use webignition\BasilCompilationSource\StatementList;
 use webignition\BasilCompilationSource\StatementListInterface;
 
@@ -34,36 +37,35 @@ class ExecutableCallFactory
     }
 
     public function create(
-        StatementListInterface $statementList,
+        SourceInterface $source,
         array $variableIdentifiers = [],
         array $setupStatements = [],
         array $teardownStatements = [],
         ?MetadataInterface $additionalMetadata = null
     ): string {
-        if (null !== $additionalMetadata) {
-            $metadata = $statementList->getMetadata();
-            $metadata = $metadata->merge([
-                $metadata,
-                $additionalMetadata
-            ]);
+        $additionalMetadata = $additionalMetadata ?? new Metadata();
 
-            $statementList = $statementList->withMetadata($metadata);
-        }
+        $metadata = new Metadata();
+        $metadata->add($source->getMetadata());
+        $metadata->add($additionalMetadata);
 
-        $metadata = $statementList->getMetadata();
         $classDependencies = $metadata->getClassDependencies();
 
         $executableCall = '';
 
         foreach ($classDependencies as $key => $value) {
-            $executableCall .= (string) $this->classDependencyHandler->createStatementList($value) . ";\n";
+            $classDependencyStatementList = $this->classDependencyHandler->createStatementList($value);
+
+            foreach ($classDependencyStatementList->getStatements() as $classDependencyStatement) {
+                $executableCall .= $classDependencyStatement . ";\n";
+            }
         }
 
         foreach ($setupStatements as $statement) {
             $executableCall .= $statement . "\n";
         }
 
-        $statements = $statementList->getStatements();
+        $statements = $source->getStatements();
 
         array_walk($statements, function (string &$statement) {
             $statement .= ';';
@@ -85,24 +87,22 @@ class ExecutableCallFactory
     }
 
     public function createWithReturn(
-        StatementListInterface $statementList,
+        SourceInterface $source,
         array $variableIdentifiers = [],
         array $setupStatements = [],
         array $teardownStatements = [],
         ?MetadataInterface $additionalMetadata = null
     ): string {
-        $statements = $statementList->getStatements();
-        $lastStatementPosition = count($statements) - 1;
-        $lastStatement = $statements[$lastStatementPosition];
-        $lastStatement = 'return ' . $lastStatement;
-        $statements[$lastStatementPosition] = $lastStatement;
+        if ($source instanceof StatementInterface) {
+            $source = new StatementList([$source]);
+        }
 
-        $statementListWithReturn = (new StatementList())
-            ->withStatements($statements)
-            ->withMetadata($statementList->getMetadata());
+        if ($source instanceof StatementListInterface) {
+            $source->prependLastStatement('return ');
+        }
 
         return $this->create(
-            $statementListWithReturn,
+            $source,
             $variableIdentifiers,
             $setupStatements,
             $teardownStatements,

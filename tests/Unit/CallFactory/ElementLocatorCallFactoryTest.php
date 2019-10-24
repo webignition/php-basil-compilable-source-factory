@@ -11,6 +11,7 @@ use webignition\BasilCompilableSourceFactory\Tests\Services\ExecutableCallFactor
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Metadata;
+use webignition\BasilCompilationSource\StatementList;
 use webignition\BasilModel\Identifier\DomIdentifier;
 use webignition\BasilModel\Identifier\DomIdentifierInterface;
 use webignition\DomElementLocator\ElementLocator;
@@ -43,16 +44,18 @@ class ElementLocatorCallFactoryTest extends \PHPUnit\Framework\TestCase
         DomIdentifierInterface $elementIdentifier,
         ElementLocatorInterface $expectedElementLocator
     ) {
-        $statementList = $this->factory->createConstructorCall($elementIdentifier);
+        $statement = $this->factory->createConstructorCall($elementIdentifier);
 
         $expectedMetadata = (new Metadata())
             ->withClassDependencies(new ClassDependencyCollection([
                 new ClassDependency(ElementLocator::class)
             ]));
 
-        $this->assertEquals($expectedMetadata, $statementList->getMetadata());
+        $this->assertEquals($expectedMetadata, $statement->getMetadata());
 
-        $executableCall = $this->executableCallFactory->createWithReturn($statementList);
+        $executableCall = $this->executableCallFactory->createWithReturn(new StatementList([
+            $statement
+        ]));
 
         $elementLocator = eval($executableCall);
 

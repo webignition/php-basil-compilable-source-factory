@@ -40,8 +40,8 @@ trait CreateFromSetActionDataProviderTrait
                         new ClassDependency(ElementLocator::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
@@ -75,8 +75,8 @@ trait CreateFromSetActionDataProviderTrait
                         new ClassDependency(ElementLocator::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
                     ]))
@@ -111,8 +111,8 @@ trait CreateFromSetActionDataProviderTrait
                         new ClassDependency(ElementLocator::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
@@ -140,8 +140,8 @@ trait CreateFromSetActionDataProviderTrait
                         new ClassDependency(ElementLocator::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::PANTHER_CLIENT,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
                     ]))
@@ -169,8 +169,8 @@ trait CreateFromSetActionDataProviderTrait
                         new ClassDependency(ElementLocator::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::PANTHER_CLIENT,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
                     ]))
@@ -197,8 +197,8 @@ trait CreateFromSetActionDataProviderTrait
                         new ClassDependency(ElementLocator::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
                     ]))
