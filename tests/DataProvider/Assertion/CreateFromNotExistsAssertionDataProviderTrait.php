@@ -33,8 +33,8 @@ trait CreateFromNotExistsAssertionDataProviderTrait
                         new ClassDependency(ElementLocator::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
                         VariableNames::EXAMINED_VALUE,
@@ -57,8 +57,8 @@ trait CreateFromNotExistsAssertionDataProviderTrait
                         new ClassDependency(ElementLocator::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
                         'HAS',

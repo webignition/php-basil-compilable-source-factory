@@ -10,6 +10,8 @@ use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilCompilationSource\SourceInterface;
+use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\StatementList;
 use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
@@ -83,21 +85,21 @@ class ExistenceComparisonHandler implements HandlerInterface
 
         if ($this->isScalarValue($value)) {
             $accessor = $this->scalarValueHandler->createStatementList($value);
-            $accessor->appendStatement(0, ' ?? null');
+            $accessor->appendLastStatement(' ?? null');
 
             $assignment = clone $accessor;
-            $assignment->prependStatement(-1, $valuePlaceholder . ' = ');
-            $assignment = $assignment->withMetadata(
-                $assignment->getMetadata()->withAdditionalVariableExports(new VariablePlaceholderCollection([
-                    $valuePlaceholder,
-                ]))
-            );
+            $assignment->prependLastStatement($valuePlaceholder . ' = ');
 
-            $existence = (new StatementList())
-                ->withPredecessors([$assignment])
-                ->withStatements([
-                    sprintf('%s = %s !== null', $valuePlaceholder, $valuePlaceholder)
-                ]);
+            $assignment->addVariableExportsToLastStatement(new VariablePlaceholderCollection([
+                $valuePlaceholder,
+            ]));
+
+            $existence = new StatementList(array_merge(
+                $assignment->getStatementObjects(),
+                [
+                    new Statement(sprintf('%s = %s !== null', $valuePlaceholder, $valuePlaceholder)),
+                ]
+            ));
 
             return $this->createAssertionCall($model->getComparison(), $existence, $valuePlaceholder);
         }
@@ -109,12 +111,10 @@ class ExistenceComparisonHandler implements HandlerInterface
                 $accessor = $this->domCrawlerNavigatorCallFactory->createHasCall($identifier);
 
                 $assignment = clone $accessor;
-                $assignment->prependStatement(-1, $valuePlaceholder . ' = ');
-                $assignment = $assignment->withMetadata(
-                    $assignment->getMetadata()->withAdditionalVariableExports(new VariablePlaceholderCollection([
-                        $valuePlaceholder,
-                    ]))
-                );
+                $assignment = $assignment->prepend($valuePlaceholder . ' = ');
+                $assignment->getMetadata()->addVariableExports(new VariablePlaceholderCollection([
+                    $valuePlaceholder,
+                ]));
 
                 return $this->createAssertionCall($model->getComparison(), $assignment, $valuePlaceholder);
             }
@@ -123,11 +123,12 @@ class ExistenceComparisonHandler implements HandlerInterface
                 new NamedDomIdentifierValue($value, $valuePlaceholder)
             );
 
-            $existence = (new StatementList())
-                ->withPredecessors([$accessor])
-                ->withStatements([
-                    sprintf('%s = %s !== null', $valuePlaceholder, $valuePlaceholder)
-                ]);
+            $existence = new StatementList(array_merge(
+                $accessor->getStatementObjects(),
+                [
+                    new Statement(sprintf('%s = %s !== null', $valuePlaceholder, $valuePlaceholder)),
+                ]
+            ));
 
             return $this->createAssertionCall($model->getComparison(), $existence, $valuePlaceholder);
         }
@@ -137,7 +138,7 @@ class ExistenceComparisonHandler implements HandlerInterface
 
     private function createAssertionCall(
         string $comparison,
-        StatementListInterface $statementList,
+        SourceInterface $statementList,
         VariablePlaceholder $valuePlaceholder
     ): StatementListInterface {
         $assertionTemplate = AssertionComparison::EXISTS === $comparison
