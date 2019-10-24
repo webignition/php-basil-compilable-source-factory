@@ -34,8 +34,8 @@ class AssertionCallFactory
     }
 
     public function createValueComparisonAssertionCall(
-        StatementListInterface $expectedValueCall,
-        StatementListInterface $actualValueCall,
+        StatementListInterface $expectedValueAssignment,
+        StatementListInterface $actualValueAssignment,
         VariablePlaceholder $expectedValuePlaceholder,
         VariablePlaceholder $actualValuePlaceholder,
         string $assertionTemplate
@@ -55,7 +55,7 @@ class AssertionCallFactory
         );
 
         return (new StatementList())
-            ->withPredecessors([$expectedValueCall, $actualValueCall])
+            ->withPredecessors([$expectedValueAssignment, $actualValueAssignment])
             ->withStatements([$assertionStatement])
             ->withMetadata($metadata);
     }

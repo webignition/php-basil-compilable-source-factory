@@ -59,14 +59,20 @@ class AssertionCallFactoryTest extends \PHPUnit\Framework\TestCase
         $expectedValuePlaceholder = new VariablePlaceholder(VariableNames::EXPECTED_VALUE);
         $examinedValuePlaceholder = new VariablePlaceholder(VariableNames::EXAMINED_VALUE);
 
-        $expectedValueCall = (new StatementList())
+        $expectedValueAssignment = (new StatementList())
             ->withStatements([$expectedValuePlaceholder . ' = "expected value"'])
             ->withMetadata(
                 (new Metadata())
                     ->withVariableExports(new VariablePlaceholderCollection([$expectedValuePlaceholder]))
             );
 
-        $actualValueCall = (new StatementList())
+        $expectedValueAssignment = new StatementList(
+            $expectedValuePlaceholder . ' = "expected value"',
+            (new Metadata())
+                ->withVariableExports(new VariablePlaceholderCollection([$expectedValuePlaceholder]))
+        );
+
+        $actualValueAssignment = (new StatementList())
             ->withStatements([$examinedValuePlaceholder . ' = "actual value"'])
             ->withMetadata(
                 (new Metadata())
@@ -75,14 +81,14 @@ class AssertionCallFactoryTest extends \PHPUnit\Framework\TestCase
 
         return [
             'assert equals' => [
-                'expectedValueCall' => $expectedValueCall,
-                'actualValueCall' => $actualValueCall,
+                'expectedValueAssignment' => $expectedValueAssignment,
+                'actualValueAssignment' => $actualValueAssignment,
                 'expectedValuePlaceholder' => $expectedValuePlaceholder,
                 'actualValuePlaceholder' => $examinedValuePlaceholder,
                 'assertionTemplate' => AssertionCallFactory::ASSERT_EQUALS_TEMPLATE,
                 'expectedStatements' => array_merge(
-                    $expectedValueCall->getStatements(),
-                    $actualValueCall->getStatements(),
+                    $expectedValueAssignment->getStatements(),
+                    $actualValueAssignment->getStatements(),
                     [
                         '{{ PHPUNIT_TEST_CASE }}->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})',
                     ]
@@ -96,97 +102,97 @@ class AssertionCallFactoryTest extends \PHPUnit\Framework\TestCase
                         $examinedValuePlaceholder,
                     ])),
             ],
-            'assert not equals' => [
-                'expectedValueCall' => $expectedValueCall,
-                'actualValueCall' => $actualValueCall,
-                'expectedValuePlaceholder' => $expectedValuePlaceholder,
-                'actualValuePlaceholder' => $examinedValuePlaceholder,
-                'assertionTemplate' => AssertionCallFactory::ASSERT_NOT_EQUALS_TEMPLATE,
-                'expectedStatements' => array_merge(
-                    $expectedValueCall->getStatements(),
-                    $actualValueCall->getStatements(),
-                    [
-                        '{{ PHPUNIT_TEST_CASE }}->assertNotEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})',
-                    ]
-                ),
-                'expectedMetadata' => (new Metadata())
-                    ->withVariableDependencies(new VariablePlaceholderCollection([
-                        new VariablePlaceholder(VariableNames::PHPUNIT_TEST_CASE),
-                    ]))
-                    ->withVariableExports(new VariablePlaceholderCollection([
-                        $expectedValuePlaceholder,
-                        $examinedValuePlaceholder,
-                    ])),
-            ],
-            'assert string contains string' => [
-                'expectedValueCall' => $expectedValueCall,
-                'actualValueCall' => $actualValueCall,
-                'expectedValuePlaceholder' => $expectedValuePlaceholder,
-                'actualValuePlaceholder' => $examinedValuePlaceholder,
-                'assertionTemplate' => AssertionCallFactory::ASSERT_STRING_CONTAINS_STRING_TEMPLATE,
-                'expectedStatements' => array_merge(
-                    $expectedValueCall->getStatements(),
-                    $actualValueCall->getStatements(),
-                    [
-                        '{{ PHPUNIT_TEST_CASE }}'
-                        .'->assertStringContainsString((string) {{ EXPECTED_VALUE }}, (string) {{ EXAMINED_VALUE }})',
-                    ]
-                ),
-                'expectedMetadata' => (new Metadata())
-                    ->withVariableDependencies(new VariablePlaceholderCollection([
-                        new VariablePlaceholder(VariableNames::PHPUNIT_TEST_CASE),
-                    ]))
-                    ->withVariableExports(new VariablePlaceholderCollection([
-                        $expectedValuePlaceholder,
-                        $examinedValuePlaceholder,
-                    ])),
-            ],
-            'assert string not contains string' => [
-                'expectedValueCall' => $expectedValueCall,
-                'actualValueCall' => $actualValueCall,
-                'expectedValuePlaceholder' => $expectedValuePlaceholder,
-                'actualValuePlaceholder' => $examinedValuePlaceholder,
-                'assertionTemplate' => AssertionCallFactory::ASSERT_STRING_NOT_CONTAINS_STRING_TEMPLATE,
-                'expectedStatements' => array_merge(
-                    $expectedValueCall->getStatements(),
-                    $actualValueCall->getStatements(),
-                    [
-                        '{{ PHPUNIT_TEST_CASE }}'.
-                        '->assertStringNotContainsString((string) {{ EXPECTED_VALUE }}, (string) {{ EXAMINED_VALUE }})',
-                    ]
-                ),
-                'expectedMetadata' => (new Metadata())
-                    ->withVariableDependencies(new VariablePlaceholderCollection([
-                        new VariablePlaceholder(VariableNames::PHPUNIT_TEST_CASE),
-                    ]))
-                    ->withVariableExports(new VariablePlaceholderCollection([
-                        $expectedValuePlaceholder,
-                        $examinedValuePlaceholder,
-                    ])),
-            ],
-            'assert matches' => [
-                'expectedValueCall' => $expectedValueCall,
-                'actualValueCall' => $actualValueCall,
-                'expectedValuePlaceholder' => $expectedValuePlaceholder,
-                'actualValuePlaceholder' => $examinedValuePlaceholder,
-                'assertionTemplate' => AssertionCallFactory::ASSERT_MATCHES_TEMPLATE,
-                'expectedStatements' => array_merge(
-                    $expectedValueCall->getStatements(),
-                    $actualValueCall->getStatements(),
-                    [
-                        '{{ PHPUNIT_TEST_CASE }}'
-                        .'->assertRegExp({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})',
-                    ]
-                ),
-                'expectedMetadata' => (new Metadata())
-                    ->withVariableDependencies(new VariablePlaceholderCollection([
-                        new VariablePlaceholder(VariableNames::PHPUNIT_TEST_CASE),
-                    ]))
-                    ->withVariableExports(new VariablePlaceholderCollection([
-                        $expectedValuePlaceholder,
-                        $examinedValuePlaceholder,
-                    ])),
-            ],
+//            'assert not equals' => [
+//                'expectedValueAssignment' => $expectedValueAssignment,
+//                'actualValueAssignment' => $actualValueAssignment,
+//                'expectedValuePlaceholder' => $expectedValuePlaceholder,
+//                'actualValuePlaceholder' => $examinedValuePlaceholder,
+//                'assertionTemplate' => AssertionCallFactory::ASSERT_NOT_EQUALS_TEMPLATE,
+//                'expectedStatements' => array_merge(
+//                    $expectedValueAssignment->getStatements(),
+//                    $actualValueAssignment->getStatements(),
+//                    [
+//                        '{{ PHPUNIT_TEST_CASE }}->assertNotEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})',
+//                    ]
+//                ),
+//                'expectedMetadata' => (new Metadata())
+//                    ->withVariableDependencies(new VariablePlaceholderCollection([
+//                        new VariablePlaceholder(VariableNames::PHPUNIT_TEST_CASE),
+//                    ]))
+//                    ->withVariableExports(new VariablePlaceholderCollection([
+//                        $expectedValuePlaceholder,
+//                        $examinedValuePlaceholder,
+//                    ])),
+//            ],
+//            'assert string contains string' => [
+//                'expectedValueAssignment' => $expectedValueAssignment,
+//                'actualValueAssignment' => $actualValueAssignment,
+//                'expectedValuePlaceholder' => $expectedValuePlaceholder,
+//                'actualValuePlaceholder' => $examinedValuePlaceholder,
+//                'assertionTemplate' => AssertionCallFactory::ASSERT_STRING_CONTAINS_STRING_TEMPLATE,
+//                'expectedStatements' => array_merge(
+//                    $expectedValueAssignment->getStatements(),
+//                    $actualValueAssignment->getStatements(),
+//                    [
+//                        '{{ PHPUNIT_TEST_CASE }}'
+//                        .'->assertStringContainsString((string) {{ EXPECTED_VALUE }}, (string) {{ EXAMINED_VALUE }})',
+//                    ]
+//                ),
+//                'expectedMetadata' => (new Metadata())
+//                    ->withVariableDependencies(new VariablePlaceholderCollection([
+//                        new VariablePlaceholder(VariableNames::PHPUNIT_TEST_CASE),
+//                    ]))
+//                    ->withVariableExports(new VariablePlaceholderCollection([
+//                        $expectedValuePlaceholder,
+//                        $examinedValuePlaceholder,
+//                    ])),
+//            ],
+//            'assert string not contains string' => [
+//                'expectedValueAssignment' => $expectedValueAssignment,
+//                'actualValueAssignment' => $actualValueAssignment,
+//                'expectedValuePlaceholder' => $expectedValuePlaceholder,
+//                'actualValuePlaceholder' => $examinedValuePlaceholder,
+//                'assertionTemplate' => AssertionCallFactory::ASSERT_STRING_NOT_CONTAINS_STRING_TEMPLATE,
+//                'expectedStatements' => array_merge(
+//                    $expectedValueAssignment->getStatements(),
+//                    $actualValueAssignment->getStatements(),
+//                    [
+//                        '{{ PHPUNIT_TEST_CASE }}'.
+//                        '->assertStringNotContainsString((string) {{ EXPECTED_VALUE }}, (string) {{ EXAMINED_VALUE }})',
+//                    ]
+//                ),
+//                'expectedMetadata' => (new Metadata())
+//                    ->withVariableDependencies(new VariablePlaceholderCollection([
+//                        new VariablePlaceholder(VariableNames::PHPUNIT_TEST_CASE),
+//                    ]))
+//                    ->withVariableExports(new VariablePlaceholderCollection([
+//                        $expectedValuePlaceholder,
+//                        $examinedValuePlaceholder,
+//                    ])),
+//            ],
+//            'assert matches' => [
+//                'expectedValueAssignment' => $expectedValueAssignment,
+//                'actualValueAssignment' => $actualValueAssignment,
+//                'expectedValuePlaceholder' => $expectedValuePlaceholder,
+//                'actualValuePlaceholder' => $examinedValuePlaceholder,
+//                'assertionTemplate' => AssertionCallFactory::ASSERT_MATCHES_TEMPLATE,
+//                'expectedStatements' => array_merge(
+//                    $expectedValueAssignment->getStatements(),
+//                    $actualValueAssignment->getStatements(),
+//                    [
+//                        '{{ PHPUNIT_TEST_CASE }}'
+//                        .'->assertRegExp({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})',
+//                    ]
+//                ),
+//                'expectedMetadata' => (new Metadata())
+//                    ->withVariableDependencies(new VariablePlaceholderCollection([
+//                        new VariablePlaceholder(VariableNames::PHPUNIT_TEST_CASE),
+//                    ]))
+//                    ->withVariableExports(new VariablePlaceholderCollection([
+//                        $expectedValuePlaceholder,
+//                        $examinedValuePlaceholder,
+//                    ])),
+//            ],
         ];
     }
 
