@@ -9,7 +9,6 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 use webignition\BasilCompilableSourceFactory\Handler\ClassDependencyHandler;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilationSource\MetadataInterface;
-use webignition\BasilCompilationSource\StatementList;
 use webignition\BasilCompilationSource\StatementListInterface;
 
 class ExecutableCallFactory
@@ -41,13 +40,7 @@ class ExecutableCallFactory
         ?MetadataInterface $additionalMetadata = null
     ): string {
         if (null !== $additionalMetadata) {
-            $metadata = $statementList->getMetadata();
-            $metadata = $metadata->merge([
-                $metadata,
-                $additionalMetadata
-            ]);
-
-            $statementList = $statementList->withMetadata($metadata);
+            $statementList->getMetadata()->add($additionalMetadata);
         }
 
         $metadata = $statementList->getMetadata();
@@ -91,15 +84,8 @@ class ExecutableCallFactory
         array $teardownStatements = [],
         ?MetadataInterface $additionalMetadata = null
     ): string {
-        $statements = $statementList->getStatements();
-        $lastStatementPosition = count($statements) - 1;
-        $lastStatement = $statements[$lastStatementPosition];
-        $lastStatement = 'return ' . $lastStatement;
-        $statements[$lastStatementPosition] = $lastStatement;
-
-        $statementListWithReturn = (new StatementList())
-            ->withStatements($statements)
-            ->withMetadata($statementList->getMetadata());
+        $statementListWithReturn = clone $statementList;
+        $statementListWithReturn->prependLastStatement('return ');
 
         return $this->create(
             $statementListWithReturn,

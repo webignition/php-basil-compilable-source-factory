@@ -2,6 +2,7 @@
 
 namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
+use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\StatementList;
 use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
@@ -19,23 +20,20 @@ class VariableAssignmentFactory
         VariablePlaceholder $placeholder,
         string $type = 'string',
         string $default = 'null'
-    ): StatementListInterface {
+    ): ?StatementListInterface {
         $assignment = clone $accessor;
-        $assignment->prependStatement(-1, $placeholder . ' = ');
-        $assignment->appendStatement(-1, ' ?? ' . $default);
 
-        $variableExports = new VariablePlaceholderCollection([
+        $assignment->prependLastStatement($placeholder . ' = ');
+        $assignment->appendLastStatement(' ?? ' . $default);
+        $assignment->addVariableExportsToLastStatement(new VariablePlaceholderCollection([
             $placeholder,
-        ]);
+        ]));
 
-        $assignment = $assignment->withMetadata(
-            $assignment->getMetadata()->withAdditionalVariableExports($variableExports)
-        );
-
-        return (new StatementList())
-            ->withPredecessors([$assignment])
-            ->withStatements([
-                sprintf('%s = (%s) %s', (string) $placeholder, $type, (string) $placeholder)
-            ]);
+        return new StatementList(array_merge(
+            $assignment->getStatementObjects(),
+            [
+                new Statement(sprintf('%s = (%s) %s', (string) $placeholder, $type, (string) $placeholder)),
+            ]
+        ));
     }
 }
