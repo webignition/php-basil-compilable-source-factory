@@ -7,6 +7,7 @@ use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyExce
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Metadata;
+use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\StatementList;
 use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
@@ -60,9 +61,9 @@ class PagePropertyHandler implements HandlerInterface
                 $metadata = (new Metadata())
                     ->withVariableDependencies($this->variableDependencies);
 
-                return (new StatementList())
-                    ->withStatements([(string) $transpiledValue])
-                    ->withMetadata($metadata);
+                return new StatementList([
+                    new Statement($transpiledValue, $metadata)
+                ]);
             }
 
             throw new UnknownObjectPropertyException($model);

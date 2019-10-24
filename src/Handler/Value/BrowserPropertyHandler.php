@@ -7,6 +7,7 @@ use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyExce
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Metadata;
+use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\StatementList;
 use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
@@ -52,29 +53,25 @@ class BrowserPropertyHandler implements HandlerInterface
         $variableDependencies = new VariablePlaceholderCollection();
         $pantherClientPlaceholder = $variableDependencies->create(VariableNames::PANTHER_CLIENT);
 
-        $dimensionAssignment = (new StatementList())
-            ->withStatements([
-                sprintf(
-                    '%s = %s->getWebDriver()->manage()->window()->getSize()',
-                    $webDriverDimensionPlaceholder,
-                    $pantherClientPlaceholder
-                ),
-            ])
-            ->withMetadata(
-                (new Metadata())
+        $dimensionAssignment = new Statement(
+            sprintf(
+                '%s = %s->getWebDriver()->manage()->window()->getSize()',
+                $webDriverDimensionPlaceholder,
+                $pantherClientPlaceholder
+            ),
+            (new Metadata())
                 ->withVariableDependencies($variableDependencies)
                 ->withVariableExports($variableExports)
-            );
+        );
 
         $getWidthCall = $webDriverDimensionPlaceholder . '->getWidth()';
         $getHeightCall = $webDriverDimensionPlaceholder . '->getHeight()';
 
-        $dimensionConcatenation = (new StatementList())
-            ->withStatements([
-                '(string) ' . $getWidthCall . ' . \'x\' . (string) ' . $getHeightCall,
-            ]);
+        $dimensionConcatenation = new Statement('(string) ' . $getWidthCall . ' . \'x\' . (string) ' . $getHeightCall);
 
-        return (new StatementList())
-            ->withPredecessors([$dimensionAssignment, $dimensionConcatenation]);
+        return new StatementList(array_merge(
+            $dimensionAssignment->getStatementObjects(),
+            $dimensionConcatenation->getStatementObjects()
+        ));
     }
 }
