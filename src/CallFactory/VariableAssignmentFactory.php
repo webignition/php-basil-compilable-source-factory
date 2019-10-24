@@ -20,7 +20,7 @@ class VariableAssignmentFactory
         VariablePlaceholder $placeholder,
         string $type = 'string',
         string $default = 'null'
-    ): ?StatementListInterface {
+    ): StatementListInterface {
         $assignment = clone $accessor;
 
         $assignment->prependLastStatement($placeholder . ' = ');
