@@ -49,7 +49,11 @@ class ExecutableCallFactory
         $executableCall = '';
 
         foreach ($classDependencies as $key => $value) {
-            $executableCall .= (string) $this->classDependencyHandler->createStatementList($value) . ";\n";
+            $classDependencyStatementList = $this->classDependencyHandler->createStatementList($value);
+
+            foreach ($classDependencyStatementList->getStatements() as $classDependencyStatement) {
+                $executableCall .= $classDependencyStatement . ";\n";
+            }
         }
 
         foreach ($setupStatements as $statement) {
