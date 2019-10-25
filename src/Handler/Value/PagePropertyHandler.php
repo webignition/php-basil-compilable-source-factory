@@ -9,7 +9,6 @@ use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
-use webignition\BasilCompilationSource\StatementList;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Value\ObjectValueInterface;
 use webignition\BasilModel\Value\ObjectValueType;
@@ -61,9 +60,7 @@ class PagePropertyHandler implements HandlerInterface
                 $metadata = (new Metadata())
                     ->withVariableDependencies($this->variableDependencies);
 
-                return new StatementList([
-                    new Statement($transpiledValue, $metadata)
-                ]);
+                return new Statement($transpiledValue, $metadata);
             }
 
             throw new UnknownObjectPropertyException($model);

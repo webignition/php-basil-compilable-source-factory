@@ -8,7 +8,6 @@ use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
-use webignition\BasilCompilationSource\StatementList;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Action\ActionTypes;
@@ -69,16 +68,14 @@ class WaitForActionHandler implements HandlerInterface
 
         $metadata = (new Metadata())->withVariableDependencies($variableDependencies);
 
-        return new StatementList([
-            new Statement(
-                sprintf(
-                    '%s = %s->waitFor(\'%s\')',
-                    $pantherCrawlerPlaceholder,
-                    $pantherClientPlaceholder,
-                    $this->singleQuotedStringEscaper->escape($elementLocator)
-                ),
-                $metadata
-            )
-        ]);
+        return new Statement(
+            sprintf(
+                '%s = %s->waitFor(\'%s\')',
+                $pantherCrawlerPlaceholder,
+                $pantherClientPlaceholder,
+                $this->singleQuotedStringEscaper->escape($elementLocator)
+            ),
+            $metadata
+        );
     }
 }

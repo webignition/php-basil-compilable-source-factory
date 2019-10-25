@@ -6,7 +6,6 @@ use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelExcep
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
-use webignition\BasilCompilationSource\StatementList;
 use webignition\BasilModel\Value\LiteralValueInterface;
 
 class LiteralValueHandler implements HandlerInterface
@@ -24,9 +23,7 @@ class LiteralValueHandler implements HandlerInterface
     public function createStatementList(object $model): SourceInterface
     {
         if ($this->handles($model)) {
-            return new StatementList([
-                new Statement((string) $model),
-            ]);
+            return new Statement((string) $model);
         }
 
         throw new NonTranspilableModelException($model);
