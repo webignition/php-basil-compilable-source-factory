@@ -8,6 +8,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ExecutableCallFactory;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
@@ -15,7 +16,7 @@ use webignition\BasilCompilationSource\StatementList;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
-class VariableAssignmentFactoryTest extends \PHPUnit\Framework\TestCase
+class VariableAssignmentFactoryTest extends AbstractTestCase
 {
     /**
      * @var VariableAssignmentFactory

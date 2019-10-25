@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\WebDriverElementInspectorCallFactory;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MetadataInterface;
@@ -14,7 +15,7 @@ use webignition\BasilCompilationSource\StatementInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
-class WebDriverElementInspectorCallFactoryTest extends \PHPUnit\Framework\TestCase
+class WebDriverElementInspectorCallFactoryTest extends AbstractTestCase
 {
     /**
      * @var WebDriverElementInspectorCallFactory
