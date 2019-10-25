@@ -51,7 +51,7 @@ class ElementLocatorCallFactoryTest extends \PHPUnit\Framework\TestCase
                 new ClassDependency(ElementLocator::class)
             ]));
 
-        $this->assertEquals($expectedMetadata, $statement->getMetadata());
+        $this->assertMetadataEquals($expectedMetadata, $statement->getMetadata());
 
         $executableCall = $this->executableCallFactory->createWithReturn(new StatementList([
             $statement

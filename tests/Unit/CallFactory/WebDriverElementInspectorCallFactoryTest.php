@@ -40,7 +40,7 @@ class WebDriverElementInspectorCallFactoryTest extends \PHPUnit\Framework\TestCa
 
         $this->assertInstanceOf(StatementInterface::class, $statement);
         $this->assertEquals($expectedStatements, $statement->getStatements());
-        $this->assertEquals($expectedMetadata, $statement->getMetadata());
+        $this->assertMetadataEquals($expectedMetadata, $statement->getMetadata());
     }
 
     public function createGetValueCallDataProvider(): array

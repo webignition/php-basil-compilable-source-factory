@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MetadataInterface;
@@ -15,7 +16,7 @@ use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
-class AssertionCallFactoryTest extends \PHPUnit\Framework\TestCase
+class AssertionCallFactoryTest extends AbstractTestCase
 {
     /**
      * @var AssertionCallFactory
@@ -50,7 +51,7 @@ class AssertionCallFactoryTest extends \PHPUnit\Framework\TestCase
         );
 
         $this->assertEquals($expectedStatements, $statementList->getStatements());
-        $this->assertEquals($expectedMetadata, $statementList->getMetadata());
+        $this->assertMetadataEquals($expectedMetadata, $statementList->getMetadata());
     }
 
     public function createValueComparisonAssertionCallDataProvider(): array
@@ -204,7 +205,7 @@ class AssertionCallFactoryTest extends \PHPUnit\Framework\TestCase
         );
 
         $this->assertEquals($expectedStatements, $statementList->getStatements());
-        $this->assertEquals($expectedMetadata, $statementList->getMetadata());
+        $this->assertMetadataEquals($expectedMetadata, $statementList->getMetadata());
     }
 
     public function createValueExistenceAssertionCallDataProvider(): array

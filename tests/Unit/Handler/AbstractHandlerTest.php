@@ -7,8 +7,9 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 
-abstract class AbstractHandlerTest extends \PHPUnit\Framework\TestCase
+abstract class AbstractHandlerTest extends AbstractTestCase
 {
     /**
      * @var HandlerInterface

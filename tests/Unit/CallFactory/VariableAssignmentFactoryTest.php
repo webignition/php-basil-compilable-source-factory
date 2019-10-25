@@ -54,7 +54,7 @@ class VariableAssignmentFactoryTest extends \PHPUnit\Framework\TestCase
         $statementList = $this->factory->createForValueAccessor($accessor, $placeholder, $type);
 
         $this->assertEquals($expectedStatements, $statementList->getStatements());
-        $this->assertEquals($expectedMetadata, $statementList->getMetadata());
+        $this->assertMetadataEquals($expectedMetadata, $statementList->getMetadata());
 
         $variableIdentifiers = [
             'VALUE' => '$value',

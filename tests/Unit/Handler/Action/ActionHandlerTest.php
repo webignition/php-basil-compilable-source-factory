@@ -96,6 +96,6 @@ class ActionHandlerTest extends AbstractHandlerTest
         $statementList = $this->handler->createSource($action);
 
         $this->assertEquals($expectedStatements, $statementList->getStatements());
-        $this->assertEquals($expectedMetadata, $statementList->getMetadata());
+        $this->assertMetadataEquals($expectedMetadata, $statementList->getMetadata());
     }
 }
