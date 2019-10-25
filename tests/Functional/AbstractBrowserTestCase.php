@@ -10,7 +10,6 @@ use webignition\BasilCompilationSource\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilCompilationSource\SourceInterface;
-use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\SymfonyDomCrawlerNavigator\Navigator;
 
 abstract class AbstractBrowserTestCase extends AbstractTestCase
@@ -50,7 +49,7 @@ abstract class AbstractBrowserTestCase extends AbstractTestCase
 
     protected function createExecutableCallForRequest(
         string $fixture,
-        StatementListInterface $statementList,
+        SourceInterface $statementList,
         array $additionalSetupStatements = [],
         array $teardownStatements = [],
         array $additionalVariableIdentifiers = [],

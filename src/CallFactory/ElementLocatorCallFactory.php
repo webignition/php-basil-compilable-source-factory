@@ -7,8 +7,8 @@ use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Statement;
-use webignition\BasilCompilationSource\StatementInterface;
 use webignition\BasilCompilationSource\Metadata;
+use webignition\BasilCompilationSource\StatementInterface;
 use webignition\BasilModel\Identifier\DomIdentifierInterface;
 use webignition\DomElementLocator\ElementLocator;
 

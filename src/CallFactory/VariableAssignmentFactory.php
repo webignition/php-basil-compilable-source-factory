@@ -2,9 +2,9 @@
 
 namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
+use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\StatementList;
-use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
@@ -16,11 +16,11 @@ class VariableAssignmentFactory
     }
 
     public function createForValueAccessor(
-        StatementListInterface $accessor,
+        SourceInterface $accessor,
         VariablePlaceholder $placeholder,
         string $type = 'string',
         string $default = 'null'
-    ): StatementListInterface {
+    ): SourceInterface {
         $assignment = clone $accessor;
 
         $assignment->mutateLastStatement(function (string $content) use ($placeholder, $default) {

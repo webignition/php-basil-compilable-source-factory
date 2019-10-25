@@ -8,9 +8,9 @@ use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
+use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\StatementList;
-use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Action\WaitActionInterface;
 use webignition\BasilModel\Value\DomIdentifierValueInterface;
@@ -51,11 +51,11 @@ class WaitActionHandler implements HandlerInterface
     /**
      * @param object $model
      *
-     * @return StatementListInterface
+     * @return SourceInterface
      *
      * @throws NonTranspilableModelException
      */
-    public function createStatementList(object $model): StatementListInterface
+    public function createStatementList(object $model): SourceInterface
     {
         if (!$model instanceof WaitActionInterface) {
             throw new NonTranspilableModelException($model);

@@ -7,9 +7,9 @@ use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyExce
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Metadata;
+use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\StatementList;
-use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Value\ObjectValueInterface;
 use webignition\BasilModel\Value\ObjectValueType;
@@ -47,12 +47,12 @@ class PagePropertyHandler implements HandlerInterface
     /**
      * @param object $model
      *
-     * @return StatementListInterface
+     * @return SourceInterface
      *
      * @throws NonTranspilableModelException
      * @throws UnknownObjectPropertyException
      */
-    public function createStatementList(object $model): StatementListInterface
+    public function createStatementList(object $model): SourceInterface
     {
         if ($this->handles($model) && $model instanceof ObjectValueInterface) {
             $transpiledValue = $this->transpiledValueMap[$model->getProperty()] ?? null;

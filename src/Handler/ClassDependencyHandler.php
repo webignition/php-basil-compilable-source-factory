@@ -5,9 +5,9 @@ namespace webignition\BasilCompilableSourceFactory\Handler;
 use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilationSource\ClassDependency;
+use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\StatementList;
-use webignition\BasilCompilationSource\StatementListInterface;
 
 class ClassDependencyHandler implements HandlerInterface
 {
@@ -27,11 +27,11 @@ class ClassDependencyHandler implements HandlerInterface
     /**
      * @param object $model
      *
-     * @return StatementListInterface
+     * @return SourceInterface
      *
      * @throws NonTranspilableModelException
      */
-    public function createStatementList(object $model): StatementListInterface
+    public function createStatementList(object $model): SourceInterface
     {
         if (!$model instanceof ClassDependency) {
             throw new NonTranspilableModelException($model);

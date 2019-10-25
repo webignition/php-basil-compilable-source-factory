@@ -13,7 +13,6 @@ use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\StatementInterface;
 use webignition\BasilCompilationSource\StatementList;
-use webignition\BasilCompilationSource\StatementListInterface;
 
 class ExecutableCallFactory
 {
@@ -97,11 +96,9 @@ class ExecutableCallFactory
             $source = new StatementList([$source]);
         }
 
-        if ($source instanceof StatementListInterface) {
-            $source->mutateLastStatement(function (string $content) {
-                return 'return ' . $content;
-            });
-        }
+        $source->mutateLastStatement(function (string $content) {
+            return 'return ' . $content;
+        });
 
         return $this->create(
             $source,

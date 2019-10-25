@@ -6,9 +6,9 @@ use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelExcep
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\StatementList;
-use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Action\ActionTypes;
@@ -37,11 +37,11 @@ class WaitForActionHandler implements HandlerInterface
     /**
      * @param object $model
      *
-     * @return StatementListInterface
+     * @return SourceInterface
      *
      * @throws NonTranspilableModelException
      */
-    public function createStatementList(object $model): StatementListInterface
+    public function createStatementList(object $model): SourceInterface
     {
         if (!$model instanceof InteractionActionInterface) {
             throw new NonTranspilableModelException($model);

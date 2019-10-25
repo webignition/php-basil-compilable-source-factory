@@ -4,9 +4,9 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Value;
 
 use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
+use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\StatementList;
-use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\BasilModel\Value\LiteralValueInterface;
 
 class LiteralValueHandler implements HandlerInterface
@@ -21,7 +21,7 @@ class LiteralValueHandler implements HandlerInterface
         return $model instanceof LiteralValueInterface;
     }
 
-    public function createStatementList(object $model): StatementListInterface
+    public function createStatementList(object $model): SourceInterface
     {
         if ($this->handles($model)) {
             return new StatementList([

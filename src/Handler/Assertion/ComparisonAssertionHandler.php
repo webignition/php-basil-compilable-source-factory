@@ -10,7 +10,7 @@ use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\StatementListInterface;
+use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilModel\Assertion\AssertionComparison;
 use webignition\BasilModel\Assertion\ComparisonAssertionInterface;
@@ -70,7 +70,7 @@ class ComparisonAssertionHandler implements HandlerInterface
         return in_array($model->getComparison(), self::HANDLED_COMPARISONS);
     }
 
-    public function createStatementList(object $model): StatementListInterface
+    public function createStatementList(object $model): SourceInterface
     {
         if (!$model instanceof ComparisonAssertionInterface) {
             throw new NonTranspilableModelException($model);

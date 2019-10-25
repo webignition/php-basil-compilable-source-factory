@@ -13,7 +13,6 @@ use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\StatementList;
-use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Assertion\AssertionComparison;
@@ -64,11 +63,11 @@ class ExistenceComparisonHandler implements HandlerInterface
     /**
      * @param object $model
      *
-     * @return StatementListInterface
+     * @return SourceInterface
      *
      * @throws NonTranspilableModelException
      */
-    public function createStatementList(object $model): StatementListInterface
+    public function createStatementList(object $model): SourceInterface
     {
         if (!$model instanceof ExaminationAssertionInterface) {
             throw new NonTranspilableModelException($model);
@@ -115,8 +114,10 @@ class ExistenceComparisonHandler implements HandlerInterface
                 $accessor = $this->domCrawlerNavigatorCallFactory->createHasCall($identifier);
 
                 $assignment = clone $accessor;
-                $assignment = $assignment->prepend($valuePlaceholder . ' = ');
-                $assignment->getMetadata()->addVariableExports(new VariablePlaceholderCollection([
+                $assignment->mutateLastStatement(function (string $content) use ($valuePlaceholder) {
+                    return $valuePlaceholder . ' = ' . $content;
+                });
+                $assignment->addVariableExportsToLastStatement(new VariablePlaceholderCollection([
                     $valuePlaceholder,
                 ]));
 
@@ -144,7 +145,7 @@ class ExistenceComparisonHandler implements HandlerInterface
         string $comparison,
         SourceInterface $statementList,
         VariablePlaceholder $valuePlaceholder
-    ): StatementListInterface {
+    ): SourceInterface {
         $assertionTemplate = AssertionComparison::EXISTS === $comparison
             ? AssertionCallFactory::ASSERT_TRUE_TEMPLATE
             : AssertionCallFactory::ASSERT_FALSE_TEMPLATE;

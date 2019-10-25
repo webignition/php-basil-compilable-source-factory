@@ -3,7 +3,7 @@
 namespace webignition\BasilCompilableSourceFactory;
 
 use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
-use webignition\BasilCompilationSource\StatementListInterface;
+use webignition\BasilCompilationSource\SourceInterface;
 
 interface HandlerInterface
 {
@@ -14,9 +14,9 @@ interface HandlerInterface
     /**
      * @param object $model
      *
-     * @return StatementListInterface
+     * @return SourceInterface
      *
      * @throws NonTranspilableModelException
      */
-    public function createStatementList(object $model): StatementListInterface;
+    public function createStatementList(object $model): SourceInterface;
 }
