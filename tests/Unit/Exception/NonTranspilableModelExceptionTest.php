@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Exception;
 
-use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 
 class NonTranspilableModelExceptionTest extends \PHPUnit\Framework\TestCase
 {
@@ -12,7 +12,7 @@ class NonTranspilableModelExceptionTest extends \PHPUnit\Framework\TestCase
     {
         $model = new \stdClass();
 
-        $exception = new NonTranspilableModelException($model);
+        $exception = new UnsupportedModelException($model);
 
         $this->assertSame($model, $exception->getModel());
     }

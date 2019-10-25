@@ -7,7 +7,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
 use webignition\BasilCompilableSourceFactory\Factory;
-use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilModel\Test\Configuration;
 use webignition\BasilModel\Test\Test;
 
@@ -24,7 +24,7 @@ class FactoryTest extends \PHPUnit\Framework\TestCase
 
     public function testCreateSourceThrowsNonTranspilableModelException()
     {
-        $this->expectException(NonTranspilableModelException::class);
+        $this->expectException(UnsupportedModelException::class);
 
         $test = new Test(
             'test name',

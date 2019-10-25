@@ -2,7 +2,7 @@
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
-use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\SourceInterface;
@@ -35,16 +35,16 @@ class BrowserOperationActionHandler implements HandlerInterface
      *
      * @return SourceInterface
      *
-     * @throws NonTranspilableModelException
+     * @throws UnsupportedModelException
      */
     public function createSource(object $model): SourceInterface
     {
         if (!$model instanceof NoArgumentsAction) {
-            throw new NonTranspilableModelException($model);
+            throw new UnsupportedModelException($model);
         }
 
         if (!in_array($model->getType(), self::HANDLED_ACTION_TYPES)) {
-            throw new NonTranspilableModelException($model);
+            throw new UnsupportedModelException($model);
         }
 
         $variableDependencies = new VariablePlaceholderCollection();

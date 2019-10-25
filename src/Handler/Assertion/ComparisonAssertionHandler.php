@@ -4,7 +4,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
-use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
@@ -73,11 +73,11 @@ class ComparisonAssertionHandler implements HandlerInterface
     public function createSource(object $model): SourceInterface
     {
         if (!$model instanceof ComparisonAssertionInterface) {
-            throw new NonTranspilableModelException($model);
+            throw new UnsupportedModelException($model);
         }
 
         if (!in_array($model->getComparison(), self::HANDLED_COMPARISONS)) {
-            throw new NonTranspilableModelException($model);
+            throw new UnsupportedModelException($model);
         }
 
         $examinedValuePlaceholder = new VariablePlaceholder(VariableNames::EXAMINED_VALUE);

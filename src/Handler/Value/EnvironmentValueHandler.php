@@ -2,7 +2,7 @@
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Value;
 
-use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Metadata;
@@ -29,7 +29,7 @@ class EnvironmentValueHandler implements HandlerInterface
      *
      * @return SourceInterface
      *
-     * @throws NonTranspilableModelException
+     * @throws UnsupportedModelException
      */
     public function createSource(object $model): SourceInterface
     {
@@ -48,6 +48,6 @@ class EnvironmentValueHandler implements HandlerInterface
             );
         }
 
-        throw new NonTranspilableModelException($model);
+        throw new UnsupportedModelException($model);
     }
 }

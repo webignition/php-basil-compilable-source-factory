@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler;
 
-use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 
 abstract class AbstractHandlerTest extends \PHPUnit\Framework\TestCase
@@ -26,8 +26,8 @@ abstract class AbstractHandlerTest extends \PHPUnit\Framework\TestCase
 
     public function testTranspileNonTranspilableModel()
     {
-        $this->expectException(NonTranspilableModelException::class);
-        $this->expectExceptionMessage('Non-transpilable model "stdClass"');
+        $this->expectException(UnsupportedModelException::class);
+        $this->expectExceptionMessage('Unsupported model "stdClass"');
 
         $model = new \stdClass();
 

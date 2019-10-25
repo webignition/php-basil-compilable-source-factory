@@ -4,7 +4,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
-use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
@@ -65,16 +65,16 @@ class ExistenceComparisonHandler implements HandlerInterface
      *
      * @return SourceInterface
      *
-     * @throws NonTranspilableModelException
+     * @throws UnsupportedModelException
      */
     public function createSource(object $model): SourceInterface
     {
         if (!$model instanceof ExaminationAssertionInterface) {
-            throw new NonTranspilableModelException($model);
+            throw new UnsupportedModelException($model);
         }
 
         if (!in_array($model->getComparison(), [AssertionComparison::EXISTS, AssertionComparison::NOT_EXISTS])) {
-            throw new NonTranspilableModelException($model);
+            throw new UnsupportedModelException($model);
         }
 
         $value = $model->getExaminedValue();
@@ -138,7 +138,7 @@ class ExistenceComparisonHandler implements HandlerInterface
             return $this->createAssertionCall($model->getComparison(), $existence, $valuePlaceholder);
         }
 
-        throw new NonTranspilableModelException($model);
+        throw new UnsupportedModelException($model);
     }
 
     private function createAssertionCall(

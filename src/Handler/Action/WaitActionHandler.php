@@ -3,7 +3,7 @@
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
-use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
@@ -53,12 +53,12 @@ class WaitActionHandler implements HandlerInterface
      *
      * @return SourceInterface
      *
-     * @throws NonTranspilableModelException
+     * @throws UnsupportedModelException
      */
     public function createSource(object $model): SourceInterface
     {
         if (!$model instanceof WaitActionInterface) {
-            throw new NonTranspilableModelException($model);
+            throw new UnsupportedModelException($model);
         }
 
         $variableExports = new VariablePlaceholderCollection();
