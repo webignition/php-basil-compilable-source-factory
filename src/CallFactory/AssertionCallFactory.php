@@ -58,7 +58,7 @@ class AssertionCallFactory
         $statementList = new StatementList([]);
         $statementList->addStatements($expectedValueAssignment->getStatementObjects());
         $statementList->addStatements($actualValueAssignment->getStatementObjects());
-        $statementList->addStatements([new Statement($assertionStatementContent, $metadata)]);
+        $statementList->addStatement(new Statement($assertionStatementContent, $metadata));
 
         return $statementList;
     }
@@ -79,7 +79,7 @@ class AssertionCallFactory
 
         $statementList = new StatementList([]);
         $statementList->addStatements($assignment->getStatementObjects());
-        $statementList->addStatements([new Statement($assertionStatementContent, $metadata)]);
+        $statementList->addStatement(new Statement($assertionStatementContent, $metadata));
 
         return $statementList;
     }

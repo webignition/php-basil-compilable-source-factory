@@ -107,7 +107,7 @@ class SetActionHandler implements HandlerInterface
         $statementList = new StatementList([]);
         $statementList->addStatements($collectionAssignment->getStatementObjects());
         $statementList->addStatements($valueAssignment->getStatementObjects());
-        $statementList->addStatements([$mutationCall]);
+        $statementList->addStatement($mutationCall);
 
         return $statementList;
     }
