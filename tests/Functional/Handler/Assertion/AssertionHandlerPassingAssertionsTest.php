@@ -55,7 +55,7 @@ class AssertionHandlerPassingAssertionsTest extends AbstractHandlerTest
         array $additionalVariableIdentifiers = [],
         ?MetadataInterface $metadata = null
     ) {
-        $statementList = $this->handler->createStatementList($model);
+        $statementList = $this->handler->createSource($model);
 
         $variableIdentifiers = array_merge(
             [

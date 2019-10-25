@@ -5,9 +5,8 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
-use webignition\BasilCompilationSource\StatementList;
-use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Action\ActionTypes;
@@ -34,11 +33,11 @@ class BrowserOperationActionHandler implements HandlerInterface
     /**
      * @param object $model
      *
-     * @return StatementListInterface
+     * @return SourceInterface
      *
      * @throws NonTranspilableModelException
      */
-    public function createStatementList(object $model): StatementListInterface
+    public function createSource(object $model): SourceInterface
     {
         if (!$model instanceof NoArgumentsAction) {
             throw new NonTranspilableModelException($model);
@@ -54,16 +53,14 @@ class BrowserOperationActionHandler implements HandlerInterface
 
         $metadata = (new Metadata())->withVariableDependencies($variableDependencies);
 
-        return new StatementList([
-            new Statement(
-                sprintf(
-                    '%s = %s->%s()',
-                    $pantherCrawlerPlaceholder,
-                    $pantherClientPlaceholder,
-                    $model->getType()
-                ),
-                $metadata
-            )
-        ]);
+        return new Statement(
+            sprintf(
+                '%s = %s->%s()',
+                $pantherCrawlerPlaceholder,
+                $pantherClientPlaceholder,
+                $model->getType()
+            ),
+            $metadata
+        );
     }
 }

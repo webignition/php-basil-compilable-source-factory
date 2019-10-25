@@ -10,9 +10,9 @@ use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelExcep
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierInterface;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
+use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\StatementList;
-use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
 class NamedDomIdentifierHandler implements HandlerInterface
@@ -53,7 +53,7 @@ class NamedDomIdentifierHandler implements HandlerInterface
         return $model instanceof NamedDomIdentifierInterface;
     }
 
-    public function createStatementList(object $model): StatementListInterface
+    public function createSource(object $model): SourceInterface
     {
         if (!$model instanceof NamedDomIdentifierInterface) {
             throw new NonTranspilableModelException($model);
@@ -74,8 +74,10 @@ class NamedDomIdentifierHandler implements HandlerInterface
         $hasPlaceholder = $hasAssignmentVariableExports->create('HAS');
 
         $hasAssignment = clone $hasCall;
-        $hasAssignment = $hasAssignment->prepend($hasPlaceholder . ' = ');
-        $hasAssignment->getMetadata()->addVariableExports($hasAssignmentVariableExports);
+        $hasAssignment->mutateLastStatement(function ($content) use ($hasPlaceholder) {
+            return $hasPlaceholder . ' = ' . $content;
+        });
+        $hasAssignment->addVariableExportsToLastStatement($hasAssignmentVariableExports);
 
         $elementPlaceholder = $model->getPlaceholder();
         $collectionAssignmentVariableExports = new VariablePlaceholderCollection([
@@ -83,8 +85,10 @@ class NamedDomIdentifierHandler implements HandlerInterface
         ]);
 
         $elementOrCollectionAssignment = clone $findCall;
-        $elementOrCollectionAssignment = $elementOrCollectionAssignment->prepend($elementPlaceholder . ' = ');
-        $elementOrCollectionAssignment->getMetadata()->addVariableExports($collectionAssignmentVariableExports);
+        $elementOrCollectionAssignment->mutateLastStatement(function ($content) use ($elementPlaceholder) {
+            return $elementPlaceholder . ' = ' . $content;
+        });
+        $elementOrCollectionAssignment->addVariableExportsToLastStatement($collectionAssignmentVariableExports);
 
         $elementExistsAssertion = $this->assertionCallFactory->createValueExistenceAssertionCall(
             $hasAssignment,
@@ -109,7 +113,9 @@ class NamedDomIdentifierHandler implements HandlerInterface
                 $getValueCall = $this->webDriverElementInspectorCallFactory->createGetValueCall($elementPlaceholder);
 
                 $valueAssignment = clone $getValueCall;
-                $valueAssignment = $valueAssignment->prepend($elementPlaceholder . ' = ');
+                $valueAssignment->mutateLastStatement(function ($content) use ($elementPlaceholder) {
+                    return $elementPlaceholder . ' = ' . $content;
+                });
             }
 
             $statements = array_merge($statements, $valueAssignment->getStatementObjects());

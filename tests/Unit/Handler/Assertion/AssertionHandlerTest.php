@@ -88,7 +88,7 @@ class AssertionHandlerTest extends AbstractHandlerTest
         array $expectedStatements,
         MetadataInterface $expectedMetadata
     ) {
-        $statementList = $this->handler->createStatementList($assertion);
+        $statementList = $this->handler->createSource($assertion);
 
         $this->assertEquals($expectedStatements, $statementList->getStatements());
         $this->assertEquals($expectedMetadata, $statementList->getMetadata());

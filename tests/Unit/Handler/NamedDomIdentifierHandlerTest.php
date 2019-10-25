@@ -65,7 +65,7 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
         array $expectedStatements,
         MetadataInterface $expectedMetadata
     ) {
-        $statementList = $this->handler->createStatementList($model);
+        $statementList = $this->handler->createSource($model);
 
         $this->assertEquals($expectedStatements, $statementList->getStatements());
         $this->assertEquals($expectedMetadata, $statementList->getMetadata());
@@ -194,6 +194,6 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
 
         $model = new \stdClass();
 
-        $this->handler->createStatementList($model);
+        $this->handler->createSource($model);
     }
 }

@@ -10,7 +10,7 @@ use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\StatementListInterface;
+use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilModel\Assertion\AssertionComparison;
 use webignition\BasilModel\Assertion\ComparisonAssertionInterface;
@@ -70,7 +70,7 @@ class ComparisonAssertionHandler implements HandlerInterface
         return in_array($model->getComparison(), self::HANDLED_COMPARISONS);
     }
 
-    public function createStatementList(object $model): StatementListInterface
+    public function createSource(object $model): SourceInterface
     {
         if (!$model instanceof ComparisonAssertionInterface) {
             throw new NonTranspilableModelException($model);
@@ -87,7 +87,7 @@ class ComparisonAssertionHandler implements HandlerInterface
         $expectedValue = $model->getExpectedValue();
 
         if ($examinedValue instanceof DomIdentifierValueInterface) {
-            $examinedValueAccessor = $this->namedDomIdentifierHandler->createStatementList(
+            $examinedValueAccessor = $this->namedDomIdentifierHandler->createSource(
                 new NamedDomIdentifierValue($examinedValue, $examinedValuePlaceholder)
             );
 
@@ -95,11 +95,11 @@ class ComparisonAssertionHandler implements HandlerInterface
                 return str_replace((string) $examinedValuePlaceholder . ' = ', '', $content);
             });
         } else {
-            $examinedValueAccessor = $this->scalarValueHandler->createStatementList($examinedValue);
+            $examinedValueAccessor = $this->scalarValueHandler->createSource($examinedValue);
         }
 
         if ($expectedValue instanceof DomIdentifierValueInterface) {
-            $expectedValueAccessor = $this->namedDomIdentifierHandler->createStatementList(
+            $expectedValueAccessor = $this->namedDomIdentifierHandler->createSource(
                 new NamedDomIdentifierValue($expectedValue, $expectedValuePlaceholder)
             );
 
@@ -107,7 +107,7 @@ class ComparisonAssertionHandler implements HandlerInterface
                 return str_replace((string) $expectedValuePlaceholder . ' = ', '', $content);
             });
         } else {
-            $expectedValueAccessor = $this->scalarValueHandler->createStatementList($expectedValue);
+            $expectedValueAccessor = $this->scalarValueHandler->createSource($expectedValue);
         }
 
         $examinedValueAssignment = $this->variableAssignmentFactory->createForValueAccessor(

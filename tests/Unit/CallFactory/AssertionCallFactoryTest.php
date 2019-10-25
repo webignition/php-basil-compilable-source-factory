@@ -12,7 +12,6 @@ use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
-use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
@@ -50,7 +49,6 @@ class AssertionCallFactoryTest extends \PHPUnit\Framework\TestCase
             $assertionTemplate
         );
 
-        $this->assertInstanceOf(StatementListInterface::class, $statementList);
         $this->assertEquals($expectedStatements, $statementList->getStatements());
         $this->assertEquals($expectedMetadata, $statementList->getMetadata());
     }
@@ -205,7 +203,6 @@ class AssertionCallFactoryTest extends \PHPUnit\Framework\TestCase
             $assertionTemplate
         );
 
-        $this->assertInstanceOf(StatementListInterface::class, $statementList);
         $this->assertEquals($expectedStatements, $statementList->getStatements());
         $this->assertEquals($expectedMetadata, $statementList->getMetadata());
     }

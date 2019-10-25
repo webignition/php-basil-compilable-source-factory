@@ -13,7 +13,6 @@ use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\StatementInterface;
 use webignition\BasilCompilationSource\StatementList;
-use webignition\BasilCompilationSource\StatementListInterface;
 
 class ExecutableCallFactory
 {
@@ -54,7 +53,7 @@ class ExecutableCallFactory
         $executableCall = '';
 
         foreach ($classDependencies as $key => $value) {
-            $classDependencyStatementList = $this->classDependencyHandler->createStatementList($value);
+            $classDependencyStatementList = $this->classDependencyHandler->createSource($value);
 
             foreach ($classDependencyStatementList->getStatements() as $classDependencyStatement) {
                 $executableCall .= $classDependencyStatement . ";\n";
@@ -97,11 +96,9 @@ class ExecutableCallFactory
             $source = new StatementList([$source]);
         }
 
-        if ($source instanceof StatementListInterface) {
-            $source->mutateLastStatement(function (string $content) {
-                return 'return ' . $content;
-            });
-        }
+        $source->mutateLastStatement(function (string $content) {
+            return 'return ' . $content;
+        });
 
         return $this->create(
             $source,

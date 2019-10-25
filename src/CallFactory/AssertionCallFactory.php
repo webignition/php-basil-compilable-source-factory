@@ -6,7 +6,6 @@ use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\StatementList;
-use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
@@ -41,7 +40,7 @@ class AssertionCallFactory
         VariablePlaceholder $expectedValuePlaceholder,
         VariablePlaceholder $actualValuePlaceholder,
         string $assertionTemplate
-    ): StatementListInterface {
+    ): SourceInterface {
         $variableDependencies = new VariablePlaceholderCollection();
         $variableDependencies = $variableDependencies->withAdditionalItems([
             $this->phpUnitTestCasePlaceholder,
@@ -69,7 +68,7 @@ class AssertionCallFactory
         SourceInterface $assignment,
         VariablePlaceholder $variablePlaceholder,
         string $assertionTemplate
-    ): StatementListInterface {
+    ): SourceInterface {
         $assertionStatementContent = sprintf(
             $assertionTemplate,
             (string) $this->phpUnitTestCasePlaceholder,

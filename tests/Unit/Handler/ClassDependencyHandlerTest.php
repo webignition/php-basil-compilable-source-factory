@@ -39,7 +39,7 @@ class ClassDependencyHandlerTest extends AbstractHandlerTest
         ClassDependency $classDependency,
         array $expectedStatements
     ) {
-        $statementList = $this->handler->createStatementList($classDependency);
+        $statementList = $this->handler->createSource($classDependency);
 
         $this->assertEquals($expectedStatements, $statementList->getStatements());
         $this->assertEquals(new Metadata(), $statementList->getMetadata());

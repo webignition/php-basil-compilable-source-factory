@@ -30,7 +30,7 @@ class ScalarValueHandlerTest extends AbstractHandlerTest
         callable $resultAssertions,
         array $additionalVariableIdentifiers = []
     ) {
-        $statementList = $this->handler->createStatementList($model);
+        $statementList = $this->handler->createSource($model);
 
         $additionalSetupStatements = [];
 

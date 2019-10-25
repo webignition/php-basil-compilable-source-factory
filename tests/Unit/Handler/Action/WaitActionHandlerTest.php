@@ -76,6 +76,6 @@ class WaitActionHandlerTest extends AbstractHandlerTest
 
         $this->expectException(NonTranspilableModelException::class);
 
-        $this->handler->createStatementList($action);
+        $this->handler->createSource($action);
     }
 }

@@ -67,6 +67,6 @@ class ComparisonAssertionHandlerTest extends AbstractHandlerTest
         $this->expectException(NonTranspilableModelException::class);
         $this->expectExceptionMessage('Non-transpilable model "' . ExaminationAssertion::class . '"');
 
-        $this->handler->createStatementList($model);
+        $this->handler->createSource($model);
     }
 }

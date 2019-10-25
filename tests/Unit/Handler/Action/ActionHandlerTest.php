@@ -27,7 +27,6 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\WaitForAc
 use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\AbstractHandlerTest;
 use webignition\BasilCompilationSource\MetadataInterface;
-use webignition\BasilCompilationSource\StatementListInterface;
 use webignition\BasilModel\Action\ActionInterface;
 
 class ActionHandlerTest extends AbstractHandlerTest
@@ -94,7 +93,7 @@ class ActionHandlerTest extends AbstractHandlerTest
         array $expectedStatements,
         MetadataInterface $expectedMetadata
     ) {
-        $statementList = $this->handler->createStatementList($action);
+        $statementList = $this->handler->createSource($action);
 
         $this->assertEquals($expectedStatements, $statementList->getStatements());
         $this->assertEquals($expectedMetadata, $statementList->getMetadata());
