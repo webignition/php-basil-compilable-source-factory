@@ -85,10 +85,14 @@ class ExistenceComparisonHandler implements HandlerInterface
 
         if ($this->isScalarValue($value)) {
             $accessor = $this->scalarValueHandler->createStatementList($value);
-            $accessor->appendLastStatement(' ?? null');
+            $accessor->mutateLastStatement(function (string $content) {
+                return $content . ' ?? null';
+            });
 
             $assignment = clone $accessor;
-            $assignment->prependLastStatement($valuePlaceholder . ' = ');
+            $assignment->mutateLastStatement(function (string $content) use ($valuePlaceholder) {
+                return $valuePlaceholder . ' = ' . $content;
+            });
 
             $assignment->addVariableExportsToLastStatement(new VariablePlaceholderCollection([
                 $valuePlaceholder,

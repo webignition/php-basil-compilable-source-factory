@@ -23,8 +23,10 @@ class VariableAssignmentFactory
     ): StatementListInterface {
         $assignment = clone $accessor;
 
-        $assignment->prependLastStatement($placeholder . ' = ');
-        $assignment->appendLastStatement(' ?? ' . $default);
+        $assignment->mutateLastStatement(function (string $content) use ($placeholder, $default) {
+            return $placeholder . ' = ' . $content . ' ?? ' . $default;
+        });
+
         $assignment->addVariableExportsToLastStatement(new VariablePlaceholderCollection([
             $placeholder,
         ]));
