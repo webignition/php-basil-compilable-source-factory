@@ -69,9 +69,6 @@ class BrowserPropertyHandler implements HandlerInterface
 
         $dimensionConcatenation = new Statement('(string) ' . $getWidthCall . ' . \'x\' . (string) ' . $getHeightCall);
 
-        return new StatementList(array_merge(
-            $dimensionAssignment->getStatementObjects(),
-            $dimensionConcatenation->getStatementObjects()
-        ));
+        return new StatementList([$dimensionAssignment, $dimensionConcatenation]);
     }
 }

@@ -11,6 +11,7 @@ use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\Statement;
+use webignition\BasilCompilationSource\StatementList;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
@@ -39,17 +40,21 @@ class AssertionCallFactoryTest extends AbstractTestCase
         $expectedValuePlaceholder = new VariablePlaceholder(VariableNames::EXPECTED_VALUE);
         $examinedValuePlaceholder = new VariablePlaceholder(VariableNames::EXAMINED_VALUE);
 
-        $expectedValueAssignment = new Statement(
-            $expectedValuePlaceholder . ' = "' . $expectedValue . '"',
-            (new Metadata())
-                ->withVariableExports(new VariablePlaceholderCollection([$expectedValuePlaceholder]))
-        );
+        $expectedValueAssignment = new StatementList([
+            new Statement(
+                $expectedValuePlaceholder . ' = "' . $expectedValue . '"',
+                (new Metadata())
+                    ->withVariableExports(new VariablePlaceholderCollection([$expectedValuePlaceholder]))
+            )
+        ]);
 
-        $actualValueAssignment = new Statement(
-            $examinedValuePlaceholder . ' = "' . $actualValue . '"',
-            (new Metadata())
-                ->withVariableExports(new VariablePlaceholderCollection([$examinedValuePlaceholder]))
-        );
+        $actualValueAssignment = new StatementList([
+            new Statement(
+                $examinedValuePlaceholder . ' = "' . $actualValue . '"',
+                (new Metadata())
+                    ->withVariableExports(new VariablePlaceholderCollection([$examinedValuePlaceholder]))
+            )
+        ]);
 
         $statementList = $this->factory->createValueComparisonAssertionCall(
             $expectedValueAssignment,
@@ -108,11 +113,13 @@ class AssertionCallFactoryTest extends AbstractTestCase
     {
         $examinedValuePlaceholder = new VariablePlaceholder(VariableNames::EXAMINED_VALUE);
 
-        $assignment = new Statement(
-            $examinedValuePlaceholder . ' = ' . $examinedValue . ' !== null',
-            (new Metadata())
-                ->withVariableExports(new VariablePlaceholderCollection([$examinedValuePlaceholder]))
-        );
+        $assignment = new StatementList([
+            new Statement(
+                $examinedValuePlaceholder . ' = ' . $examinedValue . ' !== null',
+                (new Metadata())
+                    ->withVariableExports(new VariablePlaceholderCollection([$examinedValuePlaceholder]))
+            )
+        ]);
 
         $statementList = $this->factory->createValueExistenceAssertionCall(
             $assignment,

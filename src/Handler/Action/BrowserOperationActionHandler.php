@@ -8,6 +8,7 @@ use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\Metadata;
+use webignition\BasilCompilationSource\StatementList;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Action\ActionTypes;
 use webignition\BasilModel\Action\NoArgumentsAction;
@@ -53,14 +54,16 @@ class BrowserOperationActionHandler implements HandlerInterface
 
         $metadata = (new Metadata())->withVariableDependencies($variableDependencies);
 
-        return new Statement(
-            sprintf(
-                '%s = %s->%s()',
-                $pantherCrawlerPlaceholder,
-                $pantherClientPlaceholder,
-                $model->getType()
-            ),
-            $metadata
-        );
+        return new StatementList([
+            new Statement(
+                sprintf(
+                    '%s = %s->%s()',
+                    $pantherCrawlerPlaceholder,
+                    $pantherClientPlaceholder,
+                    $model->getType()
+                ),
+                $metadata
+            )
+        ]);
     }
 }

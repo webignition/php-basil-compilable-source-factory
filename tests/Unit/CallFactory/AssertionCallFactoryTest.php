@@ -13,6 +13,7 @@ use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
+use webignition\BasilCompilationSource\StatementList;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
@@ -59,17 +60,21 @@ class AssertionCallFactoryTest extends AbstractTestCase
         $expectedValuePlaceholder = new VariablePlaceholder(VariableNames::EXPECTED_VALUE);
         $examinedValuePlaceholder = new VariablePlaceholder(VariableNames::EXAMINED_VALUE);
 
-        $expectedValueAssignment = new Statement(
-            $expectedValuePlaceholder . ' = "expected value"',
-            (new Metadata())
-                ->withVariableExports(new VariablePlaceholderCollection([$expectedValuePlaceholder]))
-        );
+        $expectedValueAssignment = new StatementList([
+            new Statement(
+                $expectedValuePlaceholder . ' = "expected value"',
+                (new Metadata())
+                    ->withVariableExports(new VariablePlaceholderCollection([$expectedValuePlaceholder]))
+            )
+        ]);
 
-        $actualValueAssignment = new Statement(
-            $examinedValuePlaceholder . ' = "actual value"',
-            (new Metadata())
-                ->withVariableExports(new VariablePlaceholderCollection([$examinedValuePlaceholder]))
-        );
+        $actualValueAssignment = new StatementList([
+            new Statement(
+                $examinedValuePlaceholder . ' = "actual value"',
+                (new Metadata())
+                    ->withVariableExports(new VariablePlaceholderCollection([$examinedValuePlaceholder]))
+            )
+        ]);
 
         return [
             'assert equals' => [
@@ -212,11 +217,13 @@ class AssertionCallFactoryTest extends AbstractTestCase
     {
         $examinedValuePlaceholder = new VariablePlaceholder(VariableNames::EXAMINED_VALUE);
 
-        $assignment = new Statement(
-            $examinedValuePlaceholder . ' = "value" !== null',
-            (new Metadata())
-                ->withVariableExports(new VariablePlaceholderCollection([$examinedValuePlaceholder]))
-        );
+        $assignment = new StatementList([
+            new Statement(
+                $examinedValuePlaceholder . ' = "value" !== null',
+                (new Metadata())
+                    ->withVariableExports(new VariablePlaceholderCollection([$examinedValuePlaceholder]))
+            )
+        ]);
 
         return [
             'assert true' => [
