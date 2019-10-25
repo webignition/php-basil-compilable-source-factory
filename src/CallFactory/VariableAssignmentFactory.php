@@ -31,11 +31,12 @@ class VariableAssignmentFactory
             $placeholder,
         ]));
 
-        return new StatementList(array_merge(
-            $assignment->getStatementObjects(),
-            [
-                new Statement(sprintf('%s = (%s) %s', (string) $placeholder, $type, (string) $placeholder)),
-            ]
-        ));
+        $statementList = new StatementList([]);
+        $statementList->addStatements($assignment->getStatementObjects());
+        $statementList->addStatements([
+            new Statement(sprintf('%s = (%s) %s', (string) $placeholder, $type, (string) $placeholder)),
+        ]);
+
+        return $statementList;
     }
 }
