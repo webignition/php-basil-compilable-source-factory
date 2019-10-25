@@ -33,9 +33,9 @@ class VariableAssignmentFactory
 
         $statementList = new StatementList([]);
         $statementList->addStatements($assignment->getStatementObjects());
-        $statementList->addStatements([
-            new Statement(sprintf('%s = (%s) %s', (string) $placeholder, $type, (string) $placeholder)),
-        ]);
+        $statementList->addStatement(
+            new Statement(sprintf('%s = (%s) %s', (string) $placeholder, $type, (string) $placeholder))
+        );
 
         return $statementList;
     }

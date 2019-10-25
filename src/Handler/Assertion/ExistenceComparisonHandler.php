@@ -134,9 +134,9 @@ class ExistenceComparisonHandler implements HandlerInterface
 
             $existence = new StatementList([]);
             $existence->addStatements($accessor->getStatementObjects());
-            $existence->addStatements([
-                new Statement(sprintf('%s = %s !== null', $valuePlaceholder, $valuePlaceholder)),
-            ]);
+            $existence->addStatement(
+                new Statement(sprintf('%s = %s !== null', $valuePlaceholder, $valuePlaceholder))
+            );
 
             return $this->createAssertionCall($model->getComparison(), $existence, $valuePlaceholder);
         }

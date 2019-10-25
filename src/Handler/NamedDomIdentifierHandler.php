@@ -98,7 +98,7 @@ class NamedDomIdentifierHandler implements HandlerInterface
 
         $statementList = new StatementList([]);
         $statementList->addStatements($elementExistsAssertion->getStatementObjects());
-        $statementList->addStatements([$elementOrCollectionAssignment]);
+        $statementList->addStatement($elementOrCollectionAssignment);
 
         if ($model->includeValue()) {
             if ($hasAttribute) {
