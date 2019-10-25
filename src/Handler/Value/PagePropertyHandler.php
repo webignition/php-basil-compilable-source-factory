@@ -19,7 +19,7 @@ class PagePropertyHandler implements HandlerInterface
     const PROPERTY_NAME_URL = 'url';
 
     private $variableDependencies;
-    private $transpiledValueMap;
+    private $contentMap;
 
     public function __construct()
     {
@@ -27,7 +27,7 @@ class PagePropertyHandler implements HandlerInterface
         $pantherClientPlaceholder = $this->variableDependencies->create(VariableNames::PANTHER_CLIENT);
         $pantherClientPlaceholderAsString = (string) $pantherClientPlaceholder;
 
-        $this->transpiledValueMap = [
+        $this->contentMap = [
             self::PROPERTY_NAME_TITLE => $pantherClientPlaceholderAsString . '->getTitle()',
             self::PROPERTY_NAME_URL => $pantherClientPlaceholderAsString . '->getCurrentURL()',
         ];
@@ -54,13 +54,13 @@ class PagePropertyHandler implements HandlerInterface
     public function createSource(object $model): SourceInterface
     {
         if ($this->handles($model) && $model instanceof ObjectValueInterface) {
-            $transpiledValue = $this->transpiledValueMap[$model->getProperty()] ?? null;
+            $statementContent = $this->contentMap[$model->getProperty()] ?? null;
 
-            if (is_string($transpiledValue)) {
+            if (is_string($statementContent)) {
                 $metadata = (new Metadata())
                     ->withVariableDependencies($this->variableDependencies);
 
-                return new Statement($transpiledValue, $metadata);
+                return new Statement($statementContent, $metadata);
             }
 
             throw new UnknownObjectPropertyException($model);
