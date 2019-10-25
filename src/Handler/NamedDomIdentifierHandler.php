@@ -74,10 +74,10 @@ class NamedDomIdentifierHandler implements HandlerInterface
         $hasPlaceholder = $hasAssignmentVariableExports->create('HAS');
 
         $hasAssignment = clone $hasCall;
-        $hasAssignment->mutateLastStatement(function ($content) use ($hasPlaceholder) {
+        $hasAssignment->mutate(function ($content) use ($hasPlaceholder) {
             return $hasPlaceholder . ' = ' . $content;
         });
-        $hasAssignment->addVariableExportsToLastStatement($hasAssignmentVariableExports);
+        $hasAssignment->addVariableExports($hasAssignmentVariableExports);
 
         $elementPlaceholder = $model->getPlaceholder();
         $collectionAssignmentVariableExports = new VariablePlaceholderCollection([
@@ -85,20 +85,20 @@ class NamedDomIdentifierHandler implements HandlerInterface
         ]);
 
         $elementOrCollectionAssignment = clone $findCall;
-        $elementOrCollectionAssignment->mutateLastStatement(function ($content) use ($elementPlaceholder) {
+        $elementOrCollectionAssignment->mutate(function ($content) use ($elementPlaceholder) {
             return $elementPlaceholder . ' = ' . $content;
         });
-        $elementOrCollectionAssignment->addVariableExportsToLastStatement($collectionAssignmentVariableExports);
+        $elementOrCollectionAssignment->addVariableExports($collectionAssignmentVariableExports);
 
         $elementExistsAssertion = $this->assertionCallFactory->createValueExistenceAssertionCall(
-            $hasAssignment,
+            new StatementList([$hasAssignment]),
             $hasPlaceholder,
             AssertionCallFactory::ASSERT_TRUE_TEMPLATE
         );
 
         $statements = array_merge(
             $elementExistsAssertion->getStatementObjects(),
-            $elementOrCollectionAssignment->getStatementObjects()
+            [$elementOrCollectionAssignment]
         );
 
         if ($model->includeValue()) {
@@ -113,12 +113,12 @@ class NamedDomIdentifierHandler implements HandlerInterface
                 $getValueCall = $this->webDriverElementInspectorCallFactory->createGetValueCall($elementPlaceholder);
 
                 $valueAssignment = clone $getValueCall;
-                $valueAssignment->mutateLastStatement(function ($content) use ($elementPlaceholder) {
+                $valueAssignment->mutate(function ($content) use ($elementPlaceholder) {
                     return $elementPlaceholder . ' = ' . $content;
                 });
             }
 
-            $statements = array_merge($statements, $valueAssignment->getStatementObjects());
+            $statements = array_merge($statements, [$valueAssignment]);
         }
 
         return new StatementList($statements);

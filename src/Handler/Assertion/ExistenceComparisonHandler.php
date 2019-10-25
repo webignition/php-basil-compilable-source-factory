@@ -114,14 +114,18 @@ class ExistenceComparisonHandler implements HandlerInterface
                 $accessor = $this->domCrawlerNavigatorCallFactory->createHasCall($identifier);
 
                 $assignment = clone $accessor;
-                $assignment->mutateLastStatement(function (string $content) use ($valuePlaceholder) {
+                $assignment->mutate(function (string $content) use ($valuePlaceholder) {
                     return $valuePlaceholder . ' = ' . $content;
                 });
-                $assignment->addVariableExportsToLastStatement(new VariablePlaceholderCollection([
+                $assignment->addVariableExports(new VariablePlaceholderCollection([
                     $valuePlaceholder,
                 ]));
 
-                return $this->createAssertionCall($model->getComparison(), $assignment, $valuePlaceholder);
+                return $this->createAssertionCall(
+                    $model->getComparison(),
+                    new StatementList([$assignment]),
+                    $valuePlaceholder
+                );
             }
 
             $accessor = $this->namedDomIdentifierHandler->createSource(

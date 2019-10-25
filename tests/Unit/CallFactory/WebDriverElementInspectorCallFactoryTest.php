@@ -34,13 +34,13 @@ class WebDriverElementInspectorCallFactoryTest extends AbstractTestCase
      */
     public function testCreateGetValueCall(
         VariablePlaceholder $collectionPlaceholder,
-        array $expectedStatements,
+        string $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
         $statement = $this->factory->createGetValueCall($collectionPlaceholder);
 
         $this->assertInstanceOf(StatementInterface::class, $statement);
-        $this->assertEquals($expectedStatements, $statement->getStatements());
+        $this->assertEquals($expectedContent, $statement->getContent());
         $this->assertMetadataEquals($expectedMetadata, $statement->getMetadata());
     }
 
@@ -49,9 +49,7 @@ class WebDriverElementInspectorCallFactoryTest extends AbstractTestCase
         return [
             'default' => [
                 'collectionPlaceholder' => new VariablePlaceholder('COLLECTION'),
-                'expectedStatements' => [
-                    '{{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ COLLECTION }})',
-                ],
+                'expectedContent' => '{{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ COLLECTION }})',
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,

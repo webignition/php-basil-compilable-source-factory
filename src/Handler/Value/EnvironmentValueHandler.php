@@ -8,6 +8,7 @@ use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
+use webignition\BasilCompilationSource\StatementList;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Value\ObjectValueInterface;
 use webignition\BasilModel\Value\ObjectValueType;
@@ -39,13 +40,15 @@ class EnvironmentValueHandler implements HandlerInterface
                 VariableNames::ENVIRONMENT_VARIABLE_ARRAY
             );
 
-            return new Statement(
-                sprintf(
-                    (string) $environmentVariableArrayPlaceholder . '[\'%s\']',
-                    $model->getProperty()
-                ),
-                (new Metadata())->withVariableDependencies($variableDependencies)
-            );
+            return new StatementList([
+                new Statement(
+                    sprintf(
+                        (string) $environmentVariableArrayPlaceholder . '[\'%s\']',
+                        $model->getProperty()
+                    ),
+                    (new Metadata())->withVariableDependencies($variableDependencies)
+                )
+            ]);
         }
 
         throw new UnsupportedModelException($model);

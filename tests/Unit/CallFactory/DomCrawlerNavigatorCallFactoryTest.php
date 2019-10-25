@@ -38,13 +38,13 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
      */
     public function testCreateFindCall(
         DomIdentifierInterface $identifier,
-        array $expectedStatements,
+        string $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
         $statement = $this->factory->createFindCall($identifier);
 
         $this->assertInstanceOf(StatementInterface::class, $statement);
-        $this->assertEquals($expectedStatements, $statement->getStatements());
+        $this->assertEquals($expectedContent, $statement->getContent());
         $this->assertMetadataEquals($expectedMetadata, $statement->getMetadata());
     }
 
@@ -58,13 +58,13 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
      */
     public function testCreateFindOneCall(
         DomIdentifierInterface $identifier,
-        array $expectedStatements,
+        string $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
         $statement = $this->factory->createFindOneCall($identifier);
 
         $this->assertInstanceOf(StatementInterface::class, $statement);
-        $this->assertEquals($expectedStatements, $statement->getStatements());
+        $this->assertEquals($expectedContent, $statement->getContent());
         $this->assertMetadataEquals($expectedMetadata, $statement->getMetadata());
     }
 
@@ -78,13 +78,13 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
      */
     public function testCreateHasCall(
         DomIdentifierInterface $identifier,
-        array $expectedStatements,
+        string $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
         $statement = $this->factory->createHasCall($identifier);
 
         $this->assertInstanceOf(StatementInterface::class, $statement);
-        $this->assertEquals($expectedStatements, $statement->getStatements());
+        $this->assertEquals($expectedContent, $statement->getContent());
         $this->assertMetadataEquals($expectedMetadata, $statement->getMetadata());
     }
 
@@ -98,13 +98,13 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
      */
     public function testCreateHasOneCall(
         DomIdentifierInterface $identifier,
-        array $expectedStatements,
+        string $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
         $statement = $this->factory->createHasOneCall($identifier);
 
         $this->assertInstanceOf(StatementInterface::class, $statement);
-        $this->assertEquals($expectedStatements, $statement->getStatements());
+        $this->assertEquals($expectedContent, $statement->getContent());
         $this->assertMetadataEquals($expectedMetadata, $statement->getMetadata());
     }
 
@@ -118,13 +118,9 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
         $testCases = $this->elementCallDataProvider();
 
         foreach ($testCases as $testCaseIndex => $testCase) {
-            $statements = $testCase['expectedStatements'];
+            $expectedContent = str_replace('{{ METHOD }}', $method, $testCase['expectedContent']);
 
-            foreach ($statements as $statementIndex => $statement) {
-                $statements[$statementIndex] = str_replace('{{ METHOD }}', $method, $statement);
-            }
-
-            $testCase['expectedStatements'] = $statements;
+            $testCase['expectedContent'] = $expectedContent;
             $testCases[$testCaseIndex] = $testCase;
         }
 
@@ -136,9 +132,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
         return [
             'no parent, no ordinal position' => [
                 'identifier' => new DomIdentifier('.selector'),
-                'expectedStatements' => [
-                    '{{ DOM_CRAWLER_NAVIGATOR }}->{{ METHOD }}(new ElementLocator(\'.selector\'))',
-                ],
+                'expectedContent' => '{{ DOM_CRAWLER_NAVIGATOR }}->{{ METHOD }}(new ElementLocator(\'.selector\'))',
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
                         new ClassDependency(ElementLocator::class),
@@ -149,9 +143,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
             ],
             'no parent, has ordinal position' => [
                 'identifier' => new DomIdentifier('.selector', 3),
-                'expectedStatements' => [
-                    '{{ DOM_CRAWLER_NAVIGATOR }}->{{ METHOD }}(new ElementLocator(\'.selector\', 3))',
-                ],
+                'expectedContent' => '{{ DOM_CRAWLER_NAVIGATOR }}->{{ METHOD }}(new ElementLocator(\'.selector\', 3))',
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
                         new ClassDependency(ElementLocator::class),
@@ -163,10 +155,8 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
             'has parent, no ordinal position' => [
                 'identifier' => (new DomIdentifier('.selector'))
                     ->withParentIdentifier(new DomIdentifier('.parent')),
-                'expectedStatements' => [
-                    '{{ DOM_CRAWLER_NAVIGATOR }}'
+                'expectedContent' => '{{ DOM_CRAWLER_NAVIGATOR }}'
                     .'->{{ METHOD }}(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))',
-                ],
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
                         new ClassDependency(ElementLocator::class),
@@ -178,10 +168,8 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
             'has parent, has ordinal position' => [
                 'identifier' => (new DomIdentifier('.selector', 2))
                     ->withParentIdentifier(new DomIdentifier('.parent')),
-                'expectedStatements' => [
-                    '{{ DOM_CRAWLER_NAVIGATOR }}'
+                'expectedContent' => '{{ DOM_CRAWLER_NAVIGATOR }}'
                     .'->{{ METHOD }}(new ElementLocator(\'.selector\', 2), new ElementLocator(\'.parent\'))',
-                ],
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
                         new ClassDependency(ElementLocator::class),
@@ -193,10 +181,8 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
             'has parent, has ordinal positions' => [
                 'identifier' => (new DomIdentifier('.selector', 3))
                     ->withParentIdentifier(new DomIdentifier('.parent', 4)),
-                'expectedStatements' => [
-                    '{{ DOM_CRAWLER_NAVIGATOR }}'
+                'expectedContent' => '{{ DOM_CRAWLER_NAVIGATOR }}'
                     .'->{{ METHOD }}(new ElementLocator(\'.selector\', 3), new ElementLocator(\'.parent\', 4))',
-                ],
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
                         new ClassDependency(ElementLocator::class),

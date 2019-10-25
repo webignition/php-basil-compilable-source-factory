@@ -35,13 +35,13 @@ class WebDriverElementMutatorCallFactoryTest extends AbstractTestCase
     public function testCreateSetValueCall(
         VariablePlaceholder $collectionPlaceholder,
         VariablePlaceholder $valuePlaceholder,
-        array $expectedStatements,
+        string $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
         $statement = $this->factory->createSetValueCall($collectionPlaceholder, $valuePlaceholder);
 
         $this->assertInstanceOf(StatementInterface::class, $statement);
-        $this->assertEquals($expectedStatements, $statement->getStatements());
+        $this->assertEquals($expectedContent, $statement->getContent());
         $this->assertMetadataEquals($expectedMetadata, $statement->getMetadata());
     }
 
@@ -51,9 +51,7 @@ class WebDriverElementMutatorCallFactoryTest extends AbstractTestCase
             'default' => [
                 'collectionPlaceholder' => new VariablePlaceholder('COLLECTION'),
                 'valuePlaceholder' => new VariablePlaceholder('VALUE'),
-                'expectedStatements' => [
-                    '{{ WEBDRIVER_ELEMENT_MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
-                ],
+                'expectedContent' => '{{ WEBDRIVER_ELEMENT_MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,

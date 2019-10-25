@@ -7,6 +7,7 @@ use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
+use webignition\BasilCompilationSource\StatementList;
 
 class ClassDependencyHandler implements HandlerInterface
 {
@@ -42,6 +43,8 @@ class ClassDependencyHandler implements HandlerInterface
             ? sprintf(self::CLASS_NAME_ONLY_TEMPLATE, $model->getClassName())
             : sprintf(self::WITH_ALIAS_TEMPLATE, $model->getClassName(), $model->getAlias());
 
-        return new Statement($content);
+        return new StatementList([
+            new Statement($content)
+        ]);
     }
 }
