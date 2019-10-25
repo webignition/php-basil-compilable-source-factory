@@ -6,6 +6,7 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
+use webignition\BasilCompilationSource\StatementList;
 use webignition\BasilModel\Step\StepInterface;
 
 class StepHandler implements HandlerInterface
@@ -26,6 +27,8 @@ class StepHandler implements HandlerInterface
             throw new UnsupportedModelException($model);
         }
 
-        return new Statement('');
+        return new StatementList([
+            new Statement('')
+        ]);
     }
 }
