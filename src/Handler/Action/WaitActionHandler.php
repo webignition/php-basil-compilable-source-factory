@@ -85,15 +85,16 @@ class WaitActionHandler implements HandlerInterface
             '0'
         );
 
-        return new StatementList(array_merge(
-            $durationAssignment->getStatementObjects(),
-            [
-                new Statement(sprintf(
-                    'usleep(%s * %s)',
-                    (string) $durationPlaceholder,
-                    self::MICROSECONDS_PER_MILLISECOND
-                ))
-            ]
-        ));
+        $statementList = new StatementList([]);
+        $statementList->addStatements($durationAssignment->getStatementObjects());
+        $statementList->addStatements([
+            new Statement(sprintf(
+                'usleep(%s * %s)',
+                (string) $durationPlaceholder,
+                self::MICROSECONDS_PER_MILLISECOND
+            ))
+        ]);
+
+        return $statementList;
     }
 }

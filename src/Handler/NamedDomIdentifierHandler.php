@@ -96,10 +96,9 @@ class NamedDomIdentifierHandler implements HandlerInterface
             AssertionCallFactory::ASSERT_TRUE_TEMPLATE
         );
 
-        $statements = array_merge(
-            $elementExistsAssertion->getStatementObjects(),
-            [$elementOrCollectionAssignment]
-        );
+        $statementList = new StatementList([]);
+        $statementList->addStatements($elementExistsAssertion->getStatementObjects());
+        $statementList->addStatements([$elementOrCollectionAssignment]);
 
         if ($model->includeValue()) {
             if ($hasAttribute) {
@@ -118,9 +117,9 @@ class NamedDomIdentifierHandler implements HandlerInterface
                 });
             }
 
-            $statements = array_merge($statements, [$valueAssignment]);
+            $statementList->addStatements([$valueAssignment]);
         }
 
-        return new StatementList($statements);
+        return $statementList;
     }
 }

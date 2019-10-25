@@ -65,15 +65,16 @@ abstract class AbstractInteractionActionHandler implements HandlerInterface
             $elementPlaceholder
         ));
 
-        return new StatementList(array_merge(
-            $accessor->getStatementObjects(),
-            [
-                new Statement(sprintf(
-                    '%s->%s()',
-                    (string) $elementPlaceholder,
-                    $this->getElementActionMethod()
-                ))
-            ]
-        ));
+        $statementList = new StatementList([]);
+        $statementList->addStatements($accessor->getStatementObjects());
+        $statementList->addStatements([
+            new Statement(sprintf(
+                '%s->%s()',
+                (string) $elementPlaceholder,
+                $this->getElementActionMethod()
+            ))
+        ]);
+
+        return $statementList;
     }
 }
