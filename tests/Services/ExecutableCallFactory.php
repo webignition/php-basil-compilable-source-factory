@@ -98,7 +98,9 @@ class ExecutableCallFactory
         }
 
         if ($source instanceof StatementListInterface) {
-            $source->prependLastStatement('return ');
+            $source->mutateLastStatement(function (string $content) {
+                return 'return ' . $content;
+            });
         }
 
         return $this->create(
