@@ -76,12 +76,12 @@ class AssertionHandlerTest extends AbstractHandlerTest
 
     /**
      * @dataProvider createFromExcludesAssertionDataProvider
-     * @dataProvider createFromExistsAssertionDataProvider
-     * @dataProvider createFromIncludesAssertionDataProvider
-     * @dataProvider createFromIsAssertionDataProvider
-     * @dataProvider createFromIsNotAssertionDataProvider
-     * @dataProvider createFromMatchesAssertionDataProvider
-     * @dataProvider createFromNotExistsAssertionDataProvider
+     * @!dataProvider createFromExistsAssertionDataProvider
+     * @!dataProvider createFromIncludesAssertionDataProvider
+     * @!dataProvider createFromIsAssertionDataProvider
+     * @!dataProvider createFromIsNotAssertionDataProvider
+     * @!dataProvider createFromMatchesAssertionDataProvider
+     * @!dataProvider createFromNotExistsAssertionDataProvider
      */
     public function testCreateStatementList(
         AssertionInterface $assertion,
@@ -91,6 +91,6 @@ class AssertionHandlerTest extends AbstractHandlerTest
         $statementList = $this->handler->createSource($assertion);
 
         $this->assertEquals($expectedStatements, $statementList->getStatements());
-        $this->assertEquals($expectedMetadata, $statementList->getMetadata());
+        $this->assertMetadataEquals($expectedMetadata, $statementList->getMetadata());
     }
 }

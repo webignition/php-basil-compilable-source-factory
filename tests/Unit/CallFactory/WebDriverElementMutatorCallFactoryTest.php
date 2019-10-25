@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\WebDriverElementMutatorCallFactory;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MetadataInterface;
@@ -14,7 +15,7 @@ use webignition\BasilCompilationSource\StatementInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
-class WebDriverElementMutatorCallFactoryTest extends \PHPUnit\Framework\TestCase
+class WebDriverElementMutatorCallFactoryTest extends AbstractTestCase
 {
     /**
      * @var WebDriverElementMutatorCallFactory
@@ -41,7 +42,7 @@ class WebDriverElementMutatorCallFactoryTest extends \PHPUnit\Framework\TestCase
 
         $this->assertInstanceOf(StatementInterface::class, $statement);
         $this->assertEquals($expectedStatements, $statement->getStatements());
-        $this->assertEquals($expectedMetadata, $statement->getMetadata());
+        $this->assertMetadataEquals($expectedMetadata, $statement->getMetadata());
     }
 
     public function createSetValueCallDataProvider(): array

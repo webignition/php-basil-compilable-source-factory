@@ -8,6 +8,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\ElementLocatorCallFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ExecutableCallFactory;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Metadata;
@@ -17,7 +18,7 @@ use webignition\BasilModel\Identifier\DomIdentifierInterface;
 use webignition\DomElementLocator\ElementLocator;
 use webignition\DomElementLocator\ElementLocatorInterface;
 
-class ElementLocatorCallFactoryTest extends \PHPUnit\Framework\TestCase
+class ElementLocatorCallFactoryTest extends AbstractTestCase
 {
     /**
      * @var ElementLocatorCallFactory
@@ -51,7 +52,7 @@ class ElementLocatorCallFactoryTest extends \PHPUnit\Framework\TestCase
                 new ClassDependency(ElementLocator::class)
             ]));
 
-        $this->assertEquals($expectedMetadata, $statement->getMetadata());
+        $this->assertMetadataEquals($expectedMetadata, $statement->getMetadata());
 
         $executableCall = $this->executableCallFactory->createWithReturn(new StatementList([
             $statement
