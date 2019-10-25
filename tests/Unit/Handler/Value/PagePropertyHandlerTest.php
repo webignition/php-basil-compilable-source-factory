@@ -51,7 +51,7 @@ class PagePropertyHandlerTest extends AbstractHandlerTest
         $this->assertFalse($this->handler->handles($model));
     }
 
-    public function testTranspileThrowsUnknownObjectPropertyException()
+    public function testCreateSourceThrowsUnknownObjectPropertyException()
     {
         $model = new ObjectValue(ObjectValueType::PAGE_PROPERTY, '$page.foo', 'foo');
 

@@ -57,9 +57,9 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
     }
 
     /**
-     * @dataProvider transpileDataProvider
+     * @dataProvider createSourceDataProvider
      */
-    public function testTranspile(
+    public function testCreateSource(
         ValueInterface $model,
         array $expectedStatements,
         MetadataInterface $expectedMetadata
@@ -70,7 +70,7 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
         $this->assertEquals($expectedMetadata, $statementList->getMetadata());
     }
 
-    public function transpileDataProvider(): array
+    public function createSourceDataProvider(): array
     {
         return [
             'element value, no parent' => [

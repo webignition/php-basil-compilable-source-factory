@@ -26,7 +26,7 @@ class SetActionHandlerTest extends AbstractHandlerTest
     /**
      * @dataProvider setActionFunctionalDataProvider
      */
-    public function testTranspileForExecutableActions(
+    public function testCreateSourceForExecutableActions(
         string $fixture,
         ActionInterface $action,
         array $additionalSetupStatements,

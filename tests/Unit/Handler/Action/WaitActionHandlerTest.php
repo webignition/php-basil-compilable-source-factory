@@ -63,7 +63,7 @@ class WaitActionHandlerTest extends AbstractHandlerTest
         $this->assertFalse($this->handler->handles($model));
     }
 
-    public function testTranspileWithNonTranspilableValue()
+    public function testCreateSourceForUnsupportedValue()
     {
         $action = new WaitAction(
             'wait 30',

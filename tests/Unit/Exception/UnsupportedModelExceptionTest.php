@@ -6,7 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Exception;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 
-class NonTranspilableModelExceptionTest extends \PHPUnit\Framework\TestCase
+class UnsupportedModelExceptionTest extends \PHPUnit\Framework\TestCase
 {
     public function testGetValue()
     {

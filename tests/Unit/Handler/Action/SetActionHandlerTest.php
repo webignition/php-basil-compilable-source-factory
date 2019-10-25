@@ -64,7 +64,7 @@ class SetActionHandlerTest extends AbstractHandlerTest
         $this->assertFalse($this->handler->handles($model));
     }
 
-    public function testTranspileWithNonTranspilableValue()
+    public function testCreatesSourceForUnsupportedValue()
     {
         $action = new InputAction(
             'set ".selector" to "foo"',

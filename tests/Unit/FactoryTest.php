@@ -22,7 +22,7 @@ class FactoryTest extends \PHPUnit\Framework\TestCase
         $this->factory = Factory::createFactory();
     }
 
-    public function testCreateSourceThrowsNonTranspilableModelException()
+    public function testCreateSourceThrowsUnsupportedModelException()
     {
         $this->expectException(UnsupportedModelException::class);
 

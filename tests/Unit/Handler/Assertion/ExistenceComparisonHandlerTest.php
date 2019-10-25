@@ -60,7 +60,7 @@ class ExistenceComparisonHandlerTest extends AbstractHandlerTest
         $this->assertFalse($this->handler->handles($model));
     }
 
-    public function testTranspileWrongComparisonType()
+    public function testCreateSourceWrongComparisonType()
     {
         $assertionFactory = AssertionFactory::createFactory();
         $model = $assertionFactory->createFromAssertionString('".selector" is "value"');
@@ -72,9 +72,9 @@ class ExistenceComparisonHandlerTest extends AbstractHandlerTest
     }
 
     /**
-     * @dataProvider transpileWrongValueTypeDataProvider
+     * @dataProvider createSourceWrongValueTypeDataProvider
      */
-    public function testTranspileWrongValueType(object $model, string $expectedExceptionMessage)
+    public function testCreateSourceWrongValueType(object $model, string $expectedExceptionMessage)
     {
         $this->expectException(UnsupportedModelException::class);
         $this->expectExceptionMessage($expectedExceptionMessage);
@@ -82,7 +82,7 @@ class ExistenceComparisonHandlerTest extends AbstractHandlerTest
         $this->handler->createSource($model);
     }
 
-    public function transpileWrongValueTypeDataProvider(): array
+    public function createSourceWrongValueTypeDataProvider(): array
     {
         $assertionFactory = AssertionFactory::createFactory();
 

@@ -24,7 +24,7 @@ abstract class AbstractHandlerTest extends \PHPUnit\Framework\TestCase
 
     abstract protected function createHandler(): HandlerInterface;
 
-    public function testTranspileNonTranspilableModel()
+    public function testCreateSourceForUnsupportedModel()
     {
         $this->expectException(UnsupportedModelException::class);
         $this->expectExceptionMessage('Unsupported model "stdClass"');

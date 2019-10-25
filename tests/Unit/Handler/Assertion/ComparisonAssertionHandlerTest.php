@@ -59,7 +59,7 @@ class ComparisonAssertionHandlerTest extends AbstractHandlerTest
         $this->assertFalse($this->handler->handles($model));
     }
 
-    public function testTranspileWrongComparisonType()
+    public function testCreateSourceWrongComparisonType()
     {
         $assertionFactory = AssertionFactory::createFactory();
         $model = $assertionFactory->createFromAssertionString('".selector" exists');

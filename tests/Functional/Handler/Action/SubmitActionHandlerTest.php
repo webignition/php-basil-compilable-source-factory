@@ -26,7 +26,7 @@ class SubmitActionHandlerTest extends AbstractHandlerTest
     /**
      * @dataProvider submitActionFunctionalDataProvider
      */
-    public function testTranspileForExecutableActions(
+    public function testCreateSourceForExecutableActions(
         string $fixture,
         ActionInterface $action,
         array $additionalSetupStatements,
