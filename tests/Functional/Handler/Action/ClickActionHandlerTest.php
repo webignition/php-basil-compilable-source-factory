@@ -26,7 +26,7 @@ class ClickActionHandlerTest extends AbstractHandlerTest
     /**
      * @dataProvider clickActionFunctionalDataProvider
      */
-    public function testTranspileForExecutableActions(
+    public function testCreateSourceForExecutableActions(
         string $fixture,
         ActionInterface $action,
         array $additionalSetupStatements,

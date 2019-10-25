@@ -6,7 +6,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Assertion;
 
-use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\ComparisonAssertionHandler;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\ExcludesAssertionDataProviderTrait;
@@ -59,13 +59,13 @@ class ComparisonAssertionHandlerTest extends AbstractHandlerTest
         $this->assertFalse($this->handler->handles($model));
     }
 
-    public function testTranspileWrongComparisonType()
+    public function testCreateSourceWrongComparisonType()
     {
         $assertionFactory = AssertionFactory::createFactory();
         $model = $assertionFactory->createFromAssertionString('".selector" exists');
 
-        $this->expectException(NonTranspilableModelException::class);
-        $this->expectExceptionMessage('Non-transpilable model "' . ExaminationAssertion::class . '"');
+        $this->expectException(UnsupportedModelException::class);
+        $this->expectExceptionMessage('Unsupported model "' . ExaminationAssertion::class . '"');
 
         $this->handler->createSource($model);
     }

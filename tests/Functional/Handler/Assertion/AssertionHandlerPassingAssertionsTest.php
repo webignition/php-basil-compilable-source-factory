@@ -48,7 +48,7 @@ class AssertionHandlerPassingAssertionsTest extends AbstractHandlerTest
      * @dataProvider matchesAssertionFunctionalDataProvider
      * @dataProvider notExistsAssertionFunctionalDataProvider
      */
-    public function testTranspile(
+    public function testCreateSource(
         string $fixture,
         AssertionInterface $model,
         array $additionalSetupStatements = [],

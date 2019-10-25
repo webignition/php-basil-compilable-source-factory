@@ -22,9 +22,9 @@ class ScalarValueHandlerTest extends AbstractHandlerTest
     }
 
     /**
-     * @dataProvider transpileDataProvider
+     * @dataProvider createSourceDataProvider
      */
-    public function testTranspile(
+    public function testCreateSource(
         string $fixture,
         ValueInterface $model,
         callable $resultAssertions,
@@ -44,7 +44,7 @@ class ScalarValueHandlerTest extends AbstractHandlerTest
         $resultAssertions(eval($executableCall));
     }
 
-    public function transpileDataProvider(): array
+    public function createSourceDataProvider(): array
     {
         return [
             'browser property: size' => [

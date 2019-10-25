@@ -2,7 +2,7 @@
 
 namespace webignition\BasilCompilableSourceFactory\Handler;
 
-use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\SourceInterface;
@@ -28,12 +28,12 @@ class ClassDependencyHandler implements HandlerInterface
      *
      * @return SourceInterface
      *
-     * @throws NonTranspilableModelException
+     * @throws UnsupportedModelException
      */
     public function createSource(object $model): SourceInterface
     {
         if (!$model instanceof ClassDependency) {
-            throw new NonTranspilableModelException($model);
+            throw new UnsupportedModelException($model);
         }
 
         $alias = $model->getAlias();

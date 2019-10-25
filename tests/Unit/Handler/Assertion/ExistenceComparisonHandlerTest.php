@@ -6,7 +6,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Assertion;
 
-use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\ExcludesAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\ExistsAssertionDataProviderTrait;
@@ -60,29 +60,29 @@ class ExistenceComparisonHandlerTest extends AbstractHandlerTest
         $this->assertFalse($this->handler->handles($model));
     }
 
-    public function testTranspileWrongComparisonType()
+    public function testCreateSourceWrongComparisonType()
     {
         $assertionFactory = AssertionFactory::createFactory();
         $model = $assertionFactory->createFromAssertionString('".selector" is "value"');
 
-        $this->expectException(NonTranspilableModelException::class);
-        $this->expectExceptionMessage('Non-transpilable model "' . ComparisonAssertion::class . '"');
+        $this->expectException(UnsupportedModelException::class);
+        $this->expectExceptionMessage('Unsupported model "' . ComparisonAssertion::class . '"');
 
         $this->handler->createSource($model);
     }
 
     /**
-     * @dataProvider transpileWrongValueTypeDataProvider
+     * @dataProvider createSourceWrongValueTypeDataProvider
      */
-    public function testTranspileWrongValueType(object $model, string $expectedExceptionMessage)
+    public function testCreateSourceWrongValueType(object $model, string $expectedExceptionMessage)
     {
-        $this->expectException(NonTranspilableModelException::class);
+        $this->expectException(UnsupportedModelException::class);
         $this->expectExceptionMessage($expectedExceptionMessage);
 
         $this->handler->createSource($model);
     }
 
-    public function transpileWrongValueTypeDataProvider(): array
+    public function createSourceWrongValueTypeDataProvider(): array
     {
         $assertionFactory = AssertionFactory::createFactory();
 
@@ -91,13 +91,13 @@ class ExistenceComparisonHandlerTest extends AbstractHandlerTest
                 'model' => $assertionFactory->createFromAssertionString(
                     'page_import_name.elements.element_name exists'
                 ),
-                'expectedExceptionMessage' => 'Non-transpilable model "' . ExaminationAssertion::class . '"',
+                'expectedExceptionMessage' => 'Unsupported model "' . ExaminationAssertion::class . '"',
             ],
             'non-scalar object value' => [
                 'model' => $assertionFactory->createFromAssertionString(
                     '$data.key exists'
                 ),
-                'expectedExceptionMessage' => 'Non-transpilable model "' . ExaminationAssertion::class . '"',
+                'expectedExceptionMessage' => 'Unsupported model "' . ExaminationAssertion::class . '"',
             ],
         ];
     }

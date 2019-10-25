@@ -46,9 +46,9 @@ class ActionHandlerTest extends AbstractHandlerTest
     }
 
     /**
-     * @dataProvider transpileForExecutableActionsDataProvider
+     * @dataProvider createSourceForExecutableActionsDataProvider
      */
-    public function testTranspileForExecutableActions(
+    public function testCreateSourceForExecutableActions(
         string $fixture,
         ActionInterface $action,
         array $additionalSetupStatements,
@@ -77,7 +77,7 @@ class ActionHandlerTest extends AbstractHandlerTest
         eval($executableCall);
     }
 
-    public function transpileForExecutableActionsDataProvider()
+    public function createSourceForExecutableActionsDataProvider()
     {
         return [
             'wait action' => current($this->waitActionFunctionalDataProvider()),
@@ -92,9 +92,9 @@ class ActionHandlerTest extends AbstractHandlerTest
     }
 
     /**
-     * @dataProvider transpileForFailingActionsDataProvider
+     * @dataProvider createSourceForFailingActionsDataProvider
      */
-    public function testTranspileForFailingActions(
+    public function testCreateSourceForFailingActions(
         ActionInterface $action,
         array $variableIdentifiers,
         string $expectedExpectationFailedExceptionMessage
@@ -125,7 +125,7 @@ class ActionHandlerTest extends AbstractHandlerTest
         eval($executableCall);
     }
 
-    public function transpileForFailingActionsDataProvider(): array
+    public function createSourceForFailingActionsDataProvider(): array
     {
         return [
             'wait action, element identifier examined value, element does not exist' => [

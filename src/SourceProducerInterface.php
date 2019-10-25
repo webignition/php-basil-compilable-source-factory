@@ -2,7 +2,7 @@
 
 namespace webignition\BasilCompilableSourceFactory;
 
-use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilationSource\SourceInterface;
 
 interface SourceProducerInterface
@@ -12,7 +12,7 @@ interface SourceProducerInterface
      *
      * @return SourceInterface
      *
-     * @throws NonTranspilableModelException
+     * @throws UnsupportedModelException
      */
     public function createSource(object $model): SourceInterface;
 }

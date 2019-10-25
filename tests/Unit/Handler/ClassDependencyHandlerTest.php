@@ -33,9 +33,9 @@ class ClassDependencyHandlerTest extends AbstractHandlerTest
     }
 
     /**
-     * @dataProvider transpileDataProvider
+     * @dataProvider createSourceDataProvider
      */
-    public function testTranspile(
+    public function testCreateSource(
         ClassDependency $classDependency,
         array $expectedStatements
     ) {
@@ -45,7 +45,7 @@ class ClassDependencyHandlerTest extends AbstractHandlerTest
         $this->assertEquals(new Metadata(), $statementList->getMetadata());
     }
 
-    public function transpileDataProvider(): array
+    public function createSourceDataProvider(): array
     {
         return [
             'without alias' => [

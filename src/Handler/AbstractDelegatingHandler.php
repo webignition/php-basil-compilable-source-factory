@@ -4,7 +4,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler;
 
 use webignition\BasilCompilableSourceFactory\AbstractDelegator;
 use webignition\BasilCompilableSourceFactory\DelegatorInterface;
-use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilationSource\SourceInterface;
 
@@ -20,7 +20,7 @@ abstract class AbstractDelegatingHandler extends AbstractDelegator implements De
      *
      * @return SourceInterface
      *
-     * @throws NonTranspilableModelException
+     * @throws UnsupportedModelException
      */
     public function createSource(object $model): SourceInterface
     {
@@ -30,6 +30,6 @@ abstract class AbstractDelegatingHandler extends AbstractDelegator implements De
             return $handler->createSource($model);
         }
 
-        throw new NonTranspilableModelException($model);
+        throw new UnsupportedModelException($model);
     }
 }

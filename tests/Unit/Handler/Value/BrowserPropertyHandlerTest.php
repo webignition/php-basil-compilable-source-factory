@@ -51,7 +51,7 @@ class BrowserPropertyHandlerTest extends AbstractHandlerTest
         $this->assertFalse($this->handler->handles($model));
     }
 
-    public function testTranspileThrowsUnknownObjectPropertyException()
+    public function testCreateSourceThrowsUnknownObjectPropertyException()
     {
         $model = new ObjectValue(ObjectValueType::BROWSER_PROPERTY, '$browser.foo', 'foo');
 

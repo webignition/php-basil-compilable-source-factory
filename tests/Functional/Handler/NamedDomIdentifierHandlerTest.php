@@ -29,9 +29,9 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
         return NamedDomIdentifierHandler::createHandler();
     }
     /**
-     * @dataProvider transpileDataProvider
+     * @dataProvider createSourceDataProvider
      */
-    public function testTranspile(
+    public function testCreateSource(
         string $fixture,
         NamedDomIdentifierInterface $namedDomIdentifier,
         callable $resultAssertions,
@@ -72,7 +72,7 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
         $resultAssertions(eval($executableCall));
     }
 
-    public function transpileDataProvider(): array
+    public function createSourceDataProvider(): array
     {
         return [
             'element value, no parent' => [

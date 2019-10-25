@@ -26,7 +26,7 @@ class WaitActionHandlerTest extends AbstractHandlerTest
     /**
      * @dataProvider waitActionFunctionalDataProvider
      */
-    public function testTranspileForExecutableActions(
+    public function testCreateSourceForExecutableActions(
         string $fixture,
         ActionInterface $action,
         array $additionalSetupStatements,

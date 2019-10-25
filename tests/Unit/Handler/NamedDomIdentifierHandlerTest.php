@@ -6,7 +6,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler;
 
-use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifier;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierInterface;
@@ -58,9 +57,9 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
     }
 
     /**
-     * @dataProvider transpileDataProvider
+     * @dataProvider createSourceDataProvider
      */
-    public function testTranspile(
+    public function testCreateSource(
         ValueInterface $model,
         array $expectedStatements,
         MetadataInterface $expectedMetadata
@@ -71,7 +70,7 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
         $this->assertEquals($expectedMetadata, $statementList->getMetadata());
     }
 
-    public function transpileDataProvider(): array
+    public function createSourceDataProvider(): array
     {
         return [
             'element value, no parent' => [
@@ -185,15 +184,5 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                     ])),
             ],
         ];
-    }
-
-    public function testTranspileNonTranspilableModel()
-    {
-        $this->expectException(NonTranspilableModelException::class);
-        $this->expectExceptionMessage('Non-transpilable model "stdClass"');
-
-        $model = new \stdClass();
-
-        $this->handler->createSource($model);
     }
 }

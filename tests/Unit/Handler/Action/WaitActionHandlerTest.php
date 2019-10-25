@@ -6,7 +6,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Action;
 
-use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\BackActionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\ClickActionDataProviderTrait;
@@ -63,7 +63,7 @@ class WaitActionHandlerTest extends AbstractHandlerTest
         $this->assertFalse($this->handler->handles($model));
     }
 
-    public function testTranspileWithNonTranspilableValue()
+    public function testCreateSourceForUnsupportedValue()
     {
         $action = new WaitAction(
             'wait 30',
@@ -74,7 +74,7 @@ class WaitActionHandlerTest extends AbstractHandlerTest
             )
         );
 
-        $this->expectException(NonTranspilableModelException::class);
+        $this->expectException(UnsupportedModelException::class);
 
         $this->handler->createSource($action);
     }

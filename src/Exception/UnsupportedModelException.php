@@ -2,13 +2,13 @@
 
 namespace webignition\BasilCompilableSourceFactory\Exception;
 
-class NonTranspilableModelException extends \Exception
+class UnsupportedModelException extends \Exception
 {
     private $model;
 
     public function __construct(object $model)
     {
-        parent::__construct('Non-transpilable model "' . get_class($model) . '"');
+        parent::__construct('Unsupported model "' . get_class($model) . '"');
 
         $this->model = $model;
     }

@@ -27,9 +27,9 @@ class AssertionHandlerFailingAssertionsTest extends AbstractHandlerTest
     }
 
     /**
-     * @dataProvider transpileForFailingAssertionsDataProvider
+     * @dataProvider createSourceForFailingAssertionsDataProvider
      */
-    public function testTranspileForFailingAssertions(
+    public function testCreateSourceForFailingAssertions(
         string $fixture,
         AssertionInterface $assertion,
         string $expectedExpectationFailedExceptionMessage,
@@ -61,7 +61,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractHandlerTest
         eval($executableCall);
     }
 
-    public function transpileForFailingAssertionsDataProvider(): array
+    public function createSourceForFailingAssertionsDataProvider(): array
     {
         $assertionFactory = AssertionFactory::createFactory();
 

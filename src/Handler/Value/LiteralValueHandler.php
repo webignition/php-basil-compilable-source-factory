@@ -2,7 +2,7 @@
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Value;
 
-use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
@@ -26,6 +26,6 @@ class LiteralValueHandler implements HandlerInterface
             return new Statement((string) $model);
         }
 
-        throw new NonTranspilableModelException($model);
+        throw new UnsupportedModelException($model);
     }
 }
