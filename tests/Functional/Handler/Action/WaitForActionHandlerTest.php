@@ -32,7 +32,7 @@ class WaitForActionHandlerTest extends AbstractHandlerTest
         array $teardownStatements,
         array $additionalVariableIdentifiers
     ) {
-        $statementList = $this->handler->createStatementList($action);
+        $statementList = $this->handler->createSource($action);
 
         $variableIdentifiers = array_merge(
             [

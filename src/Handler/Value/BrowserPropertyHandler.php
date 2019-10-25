@@ -36,7 +36,7 @@ class BrowserPropertyHandler implements HandlerInterface
      * @throws NonTranspilableModelException
      * @throws UnknownObjectPropertyException
      */
-    public function createStatementList(object $model): SourceInterface
+    public function createSource(object $model): SourceInterface
     {
         if (!$this->handles($model) || !$model instanceof ObjectValueInterface) {
             throw new NonTranspilableModelException($model);

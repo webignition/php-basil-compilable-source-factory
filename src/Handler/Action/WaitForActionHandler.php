@@ -40,7 +40,7 @@ class WaitForActionHandler implements HandlerInterface
      *
      * @throws NonTranspilableModelException
      */
-    public function createStatementList(object $model): SourceInterface
+    public function createSource(object $model): SourceInterface
     {
         if (!$model instanceof InteractionActionInterface) {
             throw new NonTranspilableModelException($model);

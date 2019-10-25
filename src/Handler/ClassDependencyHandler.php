@@ -30,7 +30,7 @@ class ClassDependencyHandler implements HandlerInterface
      *
      * @throws NonTranspilableModelException
      */
-    public function createStatementList(object $model): SourceInterface
+    public function createSource(object $model): SourceInterface
     {
         if (!$model instanceof ClassDependency) {
             throw new NonTranspilableModelException($model);

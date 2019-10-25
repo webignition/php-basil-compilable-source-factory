@@ -53,7 +53,7 @@ class ExecutableCallFactory
         $executableCall = '';
 
         foreach ($classDependencies as $key => $value) {
-            $classDependencyStatementList = $this->classDependencyHandler->createStatementList($value);
+            $classDependencyStatementList = $this->classDependencyHandler->createSource($value);
 
             foreach ($classDependencyStatementList->getStatements() as $classDependencyStatement) {
                 $executableCall .= $classDependencyStatement . ";\n";

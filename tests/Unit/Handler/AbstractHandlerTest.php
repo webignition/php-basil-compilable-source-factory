@@ -31,7 +31,7 @@ abstract class AbstractHandlerTest extends \PHPUnit\Framework\TestCase
 
         $model = new \stdClass();
 
-        $this->handler->createStatementList($model);
+        $this->handler->createSource($model);
     }
 
     public function testHandlesUnhandledModel()

@@ -37,7 +37,7 @@ class BrowserOperationActionHandler implements HandlerInterface
      *
      * @throws NonTranspilableModelException
      */
-    public function createStatementList(object $model): SourceInterface
+    public function createSource(object $model): SourceInterface
     {
         if (!$model instanceof NoArgumentsAction) {
             throw new NonTranspilableModelException($model);

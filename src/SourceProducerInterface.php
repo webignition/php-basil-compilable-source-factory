@@ -5,13 +5,8 @@ namespace webignition\BasilCompilableSourceFactory;
 use webignition\BasilCompilableSourceFactory\Exception\NonTranspilableModelException;
 use webignition\BasilCompilationSource\SourceInterface;
 
-class Factory implements FactoryInterface
+interface SourceProducerInterface
 {
-    public static function createFactory(): FactoryInterface
-    {
-        return new Factory();
-    }
-
     /**
      * @param object $model
      *
@@ -19,8 +14,5 @@ class Factory implements FactoryInterface
      *
      * @throws NonTranspilableModelException
      */
-    public function createSource(object $model): SourceInterface
-    {
-        throw new NonTranspilableModelException($model);
-    }
+    public function createSource(object $model): SourceInterface;
 }

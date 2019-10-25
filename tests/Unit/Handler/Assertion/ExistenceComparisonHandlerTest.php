@@ -68,7 +68,7 @@ class ExistenceComparisonHandlerTest extends AbstractHandlerTest
         $this->expectException(NonTranspilableModelException::class);
         $this->expectExceptionMessage('Non-transpilable model "' . ComparisonAssertion::class . '"');
 
-        $this->handler->createStatementList($model);
+        $this->handler->createSource($model);
     }
 
     /**
@@ -79,7 +79,7 @@ class ExistenceComparisonHandlerTest extends AbstractHandlerTest
         $this->expectException(NonTranspilableModelException::class);
         $this->expectExceptionMessage($expectedExceptionMessage);
 
-        $this->handler->createStatementList($model);
+        $this->handler->createSource($model);
     }
 
     public function transpileWrongValueTypeDataProvider(): array
