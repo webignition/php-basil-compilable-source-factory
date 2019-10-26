@@ -39,7 +39,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '".selector" is "value"'
                 ),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ EXPECTED_VALUE }} = "value" ?? null',
                     '{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}',
                     '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
@@ -68,7 +68,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '".selector".attribute_name is "value"'
                 ),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ EXPECTED_VALUE }} = "value" ?? null',
                     '{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}',
                     '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
@@ -96,7 +96,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '$browser.size is "value"'
                 ),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ EXPECTED_VALUE }} = "value" ?? null',
                     '{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}',
                     '{{ WEBDRIVER_DIMENSION }} = {{ PANTHER_CLIENT }}->getWebDriver()->manage()->window()->getSize()',
@@ -120,7 +120,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '$env.KEY is "value"'
                 ),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ EXPECTED_VALUE }} = "value" ?? null',
                     '{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}',
                     '{{ EXAMINED_VALUE }} = {{ ENVIRONMENT_VARIABLE_ARRAY }}[\'KEY\'] ?? null',
@@ -141,7 +141,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '$page.title is "value"'
                 ),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ EXPECTED_VALUE }} = "value" ?? null',
                     '{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}',
                     '{{ EXAMINED_VALUE }} = {{ PANTHER_CLIENT }}->getTitle() ?? null',
@@ -165,7 +165,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     AssertionComparison::IS,
                     $elementValue
                 ),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
                     '{{ EXPECTED_VALUE }} = {{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
@@ -201,7 +201,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     AssertionComparison::IS,
                     $attributeValue
                 ),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
                     '{{ EXPECTED_VALUE }} = {{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
@@ -236,7 +236,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     AssertionComparison::IS,
                     $environmentValue
                 ),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ EXPECTED_VALUE }} = {{ ENVIRONMENT_VARIABLE_ARRAY }}[\'KEY\'] ?? null',
                     '{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}',
                     '{{ WEBDRIVER_DIMENSION }} = {{ PANTHER_CLIENT }}->getWebDriver()->manage()->window()->getSize()',
@@ -264,7 +264,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     AssertionComparison::IS,
                     $pageProperty
                 ),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ EXPECTED_VALUE }} = {{ PANTHER_CLIENT }}->getCurrentURL() ?? null',
                     '{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}',
                     '{{ WEBDRIVER_DIMENSION }} = {{ PANTHER_CLIENT }}->getWebDriver()->manage()->window()->getSize()',

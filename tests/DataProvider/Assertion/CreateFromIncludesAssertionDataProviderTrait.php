@@ -24,7 +24,7 @@ trait CreateFromIncludesAssertionDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '".selector" includes "value"'
                 ),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ EXPECTED_VALUE }} = "value" ?? null',
                     '{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}',
                     '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
@@ -54,7 +54,7 @@ trait CreateFromIncludesAssertionDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '".selector".attribute_name includes "value"'
                 ),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ EXPECTED_VALUE }} = "value" ?? null',
                     '{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}',
                     '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',

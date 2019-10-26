@@ -5,7 +5,7 @@ namespace webignition\BasilCompilableSourceFactory\CallFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
-use webignition\BasilCompilationSource\StatementList;
+use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
@@ -55,12 +55,12 @@ class AssertionCallFactory
             $actualValuePlaceholder
         );
 
-        $statementList = new StatementList([]);
-        $statementList->addStatements($expectedValueAssignment->getStatementObjects());
-        $statementList->addStatements($actualValueAssignment->getStatementObjects());
-        $statementList->addStatement(new Statement($assertionStatementContent, $metadata));
+        $lineList = new LineList([]);
+        $lineList->addLines($expectedValueAssignment->getLineObjects());
+        $lineList->addLines($actualValueAssignment->getLineObjects());
+        $lineList->addLine(new Statement($assertionStatementContent, $metadata));
 
-        return $statementList;
+        return $lineList;
     }
 
     public function createValueExistenceAssertionCall(
@@ -77,10 +77,10 @@ class AssertionCallFactory
         $metadata = (new Metadata())
             ->withVariableDependencies($this->variableDependencies);
 
-        $statementList = new StatementList([]);
-        $statementList->addStatements($assignment->getStatementObjects());
-        $statementList->addStatement(new Statement($assertionStatementContent, $metadata));
+        $lineList = new LineList([]);
+        $lineList->addLines($assignment->getLineObjects());
+        $lineList->addLine(new Statement($assertionStatementContent, $metadata));
 
-        return $statementList;
+        return $lineList;
     }
 }

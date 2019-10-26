@@ -24,7 +24,7 @@ trait CreateFromExistsAssertionDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '$page.url exists'
                 ),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ EXAMINED_VALUE }} = {{ PANTHER_CLIENT }}->getCurrentURL() ?? null',
                     '{{ EXAMINED_VALUE }} = {{ EXAMINED_VALUE }} !== null',
                     '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ EXAMINED_VALUE }})',
@@ -42,7 +42,7 @@ trait CreateFromExistsAssertionDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '".selector" exists'
                 ),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ EXAMINED_VALUE }} = {{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ EXAMINED_VALUE }})',
                 ],
@@ -62,7 +62,7 @@ trait CreateFromExistsAssertionDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '".selector".attribute_name exists'
                 ),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
                     '{{ EXAMINED_VALUE }} = {{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',

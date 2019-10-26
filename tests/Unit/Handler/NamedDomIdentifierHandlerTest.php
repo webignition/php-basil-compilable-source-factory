@@ -61,13 +61,13 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
      */
     public function testCreateSource(
         ValueInterface $model,
-        array $expectedStatements,
+        array $expectedLines,
         MetadataInterface $expectedMetadata
     ) {
-        $statementList = $this->handler->createSource($model);
+        $lineList = $this->handler->createSource($model);
 
-        $this->assertEquals($expectedStatements, $statementList->getStatements());
-        $this->assertMetadataEquals($expectedMetadata, $statementList->getMetadata());
+        $this->assertEquals($expectedLines, $lineList->getLines());
+        $this->assertMetadataEquals($expectedMetadata, $lineList->getMetadata());
     }
 
     public function createSourceDataProvider(): array
@@ -78,7 +78,7 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                     new DomIdentifierValue(new DomIdentifier('.selector')),
                     new VariablePlaceholder('ELEMENT_NO_PARENT')
                 ),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
                     '{{ ELEMENT_NO_PARENT }} = {{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
@@ -105,7 +105,7 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                     ),
                     new VariablePlaceholder('ELEMENT_HAS_PARENT')
                 ),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}'
                     . '->has(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))',
                     '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
@@ -134,7 +134,7 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                     ),
                     new VariablePlaceholder('ELEMENT_NO_PARENT')
                 ),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
                     '{{ ELEMENT_NO_PARENT }} = {{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
@@ -162,7 +162,7 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                     ),
                     new VariablePlaceholder('ELEMENT_NO_PARENT')
                 ),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}'
                     .'->hasOne(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))',
                     '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',

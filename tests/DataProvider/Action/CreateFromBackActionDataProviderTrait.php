@@ -19,7 +19,7 @@ trait CreateFromBackActionDataProviderTrait
         return [
             'no-arguments action (back)' => [
                 'action' => $actionFactory->createFromActionString('back'),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ CRAWLER }} = {{ PANTHER_CLIENT }}->back()',
                 ],
                 'expectedMetadata' => (new Metadata())

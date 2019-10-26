@@ -19,14 +19,14 @@ trait CreateFromValueDataProviderTrait
         return [
             'literal string value: string' => [
                 'value' => new LiteralValue('value'),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '"value"',
                 ],
                 'expectedMetadata' => new Metadata(),
             ],
             'literal string value: integer' => [
                 'value' => new LiteralValue('100'),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '"100"',
                 ],
                 'expectedMetadata' => new Metadata(),
@@ -37,7 +37,7 @@ trait CreateFromValueDataProviderTrait
                     '$env.KEY',
                     'KEY'
                 ),
-                'expectedStatements' => [
+                'expectedLines' => [
                     (string) new VariablePlaceholder(VariableNames::ENVIRONMENT_VARIABLE_ARRAY) . '[\'KEY\']',
                 ],
                 'expectedMetadata' => (new Metadata())
@@ -47,7 +47,7 @@ trait CreateFromValueDataProviderTrait
             ],
             'browser property, size' => [
                 'value' => new ObjectValue(ObjectValueType::BROWSER_PROPERTY, '$browser.size', 'size'),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ WEBDRIVER_DIMENSION }} = {{ PANTHER_CLIENT }}->getWebDriver()->manage()->window()->getSize()',
                     '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
                     . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight()',
@@ -61,7 +61,7 @@ trait CreateFromValueDataProviderTrait
             ],
             'page property, url' => [
                 'value' => new ObjectValue(ObjectValueType::PAGE_PROPERTY, '$page.url', 'url'),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ PANTHER_CLIENT }}->getCurrentURL()',
                 ],
                 'expectedMetadata' => (new Metadata())
@@ -71,7 +71,7 @@ trait CreateFromValueDataProviderTrait
             ],
             'page property, title' => [
                 'value' => new ObjectValue(ObjectValueType::PAGE_PROPERTY, '$page.title', 'title'),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ PANTHER_CLIENT }}->getTitle()',
                 ],
                 'expectedMetadata' => (new Metadata())

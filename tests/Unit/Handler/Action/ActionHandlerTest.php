@@ -90,12 +90,12 @@ class ActionHandlerTest extends AbstractHandlerTest
      */
     public function testCreateStatementList(
         ActionInterface $action,
-        array $expectedStatements,
+        array $expectedLines,
         MetadataInterface $expectedMetadata
     ) {
-        $statementList = $this->handler->createSource($action);
+        $lineList = $this->handler->createSource($action);
 
-        $this->assertEquals($expectedStatements, $statementList->getStatements());
-        $this->assertMetadataEquals($expectedMetadata, $statementList->getMetadata());
+        $this->assertEquals($expectedLines, $lineList->getLines());
+        $this->assertMetadataEquals($expectedMetadata, $lineList->getMetadata());
     }
 }

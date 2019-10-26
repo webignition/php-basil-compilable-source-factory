@@ -19,7 +19,7 @@ trait CreateFromReloadActionDataProviderTrait
         return [
             'no-arguments action (reload)' => [
                 'action' => $actionFactory->createFromActionString('reload'),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ CRAWLER }} = {{ PANTHER_CLIENT }}->reload()',
                 ],
                 'expectedMetadata' => (new Metadata())

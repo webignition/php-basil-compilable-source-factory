@@ -37,12 +37,12 @@ class ClassDependencyHandlerTest extends AbstractHandlerTest
      */
     public function testCreateSource(
         ClassDependency $classDependency,
-        array $expectedStatements
+        array $expectedLines
     ) {
-        $statementList = $this->handler->createSource($classDependency);
+        $lineList = $this->handler->createSource($classDependency);
 
-        $this->assertEquals($expectedStatements, $statementList->getStatements());
-        $this->assertEquals(new Metadata(), $statementList->getMetadata());
+        $this->assertEquals($expectedLines, $lineList->getLines());
+        $this->assertEquals(new Metadata(), $lineList->getMetadata());
     }
 
     public function createSourceDataProvider(): array
@@ -50,13 +50,13 @@ class ClassDependencyHandlerTest extends AbstractHandlerTest
         return [
             'without alias' => [
                 'classDependency' => new ClassDependency(ClassDependency::class),
-                'expectedStatements' => [
+                'expectedLines' => [
                     'use webignition\BasilCompilationSource\ClassDependency',
                 ]
             ],
             'with alias' => [
                 'classDependency' => new ClassDependency(ClassDependency::class, 'CD'),
-                'expectedStatements' => [
+                'expectedLines' => [
                     'use webignition\BasilCompilationSource\ClassDependency as CD',
                 ]
             ],

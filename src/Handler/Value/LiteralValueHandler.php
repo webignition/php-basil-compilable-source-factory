@@ -6,7 +6,7 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
-use webignition\BasilCompilationSource\StatementList;
+use webignition\BasilCompilationSource\LineList;
 use webignition\BasilModel\Value\LiteralValueInterface;
 
 class LiteralValueHandler implements HandlerInterface
@@ -24,7 +24,7 @@ class LiteralValueHandler implements HandlerInterface
     public function createSource(object $model): SourceInterface
     {
         if ($this->handles($model)) {
-            return new StatementList([
+            return new LineList([
                 new Statement((string) $model)
             ]);
         }

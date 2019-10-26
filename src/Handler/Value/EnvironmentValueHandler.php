@@ -8,7 +8,7 @@ use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
-use webignition\BasilCompilationSource\StatementList;
+use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Value\ObjectValueInterface;
 use webignition\BasilModel\Value\ObjectValueType;
@@ -40,7 +40,7 @@ class EnvironmentValueHandler implements HandlerInterface
                 VariableNames::ENVIRONMENT_VARIABLE_ARRAY
             );
 
-            return new StatementList([
+            return new LineList([
                 new Statement(
                     sprintf(
                         (string) $environmentVariableArrayPlaceholder . '[\'%s\']',

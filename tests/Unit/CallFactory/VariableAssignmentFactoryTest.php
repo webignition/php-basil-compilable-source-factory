@@ -12,7 +12,7 @@ use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
-use webignition\BasilCompilationSource\StatementList;
+use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
@@ -42,7 +42,7 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
     public function testCreateForValueAccessor(
         SourceInterface $accessor,
         string $type,
-        array $expectedStatements,
+        array $expectedLines,
         $expectedAssignedValue
     ) {
         $placeholder = new VariablePlaceholder('VALUE');
@@ -52,16 +52,16 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
                 $placeholder,
             ]));
 
-        $statementList = $this->factory->createForValueAccessor($accessor, $placeholder, $type);
+        $lineList = $this->factory->createForValueAccessor($accessor, $placeholder, $type);
 
-        $this->assertEquals($expectedStatements, $statementList->getStatements());
-        $this->assertMetadataEquals($expectedMetadata, $statementList->getMetadata());
+        $this->assertEquals($expectedLines, $lineList->getLines());
+        $this->assertMetadataEquals($expectedMetadata, $lineList->getMetadata());
 
         $variableIdentifiers = [
             'VALUE' => '$value',
         ];
 
-        $executableCall = $this->executableCallFactory->createWithReturn($statementList, $variableIdentifiers);
+        $executableCall = $this->executableCallFactory->createWithReturn($lineList, $variableIdentifiers);
 
         $assignedValue = eval($executableCall);
 
@@ -72,80 +72,80 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
     {
         return [
             'string value cast to string' => [
-                'accessor' => new StatementList([
+                'accessor' => new LineList([
                     new Statement('"value"'),
                 ]),
                 'type' => 'string',
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ VALUE }} = "value" ?? null',
                     '{{ VALUE }} = (string) {{ VALUE }}',
                 ],
                 'expectedAssignedValue' => 'value',
             ],
             'null value cast to string' => [
-                'accessor' => new StatementList([
+                'accessor' => new LineList([
                     new Statement('null'),
                 ]),
                 'type' => 'string',
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ VALUE }} = null ?? null',
                     '{{ VALUE }} = (string) {{ VALUE }}',
                 ],
                 'expectedAssignedValue' => '',
             ],
             'int value cast to string' => [
-                'accessor' => new StatementList([
+                'accessor' => new LineList([
                     new Statement('30'),
                 ]),
                 'type' => 'string',
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ VALUE }} = 30 ?? null',
                     '{{ VALUE }} = (string) {{ VALUE }}',
                 ],
                 'expectedAssignedValue' => '30',
             ],
             'string value cast to int' => [
-                'accessor' => new StatementList([
+                'accessor' => new LineList([
                     new Statement('"value"'),
                 ]),
                 'type' => 'int',
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ VALUE }} = "value" ?? null',
                     '{{ VALUE }} = (int) {{ VALUE }}',
                 ],
                 'expectedAssignedValue' => 0,
             ],
             'int value cast to int' => [
-                'accessor' => new StatementList([
+                'accessor' => new LineList([
                     new Statement('30'),
                 ]),
                 'type' => 'int',
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ VALUE }} = 30 ?? null',
                     '{{ VALUE }} = (int) {{ VALUE }}',
                 ],
                 'expectedAssignedValue' => 30,
             ],
             'null value cast to int' => [
-                'accessor' => new StatementList([
+                'accessor' => new LineList([
                     new Statement('null'),
                 ]),
                 'type' => 'int',
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ VALUE }} = null ?? null',
                     '{{ VALUE }} = (int) {{ VALUE }}',
                 ],
                 'expectedAssignedValue' => 0,
             ],
             'only last statement is modified' => [
-                'accessor' => new StatementList([
+                'accessor' => new LineList([
                     new Statement('$a = "content"'),
                     new Statement('$b = $a'),
                     new Statement('$c = $b'),
                     new Statement('$c'),
                 ]),
                 'type' => 'string',
-                'expectedStatements' => [
+                'expectedLines' => [
                     '$a = "content"',
                     '$b = $a',
                     '$c = $b',

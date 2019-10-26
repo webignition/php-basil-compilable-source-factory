@@ -24,7 +24,7 @@ trait CreateFromIsNotAssertionDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '".selector" is-not "value"'
                 ),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ EXPECTED_VALUE }} = "value" ?? null',
                     '{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}',
                     '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
@@ -53,7 +53,7 @@ trait CreateFromIsNotAssertionDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '".selector".attribute_name is-not "value"'
                 ),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ EXPECTED_VALUE }} = "value" ?? null',
                     '{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}',
                     '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',

@@ -11,7 +11,7 @@ use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilationSource\SourceInterface;
-use webignition\BasilCompilationSource\StatementList;
+use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Action\InputActionInterface;
 use webignition\BasilModel\Identifier\DomIdentifierInterface;
@@ -104,11 +104,11 @@ class SetActionHandler implements HandlerInterface
             $valuePlaceholder
         );
 
-        $statementList = new StatementList([]);
-        $statementList->addStatements($collectionAssignment->getStatementObjects());
-        $statementList->addStatements($valueAssignment->getStatementObjects());
-        $statementList->addStatement($mutationCall);
+        $lineList = new LineList([]);
+        $lineList->addLines($collectionAssignment->getLineObjects());
+        $lineList->addLines($valueAssignment->getLineObjects());
+        $lineList->addLine($mutationCall);
 
-        return $statementList;
+        return $lineList;
     }
 }
