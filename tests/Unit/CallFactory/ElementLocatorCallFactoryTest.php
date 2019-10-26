@@ -12,7 +12,7 @@ use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Metadata;
-use webignition\BasilCompilationSource\StatementList;
+use webignition\BasilCompilationSource\LineList;
 use webignition\BasilModel\Identifier\DomIdentifier;
 use webignition\BasilModel\Identifier\DomIdentifierInterface;
 use webignition\DomElementLocator\ElementLocator;
@@ -54,7 +54,7 @@ class ElementLocatorCallFactoryTest extends AbstractTestCase
 
         $this->assertMetadataEquals($expectedMetadata, $statement->getMetadata());
 
-        $executableCall = $this->executableCallFactory->createWithReturn(new StatementList([
+        $executableCall = $this->executableCallFactory->createWithReturn(new LineList([
             $statement
         ]));
 

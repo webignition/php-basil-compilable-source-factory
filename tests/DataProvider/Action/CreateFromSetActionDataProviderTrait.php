@@ -27,7 +27,7 @@ trait CreateFromSetActionDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set ".selector" to "value"'
                 ),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
                     '{{ COLLECTION }} = {{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
@@ -59,7 +59,7 @@ trait CreateFromSetActionDataProviderTrait
                     ),
                     '".selector" to ".source"'
                 ),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
                     '{{ COLLECTION }} = {{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
@@ -95,7 +95,7 @@ trait CreateFromSetActionDataProviderTrait
                     ),
                     '".selector" to ".source"'
                 ),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
                     '{{ COLLECTION }} = {{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
@@ -125,7 +125,7 @@ trait CreateFromSetActionDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set ".selector" to $browser.size'
                 ),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
                     '{{ COLLECTION }} = {{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
@@ -156,7 +156,7 @@ trait CreateFromSetActionDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set ".selector" to $page.url'
                 ),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
                     '{{ COLLECTION }} = {{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
@@ -184,7 +184,7 @@ trait CreateFromSetActionDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set ".selector" to $env.KEY'
                 ),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
                     '{{ COLLECTION }} = {{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',

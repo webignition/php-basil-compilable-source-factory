@@ -4,7 +4,7 @@ namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
-use webignition\BasilCompilationSource\StatementList;
+use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
@@ -31,12 +31,12 @@ class VariableAssignmentFactory
             $placeholder,
         ]));
 
-        $statementList = new StatementList([]);
-        $statementList->addStatements($assignment->getStatementObjects());
-        $statementList->addStatement(
+        $lineList = new LineList([]);
+        $lineList->addLines($assignment->getLineObjects());
+        $lineList->addLine(
             new Statement(sprintf('%s = (%s) %s', (string) $placeholder, $type, (string) $placeholder))
         );
 
-        return $statementList;
+        return $lineList;
     }
 }

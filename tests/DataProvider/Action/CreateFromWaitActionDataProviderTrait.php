@@ -25,7 +25,7 @@ trait CreateFromWaitActionDataProviderTrait
         return [
             'wait action, literal' => [
                 'action' => $actionFactory->createFromActionString('wait 30'),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ DURATION }} = "30" ?? 0',
                     '{{ DURATION }} = (int) {{ DURATION }}',
                     'usleep({{ DURATION }} * 1000)',
@@ -40,7 +40,7 @@ trait CreateFromWaitActionDataProviderTrait
                     'wait $elements.element_name',
                     new DomIdentifierValue(new DomIdentifier('.duration-selector'))
                 ),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.duration-selector\'))',
                     '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
                     '{{ DURATION }} = {{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.duration-selector\'))',
@@ -69,7 +69,7 @@ trait CreateFromWaitActionDataProviderTrait
                         (new DomIdentifier('.duration-selector'))->withAttributeName('attribute_name')
                     )
                 ),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.duration-selector\'))',
                     '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
                     '{{ DURATION }} = {{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.duration-selector\'))',
@@ -92,7 +92,7 @@ trait CreateFromWaitActionDataProviderTrait
             ],
             'wait action, browser property' => [
                 'action' => $actionFactory->createFromActionString('wait $browser.size'),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ WEBDRIVER_DIMENSION }} = {{ PANTHER_CLIENT }}->getWebDriver()->manage()->window()->getSize()',
                     '{{ DURATION }} = (string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
                     . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? 0',
@@ -110,7 +110,7 @@ trait CreateFromWaitActionDataProviderTrait
             ],
             'wait action, page property' => [
                 'action' => $actionFactory->createFromActionString('wait $page.title'),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ DURATION }} = {{ PANTHER_CLIENT }}->getTitle() ?? 0',
                     '{{ DURATION }} = (int) {{ DURATION }}',
                     'usleep({{ DURATION }} * 1000)',
@@ -125,7 +125,7 @@ trait CreateFromWaitActionDataProviderTrait
             ],
             'wait action, environment value' => [
                 'action' => $actionFactory->createFromActionString('wait $env.DURATION'),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ DURATION }} = {{ ENVIRONMENT_VARIABLE_ARRAY }}[\'DURATION\'] ?? 0',
                     '{{ DURATION }} = (int) {{ DURATION }}',
                     'usleep({{ DURATION }} * 1000)',

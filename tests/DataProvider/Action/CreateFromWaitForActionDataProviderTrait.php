@@ -21,7 +21,7 @@ trait CreateFromWaitForActionDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'wait-for ".selector"'
                 ),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ CRAWLER }} = {{ PANTHER_CLIENT }}->waitFor(\'.selector\')',
                 ],
                 'expectedMetadata' => (new Metadata())

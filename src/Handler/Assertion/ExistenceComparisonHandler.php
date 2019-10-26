@@ -12,7 +12,7 @@ use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
-use webignition\BasilCompilationSource\StatementList;
+use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Assertion\AssertionComparison;
@@ -97,8 +97,8 @@ class ExistenceComparisonHandler implements HandlerInterface
                 $valuePlaceholder,
             ]));
 
-            $existence = new StatementList(array_merge(
-                $assignment->getStatementObjects(),
+            $existence = new LineList(array_merge(
+                $assignment->getLineObjects(),
                 [
                     new Statement(sprintf('%s = %s !== null', $valuePlaceholder, $valuePlaceholder)),
                 ]
@@ -123,7 +123,7 @@ class ExistenceComparisonHandler implements HandlerInterface
 
                 return $this->createAssertionCall(
                     $model->getComparison(),
-                    new StatementList([$assignment]),
+                    new LineList([$assignment]),
                     $valuePlaceholder
                 );
             }
@@ -132,9 +132,9 @@ class ExistenceComparisonHandler implements HandlerInterface
                 new NamedDomIdentifierValue($value, $valuePlaceholder)
             );
 
-            $existence = new StatementList([]);
-            $existence->addStatements($accessor->getStatementObjects());
-            $existence->addStatement(
+            $existence = new LineList([]);
+            $existence->addLines($accessor->getLineObjects());
+            $existence->addLine(
                 new Statement(sprintf('%s = %s !== null', $valuePlaceholder, $valuePlaceholder))
             );
 
@@ -146,7 +146,7 @@ class ExistenceComparisonHandler implements HandlerInterface
 
     private function createAssertionCall(
         string $comparison,
-        SourceInterface $statementList,
+        SourceInterface $lineList,
         VariablePlaceholder $valuePlaceholder
     ): SourceInterface {
         $assertionTemplate = AssertionComparison::EXISTS === $comparison
@@ -154,7 +154,7 @@ class ExistenceComparisonHandler implements HandlerInterface
             : AssertionCallFactory::ASSERT_FALSE_TEMPLATE;
 
         return $this->assertionCallFactory->createValueExistenceAssertionCall(
-            $statementList,
+            $lineList,
             $valuePlaceholder,
             $assertionTemplate
         );

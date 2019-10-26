@@ -12,7 +12,7 @@ use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierInterface;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
-use webignition\BasilCompilationSource\StatementList;
+use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
 class NamedDomIdentifierHandler implements HandlerInterface
@@ -91,14 +91,14 @@ class NamedDomIdentifierHandler implements HandlerInterface
         $elementOrCollectionAssignment->addVariableExports($collectionAssignmentVariableExports);
 
         $elementExistsAssertion = $this->assertionCallFactory->createValueExistenceAssertionCall(
-            new StatementList([$hasAssignment]),
+            new LineList([$hasAssignment]),
             $hasPlaceholder,
             AssertionCallFactory::ASSERT_TRUE_TEMPLATE
         );
 
-        $statementList = new StatementList([]);
-        $statementList->addStatements($elementExistsAssertion->getStatementObjects());
-        $statementList->addStatement($elementOrCollectionAssignment);
+        $lineList = new LineList([]);
+        $lineList->addLines($elementExistsAssertion->getLineObjects());
+        $lineList->addLine($elementOrCollectionAssignment);
 
         if ($model->includeValue()) {
             if ($hasAttribute) {
@@ -117,9 +117,9 @@ class NamedDomIdentifierHandler implements HandlerInterface
                 });
             }
 
-            $statementList->addStatements([$valueAssignment]);
+            $lineList->addLines([$valueAssignment]);
         }
 
-        return $statementList;
+        return $lineList;
     }
 }

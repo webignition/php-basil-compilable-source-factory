@@ -12,7 +12,7 @@ use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\StatementInterface;
-use webignition\BasilCompilationSource\StatementList;
+use webignition\BasilCompilationSource\LineList;
 
 class ExecutableCallFactory
 {
@@ -55,7 +55,7 @@ class ExecutableCallFactory
         foreach ($classDependencies as $key => $value) {
             $classDependencyStatementList = $this->classDependencyHandler->createSource($value);
 
-            foreach ($classDependencyStatementList->getStatements() as $classDependencyStatement) {
+            foreach ($classDependencyStatementList->getLines() as $classDependencyStatement) {
                 $executableCall .= $classDependencyStatement . ";\n";
             }
         }
@@ -64,7 +64,7 @@ class ExecutableCallFactory
             $executableCall .= $statement . "\n";
         }
 
-        $statements = $source->getStatements();
+        $statements = $source->getLines();
 
         array_walk($statements, function (string &$statement) {
             $statement .= ';';
@@ -93,7 +93,7 @@ class ExecutableCallFactory
         ?MetadataInterface $additionalMetadata = null
     ): string {
         if ($source instanceof StatementInterface) {
-            $source = new StatementList([$source]);
+            $source = new LineList([$source]);
         }
 
         $source->mutateLastStatement(function (string $content) {

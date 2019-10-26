@@ -11,7 +11,7 @@ use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCall
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Metadata;
-use webignition\BasilCompilationSource\StatementList;
+use webignition\BasilCompilationSource\LineList;
 use webignition\BasilModel\Identifier\DomIdentifier;
 use webignition\BasilModel\Identifier\DomIdentifierInterface;
 use webignition\WebDriverElementCollection\WebDriverElementCollectionInterface;
@@ -48,7 +48,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
 
         $executableCall = $this->createExecutableCallForRequestWithReturn(
             $fixture,
-            new StatementList([$statement]),
+            new LineList([$statement]),
             [
                 '$navigator = Navigator::create($crawler);',
             ],

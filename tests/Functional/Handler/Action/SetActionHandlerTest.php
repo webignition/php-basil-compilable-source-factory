@@ -34,7 +34,7 @@ class SetActionHandlerTest extends AbstractHandlerTest
         array $additionalVariableIdentifiers,
         ?MetadataInterface $metadata = null
     ) {
-        $statementList = $this->handler->createSource($action);
+        $lineList = $this->handler->createSource($action);
 
         $variableIdentifiers = array_merge(
             [
@@ -45,7 +45,7 @@ class SetActionHandlerTest extends AbstractHandlerTest
 
         $executableCall = $this->createExecutableCallForRequest(
             $fixture,
-            $statementList,
+            $lineList,
             $additionalSetupStatements,
             $teardownStatements,
             $variableIdentifiers,

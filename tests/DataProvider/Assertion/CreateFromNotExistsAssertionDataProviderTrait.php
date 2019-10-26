@@ -24,7 +24,7 @@ trait CreateFromNotExistsAssertionDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '".selector" not-exists'
                 ),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ EXAMINED_VALUE }} = {{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT_TEST_CASE }}->assertFalse({{ EXAMINED_VALUE }})',
                 ],
@@ -44,7 +44,7 @@ trait CreateFromNotExistsAssertionDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '".selector".attribute_name not-exists'
                 ),
-                'expectedStatements' => [
+                'expectedLines' => [
                     '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
                     '{{ EXAMINED_VALUE }} = {{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',

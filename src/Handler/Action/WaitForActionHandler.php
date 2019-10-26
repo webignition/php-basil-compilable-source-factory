@@ -9,7 +9,7 @@ use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\Metadata;
-use webignition\BasilCompilationSource\StatementList;
+use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Action\ActionTypes;
 use webignition\BasilModel\Action\InteractionActionInterface;
@@ -69,7 +69,7 @@ class WaitForActionHandler implements HandlerInterface
 
         $metadata = (new Metadata())->withVariableDependencies($variableDependencies);
 
-        return new StatementList([
+        return new LineList([
             new Statement(
                 sprintf(
                     '%s = %s->waitFor(\'%s\')',

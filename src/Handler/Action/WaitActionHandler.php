@@ -10,7 +10,7 @@ use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
-use webignition\BasilCompilationSource\StatementList;
+use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Action\WaitActionInterface;
 use webignition\BasilModel\Value\DomIdentifierValueInterface;
@@ -85,9 +85,9 @@ class WaitActionHandler implements HandlerInterface
             '0'
         );
 
-        $statementList = new StatementList([]);
-        $statementList->addStatements($durationAssignment->getStatementObjects());
-        $statementList->addStatement(
+        $lineList = new LineList([]);
+        $lineList->addLines($durationAssignment->getLineObjects());
+        $lineList->addLine(
             new Statement(sprintf(
                 'usleep(%s * %s)',
                 (string) $durationPlaceholder,
@@ -95,6 +95,6 @@ class WaitActionHandler implements HandlerInterface
             ))
         );
 
-        return $statementList;
+        return $lineList;
     }
 }

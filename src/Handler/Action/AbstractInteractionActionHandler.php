@@ -8,7 +8,7 @@ use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomElementIdentifier;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
-use webignition\BasilCompilationSource\StatementList;
+use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Action\InteractionActionInterface;
 use webignition\BasilModel\Identifier\DomIdentifierInterface;
@@ -65,14 +65,14 @@ abstract class AbstractInteractionActionHandler implements HandlerInterface
             $elementPlaceholder
         ));
 
-        $statementList = new StatementList([]);
-        $statementList->addStatements($accessor->getStatementObjects());
-        $statementList->addStatement(new Statement(sprintf(
+        $lineList = new LineList([]);
+        $lineList->addLines($accessor->getLineObjects());
+        $lineList->addLine(new Statement(sprintf(
             '%s->%s()',
             (string) $elementPlaceholder,
             $this->getElementActionMethod()
         )));
 
-        return $statementList;
+        return $lineList;
     }
 }

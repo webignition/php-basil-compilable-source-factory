@@ -32,7 +32,7 @@ class WaitForActionHandlerTest extends AbstractHandlerTest
         array $teardownStatements,
         array $additionalVariableIdentifiers
     ) {
-        $statementList = $this->handler->createSource($action);
+        $lineList = $this->handler->createSource($action);
 
         $variableIdentifiers = array_merge(
             [
@@ -43,7 +43,7 @@ class WaitForActionHandlerTest extends AbstractHandlerTest
 
         $executableCall = $this->createExecutableCallForRequest(
             $fixture,
-            $statementList,
+            $lineList,
             $additionalSetupStatements,
             $teardownStatements,
             $variableIdentifiers

@@ -56,12 +56,12 @@ class ScalarValueHandlerTest extends AbstractHandlerTest
      */
     public function testCreateStatementList(
         ValueInterface $model,
-        array $expectedStatements,
+        array $expectedLines,
         MetadataInterface $expectedMetadata
     ) {
-        $statementList = $this->handler->createSource($model);
+        $lineList = $this->handler->createSource($model);
 
-        $this->assertEquals($expectedStatements, $statementList->getStatements());
-        $this->assertMetadataEquals($expectedMetadata, $statementList->getMetadata());
+        $this->assertEquals($expectedLines, $lineList->getLines());
+        $this->assertMetadataEquals($expectedMetadata, $lineList->getMetadata());
     }
 }
