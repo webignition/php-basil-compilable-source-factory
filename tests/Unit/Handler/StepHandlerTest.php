@@ -31,7 +31,7 @@ class StepHandlerTest extends AbstractHandlerTest
         $source = $this->handler->createSource($step);
 
         $this->assertInstanceOf(SourceInterface::class, $source);
-        $this->assertEquals([''], $source->getStatements());
+        $this->assertEquals([''], $source->getLines());
         $this->assertEquals(new Metadata(), $source->getMetadata());
     }
 }
