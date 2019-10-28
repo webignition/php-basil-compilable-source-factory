@@ -52,16 +52,16 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
                 $placeholder,
             ]));
 
-        $lineList = $this->factory->createForValueAccessor($accessor, $placeholder, $type);
+        $source = $this->factory->createForValueAccessor($accessor, $placeholder, $type);
 
-        $this->assertJsonSerializedData($expectedSerializedData, $lineList);
-        $this->assertMetadataEquals($expectedMetadata, $lineList->getMetadata());
+        $this->assertJsonSerializedData($expectedSerializedData, $source);
+        $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
 
         $variableIdentifiers = [
             'VALUE' => '$value',
         ];
 
-        $executableCall = $this->executableCallFactory->createWithReturn($lineList, $variableIdentifiers);
+        $executableCall = $this->executableCallFactory->createWithReturn($source, $variableIdentifiers);
 
         $assignedValue = eval($executableCall);
 

@@ -257,14 +257,14 @@ class AssertionCallFactoryTest extends AbstractTestCase
         array $expectedSerializedData,
         MetadataInterface $expectedMetadata
     ) {
-        $lineList = $this->factory->createValueExistenceAssertionCall(
+        $source = $this->factory->createValueExistenceAssertionCall(
             $assignment,
             $variablePlaceholder,
             $assertionTemplate
         );
 
-        $this->assertJsonSerializedData($expectedSerializedData, $lineList);
-        $this->assertMetadataEquals($expectedMetadata, $lineList->getMetadata());
+        $this->assertJsonSerializedData($expectedSerializedData, $source);
+        $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
     }
 
     public function createValueExistenceAssertionCallDataProvider(): array

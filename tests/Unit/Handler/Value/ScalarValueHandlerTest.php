@@ -59,9 +59,9 @@ class ScalarValueHandlerTest extends AbstractHandlerTest
         array $expectedSerializedData,
         MetadataInterface $expectedMetadata
     ) {
-        $lineList = $this->handler->createSource($model);
+        $source = $this->handler->createSource($model);
 
-        $this->assertJsonSerializedData($expectedSerializedData, $lineList);
-        $this->assertMetadataEquals($expectedMetadata, $lineList->getMetadata());
+        $this->assertJsonSerializedData($expectedSerializedData, $source);
+        $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
     }
 }
