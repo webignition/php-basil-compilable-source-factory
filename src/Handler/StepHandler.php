@@ -9,7 +9,6 @@ use webignition\BasilCompilationSource\Comment;
 use webignition\BasilCompilationSource\EmptyLine;
 use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\SourceInterface;
-use webignition\BasilCompilationSource\Statement;
 use webignition\BasilModel\Step\StepInterface;
 
 class StepHandler implements HandlerInterface
