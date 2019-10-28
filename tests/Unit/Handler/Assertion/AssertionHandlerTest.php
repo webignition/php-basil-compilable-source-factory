@@ -76,21 +76,21 @@ class AssertionHandlerTest extends AbstractHandlerTest
 
     /**
      * @dataProvider createFromExcludesAssertionDataProvider
-     * @!dataProvider createFromExistsAssertionDataProvider
-     * @!dataProvider createFromIncludesAssertionDataProvider
-     * @!dataProvider createFromIsAssertionDataProvider
-     * @!dataProvider createFromIsNotAssertionDataProvider
-     * @!dataProvider createFromMatchesAssertionDataProvider
-     * @!dataProvider createFromNotExistsAssertionDataProvider
+     * @dataProvider createFromExistsAssertionDataProvider
+     * @dataProvider createFromIncludesAssertionDataProvider
+     * @dataProvider createFromIsAssertionDataProvider
+     * @dataProvider createFromIsNotAssertionDataProvider
+     * @dataProvider createFromMatchesAssertionDataProvider
+     * @dataProvider createFromNotExistsAssertionDataProvider
      */
     public function testCreateStatementList(
         AssertionInterface $assertion,
-        array $expectedLines,
+        array $expectedSerializedData,
         MetadataInterface $expectedMetadata
     ) {
-        $lineList = $this->handler->createSource($assertion);
+        $source = $this->handler->createSource($assertion);
 
-        $this->assertEquals($expectedLines, $lineList->getLines());
-        $this->assertMetadataEquals($expectedMetadata, $lineList->getMetadata());
+        $this->assertJsonSerializedData($expectedSerializedData, $source);
+        $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
     }
 }

@@ -19,8 +19,14 @@ trait CreateFromForwardActionDataProviderTrait
         return [
             'no-arguments action (forward)' => [
                 'action' => $actionFactory->createFromActionString('forward'),
-                'expectedLines' => [
-                    '{{ CRAWLER }} = {{ PANTHER_CLIENT }}->forward()',
+                'expectedSerializedData' => [
+                    'type' => 'line-list',
+                    'lines' => [
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ CRAWLER }} = {{ PANTHER_CLIENT }}->forward()',
+                        ],
+                    ],
                 ],
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([

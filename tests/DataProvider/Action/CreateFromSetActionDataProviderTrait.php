@@ -27,13 +27,36 @@ trait CreateFromSetActionDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set ".selector" to "value"'
                 ),
-                'expectedLines' => [
-                    '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
-                    '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
-                    '{{ COLLECTION }} = {{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
-                    '{{ VALUE }} = "value" ?? null',
-                    '{{ VALUE }} = (string) {{ VALUE }}',
-                    '{{ WEBDRIVER_ELEMENT_MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
+                'expectedSerializedData' => [
+                    'type' => 'line-list',
+                    'lines' => [
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ HAS }} = '
+                                . '{{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ COLLECTION }} = '
+                                . '{{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ VALUE }} = "value" ?? null',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ VALUE }} = (string) {{ VALUE }}',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ WEBDRIVER_ELEMENT_MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
+                        ],
+                    ],
                 ],
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -59,16 +82,51 @@ trait CreateFromSetActionDataProviderTrait
                     ),
                     '".selector" to ".source"'
                 ),
-                'expectedLines' => [
-                    '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
-                    '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
-                    '{{ COLLECTION }} = {{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
-                    '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.source\'))',
-                    '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
-                    '{{ VALUE }} = {{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.source\'))',
-                    '{{ VALUE }} = {{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ VALUE }}) ?? null',
-                    '{{ VALUE }} = (string) {{ VALUE }}',
-                    '{{ WEBDRIVER_ELEMENT_MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
+                'expectedSerializedData' => [
+                    'type' => 'line-list',
+                    'lines' => [
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ HAS }} = '
+                                . '{{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ COLLECTION }} = '
+                                . '{{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ HAS }} = '
+                                . '{{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.source\'))',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ VALUE }} = '
+                                . '{{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.source\'))',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ VALUE }} = '
+                                . '{{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ VALUE }}) ?? null',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ VALUE }} = (string) {{ VALUE }}',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ WEBDRIVER_ELEMENT_MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
+                        ],
+                    ],
                 ],
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -95,16 +153,50 @@ trait CreateFromSetActionDataProviderTrait
                     ),
                     '".selector" to ".source"'
                 ),
-                'expectedLines' => [
-                    '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
-                    '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
-                    '{{ COLLECTION }} = {{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
-                    '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.source\'))',
-                    '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
-                    '{{ VALUE }} = {{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.source\'))',
-                    '{{ VALUE }} = {{ VALUE }}->getAttribute(\'attribute_name\') ?? null',
-                    '{{ VALUE }} = (string) {{ VALUE }}',
-                    '{{ WEBDRIVER_ELEMENT_MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
+                'expectedSerializedData' => [
+                    'type' => 'line-list',
+                    'lines' => [
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ HAS }} = '
+                                . '{{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ COLLECTION }} = '
+                                . '{{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ HAS }} = '
+                                . '{{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.source\'))',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ VALUE }} = '
+                                . '{{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.source\'))',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ VALUE }} = {{ VALUE }}->getAttribute(\'attribute_name\') ?? null',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ VALUE }} = (string) {{ VALUE }}',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ WEBDRIVER_ELEMENT_MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
+                        ],
+                    ],
                 ],
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -125,15 +217,45 @@ trait CreateFromSetActionDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set ".selector" to $browser.size'
                 ),
-                'expectedLines' => [
-                    '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
-                    '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
-                    '{{ COLLECTION }} = {{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
-                    '{{ WEBDRIVER_DIMENSION }} = {{ PANTHER_CLIENT }}->getWebDriver()->manage()->window()->getSize()',
-                    '{{ VALUE }} = (string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
-                    . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null',
-                    '{{ VALUE }} = (string) {{ VALUE }}',
-                    '{{ WEBDRIVER_ELEMENT_MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
+                'expectedSerializedData' => [
+                    'type' => 'line-list',
+                    'lines' => [
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ HAS }} = '
+                                . '{{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ COLLECTION }} = '
+                                . '{{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
+                        ],
+
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ WEBDRIVER_DIMENSION }} = '
+                                . '{{ PANTHER_CLIENT }}->getWebDriver()->manage()->window()->getSize()',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ VALUE }} = '
+                                . '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
+                                . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null',
+                        ],
+
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ VALUE }} = (string) {{ VALUE }}',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ WEBDRIVER_ELEMENT_MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
+                        ],
+                    ],
                 ],
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -156,14 +278,38 @@ trait CreateFromSetActionDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set ".selector" to $page.url'
                 ),
-                'expectedLines' => [
-                    '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
-                    '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
-                    '{{ COLLECTION }} = {{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
-                    '{{ VALUE }} = {{ PANTHER_CLIENT }}->getCurrentURL() ?? null',
-                    '{{ VALUE }} = (string) {{ VALUE }}',
-                    '{{ WEBDRIVER_ELEMENT_MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
-                 ],
+                'expectedSerializedData' => [
+                    'type' => 'line-list',
+                    'lines' => [
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ HAS }} = '
+                                . '{{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ COLLECTION }} = '
+                                . '{{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ VALUE }} = {{ PANTHER_CLIENT }}->getCurrentURL() ?? null',
+                        ],
+
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ VALUE }} = (string) {{ VALUE }}',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ WEBDRIVER_ELEMENT_MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
+                        ],
+                    ],
+                ],
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
                         new ClassDependency(ElementLocator::class),
@@ -184,13 +330,37 @@ trait CreateFromSetActionDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set ".selector" to $env.KEY'
                 ),
-                'expectedLines' => [
-                    '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
-                    '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
-                    '{{ COLLECTION }} = {{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
-                    '{{ VALUE }} = {{ ENVIRONMENT_VARIABLE_ARRAY }}[\'KEY\'] ?? null',
-                    '{{ VALUE }} = (string) {{ VALUE }}',
-                    '{{ WEBDRIVER_ELEMENT_MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
+                'expectedSerializedData' => [
+                    'type' => 'line-list',
+                    'lines' => [
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ HAS }} = '
+                                . '{{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ COLLECTION }} = '
+                                . '{{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ VALUE }} = {{ ENVIRONMENT_VARIABLE_ARRAY }}[\'KEY\'] ?? null',
+                        ],
+
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ VALUE }} = (string) {{ VALUE }}',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ WEBDRIVER_ELEMENT_MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
+                        ],
+                    ],
                 ],
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([

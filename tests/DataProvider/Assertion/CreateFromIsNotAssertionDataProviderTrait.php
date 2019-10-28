@@ -24,15 +24,46 @@ trait CreateFromIsNotAssertionDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '".selector" is-not "value"'
                 ),
-                'expectedLines' => [
-                    '{{ EXPECTED_VALUE }} = "value" ?? null',
-                    '{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}',
-                    '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
-                    '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
-                    '{{ EXAMINED_VALUE }} = {{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
-                    '{{ EXAMINED_VALUE }} = {{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ EXAMINED_VALUE }}) ?? null',
-                    '{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}',
-                    '{{ PHPUNIT_TEST_CASE }}->assertNotEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})',
+                'expectedSerializedData' => [
+                    'type' => 'line-list',
+                    'lines' => [
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ EXPECTED_VALUE }} = "value" ?? null',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ HAS }} = '
+                                . '{{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ EXAMINED_VALUE }} = '
+                                . '{{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ EXAMINED_VALUE }} = '
+                                . '{{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ EXAMINED_VALUE }}) ?? null',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ PHPUNIT_TEST_CASE }}'
+                                . '->assertNotEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})',
+                        ],
+                    ],
                 ],
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -53,15 +84,46 @@ trait CreateFromIsNotAssertionDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '".selector".attribute_name is-not "value"'
                 ),
-                'expectedLines' => [
-                    '{{ EXPECTED_VALUE }} = "value" ?? null',
-                    '{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}',
-                    '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
-                    '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
-                    '{{ EXAMINED_VALUE }} = {{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
-                    '{{ EXAMINED_VALUE }} = {{ EXAMINED_VALUE }}->getAttribute(\'attribute_name\') ?? null',
-                    '{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}',
-                    '{{ PHPUNIT_TEST_CASE }}->assertNotEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})',
+                'expectedSerializedData' => [
+                    'type' => 'line-list',
+                    'lines' => [
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ EXPECTED_VALUE }} = "value" ?? null',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ HAS }} = '
+                                . '{{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ EXAMINED_VALUE }} = '
+                                . '{{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ EXAMINED_VALUE }} = '
+                                . '{{ EXAMINED_VALUE }}->getAttribute(\'attribute_name\') ?? null',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ PHPUNIT_TEST_CASE }}'
+                                . '->assertNotEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})',
+                        ],
+                    ],
                 ],
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([

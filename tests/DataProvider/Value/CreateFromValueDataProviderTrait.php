@@ -6,7 +6,6 @@ namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Value;
 
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Metadata;
-use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Value\LiteralValue;
 use webignition\BasilModel\Value\ObjectValue;
@@ -19,15 +18,27 @@ trait CreateFromValueDataProviderTrait
         return [
             'literal string value: string' => [
                 'value' => new LiteralValue('value'),
-                'expectedLines' => [
-                    '"value"',
+                'expectedSerializedData' => [
+                    'type' => 'line-list',
+                    'lines' => [
+                        [
+                            'type' => 'statement',
+                            'content' => '"value"',
+                        ],
+                    ],
                 ],
                 'expectedMetadata' => new Metadata(),
             ],
             'literal string value: integer' => [
                 'value' => new LiteralValue('100'),
-                'expectedLines' => [
-                    '"100"',
+                'expectedSerializedData' => [
+                    'type' => 'line-list',
+                    'lines' => [
+                        [
+                            'type' => 'statement',
+                            'content' => '"100"',
+                        ],
+                    ],
                 ],
                 'expectedMetadata' => new Metadata(),
             ],
@@ -37,8 +48,14 @@ trait CreateFromValueDataProviderTrait
                     '$env.KEY',
                     'KEY'
                 ),
-                'expectedLines' => [
-                    (string) new VariablePlaceholder(VariableNames::ENVIRONMENT_VARIABLE_ARRAY) . '[\'KEY\']',
+                'expectedSerializedData' => [
+                    'type' => 'line-list',
+                    'lines' => [
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ ENVIRONMENT_VARIABLE_ARRAY }}[\'KEY\']',
+                        ],
+                    ],
                 ],
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
@@ -47,10 +64,20 @@ trait CreateFromValueDataProviderTrait
             ],
             'browser property, size' => [
                 'value' => new ObjectValue(ObjectValueType::BROWSER_PROPERTY, '$browser.size', 'size'),
-                'expectedLines' => [
-                    '{{ WEBDRIVER_DIMENSION }} = {{ PANTHER_CLIENT }}->getWebDriver()->manage()->window()->getSize()',
-                    '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
-                    . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight()',
+                'expectedSerializedData' => [
+                    'type' => 'line-list',
+                    'lines' => [
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ WEBDRIVER_DIMENSION }} = '
+                                . '{{ PANTHER_CLIENT }}->getWebDriver()->manage()->window()->getSize()',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
+                                . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight()',
+                        ],
+                    ],
                 ],
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
@@ -61,8 +88,14 @@ trait CreateFromValueDataProviderTrait
             ],
             'page property, url' => [
                 'value' => new ObjectValue(ObjectValueType::PAGE_PROPERTY, '$page.url', 'url'),
-                'expectedLines' => [
-                    '{{ PANTHER_CLIENT }}->getCurrentURL()',
+                'expectedSerializedData' => [
+                    'type' => 'line-list',
+                    'lines' => [
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ PANTHER_CLIENT }}->getCurrentURL()',
+                        ],
+                    ],
                 ],
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
@@ -71,8 +104,14 @@ trait CreateFromValueDataProviderTrait
             ],
             'page property, title' => [
                 'value' => new ObjectValue(ObjectValueType::PAGE_PROPERTY, '$page.title', 'title'),
-                'expectedLines' => [
-                    '{{ PANTHER_CLIENT }}->getTitle()',
+                'expectedSerializedData' => [
+                    'type' => 'line-list',
+                    'lines' => [
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ PANTHER_CLIENT }}->getTitle()',
+                        ],
+                    ],
                 ],
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([

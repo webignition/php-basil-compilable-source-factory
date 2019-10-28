@@ -37,12 +37,12 @@ class ClassDependencyHandlerTest extends AbstractHandlerTest
      */
     public function testCreateSource(
         ClassDependency $classDependency,
-        array $expectedLines
+        array $expectedSerializedData
     ) {
-        $lineList = $this->handler->createSource($classDependency);
+        $source = $this->handler->createSource($classDependency);
 
-        $this->assertEquals($expectedLines, $lineList->getLines());
-        $this->assertEquals(new Metadata(), $lineList->getMetadata());
+        $this->assertJsonSerializedData($expectedSerializedData, $source);
+        $this->assertEquals(new Metadata(), $source->getMetadata());
     }
 
     public function createSourceDataProvider(): array
@@ -50,14 +50,26 @@ class ClassDependencyHandlerTest extends AbstractHandlerTest
         return [
             'without alias' => [
                 'classDependency' => new ClassDependency(ClassDependency::class),
-                'expectedLines' => [
-                    'use webignition\BasilCompilationSource\ClassDependency',
+                'expectedSerializedData' => [
+                    'type' => 'line-list',
+                    'lines' => [
+                        [
+                            'type' => 'statement',
+                            'content' => 'use webignition\BasilCompilationSource\ClassDependency',
+                        ],
+                    ],
                 ]
             ],
             'with alias' => [
                 'classDependency' => new ClassDependency(ClassDependency::class, 'CD'),
-                'expectedLines' => [
-                    'use webignition\BasilCompilationSource\ClassDependency as CD',
+                'expectedSerializedData' => [
+                    'type' => 'line-list',
+                    'lines' => [
+                        [
+                            'type' => 'statement',
+                            'content' => 'use webignition\BasilCompilationSource\ClassDependency as CD',
+                        ],
+                    ],
                 ]
             ],
         ];
