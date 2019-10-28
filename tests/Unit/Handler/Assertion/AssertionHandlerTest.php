@@ -83,7 +83,7 @@ class AssertionHandlerTest extends AbstractHandlerTest
      * @dataProvider createFromMatchesAssertionDataProvider
      * @dataProvider createFromNotExistsAssertionDataProvider
      */
-    public function testCreateStatementList(
+    public function testCreateSource(
         AssertionInterface $assertion,
         array $expectedSerializedData,
         MetadataInterface $expectedMetadata

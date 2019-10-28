@@ -88,7 +88,7 @@ class ActionHandlerTest extends AbstractHandlerTest
      * @dataProvider createFromWaitActionDataProvider
      * @dataProvider createFromWaitForActionDataProvider
      */
-    public function testCreateStatementList(
+    public function testCreateSource(
         ActionInterface $action,
         array $expectedSerializedData,
         MetadataInterface $expectedMetadata

@@ -54,7 +54,7 @@ class ScalarValueHandlerTest extends AbstractHandlerTest
     /**
      * @dataProvider createFromValueDataProvider
      */
-    public function testCreateStatementList(
+    public function testCreateSource(
         ValueInterface $model,
         array $expectedSerializedData,
         MetadataInterface $expectedMetadata
