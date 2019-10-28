@@ -37,7 +37,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractHandlerTest
         array $additionalVariableIdentifiers = [],
         ?MetadataInterface $metadata = null
     ) {
-        $lineList = $this->handler->createSource($assertion);
+        $source = $this->handler->createSource($assertion);
 
         $variableIdentifiers = array_merge(
             [
@@ -48,7 +48,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractHandlerTest
 
         $executableCall = $this->createExecutableCallForRequest(
             $fixture,
-            $lineList,
+            $source,
             $additionalSetupStatements,
             [],
             $variableIdentifiers,

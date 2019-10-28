@@ -56,7 +56,7 @@ class AssertionCallFactoryTest extends AbstractTestCase
             )
         ]);
 
-        $lineList = $this->factory->createValueComparisonAssertionCall(
+        $source = $this->factory->createValueComparisonAssertionCall(
             $expectedValueAssignment,
             $actualValueAssignment,
             $expectedValuePlaceholder,
@@ -70,7 +70,7 @@ class AssertionCallFactoryTest extends AbstractTestCase
             VariableNames::PHPUNIT_TEST_CASE => '$this',
         ];
 
-        $executableCall = $this->executableCallFactory->create($lineList, $variableIdentifiers);
+        $executableCall = $this->executableCallFactory->create($source, $variableIdentifiers);
 
         eval($executableCall);
     }
@@ -121,7 +121,7 @@ class AssertionCallFactoryTest extends AbstractTestCase
             )
         ]);
 
-        $lineList = $this->factory->createValueExistenceAssertionCall(
+        $source = $this->factory->createValueExistenceAssertionCall(
             $assignment,
             $examinedValuePlaceholder,
             $assertionTemplate
@@ -132,7 +132,7 @@ class AssertionCallFactoryTest extends AbstractTestCase
             VariableNames::PHPUNIT_TEST_CASE => '$this',
         ];
 
-        $executableCall = $this->executableCallFactory->create($lineList, $variableIdentifiers);
+        $executableCall = $this->executableCallFactory->create($source, $variableIdentifiers);
 
         eval($executableCall);
     }
