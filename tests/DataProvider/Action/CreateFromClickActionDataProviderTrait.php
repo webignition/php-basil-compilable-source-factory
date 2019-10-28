@@ -24,11 +24,28 @@ trait CreateFromClickActionDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'click ".selector"'
                 ),
-                'expectedLines' => [
-                    '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
-                    '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
-                    '{{ ELEMENT }} = {{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
-                    '{{ ELEMENT }}->click()',
+                'expectedSerializedData' => [
+                    'type' => 'line-list',
+                    'lines' => [
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ HAS }} = '
+                                . '{{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ ELEMENT }} = '
+                                . '{{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ ELEMENT }}->click()',
+                        ],
+                    ],
                 ],
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([

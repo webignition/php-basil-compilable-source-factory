@@ -40,7 +40,7 @@ class BrowserOperationActionHandlerTest extends AbstractHandlerTest
         array $additionalVariableIdentifiers,
         ?MetadataInterface $metadata = null
     ) {
-        $lineList = $this->handler->createSource($action);
+        $source = $this->handler->createSource($action);
 
         $variableIdentifiers = array_merge(
             [
@@ -51,7 +51,7 @@ class BrowserOperationActionHandlerTest extends AbstractHandlerTest
 
         $executableCall = $this->createExecutableCallForRequest(
             $fixture,
-            $lineList,
+            $source,
             $additionalSetupStatements,
             $teardownStatements,
             $variableIdentifiers,

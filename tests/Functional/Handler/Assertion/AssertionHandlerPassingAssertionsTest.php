@@ -55,7 +55,7 @@ class AssertionHandlerPassingAssertionsTest extends AbstractHandlerTest
         array $additionalVariableIdentifiers = [],
         ?MetadataInterface $metadata = null
     ) {
-        $lineList = $this->handler->createSource($model);
+        $source = $this->handler->createSource($model);
 
         $variableIdentifiers = array_merge(
             [
@@ -66,7 +66,7 @@ class AssertionHandlerPassingAssertionsTest extends AbstractHandlerTest
 
         $executableCall = $this->createExecutableCallForRequest(
             $fixture,
-            $lineList,
+            $source,
             $additionalSetupStatements,
             [],
             $variableIdentifiers,

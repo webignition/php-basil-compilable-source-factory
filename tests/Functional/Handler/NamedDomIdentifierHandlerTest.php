@@ -39,7 +39,7 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
         array $additionalVariableIdentifiers = [],
         ?MetadataInterface $additionalMetadata = null
     ) {
-        $lineList = $this->handler->createSource($namedDomIdentifier);
+        $source = $this->handler->createSource($namedDomIdentifier);
 
         $setupStatements = array_merge(
             [
@@ -63,7 +63,7 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
 
         $executableCall = $this->createExecutableCallForRequestWithReturn(
             $fixture,
-            $lineList,
+            $source,
             $setupStatements,
             $variableIdentifiers,
             $metadata

@@ -30,13 +30,13 @@ class ScalarValueHandlerTest extends AbstractHandlerTest
         callable $resultAssertions,
         array $additionalVariableIdentifiers = []
     ) {
-        $lineList = $this->handler->createSource($model);
+        $source = $this->handler->createSource($model);
 
         $additionalSetupStatements = [];
 
         $executableCall = $this->createExecutableCallForRequestWithReturn(
             $fixture,
-            $lineList,
+            $source,
             $additionalSetupStatements,
             $additionalVariableIdentifiers
         );

@@ -42,7 +42,7 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
     public function testCreateForValueAccessor(
         SourceInterface $accessor,
         string $type,
-        array $expectedLines,
+        array $expectedSerializedData,
         $expectedAssignedValue
     ) {
         $placeholder = new VariablePlaceholder('VALUE');
@@ -52,16 +52,16 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
                 $placeholder,
             ]));
 
-        $lineList = $this->factory->createForValueAccessor($accessor, $placeholder, $type);
+        $source = $this->factory->createForValueAccessor($accessor, $placeholder, $type);
 
-        $this->assertEquals($expectedLines, $lineList->getLines());
-        $this->assertMetadataEquals($expectedMetadata, $lineList->getMetadata());
+        $this->assertJsonSerializedData($expectedSerializedData, $source);
+        $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
 
         $variableIdentifiers = [
             'VALUE' => '$value',
         ];
 
-        $executableCall = $this->executableCallFactory->createWithReturn($lineList, $variableIdentifiers);
+        $executableCall = $this->executableCallFactory->createWithReturn($source, $variableIdentifiers);
 
         $assignedValue = eval($executableCall);
 
@@ -76,9 +76,18 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
                     new Statement('"value"'),
                 ]),
                 'type' => 'string',
-                'expectedLines' => [
-                    '{{ VALUE }} = "value" ?? null',
-                    '{{ VALUE }} = (string) {{ VALUE }}',
+                'expectedSerializedData' => [
+                    'type' => 'line-list',
+                    'lines' => [
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ VALUE }} = "value" ?? null',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ VALUE }} = (string) {{ VALUE }}',
+                        ],
+                    ],
                 ],
                 'expectedAssignedValue' => 'value',
             ],
@@ -87,9 +96,18 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
                     new Statement('null'),
                 ]),
                 'type' => 'string',
-                'expectedLines' => [
-                    '{{ VALUE }} = null ?? null',
-                    '{{ VALUE }} = (string) {{ VALUE }}',
+                'expectedSerializedData' => [
+                    'type' => 'line-list',
+                    'lines' => [
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ VALUE }} = null ?? null',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ VALUE }} = (string) {{ VALUE }}',
+                        ],
+                    ],
                 ],
                 'expectedAssignedValue' => '',
             ],
@@ -98,9 +116,18 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
                     new Statement('30'),
                 ]),
                 'type' => 'string',
-                'expectedLines' => [
-                    '{{ VALUE }} = 30 ?? null',
-                    '{{ VALUE }} = (string) {{ VALUE }}',
+                'expectedSerializedData' => [
+                    'type' => 'line-list',
+                    'lines' => [
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ VALUE }} = 30 ?? null',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ VALUE }} = (string) {{ VALUE }}',
+                        ],
+                    ],
                 ],
                 'expectedAssignedValue' => '30',
             ],
@@ -109,9 +136,18 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
                     new Statement('"value"'),
                 ]),
                 'type' => 'int',
-                'expectedLines' => [
-                    '{{ VALUE }} = "value" ?? null',
-                    '{{ VALUE }} = (int) {{ VALUE }}',
+                'expectedSerializedData' => [
+                    'type' => 'line-list',
+                    'lines' => [
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ VALUE }} = "value" ?? null',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ VALUE }} = (int) {{ VALUE }}',
+                        ],
+                    ],
                 ],
                 'expectedAssignedValue' => 0,
             ],
@@ -120,9 +156,18 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
                     new Statement('30'),
                 ]),
                 'type' => 'int',
-                'expectedLines' => [
-                    '{{ VALUE }} = 30 ?? null',
-                    '{{ VALUE }} = (int) {{ VALUE }}',
+                'expectedSerializedData' => [
+                    'type' => 'line-list',
+                    'lines' => [
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ VALUE }} = 30 ?? null',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ VALUE }} = (int) {{ VALUE }}',
+                        ],
+                    ],
                 ],
                 'expectedAssignedValue' => 30,
             ],
@@ -131,9 +176,18 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
                     new Statement('null'),
                 ]),
                 'type' => 'int',
-                'expectedLines' => [
-                    '{{ VALUE }} = null ?? null',
-                    '{{ VALUE }} = (int) {{ VALUE }}',
+                'expectedSerializedData' => [
+                    'type' => 'line-list',
+                    'lines' => [
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ VALUE }} = null ?? null',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ VALUE }} = (int) {{ VALUE }}',
+                        ],
+                    ],
                 ],
                 'expectedAssignedValue' => 0,
             ],
@@ -145,12 +199,30 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
                     new Statement('$c'),
                 ]),
                 'type' => 'string',
-                'expectedLines' => [
-                    '$a = "content"',
-                    '$b = $a',
-                    '$c = $b',
-                    '{{ VALUE }} = $c ?? null',
-                    '{{ VALUE }} = (string) {{ VALUE }}',
+                'expectedSerializedData' => [
+                    'type' => 'line-list',
+                    'lines' => [
+                        [
+                            'type' => 'statement',
+                            'content' => '$a = "content"',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '$b = $a',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '$c = $b',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ VALUE }} = $c ?? null',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ VALUE }} = (string) {{ VALUE }}',
+                        ],
+                    ],
                 ],
                 'expectedAssignedValue' => 'content',
             ],

@@ -21,8 +21,14 @@ trait CreateFromWaitForActionDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'wait-for ".selector"'
                 ),
-                'expectedLines' => [
-                    '{{ CRAWLER }} = {{ PANTHER_CLIENT }}->waitFor(\'.selector\')',
+                'expectedSerializedData' => [
+                    'type' => 'line-list',
+                    'lines' => [
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ CRAWLER }} = {{ PANTHER_CLIENT }}->waitFor(\'.selector\')',
+                        ],
+                    ],
                 ],
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([

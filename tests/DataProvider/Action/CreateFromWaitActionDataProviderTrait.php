@@ -25,10 +25,22 @@ trait CreateFromWaitActionDataProviderTrait
         return [
             'wait action, literal' => [
                 'action' => $actionFactory->createFromActionString('wait 30'),
-                'expectedLines' => [
-                    '{{ DURATION }} = "30" ?? 0',
-                    '{{ DURATION }} = (int) {{ DURATION }}',
-                    'usleep({{ DURATION }} * 1000)',
+                'expectedSerializedData' => [
+                    'type' => 'line-list',
+                    'lines' => [
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ DURATION }} = "30" ?? 0',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ DURATION }} = (int) {{ DURATION }}',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => 'usleep({{ DURATION }} * 1000)',
+                        ],
+                    ],
                 ],
                 'expectedMetadata' => (new Metadata())
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
@@ -40,13 +52,37 @@ trait CreateFromWaitActionDataProviderTrait
                     'wait $elements.element_name',
                     new DomIdentifierValue(new DomIdentifier('.duration-selector'))
                 ),
-                'expectedLines' => [
-                    '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.duration-selector\'))',
-                    '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
-                    '{{ DURATION }} = {{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.duration-selector\'))',
-                    '{{ DURATION }} = {{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ DURATION }}) ?? 0',
-                    '{{ DURATION }} = (int) {{ DURATION }}',
-                    'usleep({{ DURATION }} * 1000)',
+                'expectedSerializedData' => [
+                    'type' => 'line-list',
+                    'lines' => [
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ HAS }} = '
+                                . '{{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.duration-selector\'))',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ DURATION }} = '
+                                . '{{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.duration-selector\'))',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ DURATION }} = '
+                                . '{{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ DURATION }}) ?? 0',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ DURATION }} = (int) {{ DURATION }}',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => 'usleep({{ DURATION }} * 1000)',
+                        ],
+                    ],
                 ],
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -69,13 +105,36 @@ trait CreateFromWaitActionDataProviderTrait
                         (new DomIdentifier('.duration-selector'))->withAttributeName('attribute_name')
                     )
                 ),
-                'expectedLines' => [
-                    '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.duration-selector\'))',
-                    '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
-                    '{{ DURATION }} = {{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.duration-selector\'))',
-                    '{{ DURATION }} = {{ DURATION }}->getAttribute(\'attribute_name\') ?? 0',
-                    '{{ DURATION }} = (int) {{ DURATION }}',
-                    'usleep({{ DURATION }} * 1000)',
+                'expectedSerializedData' => [
+                    'type' => 'line-list',
+                    'lines' => [
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ HAS }} = '
+                                . '{{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.duration-selector\'))',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ DURATION }} = '
+                                . '{{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.duration-selector\'))',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ DURATION }} = {{ DURATION }}->getAttribute(\'attribute_name\') ?? 0',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ DURATION }} = (int) {{ DURATION }}',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => 'usleep({{ DURATION }} * 1000)',
+                        ],
+                    ],
                 ],
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -92,12 +151,29 @@ trait CreateFromWaitActionDataProviderTrait
             ],
             'wait action, browser property' => [
                 'action' => $actionFactory->createFromActionString('wait $browser.size'),
-                'expectedLines' => [
-                    '{{ WEBDRIVER_DIMENSION }} = {{ PANTHER_CLIENT }}->getWebDriver()->manage()->window()->getSize()',
-                    '{{ DURATION }} = (string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
-                    . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? 0',
-                    '{{ DURATION }} = (int) {{ DURATION }}',
-                    'usleep({{ DURATION }} * 1000)',
+                'expectedSerializedData' => [
+                    'type' => 'line-list',
+                    'lines' => [
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ WEBDRIVER_DIMENSION }} = '
+                                . '{{ PANTHER_CLIENT }}->getWebDriver()->manage()->window()->getSize()',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ DURATION }} = '
+                                . '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
+                                . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? 0',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ DURATION }} = (int) {{ DURATION }}',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => 'usleep({{ DURATION }} * 1000)',
+                        ],
+                    ],
                 ],
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
@@ -110,10 +186,22 @@ trait CreateFromWaitActionDataProviderTrait
             ],
             'wait action, page property' => [
                 'action' => $actionFactory->createFromActionString('wait $page.title'),
-                'expectedLines' => [
-                    '{{ DURATION }} = {{ PANTHER_CLIENT }}->getTitle() ?? 0',
-                    '{{ DURATION }} = (int) {{ DURATION }}',
-                    'usleep({{ DURATION }} * 1000)',
+                'expectedSerializedData' => [
+                    'type' => 'line-list',
+                    'lines' => [
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ DURATION }} = {{ PANTHER_CLIENT }}->getTitle() ?? 0',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ DURATION }} = (int) {{ DURATION }}',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => 'usleep({{ DURATION }} * 1000)',
+                        ],
+                    ],
                 ],
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
@@ -125,10 +213,22 @@ trait CreateFromWaitActionDataProviderTrait
             ],
             'wait action, environment value' => [
                 'action' => $actionFactory->createFromActionString('wait $env.DURATION'),
-                'expectedLines' => [
-                    '{{ DURATION }} = {{ ENVIRONMENT_VARIABLE_ARRAY }}[\'DURATION\'] ?? 0',
-                    '{{ DURATION }} = (int) {{ DURATION }}',
-                    'usleep({{ DURATION }} * 1000)',
+                'expectedSerializedData' => [
+                    'type' => 'line-list',
+                    'lines' => [
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ DURATION }} = {{ ENVIRONMENT_VARIABLE_ARRAY }}[\'DURATION\'] ?? 0',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ DURATION }} = (int) {{ DURATION }}',
+                        ],
+                        [
+                            'type' => 'statement',
+                            'content' => 'usleep({{ DURATION }} * 1000)',
+                        ],
+                    ],
                 ],
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([

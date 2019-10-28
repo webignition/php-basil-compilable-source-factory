@@ -19,8 +19,14 @@ trait CreateFromBackActionDataProviderTrait
         return [
             'no-arguments action (back)' => [
                 'action' => $actionFactory->createFromActionString('back'),
-                'expectedLines' => [
-                    '{{ CRAWLER }} = {{ PANTHER_CLIENT }}->back()',
+                'expectedSerializedData' => [
+                    'type' => 'line-list',
+                    'lines' => [
+                        [
+                            'type' => 'statement',
+                            'content' => '{{ CRAWLER }} = {{ PANTHER_CLIENT }}->back()',
+                        ],
+                    ],
                 ],
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([

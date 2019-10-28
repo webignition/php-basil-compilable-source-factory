@@ -49,7 +49,7 @@ abstract class AbstractBrowserTestCase extends AbstractTestCase
 
     protected function createExecutableCallForRequest(
         string $fixture,
-        SourceInterface $lineList,
+        SourceInterface $source,
         array $additionalSetupStatements = [],
         array $teardownStatements = [],
         array $additionalVariableIdentifiers = [],
@@ -72,7 +72,7 @@ abstract class AbstractBrowserTestCase extends AbstractTestCase
         $metadata = $metadata ?? new Metadata();
 
         return $this->executableCallFactory->create(
-            $lineList,
+            $source,
             $variableIdentifiers,
             $setupStatements,
             $teardownStatements,
