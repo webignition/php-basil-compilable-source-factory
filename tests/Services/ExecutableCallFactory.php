@@ -69,7 +69,7 @@ class ExecutableCallFactory
 
         $statements = [];
 
-        foreach ($source->getLineObjects() as $line) {
+        foreach ($source->getSources() as $line) {
             if ($line instanceof EmptyLine) {
                 $statements[] = '';
             }

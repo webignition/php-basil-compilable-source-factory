@@ -31,12 +31,9 @@ class VariableAssignmentFactory
             $placeholder,
         ]));
 
-        $lineList = new LineList([]);
-        $lineList->addLines($assignment->getLineObjects());
-        $lineList->addLine(
+        return new LineList([
+            $assignment,
             new Statement(sprintf('%s = (%s) %s', (string) $placeholder, $type, (string) $placeholder))
-        );
-
-        return $lineList;
+        ]);
     }
 }

@@ -55,12 +55,11 @@ class AssertionCallFactory
             $actualValuePlaceholder
         );
 
-        $lineList = new LineList([]);
-        $lineList->addLines($expectedValueAssignment->getLineObjects());
-        $lineList->addLines($actualValueAssignment->getLineObjects());
-        $lineList->addLine(new Statement($assertionStatementContent, $metadata));
-
-        return $lineList;
+        return new LineList([
+            $expectedValueAssignment,
+            $actualValueAssignment,
+            new Statement($assertionStatementContent, $metadata)
+        ]);
     }
 
     public function createValueExistenceAssertionCall(
@@ -77,10 +76,9 @@ class AssertionCallFactory
         $metadata = (new Metadata())
             ->withVariableDependencies($this->variableDependencies);
 
-        $lineList = new LineList([]);
-        $lineList->addLines($assignment->getLineObjects());
-        $lineList->addLine(new Statement($assertionStatementContent, $metadata));
-
-        return $lineList;
+        return new LineList([
+            $assignment,
+            new Statement($assertionStatementContent, $metadata),
+        ]);
     }
 }
