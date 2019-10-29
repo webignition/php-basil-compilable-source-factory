@@ -8,9 +8,12 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
 use webignition\BasilCompilableSourceFactory\Handler\ClassDependencyHandler;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
+use webignition\BasilCompilationSource\Comment;
+use webignition\BasilCompilationSource\EmptyLine;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilCompilationSource\SourceInterface;
+use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\StatementInterface;
 use webignition\BasilCompilationSource\LineList;
 
@@ -64,11 +67,21 @@ class ExecutableCallFactory
             $executableCall .= $statement . "\n";
         }
 
-        $statements = $source->getLines();
+        $statements = [];
 
-        array_walk($statements, function (string &$statement) {
-            $statement .= ';';
-        });
+        foreach ($source->getLineObjects() as $line) {
+            if ($line instanceof EmptyLine) {
+                $statements[] = '';
+            }
+
+            if ($line instanceof Comment) {
+                $statements[] = '// ' . $line->getContent();
+            }
+
+            if ($line instanceof Statement) {
+                $statements[] = $line->getContent() . ';';
+            }
+        }
 
         $content = $this->variablePlaceholderResolver->resolve(
             implode("\n", $statements),
