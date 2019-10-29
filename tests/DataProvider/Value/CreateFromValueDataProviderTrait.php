@@ -19,26 +19,16 @@ trait CreateFromValueDataProviderTrait
             'literal string value: string' => [
                 'value' => new LiteralValue('value'),
                 'expectedSerializedData' => [
-                    'type' => 'line-list',
-                    'lines' => [
-                        [
-                            'type' => 'statement',
-                            'content' => '"value"',
-                        ],
-                    ],
+                    'type' => 'statement',
+                    'content' => '"value"',
                 ],
                 'expectedMetadata' => new Metadata(),
             ],
             'literal string value: integer' => [
                 'value' => new LiteralValue('100'),
                 'expectedSerializedData' => [
-                    'type' => 'line-list',
-                    'lines' => [
-                        [
-                            'type' => 'statement',
-                            'content' => '"100"',
-                        ],
-                    ],
+                    'type' => 'statement',
+                    'content' => '"100"',
                 ],
                 'expectedMetadata' => new Metadata(),
             ],
@@ -49,13 +39,8 @@ trait CreateFromValueDataProviderTrait
                     'KEY'
                 ),
                 'expectedSerializedData' => [
-                    'type' => 'line-list',
-                    'lines' => [
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ ENVIRONMENT_VARIABLE_ARRAY }}[\'KEY\']',
-                        ],
-                    ],
+                    'type' => 'statement',
+                    'content' => '{{ ENVIRONMENT_VARIABLE_ARRAY }}[\'KEY\']',
                 ],
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
@@ -89,13 +74,8 @@ trait CreateFromValueDataProviderTrait
             'page property, url' => [
                 'value' => new ObjectValue(ObjectValueType::PAGE_PROPERTY, '$page.url', 'url'),
                 'expectedSerializedData' => [
-                    'type' => 'line-list',
-                    'lines' => [
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ PANTHER_CLIENT }}->getCurrentURL()',
-                        ],
-                    ],
+                    'type' => 'statement',
+                    'content' => '{{ PANTHER_CLIENT }}->getCurrentURL()',
                 ],
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
@@ -105,13 +85,8 @@ trait CreateFromValueDataProviderTrait
             'page property, title' => [
                 'value' => new ObjectValue(ObjectValueType::PAGE_PROPERTY, '$page.title', 'title'),
                 'expectedSerializedData' => [
-                    'type' => 'line-list',
-                    'lines' => [
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ PANTHER_CLIENT }}->getTitle()',
-                        ],
-                    ],
+                    'type' => 'statement',
+                    'content' => '{{ PANTHER_CLIENT }}->getTitle()',
                 ],
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
