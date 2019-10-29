@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6a9e65691066ca9c9725b1daa2b1206d",
+    "content-hash": "2fe37089c4d7e75ec553c68d42442a09",
     "packages": [
         {
             "name": "facebook/webdriver",
@@ -838,16 +838,16 @@
         },
         {
             "name": "webignition/php-basil-models",
-            "version": "0.88",
+            "version": "0.89",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/php-basil-models.git",
-                "reference": "e294f944997edd2e30cf98abb8e35d0589b1b6e0"
+                "reference": "7d850c5b0da5733f7088f951a24691917148932e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/php-basil-models/zipball/e294f944997edd2e30cf98abb8e35d0589b1b6e0",
-                "reference": "e294f944997edd2e30cf98abb8e35d0589b1b6e0",
+                "url": "https://api.github.com/repos/webignition/php-basil-models/zipball/7d850c5b0da5733f7088f951a24691917148932e",
+                "reference": "7d850c5b0da5733f7088f951a24691917148932e",
                 "shasum": ""
             },
             "require": {
@@ -881,7 +881,7 @@
             ],
             "description": "Models for basil language objects",
             "homepage": "https://github.com/webignition/php-basil-models",
-            "time": "2019-09-26T18:24:08+00:00"
+            "time": "2019-10-29T10:44:23+00:00"
         },
         {
             "name": "webignition/php-dom-element-locator",

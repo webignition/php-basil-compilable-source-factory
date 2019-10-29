@@ -92,6 +92,10 @@ class StepHandlerTest extends AbstractHandlerTest
                             'type' => 'statement',
                             'content' => '{{ ELEMENT }}->click()',
                         ],
+                        [
+                            'type' => 'empty',
+                            'content' => '',
+                        ],
                     ],
                 ],
                 'expectedMetadata' => (new Metadata())
@@ -159,6 +163,10 @@ class StepHandlerTest extends AbstractHandlerTest
                         [
                             'type' => 'statement',
                             'content' => 'usleep({{ DURATION }} * 1000)',
+                        ],
+                        [
+                            'type' => 'empty',
+                            'content' => '',
                         ],
                     ],
                 ],
