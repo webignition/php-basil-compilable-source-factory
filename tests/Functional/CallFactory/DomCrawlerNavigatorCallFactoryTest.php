@@ -52,6 +52,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
             [
                 '$navigator = Navigator::create($crawler);',
             ],
+            [],
             $variableIdentifiers,
             $metadata
         );

@@ -65,6 +65,7 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
             $fixture,
             $source,
             $setupStatements,
+            [],
             $variableIdentifiers,
             $metadata
         );

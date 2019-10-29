@@ -84,6 +84,7 @@ abstract class AbstractBrowserTestCase extends AbstractTestCase
         string $fixture,
         SourceInterface $source,
         array $additionalSetupStatements = [],
+        array $additionalTeardownStatements = [],
         array $additionalVariableIdentifiers = [],
         ?MetadataInterface $metadata = null
     ) {
@@ -107,7 +108,7 @@ abstract class AbstractBrowserTestCase extends AbstractTestCase
             $source,
             $variableIdentifiers,
             $setupStatements,
-            [],
+            $additionalTeardownStatements,
             $metadata
         );
     }

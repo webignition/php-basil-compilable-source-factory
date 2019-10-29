@@ -38,6 +38,7 @@ class ScalarValueHandlerTest extends AbstractHandlerTest
             $fixture,
             $source,
             $additionalSetupStatements,
+            [],
             $additionalVariableIdentifiers
         );
 
