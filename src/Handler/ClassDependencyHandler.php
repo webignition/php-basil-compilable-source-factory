@@ -7,12 +7,10 @@ use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
-use webignition\BasilCompilationSource\LineList;
 
 class ClassDependencyHandler implements HandlerInterface
 {
-    const CLASS_NAME_ONLY_TEMPLATE = 'use %s';
-    const WITH_ALIAS_TEMPLATE = self::CLASS_NAME_ONLY_TEMPLATE . ' as %s';
+    const TEMPLATE = 'use %s';
 
     public static function createHandler(): HandlerInterface
     {
@@ -37,14 +35,6 @@ class ClassDependencyHandler implements HandlerInterface
             throw new UnsupportedModelException($model);
         }
 
-        $alias = $model->getAlias();
-
-        $content = null === $alias
-            ? sprintf(self::CLASS_NAME_ONLY_TEMPLATE, $model->getClassName())
-            : sprintf(self::WITH_ALIAS_TEMPLATE, $model->getClassName(), $model->getAlias());
-
-        return new LineList([
-            new Statement($content)
-        ]);
+        return new Statement(sprintf(self::TEMPLATE, (string) $model));
     }
 }
