@@ -8,7 +8,9 @@ namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
+use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\Metadata;
+use webignition\BasilCompilationSource\Statement;
 use webignition\BasilModelFactory\Action\ActionFactory;
 use webignition\SymfonyDomCrawlerNavigator\Navigator;
 
@@ -20,19 +22,19 @@ trait SubmitActionFunctionalDataProviderTrait
 
         $fixture = '/action-click-submit.html';
 
-        $setupStatements = [
-            '$navigator = Navigator::create($crawler);',
-            '$this->assertEquals("Click", self::$client->getTitle());',
-            '$submitButton = $crawler->filter(\'#form input[type="submit"]\')->getElement(0);',
-            '$form = $crawler->filter(\'#form\')->getElement(0);',
-            '$this->assertEquals("false", $submitButton->getAttribute(\'data-submitted\'));',
-            '$this->assertEquals("false", $form->getAttribute(\'data-submitted\'));',
-        ];
+        $setupStatements = new LineList([
+            new Statement('$navigator = Navigator::create($crawler)'),
+            new Statement('$this->assertEquals("Click", self::$client->getTitle())'),
+            new Statement('$submitButton = $crawler->filter(\'#form input[type="submit"]\')->getElement(0)'),
+            new Statement('$form = $crawler->filter(\'#form\')->getElement(0)'),
+            new Statement('$this->assertEquals("false", $submitButton->getAttribute(\'data-submitted\'))'),
+            new Statement('$this->assertEquals("false", $form->getAttribute(\'data-submitted\'))'),
+        ]);
 
-        $teardownStatements = [
-            '$this->assertEquals("false", $submitButton->getAttribute(\'data-submitted\'));',
-            '$this->assertEquals("true", $form->getAttribute(\'data-submitted\'));',
-        ];
+        $teardownStatements = new LineList([
+            new Statement('$this->assertEquals("false", $submitButton->getAttribute(\'data-submitted\'))'),
+            new Statement('$this->assertEquals("true", $form->getAttribute(\'data-submitted\'))'),
+        ]);
 
         $variableIdentifiers = [
             'HAS' => self::HAS_VARIABLE_NAME,

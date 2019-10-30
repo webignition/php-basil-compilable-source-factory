@@ -8,7 +8,9 @@ namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
+use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\Metadata;
+use webignition\BasilCompilationSource\Statement;
 use webignition\BasilModelFactory\AssertionFactory;
 use webignition\SymfonyDomCrawlerNavigator\Navigator;
 
@@ -24,9 +26,9 @@ trait ExistsAssertionFunctionalDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '".selector" exists'
                 ),
-                'additionalSetupStatements' => [
-                    '$navigator = Navigator::create($crawler);',
-                ],
+                'additionalSetupStatements' => new LineList([
+                    new Statement('$navigator = Navigator::create($crawler)'),
+                ]),
                 'variableIdentifiers' => [
                     'HAS' => '$has',
                     VariableNames::DOM_CRAWLER_NAVIGATOR => self::DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME,
@@ -44,9 +46,9 @@ trait ExistsAssertionFunctionalDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '".selector".data-test-attribute exists'
                 ),
-                'additionalSetupStatements' => [
-                    '$navigator = Navigator::create($crawler);',
-                ],
+                'additionalSetupStatements' => new LineList([
+                    new Statement('$navigator = Navigator::create($crawler)'),
+                ]),
                 'variableIdentifiers' => [
                     'HAS' => '$has',
                     VariableNames::DOM_CRAWLER_NAVIGATOR => self::DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME,
@@ -63,7 +65,7 @@ trait ExistsAssertionFunctionalDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '$env.TEST1 exists'
                 ),
-                'additionalSetupStatements' => [],
+                'additionalSetupStatements' => null,
                 'variableIdentifiers' => [
                     VariableNames::ENVIRONMENT_VARIABLE_ARRAY => '$_ENV',
                     VariableNames::EXAMINED_VALUE => self::EXAMINED_VALUE_VARIABLE_NAME,
@@ -74,7 +76,7 @@ trait ExistsAssertionFunctionalDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '$browser.size exists'
                 ),
-                'additionalSetupStatements' => [],
+                'additionalSetupStatements' => null,
                 'variableIdentifiers' => [
                     'WEBDRIVER_DIMENSION' => self::WEBDRIVER_DIMENSION_VARIABLE_NAME,
                     VariableNames::EXAMINED_VALUE => self::EXAMINED_VALUE_VARIABLE_NAME,
@@ -85,7 +87,7 @@ trait ExistsAssertionFunctionalDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '$page.title exists'
                 ),
-                'additionalSetupStatements' => [],
+                'additionalSetupStatements' => null,
                 'variableIdentifiers' => [
                     VariableNames::EXAMINED_VALUE => self::EXAMINED_VALUE_VARIABLE_NAME,
                 ],

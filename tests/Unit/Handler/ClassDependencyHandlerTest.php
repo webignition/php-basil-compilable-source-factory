@@ -51,26 +51,16 @@ class ClassDependencyHandlerTest extends AbstractHandlerTest
             'without alias' => [
                 'classDependency' => new ClassDependency(ClassDependency::class),
                 'expectedSerializedData' => [
-                    'type' => 'line-list',
-                    'lines' => [
-                        [
-                            'type' => 'statement',
-                            'content' => 'use webignition\BasilCompilationSource\ClassDependency',
-                        ],
-                    ],
-                ]
+                    'type' => 'statement',
+                    'content' => 'use webignition\BasilCompilationSource\ClassDependency',
+                ],
             ],
             'with alias' => [
                 'classDependency' => new ClassDependency(ClassDependency::class, 'CD'),
                 'expectedSerializedData' => [
-                    'type' => 'line-list',
-                    'lines' => [
-                        [
-                            'type' => 'statement',
-                            'content' => 'use webignition\BasilCompilationSource\ClassDependency as CD',
-                        ],
-                    ],
-                ]
+                    'type' => 'statement',
+                    'content' => 'use webignition\BasilCompilationSource\ClassDependency as CD',
+                ],
             ],
         ];
     }

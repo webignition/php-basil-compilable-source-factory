@@ -10,13 +10,11 @@ use webignition\BasilCompilableSourceFactory\Handler\ClassDependencyHandler;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilationSource\Comment;
 use webignition\BasilCompilationSource\EmptyLine;
-use webignition\BasilCompilationSource\LineListInterface;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilCompilationSource\MutableListLineListInterface;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
-use webignition\BasilCompilationSource\StatementInterface;
 use webignition\BasilCompilationSource\LineList;
 
 class ExecutableCallFactory
@@ -43,10 +41,12 @@ class ExecutableCallFactory
     public function create(
         SourceInterface $source,
         array $variableIdentifiers = [],
-        array $setupStatements = [],
-        array $teardownStatements = [],
+        ?LineList $setupStatements = null,
+        ?LineList $teardownStatements = null,
         ?MetadataInterface $additionalMetadata = null
     ): string {
+        $setupStatements = $setupStatements ?? new LineList();
+        $teardownStatements = $teardownStatements ?? new LineList();
         $additionalMetadata = $additionalMetadata ?? new Metadata();
 
         $metadata = new Metadata();
@@ -55,64 +55,45 @@ class ExecutableCallFactory
 
         $classDependencies = $metadata->getClassDependencies();
 
-        $executableCall = '';
+        $lineList = new LineList();
 
         foreach ($classDependencies as $key => $value) {
-            $classDependencyStatementList = $this->classDependencyHandler->createSource($value);
-
-            if ($classDependencyStatementList instanceof LineListInterface) {
-                foreach ($classDependencyStatementList->getLines() as $classDependencyStatement) {
-                    $executableCall .= $classDependencyStatement . ";\n";
-                }
-            }
+            $lineList->addLinesFromSource($this->classDependencyHandler->createSource($value));
         }
 
-        foreach ($setupStatements as $statement) {
-            $executableCall .= $statement . "\n";
-        }
+        $lineList->addLinesFromSource($setupStatements);
+        $lineList->addLinesFromSources($source->getSources());
+        $lineList->addLinesFromSource($teardownStatements);
 
-        $statements = [];
+        $lines = [];
 
-        foreach ($source->getSources() as $line) {
+        foreach ($lineList->getLines() as $line) {
             if ($line instanceof EmptyLine) {
-                $statements[] = '';
+                $lines[] = '';
             }
 
             if ($line instanceof Comment) {
-                $statements[] = '// ' . $line->getContent();
+                $lines[] = '// ' . $line->getContent();
             }
 
             if ($line instanceof Statement) {
-                $statements[] = $line->getContent() . ';';
+                $lines[] = $line->getContent() . ';';
             }
         }
 
-        $content = $this->variablePlaceholderResolver->resolve(
-            implode("\n", $statements),
+        return $this->variablePlaceholderResolver->resolve(
+            implode("\n", $lines),
             $variableIdentifiers
         );
-
-        $executableCall .= $content;
-
-        foreach ($teardownStatements as $statement) {
-            $executableCall .= "\n";
-            $executableCall .= $statement;
-        }
-
-        return $executableCall;
     }
 
     public function createWithReturn(
         SourceInterface $source,
         array $variableIdentifiers = [],
-        array $setupStatements = [],
-        array $teardownStatements = [],
+        ?LineList $setupStatements = null,
+        ?LineList $teardownStatements = null,
         ?MetadataInterface $additionalMetadata = null
     ): string {
-        if ($source instanceof StatementInterface) {
-            $source = new LineList([$source]);
-        }
-
         if ($source instanceof MutableListLineListInterface) {
             $source->mutateLastStatement(function (string $content) {
                 return 'return ' . $content;

@@ -14,8 +14,10 @@ use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
+use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MetadataInterface;
+use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilModel\Identifier\DomIdentifier;
 use webignition\BasilModel\Value\DomIdentifierValue;
@@ -35,18 +37,16 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
         string $fixture,
         NamedDomIdentifierInterface $namedDomIdentifier,
         callable $resultAssertions,
-        array $additionalSetupStatements = [],
+        ?LineList $additionalSetupStatements = null,
         array $additionalVariableIdentifiers = [],
         ?MetadataInterface $additionalMetadata = null
     ) {
         $source = $this->handler->createSource($namedDomIdentifier);
 
-        $setupStatements = array_merge(
-            [
-                '$navigator = Navigator::create($crawler);',
-            ],
-            $additionalSetupStatements
-        );
+        $setupStatements = new LineList([
+            new Statement('$navigator = Navigator::create($crawler)'),
+            $additionalSetupStatements,
+        ]);
 
         $variableIdentifiers = array_merge(
             $additionalVariableIdentifiers,
@@ -65,7 +65,7 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
             $fixture,
             $source,
             $setupStatements,
-            [],
+            null,
             $variableIdentifiers,
             $metadata
         );
@@ -87,9 +87,9 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                 'resultAssertions' => function ($result) {
                     $this->assertEquals('', $result);
                 },
-                'additionalSetupStatements' => [
-                    '$inspector = Inspector::create();',
-                ],
+                'additionalSetupStatements' => new LineList([
+                    new Statement('$inspector = Inspector::create()'),
+                ]),
                 'additionalVariableIdentifiers' => [
                     VariableNames::WEBDRIVER_ELEMENT_INSPECTOR => self::WEBDRIVER_ELEMENT_INSPECTOR_VARIABLE_NAME,
                 ],
@@ -110,9 +110,9 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                 'resultAssertions' => function ($result) {
                     $this->assertEquals('test', $result);
                 },
-                'additionalSetupStatements' => [
-                    '$inspector = Inspector::create();',
-                ],
+                'additionalSetupStatements' => new LineList([
+                    new Statement('$inspector = Inspector::create()'),
+                ]),
                 'additionalVariableIdentifiers' => [
                     VariableNames::WEBDRIVER_ELEMENT_INSPECTOR => self::WEBDRIVER_ELEMENT_INSPECTOR_VARIABLE_NAME,
                 ],

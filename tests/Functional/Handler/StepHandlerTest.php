@@ -11,8 +11,10 @@ use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
+use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MetadataInterface;
+use webignition\BasilCompilationSource\Statement;
 use webignition\BasilModel\Step\Step;
 use webignition\BasilModel\Step\StepInterface;
 use webignition\BasilModelFactory\Action\ActionFactory;
@@ -31,8 +33,8 @@ class StepHandlerTest extends AbstractHandlerTest
     public function testCreateSource(
         string $fixture,
         StepInterface $step,
-        array $additionalSetupStatements = [],
-        array $additionalTeardownStatements = [],
+        ?LineList $additionalSetupStatements = null,
+        ?LineList $additionalTeardownStatements = null,
         array $additionalVariableIdentifiers = [],
         ?MetadataInterface $additionalMetadata = null
     ) {
@@ -65,6 +67,11 @@ class StepHandlerTest extends AbstractHandlerTest
         $actionFactory = ActionFactory::createFactory();
         $assertionFactory = AssertionFactory::createFactory();
 
+        $additionalSetupStatements = new LineList([
+            new Statement('$navigator = Navigator::create($crawler)'),
+            new Statement('$inspector = Inspector::create()'),
+        ]);
+
         return [
             'single click action' => [
                 'fixture' => '/action-click-submit.html',
@@ -74,13 +81,12 @@ class StepHandlerTest extends AbstractHandlerTest
                     ],
                     []
                 ),
-                'additionalSetupStatements' => [
-                    '$navigator = Navigator::create($crawler);',
-                    '$inspector = Inspector::create();',
-                ],
-                'additionalTeardownStatements' => [
-                    '$this->assertEquals("Test fixture web server default document", self::$client->getTitle());',
-                ],
+                'additionalSetupStatements' => $additionalSetupStatements,
+                'additionalTeardownStatements' => new LineList([
+                    new Statement(
+                        '$this->assertEquals("Test fixture web server default document", self::$client->getTitle())'
+                    )
+                ]),
                 'additionalVariableIdentifiers' => [
                     'ELEMENT' => '$element',
                     'HAS' => '$has',
@@ -99,11 +105,8 @@ class StepHandlerTest extends AbstractHandlerTest
                         $assertionFactory->createFromAssertionString('".selector" is ".selector content"')
                     ]
                 ),
-                'additionalSetupStatements' => [
-                    '$navigator = Navigator::create($crawler);',
-                    '$inspector = Inspector::create();',
-                ],
-                'additionalTeardownStatements' => [],
+                'additionalSetupStatements' => $additionalSetupStatements,
+                'additionalTeardownStatements' => null,
                 'additionalVariableIdentifiers' => [
                     'HAS' => '$has',
                     VariableNames::DOM_CRAWLER_NAVIGATOR => self::DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME,
@@ -128,11 +131,8 @@ class StepHandlerTest extends AbstractHandlerTest
                         )
                     ]
                 ),
-                'additionalSetupStatements' => [
-                    '$navigator = Navigator::create($crawler);',
-                    '$inspector = Inspector::create();',
-                ],
-                'additionalTeardownStatements' => [],
+                'additionalSetupStatements' => $additionalSetupStatements,
+                'additionalTeardownStatements' => null,
                 'additionalVariableIdentifiers' => [
                     'ELEMENT' => '$element',
                     'HAS' => '$has',
@@ -165,11 +165,8 @@ class StepHandlerTest extends AbstractHandlerTest
                         ),
                     ]
                 ),
-                'additionalSetupStatements' => [
-                    '$navigator = Navigator::create($crawler);',
-                    '$inspector = Inspector::create();',
-                ],
-                'additionalTeardownStatements' => [],
+                'additionalSetupStatements' => $additionalSetupStatements,
+                'additionalTeardownStatements' => null,
                 'additionalVariableIdentifiers' => [
                     'ELEMENT' => '$element',
                     'HAS' => '$has',

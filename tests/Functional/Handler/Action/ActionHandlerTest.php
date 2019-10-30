@@ -21,8 +21,10 @@ use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
+use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MetadataInterface;
+use webignition\BasilCompilationSource\Statement;
 use webignition\BasilModel\Action\ActionInterface;
 use webignition\BasilModel\Action\WaitAction;
 use webignition\BasilModel\Identifier\DomIdentifier;
@@ -51,9 +53,9 @@ class ActionHandlerTest extends AbstractHandlerTest
     public function testCreateSourceForExecutableActions(
         string $fixture,
         ActionInterface $action,
-        array $additionalSetupStatements,
-        array $teardownStatements,
-        array $additionalVariableIdentifiers,
+        ?LineList $additionalSetupStatements = null,
+        ?LineList $teardownStatements = null,
+        array $additionalVariableIdentifiers = [],
         ?MetadataInterface $metadata = null
     ) {
         $source = $this->handler->createSource($action);
@@ -101,9 +103,9 @@ class ActionHandlerTest extends AbstractHandlerTest
     ) {
         $source = $this->handler->createSource($action);
 
-        $setupStatements = [
-            '$navigator = Navigator::create($crawler);',
-        ];
+        $setupStatements = new LineList([
+            new Statement('$navigator = Navigator::create($crawler)'),
+        ]);
 
         $metadata = (new Metadata())
             ->withClassDependencies(new ClassDependencyCollection([
@@ -114,7 +116,7 @@ class ActionHandlerTest extends AbstractHandlerTest
             '/action-wait.html',
             $source,
             $setupStatements,
-            [],
+            null,
             $variableIdentifiers,
             $metadata
         );
