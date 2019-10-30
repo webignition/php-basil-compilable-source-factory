@@ -8,6 +8,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler;
 
 use webignition\BasilCompilableSourceFactory\Handler\TestHandler;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
+use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilCompilationSource\SourceInterface;
@@ -36,13 +37,13 @@ class TestHandlerTest extends AbstractHandlerTest
      */
     public function testCreateSource(
         TestInterface $test,
-        array $expectedSerializedData,
+        SourceInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
         $source = $this->handler->createSource($test);
 
         $this->assertInstanceOf(SourceInterface::class, $source);
-        $this->assertJsonSerializedData($expectedSerializedData, $source);
+        $this->assertSourceContentEquals($expectedContent, $source);
         $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
     }
 
@@ -55,10 +56,7 @@ class TestHandlerTest extends AbstractHandlerTest
                     new Configuration('chrome', 'http://example.com'),
                     []
                 ),
-                'expectedSerializedData' => [
-                    'type' => 'line-list',
-                    'lines' => [],
-                ],
+                'expectedContent' => new LineList([]),
                 'expectedMetadata' => new Metadata(),
             ],
         ];
