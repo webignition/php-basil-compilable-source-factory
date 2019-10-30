@@ -88,7 +88,11 @@ class TestHandlerTest extends AbstractHandlerTest
                     []
                 ),
                 'expectedClassName' => 'generated69ef658fb6e99440777d8bbe69f5bc89Test',
-                'expectedMethods' => [],
+                'expectedMethods' => [
+                    new MethodDefinition('setUp', new LineList([
+                        new Statement('$this->setName(\'test name\')'),
+                    ])),
+                ],
                 'expectedMetadata' => new Metadata(),
             ],
             'single step with single action and single assertion' => [
@@ -108,6 +112,9 @@ class TestHandlerTest extends AbstractHandlerTest
                 ),
                 'expectedClassName' => 'generated69ef658fb6e99440777d8bbe69f5bc89Test',
                 'expectedMethods' => [
+                    new MethodDefinition('setUp', new LineList([
+                        new Statement('$this->setName(\'test name\')'),
+                    ])),
                     new MethodDefinition(
                         'testBdc4b8bd83e5660d1c62908dc7a7c43a',
                         new LineList([
