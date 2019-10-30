@@ -65,14 +65,13 @@ abstract class AbstractInteractionActionHandler implements HandlerInterface
             $elementPlaceholder
         ));
 
-        $lineList = new LineList([]);
-        $lineList->addLines($accessor->getLineObjects());
-        $lineList->addLine(new Statement(sprintf(
-            '%s->%s()',
-            (string) $elementPlaceholder,
-            $this->getElementActionMethod()
-        )));
-
-        return $lineList;
+        return new LineList([
+            $accessor,
+            new Statement(sprintf(
+                '%s->%s()',
+                (string) $elementPlaceholder,
+                $this->getElementActionMethod()
+            )),
+        ]);
     }
 }

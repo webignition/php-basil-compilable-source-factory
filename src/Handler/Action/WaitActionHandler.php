@@ -85,16 +85,13 @@ class WaitActionHandler implements HandlerInterface
             '0'
         );
 
-        $lineList = new LineList([]);
-        $lineList->addLines($durationAssignment->getLineObjects());
-        $lineList->addLine(
+        return new LineList([
+            $durationAssignment,
             new Statement(sprintf(
                 'usleep(%s * %s)',
                 (string) $durationPlaceholder,
                 self::MICROSECONDS_PER_MILLISECOND
-            ))
-        );
-
-        return $lineList;
+            )),
+        ]);
     }
 }

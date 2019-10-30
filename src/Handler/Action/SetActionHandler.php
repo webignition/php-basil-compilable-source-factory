@@ -104,11 +104,10 @@ class SetActionHandler implements HandlerInterface
             $valuePlaceholder
         );
 
-        $lineList = new LineList([]);
-        $lineList->addLines($collectionAssignment->getLineObjects());
-        $lineList->addLines($valueAssignment->getLineObjects());
-        $lineList->addLine($mutationCall);
-
-        return $lineList;
+        return new LineList([
+            $collectionAssignment,
+            $valueAssignment,
+            $mutationCall
+        ]);
     }
 }
