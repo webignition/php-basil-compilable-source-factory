@@ -14,8 +14,11 @@ use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
+use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MetadataInterface;
+use webignition\BasilCompilationSource\SourceInterface;
+use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Identifier\DomIdentifier;
@@ -61,12 +64,12 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
      */
     public function testCreateSource(
         ValueInterface $model,
-        array $expectedSerializedData,
+        SourceInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
         $source = $this->handler->createSource($model);
 
-        $this->assertJsonSerializedData($expectedSerializedData, $source);
+        $this->assertSourceContentEquals($expectedContent, $source);
         $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
     }
 
@@ -76,32 +79,14 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
             'element value, no parent' => [
                 'value' => new NamedDomIdentifierValue(
                     new DomIdentifierValue(new DomIdentifier('.selector')),
-                    new VariablePlaceholder('ELEMENT_NO_PARENT')
+                    new VariablePlaceholder('E')
                 ),
-                'expectedSerializedData' => [
-                    'type' => 'line-list',
-                    'lines' => [
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ HAS }} = '
-                                . '{{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ ELEMENT_NO_PARENT }} = '
-                                . '{{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ ELEMENT_NO_PARENT }} = '
-                                . '{{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ ELEMENT_NO_PARENT }})',
-                        ],
-                    ],
-                ],
+                'expectedContent' => new LineList([
+                    new Statement('{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ E }} = {{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ E }} = {{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ E }})'),
+                ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
                         new ClassDependency(ElementLocator::class),
@@ -113,7 +98,7 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
                         'HAS',
-                        'ELEMENT_NO_PARENT',
+                        'E',
                     ])),
             ],
             'element value, has parent' => [
@@ -121,32 +106,20 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                     new DomIdentifierValue(
                         (new DomIdentifier('.selector'))->withParentIdentifier(new DomIdentifier('.parent'))
                     ),
-                    new VariablePlaceholder('ELEMENT_HAS_PARENT')
+                    new VariablePlaceholder('E')
                 ),
-                'expectedSerializedData' => [
-                    'type' => 'line-list',
-                    'lines' => [
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}'
-                                . '->has(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ ELEMENT_HAS_PARENT }} = {{ DOM_CRAWLER_NAVIGATOR }}'
-                                . '->find(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ ELEMENT_HAS_PARENT }} = '
-                                . '{{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ ELEMENT_HAS_PARENT }})',
-                        ],
-                    ],
-                ],
+                'expectedContent' => new LineList([
+                    new Statement(
+                        '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}'
+                        . '->has(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))'
+                    ),
+                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
+                    new Statement(
+                        '{{ E }} = {{ DOM_CRAWLER_NAVIGATOR }}'
+                        . '->find(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))'
+                    ),
+                    new Statement('{{ E }} = {{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ E }})'),
+                ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
                         new ClassDependency(ElementLocator::class),
@@ -158,7 +131,7 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
                         'HAS',
-                        'ELEMENT_HAS_PARENT',
+                        'E',
                     ])),
             ],
             'attribute value, no parent' => [
@@ -166,32 +139,18 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                     new DomIdentifierValue(
                         (new DomIdentifier('.selector'))->withAttributeName('attribute_name')
                     ),
-                    new VariablePlaceholder('ELEMENT_NO_PARENT')
+                    new VariablePlaceholder('E')
                 ),
-                'expectedSerializedData' => [
-                    'type' => 'line-list',
-                    'lines' => [
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}'
-                                . '->hasOne(new ElementLocator(\'.selector\'))',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ ELEMENT_NO_PARENT }} = {{ DOM_CRAWLER_NAVIGATOR }}'
-                                . '->findOne(new ElementLocator(\'.selector\'))',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ ELEMENT_NO_PARENT }} = '
-                                . '{{ ELEMENT_NO_PARENT }}->getAttribute(\'attribute_name\')',
-                        ],
-                    ],
-                ],
+                'expectedContent' => new LineList([
+                    new Statement(
+                        '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'
+                    ),
+                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
+                    new Statement(
+                        '{{ E }} = {{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'
+                    ),
+                    new Statement('{{ E }} = {{ E }}->getAttribute(\'attribute_name\')'),
+                ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
                         new ClassDependency(ElementLocator::class),
@@ -202,7 +161,7 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
                         'HAS',
-                        'ELEMENT_NO_PARENT',
+                        'E',
                     ])),
             ],
             'attribute value, has parent' => [
@@ -212,32 +171,20 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                             ->withAttributeName('attribute_name')
                             ->withParentIdentifier(new DomIdentifier('.parent'))
                     ),
-                    new VariablePlaceholder('ELEMENT_HAS_PARENT')
+                    new VariablePlaceholder('E')
                 ),
-                'expectedSerializedData' => [
-                    'type' => 'line-list',
-                    'lines' => [
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}'
-                                .'->hasOne(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ ELEMENT_HAS_PARENT }} = {{ DOM_CRAWLER_NAVIGATOR }}'
-                                .'->findOne(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ ELEMENT_HAS_PARENT }} = '
-                                . '{{ ELEMENT_HAS_PARENT }}->getAttribute(\'attribute_name\')',
-                        ],
-                    ],
-                ],
+                'expectedContent' => new LineList([
+                    new Statement(
+                        '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}'
+                        . '->hasOne(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))'
+                    ),
+                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
+                    new Statement(
+                        '{{ E }} = {{ DOM_CRAWLER_NAVIGATOR }}'
+                        . '->findOne(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))'
+                    ),
+                    new Statement('{{ E }} = {{ E }}->getAttribute(\'attribute_name\')'),
+                ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
                         new ClassDependency(ElementLocator::class),
@@ -248,7 +195,7 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
                         'HAS',
-                        'ELEMENT_HAS_PARENT',
+                        'E',
                     ])),
             ],
         ];
