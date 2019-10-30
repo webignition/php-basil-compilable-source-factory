@@ -8,7 +8,9 @@ namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
+use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\Metadata;
+use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModelFactory\AssertionFactory;
 use webignition\DomElementLocator\ElementLocator;
@@ -24,48 +26,21 @@ trait CreateFromIncludesAssertionDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '".selector" includes "value"'
                 ),
-                'expectedSerializedData' => [
-                    'type' => 'line-list',
-                    'lines' => [
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ EXPECTED_VALUE }} = "value" ?? null',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ HAS }} = '
-                                . '{{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ EXAMINED_VALUE }} = '
-                                . '{{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ EXAMINED_VALUE }} = '
-                                . '{{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ EXAMINED_VALUE }}) ?? null',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ PHPUNIT_TEST_CASE }}'
-                                . '->assertStringContainsString((string) {{ EXPECTED_VALUE }}, '
-                                . '(string) {{ EXAMINED_VALUE }})',
-                        ],
-                    ],
-                ],
+                'expectedContent' => new LineList([
+                    new Statement('{{ EXPECTED_VALUE }} = "value" ?? null'),
+                    new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
+                    new Statement('{{ HAS }} = '
+                        . '{{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ EXAMINED_VALUE }} = '
+                        . '{{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ EXAMINED_VALUE }} = '
+                        . '{{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ EXAMINED_VALUE }}) ?? null'),
+                    new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
+                    new Statement('{{ PHPUNIT_TEST_CASE }}'
+                        . '->assertStringContainsString((string) {{ EXPECTED_VALUE }}, '
+                        . '(string) {{ EXAMINED_VALUE }})'),
+                ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
                         new ClassDependency(ElementLocator::class),
@@ -85,48 +60,21 @@ trait CreateFromIncludesAssertionDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '".selector".attribute_name includes "value"'
                 ),
-                'expectedSerializedData' => [
-                    'type' => 'line-list',
-                    'lines' => [
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ EXPECTED_VALUE }} = "value" ?? null',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ HAS }} = '
-                                . '{{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ EXAMINED_VALUE }} = '
-                                . '{{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ EXAMINED_VALUE }} = '
-                                . '{{ EXAMINED_VALUE }}->getAttribute(\'attribute_name\') ?? null',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ PHPUNIT_TEST_CASE }}'
-                                . '->assertStringContainsString((string) {{ EXPECTED_VALUE }}, '
-                                . '(string) {{ EXAMINED_VALUE }})',
-                        ],
-                    ],
-                ],
+                'expectedContent' => new LineList([
+                    new Statement('{{ EXPECTED_VALUE }} = "value" ?? null'),
+                    new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
+                    new Statement('{{ HAS }} = '
+                        . '{{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ EXAMINED_VALUE }} = '
+                        . '{{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ EXAMINED_VALUE }} = '
+                        . '{{ EXAMINED_VALUE }}->getAttribute(\'attribute_name\') ?? null'),
+                    new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
+                    new Statement('{{ PHPUNIT_TEST_CASE }}'
+                        . '->assertStringContainsString((string) {{ EXPECTED_VALUE }}, '
+                        . '(string) {{ EXAMINED_VALUE }})'),
+                ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
                         new ClassDependency(ElementLocator::class),
