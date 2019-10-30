@@ -10,13 +10,11 @@ use webignition\BasilCompilableSourceFactory\Handler\ClassDependencyHandler;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilationSource\Comment;
 use webignition\BasilCompilationSource\EmptyLine;
-use webignition\BasilCompilationSource\LineListInterface;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilCompilationSource\MutableListLineListInterface;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
-use webignition\BasilCompilationSource\StatementInterface;
 use webignition\BasilCompilationSource\LineList;
 
 class ExecutableCallFactory
@@ -55,51 +53,42 @@ class ExecutableCallFactory
 
         $classDependencies = $metadata->getClassDependencies();
 
-        $executableCall = '';
+        $lineList = new LineList();
 
         foreach ($classDependencies as $key => $value) {
-            $classDependencyStatementList = $this->classDependencyHandler->createSource($value);
-
-            if ($classDependencyStatementList instanceof LineListInterface) {
-                foreach ($classDependencyStatementList->getLines() as $classDependencyStatement) {
-                    $executableCall .= $classDependencyStatement . ";\n";
-                }
-            }
+            $lineList->addLinesFromSource($this->classDependencyHandler->createSource($value));
         }
 
         foreach ($setupStatements as $statement) {
-            $executableCall .= $statement . "\n";
+            $lineList->addLine(new Statement($statement));
         }
 
-        $statements = [];
+        $lineList->addLinesFromSources($source->getSources());
 
-        foreach ($source->getSources() as $line) {
+        foreach ($teardownStatements as $statement) {
+            $lineList->addLine(new Statement($statement));
+        }
+
+        $lines = [];
+
+        foreach ($lineList->getLines() as $line) {
             if ($line instanceof EmptyLine) {
-                $statements[] = '';
+                $lines[] = '';
             }
 
             if ($line instanceof Comment) {
-                $statements[] = '// ' . $line->getContent();
+                $lines[] = '// ' . $line->getContent();
             }
 
             if ($line instanceof Statement) {
-                $statements[] = $line->getContent() . ';';
+                $lines[] = $line->getContent() . ';';
             }
         }
 
-        $content = $this->variablePlaceholderResolver->resolve(
-            implode("\n", $statements),
+        return $this->variablePlaceholderResolver->resolve(
+            implode("\n", $lines),
             $variableIdentifiers
         );
-
-        $executableCall .= $content;
-
-        foreach ($teardownStatements as $statement) {
-            $executableCall .= "\n";
-            $executableCall .= $statement;
-        }
-
-        return $executableCall;
     }
 
     public function createWithReturn(
@@ -109,10 +98,6 @@ class ExecutableCallFactory
         array $teardownStatements = [],
         ?MetadataInterface $additionalMetadata = null
     ): string {
-        if ($source instanceof StatementInterface) {
-            $source = new LineList([$source]);
-        }
-
         if ($source instanceof MutableListLineListInterface) {
             $source->mutateLastStatement(function (string $content) {
                 return 'return ' . $content;
