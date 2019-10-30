@@ -10,6 +10,7 @@ use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilCompilationSource\MutableListLineListInterface;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\LineList;
@@ -84,18 +85,24 @@ class ExistenceComparisonHandler implements HandlerInterface
 
         if ($this->isScalarValue($value)) {
             $accessor = $this->scalarValueHandler->createSource($value);
-            $accessor->mutateLastStatement(function (string $content) {
-                return $content . ' ?? null';
-            });
+
+            if ($accessor instanceof MutableListLineListInterface) {
+                $accessor->mutateLastStatement(function (string $content) {
+                    return $content . ' ?? null';
+                });
+            }
 
             $assignment = clone $accessor;
-            $assignment->mutateLastStatement(function (string $content) use ($valuePlaceholder) {
-                return $valuePlaceholder . ' = ' . $content;
-            });
 
-            $assignment->addVariableExportsToLastStatement(new VariablePlaceholderCollection([
-                $valuePlaceholder,
-            ]));
+            if ($assignment instanceof MutableListLineListInterface) {
+                $assignment->mutateLastStatement(function (string $content) use ($valuePlaceholder) {
+                    return $valuePlaceholder . ' = ' . $content;
+                });
+
+                $assignment->addVariableExportsToLastStatement(new VariablePlaceholderCollection([
+                    $valuePlaceholder,
+                ]));
+            }
 
             $existence = new LineList([
                 $assignment,

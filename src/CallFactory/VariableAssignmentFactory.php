@@ -2,6 +2,7 @@
 
 namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
+use webignition\BasilCompilationSource\MutableListLineListInterface;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\LineList;
@@ -23,13 +24,15 @@ class VariableAssignmentFactory
     ): SourceInterface {
         $assignment = clone $accessor;
 
-        $assignment->mutateLastStatement(function (string $content) use ($placeholder, $default) {
-            return $placeholder . ' = ' . $content . ' ?? ' . $default;
-        });
+        if ($assignment instanceof MutableListLineListInterface) {
+            $assignment->mutateLastStatement(function (string $content) use ($placeholder, $default) {
+                return $placeholder . ' = ' . $content . ' ?? ' . $default;
+            });
 
-        $assignment->addVariableExportsToLastStatement(new VariablePlaceholderCollection([
-            $placeholder,
-        ]));
+            $assignment->addVariableExportsToLastStatement(new VariablePlaceholderCollection([
+                $placeholder,
+            ]));
+        }
 
         return new LineList([
             $assignment,

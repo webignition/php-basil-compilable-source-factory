@@ -10,6 +10,7 @@ use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilCompilationSource\MutableListLineListInterface;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilModel\Assertion\AssertionComparison;
@@ -91,9 +92,11 @@ class ComparisonAssertionHandler implements HandlerInterface
                 new NamedDomIdentifierValue($examinedValue, $examinedValuePlaceholder)
             );
 
-            $examinedValueAccessor->mutateLastStatement(function (string $content) use ($examinedValuePlaceholder) {
-                return str_replace((string) $examinedValuePlaceholder . ' = ', '', $content);
-            });
+            if ($examinedValueAccessor instanceof MutableListLineListInterface) {
+                $examinedValueAccessor->mutateLastStatement(function (string $content) use ($examinedValuePlaceholder) {
+                    return str_replace((string) $examinedValuePlaceholder . ' = ', '', $content);
+                });
+            }
         } else {
             $examinedValueAccessor = $this->scalarValueHandler->createSource($examinedValue);
         }
@@ -103,9 +106,11 @@ class ComparisonAssertionHandler implements HandlerInterface
                 new NamedDomIdentifierValue($expectedValue, $expectedValuePlaceholder)
             );
 
-            $expectedValueAccessor->mutateLastStatement(function (string $content) use ($expectedValuePlaceholder) {
-                return str_replace((string) $expectedValuePlaceholder . ' = ', '', $content);
-            });
+            if ($expectedValueAccessor instanceof MutableListLineListInterface) {
+                $expectedValueAccessor->mutateLastStatement(function (string $content) use ($expectedValuePlaceholder) {
+                    return str_replace((string) $expectedValuePlaceholder . ' = ', '', $content);
+                });
+            }
         } else {
             $expectedValueAccessor = $this->scalarValueHandler->createSource($expectedValue);
         }
