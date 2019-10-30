@@ -11,9 +11,13 @@ use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
+use webignition\BasilCompilationSource\Comment;
+use webignition\BasilCompilationSource\EmptyLine;
+use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilCompilationSource\SourceInterface;
+use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Step\Step;
 use webignition\BasilModel\Step\StepInterface;
@@ -38,13 +42,13 @@ class StepHandlerTest extends AbstractHandlerTest
      */
     public function testCreateSource(
         StepInterface $step,
-        array $expectedSerializedData,
+        SourceInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
         $source = $this->handler->createSource($step);
 
         $this->assertInstanceOf(SourceInterface::class, $source);
-        $this->assertJsonSerializedData($expectedSerializedData, $source);
+        $this->assertSourceContentEquals($expectedContent, $source);
         $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
     }
 
@@ -56,10 +60,7 @@ class StepHandlerTest extends AbstractHandlerTest
         return [
             'empty step' => [
                 'step' => new Step([], []),
-                'expectedSerializedData' => [
-                    'type' => 'line-list',
-                    'lines' => [],
-                ],
+                'expectedContent' => new LineList(),
                 'expectedMetadata' => new Metadata(),
             ],
             'one action' => [
@@ -69,37 +70,16 @@ class StepHandlerTest extends AbstractHandlerTest
                     ],
                     []
                 ),
-                'expectedSerializedData' => [
-                    'type' => 'line-list',
-                    'lines' => [
-                        [
-                            'type' => 'comment',
-                            'content' => 'click ".selector"',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ HAS }} = '
-                                . '{{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ ELEMENT }} = '
-                                . '{{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ ELEMENT }}->click()',
-                        ],
-                        [
-                            'type' => 'empty',
-                            'content' => '',
-                        ],
-                    ],
-                ],
+                'expectedContent' => new LineList([
+                    new Comment('click ".selector"'),
+                    new Statement('{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
+                    new Statement(
+                        '{{ ELEMENT }} = {{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'
+                    ),
+                    new Statement('{{ ELEMENT }}->click()'),
+                    new EmptyLine(),
+                ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
                         new ClassDependency(ElementLocator::class),
@@ -121,57 +101,21 @@ class StepHandlerTest extends AbstractHandlerTest
                     ],
                     []
                 ),
-                'expectedSerializedData' => [
-                    'type' => 'line-list',
-                    'lines' => [
-                        [
-                            'type' => 'comment',
-                            'content' => 'click ".selector"',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ HAS }} = '
-                                . '{{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ ELEMENT }} = '
-                                . '{{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ ELEMENT }}->click()',
-                        ],
-                        [
-                            'type' => 'empty',
-                            'content' => '',
-                        ],
-                        [
-                            'type' => 'comment',
-                            'content' => 'wait 1',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ DURATION }} = "1" ?? 0',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ DURATION }} = (int) {{ DURATION }}',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => 'usleep({{ DURATION }} * 1000)',
-                        ],
-                        [
-                            'type' => 'empty',
-                            'content' => '',
-                        ],
-                    ],
-                ],
+                'expectedContent' => new LineList([
+                    new Comment('click ".selector"'),
+                    new Statement('{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
+                    new Statement(
+                        '{{ ELEMENT }} = {{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'
+                    ),
+                    new Statement('{{ ELEMENT }}->click()'),
+                    new EmptyLine(),
+                    new Comment('wait 1'),
+                    new Statement('{{ DURATION }} = "1" ?? 0'),
+                    new Statement('{{ DURATION }} = (int) {{ DURATION }}'),
+                    new Statement('usleep({{ DURATION }} * 1000)'),
+                    new EmptyLine(),
+                ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
                         new ClassDependency(ElementLocator::class),
@@ -193,40 +137,16 @@ class StepHandlerTest extends AbstractHandlerTest
                         $assertionFactory->createFromAssertionString('$page.title is "value"'),
                     ]
                 ),
-                'expectedSerializedData' => [
-                    'type' => 'line-list',
-                    'lines' => [
-                        [
-                            'type' => 'comment',
-                            'content' => '$page.title is "value"',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ EXPECTED_VALUE }} = "value" ?? null',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ EXAMINED_VALUE }} = {{ PANTHER_CLIENT }}->getTitle() ?? null',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ PHPUNIT_TEST_CASE }}'
-                                . '->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})',
-                        ],
-                        [
-                            'type' => 'empty',
-                            'content' => '',
-                        ],
-                    ],
-                ],
+                'expectedContent' => new LineList([
+                    new Comment('$page.title is "value"'),
+                    new Statement('{{ EXPECTED_VALUE }} = "value" ?? null'),
+                    new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
+                    new Statement('{{ EXAMINED_VALUE }} = {{ PANTHER_CLIENT }}->getTitle() ?? null'),
+                    new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
+                    new Statement('{{ PHPUNIT_TEST_CASE }}'
+                        . '->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})'),
+                    new EmptyLine(),
+                ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::PANTHER_CLIENT,
@@ -245,69 +165,22 @@ class StepHandlerTest extends AbstractHandlerTest
                         $assertionFactory->createFromAssertionString('$page.url is "http://example.com"'),
                     ]
                 ),
-                'expectedSerializedData' => [
-                    'type' => 'line-list',
-                    'lines' => [
-                        [
-                            'type' => 'comment',
-                            'content' => '$page.title is "value"',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ EXPECTED_VALUE }} = "value" ?? null',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ EXAMINED_VALUE }} = {{ PANTHER_CLIENT }}->getTitle() ?? null',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ PHPUNIT_TEST_CASE }}'
-                                . '->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})',
-                        ],
-                        [
-                            'type' => 'empty',
-                            'content' => '',
-                        ],
-                        [
-                            'type' => 'comment',
-                            'content' => '$page.url is "http://example.com"',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ EXPECTED_VALUE }} = "http://example.com" ?? null',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ EXAMINED_VALUE }} = {{ PANTHER_CLIENT }}->getCurrentURL() ?? null',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ PHPUNIT_TEST_CASE }}'
-                                . '->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})',
-                        ],
-                        [
-                            'type' => 'empty',
-                            'content' => '',
-                        ],
-                    ],
-                ],
+                'expectedContent' => new LineList([
+                    new Comment('$page.title is "value"'),
+                    new Statement('{{ EXPECTED_VALUE }} = "value" ?? null'),
+                    new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
+                    new Statement('{{ EXAMINED_VALUE }} = {{ PANTHER_CLIENT }}->getTitle() ?? null'),
+                    new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
+                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})'),
+                    new EmptyLine(),
+                    new Comment('$page.url is "http://example.com"'),
+                    new Statement('{{ EXPECTED_VALUE }} = "http://example.com" ?? null'),
+                    new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
+                    new Statement('{{ EXAMINED_VALUE }} = {{ PANTHER_CLIENT }}->getCurrentURL() ?? null'),
+                    new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
+                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})'),
+                    new EmptyLine(),
+                ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::PANTHER_CLIENT,
@@ -327,66 +200,23 @@ class StepHandlerTest extends AbstractHandlerTest
                         $assertionFactory->createFromAssertionString('$page.title is "value"'),
                     ]
                 ),
-                'expectedSerializedData' => [
-                    'type' => 'line-list',
-                    'lines' => [
-                        [
-                            'type' => 'comment',
-                            'content' => 'click ".selector"',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ HAS }} = '
-                                . '{{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ ELEMENT }} = '
-                                . '{{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ ELEMENT }}->click()',
-                        ],
-                        [
-                            'type' => 'empty',
-                            'content' => '',
-                        ],
-                        [
-                            'type' => 'comment',
-                            'content' => '$page.title is "value"',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ EXPECTED_VALUE }} = "value" ?? null',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ EXAMINED_VALUE }} = {{ PANTHER_CLIENT }}->getTitle() ?? null',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ PHPUNIT_TEST_CASE }}'
-                                . '->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})',
-                        ],
-                        [
-                            'type' => 'empty',
-                            'content' => '',
-                        ],
-                    ],
-                ],
+                'expectedContent' => new LineList([
+                    new Comment('click ".selector"'),
+                    new Statement('{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
+                    new Statement(
+                        '{{ ELEMENT }} = {{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'
+                    ),
+                    new Statement('{{ ELEMENT }}->click()'),
+                    new EmptyLine(),
+                    new Comment('$page.title is "value"'),
+                    new Statement('{{ EXPECTED_VALUE }} = "value" ?? null'),
+                    new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
+                    new Statement('{{ EXAMINED_VALUE }} = {{ PANTHER_CLIENT }}->getTitle() ?? null'),
+                    new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
+                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})'),
+                    new EmptyLine(),
+                ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
                         new ClassDependency(ElementLocator::class),

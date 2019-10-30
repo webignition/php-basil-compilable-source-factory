@@ -27,6 +27,7 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\WaitForAc
 use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\AbstractHandlerTest;
 use webignition\BasilCompilationSource\MetadataInterface;
+use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilModel\Action\ActionInterface;
 
 class ActionHandlerTest extends AbstractHandlerTest
@@ -90,12 +91,12 @@ class ActionHandlerTest extends AbstractHandlerTest
      */
     public function testCreateSource(
         ActionInterface $action,
-        array $expectedSerializedData,
+        SourceInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
         $source = $this->handler->createSource($action);
 
-        $this->assertJsonSerializedData($expectedSerializedData, $source);
+        $this->assertSourceContentEquals($expectedContent, $source);
         $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
     }
 }

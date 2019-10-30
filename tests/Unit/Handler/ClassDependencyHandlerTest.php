@@ -9,7 +9,8 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Handler\ClassDependencyHandler;
 use webignition\BasilCompilationSource\ClassDependency;
-use webignition\BasilCompilationSource\Metadata;
+use webignition\BasilCompilationSource\Statement;
+use webignition\BasilCompilationSource\StatementInterface;
 
 class ClassDependencyHandlerTest extends AbstractHandlerTest
 {
@@ -37,12 +38,11 @@ class ClassDependencyHandlerTest extends AbstractHandlerTest
      */
     public function testCreateSource(
         ClassDependency $classDependency,
-        array $expectedSerializedData
+        StatementInterface $expectedStatement
     ) {
         $source = $this->handler->createSource($classDependency);
 
-        $this->assertJsonSerializedData($expectedSerializedData, $source);
-        $this->assertEquals(new Metadata(), $source->getMetadata());
+        $this->assertEquals($expectedStatement, $source);
     }
 
     public function createSourceDataProvider(): array
@@ -50,17 +50,11 @@ class ClassDependencyHandlerTest extends AbstractHandlerTest
         return [
             'without alias' => [
                 'classDependency' => new ClassDependency(ClassDependency::class),
-                'expectedSerializedData' => [
-                    'type' => 'statement',
-                    'content' => 'use webignition\BasilCompilationSource\ClassDependency',
-                ],
+                'expectedStatement' => new Statement('use webignition\BasilCompilationSource\ClassDependency'),
             ],
             'with alias' => [
                 'classDependency' => new ClassDependency(ClassDependency::class, 'CD'),
-                'expectedSerializedData' => [
-                    'type' => 'statement',
-                    'content' => 'use webignition\BasilCompilationSource\ClassDependency as CD',
-                ],
+                'expectedStatement' => new Statement('use webignition\BasilCompilationSource\ClassDependency as CD'),
             ],
         ];
     }

@@ -10,7 +10,7 @@ use webignition\BasilCompilableSourceFactory\CallFactory\WebDriverElementInspect
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Metadata;
-use webignition\BasilCompilationSource\MetadataInterface;
+use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\StatementInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
@@ -34,14 +34,12 @@ class WebDriverElementInspectorCallFactoryTest extends AbstractTestCase
      */
     public function testCreateGetValueCall(
         VariablePlaceholder $collectionPlaceholder,
-        string $expectedContent,
-        MetadataInterface $expectedMetadata
+        StatementInterface $expectedStatement
     ) {
         $statement = $this->factory->createGetValueCall($collectionPlaceholder);
 
         $this->assertInstanceOf(StatementInterface::class, $statement);
-        $this->assertEquals($expectedContent, $statement->getContent());
-        $this->assertMetadataEquals($expectedMetadata, $statement->getMetadata());
+        $this->assertEquals($expectedStatement, $statement);
     }
 
     public function createGetValueCallDataProvider(): array
@@ -49,14 +47,16 @@ class WebDriverElementInspectorCallFactoryTest extends AbstractTestCase
         return [
             'default' => [
                 'collectionPlaceholder' => new VariablePlaceholder('COLLECTION'),
-                'expectedContent' => '{{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ COLLECTION }})',
-                'expectedMetadata' => (new Metadata())
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
-                        'COLLECTION',
-                    ])),
+                'expectedStatement' => new Statement(
+                    '{{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ COLLECTION }})',
+                    (new Metadata())
+                        ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                            VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
+                        ]))
+                        ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                            'COLLECTION',
+                        ]))
+                ),
             ],
         ];
     }

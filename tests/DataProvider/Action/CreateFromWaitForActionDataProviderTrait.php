@@ -6,7 +6,9 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
 use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\Metadata;
+use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModelFactory\Action\ActionFactory;
 
@@ -21,15 +23,9 @@ trait CreateFromWaitForActionDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'wait-for ".selector"'
                 ),
-                'expectedSerializedData' => [
-                    'type' => 'line-list',
-                    'lines' => [
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ CRAWLER }} = {{ PANTHER_CLIENT }}->waitFor(\'.selector\')',
-                        ],
-                    ],
-                ],
+                'expectedContent' => new LineList([
+                    new Statement('{{ CRAWLER }} = {{ PANTHER_CLIENT }}->waitFor(\'.selector\')'),
+                ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::PANTHER_CRAWLER,

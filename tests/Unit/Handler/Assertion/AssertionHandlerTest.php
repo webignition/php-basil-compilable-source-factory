@@ -26,6 +26,7 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\Unhand
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\AbstractHandlerTest;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
 use webignition\BasilCompilationSource\MetadataInterface;
+use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilModel\Assertion\AssertionInterface;
 
 class AssertionHandlerTest extends AbstractHandlerTest
@@ -85,12 +86,12 @@ class AssertionHandlerTest extends AbstractHandlerTest
      */
     public function testCreateSource(
         AssertionInterface $assertion,
-        array $expectedSerializedData,
+        SourceInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
         $source = $this->handler->createSource($assertion);
 
-        $this->assertJsonSerializedData($expectedSerializedData, $source);
+        $this->assertSourceContentEquals($expectedContent, $source);
         $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
     }
 }
