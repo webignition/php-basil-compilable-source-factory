@@ -6,8 +6,8 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilationSource\ClassDefinition;
 use webignition\BasilCompilationSource\Comment;
-use webignition\BasilCompilationSource\FunctionDefinition;
 use webignition\BasilCompilationSource\LineList;
+use webignition\BasilCompilationSource\MethodDefinition;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilModel\Test\TestInterface;
 
@@ -45,7 +45,7 @@ class TestHandler implements HandlerInterface
 
             $stepMethodName = sprintf('test%s', ucfirst(md5($stepName)));
 
-            $functionDefinitions[] = new FunctionDefinition(
+            $functionDefinitions[] = new MethodDefinition(
                 $stepMethodName,
                 new LineList([
                     new Comment($stepName),

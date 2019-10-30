@@ -9,7 +9,6 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler;
 use webignition\BasilCompilableSourceFactory\Handler\TestHandler;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\ClassDefinition;
 use webignition\BasilCompilationSource\ClassDefinitionInterface;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
@@ -18,7 +17,8 @@ use webignition\BasilCompilationSource\EmptyLine;
 use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MetadataInterface;
-use webignition\BasilCompilationSource\SourceInterface;
+use webignition\BasilCompilationSource\MethodDefinition;
+use webignition\BasilCompilationSource\MethodDefinitionInterface;
 use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Step\Step;
@@ -50,27 +50,28 @@ class TestHandlerTest extends AbstractHandlerTest
      */
     public function testCreateSource(
         TestInterface $test,
-        SourceInterface $expectedContent,
-        MetadataInterface $expectedMetadata,
         string $expectedClassName,
-        array $expectedFunctionNames
+        array $expectedMethods,
+        MetadataInterface $expectedMetadata
     ) {
         $source = $this->handler->createSource($test);
 
         $this->assertInstanceOf(ClassDefinitionInterface::class, $source);
-        $this->assertSourceContentEquals($expectedContent, $source);
         $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
 
         if ($source instanceof ClassDefinitionInterface) {
             $this->assertSame($expectedClassName, $source->getName());
 
-            $functionNames = [];
+            $methods = $source->getMethods();
+            $this->assertCount(count($expectedMethods), $methods);
 
-            foreach ($source->getFunctions() as $function) {
-                $functionNames[] = $function->getName();
+            foreach ($methods as $methodIndex => $method) {
+                /* @var MethodDefinitionInterface $expectedMethod */
+                $expectedMethod = $expectedMethods[$methodIndex];
+
+                $this->assertSame($expectedMethod->getName(), $method->getName());
+                $this->assertSourceContentEquals($expectedMethod, $method);
             }
-
-            $this->assertSame($expectedFunctionNames, $functionNames);
         }
     }
 
@@ -86,10 +87,9 @@ class TestHandlerTest extends AbstractHandlerTest
                     new Configuration('chrome', 'http://example.com'),
                     []
                 ),
-                'expectedContent' => new ClassDefinition('', []),
-                'expectedMetadata' => new Metadata(),
                 'expectedClassName' => 'generated69ef658fb6e99440777d8bbe69f5bc89Test',
-                'expectedFunctionNames' => [],
+                'expectedMethods' => [],
+                'expectedMetadata' => new Metadata(),
             ],
             'single step with single action and single assertion' => [
                 'step' => new Test(
@@ -106,25 +106,34 @@ class TestHandlerTest extends AbstractHandlerTest
                         ),
                     ]
                 ),
-                'expectedContent' => new LineList([
-                    new Comment('step one'),
-                    new Comment('click ".selector"'),
-                    new Statement('{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
-                    new Statement(
-                        '{{ ELEMENT }} = {{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'
+                'expectedClassName' => 'generated69ef658fb6e99440777d8bbe69f5bc89Test',
+                'expectedMethods' => [
+                    new MethodDefinition(
+                        'testBdc4b8bd83e5660d1c62908dc7a7c43a',
+                        new LineList([
+                            new Comment('step one'),
+                            new Comment('click ".selector"'),
+                            new Statement(
+                                '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'
+                            ),
+                            new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
+                            new Statement(
+                                '{{ ELEMENT }} = '
+                                . '{{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'
+                            ),
+                            new Statement('{{ ELEMENT }}->click()'),
+                            new EmptyLine(),
+                            new Comment('$page.title is "value"'),
+                            new Statement('{{ EXPECTED_VALUE }} = "value" ?? null'),
+                            new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
+                            new Statement('{{ EXAMINED_VALUE }} = {{ PANTHER_CLIENT }}->getTitle() ?? null'),
+                            new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
+                            new Statement('{{ PHPUNIT_TEST_CASE }}'
+                                . '->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})'),
+                            new EmptyLine(),
+                        ])
                     ),
-                    new Statement('{{ ELEMENT }}->click()'),
-                    new EmptyLine(),
-                    new Comment('$page.title is "value"'),
-                    new Statement('{{ EXPECTED_VALUE }} = "value" ?? null'),
-                    new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
-                    new Statement('{{ EXAMINED_VALUE }} = {{ PANTHER_CLIENT }}->getTitle() ?? null'),
-                    new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}'
-                        . '->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})'),
-                    new EmptyLine(),
-                ]),
+                ],
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
                         new ClassDependency(ElementLocator::class),
@@ -140,10 +149,6 @@ class TestHandlerTest extends AbstractHandlerTest
                         'EXAMINED_VALUE',
                         'EXPECTED_VALUE',
                     ])),
-                'expectedClassName' => 'generated69ef658fb6e99440777d8bbe69f5bc89Test',
-                'expectedFunctionNames' => [
-                    'testBdc4b8bd83e5660d1c62908dc7a7c43a',
-                ],
             ],
         ];
     }
