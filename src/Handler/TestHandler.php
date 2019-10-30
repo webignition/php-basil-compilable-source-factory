@@ -4,6 +4,9 @@ namespace webignition\BasilCompilableSourceFactory\Handler;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
+use webignition\BasilCompilationSource\ClassDefinition;
+use webignition\BasilCompilationSource\Comment;
+use webignition\BasilCompilationSource\FunctionDefinition;
 use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilModel\Test\TestInterface;
@@ -11,6 +14,7 @@ use webignition\BasilModel\Test\TestInterface;
 class TestHandler implements HandlerInterface
 {
     private $stepHandler;
+
     public function __construct(HandlerInterface $stepHandler)
     {
         $this->stepHandler = $stepHandler;
@@ -34,6 +38,25 @@ class TestHandler implements HandlerInterface
             throw new UnsupportedModelException($model);
         }
 
-        return new LineList([]);
+        $functionDefinitions = [];
+
+        foreach ($model->getSteps() as $stepName => $step) {
+            $stepName = (string) $stepName;
+
+            $stepMethodName = sprintf('test%s', ucfirst(md5($stepName)));
+
+            $functionDefinitions[] = new FunctionDefinition(
+                $stepMethodName,
+                new LineList([
+                    new Comment($stepName),
+                    $this->stepHandler->createSource($step),
+                ])
+            );
+        }
+
+        $testName = (string) $model->getName();
+        $className = sprintf('generated%sTest', ucfirst(md5($testName)));
+
+        return new ClassDefinition($className, $functionDefinitions);
     }
 }
