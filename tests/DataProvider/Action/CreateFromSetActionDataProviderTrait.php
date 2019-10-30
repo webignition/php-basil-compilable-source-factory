@@ -207,7 +207,7 @@ trait CreateFromSetActionDataProviderTrait
                     new Statement('{{ HAS }} = '
                         . '{{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
-                    new Statement( '{{ COLLECTION }} = '
+                    new Statement('{{ COLLECTION }} = '
                         . '{{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ VALUE }} = {{ ENVIRONMENT_VARIABLE_ARRAY }}[\'KEY\'] ?? null'),
                     new Statement('{{ VALUE }} = (string) {{ VALUE }}'),
