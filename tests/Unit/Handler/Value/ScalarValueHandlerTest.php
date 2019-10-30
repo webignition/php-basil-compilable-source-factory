@@ -16,6 +16,7 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Value\UnhandledV
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\AbstractHandlerTest;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilationSource\MetadataInterface;
+use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilModel\Value\ValueInterface;
 
 class ScalarValueHandlerTest extends AbstractHandlerTest
@@ -56,12 +57,12 @@ class ScalarValueHandlerTest extends AbstractHandlerTest
      */
     public function testCreateSource(
         ValueInterface $model,
-        array $expectedSerializedData,
+        SourceInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
         $source = $this->handler->createSource($model);
 
-        $this->assertJsonSerializedData($expectedSerializedData, $source);
+        $this->assertSourceContentEquals($expectedContent, $source);
         $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
     }
 }
