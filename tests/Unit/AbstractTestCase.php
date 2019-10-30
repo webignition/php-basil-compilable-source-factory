@@ -18,7 +18,6 @@ abstract class AbstractTestCase extends \PHPUnit\Framework\TestCase
 {
     protected function assertSourceContentEquals(SourceInterface $expected, SourceInterface $actual)
     {
-        $this->assertSourceClassEquals($expected, $actual);
         $this->assertSourceLines($expected, $actual);
     }
 
