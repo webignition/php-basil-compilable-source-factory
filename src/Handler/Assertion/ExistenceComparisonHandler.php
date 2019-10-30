@@ -97,12 +97,10 @@ class ExistenceComparisonHandler implements HandlerInterface
                 $valuePlaceholder,
             ]));
 
-            $existence = new LineList(array_merge(
-                $assignment->getLineObjects(),
-                [
-                    new Statement(sprintf('%s = %s !== null', $valuePlaceholder, $valuePlaceholder)),
-                ]
-            ));
+            $existence = new LineList([
+                $assignment,
+                new Statement(sprintf('%s = %s !== null', $valuePlaceholder, $valuePlaceholder)),
+            ]);
 
             return $this->createAssertionCall($model->getComparison(), $existence, $valuePlaceholder);
         }
@@ -132,11 +130,10 @@ class ExistenceComparisonHandler implements HandlerInterface
                 new NamedDomIdentifierValue($value, $valuePlaceholder)
             );
 
-            $existence = new LineList([]);
-            $existence->addLines($accessor->getLineObjects());
-            $existence->addLine(
-                new Statement(sprintf('%s = %s !== null', $valuePlaceholder, $valuePlaceholder))
-            );
+            $existence = new LineList([
+                $accessor,
+                new Statement(sprintf('%s = %s !== null', $valuePlaceholder, $valuePlaceholder)),
+            ]);
 
             return $this->createAssertionCall($model->getComparison(), $existence, $valuePlaceholder);
         }
