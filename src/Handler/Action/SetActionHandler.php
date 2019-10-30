@@ -10,6 +10,7 @@ use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifier;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
+use webignition\BasilCompilationSource\MutableListLineListInterface;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
@@ -90,9 +91,11 @@ class SetActionHandler implements HandlerInterface
                 new NamedDomIdentifierValue($value, $valuePlaceholder)
             );
 
-            $valueAccessor->mutateLastStatement(function (string $content) use ($valuePlaceholder) {
-                return str_replace((string) $valuePlaceholder . ' = ', '', $content);
-            });
+            if ($valueAccessor instanceof MutableListLineListInterface) {
+                $valueAccessor->mutateLastStatement(function (string $content) use ($valuePlaceholder) {
+                    return str_replace((string) $valuePlaceholder . ' = ', '', $content);
+                });
+            }
         } else {
             $valueAccessor = $this->scalarValueHandler->createSource($value);
         }
@@ -104,11 +107,10 @@ class SetActionHandler implements HandlerInterface
             $valuePlaceholder
         );
 
-        $lineList = new LineList([]);
-        $lineList->addLines($collectionAssignment->getLineObjects());
-        $lineList->addLines($valueAssignment->getLineObjects());
-        $lineList->addLine($mutationCall);
-
-        return $lineList;
+        return new LineList([
+            $collectionAssignment,
+            $valueAssignment,
+            $mutationCall
+        ]);
     }
 }

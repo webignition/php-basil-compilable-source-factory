@@ -91,14 +91,15 @@ class NamedDomIdentifierHandler implements HandlerInterface
         $elementOrCollectionAssignment->addVariableExports($collectionAssignmentVariableExports);
 
         $elementExistsAssertion = $this->assertionCallFactory->createValueExistenceAssertionCall(
-            new LineList([$hasAssignment]),
+            $hasAssignment,
             $hasPlaceholder,
             AssertionCallFactory::ASSERT_TRUE_TEMPLATE
         );
 
-        $lineList = new LineList([]);
-        $lineList->addLines($elementExistsAssertion->getLineObjects());
-        $lineList->addLine($elementOrCollectionAssignment);
+        $lineList = new LineList([
+            $elementExistsAssertion,
+            $elementOrCollectionAssignment,
+        ]);
 
         if ($model->includeValue()) {
             if ($hasAttribute) {
@@ -117,7 +118,7 @@ class NamedDomIdentifierHandler implements HandlerInterface
                 });
             }
 
-            $lineList->addLines([$valueAssignment]);
+            $lineList->addLinesFromSource($valueAssignment);
         }
 
         return $lineList;

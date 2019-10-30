@@ -8,6 +8,7 @@ use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
+use webignition\BasilCompilationSource\MutableListLineListInterface;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\LineList;
@@ -71,9 +72,11 @@ class WaitActionHandler implements HandlerInterface
                 new NamedDomIdentifierValue($duration, $durationPlaceholder)
             );
 
-            $durationAccessor->mutateLastStatement(function (string $content) use ($durationPlaceholder) {
-                return str_replace((string) $durationPlaceholder . ' = ', '', $content);
-            });
+            if ($durationAccessor instanceof MutableListLineListInterface) {
+                $durationAccessor->mutateLastStatement(function (string $content) use ($durationPlaceholder) {
+                    return str_replace((string) $durationPlaceholder . ' = ', '', $content);
+                });
+            }
         } else {
             $durationAccessor = $this->scalarValueHandler->createSource($duration);
         }
@@ -85,16 +88,13 @@ class WaitActionHandler implements HandlerInterface
             '0'
         );
 
-        $lineList = new LineList([]);
-        $lineList->addLines($durationAssignment->getLineObjects());
-        $lineList->addLine(
+        return new LineList([
+            $durationAssignment,
             new Statement(sprintf(
                 'usleep(%s * %s)',
                 (string) $durationPlaceholder,
                 self::MICROSECONDS_PER_MILLISECOND
-            ))
-        );
-
-        return $lineList;
+            )),
+        ]);
     }
 }

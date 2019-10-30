@@ -10,8 +10,10 @@ use webignition\BasilCompilableSourceFactory\Handler\ClassDependencyHandler;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilationSource\Comment;
 use webignition\BasilCompilationSource\EmptyLine;
+use webignition\BasilCompilationSource\LineListInterface;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MetadataInterface;
+use webignition\BasilCompilationSource\MutableListLineListInterface;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\StatementInterface;
@@ -58,8 +60,10 @@ class ExecutableCallFactory
         foreach ($classDependencies as $key => $value) {
             $classDependencyStatementList = $this->classDependencyHandler->createSource($value);
 
-            foreach ($classDependencyStatementList->getLines() as $classDependencyStatement) {
-                $executableCall .= $classDependencyStatement . ";\n";
+            if ($classDependencyStatementList instanceof LineListInterface) {
+                foreach ($classDependencyStatementList->getLines() as $classDependencyStatement) {
+                    $executableCall .= $classDependencyStatement . ";\n";
+                }
             }
         }
 
@@ -69,7 +73,7 @@ class ExecutableCallFactory
 
         $statements = [];
 
-        foreach ($source->getLineObjects() as $line) {
+        foreach ($source->getSources() as $line) {
             if ($line instanceof EmptyLine) {
                 $statements[] = '';
             }
@@ -109,9 +113,11 @@ class ExecutableCallFactory
             $source = new LineList([$source]);
         }
 
-        $source->mutateLastStatement(function (string $content) {
-            return 'return ' . $content;
-        });
+        if ($source instanceof MutableListLineListInterface) {
+            $source->mutateLastStatement(function (string $content) {
+                return 'return ' . $content;
+            });
+        }
 
         return $this->create(
             $source,

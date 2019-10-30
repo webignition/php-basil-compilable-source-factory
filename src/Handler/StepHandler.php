@@ -58,8 +58,10 @@ class StepHandler implements HandlerInterface
 
     private function addSourceToLineList(LineList $lineList, StatementInterface $statement, SourceInterface $source)
     {
-        $lineList->addLine(new Comment($statement->getSource()));
-        $lineList->addLines($source->getLineObjects());
-        $lineList->addLine(new EmptyLine());
+        $lineList->addLinesFromSources([
+            new Comment($statement->getSource()),
+            $source,
+            new EmptyLine(),
+        ]);
     }
 }
