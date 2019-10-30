@@ -41,10 +41,12 @@ class ExecutableCallFactory
     public function create(
         SourceInterface $source,
         array $variableIdentifiers = [],
-        array $setupStatements = [],
-        array $teardownStatements = [],
+        ?LineList $setupStatements = null,
+        ?LineList $teardownStatements = null,
         ?MetadataInterface $additionalMetadata = null
     ): string {
+        $setupStatements = $setupStatements ?? new LineList();
+        $teardownStatements = $teardownStatements ?? new LineList();
         $additionalMetadata = $additionalMetadata ?? new Metadata();
 
         $metadata = new Metadata();
@@ -59,15 +61,9 @@ class ExecutableCallFactory
             $lineList->addLinesFromSource($this->classDependencyHandler->createSource($value));
         }
 
-        foreach ($setupStatements as $statement) {
-            $lineList->addLine(new Statement($statement));
-        }
-
+        $lineList->addLinesFromSource($setupStatements);
         $lineList->addLinesFromSources($source->getSources());
-
-        foreach ($teardownStatements as $statement) {
-            $lineList->addLine(new Statement($statement));
-        }
+        $lineList->addLinesFromSource($teardownStatements);
 
         $lines = [];
 
@@ -94,8 +90,8 @@ class ExecutableCallFactory
     public function createWithReturn(
         SourceInterface $source,
         array $variableIdentifiers = [],
-        array $setupStatements = [],
-        array $teardownStatements = [],
+        ?LineList $setupStatements = null,
+        ?LineList $teardownStatements = null,
         ?MetadataInterface $additionalMetadata = null
     ): string {
         if ($source instanceof MutableListLineListInterface) {

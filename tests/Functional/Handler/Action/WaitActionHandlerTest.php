@@ -11,6 +11,7 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\WaitActio
 use webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\AbstractHandlerTest;
 use webignition\BasilCompilableSourceFactory\Handler\Action\WaitActionHandler;
 use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilModel\Action\ActionInterface;
 
@@ -29,11 +30,11 @@ class WaitActionHandlerTest extends AbstractHandlerTest
     public function testCreateSourceForExecutableActions(
         string $fixture,
         ActionInterface $action,
-        array $additionalSetupStatements,
-        array $teardownStatements,
-        array $additionalVariableIdentifiers,
-        MetadataInterface $metadata,
-        int $expectedDuration
+        ?LineList $additionalSetupStatements = null,
+        ?LineList $teardownStatements = null,
+        array $additionalVariableIdentifiers = [],
+        ?MetadataInterface $metadata = null,
+        ?int $expectedDuration = null
     ) {
         $source = $this->handler->createSource($action);
 

@@ -13,8 +13,10 @@ use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
+use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MetadataInterface;
+use webignition\BasilCompilationSource\Statement;
 use webignition\BasilModel\Assertion\AssertionInterface;
 use webignition\BasilModelFactory\AssertionFactory;
 use webignition\SymfonyDomCrawlerNavigator\Navigator;
@@ -33,7 +35,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractHandlerTest
         string $fixture,
         AssertionInterface $assertion,
         string $expectedExpectationFailedExceptionMessage,
-        array $additionalSetupStatements = [],
+        ?LineList $additionalSetupStatements = null,
         array $additionalVariableIdentifiers = [],
         ?MetadataInterface $metadata = null
     ) {
@@ -50,7 +52,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractHandlerTest
             $fixture,
             $source,
             $additionalSetupStatements,
-            [],
+            null,
             $variableIdentifiers,
             $metadata
         );
@@ -72,9 +74,9 @@ class AssertionHandlerFailingAssertionsTest extends AbstractHandlerTest
                     '".selector" exists'
                 ),
                 'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
-                'additionalSetupStatements' => [
-                    '$navigator = Navigator::create($crawler);',
-                ],
+                'additionalSetupStatements' => new LineList([
+                    new Statement('$navigator = Navigator::create($crawler)'),
+                ]),
                 'additionalVariableIdentifiers' => [
                     VariableNames::DOM_CRAWLER_NAVIGATOR => self::DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME,
                     VariableNames::EXAMINED_VALUE => self::EXAMINED_VALUE_VARIABLE_NAME,
@@ -92,9 +94,9 @@ class AssertionHandlerFailingAssertionsTest extends AbstractHandlerTest
                     '".selector".attribute_name exists'
                 ),
                 'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
-                'additionalSetupStatements' => [
-                    '$navigator = Navigator::create($crawler);',
-                ],
+                'additionalSetupStatements' => new LineList([
+                    new Statement('$navigator = Navigator::create($crawler)'),
+                ]),
                 'additionalVariableIdentifiers' => [
                     'HAS' => self::HAS_VARIABLE_NAME,
                     VariableNames::DOM_CRAWLER_NAVIGATOR => self::DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME,
@@ -112,9 +114,9 @@ class AssertionHandlerFailingAssertionsTest extends AbstractHandlerTest
                     '"h1".attribute_name exists'
                 ),
                 'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
-                'additionalSetupStatements' => [
-                    '$navigator = Navigator::create($crawler);',
-                ],
+                'additionalSetupStatements' => new LineList([
+                    new Statement('$navigator = Navigator::create($crawler)'),
+                ]),
                 'additionalVariableIdentifiers' => [
                     'HAS' => self::HAS_VARIABLE_NAME,
                     VariableNames::DOM_CRAWLER_NAVIGATOR => self::DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME,
@@ -132,7 +134,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractHandlerTest
                     '$env.FOO exists'
                 ),
                 'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
-                'additionalSetupStatements' => [],
+                'additionalSetupStatements' => null,
                 'additionalVariableIdentifiers' => [
                     VariableNames::ENVIRONMENT_VARIABLE_ARRAY => '$_ENV',
                     VariableNames::EXAMINED_VALUE => self::EXAMINED_VALUE_VARIABLE_NAME,

@@ -8,7 +8,9 @@ namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
+use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\Metadata;
+use webignition\BasilCompilationSource\Statement;
 use webignition\BasilModelFactory\AssertionFactory;
 use webignition\SymfonyDomCrawlerNavigator\Navigator;
 
@@ -24,9 +26,9 @@ trait NotExistsAssertionFunctionalDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '".selector" not-exists'
                 ),
-                'additionalSetupStatements' => [
-                    '$navigator = Navigator::create($crawler);',
-                ],
+                'additionalSetupStatements' => new LineList([
+                    new Statement('$navigator = Navigator::create($crawler)'),
+                ]),
                 'variableIdentifiers' => [
                     VariableNames::DOM_CRAWLER_NAVIGATOR => self::DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME,
                     VariableNames::EXAMINED_VALUE => self::EXAMINED_VALUE_VARIABLE_NAME,
@@ -42,9 +44,9 @@ trait NotExistsAssertionFunctionalDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '".selector".data-non-existent-attribute not-exists'
                 ),
-                'additionalSetupStatements' => [
-                    '$navigator = Navigator::create($crawler);',
-                ],
+                'additionalSetupStatements' => new LineList([
+                    new Statement('$navigator = Navigator::create($crawler)'),
+                ]),
                 'variableIdentifiers' => [
                     'HAS' => self::HAS_VARIABLE_NAME,
                     VariableNames::DOM_CRAWLER_NAVIGATOR => self::DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME,
@@ -61,7 +63,7 @@ trait NotExistsAssertionFunctionalDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '$env.NON-EXISTENT not-exists'
                 ),
-                'additionalSetupStatements' => [],
+                'additionalSetupStatements' => null,
                 'variableIdentifiers' => [
                     VariableNames::EXAMINED_VALUE => self::EXAMINED_VALUE_VARIABLE_NAME,
                     VariableNames::ENVIRONMENT_VARIABLE_ARRAY => self::ENVIRONMENT_VARIABLE_ARRAY_VARIABLE_NAME,

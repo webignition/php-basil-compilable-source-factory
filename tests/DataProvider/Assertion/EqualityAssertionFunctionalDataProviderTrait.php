@@ -8,7 +8,9 @@ namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
+use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\Metadata;
+use webignition\BasilCompilationSource\Statement;
 use webignition\SymfonyDomCrawlerNavigator\Navigator;
 use webignition\WebDriverElementInspector\Inspector;
 
@@ -20,10 +22,10 @@ trait EqualityAssertionFunctionalDataProviderTrait
             'element identifier examined value, scalar expected value' => [
                 'fixture' => '/assertions.html',
                 'assertion' => null,
-                'additionalSetupStatements' => [
-                    '$inspector = Inspector::create();',
-                    '$navigator = Navigator::create($crawler);',
-                ],
+                'additionalSetupStatements' => new LineList([
+                    new Statement('$inspector = Inspector::create()'),
+                    new Statement('$navigator = Navigator::create($crawler)'),
+                ]),
                 'variableIdentifiers' => [
                     'HAS' => '$has',
                     VariableNames::DOM_CRAWLER_NAVIGATOR => self::DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME,
@@ -41,9 +43,9 @@ trait EqualityAssertionFunctionalDataProviderTrait
             'attribute identifier examined value, scalar expected value' => [
                 'fixture' => '/assertions.html',
                 'assertion' => null,
-                'additionalSetupStatements' => [
-                    '$navigator = Navigator::create($crawler);',
-                ],
+                'additionalSetupStatements' => new LineList([
+                    new Statement('$navigator = Navigator::create($crawler)'),
+                ]),
                 'variableIdentifiers' => [
                     'HAS' => '$has',
                     VariableNames::DOM_CRAWLER_NAVIGATOR => self::DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME,
@@ -59,7 +61,7 @@ trait EqualityAssertionFunctionalDataProviderTrait
             'environment examined value, scalar expected value' => [
                 'fixture' => '/empty.html',
                 'assertion' => null,
-                'additionalSetupStatements' => [],
+                'additionalSetupStatements' => null,
                 'variableIdentifiers' => [
                     VariableNames::ENVIRONMENT_VARIABLE_ARRAY => self::ENVIRONMENT_VARIABLE_ARRAY_VARIABLE_NAME,
                     VariableNames::EXAMINED_VALUE => self::EXAMINED_VALUE_VARIABLE_NAME,
@@ -69,7 +71,7 @@ trait EqualityAssertionFunctionalDataProviderTrait
             'browser object examined value, scalar expected value' => [
                 'fixture' => '/empty.html',
                 'assertion' => null,
-                'additionalSetupStatements' => [],
+                'additionalSetupStatements' => null,
                 'variableIdentifiers' => [
                     'WEBDRIVER_DIMENSION' => self::WEBDRIVER_DIMENSION_VARIABLE_NAME,
                     VariableNames::EXAMINED_VALUE => self::EXAMINED_VALUE_VARIABLE_NAME,
@@ -79,7 +81,7 @@ trait EqualityAssertionFunctionalDataProviderTrait
             'page object examined value, scalar expected value' => [
                 'fixture' => '/index.html',
                 'assertion' => null,
-                'additionalSetupStatements' => [],
+                'additionalSetupStatements' => null,
                 'variableIdentifiers' => [
                     VariableNames::EXAMINED_VALUE => self::EXAMINED_VALUE_VARIABLE_NAME,
                     VariableNames::EXPECTED_VALUE => self::EXPECTED_VALUE_VARIABLE_NAME,
@@ -88,10 +90,10 @@ trait EqualityAssertionFunctionalDataProviderTrait
             'element identifier examined value, element identifier expected value' => [
                 'fixture' => '/assertions.html',
                 'assertion' => null,
-                'additionalSetupStatements' => [
-                    '$inspector = Inspector::create();',
-                    '$navigator = Navigator::create($crawler);',
-                ],
+                'additionalSetupStatements' => new LineList([
+                    new Statement('$inspector = Inspector::create()'),
+                    new Statement('$navigator = Navigator::create($crawler)'),
+                ]),
                 'variableIdentifiers' => [
                     'HAS' => self::HAS_VARIABLE_NAME,
                     VariableNames::DOM_CRAWLER_NAVIGATOR => self::DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME,
@@ -109,10 +111,10 @@ trait EqualityAssertionFunctionalDataProviderTrait
             'element identifier examined value, attribute identifier expected value' => [
                 'fixture' => '/assertions.html',
                 'assertion' => null,
-                'additionalSetupStatements' => [
-                    '$inspector = Inspector::create();',
-                    '$navigator = Navigator::create($crawler);',
-                ],
+                'additionalSetupStatements' => new LineList([
+                    new Statement('$inspector = Inspector::create()'),
+                    new Statement('$navigator = Navigator::create($crawler)'),
+                ]),
                 'variableIdentifiers' => [
                     'HAS' => self::HAS_VARIABLE_NAME,
                     VariableNames::DOM_CRAWLER_NAVIGATOR => self::DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME,
@@ -130,9 +132,9 @@ trait EqualityAssertionFunctionalDataProviderTrait
             'attribute identifier examined value, environment expected value' => [
                 'fixture' => '/assertions.html',
                 'assertion' => null,
-                'additionalSetupStatements' => [
-                    '$navigator = Navigator::create($crawler);',
-                ],
+                'additionalSetupStatements' => new LineList([
+                    new Statement('$navigator = Navigator::create($crawler)'),
+                ]),
                 'variableIdentifiers' => [
                     'HAS' => self::HAS_VARIABLE_NAME,
                     VariableNames::DOM_CRAWLER_NAVIGATOR => self::DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME,
@@ -149,9 +151,9 @@ trait EqualityAssertionFunctionalDataProviderTrait
             'attribute identifier examined value, browser object expected value' => [
                 'fixture' => '/assertions.html',
                 'assertion' => null,
-                'additionalSetupStatements' => [
-                    '$navigator = Navigator::create($crawler);',
-                ],
+                'additionalSetupStatements' => new LineList([
+                    new Statement('$navigator = Navigator::create($crawler)'),
+                ]),
                 'variableIdentifiers' => [
                     'HAS' => self::HAS_VARIABLE_NAME,
                     'WEBDRIVER_DIMENSION' => self::WEBDRIVER_DIMENSION_VARIABLE_NAME,
@@ -168,9 +170,9 @@ trait EqualityAssertionFunctionalDataProviderTrait
             'attribute identifier examined value, page object expected value' => [
                 'fixture' => '/assertions.html',
                 'assertion' => null,
-                'additionalSetupStatements' => [
-                    '$navigator = Navigator::create($crawler);',
-                ],
+                'additionalSetupStatements' => new LineList([
+                    new Statement('$navigator = Navigator::create($crawler)'),
+                ]),
                 'variableIdentifiers' => [
                     'HAS' => self::HAS_VARIABLE_NAME,
                     VariableNames::DOM_CRAWLER_NAVIGATOR => self::DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME,
@@ -186,10 +188,10 @@ trait EqualityAssertionFunctionalDataProviderTrait
             'select element identifier examined value, scalar expected value (1)' => [
                 'fixture' => '/form.html',
                 'assertion' => null,
-                'additionalSetupStatements' => [
-                    '$inspector = Inspector::create();',
-                    '$navigator = Navigator::create($crawler);',
-                ],
+                'additionalSetupStatements' => new LineList([
+                    new Statement('$inspector = Inspector::create()'),
+                    new Statement('$navigator = Navigator::create($crawler)'),
+                ]),
                 'variableIdentifiers' => [
                     'HAS' => self::HAS_VARIABLE_NAME,
                     VariableNames::DOM_CRAWLER_NAVIGATOR => self::DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME,
@@ -207,10 +209,10 @@ trait EqualityAssertionFunctionalDataProviderTrait
             'select element identifier examined value, scalar expected value (2)' => [
                 'fixture' => '/form.html',
                 'assertion' => null,
-                'additionalSetupStatements' => [
-                    '$inspector = Inspector::create();',
-                    '$navigator = Navigator::create($crawler);',
-                ],
+                'additionalSetupStatements' => new LineList([
+                    new Statement('$inspector = Inspector::create()'),
+                    new Statement('$navigator = Navigator::create($crawler)'),
+                ]),
                 'variableIdentifiers' => [
                     'HAS' => self::HAS_VARIABLE_NAME,
                     VariableNames::DOM_CRAWLER_NAVIGATOR => self::DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME,
@@ -228,10 +230,10 @@ trait EqualityAssertionFunctionalDataProviderTrait
             'option collection element identifier examined value, scalar expected value (1)' => [
                 'fixture' => '/form.html',
                 'assertion' => null,
-                'additionalSetupStatements' => [
-                    '$inspector = Inspector::create();',
-                    '$navigator = Navigator::create($crawler);',
-                ],
+                'additionalSetupStatements' => new LineList([
+                    new Statement('$inspector = Inspector::create()'),
+                    new Statement('$navigator = Navigator::create($crawler)'),
+                ]),
                 'variableIdentifiers' => [
                     'HAS' => self::HAS_VARIABLE_NAME,
                     VariableNames::DOM_CRAWLER_NAVIGATOR => self::DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME,
@@ -249,10 +251,10 @@ trait EqualityAssertionFunctionalDataProviderTrait
             'option collection element identifier examined value, scalar expected value (2)' => [
                 'fixture' => '/form.html',
                 'assertion' => null,
-                'additionalSetupStatements' => [
-                    '$inspector = Inspector::create();',
-                    '$navigator = Navigator::create($crawler);',
-                ],
+                'additionalSetupStatements' => new LineList([
+                    new Statement('$inspector = Inspector::create()'),
+                    new Statement('$navigator = Navigator::create($crawler)'),
+                ]),
                 'variableIdentifiers' => [
                     'HAS' => self::HAS_VARIABLE_NAME,
                     VariableNames::DOM_CRAWLER_NAVIGATOR => self::DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME,
@@ -270,10 +272,10 @@ trait EqualityAssertionFunctionalDataProviderTrait
             'radio group element identifier examined value, scalar expected value (1)' => [
                 'fixture' => '/form.html',
                 'assertion' => null,
-                'additionalSetupStatements' => [
-                    '$inspector = Inspector::create();',
-                    '$navigator = Navigator::create($crawler);',
-                ],
+                'additionalSetupStatements' => new LineList([
+                    new Statement('$inspector = Inspector::create()'),
+                    new Statement('$navigator = Navigator::create($crawler)'),
+                ]),
                 'variableIdentifiers' => [
                     'HAS' => self::HAS_VARIABLE_NAME,
                     VariableNames::DOM_CRAWLER_NAVIGATOR => self::DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME,
@@ -291,10 +293,10 @@ trait EqualityAssertionFunctionalDataProviderTrait
             'radio group element identifier examined value, scalar expected value (2)' => [
                 'fixture' => '/form.html',
                 'assertion' => null,
-                'additionalSetupStatements' => [
-                    '$inspector = Inspector::create();',
-                    '$navigator = Navigator::create($crawler);',
-                ],
+                'additionalSetupStatements' => new LineList([
+                    new Statement('$inspector = Inspector::create()'),
+                    new Statement('$navigator = Navigator::create($crawler)'),
+                ]),
                 'variableIdentifiers' => [
                     'HAS' => self::HAS_VARIABLE_NAME,
                     VariableNames::DOM_CRAWLER_NAVIGATOR => self::DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME,

@@ -19,6 +19,7 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\NotExi
 use webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\AbstractHandlerTest;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
 use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilModel\Assertion\AssertionInterface;
 
@@ -51,7 +52,7 @@ class AssertionHandlerPassingAssertionsTest extends AbstractHandlerTest
     public function testCreateSource(
         string $fixture,
         AssertionInterface $model,
-        array $additionalSetupStatements = [],
+        ?LineList $additionalSetupStatements = null,
         array $additionalVariableIdentifiers = [],
         ?MetadataInterface $metadata = null
     ) {
@@ -68,7 +69,7 @@ class AssertionHandlerPassingAssertionsTest extends AbstractHandlerTest
             $fixture,
             $source,
             $additionalSetupStatements,
-            [],
+            null,
             $variableIdentifiers,
             $metadata
         );

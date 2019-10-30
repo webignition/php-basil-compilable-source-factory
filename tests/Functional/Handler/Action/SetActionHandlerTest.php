@@ -11,6 +11,7 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\SetAction
 use webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\AbstractHandlerTest;
 use webignition\BasilCompilableSourceFactory\Handler\Action\SetActionHandler;
 use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilModel\Action\ActionInterface;
 
@@ -29,9 +30,9 @@ class SetActionHandlerTest extends AbstractHandlerTest
     public function testCreateSourceForExecutableActions(
         string $fixture,
         ActionInterface $action,
-        array $additionalSetupStatements,
-        array $teardownStatements,
-        array $additionalVariableIdentifiers,
+        ?LineList $additionalSetupStatements = null,
+        ?LineList $teardownStatements = null,
+        array $additionalVariableIdentifiers = [],
         ?MetadataInterface $metadata = null
     ) {
         $source = $this->handler->createSource($action);

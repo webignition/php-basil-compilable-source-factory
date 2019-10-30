@@ -7,9 +7,11 @@ use Symfony\Component\Panther\Client;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
+use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilCompilationSource\SourceInterface;
+use webignition\BasilCompilationSource\Statement;
 use webignition\SymfonyDomCrawlerNavigator\Navigator;
 
 abstract class AbstractBrowserTestCase extends AbstractTestCase
@@ -50,17 +52,15 @@ abstract class AbstractBrowserTestCase extends AbstractTestCase
     protected function createExecutableCallForRequest(
         string $fixture,
         SourceInterface $source,
-        array $additionalSetupStatements = [],
-        array $teardownStatements = [],
+        ?LineList $additionalSetupStatements = null,
+        ?LineList $teardownStatements = null,
         array $additionalVariableIdentifiers = [],
         ?MetadataInterface $metadata = null
     ) {
-        $setupStatements = array_merge(
-            [
-                '$crawler = self::$client->request(\'GET\', \'' . $fixture . '\'); ',
-            ],
-            $additionalSetupStatements
-        );
+        $setupStatements = new LineList([
+            new Statement('$crawler = self::$client->request(\'GET\', \'' . $fixture . '\')'),
+            $additionalSetupStatements,
+        ]);
 
         $variableIdentifiers = array_merge(
             [
@@ -83,17 +83,15 @@ abstract class AbstractBrowserTestCase extends AbstractTestCase
     protected function createExecutableCallForRequestWithReturn(
         string $fixture,
         SourceInterface $source,
-        array $additionalSetupStatements = [],
-        array $additionalTeardownStatements = [],
+        ?LineList $additionalSetupStatements = null,
+        ?LineList $additionalTeardownStatements = null,
         array $additionalVariableIdentifiers = [],
         ?MetadataInterface $metadata = null
     ) {
-        $setupStatements = array_merge(
-            [
-                '$crawler = self::$client->request(\'GET\', \'' . $fixture . '\'); ',
-            ],
-            $additionalSetupStatements
-        );
+        $setupStatements = new LineList([
+            new Statement('$crawler = self::$client->request(\'GET\', \'' . $fixture . '\')'),
+            $additionalSetupStatements,
+        ]);
 
         $variableIdentifiers = array_merge(
             [
