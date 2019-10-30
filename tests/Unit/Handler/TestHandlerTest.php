@@ -70,6 +70,7 @@ class TestHandlerTest extends AbstractHandlerTest
                 $expectedMethod = $expectedMethods[$methodIndex];
 
                 $this->assertSame($expectedMethod->getName(), $method->getName());
+                $this->assertSame($expectedMethod->getReturnType(), $method->getReturnType());
                 $this->assertSourceContentEquals($expectedMethod, $method);
             }
         }
