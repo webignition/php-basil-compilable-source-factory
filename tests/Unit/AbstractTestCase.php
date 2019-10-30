@@ -62,11 +62,6 @@ abstract class AbstractTestCase extends \PHPUnit\Framework\TestCase
         return $lines;
     }
 
-    protected function assertJsonSerializedData(array $expectedSerializedData, \JsonSerializable $object)
-    {
-        $this->assertSame($expectedSerializedData, $object->jsonSerialize());
-    }
-
     protected function assertMetadataEquals(MetadataInterface $expected, MetadataInterface $actual)
     {
         $this->assertClassDependencyCollectionEquals(

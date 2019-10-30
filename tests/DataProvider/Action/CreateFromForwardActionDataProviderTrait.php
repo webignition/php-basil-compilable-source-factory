@@ -6,7 +6,9 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
 use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\Metadata;
+use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModelFactory\Action\ActionFactory;
 
@@ -19,15 +21,9 @@ trait CreateFromForwardActionDataProviderTrait
         return [
             'no-arguments action (forward)' => [
                 'action' => $actionFactory->createFromActionString('forward'),
-                'expectedSerializedData' => [
-                    'type' => 'line-list',
-                    'lines' => [
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ CRAWLER }} = {{ PANTHER_CLIENT }}->forward()',
-                        ],
-                    ],
-                ],
+                'expectedContent' => new LineList([
+                    new Statement('{{ CRAWLER }} = {{ PANTHER_CLIENT }}->forward()'),
+                ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::PANTHER_CRAWLER,

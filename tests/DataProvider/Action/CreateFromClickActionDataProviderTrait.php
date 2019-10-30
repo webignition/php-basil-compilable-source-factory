@@ -8,7 +8,9 @@ namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
+use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\Metadata;
+use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModelFactory\Action\ActionFactory;
 use webignition\DomElementLocator\ElementLocator;
@@ -24,29 +26,14 @@ trait CreateFromClickActionDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'click ".selector"'
                 ),
-                'expectedSerializedData' => [
-                    'type' => 'line-list',
-                    'lines' => [
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ HAS }} = '
-                                . '{{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ ELEMENT }} = '
-                                . '{{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ ELEMENT }}->click()',
-                        ],
-                    ],
-                ],
+                'expectedContent' => new LineList([
+                    new Statement('{{ HAS }} = '
+                        . '{{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ ELEMENT }} = '
+                        . '{{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ ELEMENT }}->click()'),
+                ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
                         new ClassDependency(ElementLocator::class),
