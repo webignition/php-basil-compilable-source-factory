@@ -42,7 +42,7 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
     public function testCreateForValueAccessor(
         SourceInterface $accessor,
         string $type,
-        array $expectedSerializedData,
+        SourceInterface $expectedContent,
         $expectedAssignedValue
     ) {
         $placeholder = new VariablePlaceholder('VALUE');
@@ -54,7 +54,7 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
 
         $source = $this->factory->createForValueAccessor($accessor, $placeholder, $type);
 
-        $this->assertJsonSerializedData($expectedSerializedData, $source);
+        $this->assertSourceContentEquals($expectedContent, $source);
         $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
 
         $variableIdentifiers = [
@@ -76,19 +76,10 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
                     new Statement('"value"'),
                 ]),
                 'type' => 'string',
-                'expectedSerializedData' => [
-                    'type' => 'line-list',
-                    'lines' => [
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ VALUE }} = "value" ?? null',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ VALUE }} = (string) {{ VALUE }}',
-                        ],
-                    ],
-                ],
+                'expectedContent' => new LineList([
+                    new Statement('{{ VALUE }} = "value" ?? null'),
+                    new Statement('{{ VALUE }} = (string) {{ VALUE }}'),
+                ]),
                 'expectedAssignedValue' => 'value',
             ],
             'null value cast to string' => [
@@ -96,19 +87,10 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
                     new Statement('null'),
                 ]),
                 'type' => 'string',
-                'expectedSerializedData' => [
-                    'type' => 'line-list',
-                    'lines' => [
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ VALUE }} = null ?? null',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ VALUE }} = (string) {{ VALUE }}',
-                        ],
-                    ],
-                ],
+                'expectedContent' => new LineList([
+                    new Statement('{{ VALUE }} = null ?? null'),
+                    new Statement('{{ VALUE }} = (string) {{ VALUE }}'),
+                ]),
                 'expectedAssignedValue' => '',
             ],
             'int value cast to string' => [
@@ -116,19 +98,10 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
                     new Statement('30'),
                 ]),
                 'type' => 'string',
-                'expectedSerializedData' => [
-                    'type' => 'line-list',
-                    'lines' => [
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ VALUE }} = 30 ?? null',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ VALUE }} = (string) {{ VALUE }}',
-                        ],
-                    ],
-                ],
+                'expectedContent' => new LineList([
+                    new Statement('{{ VALUE }} = 30 ?? null'),
+                    new Statement('{{ VALUE }} = (string) {{ VALUE }}'),
+                ]),
                 'expectedAssignedValue' => '30',
             ],
             'string value cast to int' => [
@@ -136,19 +109,10 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
                     new Statement('"value"'),
                 ]),
                 'type' => 'int',
-                'expectedSerializedData' => [
-                    'type' => 'line-list',
-                    'lines' => [
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ VALUE }} = "value" ?? null',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ VALUE }} = (int) {{ VALUE }}',
-                        ],
-                    ],
-                ],
+                'expectedContent' => new LineList([
+                    new Statement('{{ VALUE }} = "value" ?? null'),
+                    new Statement('{{ VALUE }} = (int) {{ VALUE }}'),
+                ]),
                 'expectedAssignedValue' => 0,
             ],
             'int value cast to int' => [
@@ -156,19 +120,10 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
                     new Statement('30'),
                 ]),
                 'type' => 'int',
-                'expectedSerializedData' => [
-                    'type' => 'line-list',
-                    'lines' => [
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ VALUE }} = 30 ?? null',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ VALUE }} = (int) {{ VALUE }}',
-                        ],
-                    ],
-                ],
+                'expectedContent' => new LineList([
+                    new Statement('{{ VALUE }} = 30 ?? null'),
+                    new Statement('{{ VALUE }} = (int) {{ VALUE }}'),
+                ]),
                 'expectedAssignedValue' => 30,
             ],
             'null value cast to int' => [
@@ -176,54 +131,25 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
                     new Statement('null'),
                 ]),
                 'type' => 'int',
-                'expectedSerializedData' => [
-                    'type' => 'line-list',
-                    'lines' => [
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ VALUE }} = null ?? null',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ VALUE }} = (int) {{ VALUE }}',
-                        ],
-                    ],
-                ],
+                'expectedContent' => new LineList([
+                    new Statement('{{ VALUE }} = null ?? null'),
+                    new Statement('{{ VALUE }} = (int) {{ VALUE }}'),
+                ]),
                 'expectedAssignedValue' => 0,
             ],
             'only last statement is modified' => [
                 'accessor' => new LineList([
                     new Statement('$a = "content"'),
                     new Statement('$b = $a'),
-                    new Statement('$c = $b'),
-                    new Statement('$c'),
+                    new Statement('$b'),
                 ]),
                 'type' => 'string',
-                'expectedSerializedData' => [
-                    'type' => 'line-list',
-                    'lines' => [
-                        [
-                            'type' => 'statement',
-                            'content' => '$a = "content"',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '$b = $a',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '$c = $b',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ VALUE }} = $c ?? null',
-                        ],
-                        [
-                            'type' => 'statement',
-                            'content' => '{{ VALUE }} = (string) {{ VALUE }}',
-                        ],
-                    ],
-                ],
+                'expectedContent' => new LineList([
+                    new Statement('$a = "content"'),
+                    new Statement('$b = $a'),
+                    new Statement('{{ VALUE }} = $b ?? null'),
+                    new Statement('{{ VALUE }} = (string) {{ VALUE }}'),
+                ]),
                 'expectedAssignedValue' => 'content',
             ],
         ];

@@ -10,7 +10,7 @@ use webignition\BasilCompilableSourceFactory\CallFactory\WebDriverElementMutator
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Metadata;
-use webignition\BasilCompilationSource\MetadataInterface;
+use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\StatementInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
@@ -35,14 +35,12 @@ class WebDriverElementMutatorCallFactoryTest extends AbstractTestCase
     public function testCreateSetValueCall(
         VariablePlaceholder $collectionPlaceholder,
         VariablePlaceholder $valuePlaceholder,
-        string $expectedContent,
-        MetadataInterface $expectedMetadata
+        StatementInterface $expectedStatement
     ) {
         $statement = $this->factory->createSetValueCall($collectionPlaceholder, $valuePlaceholder);
 
         $this->assertInstanceOf(StatementInterface::class, $statement);
-        $this->assertEquals($expectedContent, $statement->getContent());
-        $this->assertMetadataEquals($expectedMetadata, $statement->getMetadata());
+        $this->assertEquals($expectedStatement, $statement);
     }
 
     public function createSetValueCallDataProvider(): array
@@ -51,15 +49,17 @@ class WebDriverElementMutatorCallFactoryTest extends AbstractTestCase
             'default' => [
                 'collectionPlaceholder' => new VariablePlaceholder('COLLECTION'),
                 'valuePlaceholder' => new VariablePlaceholder('VALUE'),
-                'expectedContent' => '{{ WEBDRIVER_ELEMENT_MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
-                'expectedMetadata' => (new Metadata())
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
-                        'COLLECTION',
-                        'VALUE',
-                    ])),
+                'expectedStatement' => new Statement(
+                    '{{ WEBDRIVER_ELEMENT_MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
+                    (new Metadata())
+                        ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                            VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
+                        ]))
+                        ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                            'COLLECTION',
+                            'VALUE',
+                        ]))
+                ),
             ],
         ];
     }
