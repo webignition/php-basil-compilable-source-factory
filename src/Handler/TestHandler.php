@@ -74,11 +74,18 @@ class TestHandler implements HandlerInterface
 
     private function createSetupMethod(TestInterface $test): MethodDefinitionInterface
     {
-        $escapedTestName = $this->singleQuotedStringEscaper->escape($test->getName());
+        $setNameStatement = new Statement(sprintf(
+            '$this->setName(\'%s\')',
+            $this->singleQuotedStringEscaper->escape($test->getName())
+        ));
 
-        $setNameStatement = new Statement(sprintf('$this->setName(\'%s\')', $escapedTestName));
+        $refreshCrawlerStatement = new Statement('self::$crawler = self::$client->refreshCrawler()');
 
-        $setupMethod = new MethodDefinition('setUp', new LineList([$setNameStatement]));
+        $setupMethod = new MethodDefinition('setUp', new LineList([
+            $setNameStatement,
+            $refreshCrawlerStatement,
+        ]));
+
         $setupMethod->setProtected();
 
         return $setupMethod;
