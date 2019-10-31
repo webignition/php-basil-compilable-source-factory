@@ -5,13 +5,16 @@ namespace webignition\BasilCompilableSourceFactory\Handler;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
+use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\ClassDefinition;
 use webignition\BasilCompilationSource\Comment;
 use webignition\BasilCompilationSource\LineList;
+use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MethodDefinition;
 use webignition\BasilCompilationSource\MethodDefinitionInterface;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
+use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Test\TestInterface;
 
 class TestHandler implements HandlerInterface
@@ -46,6 +49,7 @@ class TestHandler implements HandlerInterface
 
         $methodDefinitions = [
             $this->createSetupMethod($model),
+            $this->createOpenMethod($model),
         ];
 
         foreach ($model->getSteps() as $stepName => $step) {
@@ -78,5 +82,25 @@ class TestHandler implements HandlerInterface
         $setupMethod->setProtected();
 
         return $setupMethod;
+    }
+
+    private function createOpenMethod(TestInterface $test): MethodDefinitionInterface
+    {
+        $requestStatementVariableDependencies = new VariablePlaceholderCollection();
+        $pantherClientPlaceholder = $requestStatementVariableDependencies->create(VariableNames::PANTHER_CLIENT);
+
+        $configuration = $test->getConfiguration();
+
+        $requestStatement = new Statement(
+            sprintf(
+                '%s->request(\'GET\', \'%s\')',
+                (string) $pantherClientPlaceholder,
+                $configuration->getUrl()
+            ),
+            (new Metadata())
+                ->withVariableDependencies($requestStatementVariableDependencies)
+        );
+
+        return new MethodDefinition('testOpen', new LineList([$requestStatement]));
     }
 }
