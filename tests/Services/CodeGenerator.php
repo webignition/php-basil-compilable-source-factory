@@ -9,7 +9,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 use webignition\BasilCompilableSourceFactory\Handler\ClassDependencyHandler;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilationSource\Comment;
-use webignition\BasilCompilationSource\EmptyLine;
+use webignition\BasilCompilationSource\LineInterface;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilCompilationSource\MutableListLineListInterface;
@@ -65,26 +65,36 @@ class CodeGenerator
         $lineList->addLinesFromSources($source->getSources());
         $lineList->addLinesFromSource($teardownStatements);
 
-        $lines = [];
-
-        foreach ($lineList->getLines() as $line) {
-            if ($line instanceof EmptyLine) {
-                $lines[] = '';
-            }
-
-            if ($line instanceof Comment) {
-                $lines[] = '// ' . $line->getContent();
-            }
-
-            if ($line instanceof Statement) {
-                $lines[] = $line->getContent() . ';';
-            }
-        }
+        $lines = $this->createCodeLinesFromLineList($lineList);
 
         return $this->variablePlaceholderResolver->resolve(
             implode("\n", $lines),
             $variableIdentifiers
         );
+    }
+
+    private function createCodeLinesFromLineList(LineList $lineList): array
+    {
+        $lines = [];
+
+        foreach ($lineList->getLines() as $line) {
+            $lines[] = $this->createCodeFromLineObject($line);
+        }
+
+        return $lines;
+    }
+
+    private function createCodeFromLineObject(LineInterface $line): string
+    {
+        if ($line instanceof Comment) {
+            return '// ' . $line->getContent();
+        }
+
+        if ($line instanceof Statement) {
+            return $line->getContent() . ';';
+        }
+
+        return '';
     }
 
     public function createForLinesWithReturn(
