@@ -3,7 +3,8 @@
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional;
 
 use Facebook\WebDriver\WebDriverDimension;
-use Symfony\Component\Panther\Client;
+use Symfony\Component\Panther\Client as PantherClient;
+use Symfony\Component\Panther\ProcessManager\WebServerManager;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
@@ -35,9 +36,32 @@ abstract class AbstractBrowserTestCase extends AbstractTestCase
     const VALUE_VARIABLE_NAME = '$value';
 
     /**
-     * @var Client
+     * @var PantherClient|null
      */
     protected static $client;
+
+    /**
+     * @var string|null
+     */
+    protected static $webServerDir;
+
+    /**
+     * @var array
+     */
+    protected static $defaultOptions = [
+        'hostname' => '127.0.0.1',
+        'port' => 9080,
+    ];
+
+    /**
+     * @var WebServerManager|null
+     */
+    protected static $webServerManager;
+
+    /**
+     * @var string|null
+     */
+    protected static $baseUri;
 
     public static function setUpBeforeClass(): void
     {
@@ -45,8 +69,45 @@ abstract class AbstractBrowserTestCase extends AbstractTestCase
             __DIR__  . '/..' . self::FIXTURES_RELATIVE_PATH . self::FIXTURES_HTML_RELATIVE_PATH
         );
 
-        self::$client = self::createPantherClient();
+        self::startWebServer();
+        self::$client = PantherClient::createChromeClient(null, null, [], self::$baseUri);
         self::$client->getWebDriver()->manage()->window()->setSize(new WebDriverDimension(1200, 1100));
+    }
+
+    public static function tearDownAfterClass(): void
+    {
+        static::stopWebServer();
+    }
+
+    public static function startWebServer(): void
+    {
+        if (null !== static::$webServerManager) {
+            return;
+        }
+
+        self::$webServerManager = new WebServerManager(
+            (string) static::$webServerDir,
+            self::$defaultOptions['hostname'],
+            self::$defaultOptions['port']
+        );
+        self::$webServerManager->start();
+
+        self::$baseUri = sprintf('http://%s:%s', self::$defaultOptions['hostname'], self::$defaultOptions['port']);
+    }
+
+
+    public static function stopWebServer()
+    {
+        if (null !== self::$webServerManager) {
+            self::$webServerManager->quit();
+            self::$webServerManager = null;
+        }
+
+        if (null !== self::$client) {
+            self::$client->quit(false);
+            self::$client->getBrowserManager()->quit();
+            self::$client = null;
+        }
     }
 
     protected function createExecutableCallForRequest(
