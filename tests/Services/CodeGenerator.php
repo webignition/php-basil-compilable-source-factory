@@ -12,6 +12,7 @@ use webignition\BasilCompilationSource\Comment;
 use webignition\BasilCompilationSource\EmptyLine;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MetadataInterface;
+use webignition\BasilCompilationSource\MutableListLineListInterface;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\LineList;
@@ -83,6 +84,28 @@ class CodeGenerator
         return $this->variablePlaceholderResolver->resolve(
             implode("\n", $lines),
             $variableIdentifiers
+        );
+    }
+
+    public function createForLinesWithReturn(
+        SourceInterface $source,
+        array $variableIdentifiers = [],
+        ?LineList $setupStatements = null,
+        ?LineList $teardownStatements = null,
+        ?MetadataInterface $additionalMetadata = null
+    ): string {
+        if ($source instanceof MutableListLineListInterface) {
+            $source->mutateLastStatement(function (string $content) {
+                return 'return ' . $content;
+            });
+        }
+
+        return $this->createForLines(
+            $source,
+            $variableIdentifiers,
+            $setupStatements,
+            $teardownStatements,
+            $additionalMetadata
         );
     }
 }
