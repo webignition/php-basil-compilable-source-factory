@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
+use webignition\BasilCompilableSourceFactory\Tests\Services\CodeGenerator;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ExecutableCallFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilationSource\Metadata;
@@ -28,12 +29,18 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
      */
     private $executableCallFactory;
 
+    /**
+     * @var CodeGenerator
+     */
+    private $codeGenerator;
+
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->factory = VariableAssignmentFactory::createFactory();
         $this->executableCallFactory = ExecutableCallFactory::createFactory();
+        $this->codeGenerator = CodeGenerator::create();
     }
 
     /**
@@ -61,10 +68,9 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
             'VALUE' => '$value',
         ];
 
-        $executableCall = $this->executableCallFactory->createWithReturn($source, $variableIdentifiers);
+        $executableCode = $this->codeGenerator->createForLinesWithReturn($source, $variableIdentifiers);
 
-        $assignedValue = eval($executableCall);
-
+        $assignedValue = eval($executableCode);
         $this->assertSame($expectedAssignedValue, $assignedValue);
     }
 
