@@ -9,7 +9,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 use webignition\BasilCompilableSourceFactory\Handler\ClassDependencyHandler;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilationSource\Comment;
-use webignition\BasilCompilationSource\EmptyLine;
+use webignition\BasilCompilationSource\LineInterface;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilCompilationSource\MutableListLineListInterface;
@@ -17,7 +17,7 @@ use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\LineList;
 
-class ExecutableCallFactory
+class CodeGenerator
 {
     private $classDependencyHandler;
     private $variablePlaceholderResolver;
@@ -30,15 +30,15 @@ class ExecutableCallFactory
         $this->variablePlaceholderResolver = $variablePlaceholderResolver;
     }
 
-    public static function createFactory(): ExecutableCallFactory
+    public static function create(): CodeGenerator
     {
-        return new ExecutableCallFactory(
+        return new CodeGenerator(
             ClassDependencyHandler::createHandler(),
             new VariablePlaceholderResolver()
         );
     }
 
-    public function create(
+    public function createForLines(
         SourceInterface $source,
         array $variableIdentifiers = [],
         ?LineList $setupStatements = null,
@@ -65,21 +65,7 @@ class ExecutableCallFactory
         $lineList->addLinesFromSources($source->getSources());
         $lineList->addLinesFromSource($teardownStatements);
 
-        $lines = [];
-
-        foreach ($lineList->getLines() as $line) {
-            if ($line instanceof EmptyLine) {
-                $lines[] = '';
-            }
-
-            if ($line instanceof Comment) {
-                $lines[] = '// ' . $line->getContent();
-            }
-
-            if ($line instanceof Statement) {
-                $lines[] = $line->getContent() . ';';
-            }
-        }
+        $lines = $this->createCodeLinesFromLineList($lineList);
 
         return $this->variablePlaceholderResolver->resolve(
             implode("\n", $lines),
@@ -87,7 +73,31 @@ class ExecutableCallFactory
         );
     }
 
-    public function createWithReturn(
+    private function createCodeLinesFromLineList(LineList $lineList): array
+    {
+        $lines = [];
+
+        foreach ($lineList->getLines() as $line) {
+            $lines[] = $this->createCodeFromLineObject($line);
+        }
+
+        return $lines;
+    }
+
+    private function createCodeFromLineObject(LineInterface $line): string
+    {
+        if ($line instanceof Comment) {
+            return '// ' . $line->getContent();
+        }
+
+        if ($line instanceof Statement) {
+            return $line->getContent() . ';';
+        }
+
+        return '';
+    }
+
+    public function createForLinesWithReturn(
         SourceInterface $source,
         array $variableIdentifiers = [],
         ?LineList $setupStatements = null,
@@ -100,7 +110,7 @@ class ExecutableCallFactory
             });
         }
 
-        return $this->create(
+        return $this->createForLines(
             $source,
             $variableIdentifiers,
             $setupStatements,

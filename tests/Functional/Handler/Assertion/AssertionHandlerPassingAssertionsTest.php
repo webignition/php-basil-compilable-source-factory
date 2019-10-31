@@ -65,7 +65,7 @@ class AssertionHandlerPassingAssertionsTest extends AbstractHandlerTest
             $additionalVariableIdentifiers
         );
 
-        $executableCall = $this->createExecutableCallForRequest(
+        $code = $this->createExecutableCallForRequest(
             $fixture,
             $source,
             $additionalSetupStatements,
@@ -74,6 +74,6 @@ class AssertionHandlerPassingAssertionsTest extends AbstractHandlerTest
             $metadata
         );
 
-        eval($executableCall);
+        eval($code);
     }
 }

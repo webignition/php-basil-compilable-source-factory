@@ -44,7 +44,7 @@ class ClickActionHandlerTest extends AbstractHandlerTest
             $additionalVariableIdentifiers
         );
 
-        $executableCall = $this->createExecutableCallForRequest(
+        $code = $this->createExecutableCallForRequest(
             $fixture,
             $source,
             $additionalSetupStatements,
@@ -53,6 +53,6 @@ class ClickActionHandlerTest extends AbstractHandlerTest
             $metadata
         );
 
-        eval($executableCall);
+        eval($code);
     }
 }
