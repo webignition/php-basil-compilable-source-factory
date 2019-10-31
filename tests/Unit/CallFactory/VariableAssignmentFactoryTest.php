@@ -61,9 +61,9 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
             'VALUE' => '$value',
         ];
 
-        $executableCode = $this->codeGenerator->createForLinesWithReturn($source, $variableIdentifiers);
+        $code = $this->codeGenerator->createForLinesWithReturn($source, $variableIdentifiers);
 
-        $assignedValue = eval($executableCode);
+        $assignedValue = eval($code);
         $this->assertSame($expectedAssignedValue, $assignedValue);
     }
 

@@ -48,7 +48,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractHandlerTest
             $additionalVariableIdentifiers
         );
 
-        $executableCall = $this->createExecutableCallForRequest(
+        $code = $this->createExecutableCallForRequest(
             $fixture,
             $source,
             $additionalSetupStatements,
@@ -60,7 +60,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractHandlerTest
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage($expectedExpectationFailedExceptionMessage);
 
-        eval($executableCall);
+        eval($code);
     }
 
     public function createSourceForFailingAssertionsDataProvider(): array

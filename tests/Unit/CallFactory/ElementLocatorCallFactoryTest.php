@@ -54,9 +54,9 @@ class ElementLocatorCallFactoryTest extends AbstractTestCase
 
         $this->assertMetadataEquals($expectedMetadata, $statement->getMetadata());
 
-        $executableCode = $this->codeGenerator->createForLinesWithReturn(new LineList([$statement]));
+        $code = $this->codeGenerator->createForLinesWithReturn(new LineList([$statement]));
 
-        $elementLocator = eval($executableCode);
+        $elementLocator = eval($code);
         $this->assertEquals($expectedElementLocator, $elementLocator);
     }
 

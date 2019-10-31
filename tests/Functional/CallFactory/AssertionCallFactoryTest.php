@@ -70,9 +70,9 @@ class AssertionCallFactoryTest extends AbstractTestCase
             VariableNames::PHPUNIT_TEST_CASE => '$this',
         ];
 
-        $executableCode = $this->codeGenerator->createForLines($source, $variableIdentifiers);
+        $code = $this->codeGenerator->createForLines($source, $variableIdentifiers);
 
-        eval($executableCode);
+        eval($code);
     }
 
     public function createValueComparisonAssertionCallDataProvider(): array
@@ -132,9 +132,9 @@ class AssertionCallFactoryTest extends AbstractTestCase
             VariableNames::PHPUNIT_TEST_CASE => '$this',
         ];
 
-        $executableCode = $this->codeGenerator->createForLines($source, $variableIdentifiers);
+        $code = $this->codeGenerator->createForLines($source, $variableIdentifiers);
 
-        eval($executableCode);
+        eval($code);
     }
 
     public function createValueExistenceAssertionCallDataProvider(): array

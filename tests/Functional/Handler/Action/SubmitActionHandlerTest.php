@@ -44,7 +44,7 @@ class SubmitActionHandlerTest extends AbstractHandlerTest
             $additionalVariableIdentifiers
         );
 
-        $executableCall = $this->createExecutableCallForRequest(
+        $code = $this->createExecutableCallForRequest(
             $fixture,
             $source,
             $additionalSetupStatements,
@@ -53,6 +53,6 @@ class SubmitActionHandlerTest extends AbstractHandlerTest
             $metadata
         );
 
-        eval($executableCall);
+        eval($code);
     }
 }
