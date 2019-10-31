@@ -93,8 +93,14 @@ class TestHandlerTest extends AbstractHandlerTest
                     new MethodDefinition('setUp', new LineList([
                         new Statement('$this->setName(\'test name\')'),
                     ])),
+                    new MethodDefinition('testOpen', new LineList([
+                        new Statement('{{ PANTHER_CLIENT }}->request(\'GET\', \'http://example.com\')'),
+                    ])),
                 ],
-                'expectedMetadata' => new Metadata(),
+                'expectedMetadata' => (new Metadata())
+                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        VariableNames::PANTHER_CLIENT,
+                    ])),
             ],
             'single step with single action and single assertion' => [
                 'step' => new Test(
@@ -115,6 +121,9 @@ class TestHandlerTest extends AbstractHandlerTest
                 'expectedMethods' => [
                     new MethodDefinition('setUp', new LineList([
                         new Statement('$this->setName(\'test name\')'),
+                    ])),
+                    new MethodDefinition('testOpen', new LineList([
+                        new Statement('{{ PANTHER_CLIENT }}->request(\'GET\', \'http://example.com\')'),
                     ])),
                     new MethodDefinition(
                         'testBdc4b8bd83e5660d1c62908dc7a7c43a',
