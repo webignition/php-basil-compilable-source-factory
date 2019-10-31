@@ -3,13 +3,13 @@
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional;
 
 use Facebook\WebDriver\WebDriverDimension;
-use webignition\BasilCompilableSourceFactory\Tests\Services\ExecutableCallFactory;
+use webignition\BasilCompilableSourceFactory\Tests\Services\CodeGenerator;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
 use webignition\BasilCompilationSource\LineList;
-use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MetadataInterface;
+use webignition\BasilCompilationSource\MutableListLineListInterface;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
 use webignition\SymfonyDomCrawlerNavigator\Navigator;
@@ -36,9 +36,9 @@ abstract class AbstractBrowserTestCase extends BaseAbstractBrowserTestCase
     const VALUE_VARIABLE_NAME = '$value';
 
     /**
-     * @var ExecutableCallFactory
+     * @var CodeGenerator
      */
-    private $executableCallFactory;
+    private $codeGenerator;
 
     public static function setUpBeforeClass(): void
     {
@@ -53,7 +53,7 @@ abstract class AbstractBrowserTestCase extends BaseAbstractBrowserTestCase
 
     protected function setUp(): void
     {
-        $this->executableCallFactory = ExecutableCallFactory::createFactory();
+        $this->codeGenerator = CodeGenerator::create();
     }
 
     protected function createExecutableCallForRequest(
@@ -63,7 +63,7 @@ abstract class AbstractBrowserTestCase extends BaseAbstractBrowserTestCase
         ?LineList $teardownStatements = null,
         array $additionalVariableIdentifiers = [],
         ?MetadataInterface $metadata = null
-    ) {
+    ): string {
         $setupStatements = new LineList([
             new Statement('$crawler = self::$client->request(\'GET\', \'' . $fixture . '\')'),
             $additionalSetupStatements,
@@ -76,9 +76,7 @@ abstract class AbstractBrowserTestCase extends BaseAbstractBrowserTestCase
             $additionalVariableIdentifiers
         );
 
-        $metadata = $metadata ?? new Metadata();
-
-        return $this->executableCallFactory->create(
+        return $this->codeGenerator->createForLines(
             $source,
             $variableIdentifiers,
             $setupStatements,
@@ -95,25 +93,18 @@ abstract class AbstractBrowserTestCase extends BaseAbstractBrowserTestCase
         array $additionalVariableIdentifiers = [],
         ?MetadataInterface $metadata = null
     ) {
-        $setupStatements = new LineList([
-            new Statement('$crawler = self::$client->request(\'GET\', \'' . $fixture . '\')'),
-            $additionalSetupStatements,
-        ]);
+        if ($source instanceof MutableListLineListInterface) {
+            $source->mutateLastStatement(function (string $content) {
+                return 'return ' . $content;
+            });
+        }
 
-        $variableIdentifiers = array_merge(
-            [
-                VariableNames::PANTHER_CLIENT => self::PANTHER_CLIENT_VARIABLE_NAME,
-            ],
-            $additionalVariableIdentifiers
-        );
-
-        $metadata = $metadata ?? new Metadata();
-
-        return $this->executableCallFactory->createWithReturn(
+        return $this->createExecutableCallForRequest(
+            $fixture,
             $source,
-            $variableIdentifiers,
-            $setupStatements,
+            $additionalSetupStatements,
             $additionalTeardownStatements,
+            $additionalVariableIdentifiers,
             $metadata
         );
     }
