@@ -61,7 +61,7 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
         $metadata = $additionalMetadata ?? new Metadata();
         $metadata = $this->addNavigatorToMetadata($metadata);
 
-        $executableCall = $this->createExecutableCallForRequestWithReturn(
+        $code = $this->createExecutableCallForRequestWithReturn(
             $fixture,
             $source,
             $setupStatements,
@@ -70,7 +70,7 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
             $metadata
         );
 
-        $resultAssertions(eval($executableCall));
+        $resultAssertions(eval($code));
     }
 
     public function createSourceDataProvider(): array

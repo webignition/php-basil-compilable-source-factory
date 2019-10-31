@@ -47,7 +47,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
 
         $metadata = $this->addNavigatorToMetadata(new Metadata());
 
-        $executableCall = $this->createExecutableCallForRequestWithReturn(
+        $code = $this->createExecutableCallForRequestWithReturn(
             $fixture,
             new LineList([$statement]),
             new LineList([
@@ -58,7 +58,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
             $metadata
         );
 
-        $returnValue = eval($executableCall);
+        $returnValue = eval($code);
 
         $assertions($returnValue);
     }
