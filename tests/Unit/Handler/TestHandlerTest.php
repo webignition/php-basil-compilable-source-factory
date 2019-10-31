@@ -92,6 +92,7 @@ class TestHandlerTest extends AbstractHandlerTest
                 'expectedMethods' => [
                     new MethodDefinition('setUp', new LineList([
                         new Statement('$this->setName(\'test name\')'),
+                        new Statement('self::$crawler = self::$client->refreshCrawler()'),
                     ])),
                     new MethodDefinition('testOpen', new LineList([
                         new Statement('{{ PANTHER_CLIENT }}->request(\'GET\', \'http://example.com\')'),
@@ -121,6 +122,7 @@ class TestHandlerTest extends AbstractHandlerTest
                 'expectedMethods' => [
                     new MethodDefinition('setUp', new LineList([
                         new Statement('$this->setName(\'test name\')'),
+                        new Statement('self::$crawler = self::$client->refreshCrawler()'),
                     ])),
                     new MethodDefinition('testOpen', new LineList([
                         new Statement('{{ PANTHER_CLIENT }}->request(\'GET\', \'http://example.com\')'),
