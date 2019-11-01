@@ -9,10 +9,14 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\ElementLocatorCallFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\CodeGenerator;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
+use webignition\BasilCompilationSource\ClassDefinitionInterface;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
+use webignition\BasilCompilationSource\EmptyLine;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\LineList;
+use webignition\BasilCompilationSource\MethodDefinitionInterface;
+use webignition\BasilCompilationSource\Statement;
 use webignition\BasilModel\Identifier\DomIdentifier;
 use webignition\BasilModel\Identifier\DomIdentifierInterface;
 use webignition\DomElementLocator\ElementLocator;
@@ -46,6 +50,9 @@ class ElementLocatorCallFactoryTest extends AbstractTestCase
         ElementLocatorInterface $expectedElementLocator
     ) {
         $statement = $this->factory->createConstructorCall($elementIdentifier);
+        $statement->mutate(function ($content) {
+            return 'return ' . $content;
+        });
 
         $expectedMetadata = (new Metadata())
             ->withClassDependencies(new ClassDependencyCollection([
@@ -54,10 +61,8 @@ class ElementLocatorCallFactoryTest extends AbstractTestCase
 
         $this->assertMetadataEquals($expectedMetadata, $statement->getMetadata());
 
-        $code = $this->codeGenerator->createForLinesWithReturn(new LineList([
-            $statement
-        ]));
-
+        $initializer = $this->codeGenerator->createLineListWrapperReturningInitializer();
+        $code = $this->codeGenerator->wrapLineListInClass($statement, $initializer, [], 'ElementLocator');
         $elementLocator = eval($code);
 
         $this->assertEquals($expectedElementLocator, $elementLocator);
