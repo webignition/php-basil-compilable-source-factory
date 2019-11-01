@@ -5,7 +5,6 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Functional;
 use Facebook\WebDriver\WebDriverDimension;
 use webignition\BasePantherTestCase\Options;
 use webignition\BasilCompilableSourceFactory\Tests\Services\CodeGenerator;
-use webignition\BasilCompilableSourceFactory\Tests\Services\ExecutableCallFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
