@@ -32,7 +32,7 @@ class ScalarValueHandlerTest extends AbstractHandlerTest
     ) {
         $source = $this->handler->createSource($model);
 
-        $executableCall = $this->createExecutableCallForRequestWithReturn(
+        $code = $this->createExecutableCallForRequestWithReturn(
             $fixture,
             $source,
             null,
@@ -40,7 +40,7 @@ class ScalarValueHandlerTest extends AbstractHandlerTest
             $additionalVariableIdentifiers
         );
 
-        $resultAssertions(eval($executableCall));
+        $resultAssertions(eval($code));
     }
 
     public function createSourceDataProvider(): array
