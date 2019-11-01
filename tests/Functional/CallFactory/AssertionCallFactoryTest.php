@@ -71,13 +71,12 @@ class AssertionCallFactoryTest extends TestCase
             $assertionTemplate
         );
 
-        $variableIdentifiers = [
+        $initializer = $this->codeGenerator->createLineListWrapperInitializer();
+        $code = $this->codeGenerator->wrapLineListInPhpUnitTestClass($source, $initializer, [
             VariableNames::EXPECTED_VALUE => '$expectedValue',
             VariableNames::EXAMINED_VALUE => '$examinedValue',
             VariableNames::PHPUNIT_TEST_CASE => '$this',
-        ];
-
-        $code = $this->codeGenerator->createForLines($source, $variableIdentifiers);
+        ]);
 
         eval($code);
     }
@@ -134,12 +133,11 @@ class AssertionCallFactoryTest extends TestCase
             $assertionTemplate
         );
 
-        $variableIdentifiers = [
+        $initializer = $this->codeGenerator->createLineListWrapperInitializer();
+        $code = $this->codeGenerator->wrapLineListInPhpUnitTestClass($source, $initializer, [
             VariableNames::EXAMINED_VALUE => '$examinedValue',
             VariableNames::PHPUNIT_TEST_CASE => '$this',
-        ];
-
-        $code = $this->codeGenerator->createForLines($source, $variableIdentifiers);
+        ]);
 
         eval($code);
     }

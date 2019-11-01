@@ -177,7 +177,7 @@ EOD;
         return '';
     }
 
-    public function wrapLineListInClass(
+    public function wrapLineListInPhpUnitTestClass(
         SourceInterface $source,
         callable $initializer,
         array $variableIdentifiers,
@@ -191,7 +191,7 @@ EOD;
         $classDefinition = $this->createMethodListWrapper([$methodDefinition]);
         $classDefinitionCode = $this->createForClassDefinition(
             $classDefinition,
-            null,
+            '\PHPUnit\Framework\TestCase',
             $variableIdentifiers
         );
 
@@ -224,6 +224,18 @@ EOD;
         return $methodDefinition;
     }
 
+    public function createLineListWrapperInitializer(): callable
+    {
+        return function (
+            ClassDefinitionInterface $classDefinition,
+            MethodDefinitionInterface $methodDefinition
+        ): LineList {
+            return new LineList([
+                new Statement('(new ' . $classDefinition->getName() . '())->' . $methodDefinition->getName() . '()'),
+            ]);
+        };
+    }
+
     public function createLineListWrapperReturningInitializer(): callable
     {
         return function (
@@ -231,9 +243,7 @@ EOD;
             MethodDefinitionInterface $methodDefinition
         ): LineList {
             return new LineList([
-                new Statement('$instance = new ' . $classDefinition->getName() . '()'),
-                new EmptyLine(),
-                new Statement('return $instance->' . $methodDefinition->getName() . '()'),
+                new Statement('return (new ' . $classDefinition->getName() . '())->' . $methodDefinition->getName() . '()'),
             ]);
         };
     }

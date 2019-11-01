@@ -64,7 +64,7 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
         }
 
         $initializer = $this->codeGenerator->createLineListWrapperReturningInitializer();
-        $code = $this->codeGenerator->wrapLineListInClass($source, $initializer, [
+        $code = $this->codeGenerator->wrapLineListInPhpUnitTestClass($source, $initializer, [
             'VALUE' => '$value',
         ]);
 

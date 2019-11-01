@@ -62,7 +62,7 @@ class ElementLocatorCallFactoryTest extends AbstractTestCase
         $this->assertMetadataEquals($expectedMetadata, $statement->getMetadata());
 
         $initializer = $this->codeGenerator->createLineListWrapperReturningInitializer();
-        $code = $this->codeGenerator->wrapLineListInClass($statement, $initializer, [], 'ElementLocator');
+        $code = $this->codeGenerator->wrapLineListInPhpUnitTestClass($statement, $initializer, [], 'ElementLocator');
         $elementLocator = eval($code);
 
         $this->assertEquals($expectedElementLocator, $elementLocator);
