@@ -28,6 +28,9 @@ use webignition\BasilModel\Test\TestInterface;
 use webignition\BasilModelFactory\Action\ActionFactory;
 use webignition\BasilModelFactory\AssertionFactory;
 use webignition\DomElementLocator\ElementLocator;
+use webignition\SymfonyDomCrawlerNavigator\Navigator;
+use webignition\WebDriverElementInspector\Inspector;
+use webignition\WebDriverElementMutator\Mutator;
 
 class TestHandlerTest extends AbstractHandlerTest
 {
@@ -81,6 +84,12 @@ class TestHandlerTest extends AbstractHandlerTest
         $actionFactory = ActionFactory::createFactory();
         $assertionFactory = AssertionFactory::createFactory();
 
+        $expectedSetupMethodClassDependencies = new ClassDependencyCollection([
+            new ClassDependency(Navigator::class),
+            new ClassDependency(Inspector::class),
+            new ClassDependency(Mutator::class),
+        ]);
+
         return [
             'empty test' => [
                 'step' => new Test(
@@ -90,15 +99,13 @@ class TestHandlerTest extends AbstractHandlerTest
                 ),
                 'expectedClassName' => 'generated69ef658fb6e99440777d8bbe69f5bc89Test',
                 'expectedMethods' => [
-                    new MethodDefinition('setUp', new LineList([
-                        new Statement('$this->setName(\'test name\')'),
-                        new Statement('self::$crawler = self::$client->refreshCrawler()'),
-                    ])),
+                    $this->createExpectedSetupMethodDefinition('test name'),
                     new MethodDefinition('testOpen', new LineList([
                         new Statement('{{ PANTHER_CLIENT }}->request(\'GET\', \'http://example.com\')'),
                     ])),
                 ],
                 'expectedMetadata' => (new Metadata())
+                    ->withClassDependencies($expectedSetupMethodClassDependencies)
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::PANTHER_CLIENT,
                     ])),
@@ -120,10 +127,7 @@ class TestHandlerTest extends AbstractHandlerTest
                 ),
                 'expectedClassName' => 'generated69ef658fb6e99440777d8bbe69f5bc89Test',
                 'expectedMethods' => [
-                    new MethodDefinition('setUp', new LineList([
-                        new Statement('$this->setName(\'test name\')'),
-                        new Statement('self::$crawler = self::$client->refreshCrawler()'),
-                    ])),
+                    $this->createExpectedSetupMethodDefinition('test name'),
                     new MethodDefinition('testOpen', new LineList([
                         new Statement('{{ PANTHER_CLIENT }}->request(\'GET\', \'http://example.com\')'),
                     ])),
@@ -154,9 +158,11 @@ class TestHandlerTest extends AbstractHandlerTest
                     ),
                 ],
                 'expectedMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
-                    ]))
+                    ->withClassDependencies(
+                        $expectedSetupMethodClassDependencies->withAdditionalItems([
+                            new ClassDependency(ElementLocator::class),
+                        ])
+                    )
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -170,5 +176,16 @@ class TestHandlerTest extends AbstractHandlerTest
                     ])),
             ],
         ];
+    }
+
+    private function createExpectedSetupMethodDefinition(string $testName): MethodDefinitionInterface
+    {
+        return new MethodDefinition('setUp', new LineList([
+            new Statement('$this->setName(\'' . $testName . '\')'),
+            new Statement('self::$crawler = self::$client->refreshCrawler()'),
+            new Statement('$this->navigator = Navigator::create(self::$crawler)'),
+            new Statement('$this->inspector = Inspector::create()'),
+            new Statement('$this->mutator = Mutator::create()'),
+        ]));
     }
 }
