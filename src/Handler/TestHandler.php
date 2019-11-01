@@ -7,6 +7,8 @@ use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\ClassDefinition;
+use webignition\BasilCompilationSource\ClassDependency;
+use webignition\BasilCompilationSource\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Comment;
 use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\Metadata;
@@ -16,6 +18,9 @@ use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Test\TestInterface;
+use webignition\SymfonyDomCrawlerNavigator\Navigator;
+use webignition\WebDriverElementInspector\Inspector;
+use webignition\WebDriverElementMutator\Mutator;
 
 class TestHandler implements HandlerInterface
 {
@@ -80,10 +85,36 @@ class TestHandler implements HandlerInterface
         ));
 
         $refreshCrawlerStatement = new Statement('self::$crawler = self::$client->refreshCrawler()');
+        $createNavigatorStatement = new Statement(
+            '$this->navigator = Navigator::create(self::$crawler)',
+            (new Metadata())
+                ->withClassDependencies(new ClassDependencyCollection([
+                    new ClassDependency(Navigator::class),
+                ]))
+        );
+
+        $createInspectorStatement = new Statement(
+            '$this->inspector = Inspector::create()',
+            (new Metadata())
+                ->withClassDependencies(new ClassDependencyCollection([
+                    new ClassDependency(Inspector::class),
+                ]))
+        );
+
+        $createMutatorStatement = new Statement(
+            '$this->mutator = Mutator::create()',
+            (new Metadata())
+                ->withClassDependencies(new ClassDependencyCollection([
+                    new ClassDependency(Mutator::class),
+                ]))
+        );
 
         $setupMethod = new MethodDefinition('setUp', new LineList([
             $setNameStatement,
             $refreshCrawlerStatement,
+            $createNavigatorStatement,
+            $createInspectorStatement,
+            $createMutatorStatement,
         ]));
 
         $setupMethod->setProtected();
