@@ -3,6 +3,7 @@
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional;
 
 use Facebook\WebDriver\WebDriverDimension;
+use webignition\BasePantherTestCase\Options;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ExecutableCallFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\ClassDependency;
@@ -64,8 +65,10 @@ abstract class AbstractBrowserTestCase extends BaseAbstractBrowserTestCase
         array $additionalVariableIdentifiers = [],
         ?MetadataInterface $metadata = null
     ) {
+        $requestUrl = Options::getBaseUri() . $fixture;
+
         $setupStatements = new LineList([
-            new Statement('$crawler = self::$client->request(\'GET\', \'' . $fixture . '\')'),
+            new Statement('$crawler = self::$client->request(\'GET\', \'' . $requestUrl . '\')'),
             $additionalSetupStatements,
         ]);
 
@@ -95,8 +98,10 @@ abstract class AbstractBrowserTestCase extends BaseAbstractBrowserTestCase
         array $additionalVariableIdentifiers = [],
         ?MetadataInterface $metadata = null
     ) {
+        $requestUrl = Options::getBaseUri() . $fixture;
+
         $setupStatements = new LineList([
-            new Statement('$crawler = self::$client->request(\'GET\', \'' . $fixture . '\')'),
+            new Statement('$crawler = self::$client->request(\'GET\', \'' . $requestUrl . '\')'),
             $additionalSetupStatements,
         ]);
 
