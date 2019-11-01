@@ -6,8 +6,9 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\CallFactory;
 
+use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
-use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractTestCase;
+use webignition\BasilCompilableSourceFactory\Tests\Services\CodeGenerator;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\Statement;
@@ -15,18 +16,24 @@ use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
-class AssertionCallFactoryTest extends AbstractTestCase
+class AssertionCallFactoryTest extends TestCase
 {
     /**
      * @var AssertionCallFactory
      */
     private $factory;
 
+    /**
+     * @var CodeGenerator
+     */
+    private $codeGenerator;
+
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->factory = AssertionCallFactory::createFactory();
+        $this->codeGenerator = CodeGenerator::create();
     }
 
     /**
@@ -70,9 +77,9 @@ class AssertionCallFactoryTest extends AbstractTestCase
             VariableNames::PHPUNIT_TEST_CASE => '$this',
         ];
 
-        $executableCall = $this->executableCallFactory->create($source, $variableIdentifiers);
+        $code = $this->codeGenerator->createForLines($source, $variableIdentifiers);
 
-        eval($executableCall);
+        eval($code);
     }
 
     public function createValueComparisonAssertionCallDataProvider(): array
@@ -132,9 +139,9 @@ class AssertionCallFactoryTest extends AbstractTestCase
             VariableNames::PHPUNIT_TEST_CASE => '$this',
         ];
 
-        $executableCall = $this->executableCallFactory->create($source, $variableIdentifiers);
+        $code = $this->codeGenerator->createForLines($source, $variableIdentifiers);
 
-        eval($executableCall);
+        eval($code);
     }
 
     public function createValueExistenceAssertionCallDataProvider(): array

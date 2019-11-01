@@ -42,7 +42,7 @@ class WaitForActionHandlerTest extends AbstractHandlerTest
             $additionalVariableIdentifiers
         );
 
-        $executableCall = $this->createExecutableCallForRequest(
+        $code = $this->createExecutableCallForRequest(
             $fixture,
             $source,
             $additionalSetupStatements,
@@ -50,7 +50,7 @@ class WaitForActionHandlerTest extends AbstractHandlerTest
             $variableIdentifiers
         );
 
-        $executableCallStatements = explode("\n", $executableCall);
+        $executableCallStatements = explode("\n", $code);
         $waitForStatement = array_pop($executableCallStatements);
 
         $executableCallStatements = array_merge($executableCallStatements, [
@@ -60,8 +60,8 @@ class WaitForActionHandlerTest extends AbstractHandlerTest
             '$this->assertGreaterThan(100, $executionDurationInMilliseconds);',
         ]);
 
-        $executableCall = implode("\n", $executableCallStatements);
+        $code = implode("\n", $executableCallStatements);
 
-        eval($executableCall);
+        eval($code);
     }
 }

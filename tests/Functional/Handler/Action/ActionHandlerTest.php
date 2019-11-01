@@ -67,7 +67,7 @@ class ActionHandlerTest extends AbstractHandlerTest
             $additionalVariableIdentifiers
         );
 
-        $executableCall = $this->createExecutableCallForRequest(
+        $code = $this->createExecutableCallForRequest(
             $fixture,
             $source,
             $additionalSetupStatements,
@@ -76,7 +76,7 @@ class ActionHandlerTest extends AbstractHandlerTest
             $metadata
         );
 
-        eval($executableCall);
+        eval($code);
     }
 
     public function createSourceForExecutableActionsDataProvider()
@@ -112,7 +112,7 @@ class ActionHandlerTest extends AbstractHandlerTest
                 new ClassDependency(Navigator::class),
             ]));
 
-        $executableCall = $this->createExecutableCallForRequest(
+        $code = $this->createExecutableCallForRequest(
             '/action-wait.html',
             $source,
             $setupStatements,
@@ -124,7 +124,7 @@ class ActionHandlerTest extends AbstractHandlerTest
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage($expectedExpectationFailedExceptionMessage);
 
-        eval($executableCall);
+        eval($code);
     }
 
     public function createSourceForFailingActionsDataProvider(): array

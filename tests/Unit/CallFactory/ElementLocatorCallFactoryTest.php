@@ -7,7 +7,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\ElementLocatorCallFactory;
-use webignition\BasilCompilableSourceFactory\Tests\Services\ExecutableCallFactory;
+use webignition\BasilCompilableSourceFactory\Tests\Services\CodeGenerator;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
@@ -26,16 +26,16 @@ class ElementLocatorCallFactoryTest extends AbstractTestCase
     private $factory;
 
     /**
-     * @var ExecutableCallFactory
+     * @var CodeGenerator
      */
-    private $executableCallFactory;
+    private $codeGenerator;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->factory = ElementLocatorCallFactory::createFactory();
-        $this->executableCallFactory = ExecutableCallFactory::createFactory();
+        $this->codeGenerator = CodeGenerator::create();
     }
 
     /**
@@ -54,11 +54,11 @@ class ElementLocatorCallFactoryTest extends AbstractTestCase
 
         $this->assertMetadataEquals($expectedMetadata, $statement->getMetadata());
 
-        $executableCall = $this->executableCallFactory->createWithReturn(new LineList([
+        $code = $this->codeGenerator->createForLinesWithReturn(new LineList([
             $statement
         ]));
 
-        $elementLocator = eval($executableCall);
+        $elementLocator = eval($code);
 
         $this->assertEquals($expectedElementLocator, $elementLocator);
     }
