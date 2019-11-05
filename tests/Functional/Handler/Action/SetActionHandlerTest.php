@@ -10,9 +10,7 @@ use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\SetActionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\AbstractHandlerTest;
 use webignition\BasilCompilableSourceFactory\Handler\Action\SetActionHandler;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\LineList;
-use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilModel\Action\ActionInterface;
 
 class SetActionHandlerTest extends AbstractHandlerTest
@@ -32,27 +30,22 @@ class SetActionHandlerTest extends AbstractHandlerTest
         ActionInterface $action,
         ?LineList $additionalSetupStatements = null,
         ?LineList $teardownStatements = null,
-        array $additionalVariableIdentifiers = [],
-        ?MetadataInterface $metadata = null
+        array $additionalVariableIdentifiers = []
     ) {
         $source = $this->handler->createSource($action);
 
-        $variableIdentifiers = array_merge(
-            [
-                VariableNames::PANTHER_CRAWLER => self::PANTHER_CRAWLER_VARIABLE_NAME,
-            ],
+        $classCode = $this->testCodeGenerator->createForLineList(
+            $source,
+            $fixture,
+            $additionalSetupStatements,
+            $teardownStatements,
             $additionalVariableIdentifiers
         );
 
-        $code = $this->createExecutableCallForRequest(
-            $fixture,
-            $source,
-            $additionalSetupStatements,
-            $teardownStatements,
-            $variableIdentifiers,
-            $metadata
-        );
+        $testRunJob = $this->testRunner->createTestRunJob($classCode);
+        $this->testRunner->run($testRunJob);
+        $exitCode = $testRunJob->getExitCode();
 
-        eval($code);
+        $this->assertSame(0, $exitCode, $testRunJob->getOutputAsString());
     }
 }

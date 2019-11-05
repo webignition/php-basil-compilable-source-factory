@@ -6,6 +6,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
 use webignition\BasilCompilableSourceFactory\Tests\Services\PlaceholderFactory;
+use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\Statement;
 use webignition\BasilModelFactory\Action\ActionFactory;
@@ -17,17 +18,21 @@ trait ReloadActionFunctionalDataProviderTrait
         $actionFactory = ActionFactory::createFactory();
 
         $setupTeardownStatements = new LineList([
-            new Statement(sprintf(
+            StatementFactory::create(
                 '%s->assertCount(0, %s->filter("#hello"))',
-                PlaceholderFactory::phpUnitTestCase(),
-                PlaceholderFactory::pantherCrawler()
-            )),
+                [
+                    PlaceholderFactory::phpUnitTestCase(),
+                    PlaceholderFactory::pantherCrawler(),
+                ]
+            ),
             new Statement('usleep(100000)'),
-            new Statement(sprintf(
+            StatementFactory::create(
                 '%s->assertCount(1, %s->filter("#hello"))',
-                PlaceholderFactory::phpUnitTestCase(),
-                PlaceholderFactory::pantherCrawler()
-            )),
+                [
+                    PlaceholderFactory::phpUnitTestCase(),
+                    PlaceholderFactory::pantherCrawler(),
+                ]
+            ),
         ]);
 
         return [
