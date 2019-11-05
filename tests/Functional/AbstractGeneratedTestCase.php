@@ -3,7 +3,6 @@
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional;
 
 use Facebook\WebDriver\WebDriverDimension;
-use webignition\BasilCompilableSourceFactory\Tests\Services\CodeGenerator;
 use webignition\BasePantherTestCase\AbstractBrowserTestCase as BaseAbstractBrowserTestCase;
 
 abstract class AbstractGeneratedTestCase extends BaseAbstractBrowserTestCase

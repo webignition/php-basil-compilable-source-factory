@@ -63,8 +63,11 @@ class AssertionHandlerPassingAssertionsTest extends AbstractHandlerTest
 
         $testRunJob = $this->testRunner->createTestRunJob($classCode);
         $this->testRunner->run($testRunJob);
-        $exitCode = $testRunJob->getExitCode();
 
-        $this->assertSame(0, $exitCode, $testRunJob->getOutputAsString());
+        $this->assertSame(
+            $testRunJob->getExpectedExitCode(),
+            $testRunJob->getExitCode(),
+            $testRunJob->getOutputAsString()
+        );
     }
 }

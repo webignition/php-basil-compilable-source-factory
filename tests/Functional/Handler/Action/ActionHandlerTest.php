@@ -61,9 +61,12 @@ class ActionHandlerTest extends AbstractHandlerTest
 
         $testRunJob = $this->testRunner->createTestRunJob($classCode);
         $this->testRunner->run($testRunJob);
-        $exitCode = $testRunJob->getExitCode();
 
-        $this->assertSame(0, $exitCode, $testRunJob->getOutputAsString());
+        $this->assertSame(
+            $testRunJob->getExpectedExitCode(),
+            $testRunJob->getExitCode(),
+            $testRunJob->getOutputAsString()
+        );
     }
 
     public function createSourceForExecutableActionsDataProvider()
@@ -101,11 +104,14 @@ class ActionHandlerTest extends AbstractHandlerTest
             $additionalVariableIdentifiers
         );
 
-        $testRunJob = $this->testRunner->createTestRunJob($classCode);
+        $testRunJob = $this->testRunner->createTestRunJob($classCode, 1);
         $this->testRunner->run($testRunJob);
-        $exitCode = $testRunJob->getExitCode();
 
-        $this->assertSame(1, $exitCode, $testRunJob->getOutputAsString());
+        $this->assertSame(
+            $testRunJob->getExpectedExitCode(),
+            $testRunJob->getExitCode(),
+            $testRunJob->getOutputAsString()
+        );
         $this->assertStringContainsString($expectedExpectationFailedExceptionMessage, $testRunJob->getOutputAsString());
     }
 
