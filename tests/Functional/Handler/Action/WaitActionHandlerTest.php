@@ -10,9 +10,10 @@ use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\WaitActionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\AbstractHandlerTest;
 use webignition\BasilCompilableSourceFactory\Handler\Action\WaitActionHandler;
-use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilCompilationSource\Comment;
+use webignition\BasilCompilationSource\EmptyLine;
 use webignition\BasilCompilationSource\LineList;
-use webignition\BasilCompilationSource\MetadataInterface;
+use webignition\BasilCompilationSource\Statement;
 use webignition\BasilModel\Action\ActionInterface;
 
 class WaitActionHandlerTest extends AbstractHandlerTest
@@ -33,42 +34,52 @@ class WaitActionHandlerTest extends AbstractHandlerTest
         ?LineList $additionalSetupStatements = null,
         ?LineList $teardownStatements = null,
         array $additionalVariableIdentifiers = [],
-        ?MetadataInterface $metadata = null,
         ?int $expectedDuration = null
     ) {
         $source = $this->handler->createSource($action);
 
-        $expectedDurationThreshold = $expectedDuration + 1;
+        $instrumentedSource = clone $source;
 
-        $variableIdentifiers = array_merge(
-            [
-                VariableNames::PANTHER_CRAWLER => self::PANTHER_CRAWLER_VARIABLE_NAME,
-            ],
+        if ($instrumentedSource instanceof LineList) {
+            $lines = $source->getLines();
+            $lastLine = array_pop($lines);
+
+            $expectedDurationThreshold = $expectedDuration + 1;
+
+            $instrumentedSource = new LineList(array_merge(
+                $lines,
+                [
+                    new EmptyLine(),
+                    new Comment('Test harness instrumentation'),
+                    new Statement('$before = microtime(true)'),
+                    new EmptyLine(),
+                    new Comment('Code under test'),
+                    $lastLine,
+                    new EmptyLine(),
+                    new Comment('Test harness instrumentation'),
+                    new Statement('$executionDurationInMilliseconds = (microtime(true) - $before) * 1000'),
+                    new Statement(
+                        '$this->assertGreaterThan(' . $expectedDuration . ', $executionDurationInMilliseconds)'
+                    ),
+                    new Statement(
+                        '$this->assertLessThan(' . $expectedDurationThreshold . ', $executionDurationInMilliseconds)'
+                    ),
+                ]
+            ));
+        }
+
+        $classCode = $this->testCodeGenerator->createForLineList(
+            $instrumentedSource,
+            $fixture,
+            $additionalSetupStatements,
+            $teardownStatements,
             $additionalVariableIdentifiers
         );
 
-        $code = $this->createExecutableCallForRequest(
-            $fixture,
-            $source,
-            $additionalSetupStatements,
-            $teardownStatements,
-            $variableIdentifiers,
-            $metadata
-        );
+        $testRunJob = $this->testRunner->createTestRunJob($classCode);
+        $this->testRunner->run($testRunJob);
+        $exitCode = $testRunJob->getExitCode();
 
-        $executableCallStatements = explode("\n", $code);
-        $sleepStatement = array_pop($executableCallStatements);
-
-        $executableCallStatements = array_merge($executableCallStatements, [
-            '$before = microtime(true);',
-            $sleepStatement,
-            '$executionDurationInMilliseconds = (microtime(true) - $before) * 1000;',
-            '$this->assertGreaterThan(' . $expectedDuration . ', $executionDurationInMilliseconds);',
-            '$this->assertLessThan(' . $expectedDurationThreshold . ', $executionDurationInMilliseconds);',
-        ]);
-
-        $code = implode("\n", $executableCallStatements);
-
-        eval($code);
+        $this->assertSame(0, $exitCode, $testRunJob->getOutputAsString());
     }
 }
