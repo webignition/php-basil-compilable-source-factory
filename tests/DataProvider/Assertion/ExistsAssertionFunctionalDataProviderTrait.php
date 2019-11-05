@@ -23,7 +23,6 @@ trait ExistsAssertionFunctionalDataProviderTrait
                 'variableIdentifiers' => [
                     'HAS' => '$has',
                     VariableNames::EXAMINED_VALUE => self::EXAMINED_VALUE_VARIABLE_NAME,
-                    VariableNames::WEBDRIVER_ELEMENT_INSPECTOR => self::WEBDRIVER_ELEMENT_INSPECTOR_VARIABLE_NAME,
                 ],
             ],
             'exists comparison, attribute identifier examined value' => [
