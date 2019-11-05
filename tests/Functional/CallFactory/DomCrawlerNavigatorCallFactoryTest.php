@@ -9,13 +9,12 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Functional\CallFactory;
 use Facebook\WebDriver\WebDriverElement;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
-use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Metadata;
+use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilCompilationSource\LineList;
+use webignition\BasilCompilationSource\MutableListLineListInterface;
 use webignition\BasilCompilationSource\Statement;
 use webignition\BasilModel\Identifier\DomIdentifier;
 use webignition\BasilModel\Identifier\DomIdentifierInterface;
-use webignition\WebDriverElementCollection\WebDriverElementCollectionInterface;
 
 class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
 {
@@ -37,70 +36,58 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
     public function testCreateFindCall(
         string $fixture,
         DomIdentifierInterface $identifier,
-        callable $assertions
+        LineList $teardownStatements
     ) {
-        $statement = $this->factory->createFindCall($identifier);
+        $source = $this->factory->createFindCall($identifier);
 
-        $variableIdentifiers = [
-            VariableNames::DOM_CRAWLER_NAVIGATOR => self::DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME,
-        ];
+        $instrumentedSource = clone $source;
 
-        $metadata = $this->addNavigatorToMetadata(new Metadata());
+        if ($instrumentedSource instanceof MutableListLineListInterface) {
+            $instrumentedSource->mutateLastStatement(function ($content) {
+                return '$collection = ' . $content;
+            });
+        }
 
-        $code = $this->createExecutableCallForRequestWithReturn(
+        $classCode = $this->testCodeGenerator->createForLineList(
+            $instrumentedSource,
             $fixture,
-            new LineList([$statement]),
-            new LineList([
-                new Statement('$navigator = Navigator::create($crawler)'),
-            ]),
             null,
-            $variableIdentifiers,
-            $metadata
+            $teardownStatements
         );
 
-        $returnValue = eval($code);
+        $testRunJob = $this->testRunner->createTestRunJob($classCode);
+        $this->testRunner->run($testRunJob);
 
-        $assertions($returnValue);
+        $this->assertSame(
+            $testRunJob->getExpectedExitCode(),
+            $testRunJob->getExitCode(),
+            $testRunJob->getOutputAsString()
+        );
     }
 
     public function createFindCallDataProvider(): array
     {
         return [
-            'no parent, no ordinal position' => [
-                'fixture' => '/form.html',
-                'identifier' => new DomIdentifier('input'),
-                'assertions' => function (WebDriverElementCollectionInterface $collection) {
-                    $this->assertCount(9, $collection);
-                },
-            ],
             'no parent, has ordinal position' => [
                 'fixture' => '/form.html',
                 'identifier' => new DomIdentifier('input', 1),
-                'assertions' => function (WebDriverElementCollectionInterface $collection) {
-                    $this->assertCount(1, $collection);
-
-                    $element = $collection->get(0);
-                    $this->assertInstanceOf(WebDriverElement::class, $element);
-
-                    if ($element instanceof WebDriverElement) {
-                        $this->assertSame('input-without-value', $element->getAttribute('name'));
-                    }
-                },
+                'teardownStatements' => new LineList([
+                    StatementFactory::createAssertCount('1', '$collection'),
+                    new Statement('$element = $collection->get(0)'),
+                    StatementFactory::createAssertInstanceOf('\'' . WebDriverElement::class . '\'', '$element'),
+                    StatementFactory::createAssertSame("'input-without-value'", '$element->getAttribute(\'name\')'),
+                ]),
             ],
             'has parent' => [
                 'fixture' => '/form.html',
                 'identifier' => (new DomIdentifier('input'))
                     ->withParentIdentifier(new DomIdentifier('form[action="/action2"]')),
-                'assertions' => function (WebDriverElementCollectionInterface $collection) {
-                    $this->assertCount(1, $collection);
-
-                    $element = $collection->get(0);
-                    $this->assertInstanceOf(WebDriverElement::class, $element);
-
-                    if ($element instanceof WebDriverElement) {
-                        $this->assertSame('input-2', $element->getAttribute('name'));
-                    }
-                },
+                'teardownStatements' => new LineList([
+                    StatementFactory::createAssertCount('1', '$collection'),
+                    new Statement('$element = $collection->get(0)'),
+                    StatementFactory::createAssertInstanceOf('\'' . WebDriverElement::class . '\'', '$element'),
+                    StatementFactory::createAssertSame("'input-2'", '$element->getAttribute(\'name\')'),
+                ]),
             ],
         ];
     }

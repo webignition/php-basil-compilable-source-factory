@@ -105,4 +105,24 @@ class StatementFactory
             ]
         );
     }
+
+    public static function createAssertCount(string $expected, string $actual): StatementInterface
+    {
+        return self::create(
+            '%s->assertCount(' . $expected . ', ' . $actual . ')',
+            [
+                new VariablePlaceholder(VariableNames::PHPUNIT_TEST_CASE),
+            ]
+        );
+    }
+
+    public static function createAssertInstanceOf(string $expected, string $actual): StatementInterface
+    {
+        return self::create(
+            '%s->assertInstanceOf(' . $expected . ', ' . $actual . ')',
+            [
+                new VariablePlaceholder(VariableNames::PHPUNIT_TEST_CASE),
+            ]
+        );
+    }
 }
