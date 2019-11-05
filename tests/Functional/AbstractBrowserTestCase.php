@@ -5,6 +5,8 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Functional;
 use Facebook\WebDriver\WebDriverDimension;
 use webignition\BasePantherTestCase\Options;
 use webignition\BasilCompilableSourceFactory\Tests\Services\CodeGenerator;
+use webignition\BasilCompilableSourceFactory\Tests\Services\TestCodeGenerator;
+use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunner;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
@@ -24,7 +26,7 @@ abstract class AbstractBrowserTestCase extends BaseAbstractBrowserTestCase
 
     const PANTHER_CLIENT_VARIABLE_NAME = 'self::$client';
     const PHPUNIT_TEST_CASE_VARIABLE_NAME = '$this';
-    const DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME = '$navigator';
+    const DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME = '$this->navigator';
     const WEBDRIVER_ELEMENT_INSPECTOR_VARIABLE_NAME = '$inspector';
     const WEBDRIVER_ELEMENT_MUTATOR_VARIABLE_NAME = '$mutator';
     const EXAMINED_VALUE_VARIABLE_NAME = '$examinedValue';
@@ -32,7 +34,7 @@ abstract class AbstractBrowserTestCase extends BaseAbstractBrowserTestCase
     const HAS_VARIABLE_NAME = '$has';
     const ENVIRONMENT_VARIABLE_ARRAY_VARIABLE_NAME = '$_ENV';
     const WEBDRIVER_DIMENSION_VARIABLE_NAME = '$webDriverDimension';
-    const PANTHER_CRAWLER_VARIABLE_NAME = '$crawler';
+    const PANTHER_CRAWLER_VARIABLE_NAME = 'self::$crawler';
     const ELEMENT_VARIABLE_NAME = '$element';
     const COLLECTION_VARIABLE_NAME = '$collection';
     const VALUE_VARIABLE_NAME = '$value';
@@ -40,7 +42,17 @@ abstract class AbstractBrowserTestCase extends BaseAbstractBrowserTestCase
     /**
      * @var CodeGenerator
      */
-    private $codeGenerator;
+    protected $codeGenerator;
+
+    /**
+     * @var TestRunner
+     */
+    protected $testRunner;
+
+    /**
+     * @var TestCodeGenerator
+     */
+    protected $testCodeGenerator;
 
     public static function setUpBeforeClass(): void
     {
@@ -56,6 +68,11 @@ abstract class AbstractBrowserTestCase extends BaseAbstractBrowserTestCase
     protected function setUp(): void
     {
         $this->codeGenerator = CodeGenerator::create();
+        $this->testRunner = new TestRunner();
+        $this->testCodeGenerator = TestCodeGenerator::create();
+
+        self::stopWebServer();
+        self::$client->quit();
     }
 
     protected function createExecutableCallForRequest(

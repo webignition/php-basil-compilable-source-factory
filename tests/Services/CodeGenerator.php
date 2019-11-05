@@ -70,7 +70,7 @@ class CodeGenerator
 
 class %s %s
 {
-    %s
+%s
 }
 EOD;
 
@@ -88,7 +88,7 @@ EOD;
         array $variableIdentifiers = []
     ): string {
         $methodTemplate = <<<'EOD'
-public function %s() %s
+    %s %s function %s() %s
     {
 %s
     }
@@ -107,6 +107,8 @@ EOD;
 
         return sprintf(
             $methodTemplate,
+            $methodDefinition->getVisibility(),
+            $methodDefinition->isStatic() ? 'static' : '',
             $methodDefinition->getName(),
             $returnTypeCode,
             $linesCode
@@ -243,7 +245,9 @@ EOD;
             MethodDefinitionInterface $methodDefinition
         ): LineList {
             return new LineList([
-                new Statement('return (new ' . $classDefinition->getName() . '())->' . $methodDefinition->getName() . '()'),
+                new Statement(
+                    'return (new ' . $classDefinition->getName() . '())->' . $methodDefinition->getName() . '()'
+                ),
             ]);
         };
     }

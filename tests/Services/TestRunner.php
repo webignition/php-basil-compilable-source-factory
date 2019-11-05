@@ -1,0 +1,54 @@
+<?php
+/** @noinspection PhpDocSignatureInspection */
+/** @noinspection PhpUnhandledExceptionInspection */
+
+declare(strict_types=1);
+
+namespace webignition\BasilCompilableSourceFactory\Tests\Services;
+
+class TestRunner
+{
+    const PATH = __DIR__ . '/../Generated/';
+
+    public function createTestRunJob(string $code): ?TestRunJob
+    {
+        $content = '<?php' . "\n\n" . $code . "\n";
+
+        $classMatches = [];
+        preg_match('/Generated[a-z0-9]{32}Test/i', $content, $classMatches);
+        $name = $classMatches[0] . '.php';
+
+        $path = (string) self::PATH . $name;
+
+        if (preg_match('/Generated\/Generated[A-Fa-f0-9]{32}Test.php/', $path)) {
+            file_put_contents($path, $content);
+
+            return new TestRunJob(realpath($path));
+        }
+
+        return null;
+    }
+
+    public function run(TestRunJob $testRunJob): void
+    {
+        $path = $testRunJob->getPath();
+
+        if (preg_match('/Generated\/Generated[A-Fa-f0-9]{32}Test.php/', $path)) {
+            $command = 'vendor/bin/phpunit ' . $path;
+
+            $output = [];
+            $exitCode = 0;
+
+            exec($command, $output, $exitCode);
+
+            if (0 === $exitCode) {
+                unlink($path);
+            }
+
+            $testRunJob->setOutput($output);
+            $testRunJob->setExitCode($exitCode);
+        } else {
+            $testRunJob->setExitCode(255);
+        }
+    }
+}
