@@ -18,9 +18,6 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\Matche
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\NotExistsAssertionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\AbstractHandlerTest;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
-use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\LineList;
-use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilModel\Assertion\AssertionInterface;
 
 class AssertionHandlerPassingAssertionsTest extends AbstractHandlerTest
@@ -52,28 +49,22 @@ class AssertionHandlerPassingAssertionsTest extends AbstractHandlerTest
     public function testCreateSource(
         string $fixture,
         AssertionInterface $model,
-        ?LineList $additionalSetupStatements = null,
-        array $additionalVariableIdentifiers = [],
-        ?MetadataInterface $metadata = null
+        array $additionalVariableIdentifiers = []
     ) {
         $source = $this->handler->createSource($model);
 
-        $variableIdentifiers = array_merge(
-            [
-                VariableNames::PHPUNIT_TEST_CASE => self::PHPUNIT_TEST_CASE_VARIABLE_NAME,
-            ],
+        $classCode = $this->testCodeGenerator->createForLineList(
+            $source,
+            $fixture,
+            null,
+            null,
             $additionalVariableIdentifiers
         );
 
-        $code = $this->createExecutableCallForRequest(
-            $fixture,
-            $source,
-            $additionalSetupStatements,
-            null,
-            $variableIdentifiers,
-            $metadata
-        );
+        $testRunJob = $this->testRunner->createTestRunJob($classCode);
+        $this->testRunner->run($testRunJob);
+        $exitCode = $testRunJob->getExitCode();
 
-        eval($code);
+        $this->assertSame(0, $exitCode, $testRunJob->getOutputAsString());
     }
 }

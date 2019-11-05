@@ -10,7 +10,7 @@ class TestRunner
 {
     const PATH = __DIR__ . '/../Generated/';
 
-    public function createTestRunJob(string $code): ?TestRunJob
+    public function createTestRunJob(string $code, int $expectedExitCode = 0): ?TestRunJob
     {
         $content = '<?php' . "\n\n" . $code . "\n";
 
@@ -23,7 +23,10 @@ class TestRunner
         if (preg_match('/Generated\/Generated[A-Fa-f0-9]{32}Test.php/', $path)) {
             file_put_contents($path, $content);
 
-            return new TestRunJob(realpath($path));
+            $testRunJob = new TestRunJob(realpath($path));
+            $testRunJob->setExpectedExitCode($expectedExitCode);
+
+            return $testRunJob;
         }
 
         return null;
@@ -41,7 +44,7 @@ class TestRunner
 
             exec($command, $output, $exitCode);
 
-            if (0 === $exitCode) {
+            if ($testRunJob->getExpectedExitCode() === $exitCode) {
                 unlink($path);
             }
 

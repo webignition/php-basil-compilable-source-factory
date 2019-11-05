@@ -6,6 +6,7 @@ class TestRunJob
 {
     private $path = '';
     private $exitCode = -1;
+    private $expectedExitCode = 0;
     private $output = [];
 
     public function __construct(string $path)
@@ -31,6 +32,16 @@ class TestRunJob
     public function getOutputAsString(): string
     {
         return implode("\n", $this->output);
+    }
+
+    public function setExpectedExitCode(int $expectedExitCode): void
+    {
+        $this->expectedExitCode = $expectedExitCode;
+    }
+
+    public function getExpectedExitCode(): int
+    {
+        return $this->expectedExitCode;
     }
 
     public function setExitCode(int $exitCode): void
