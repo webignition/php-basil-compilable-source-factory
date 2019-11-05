@@ -9,7 +9,9 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\Valu
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\AbstractHandlerTest;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
-use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
+use webignition\BasilCompilationSource\LineList;
+use webignition\BasilCompilationSource\MutableListLineListInterface;
 use webignition\BasilModel\Value\ObjectValue;
 use webignition\BasilModel\Value\ObjectValueType;
 use webignition\BasilModel\Value\ValueInterface;
@@ -27,20 +29,35 @@ class ScalarValueHandlerTest extends AbstractHandlerTest
     public function testCreateSource(
         string $fixture,
         ValueInterface $model,
-        callable $resultAssertions,
+        LineList $teardownStatements,
         array $additionalVariableIdentifiers = []
     ) {
         $source = $this->handler->createSource($model);
 
-        $code = $this->createExecutableCallForRequestWithReturn(
+        $instrumentedSource = clone $source;
+        if ($instrumentedSource instanceof MutableListLineListInterface) {
+            $instrumentedSource->mutateLastStatement(function ($content) {
+                return '$value = ' . $content;
+            });
+        }
+
+        $classCode = $this->testCodeGenerator->createForLineList(
+            $instrumentedSource,
             $fixture,
-            $source,
             null,
-            null,
+            $teardownStatements,
             $additionalVariableIdentifiers
         );
 
-        $resultAssertions(eval($code));
+        $testRunJob = $this->testRunner->createTestRunJob($classCode);
+
+        $this->testRunner->run($testRunJob);
+
+        $this->assertSame(
+            $testRunJob->getExpectedExitCode(),
+            $testRunJob->getExitCode(),
+            $testRunJob->getOutputAsString()
+        );
     }
 
     public function createSourceDataProvider(): array
@@ -49,27 +66,26 @@ class ScalarValueHandlerTest extends AbstractHandlerTest
             'browser property: size' => [
                 'fixture' => '/empty.html',
                 'model' => new ObjectValue(ObjectValueType::BROWSER_PROPERTY, '$browser.size', 'size'),
-                'resultAssertions' => function ($result) {
-                    $this->assertEquals('1200x1100', $result);
-                },
+                'teardownStatements' => new LineList([
+                    StatementFactory::createAssertSame('"1200x1100"', '$value'),
+                ]),
                 'additionalVariableIdentifiers' => [
-                    VariableNames::PANTHER_CLIENT => self::PANTHER_CLIENT_VARIABLE_NAME,
                     'WEBDRIVER_DIMENSION' => '$webDriverDimension',
                 ],
             ],
             'page property: title' => [
                 'fixture' => '/index.html',
                 'model' => new ObjectValue(ObjectValueType::PAGE_PROPERTY, '$page.title', 'title'),
-                'resultAssertions' => function ($result) {
-                    $this->assertEquals('Test fixture web server default document', $result);
-                },
+                'teardownStatements' => new LineList([
+                    StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
+                ]),
             ],
             'page property: url' => [
                 'fixture' => '/index.html',
                 'model' => new ObjectValue(ObjectValueType::PAGE_PROPERTY, '$page.url', 'url'),
-                'resultAssertions' => function ($result) {
-                    $this->assertEquals('http://127.0.0.1:9080/index.html', $result);
-                },
+                'teardownStatements' => new LineList([
+                    StatementFactory::createAssertSame('"http://127.0.0.1:9080/index.html"', '$value'),
+                ]),
             ],
         ];
     }
