@@ -43,9 +43,6 @@ class ClickActionHandlerTest extends AbstractHandlerTest
         );
 
         $testRunJob = $this->testRunner->createTestRunJob($classCode);
-
-        echo "\n\n" . $classCode . "\n\n";
-
         $this->testRunner->run($testRunJob);
         $exitCode = $testRunJob->getExitCode();
 

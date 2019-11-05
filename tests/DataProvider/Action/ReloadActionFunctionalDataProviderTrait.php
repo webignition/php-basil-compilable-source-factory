@@ -5,7 +5,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
-use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilCompilableSourceFactory\Tests\Services\PlaceholderFactory;
 use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\Statement;
 use webignition\BasilModelFactory\Action\ActionFactory;
@@ -17,9 +17,17 @@ trait ReloadActionFunctionalDataProviderTrait
         $actionFactory = ActionFactory::createFactory();
 
         $setupTeardownStatements = new LineList([
-            new Statement('$this->assertCount(0, $crawler->filter("#hello"))'),
+            new Statement(sprintf(
+                '%s->assertCount(0, %s->filter("#hello"))',
+                PlaceholderFactory::phpUnitTestCase(),
+                PlaceholderFactory::pantherCrawler()
+            )),
             new Statement('usleep(100000)'),
-            new Statement('$this->assertCount(1, $crawler->filter("#hello"))'),
+            new Statement(sprintf(
+                '%s->assertCount(1, %s->filter("#hello"))',
+                PlaceholderFactory::phpUnitTestCase(),
+                PlaceholderFactory::pantherCrawler()
+            )),
         ]);
 
         return [
@@ -28,9 +36,6 @@ trait ReloadActionFunctionalDataProviderTrait
                 'action' => $actionFactory->createFromActionString('reload'),
                 'additionalSetupStatements' => $setupTeardownStatements,
                 'teardownStatements' => $setupTeardownStatements,
-                'variableIdentifiers' => [
-                    VariableNames::PANTHER_CRAWLER => self::PANTHER_CRAWLER_VARIABLE_NAME,
-                ],
             ],
         ];
     }

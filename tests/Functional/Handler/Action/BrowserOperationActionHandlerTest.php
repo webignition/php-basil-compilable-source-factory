@@ -12,9 +12,7 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\ForwardAc
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\ReloadActionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\AbstractHandlerTest;
 use webignition\BasilCompilableSourceFactory\Handler\Action\BrowserOperationActionHandler;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\LineList;
-use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilModel\Action\ActionInterface;
 
 class BrowserOperationActionHandlerTest extends AbstractHandlerTest
@@ -38,27 +36,23 @@ class BrowserOperationActionHandlerTest extends AbstractHandlerTest
         ActionInterface $action,
         ?LineList $additionalSetupStatements = null,
         ?LineList $teardownStatements = null,
-        array $additionalVariableIdentifiers = [],
-        ?MetadataInterface $metadata = null
+        array $additionalVariableIdentifiers = []
     ) {
         $source = $this->handler->createSource($action);
 
-        $variableIdentifiers = array_merge(
-            [
-                VariableNames::PANTHER_CRAWLER => self::PANTHER_CRAWLER_VARIABLE_NAME,
-            ],
+        $classCode = $this->testCodeGenerator->createForLineList(
+            $source,
+            $fixture,
+            $additionalSetupStatements,
+            $teardownStatements,
             $additionalVariableIdentifiers
         );
 
-        $code = $this->createExecutableCallForRequest(
-            $fixture,
-            $source,
-            $additionalSetupStatements,
-            $teardownStatements,
-            $variableIdentifiers,
-            $metadata
-        );
+        $testRunJob = $this->testRunner->createTestRunJob($classCode);
 
-        eval($code);
+        $this->testRunner->run($testRunJob);
+        $exitCode = $testRunJob->getExitCode();
+
+        $this->assertSame(0, $exitCode, $testRunJob->getOutputAsString());
     }
 }
