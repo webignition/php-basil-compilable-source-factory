@@ -10,8 +10,10 @@ use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\WaitForActionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\AbstractHandlerTest;
 use webignition\BasilCompilableSourceFactory\Handler\Action\WaitForActionHandler;
-use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilCompilationSource\Comment;
+use webignition\BasilCompilationSource\EmptyLine;
 use webignition\BasilCompilationSource\LineList;
+use webignition\BasilCompilationSource\Statement;
 use webignition\BasilModel\Action\ActionInterface;
 
 class WaitForActionHandlerTest extends AbstractHandlerTest
@@ -26,42 +28,42 @@ class WaitForActionHandlerTest extends AbstractHandlerTest
     /**
      * @dataProvider waitForActionFunctionalDataProvider
      */
-    public function testCreateSourceForExecutableActions(
-        string $fixture,
-        ActionInterface $action,
-        ?LineList $additionalSetupStatements = null,
-        ?LineList $teardownStatements = null,
-        array $additionalVariableIdentifiers = []
-    ) {
+    public function testCreateSourceForExecutableActions(string $fixture, ActionInterface $action)
+    {
         $source = $this->handler->createSource($action);
 
-        $variableIdentifiers = array_merge(
-            [
-                VariableNames::PANTHER_CRAWLER => self::PANTHER_CRAWLER_VARIABLE_NAME,
-            ],
-            $additionalVariableIdentifiers
+        $instrumentedSource = clone $source;
+
+        if ($instrumentedSource instanceof LineList) {
+            $lines = $source->getLines();
+            $lastLine = array_pop($lines);
+
+            $instrumentedSource = new LineList(array_merge(
+                $lines,
+                [
+                    new EmptyLine(),
+                    new Comment('Test harness instrumentation'),
+                    new Statement('$before = microtime(true)'),
+                    new EmptyLine(),
+                    new Comment('Code under test'),
+                    $lastLine,
+                    new EmptyLine(),
+                    new Comment('Test harness instrumentation'),
+                    new Statement('$executionDurationInMilliseconds = (microtime(true) - $before) * 1000'),
+                    new Statement('$this->assertGreaterThan(100, $executionDurationInMilliseconds)'),
+                ]
+            ));
+        }
+
+        $classCode = $this->testCodeGenerator->createForLineList(
+            $instrumentedSource,
+            $fixture
         );
 
-        $code = $this->createExecutableCallForRequest(
-            $fixture,
-            $source,
-            $additionalSetupStatements,
-            $teardownStatements,
-            $variableIdentifiers
-        );
+        $testRunJob = $this->testRunner->createTestRunJob($classCode);
+        $this->testRunner->run($testRunJob);
+        $exitCode = $testRunJob->getExitCode();
 
-        $executableCallStatements = explode("\n", $code);
-        $waitForStatement = array_pop($executableCallStatements);
-
-        $executableCallStatements = array_merge($executableCallStatements, [
-            '$before = microtime(true);',
-            $waitForStatement,
-            '$executionDurationInMilliseconds = (microtime(true) - $before) * 1000;',
-            '$this->assertGreaterThan(100, $executionDurationInMilliseconds);',
-        ]);
-
-        $code = implode("\n", $executableCallStatements);
-
-        eval($code);
+        $this->assertSame(0, $exitCode, $testRunJob->getOutputAsString());
     }
 }
