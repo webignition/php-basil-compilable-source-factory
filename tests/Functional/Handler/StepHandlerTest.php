@@ -8,6 +8,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler;
 
 use webignition\BasilCompilableSourceFactory\Handler\StepHandler;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
+use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\LineList;
@@ -84,8 +85,8 @@ class StepHandlerTest extends AbstractHandlerTest
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [
                     'HAS' => '$has',
-                    VariableNames::EXAMINED_VALUE => self::EXAMINED_VALUE_VARIABLE_NAME,
-                    VariableNames::EXPECTED_VALUE => self::EXPECTED_VALUE_VARIABLE_NAME,
+                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
+                    VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
                 ],
             ],
             'single click action, single assertion' => [
@@ -104,8 +105,8 @@ class StepHandlerTest extends AbstractHandlerTest
                 'additionalVariableIdentifiers' => [
                     'ELEMENT' => '$element',
                     'HAS' => '$has',
-                    VariableNames::EXPECTED_VALUE => self::EXPECTED_VALUE_VARIABLE_NAME,
-                    VariableNames::EXAMINED_VALUE => self::EXAMINED_VALUE_VARIABLE_NAME,
+                    VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
+                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                 ],
             ],
             'multiple actions, multiple assertions' => [
@@ -132,8 +133,8 @@ class StepHandlerTest extends AbstractHandlerTest
                 'additionalVariableIdentifiers' => [
                     'ELEMENT' => '$element',
                     'HAS' => '$has',
-                    VariableNames::EXPECTED_VALUE => self::EXPECTED_VALUE_VARIABLE_NAME,
-                    VariableNames::EXAMINED_VALUE => self::EXAMINED_VALUE_VARIABLE_NAME,
+                    VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
+                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                 ],
             ],
         ];

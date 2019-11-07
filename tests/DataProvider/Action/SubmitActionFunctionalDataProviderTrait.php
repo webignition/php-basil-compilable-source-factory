@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
+use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilCompilationSource\LineList;
 use webignition\BasilModelFactory\Action\ActionFactory;
@@ -34,8 +35,8 @@ trait SubmitActionFunctionalDataProviderTrait
         ]);
 
         $variableIdentifiers = [
-            'HAS' => self::HAS_VARIABLE_NAME,
-            'ELEMENT' => self::ELEMENT_VARIABLE_NAME,
+            'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
+            'ELEMENT' => ResolvedVariableNames::ELEMENT_VARIABLE_NAME,
         ];
 
         return [

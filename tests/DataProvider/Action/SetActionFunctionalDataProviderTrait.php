@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
+use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\LineList;
@@ -18,9 +19,9 @@ trait SetActionFunctionalDataProviderTrait
     private $setActionFunctionalFixture = '/form.html';
 
     private $setActionFunctionalVariableIdentifiers = [
-        'COLLECTION' => self::COLLECTION_VARIABLE_NAME,
-        'HAS' => self::HAS_VARIABLE_NAME,
-        'VALUE' => self::VALUE_VARIABLE_NAME,
+        'COLLECTION' => ResolvedVariableNames::COLLECTION_VARIABLE_NAME,
+        'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
+        'VALUE' => ResolvedVariableNames::VALUE_VARIABLE_NAME,
     ];
 
     public function setActionFunctionalDataProvider(): array
@@ -110,7 +111,7 @@ trait SetActionFunctionalDataProviderTrait
                         ),
                     ]),
                     'additionalVariableIdentifiers' => array_merge($this->setActionFunctionalVariableIdentifiers, [
-                        'WEBDRIVER_DIMENSION' => self::WEBDRIVER_DIMENSION_VARIABLE_NAME,
+                        'WEBDRIVER_DIMENSION' => ResolvedVariableNames::WEBDRIVER_DIMENSION_VARIABLE_NAME,
                     ]),
                 ],
                 'input action, page property' => [
@@ -160,7 +161,7 @@ trait SetActionFunctionalDataProviderTrait
                         ),
                     ]),
                     'additionalVariableIdentifiers' => array_merge($this->setActionFunctionalVariableIdentifiers, [
-                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY => self::ENVIRONMENT_VARIABLE_ARRAY_VARIABLE_NAME,
+                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
                     ]),
                 ],
             ]

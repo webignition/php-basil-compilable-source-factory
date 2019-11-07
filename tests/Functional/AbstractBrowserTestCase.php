@@ -13,15 +13,6 @@ abstract class AbstractBrowserTestCase extends BaseAbstractBrowserTestCase
     const FIXTURES_RELATIVE_PATH = '/Fixtures';
     const FIXTURES_HTML_RELATIVE_PATH = '/html';
 
-    const EXAMINED_VALUE_VARIABLE_NAME = '$examinedValue';
-    const EXPECTED_VALUE_VARIABLE_NAME = '$expectedValue';
-    const HAS_VARIABLE_NAME = '$has';
-    const ENVIRONMENT_VARIABLE_ARRAY_VARIABLE_NAME = '$_ENV';
-    const WEBDRIVER_DIMENSION_VARIABLE_NAME = '$webDriverDimension';
-    const ELEMENT_VARIABLE_NAME = '$element';
-    const COLLECTION_VARIABLE_NAME = '$collection';
-    const VALUE_VARIABLE_NAME = '$value';
-
     /**
      * @var CodeGenerator
      */

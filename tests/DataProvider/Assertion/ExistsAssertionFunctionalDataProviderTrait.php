@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
+use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModelFactory\AssertionFactory;
 
@@ -22,7 +23,7 @@ trait ExistsAssertionFunctionalDataProviderTrait
                 ),
                 'variableIdentifiers' => [
                     'HAS' => '$has',
-                    VariableNames::EXAMINED_VALUE => self::EXAMINED_VALUE_VARIABLE_NAME,
+                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                 ],
             ],
             'exists comparison, attribute identifier examined value' => [
@@ -32,7 +33,7 @@ trait ExistsAssertionFunctionalDataProviderTrait
                 ),
                 'variableIdentifiers' => [
                     'HAS' => '$has',
-                    VariableNames::EXAMINED_VALUE => self::EXAMINED_VALUE_VARIABLE_NAME,
+                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                 ],
             ],
             'exists comparison, environment examined value' => [
@@ -42,7 +43,7 @@ trait ExistsAssertionFunctionalDataProviderTrait
                 ),
                 'variableIdentifiers' => [
                     VariableNames::ENVIRONMENT_VARIABLE_ARRAY => '$_ENV',
-                    VariableNames::EXAMINED_VALUE => self::EXAMINED_VALUE_VARIABLE_NAME,
+                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                 ],
             ],
             'exists comparison, browser object value' => [
@@ -51,8 +52,8 @@ trait ExistsAssertionFunctionalDataProviderTrait
                     '$browser.size exists'
                 ),
                 'variableIdentifiers' => [
-                    'WEBDRIVER_DIMENSION' => self::WEBDRIVER_DIMENSION_VARIABLE_NAME,
-                    VariableNames::EXAMINED_VALUE => self::EXAMINED_VALUE_VARIABLE_NAME,
+                    'WEBDRIVER_DIMENSION' => ResolvedVariableNames::WEBDRIVER_DIMENSION_VARIABLE_NAME,
+                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                 ],
             ],
             'exists comparison, page object value' => [
@@ -61,7 +62,7 @@ trait ExistsAssertionFunctionalDataProviderTrait
                     '$page.title exists'
                 ),
                 'variableIdentifiers' => [
-                    VariableNames::EXAMINED_VALUE => self::EXAMINED_VALUE_VARIABLE_NAME,
+                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                 ],
             ],
         ];

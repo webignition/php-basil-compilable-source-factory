@@ -17,6 +17,7 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\WaitActio
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\WaitForActionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\AbstractHandlerTest;
 use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
+use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilationSource\LineList;
 use webignition\BasilModel\Action\ActionInterface;
 use webignition\BasilModel\Action\WaitAction;
@@ -129,7 +130,7 @@ class ActionHandlerTest extends AbstractHandlerTest
                 'teardownStatements' => null,
                 'variableIdentifiers' => [
                     'DURATION' => '$duration',
-                    'HAS' => self::HAS_VARIABLE_NAME,
+                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                 ],
             ],
             'wait, attribute identifier examined value, element does not exist' => [
@@ -145,7 +146,7 @@ class ActionHandlerTest extends AbstractHandlerTest
                 'teardownStatements' => null,
                 'variableIdentifiers' => [
                     'DURATION' => '$duration',
-                    'HAS' => self::HAS_VARIABLE_NAME,
+                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                 ],
             ],
         ];

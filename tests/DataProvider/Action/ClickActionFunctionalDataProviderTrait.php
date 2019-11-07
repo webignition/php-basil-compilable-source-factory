@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
+use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilCompilationSource\LineList;
 use webignition\BasilModelFactory\Action\ActionFactory;
@@ -26,8 +27,8 @@ trait ClickActionFunctionalDataProviderTrait
                     StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
                 ]),
                 'additionalVariableIdentifiers' => [
-                    'ELEMENT' => self::ELEMENT_VARIABLE_NAME,
-                    'HAS' => self::HAS_VARIABLE_NAME,
+                    'ELEMENT' => ResolvedVariableNames::ELEMENT_VARIABLE_NAME,
+                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                 ]
             ],
             'interaction action (click), submit button' => [
@@ -43,8 +44,8 @@ trait ClickActionFunctionalDataProviderTrait
                     StatementFactory::createAssertSame('"true"', '$submitButton->getAttribute(\'data-clicked\')'),
                 ]),
                 'additionalVariableIdentifiers' => [
-                    'ELEMENT' => self::ELEMENT_VARIABLE_NAME,
-                    'HAS' => self::HAS_VARIABLE_NAME,
+                    'ELEMENT' => ResolvedVariableNames::ELEMENT_VARIABLE_NAME,
+                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                 ],
             ],
         ];

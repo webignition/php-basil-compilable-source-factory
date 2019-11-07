@@ -11,4 +11,5 @@ class ResolvedVariableNames
     const WEBDRIVER_DIMENSION_VARIABLE_NAME = '$webDriverDimension';
     const ELEMENT_VARIABLE_NAME = '$element';
     const COLLECTION_VARIABLE_NAME = '$collection';
+    const VALUE_VARIABLE_NAME = '$value';
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
+use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModel\Assertion\AssertionComparison;
 use webignition\BasilModel\Assertion\ComparisonAssertion;
@@ -25,9 +26,9 @@ trait MatchesAssertionFunctionalDataProviderTrait
                     '".selector" matches "/^\.selector [a-z]+$/"'
                 ),
                 'variableIdentifiers' => [
-                    'HAS' => self::HAS_VARIABLE_NAME,
-                    VariableNames::EXAMINED_VALUE => self::EXAMINED_VALUE_VARIABLE_NAME,
-                    VariableNames::EXPECTED_VALUE => self::EXPECTED_VALUE_VARIABLE_NAME,
+                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
+                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
+                    VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
                 ],
             ],
             'matches comparison, attribute identifier examined value, scalar expected value' => [
@@ -36,9 +37,9 @@ trait MatchesAssertionFunctionalDataProviderTrait
                     '".selector".data-test-attribute matches "/^[a-z]+ content$/"'
                 ),
                 'variableIdentifiers' => [
-                    'HAS' => self::HAS_VARIABLE_NAME,
-                    VariableNames::EXAMINED_VALUE => self::EXAMINED_VALUE_VARIABLE_NAME,
-                    VariableNames::EXPECTED_VALUE => self::EXPECTED_VALUE_VARIABLE_NAME,
+                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
+                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
+                    VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
                 ],
             ],
             'matches comparison, environment examined value, scalar expected value' => [
@@ -47,9 +48,9 @@ trait MatchesAssertionFunctionalDataProviderTrait
                     '$env.TEST1 matches "/^environment/"'
                 ),
                 'variableIdentifiers' => [
-                    VariableNames::ENVIRONMENT_VARIABLE_ARRAY => self::ENVIRONMENT_VARIABLE_ARRAY_VARIABLE_NAME,
-                    VariableNames::EXAMINED_VALUE => self::EXAMINED_VALUE_VARIABLE_NAME,
-                    VariableNames::EXPECTED_VALUE => self::EXPECTED_VALUE_VARIABLE_NAME,
+                    VariableNames::ENVIRONMENT_VARIABLE_ARRAY => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
+                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
+                    VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
                 ],
             ],
             'matches comparison, browser object examined value, scalar expected value' => [
@@ -58,9 +59,9 @@ trait MatchesAssertionFunctionalDataProviderTrait
                     '$browser.size matches "/[0-9]+x[0-9]+/"'
                 ),
                 'variableIdentifiers' => [
-                    VariableNames::EXAMINED_VALUE => self::EXAMINED_VALUE_VARIABLE_NAME,
-                    VariableNames::EXPECTED_VALUE => self::EXPECTED_VALUE_VARIABLE_NAME,
-                    'WEBDRIVER_DIMENSION' => self::WEBDRIVER_DIMENSION_VARIABLE_NAME,
+                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
+                    VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
+                    'WEBDRIVER_DIMENSION' => ResolvedVariableNames::WEBDRIVER_DIMENSION_VARIABLE_NAME,
                 ],
             ],
             'matches comparison, page object examined value, scalar expected value' => [
@@ -69,8 +70,8 @@ trait MatchesAssertionFunctionalDataProviderTrait
                     '$page.title matches "/fixture$/"'
                 ),
                 'variableIdentifiers' => [
-                    VariableNames::EXAMINED_VALUE => self::EXAMINED_VALUE_VARIABLE_NAME,
-                    VariableNames::EXPECTED_VALUE => self::EXPECTED_VALUE_VARIABLE_NAME,
+                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
+                    VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
                 ],
             ],
             'matches comparison, element identifier examined value, element identifier expected value' => [
@@ -82,9 +83,9 @@ trait MatchesAssertionFunctionalDataProviderTrait
                     DomIdentifierValue::create('.matches-expected')
                 ),
                 'variableIdentifiers' => [
-                    'HAS' => self::HAS_VARIABLE_NAME,
-                    VariableNames::EXAMINED_VALUE => self::EXAMINED_VALUE_VARIABLE_NAME,
-                    VariableNames::EXPECTED_VALUE => self::EXPECTED_VALUE_VARIABLE_NAME,
+                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
+                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
+                    VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
                 ],
             ],
             'matches comparison, element identifier examined value, attribute identifier expected value' => [
@@ -98,9 +99,9 @@ trait MatchesAssertionFunctionalDataProviderTrait
                     )
                 ),
                 'variableIdentifiers' => [
-                    'HAS' => self::HAS_VARIABLE_NAME,
-                    VariableNames::EXAMINED_VALUE => self::EXAMINED_VALUE_VARIABLE_NAME,
-                    VariableNames::EXPECTED_VALUE => self::EXPECTED_VALUE_VARIABLE_NAME,
+                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
+                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
+                    VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
                 ],
             ],
             'matches comparison, attribute identifier examined value, environment expected value' => [
@@ -109,10 +110,10 @@ trait MatchesAssertionFunctionalDataProviderTrait
                     '".selector".data-environment-value matches $env.MATCHES'
                 ),
                 'variableIdentifiers' => [
-                    'HAS' => self::HAS_VARIABLE_NAME,
-                    VariableNames::ENVIRONMENT_VARIABLE_ARRAY => self::ENVIRONMENT_VARIABLE_ARRAY_VARIABLE_NAME,
-                    VariableNames::EXAMINED_VALUE => self::EXAMINED_VALUE_VARIABLE_NAME,
-                    VariableNames::EXPECTED_VALUE => self::EXPECTED_VALUE_VARIABLE_NAME,
+                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
+                    VariableNames::ENVIRONMENT_VARIABLE_ARRAY => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
+                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
+                    VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
                 ],
             ],
         ];

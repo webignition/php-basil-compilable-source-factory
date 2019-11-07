@@ -9,6 +9,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\Asse
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\AbstractHandlerTest;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
+use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModel\Assertion\AssertionInterface;
 use webignition\BasilModelFactory\AssertionFactory;
@@ -62,7 +63,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractHandlerTest
                 ),
                 'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
                 'additionalVariableIdentifiers' => [
-                    VariableNames::EXAMINED_VALUE => self::EXAMINED_VALUE_VARIABLE_NAME,
+                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                 ],
             ],
             'exists comparison, attribute identifier examined value, element does not exist' => [
@@ -72,8 +73,8 @@ class AssertionHandlerFailingAssertionsTest extends AbstractHandlerTest
                 ),
                 'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
                 'additionalVariableIdentifiers' => [
-                    'HAS' => self::HAS_VARIABLE_NAME,
-                    VariableNames::EXAMINED_VALUE => self::EXAMINED_VALUE_VARIABLE_NAME,
+                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
+                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                 ],
             ],
             'exists comparison, attribute identifier examined value, attribute does not exist' => [
@@ -83,8 +84,8 @@ class AssertionHandlerFailingAssertionsTest extends AbstractHandlerTest
                 ),
                 'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
                 'additionalVariableIdentifiers' => [
-                    'HAS' => self::HAS_VARIABLE_NAME,
-                    VariableNames::EXAMINED_VALUE => self::EXAMINED_VALUE_VARIABLE_NAME,
+                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
+                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                 ],
             ],
             'exists comparison, environment examined value, environment variable does not exist' => [
@@ -95,7 +96,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractHandlerTest
                 'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
                 'additionalVariableIdentifiers' => [
                     VariableNames::ENVIRONMENT_VARIABLE_ARRAY => '$_ENV',
-                    VariableNames::EXAMINED_VALUE => self::EXAMINED_VALUE_VARIABLE_NAME,
+                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                 ],
             ],
         ];

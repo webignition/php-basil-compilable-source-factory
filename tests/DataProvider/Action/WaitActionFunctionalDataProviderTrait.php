@@ -5,6 +5,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
+use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModel\Action\WaitAction;
 use webignition\BasilModel\Identifier\DomIdentifier;
@@ -39,7 +40,7 @@ trait WaitActionFunctionalDataProviderTrait
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [
                     'DURATION' => '$duration',
-                    'HAS' => self::HAS_VARIABLE_NAME,
+                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                 ],
                 'expectedDuration' => 20,
             ],
@@ -55,7 +56,7 @@ trait WaitActionFunctionalDataProviderTrait
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [
                     'DURATION' => '$duration',
-                    'HAS' => self::HAS_VARIABLE_NAME,
+                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                 ],
                 'expectedDuration' => 30,
             ],
@@ -71,7 +72,7 @@ trait WaitActionFunctionalDataProviderTrait
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [
                     'DURATION' => '$duration',
-                    'HAS' => self::HAS_VARIABLE_NAME,
+                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                 ],
                 'expectedDuration' => 0,
             ],
@@ -82,7 +83,7 @@ trait WaitActionFunctionalDataProviderTrait
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [
                     'DURATION' => '$duration',
-                    'WEBDRIVER_DIMENSION' => self::WEBDRIVER_DIMENSION_VARIABLE_NAME,
+                    'WEBDRIVER_DIMENSION' => ResolvedVariableNames::WEBDRIVER_DIMENSION_VARIABLE_NAME,
                 ],
                 'expectedDuration' => 1200,
             ],
@@ -103,7 +104,7 @@ trait WaitActionFunctionalDataProviderTrait
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [
                     'DURATION' => '$duration',
-                    VariableNames::ENVIRONMENT_VARIABLE_ARRAY => self::ENVIRONMENT_VARIABLE_ARRAY_VARIABLE_NAME,
+                    VariableNames::ENVIRONMENT_VARIABLE_ARRAY => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
                 ],
                 'expectedDuration' => 5,
             ],
@@ -114,7 +115,7 @@ trait WaitActionFunctionalDataProviderTrait
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [
                     'DURATION' => '$duration',
-                    VariableNames::ENVIRONMENT_VARIABLE_ARRAY => self::ENVIRONMENT_VARIABLE_ARRAY_VARIABLE_NAME,
+                    VariableNames::ENVIRONMENT_VARIABLE_ARRAY => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
                 ],
                 'expectedDuration' => 0,
             ],
