@@ -27,14 +27,14 @@ use webignition\BasilModel\Value\DomIdentifierValue;
 
 class ActionHandlerTest extends AbstractHandlerTest
 {
-    use WaitActionFunctionalDataProviderTrait;
-    use WaitForActionFunctionalDataProviderTrait;
     use BackActionFunctionalDataProviderTrait;
+    use ClickActionFunctionalDataProviderTrait;
     use ForwardActionFunctionalDataProviderTrait;
     use ReloadActionFunctionalDataProviderTrait;
-    use ClickActionFunctionalDataProviderTrait;
-    use SubmitActionFunctionalDataProviderTrait;
     use SetActionFunctionalDataProviderTrait;
+    use SubmitActionFunctionalDataProviderTrait;
+    use WaitActionFunctionalDataProviderTrait;
+    use WaitForActionFunctionalDataProviderTrait;
 
     protected function createHandler(): HandlerInterface
     {
@@ -42,7 +42,14 @@ class ActionHandlerTest extends AbstractHandlerTest
     }
 
     /**
-     * @dataProvider createSourceForExecutableActionsDataProvider
+     * @dataProvider backActionFunctionalDataProvider
+     * @dataProvider clickActionFunctionalDataProvider
+     * @dataProvider forwardActionFunctionalDataProvider
+     * @dataProvider reloadActionFunctionalDataProvider
+     * @dataProvider setActionFunctionalDataProvider
+     * @dataProvider submitActionFunctionalDataProvider
+     * @dataProvider waitActionFunctionalDataProvider
+     * @dataProvider waitForActionFunctionalDataProvider
      */
     public function testCreateSourceForExecutableActions(
         string $fixture,
@@ -72,20 +79,6 @@ class ActionHandlerTest extends AbstractHandlerTest
                 $testRunJob->getOutputAsString()
             );
         }
-    }
-
-    public function createSourceForExecutableActionsDataProvider()
-    {
-        return [
-            'wait action' => current($this->waitActionFunctionalDataProvider()),
-            'wait-for action' => current($this->waitForActionFunctionalDataProvider()),
-            'back action' => current($this->backActionFunctionalDataProvider()),
-            'forward action' => current($this->forwardActionFunctionalDataProvider()),
-            'reload action' => current($this->reloadActionFunctionalDataProvider()),
-            'click action' => current($this->clickActionFunctionalDataProvider()),
-            'submit action' => current($this->submitActionFunctionalDataProvider()),
-            'set action' => current($this->setActionFunctionalDataProvider()),
-        ];
     }
 
     /**
