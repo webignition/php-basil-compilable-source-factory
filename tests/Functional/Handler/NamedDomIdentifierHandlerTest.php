@@ -12,6 +12,7 @@ use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
+use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholder;
@@ -47,13 +48,15 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
 
         $testRunJob = $this->testRunner->createTestRunJob($classCode);
 
-        $this->testRunner->run($testRunJob);
+        if ($testRunJob instanceof TestRunJob) {
+            $this->testRunner->run($testRunJob);
 
-        $this->assertSame(
-            $testRunJob->getExpectedExitCode(),
-            $testRunJob->getExitCode(),
-            $testRunJob->getOutputAsString()
-        );
+            $this->assertSame(
+                $testRunJob->getExpectedExitCode(),
+                $testRunJob->getExitCode(),
+                $testRunJob->getOutputAsString()
+            );
+        }
     }
 
     public function createSourceDataProvider(): array

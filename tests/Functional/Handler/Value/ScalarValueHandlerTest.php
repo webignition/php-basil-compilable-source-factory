@@ -10,6 +10,7 @@ use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\AbstractHandlerTest;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
+use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\MutableListLineListInterface;
 use webignition\BasilModel\Value\ObjectValue;
@@ -51,13 +52,15 @@ class ScalarValueHandlerTest extends AbstractHandlerTest
 
         $testRunJob = $this->testRunner->createTestRunJob($classCode);
 
-        $this->testRunner->run($testRunJob);
+        if ($testRunJob instanceof TestRunJob) {
+            $this->testRunner->run($testRunJob);
 
-        $this->assertSame(
-            $testRunJob->getExpectedExitCode(),
-            $testRunJob->getExitCode(),
-            $testRunJob->getOutputAsString()
-        );
+            $this->assertSame(
+                $testRunJob->getExpectedExitCode(),
+                $testRunJob->getExitCode(),
+                $testRunJob->getOutputAsString()
+            );
+        }
     }
 
     public function createSourceDataProvider(): array

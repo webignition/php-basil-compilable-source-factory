@@ -18,6 +18,7 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\WaitForAc
 use webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\AbstractHandlerTest;
 use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
+use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilCompilationSource\LineList;
 use webignition\BasilModel\Action\ActionInterface;
 use webignition\BasilModel\Action\WaitAction;
@@ -61,13 +62,16 @@ class ActionHandlerTest extends AbstractHandlerTest
         );
 
         $testRunJob = $this->testRunner->createTestRunJob($classCode);
-        $this->testRunner->run($testRunJob);
 
-        $this->assertSame(
-            $testRunJob->getExpectedExitCode(),
-            $testRunJob->getExitCode(),
-            $testRunJob->getOutputAsString()
-        );
+        if ($testRunJob instanceof TestRunJob) {
+            $this->testRunner->run($testRunJob);
+
+            $this->assertSame(
+                $testRunJob->getExpectedExitCode(),
+                $testRunJob->getExitCode(),
+                $testRunJob->getOutputAsString()
+            );
+        }
     }
 
     public function createSourceForExecutableActionsDataProvider()
@@ -106,14 +110,21 @@ class ActionHandlerTest extends AbstractHandlerTest
         );
 
         $testRunJob = $this->testRunner->createTestRunJob($classCode, 1);
-        $this->testRunner->run($testRunJob);
 
-        $this->assertSame(
-            $testRunJob->getExpectedExitCode(),
-            $testRunJob->getExitCode(),
-            $testRunJob->getOutputAsString()
-        );
-        $this->assertStringContainsString($expectedExpectationFailedExceptionMessage, $testRunJob->getOutputAsString());
+        if ($testRunJob instanceof TestRunJob) {
+            $this->testRunner->run($testRunJob);
+
+            $this->assertSame(
+                $testRunJob->getExpectedExitCode(),
+                $testRunJob->getExitCode(),
+                $testRunJob->getOutputAsString()
+            );
+
+            $this->assertStringContainsString(
+                $expectedExpectationFailedExceptionMessage,
+                $testRunJob->getOutputAsString()
+            );
+        }
     }
 
     public function createSourceForFailingActionsDataProvider(): array

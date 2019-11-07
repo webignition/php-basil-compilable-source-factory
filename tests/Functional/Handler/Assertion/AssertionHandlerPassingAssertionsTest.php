@@ -18,6 +18,7 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\Matche
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\NotExistsAssertionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\AbstractHandlerTest;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
+use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilModel\Assertion\AssertionInterface;
 
 class AssertionHandlerPassingAssertionsTest extends AbstractHandlerTest
@@ -62,12 +63,15 @@ class AssertionHandlerPassingAssertionsTest extends AbstractHandlerTest
         );
 
         $testRunJob = $this->testRunner->createTestRunJob($classCode);
-        $this->testRunner->run($testRunJob);
 
-        $this->assertSame(
-            $testRunJob->getExpectedExitCode(),
-            $testRunJob->getExitCode(),
-            $testRunJob->getOutputAsString()
-        );
+        if ($testRunJob instanceof TestRunJob) {
+            $this->testRunner->run($testRunJob);
+
+            $this->assertSame(
+                $testRunJob->getExpectedExitCode(),
+                $testRunJob->getExitCode(),
+                $testRunJob->getOutputAsString()
+            );
+        }
     }
 }

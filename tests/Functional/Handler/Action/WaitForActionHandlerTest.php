@@ -10,6 +10,7 @@ use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\WaitForActionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\AbstractHandlerTest;
 use webignition\BasilCompilableSourceFactory\Handler\Action\WaitForActionHandler;
+use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilCompilationSource\Comment;
 use webignition\BasilCompilationSource\EmptyLine;
 use webignition\BasilCompilationSource\LineList;
@@ -35,7 +36,7 @@ class WaitForActionHandlerTest extends AbstractHandlerTest
         $instrumentedSource = clone $source;
 
         if ($instrumentedSource instanceof LineList) {
-            $lines = $source->getLines();
+            $lines = $instrumentedSource->getLines();
             $lastLine = array_pop($lines);
 
             $instrumentedSource = new LineList(array_merge(
@@ -61,12 +62,15 @@ class WaitForActionHandlerTest extends AbstractHandlerTest
         );
 
         $testRunJob = $this->testRunner->createTestRunJob($classCode);
-        $this->testRunner->run($testRunJob);
 
-        $this->assertSame(
-            $testRunJob->getExpectedExitCode(),
-            $testRunJob->getExitCode(),
-            $testRunJob->getOutputAsString()
-        );
+        if ($testRunJob instanceof TestRunJob) {
+            $this->testRunner->run($testRunJob);
+
+            $this->assertSame(
+                $testRunJob->getExpectedExitCode(),
+                $testRunJob->getExitCode(),
+                $testRunJob->getOutputAsString()
+            );
+        }
     }
 }

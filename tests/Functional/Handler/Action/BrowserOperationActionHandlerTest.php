@@ -12,6 +12,7 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\ForwardAc
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\ReloadActionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\AbstractHandlerTest;
 use webignition\BasilCompilableSourceFactory\Handler\Action\BrowserOperationActionHandler;
+use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilCompilationSource\LineList;
 use webignition\BasilModel\Action\ActionInterface;
 
@@ -50,12 +51,14 @@ class BrowserOperationActionHandlerTest extends AbstractHandlerTest
 
         $testRunJob = $this->testRunner->createTestRunJob($classCode);
 
-        $this->testRunner->run($testRunJob);
+        if ($testRunJob instanceof TestRunJob) {
+            $this->testRunner->run($testRunJob);
 
-        $this->assertSame(
-            $testRunJob->getExpectedExitCode(),
-            $testRunJob->getExitCode(),
-            $testRunJob->getOutputAsString()
-        );
+            $this->assertSame(
+                $testRunJob->getExpectedExitCode(),
+                $testRunJob->getExitCode(),
+                $testRunJob->getOutputAsString()
+            );
+        }
     }
 }

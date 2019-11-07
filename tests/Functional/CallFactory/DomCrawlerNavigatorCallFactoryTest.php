@@ -10,6 +10,7 @@ use Facebook\WebDriver\WebDriverElement;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
+use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\MutableListLineListInterface;
 use webignition\BasilCompilationSource\Statement;
@@ -56,13 +57,16 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
         );
 
         $testRunJob = $this->testRunner->createTestRunJob($classCode);
-        $this->testRunner->run($testRunJob);
 
-        $this->assertSame(
-            $testRunJob->getExpectedExitCode(),
-            $testRunJob->getExitCode(),
-            $testRunJob->getOutputAsString()
-        );
+        if ($testRunJob instanceof TestRunJob) {
+            $this->testRunner->run($testRunJob);
+
+            $this->assertSame(
+                $testRunJob->getExpectedExitCode(),
+                $testRunJob->getExitCode(),
+                $testRunJob->getOutputAsString()
+            );
+        }
     }
 
     public function createFindCallDataProvider(): array
