@@ -55,7 +55,7 @@ class WaitForActionHandlerTest extends AbstractHandlerTest
             ));
         }
 
-        $classCode = $this->testCodeGenerator->createForLineList(
+        $classCode = $this->testCodeGenerator->createBrowserTestForLineList(
             $instrumentedSource,
             $fixture
         );

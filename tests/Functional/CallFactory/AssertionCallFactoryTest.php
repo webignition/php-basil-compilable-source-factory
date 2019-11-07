@@ -6,8 +6,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\CallFactory;
 
-use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
+use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Tests\Services\CodeGenerator;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Metadata;
@@ -16,7 +16,7 @@ use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
-class AssertionCallFactoryTest extends TestCase
+class AssertionCallFactoryTest extends AbstractBrowserTestCase
 {
     /**
      * @var AssertionCallFactory
@@ -71,8 +71,7 @@ class AssertionCallFactoryTest extends TestCase
             $assertionTemplate
         );
 
-        $initializer = $this->codeGenerator->createLineListWrapperInitializer();
-        $code = $this->codeGenerator->wrapLineListInPhpUnitTestClass($source, $initializer, [
+        $code = $this->testCodeGenerator->createPhpUnitTestForLineList($source, [
             VariableNames::EXPECTED_VALUE => '$expectedValue',
             VariableNames::EXAMINED_VALUE => '$examinedValue',
             VariableNames::PHPUNIT_TEST_CASE => '$this',
@@ -133,8 +132,7 @@ class AssertionCallFactoryTest extends TestCase
             $assertionTemplate
         );
 
-        $initializer = $this->codeGenerator->createLineListWrapperInitializer();
-        $code = $this->codeGenerator->wrapLineListInPhpUnitTestClass($source, $initializer, [
+        $code = $this->testCodeGenerator->createPhpUnitTestForLineList($source, [
             VariableNames::EXAMINED_VALUE => '$examinedValue',
             VariableNames::PHPUNIT_TEST_CASE => '$this',
         ]);

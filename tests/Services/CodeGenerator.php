@@ -8,14 +8,11 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
 use webignition\BasilCompilableSourceFactory\Handler\ClassDependencyHandler;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
-use webignition\BasilCompilationSource\ClassDefinition;
 use webignition\BasilCompilationSource\ClassDefinitionInterface;
 use webignition\BasilCompilationSource\Comment;
-use webignition\BasilCompilationSource\EmptyLine;
 use webignition\BasilCompilationSource\LineInterface;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MetadataInterface;
-use webignition\BasilCompilationSource\MethodDefinition;
 use webignition\BasilCompilationSource\MethodDefinitionInterface;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
@@ -177,78 +174,5 @@ EOD;
         }
 
         return '';
-    }
-
-    public function wrapLineListInPhpUnitTestClass(
-        SourceInterface $source,
-        callable $initializer,
-        array $variableIdentifiers,
-        ?string $methodReturnType = null
-    ): string {
-        $methodDefinition = $this->createLineListWrapper(
-            new LineList([$source]),
-            $methodReturnType
-        );
-
-        $classDefinition = $this->createMethodListWrapper([$methodDefinition]);
-        $classDefinitionCode = $this->createForClassDefinition(
-            $classDefinition,
-            '\PHPUnit\Framework\TestCase',
-            $variableIdentifiers
-        );
-
-        $initSource = $initializer($classDefinition, $methodDefinition);
-        $initCode = $this->createForLines($initSource, $variableIdentifiers);
-
-        return $classDefinitionCode . "\n\n" . $initCode;
-    }
-
-    private function createMethodListWrapper(array $methods)
-    {
-        $className = 'GeneratedClass' . ucfirst(md5((string) rand()));
-
-        return new ClassDefinition($className, $methods);
-    }
-
-    private function createLineListWrapper(LineList $lineList, ?string $returnType = null): MethodDefinitionInterface
-    {
-        $methodName = 'generatedMethod' . ucfirst(md5((string) rand()));
-
-        $methodDefinition = new MethodDefinition(
-            $methodName,
-            $lineList
-        );
-
-        if (null !== $returnType) {
-            $methodDefinition->setReturnType($returnType);
-        }
-
-        return $methodDefinition;
-    }
-
-    public function createLineListWrapperInitializer(): callable
-    {
-        return function (
-            ClassDefinitionInterface $classDefinition,
-            MethodDefinitionInterface $methodDefinition
-        ): LineList {
-            return new LineList([
-                new Statement('(new ' . $classDefinition->getName() . '())->' . $methodDefinition->getName() . '()'),
-            ]);
-        };
-    }
-
-    public function createLineListWrapperReturningInitializer(): callable
-    {
-        return function (
-            ClassDefinitionInterface $classDefinition,
-            MethodDefinitionInterface $methodDefinition
-        ): LineList {
-            return new LineList([
-                new Statement(
-                    'return (new ' . $classDefinition->getName() . '())->' . $methodDefinition->getName() . '()'
-                ),
-            ]);
-        };
     }
 }

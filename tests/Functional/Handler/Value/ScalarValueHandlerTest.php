@@ -41,7 +41,7 @@ class ScalarValueHandlerTest extends AbstractHandlerTest
             });
         }
 
-        $classCode = $this->testCodeGenerator->createForLineList(
+        $classCode = $this->testCodeGenerator->createBrowserTestForLineList(
             $instrumentedSource,
             $fixture,
             null,

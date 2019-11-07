@@ -34,7 +34,7 @@ class SubmitActionHandlerTest extends AbstractHandlerTest
     ) {
         $source = $this->handler->createSource($action);
 
-        $classCode = $this->testCodeGenerator->createForLineList(
+        $classCode = $this->testCodeGenerator->createBrowserTestForLineList(
             $source,
             $fixture,
             $additionalSetupStatements,

@@ -34,7 +34,7 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
     ) {
         $source = $this->handler->createSource($namedDomIdentifier);
 
-        $classCode = $this->testCodeGenerator->createForLineList(
+        $classCode = $this->testCodeGenerator->createBrowserTestForLineList(
             $source,
             $fixture,
             null,

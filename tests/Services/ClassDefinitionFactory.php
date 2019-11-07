@@ -10,7 +10,7 @@ use webignition\BasilCompilationSource\MethodDefinition;
 
 class ClassDefinitionFactory
 {
-    public static function createForLineList(
+    public static function createGeneratedBrowserTestForLineList(
         string $fixture,
         LineList $lineList,
         ?LineListInterface $additionalSetupStatements
@@ -24,6 +24,18 @@ class ClassDefinitionFactory
             MethodDefinitionFactory::createSetUpBeforeClassMethodDefinition($fixture),
             MethodDefinitionFactory::createSetUpMethodDefinition($additionalSetupStatements),
             $methodDefinition
+        ]);
+    }
+
+    public static function createPhpUnitTestForLineList(LineList $lineList): ClassDefinitionInterface
+    {
+        $methodName = 'testGeneratedCode';
+        $methodDefinition = new MethodDefinition($methodName, $lineList);
+
+        $className = 'Generated' . md5((string) rand()) . 'Test';
+
+        return new ClassDefinition($className, [
+            $methodDefinition,
         ]);
     }
 }

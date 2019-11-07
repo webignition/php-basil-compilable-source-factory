@@ -53,7 +53,7 @@ class AssertionHandlerPassingAssertionsTest extends AbstractHandlerTest
     ) {
         $source = $this->handler->createSource($model);
 
-        $classCode = $this->testCodeGenerator->createForLineList(
+        $classCode = $this->testCodeGenerator->createBrowserTestForLineList(
             $source,
             $fixture,
             null,

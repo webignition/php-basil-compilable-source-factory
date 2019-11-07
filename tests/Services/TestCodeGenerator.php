@@ -4,8 +4,10 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\ClassDefinitionInterface;
+use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\LineListInterface;
 use webignition\BasilCompilationSource\SourceInterface;
+use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
 class TestCodeGenerator
@@ -30,7 +32,27 @@ class TestCodeGenerator
         return new TestCodeGenerator(CodeGenerator::create());
     }
 
-    public function createForLineList(
+    public function createPhpUnitTestForLineList(
+        SourceInterface $source,
+        array $additionalVariableIdentifiers = []
+    ): string {
+        $codeSource = LineListFactory::createForSourceLineList($source);
+        $classDefinition = ClassDefinitionFactory::createPhpUnitTestForLineList($codeSource);
+
+        $classCode = $this->createForClassDefinition(
+            $classDefinition,
+            '\PHPUnit\Framework\TestCase',
+            $additionalVariableIdentifiers
+        );
+
+        $initializerCode = $this->codeGenerator->createForLines(new LineList([
+            new Statement('(new ' . $classDefinition->getName() . '())->testGeneratedCode()')
+        ]));
+
+        return $classCode . "\n\n" . $initializerCode;
+    }
+
+    public function createBrowserTestForLineList(
         SourceInterface $source,
         string $fixture,
         ?LineListInterface $additionalSetupStatements = null,
@@ -38,16 +60,22 @@ class TestCodeGenerator
         array $additionalVariableIdentifiers = []
     ): string {
         $codeSource = LineListFactory::createForSourceLineList($source, $teardownStatements);
-        $classDefinition = ClassDefinitionFactory::createForLineList($fixture, $codeSource, $additionalSetupStatements);
+        $classDefinition = ClassDefinitionFactory::createGeneratedBrowserTestForLineList(
+            $fixture,
+            $codeSource,
+            $additionalSetupStatements
+        );
 
         return $this->createForClassDefinition(
             $classDefinition,
+            'AbstractGeneratedTestCase',
             $additionalVariableIdentifiers
         );
     }
 
-    public function createForClassDefinition(
+    private function createForClassDefinition(
         ClassDefinitionInterface $classDefinition,
+        string $baseClass,
         array $variableIdentifiers
     ): string {
         $variableDependencyIdentifiers = $this->createVariableIdentifiersForVariableDependencies(
@@ -56,7 +84,7 @@ class TestCodeGenerator
 
         return $this->codeGenerator->createForClassDefinition(
             $classDefinition,
-            'AbstractGeneratedTestCase',
+            $baseClass,
             array_merge(
                 $variableDependencyIdentifiers,
                 $variableIdentifiers

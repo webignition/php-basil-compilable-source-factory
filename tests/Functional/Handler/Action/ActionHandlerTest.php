@@ -52,7 +52,7 @@ class ActionHandlerTest extends AbstractHandlerTest
     ) {
         $source = $this->handler->createSource($action);
 
-        $classCode = $this->testCodeGenerator->createForLineList(
+        $classCode = $this->testCodeGenerator->createBrowserTestForLineList(
             $source,
             $fixture,
             $additionalSetupStatements,
@@ -97,7 +97,7 @@ class ActionHandlerTest extends AbstractHandlerTest
     ) {
         $source = $this->handler->createSource($action);
 
-        $classCode = $this->testCodeGenerator->createForLineList(
+        $classCode = $this->testCodeGenerator->createBrowserTestForLineList(
             $source,
             $fixture,
             $additionalSetupStatements,

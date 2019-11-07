@@ -8,15 +8,11 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\ElementLocatorCallFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\CodeGenerator;
+use webignition\BasilCompilableSourceFactory\Tests\Services\TestCodeGenerator;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
-use webignition\BasilCompilationSource\ClassDefinitionInterface;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
-use webignition\BasilCompilationSource\EmptyLine;
 use webignition\BasilCompilationSource\Metadata;
-use webignition\BasilCompilationSource\LineList;
-use webignition\BasilCompilationSource\MethodDefinitionInterface;
-use webignition\BasilCompilationSource\Statement;
 use webignition\BasilModel\Identifier\DomIdentifier;
 use webignition\BasilModel\Identifier\DomIdentifierInterface;
 use webignition\DomElementLocator\ElementLocator;
@@ -34,12 +30,18 @@ class ElementLocatorCallFactoryTest extends AbstractTestCase
      */
     private $codeGenerator;
 
+    /**
+     * @var TestCodeGenerator
+     */
+    private $testCodeGenerator;
+
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->factory = ElementLocatorCallFactory::createFactory();
         $this->codeGenerator = CodeGenerator::create();
+        $this->testCodeGenerator = TestCodeGenerator::create();
     }
 
     /**
@@ -61,8 +63,7 @@ class ElementLocatorCallFactoryTest extends AbstractTestCase
 
         $this->assertMetadataEquals($expectedMetadata, $statement->getMetadata());
 
-        $initializer = $this->codeGenerator->createLineListWrapperReturningInitializer();
-        $code = $this->codeGenerator->wrapLineListInPhpUnitTestClass($statement, $initializer, [], 'ElementLocator');
+        $code = $this->codeGenerator->createForLines($statement);
         $elementLocator = eval($code);
 
         $this->assertEquals($expectedElementLocator, $elementLocator);
