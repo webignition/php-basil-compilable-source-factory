@@ -23,7 +23,7 @@ class TestRunner
         if (preg_match('/Generated\/Generated[A-Fa-f0-9]{32}Test.php/', $path)) {
             file_put_contents($path, $content);
 
-            $testRunJob = new TestRunJob(realpath($path));
+            $testRunJob = new TestRunJob((string) realpath($path));
             $testRunJob->setExpectedExitCode($expectedExitCode);
 
             return $testRunJob;
