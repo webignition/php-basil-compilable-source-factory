@@ -13,7 +13,7 @@ class StatementFactory
 {
     public static function create(string $contentTemplate, array $variableDependencies): StatementInterface
     {
-        $content = call_user_func_array('sprintf', array_merge([$contentTemplate], $variableDependencies));
+        $content = sprintf($contentTemplate, ...$variableDependencies);
 
         $metadata = (new Metadata())
             ->withVariableDependencies(new VariablePlaceholderCollection($variableDependencies));
