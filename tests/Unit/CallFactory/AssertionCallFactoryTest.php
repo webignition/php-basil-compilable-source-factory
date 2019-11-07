@@ -7,6 +7,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
+use webignition\BasilCompilableSourceFactory\Tests\Services\TestCodeGenerator;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Metadata;
@@ -24,11 +25,17 @@ class AssertionCallFactoryTest extends AbstractTestCase
      */
     private $factory;
 
+    /**
+     * @var TestCodeGenerator
+     */
+    private $testCodeGenerator;
+
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->factory = AssertionCallFactory::createFactory();
+        $this->testCodeGenerator = TestCodeGenerator::create();
     }
 
     /**
@@ -53,6 +60,14 @@ class AssertionCallFactoryTest extends AbstractTestCase
 
         $this->assertSourceContentEquals($expectedContent, $source);
         $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
+
+        $code = $this->testCodeGenerator->createPhpUnitTestForLineList($source, [
+            VariableNames::EXPECTED_VALUE => '$expectedValue',
+            VariableNames::EXAMINED_VALUE => '$examinedValue',
+            VariableNames::PHPUNIT_TEST_CASE => '$this',
+        ]);
+
+        eval($code);
     }
 
     public function createValueComparisonAssertionCallDataProvider(): array
@@ -60,32 +75,24 @@ class AssertionCallFactoryTest extends AbstractTestCase
         $expectedValuePlaceholder = new VariablePlaceholder(VariableNames::EXPECTED_VALUE);
         $examinedValuePlaceholder = new VariablePlaceholder(VariableNames::EXAMINED_VALUE);
 
-        $expectedValueAssignment = new LineList([
-            new Statement(
-                $expectedValuePlaceholder . ' = "expected value"',
-                (new Metadata())
-                    ->withVariableExports(new VariablePlaceholderCollection([$expectedValuePlaceholder]))
-            )
-        ]);
-
-        $actualValueAssignment = new LineList([
-            new Statement(
-                $examinedValuePlaceholder . ' = "actual value"',
-                (new Metadata())
-                    ->withVariableExports(new VariablePlaceholderCollection([$examinedValuePlaceholder]))
-            )
-        ]);
-
         return [
             'assert equals' => [
-                'expectedValueAssignment' => $expectedValueAssignment,
-                'actualValueAssignment' => $actualValueAssignment,
+                'expectedValueAssignment' => new Statement(
+                    $expectedValuePlaceholder . ' = "equals"',
+                    (new Metadata())
+                        ->withVariableExports(new VariablePlaceholderCollection([$expectedValuePlaceholder]))
+                ),
+                'actualValueAssignment' => new Statement(
+                    $examinedValuePlaceholder . ' = "equals"',
+                    (new Metadata())
+                        ->withVariableExports(new VariablePlaceholderCollection([$examinedValuePlaceholder]))
+                ),
                 'expectedValuePlaceholder' => $expectedValuePlaceholder,
                 'actualValuePlaceholder' => $examinedValuePlaceholder,
                 'assertionTemplate' => AssertionCallFactory::ASSERT_EQUALS_TEMPLATE,
                 'expectedContent' => new LineList([
-                    new Statement('{{ EXPECTED_VALUE }} = "expected value"'),
-                    new Statement('{{ EXAMINED_VALUE }} = "actual value"'),
+                    new Statement('{{ EXPECTED_VALUE }} = "equals"'),
+                    new Statement('{{ EXAMINED_VALUE }} = "equals"'),
                     new Statement('{{ PHPUNIT_TEST_CASE }}->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
@@ -98,14 +105,22 @@ class AssertionCallFactoryTest extends AbstractTestCase
                     ])),
             ],
             'assert not equals' => [
-                'expectedValueAssignment' => $expectedValueAssignment,
-                'actualValueAssignment' => $actualValueAssignment,
+                'expectedValueAssignment' => new Statement(
+                    $expectedValuePlaceholder . ' = "equals"',
+                    (new Metadata())
+                        ->withVariableExports(new VariablePlaceholderCollection([$expectedValuePlaceholder]))
+                ),
+                'actualValueAssignment' => new Statement(
+                    $examinedValuePlaceholder . ' = "not equals"',
+                    (new Metadata())
+                        ->withVariableExports(new VariablePlaceholderCollection([$examinedValuePlaceholder]))
+                ),
                 'expectedValuePlaceholder' => $expectedValuePlaceholder,
                 'actualValuePlaceholder' => $examinedValuePlaceholder,
                 'assertionTemplate' => AssertionCallFactory::ASSERT_NOT_EQUALS_TEMPLATE,
                 'expectedContent' => new LineList([
-                    new Statement('{{ EXPECTED_VALUE }} = "expected value"'),
-                    new Statement('{{ EXAMINED_VALUE }} = "actual value"'),
+                    new Statement('{{ EXPECTED_VALUE }} = "equals"'),
+                    new Statement('{{ EXAMINED_VALUE }} = "not equals"'),
                     new Statement(
                         '{{ PHPUNIT_TEST_CASE }}->assertNotEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})'
                     ),
@@ -120,14 +135,22 @@ class AssertionCallFactoryTest extends AbstractTestCase
                     ])),
             ],
             'assert string contains string' => [
-                'expectedValueAssignment' => $expectedValueAssignment,
-                'actualValueAssignment' => $actualValueAssignment,
+                'expectedValueAssignment' => new Statement(
+                    $expectedValuePlaceholder . ' = "needle"',
+                    (new Metadata())
+                        ->withVariableExports(new VariablePlaceholderCollection([$expectedValuePlaceholder]))
+                ),
+                'actualValueAssignment' => new Statement(
+                    $examinedValuePlaceholder . ' = "haystack containing needle"',
+                    (new Metadata())
+                        ->withVariableExports(new VariablePlaceholderCollection([$examinedValuePlaceholder]))
+                ),
                 'expectedValuePlaceholder' => $expectedValuePlaceholder,
                 'actualValuePlaceholder' => $examinedValuePlaceholder,
                 'assertionTemplate' => AssertionCallFactory::ASSERT_STRING_CONTAINS_STRING_TEMPLATE,
                 'expectedContent' => new LineList([
-                    new Statement('{{ EXPECTED_VALUE }} = "expected value"'),
-                    new Statement('{{ EXAMINED_VALUE }} = "actual value"'),
+                    new Statement('{{ EXPECTED_VALUE }} = "needle"'),
+                    new Statement('{{ EXAMINED_VALUE }} = "haystack containing needle"'),
                     new Statement(
                         '{{ PHPUNIT_TEST_CASE }}'
                         . '->assertStringContainsString((string) {{ EXPECTED_VALUE }}, (string) {{ EXAMINED_VALUE }})'
@@ -143,14 +166,22 @@ class AssertionCallFactoryTest extends AbstractTestCase
                     ])),
             ],
             'assert string not contains string' => [
-                'expectedValueAssignment' => $expectedValueAssignment,
-                'actualValueAssignment' => $actualValueAssignment,
+                'expectedValueAssignment' => new Statement(
+                    $expectedValuePlaceholder . ' = "needle"',
+                    (new Metadata())
+                        ->withVariableExports(new VariablePlaceholderCollection([$expectedValuePlaceholder]))
+                ),
+                'actualValueAssignment' => new Statement(
+                    $examinedValuePlaceholder . ' = "haystack"',
+                    (new Metadata())
+                        ->withVariableExports(new VariablePlaceholderCollection([$examinedValuePlaceholder]))
+                ),
                 'expectedValuePlaceholder' => $expectedValuePlaceholder,
                 'actualValuePlaceholder' => $examinedValuePlaceholder,
                 'assertionTemplate' => AssertionCallFactory::ASSERT_STRING_NOT_CONTAINS_STRING_TEMPLATE,
                 'expectedContent' => new LineList([
-                    new Statement('{{ EXPECTED_VALUE }} = "expected value"'),
-                    new Statement('{{ EXAMINED_VALUE }} = "actual value"'),
+                    new Statement('{{ EXPECTED_VALUE }} = "needle"'),
+                    new Statement('{{ EXAMINED_VALUE }} = "haystack"'),
                     new Statement(
                         '{{ PHPUNIT_TEST_CASE }}->'
                         . 'assertStringNotContainsString((string) {{ EXPECTED_VALUE }}, (string) {{ EXAMINED_VALUE }})'
@@ -166,14 +197,22 @@ class AssertionCallFactoryTest extends AbstractTestCase
                     ])),
             ],
             'assert matches' => [
-                'expectedValueAssignment' => $expectedValueAssignment,
-                'actualValueAssignment' => $actualValueAssignment,
+                'expectedValueAssignment' => new Statement(
+                    $expectedValuePlaceholder . ' = "/pattern/"',
+                    (new Metadata())
+                        ->withVariableExports(new VariablePlaceholderCollection([$expectedValuePlaceholder]))
+                ),
+                'actualValueAssignment' => new Statement(
+                    $examinedValuePlaceholder . ' = "matches pattern"',
+                    (new Metadata())
+                        ->withVariableExports(new VariablePlaceholderCollection([$examinedValuePlaceholder]))
+                ),
                 'expectedValuePlaceholder' => $expectedValuePlaceholder,
                 'actualValuePlaceholder' => $examinedValuePlaceholder,
                 'assertionTemplate' => AssertionCallFactory::ASSERT_MATCHES_TEMPLATE,
                 'expectedContent' => new LineList([
-                    new Statement('{{ EXPECTED_VALUE }} = "expected value"'),
-                    new Statement('{{ EXAMINED_VALUE }} = "actual value"'),
+                    new Statement('{{ EXPECTED_VALUE }} = "/pattern/"'),
+                    new Statement('{{ EXAMINED_VALUE }} = "matches pattern"'),
                     new Statement(
                         '{{ PHPUNIT_TEST_CASE }}->assertRegExp({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})'
                     ),
@@ -208,23 +247,28 @@ class AssertionCallFactoryTest extends AbstractTestCase
 
         $this->assertSourceContentEquals($expectedContent, $source);
         $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
+
+        $code = $this->testCodeGenerator->createPhpUnitTestForLineList($source, [
+            VariableNames::EXAMINED_VALUE => '$examinedValue',
+            VariableNames::PHPUNIT_TEST_CASE => '$this',
+        ]);
+
+        echo $code . "\n\n";
+
+        eval($code);
     }
 
     public function createValueExistenceAssertionCallDataProvider(): array
     {
         $examinedValuePlaceholder = new VariablePlaceholder(VariableNames::EXAMINED_VALUE);
 
-        $assignment = new LineList([
-            new Statement(
-                $examinedValuePlaceholder . ' = "value" !== null',
-                (new Metadata())
-                    ->withVariableExports(new VariablePlaceholderCollection([$examinedValuePlaceholder]))
-            )
-        ]);
-
         return [
             'assert true' => [
-                'assignment' => $assignment,
+                'assignment' => new Statement(
+                    $examinedValuePlaceholder . ' = "value" !== null',
+                    (new Metadata())
+                        ->withVariableExports(new VariablePlaceholderCollection([$examinedValuePlaceholder]))
+                ),
                 'variablePlaceholder' => $examinedValuePlaceholder,
                 'assertionTemplate' => AssertionCallFactory::ASSERT_TRUE_TEMPLATE,
                 'expectedContent' => new LineList([
@@ -240,11 +284,15 @@ class AssertionCallFactoryTest extends AbstractTestCase
                     ])),
             ],
             'assert false' => [
-                'assignment' => $assignment,
+                'assignment' => new Statement(
+                    $examinedValuePlaceholder . ' = null !== null',
+                    (new Metadata())
+                        ->withVariableExports(new VariablePlaceholderCollection([$examinedValuePlaceholder]))
+                ),
                 'variablePlaceholder' => $examinedValuePlaceholder,
                 'assertionTemplate' => AssertionCallFactory::ASSERT_FALSE_TEMPLATE,
                 'expectedContent' => new LineList([
-                    new Statement('{{ EXAMINED_VALUE }} = "value" !== null'),
+                    new Statement('{{ EXAMINED_VALUE }} = null !== null'),
                     new Statement('{{ PHPUNIT_TEST_CASE }}->assertFalse({{ EXAMINED_VALUE }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
