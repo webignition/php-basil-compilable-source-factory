@@ -253,8 +253,6 @@ class AssertionCallFactoryTest extends AbstractTestCase
             VariableNames::PHPUNIT_TEST_CASE => '$this',
         ]);
 
-        echo $code . "\n\n";
-
         eval($code);
     }
 
