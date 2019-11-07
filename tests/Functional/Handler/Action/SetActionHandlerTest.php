@@ -10,9 +10,8 @@ use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\SetActionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\AbstractHandlerTest;
 use webignition\BasilCompilableSourceFactory\Handler\Action\SetActionHandler;
-use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilCompilationSource\LineList;
-use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilModel\Action\ActionInterface;
 
 class SetActionHandlerTest extends AbstractHandlerTest
@@ -32,27 +31,28 @@ class SetActionHandlerTest extends AbstractHandlerTest
         ActionInterface $action,
         ?LineList $additionalSetupStatements = null,
         ?LineList $teardownStatements = null,
-        array $additionalVariableIdentifiers = [],
-        ?MetadataInterface $metadata = null
+        array $additionalVariableIdentifiers = []
     ) {
         $source = $this->handler->createSource($action);
 
-        $variableIdentifiers = array_merge(
-            [
-                VariableNames::PANTHER_CRAWLER => self::PANTHER_CRAWLER_VARIABLE_NAME,
-            ],
+        $classCode = $this->testCodeGenerator->createBrowserTestForLineList(
+            $source,
+            $fixture,
+            $additionalSetupStatements,
+            $teardownStatements,
             $additionalVariableIdentifiers
         );
 
-        $code = $this->createExecutableCallForRequest(
-            $fixture,
-            $source,
-            $additionalSetupStatements,
-            $teardownStatements,
-            $variableIdentifiers,
-            $metadata
-        );
+        $testRunJob = $this->testRunner->createTestRunJob($classCode);
 
-        eval($code);
+        if ($testRunJob instanceof TestRunJob) {
+            $this->testRunner->run($testRunJob);
+
+            $this->assertSame(
+                $testRunJob->getExpectedExitCode(),
+                $testRunJob->getExitCode(),
+                $testRunJob->getOutputAsString()
+            );
+        }
     }
 }

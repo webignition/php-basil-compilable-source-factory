@@ -11,18 +11,13 @@ use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifier;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
-use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\ClassDependency;
-use webignition\BasilCompilationSource\ClassDependencyCollection;
+use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
+use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilCompilationSource\LineList;
-use webignition\BasilCompilationSource\Metadata;
-use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilModel\Identifier\DomIdentifier;
 use webignition\BasilModel\Value\DomIdentifierValue;
-use webignition\WebDriverElementCollection\WebDriverElementCollection;
-use webignition\WebDriverElementInspector\Inspector;
 
 class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
 {
@@ -36,41 +31,32 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
     public function testCreateSource(
         string $fixture,
         NamedDomIdentifierInterface $namedDomIdentifier,
-        callable $resultAssertions,
-        ?LineList $additionalSetupStatements = null,
-        array $additionalVariableIdentifiers = [],
-        ?MetadataInterface $additionalMetadata = null
+        LineList $teardownStatements
     ) {
         $source = $this->handler->createSource($namedDomIdentifier);
 
-        $setupStatements = new LineList([
-            new Statement('$navigator = Navigator::create($crawler)'),
-            $additionalSetupStatements,
-        ]);
-
-        $variableIdentifiers = array_merge(
-            $additionalVariableIdentifiers,
+        $classCode = $this->testCodeGenerator->createBrowserTestForLineList(
+            $source,
+            $fixture,
+            null,
+            $teardownStatements,
             [
                 'HAS' => '$has',
-                'ELEMENT' => '$element',
-                VariableNames::DOM_CRAWLER_NAVIGATOR => self::DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME,
-                VariableNames::PHPUNIT_TEST_CASE => self::PHPUNIT_TEST_CASE_VARIABLE_NAME,
+                'ELEMENT' => '$value',
             ]
         );
 
-        $metadata = $additionalMetadata ?? new Metadata();
-        $metadata = $this->addNavigatorToMetadata($metadata);
+        $testRunJob = $this->testRunner->createTestRunJob($classCode);
 
-        $code = $this->createExecutableCallForRequestWithReturn(
-            $fixture,
-            $source,
-            $setupStatements,
-            null,
-            $variableIdentifiers,
-            $metadata
-        );
+        if ($testRunJob instanceof TestRunJob) {
+            $this->testRunner->run($testRunJob);
 
-        $resultAssertions(eval($code));
+            $this->assertSame(
+                $testRunJob->getExpectedExitCode(),
+                $testRunJob->getExitCode(),
+                $testRunJob->getOutputAsString()
+            );
+        }
     }
 
     public function createSourceDataProvider(): array
@@ -84,19 +70,9 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                     ),
                     new VariablePlaceholder('ELEMENT')
                 ),
-                'resultAssertions' => function ($result) {
-                    $this->assertEquals('', $result);
-                },
-                'additionalSetupStatements' => new LineList([
-                    new Statement('$inspector = Inspector::create()'),
+                'teardownStatements' => new LineList([
+                    StatementFactory::createAssertSame('""', '$value'),
                 ]),
-                'additionalVariableIdentifiers' => [
-                    VariableNames::WEBDRIVER_ELEMENT_INSPECTOR => self::WEBDRIVER_ELEMENT_INSPECTOR_VARIABLE_NAME,
-                ],
-                'additionalMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(Inspector::class),
-                    ]))
             ],
             'element value, has parent' => [
                 'fixture' => '/form.html',
@@ -107,19 +83,9 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                     ),
                     new VariablePlaceholder('ELEMENT')
                 ),
-                'resultAssertions' => function ($result) {
-                    $this->assertEquals('test', $result);
-                },
-                'additionalSetupStatements' => new LineList([
-                    new Statement('$inspector = Inspector::create()'),
+                'teardownStatements' => new LineList([
+                    StatementFactory::createAssertSame('"test"', '$value'),
                 ]),
-                'additionalVariableIdentifiers' => [
-                    VariableNames::WEBDRIVER_ELEMENT_INSPECTOR => self::WEBDRIVER_ELEMENT_INSPECTOR_VARIABLE_NAME,
-                ],
-                'additionalMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(Inspector::class),
-                    ]))
             ],
             'attribute value, no parent' => [
                 'fixture' => '/form.html',
@@ -129,9 +95,9 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                     ),
                     new VariablePlaceholder('ELEMENT')
                 ),
-                'resultAssertions' => function ($result) {
-                    $this->assertEquals('input-without-value', $result);
-                },
+                'teardownStatements' => new LineList([
+                    StatementFactory::createAssertSame('"input-without-value"', '$value'),
+                ]),
             ],
             'attribute value, has parent' => [
                 'fixture' => '/form.html',
@@ -143,9 +109,9 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                     ),
                     new VariablePlaceholder('ELEMENT')
                 ),
-                'resultAssertions' => function ($result) {
-                    $this->assertEquals('input-2', $result);
-                },
+                'teardownStatements' => new LineList([
+                    StatementFactory::createAssertSame('"input-2"', '$value'),
+                ]),
             ],
             'element identifier, no parent' => [
                 'fixture' => '/form.html',
@@ -153,12 +119,11 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                     new DomIdentifier('input', 1),
                     new VariablePlaceholder('ELEMENT')
                 ),
-                'resultAssertions' => function (WebDriverElementCollection $collection) {
-                    $this->assertCount(1, $collection);
-
-                    $element = $collection->current();
-                    $this->assertEquals('', $element->getAttribute('value'));
-                },
+                'teardownStatements' => new LineList([
+                    StatementFactory::createAssertCount('1', '$value'),
+                    new Statement('$element = $value->current()'),
+                    StatementFactory::createAssertSame('""', '$element->getAttribute(\'value\')'),
+                ]),
             ],
             'element identifier, has parent' => [
                 'fixture' => '/form.html',
@@ -167,12 +132,11 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                         ->withParentIdentifier(new DomIdentifier('form[action="/action2"]')),
                     new VariablePlaceholder('ELEMENT')
                 ),
-                'resultAssertions' => function (WebDriverElementCollection $collection) {
-                    $this->assertCount(1, $collection);
-
-                    $element = $collection->current();
-                    $this->assertEquals('', $element->getAttribute('test'));
-                },
+                'teardownStatements' => new LineList([
+                    StatementFactory::createAssertCount('1', '$value'),
+                    new Statement('$element = $value->current()'),
+                    StatementFactory::createAssertSame('null', '$element->getAttribute(\'test\')'),
+                ]),
             ],
         ];
     }

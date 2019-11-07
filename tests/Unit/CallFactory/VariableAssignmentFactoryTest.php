@@ -57,11 +57,15 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
         $this->assertSourceContentEquals($expectedContent, $source);
         $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
 
-        $variableIdentifiers = [
-            'VALUE' => '$value',
-        ];
+        if ($source instanceof LineList) {
+            $source->mutateLastStatement(function ($content) {
+                return 'return ' . $content;
+            });
+        }
 
-        $code = $this->codeGenerator->createForLinesWithReturn($source, $variableIdentifiers);
+        $code = $this->codeGenerator->createForLines($source, [
+            'VALUE' => '$value',
+        ]);
 
         $assignedValue = eval($code);
 

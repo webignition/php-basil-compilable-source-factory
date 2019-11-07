@@ -8,11 +8,12 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
 use webignition\BasilCompilableSourceFactory\Handler\ClassDependencyHandler;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
+use webignition\BasilCompilationSource\ClassDefinitionInterface;
 use webignition\BasilCompilationSource\Comment;
 use webignition\BasilCompilationSource\LineInterface;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MetadataInterface;
-use webignition\BasilCompilationSource\MutableListLineListInterface;
+use webignition\BasilCompilationSource\MethodDefinitionInterface;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\LineList;
@@ -35,6 +36,79 @@ class CodeGenerator
         return new CodeGenerator(
             ClassDependencyHandler::createHandler(),
             new VariablePlaceholderResolver()
+        );
+    }
+
+    public function createForClassDefinition(
+        ClassDefinitionInterface $classDefinition,
+        string $baseClass = null,
+        array $variableIdentifiers = []
+    ) {
+        $classDependencies = $classDefinition->getMetadata()->getClassDependencies();
+        $useStatementLineList = new LineList();
+
+        foreach ($classDependencies as $classDependency) {
+            $useStatementLineList->addLinesFromSource($this->classDependencyHandler->createSource($classDependency));
+        }
+
+        $useStatementLines = $this->createCodeLinesFromLineList($useStatementLineList);
+        $useStatementCode = $this->resolveCodeLines($useStatementLines);
+
+        $methodCode = [];
+
+        foreach ($classDefinition->getMethods() as $methodDefinition) {
+            $methodCode[] = $this->createForMethodDefinition($methodDefinition, $variableIdentifiers);
+        }
+
+        $extendsCode = null === $baseClass ? '' : 'extends ' . $baseClass;
+
+        $classTemplate = <<<'EOD'
+%s
+
+class %s %s
+{
+%s
+}
+EOD;
+
+        return sprintf(
+            $classTemplate,
+            $useStatementCode,
+            $classDefinition->getName(),
+            $extendsCode,
+            implode("\n\n", $methodCode)
+        );
+    }
+
+    private function createForMethodDefinition(
+        MethodDefinitionInterface $methodDefinition,
+        array $variableIdentifiers = []
+    ): string {
+        $methodTemplate = <<<'EOD'
+    %s %s function %s() %s
+    {
+%s
+    }
+EOD;
+        $lines = $this->createCodeLinesFromLineList(new LineList($methodDefinition->getSources()));
+        array_walk($lines, function (string &$line) {
+            $line = '        ' . trim($line);
+        });
+
+        $returnType = $methodDefinition->getReturnType();
+        $returnTypeCode = null === $returnType
+            ? ''
+            : ': ' . $returnType;
+
+        $linesCode = $this->resolveCodeLines($lines, $variableIdentifiers);
+
+        return sprintf(
+            $methodTemplate,
+            $methodDefinition->getVisibility(),
+            $methodDefinition->isStatic() ? 'static' : '',
+            $methodDefinition->getName(),
+            $returnTypeCode,
+            $linesCode
         );
     }
 
@@ -67,10 +141,7 @@ class CodeGenerator
 
         $lines = $this->createCodeLinesFromLineList($lineList);
 
-        return $this->variablePlaceholderResolver->resolve(
-            implode("\n", $lines),
-            $variableIdentifiers
-        );
+        return $this->resolveCodeLines($lines, $variableIdentifiers);
     }
 
     private function createCodeLinesFromLineList(LineList $lineList): array
@@ -84,6 +155,14 @@ class CodeGenerator
         return $lines;
     }
 
+    private function resolveCodeLines(array $lines, array $variableIdentifiers = []): string
+    {
+        return $this->variablePlaceholderResolver->resolve(
+            implode("\n", $lines),
+            $variableIdentifiers
+        );
+    }
+
     private function createCodeFromLineObject(LineInterface $line): string
     {
         if ($line instanceof Comment) {
@@ -95,27 +174,5 @@ class CodeGenerator
         }
 
         return '';
-    }
-
-    public function createForLinesWithReturn(
-        SourceInterface $source,
-        array $variableIdentifiers = [],
-        ?LineList $setupStatements = null,
-        ?LineList $teardownStatements = null,
-        ?MetadataInterface $additionalMetadata = null
-    ): string {
-        if ($source instanceof MutableListLineListInterface) {
-            $source->mutateLastStatement(function (string $content) {
-                return 'return ' . $content;
-            });
-        }
-
-        return $this->createForLines(
-            $source,
-            $variableIdentifiers,
-            $setupStatements,
-            $teardownStatements,
-            $additionalMetadata
-        );
     }
 }

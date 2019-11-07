@@ -8,18 +8,15 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler;
 
 use webignition\BasilCompilableSourceFactory\Handler\StepHandler;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
+use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
+use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
+use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\ClassDependency;
-use webignition\BasilCompilationSource\ClassDependencyCollection;
 use webignition\BasilCompilationSource\LineList;
-use webignition\BasilCompilationSource\Metadata;
-use webignition\BasilCompilationSource\MetadataInterface;
-use webignition\BasilCompilationSource\Statement;
 use webignition\BasilModel\Step\Step;
 use webignition\BasilModel\Step\StepInterface;
 use webignition\BasilModelFactory\Action\ActionFactory;
 use webignition\BasilModelFactory\AssertionFactory;
-use webignition\WebDriverElementInspector\Inspector;
 
 class StepHandlerTest extends AbstractHandlerTest
 {
@@ -33,44 +30,36 @@ class StepHandlerTest extends AbstractHandlerTest
     public function testCreateSource(
         string $fixture,
         StepInterface $step,
-        ?LineList $additionalSetupStatements = null,
-        ?LineList $additionalTeardownStatements = null,
-        array $additionalVariableIdentifiers = [],
-        ?MetadataInterface $additionalMetadata = null
+        ?LineList $teardownStatements = null,
+        array $additionalVariableIdentifiers = []
     ) {
         $source = $this->handler->createSource($step);
 
-        $variableIdentifiers = array_merge(
-            $additionalVariableIdentifiers,
-            [
-                VariableNames::PHPUNIT_TEST_CASE => self::PHPUNIT_TEST_CASE_VARIABLE_NAME,
-            ]
-        );
-
-        $metadata = $additionalMetadata ?? new Metadata();
-        $metadata = $this->addNavigatorToMetadata($metadata);
-
-        $code = $this->createExecutableCallForRequest(
-            $fixture,
+        $classCode = $this->testCodeGenerator->createBrowserTestForLineList(
             $source,
-            $additionalSetupStatements,
-            $additionalTeardownStatements,
-            $variableIdentifiers,
-            $metadata
+            $fixture,
+            null,
+            $teardownStatements,
+            $additionalVariableIdentifiers
         );
 
-        eval($code);
+        $testRunJob = $this->testRunner->createTestRunJob($classCode);
+
+        if ($testRunJob instanceof TestRunJob) {
+            $this->testRunner->run($testRunJob);
+
+            $this->assertSame(
+                $testRunJob->getExpectedExitCode(),
+                $testRunJob->getExitCode(),
+                $testRunJob->getOutputAsString()
+            );
+        }
     }
 
     public function createSourceDataProvider(): array
     {
         $actionFactory = ActionFactory::createFactory();
         $assertionFactory = AssertionFactory::createFactory();
-
-        $additionalSetupStatements = new LineList([
-            new Statement('$navigator = Navigator::create($crawler)'),
-            new Statement('$inspector = Inspector::create()'),
-        ]);
 
         return [
             'single click action' => [
@@ -81,21 +70,13 @@ class StepHandlerTest extends AbstractHandlerTest
                     ],
                     []
                 ),
-                'additionalSetupStatements' => $additionalSetupStatements,
-                'additionalTeardownStatements' => new LineList([
-                    new Statement(
-                        '$this->assertEquals("Test fixture web server default document", self::$client->getTitle())'
-                    )
+                'teardownStatements' => new LineList([
+                    StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
                 ]),
                 'additionalVariableIdentifiers' => [
                     'ELEMENT' => '$element',
                     'HAS' => '$has',
-                    VariableNames::DOM_CRAWLER_NAVIGATOR => self::DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME,
                 ],
-                'additionalMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(Inspector::class),
-                    ]))
             ],
             'single is assertion' => [
                 'fixture' => '/assertions.html',
@@ -105,19 +86,12 @@ class StepHandlerTest extends AbstractHandlerTest
                         $assertionFactory->createFromAssertionString('".selector" is ".selector content"')
                     ]
                 ),
-                'additionalSetupStatements' => $additionalSetupStatements,
-                'additionalTeardownStatements' => null,
+                'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [
                     'HAS' => '$has',
-                    VariableNames::DOM_CRAWLER_NAVIGATOR => self::DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME,
-                    VariableNames::EXAMINED_VALUE => self::EXAMINED_VALUE_VARIABLE_NAME,
-                    VariableNames::EXPECTED_VALUE => self::EXPECTED_VALUE_VARIABLE_NAME,
-                    VariableNames::WEBDRIVER_ELEMENT_INSPECTOR => self::WEBDRIVER_ELEMENT_INSPECTOR_VARIABLE_NAME,
+                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
+                    VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
                 ],
-                'additionalMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(Inspector::class),
-                    ]))
             ],
             'single click action, single assertion' => [
                 'fixture' => '/action-click-submit.html',
@@ -131,19 +105,13 @@ class StepHandlerTest extends AbstractHandlerTest
                         )
                     ]
                 ),
-                'additionalSetupStatements' => $additionalSetupStatements,
-                'additionalTeardownStatements' => null,
+                'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [
                     'ELEMENT' => '$element',
                     'HAS' => '$has',
-                    VariableNames::DOM_CRAWLER_NAVIGATOR => self::DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME,
-                    VariableNames::EXPECTED_VALUE => self::EXPECTED_VALUE_VARIABLE_NAME,
-                    VariableNames::EXAMINED_VALUE => self::EXAMINED_VALUE_VARIABLE_NAME,
+                    VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
+                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                 ],
-                'additionalMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(Inspector::class),
-                    ]))
             ],
             'multiple actions, multiple assertions' => [
                 'fixture' => '/form.html',
@@ -165,20 +133,13 @@ class StepHandlerTest extends AbstractHandlerTest
                         ),
                     ]
                 ),
-                'additionalSetupStatements' => $additionalSetupStatements,
-                'additionalTeardownStatements' => null,
+                'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [
                     'ELEMENT' => '$element',
                     'HAS' => '$has',
-                    VariableNames::DOM_CRAWLER_NAVIGATOR => self::DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME,
-                    VariableNames::EXPECTED_VALUE => self::EXPECTED_VALUE_VARIABLE_NAME,
-                    VariableNames::EXAMINED_VALUE => self::EXAMINED_VALUE_VARIABLE_NAME,
-                    VariableNames::WEBDRIVER_ELEMENT_INSPECTOR => self::WEBDRIVER_ELEMENT_INSPECTOR_VARIABLE_NAME,
+                    VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
+                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                 ],
-                'additionalMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(Inspector::class),
-                    ]))
             ],
         ];
     }

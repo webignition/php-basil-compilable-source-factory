@@ -6,7 +6,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\Action;
 
-use PHPUnit\Framework\ExpectationFailedException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\BackActionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\ClickActionFunctionalDataProviderTrait;
@@ -18,18 +17,13 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\WaitActio
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\WaitForActionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\AbstractHandlerTest;
 use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
-use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\ClassDependency;
-use webignition\BasilCompilationSource\ClassDependencyCollection;
+use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
+use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilCompilationSource\LineList;
-use webignition\BasilCompilationSource\Metadata;
-use webignition\BasilCompilationSource\MetadataInterface;
-use webignition\BasilCompilationSource\Statement;
 use webignition\BasilModel\Action\ActionInterface;
 use webignition\BasilModel\Action\WaitAction;
 use webignition\BasilModel\Identifier\DomIdentifier;
 use webignition\BasilModel\Value\DomIdentifierValue;
-use webignition\SymfonyDomCrawlerNavigator\Navigator;
 
 class ActionHandlerTest extends AbstractHandlerTest
 {
@@ -55,28 +49,29 @@ class ActionHandlerTest extends AbstractHandlerTest
         ActionInterface $action,
         ?LineList $additionalSetupStatements = null,
         ?LineList $teardownStatements = null,
-        array $additionalVariableIdentifiers = [],
-        ?MetadataInterface $metadata = null
+        array $additionalVariableIdentifiers = []
     ) {
         $source = $this->handler->createSource($action);
 
-        $variableIdentifiers = array_merge(
-            [
-                VariableNames::PANTHER_CRAWLER => self::PANTHER_CRAWLER_VARIABLE_NAME,
-            ],
+        $classCode = $this->testCodeGenerator->createBrowserTestForLineList(
+            $source,
+            $fixture,
+            $additionalSetupStatements,
+            $teardownStatements,
             $additionalVariableIdentifiers
         );
 
-        $code = $this->createExecutableCallForRequest(
-            $fixture,
-            $source,
-            $additionalSetupStatements,
-            $teardownStatements,
-            $variableIdentifiers,
-            $metadata
-        );
+        $testRunJob = $this->testRunner->createTestRunJob($classCode);
 
-        eval($code);
+        if ($testRunJob instanceof TestRunJob) {
+            $this->testRunner->run($testRunJob);
+
+            $this->assertSame(
+                $testRunJob->getExpectedExitCode(),
+                $testRunJob->getExitCode(),
+                $testRunJob->getOutputAsString()
+            );
+        }
     }
 
     public function createSourceForExecutableActionsDataProvider()
@@ -97,68 +92,73 @@ class ActionHandlerTest extends AbstractHandlerTest
      * @dataProvider createSourceForFailingActionsDataProvider
      */
     public function testCreateSourceForFailingActions(
+        string $fixture,
         ActionInterface $action,
-        array $variableIdentifiers,
-        string $expectedExpectationFailedExceptionMessage
+        string $expectedExpectationFailedExceptionMessage,
+        ?LineList $additionalSetupStatements = null,
+        ?LineList $teardownStatements = null,
+        array $additionalVariableIdentifiers = []
     ) {
         $source = $this->handler->createSource($action);
 
-        $setupStatements = new LineList([
-            new Statement('$navigator = Navigator::create($crawler)'),
-        ]);
-
-        $metadata = (new Metadata())
-            ->withClassDependencies(new ClassDependencyCollection([
-                new ClassDependency(Navigator::class),
-            ]));
-
-        $code = $this->createExecutableCallForRequest(
-            '/action-wait.html',
+        $classCode = $this->testCodeGenerator->createBrowserTestForLineList(
             $source,
-            $setupStatements,
-            null,
-            $variableIdentifiers,
-            $metadata
+            $fixture,
+            $additionalSetupStatements,
+            $teardownStatements,
+            $additionalVariableIdentifiers
         );
 
-        $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage($expectedExpectationFailedExceptionMessage);
+        $testRunJob = $this->testRunner->createTestRunJob($classCode, 1);
 
-        eval($code);
+        if ($testRunJob instanceof TestRunJob) {
+            $this->testRunner->run($testRunJob);
+
+            $this->assertSame(
+                $testRunJob->getExpectedExitCode(),
+                $testRunJob->getExitCode(),
+                $testRunJob->getOutputAsString()
+            );
+
+            $this->assertStringContainsString(
+                $expectedExpectationFailedExceptionMessage,
+                $testRunJob->getOutputAsString()
+            );
+        }
     }
 
     public function createSourceForFailingActionsDataProvider(): array
     {
         return [
             'wait action, element identifier examined value, element does not exist' => [
+                'fixture' => '/action-wait.html',
                 'action' => new WaitAction(
                     'wait $elements.element_name',
                     new DomIdentifierValue(new DomIdentifier('.non-existent'))
                 ),
+                'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
+                'additionalSetupStatements' => null,
+                'teardownStatements' => null,
                 'variableIdentifiers' => [
                     'DURATION' => '$duration',
-                    'HAS' => self::HAS_VARIABLE_NAME,
-                    VariableNames::DOM_CRAWLER_NAVIGATOR => self::DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME,
-                    VariableNames::PHPUNIT_TEST_CASE => self::PHPUNIT_TEST_CASE_VARIABLE_NAME,
-                    VariableNames::WEBDRIVER_ELEMENT_INSPECTOR => self::WEBDRIVER_ELEMENT_INSPECTOR_VARIABLE_NAME,
+                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                 ],
-                'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
             ],
             'wait, attribute identifier examined value, element does not exist' => [
+                'fixture' => '/action-wait.html',
                 'action' => new WaitAction(
                     'wait $elements.element_name.attribute_name',
                     new DomIdentifierValue(
                         (new DomIdentifier('.non-existent'))->withAttributeName('attribute_name')
                     )
                 ),
+                'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
+                'additionalSetupStatements' => null,
+                'teardownStatements' => null,
                 'variableIdentifiers' => [
                     'DURATION' => '$duration',
-                    'HAS' => self::HAS_VARIABLE_NAME,
-                    VariableNames::DOM_CRAWLER_NAVIGATOR => self::DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME,
-                    VariableNames::PHPUNIT_TEST_CASE => self::PHPUNIT_TEST_CASE_VARIABLE_NAME,
-                    VariableNames::WEBDRIVER_ELEMENT_INSPECTOR => self::WEBDRIVER_ELEMENT_INSPECTOR_VARIABLE_NAME,
+                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                 ],
-                'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
             ],
         ];
     }

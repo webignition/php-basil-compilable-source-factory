@@ -18,9 +18,7 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\Matche
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\NotExistsAssertionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\AbstractHandlerTest;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
-use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\LineList;
-use webignition\BasilCompilationSource\MetadataInterface;
+use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilModel\Assertion\AssertionInterface;
 
 class AssertionHandlerPassingAssertionsTest extends AbstractHandlerTest
@@ -52,28 +50,28 @@ class AssertionHandlerPassingAssertionsTest extends AbstractHandlerTest
     public function testCreateSource(
         string $fixture,
         AssertionInterface $model,
-        ?LineList $additionalSetupStatements = null,
-        array $additionalVariableIdentifiers = [],
-        ?MetadataInterface $metadata = null
+        array $additionalVariableIdentifiers = []
     ) {
         $source = $this->handler->createSource($model);
 
-        $variableIdentifiers = array_merge(
-            [
-                VariableNames::PHPUNIT_TEST_CASE => self::PHPUNIT_TEST_CASE_VARIABLE_NAME,
-            ],
+        $classCode = $this->testCodeGenerator->createBrowserTestForLineList(
+            $source,
+            $fixture,
+            null,
+            null,
             $additionalVariableIdentifiers
         );
 
-        $code = $this->createExecutableCallForRequest(
-            $fixture,
-            $source,
-            $additionalSetupStatements,
-            null,
-            $variableIdentifiers,
-            $metadata
-        );
+        $testRunJob = $this->testRunner->createTestRunJob($classCode);
 
-        eval($code);
+        if ($testRunJob instanceof TestRunJob) {
+            $this->testRunner->run($testRunJob);
+
+            $this->assertSame(
+                $testRunJob->getExpectedExitCode(),
+                $testRunJob->getExitCode(),
+                $testRunJob->getOutputAsString()
+            );
+        }
     }
 }
