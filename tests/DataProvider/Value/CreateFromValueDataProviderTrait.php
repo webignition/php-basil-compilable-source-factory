@@ -71,6 +71,15 @@ trait CreateFromValueDataProviderTrait
                         VariableNames::PANTHER_CLIENT,
                     ])),
             ],
+            'data parameter' => [
+                'value' => new ObjectValue(
+                    ObjectValueType::DATA_PARAMETER,
+                    '$data.key',
+                    'key'
+                ),
+                'expectedContent' => new Statement('$key'),
+                'expectedMetadata' => new Metadata(),
+            ],
         ];
     }
 }

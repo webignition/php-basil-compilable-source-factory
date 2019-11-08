@@ -9,6 +9,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Value;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Value\BrowserPropertyDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Value\CreateFromValueDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Value\DataParameterValueDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Value\EnvironmentParameterValueDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Value\LiteralValueDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Value\PagePropertyProviderTrait;
@@ -23,6 +24,7 @@ class ScalarValueHandlerTest extends AbstractHandlerTest
 {
     use BrowserPropertyDataProviderTrait;
     use CreateFromValueDataProviderTrait;
+    use DataParameterValueDataProviderTrait;
     use EnvironmentParameterValueDataProviderTrait;
     use LiteralValueDataProviderTrait;
     use PagePropertyProviderTrait;
@@ -35,6 +37,7 @@ class ScalarValueHandlerTest extends AbstractHandlerTest
 
     /**
      * @dataProvider browserPropertyDataProvider
+     * @dataProvider dataParameterValueDataProvider
      * @dataProvider environmentParameterValueDataProvider
      * @dataProvider literalValueDataProvider
      * @dataProvider pagePropertyDataProvider

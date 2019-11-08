@@ -9,6 +9,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Value;
 use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Value\BrowserPropertyDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Value\DataParameterValueDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Value\EnvironmentParameterValueDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Value\LiteralValueDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Value\PagePropertyProviderTrait;
@@ -22,6 +23,7 @@ use webignition\BasilModel\Value\ValueInterface;
 class BrowserPropertyHandlerTest extends AbstractHandlerTest
 {
     use BrowserPropertyDataProviderTrait;
+    use DataParameterValueDataProviderTrait;
     use EnvironmentParameterValueDataProviderTrait;
     use LiteralValueDataProviderTrait;
     use PagePropertyProviderTrait;
@@ -41,6 +43,7 @@ class BrowserPropertyHandlerTest extends AbstractHandlerTest
     }
 
     /**
+     * @dataProvider dataParameterValueDataProvider
      * @dataProvider environmentParameterValueDataProvider
      * @dataProvider literalValueDataProvider
      * @dataProvider pagePropertyDataProvider
