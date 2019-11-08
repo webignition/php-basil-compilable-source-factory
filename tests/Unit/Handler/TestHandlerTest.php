@@ -28,9 +28,6 @@ use webignition\BasilModel\Test\TestInterface;
 use webignition\BasilModelFactory\Action\ActionFactory;
 use webignition\BasilModelFactory\AssertionFactory;
 use webignition\DomElementLocator\ElementLocator;
-use webignition\SymfonyDomCrawlerNavigator\Navigator;
-use webignition\WebDriverElementInspector\Inspector;
-use webignition\WebDriverElementMutator\Mutator;
 
 class TestHandlerTest extends AbstractHandlerTest
 {
@@ -75,6 +72,7 @@ class TestHandlerTest extends AbstractHandlerTest
 
                 $this->assertSame($expectedMethod->getName(), $method->getName());
                 $this->assertSame($expectedMethod->getReturnType(), $method->getReturnType());
+                $this->assertSame($expectedMethod->isStatic(), $method->isStatic());
                 $this->assertSourceContentEquals($expectedMethod, $method);
             }
         }
@@ -85,12 +83,6 @@ class TestHandlerTest extends AbstractHandlerTest
         $actionFactory = ActionFactory::createFactory();
         $assertionFactory = AssertionFactory::createFactory();
 
-        $expectedSetupMethodClassDependencies = new ClassDependencyCollection([
-            new ClassDependency(Navigator::class),
-            new ClassDependency(Inspector::class),
-            new ClassDependency(Mutator::class),
-        ]);
-
         return [
             'empty test' => [
                 'step' => new Test(
@@ -98,15 +90,11 @@ class TestHandlerTest extends AbstractHandlerTest
                     new Configuration('chrome', 'http://example.com'),
                     []
                 ),
-                'expectedClassName' => 'generated69ef658fb6e99440777d8bbe69f5bc89Test',
+                'expectedClassName' => 'Generated69ef658fb6e99440777d8bbe69f5bc89Test',
                 'expectedMethods' => [
-                    $this->createExpectedSetupMethodDefinition('test name'),
-                    new MethodDefinition('testOpen', new LineList([
-                        new Statement('{{ PANTHER_CLIENT }}->request(\'GET\', \'http://example.com\')'),
-                    ])),
+                    'setUpBeforeClass' => $this->createExpectedSetUpBeforeClassMethodDefinition('http://example.com'),
                 ],
                 'expectedMetadata' => (new Metadata())
-                    ->withClassDependencies($expectedSetupMethodClassDependencies)
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::PANTHER_CLIENT,
                     ])),
@@ -126,13 +114,10 @@ class TestHandlerTest extends AbstractHandlerTest
                         ),
                     ]
                 ),
-                'expectedClassName' => 'generated69ef658fb6e99440777d8bbe69f5bc89Test',
+                'expectedClassName' => 'Generated69ef658fb6e99440777d8bbe69f5bc89Test',
                 'expectedMethods' => [
-                    $this->createExpectedSetupMethodDefinition('test name'),
-                    new MethodDefinition('testOpen', new LineList([
-                        new Statement('{{ PANTHER_CLIENT }}->request(\'GET\', \'http://example.com\')'),
-                    ])),
-                    new MethodDefinition(
+                    'setUpBeforeClass' => $this->createExpectedSetUpBeforeClassMethodDefinition('http://example.com'),
+                    'testBdc4b8bd83e5660d1c62908dc7a7c43a' => new MethodDefinition(
                         'testBdc4b8bd83e5660d1c62908dc7a7c43a',
                         new LineList([
                             new Comment('step one'),
@@ -159,11 +144,9 @@ class TestHandlerTest extends AbstractHandlerTest
                     ),
                 ],
                 'expectedMetadata' => (new Metadata())
-                    ->withClassDependencies(
-                        $expectedSetupMethodClassDependencies->withAdditionalItems([
-                            new ClassDependency(ElementLocator::class),
-                        ])
-                    )
+                    ->withClassDependencies(new ClassDependencyCollection([
+                        new ClassDependency(ElementLocator::class),
+                    ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -179,14 +162,15 @@ class TestHandlerTest extends AbstractHandlerTest
         ];
     }
 
-    private function createExpectedSetupMethodDefinition(string $testName): MethodDefinitionInterface
+    private function createExpectedSetUpBeforeClassMethodDefinition(string $requestUrl): MethodDefinitionInterface
     {
-        return new MethodDefinition('setUp', new LineList([
-            new Statement('$this->setName(\'' . $testName . '\')'),
-            new Statement('self::$crawler = self::$client->refreshCrawler()'),
-            new Statement('$this->navigator = Navigator::create(self::$crawler)'),
-            new Statement('$this->inspector = Inspector::create()'),
-            new Statement('$this->mutator = Mutator::create()'),
+        $method = new MethodDefinition('setUpBeforeClass', new LineList([
+            new Statement('parent::setUpBeforeClass()'),
+            new Statement('{{ PANTHER_CLIENT }}->request(\'GET\', \'' . $requestUrl . '\')'),
         ]));
+        $method->setReturnType('void');
+        $method->setStatic();
+
+        return $method;
     }
 }
