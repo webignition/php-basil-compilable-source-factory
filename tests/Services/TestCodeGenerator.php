@@ -28,7 +28,7 @@ class TestCodeGenerator
     private $codeGenerator;
     private $codeBlockGenerator;
 
-    public function __construct(CodeGenerator $codeGenerator, CodeBlockGenerator $codeBlockGenerator)
+    public function __construct(CodeGeneratorService $codeGenerator, CodeBlockGenerator $codeBlockGenerator)
     {
         $this->codeGenerator = $codeGenerator;
         $this->codeBlockGenerator = $codeBlockGenerator;
@@ -37,7 +37,7 @@ class TestCodeGenerator
     public static function create(): TestCodeGenerator
     {
         return new TestCodeGenerator(
-            CodeGenerator::create(),
+            CodeGeneratorService::create(),
             CodeBlockGenerator::create()
         );
     }

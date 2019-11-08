@@ -15,7 +15,7 @@ use webignition\BasilCompilationSource\MethodDefinitionInterface;
 use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\LineList;
 
-class CodeGenerator
+class CodeGeneratorService
 {
     private $classDependencyHandler;
     private $variablePlaceholderResolver;
@@ -28,9 +28,9 @@ class CodeGenerator
         $this->variablePlaceholderResolver = $variablePlaceholderResolver;
     }
 
-    public static function create(): CodeGenerator
+    public static function create(): CodeGeneratorService
     {
-        return new CodeGenerator(
+        return new CodeGeneratorService(
             ClassDependencyHandler::createHandler(),
             new VariablePlaceholderResolver()
         );
