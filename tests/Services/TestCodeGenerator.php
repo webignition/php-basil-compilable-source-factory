@@ -9,6 +9,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 use webignition\BasilCodeGenerator\ClassGenerator;
 use webignition\BasilCodeGenerator\CodeBlockGenerator;
 use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilCompilationSource\ClassDefinitionInterface;
 use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\LineListInterface;
 use webignition\BasilCompilationSource\SourceInterface;
@@ -78,6 +79,24 @@ class TestCodeGenerator
             $additionalSetupStatements
         );
 
+        $variableDependencyIdentifiers = $this->createVariableIdentifiersForVariableDependencies(
+            $classDefinition->getMetadata()->getVariableDependencies()
+        );
+
+        return $this->classGenerator->createForClassDefinition(
+            $classDefinition,
+            'AbstractGeneratedTestCase',
+            array_merge(
+                $variableDependencyIdentifiers,
+                $additionalVariableIdentifiers
+            )
+        );
+    }
+
+    public function createBrowserTestForClass(
+        ClassDefinitionInterface $classDefinition,
+        array $additionalVariableIdentifiers = []
+    ): string {
         $variableDependencyIdentifiers = $this->createVariableIdentifiersForVariableDependencies(
             $classDefinition->getMetadata()->getVariableDependencies()
         );
