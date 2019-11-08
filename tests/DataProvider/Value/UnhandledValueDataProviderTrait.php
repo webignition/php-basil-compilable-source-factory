@@ -15,9 +15,6 @@ trait UnhandledValueDataProviderTrait
     public function unhandledValueDataProvider(): array
     {
         return [
-            'unhandled value: data parameter object' => [
-                'model' => new ObjectValue(ObjectValueType::DATA_PARAMETER, '$data.key', 'key'),
-            ],
             'unhandled value: element parameter object' => [
                 'model' => new DomIdentifierReference(DomIdentifierReferenceType::ELEMENT, '', ''),
             ],

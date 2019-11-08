@@ -6,7 +6,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Value;
 
-use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
+use webignition\BasilCompilableSourceFactory\Handler\Value\DataParameterHandler;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Value\BrowserPropertyDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Value\DataParameterValueDataProviderTrait;
@@ -15,12 +15,9 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Value\LiteralVal
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Value\PagePropertyProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Value\UnhandledValueDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\AbstractHandlerTest;
-use webignition\BasilCompilableSourceFactory\Handler\Value\PagePropertyHandler;
-use webignition\BasilModel\Value\ObjectValue;
-use webignition\BasilModel\Value\ObjectValueType;
 use webignition\BasilModel\Value\ValueInterface;
 
-class PagePropertyHandlerTest extends AbstractHandlerTest
+class DataParameterHandlerTest extends AbstractHandlerTest
 {
     use BrowserPropertyDataProviderTrait;
     use DataParameterValueDataProviderTrait;
@@ -31,11 +28,11 @@ class PagePropertyHandlerTest extends AbstractHandlerTest
 
     protected function createHandler(): HandlerInterface
     {
-        return PagePropertyHandler::createHandler();
+        return DataParameterHandler::createHandler();
     }
 
     /**
-     * @dataProvider pagePropertyDataProvider
+     * @dataProvider dataParameterValueDataProvider
      */
     public function testHandlesDoesHandle(ValueInterface $model)
     {
@@ -44,23 +41,13 @@ class PagePropertyHandlerTest extends AbstractHandlerTest
 
     /**
      * @dataProvider browserPropertyDataProvider
-     * @dataProvider dataParameterValueDataProvider
      * @dataProvider environmentParameterValueDataProvider
      * @dataProvider literalValueDataProvider
+     * @dataProvider pagePropertyDataProvider
      * @dataProvider unhandledValueDataProvider
      */
     public function testHandlesDoesNotHandle(ValueInterface $model)
     {
         $this->assertFalse($this->handler->handles($model));
-    }
-
-    public function testHandleThrowsUnknownObjectPropertyException()
-    {
-        $model = new ObjectValue(ObjectValueType::PAGE_PROPERTY, '$page.foo', 'foo');
-
-        $this->expectException(UnknownObjectPropertyException::class);
-        $this->expectExceptionMessage('Unknown object property "foo"');
-
-        $this->handler->handle($model);
     }
 }

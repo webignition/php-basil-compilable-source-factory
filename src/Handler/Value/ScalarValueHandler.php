@@ -12,6 +12,7 @@ class ScalarValueHandler extends AbstractDelegatingHandler
     {
         return new ScalarValueHandler([
             BrowserPropertyHandler::createHandler(),
+            DataParameterHandler::createHandler(),
             EnvironmentValueHandler::createHandler(),
             LiteralValueHandler::createHandler(),
             PagePropertyHandler::createHandler(),
