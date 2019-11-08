@@ -7,8 +7,6 @@ use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\ClassDefinition;
-use webignition\BasilCompilationSource\ClassDependency;
-use webignition\BasilCompilationSource\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Comment;
 use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\Metadata;
@@ -16,11 +14,9 @@ use webignition\BasilCompilationSource\MethodDefinition;
 use webignition\BasilCompilationSource\MethodDefinitionInterface;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
+use webignition\BasilCompilationSource\StatementInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Test\TestInterface;
-use webignition\SymfonyDomCrawlerNavigator\Navigator;
-use webignition\WebDriverElementInspector\Inspector;
-use webignition\WebDriverElementMutator\Mutator;
 
 class TestHandler implements HandlerInterface
 {
@@ -60,8 +56,7 @@ class TestHandler implements HandlerInterface
         }
 
         $methodDefinitions = [
-            $this->createSetupMethod($model),
-            $this->createOpenMethod($model),
+            $this->createSetupBeforeClassMethod($model),
         ];
 
         foreach ($model->getSteps() as $stepName => $step) {
@@ -79,73 +74,42 @@ class TestHandler implements HandlerInterface
         }
 
         $testName = (string) $model->getName();
-        $className = sprintf('generated%sTest', ucfirst(md5($testName)));
+        $className = sprintf('Generated%sTest', ucfirst(md5($testName)));
 
         return new ClassDefinition($className, $methodDefinitions);
     }
 
-    private function createSetupMethod(TestInterface $test): MethodDefinitionInterface
+    private function createSetupBeforeClassMethod(TestInterface $test): MethodDefinitionInterface
     {
-        $setNameStatement = new Statement(sprintf(
-            '$this->setName(\'%s\')',
-            $this->singleQuotedStringEscaper->escape($test->getName())
-        ));
+        $parentCallStatement = new Statement('parent::setUpBeforeClass()');
+        $clientRequestStatement = $this->createClientRequestStatement($test);
 
-        $refreshCrawlerStatement = new Statement('self::$crawler = self::$client->refreshCrawler()');
-        $createNavigatorStatement = new Statement(
-            '$this->navigator = Navigator::create(self::$crawler)',
-            (new Metadata())
-                ->withClassDependencies(new ClassDependencyCollection([
-                    new ClassDependency(Navigator::class),
-                ]))
-        );
-
-        $createInspectorStatement = new Statement(
-            '$this->inspector = Inspector::create()',
-            (new Metadata())
-                ->withClassDependencies(new ClassDependencyCollection([
-                    new ClassDependency(Inspector::class),
-                ]))
-        );
-
-        $createMutatorStatement = new Statement(
-            '$this->mutator = Mutator::create()',
-            (new Metadata())
-                ->withClassDependencies(new ClassDependencyCollection([
-                    new ClassDependency(Mutator::class),
-                ]))
-        );
-
-        $setupMethod = new MethodDefinition('setUp', new LineList([
-            $setNameStatement,
-            $refreshCrawlerStatement,
-            $createNavigatorStatement,
-            $createInspectorStatement,
-            $createMutatorStatement,
+        $setupBeforeClassMethod = new MethodDefinition('setUpBeforeClass', new LineList([
+            $parentCallStatement,
+            $clientRequestStatement,
         ]));
 
-        $setupMethod->setProtected();
+        $setupBeforeClassMethod->setStatic();
+        $setupBeforeClassMethod->setReturnType('void');
 
-        return $setupMethod;
+        return $setupBeforeClassMethod;
     }
 
-    private function createOpenMethod(TestInterface $test): MethodDefinitionInterface
+    private function createClientRequestStatement(TestInterface $test): StatementInterface
     {
-        $requestStatementVariableDependencies = new VariablePlaceholderCollection();
-        $pantherClientPlaceholder = $requestStatementVariableDependencies->create(VariableNames::PANTHER_CLIENT);
+        $variableDependencies = new VariablePlaceholderCollection();
+        $pantherClientPlaceholder = $variableDependencies->create(VariableNames::PANTHER_CLIENT);
 
-        $configuration = $test->getConfiguration();
-
-        $requestStatement = new Statement(
+        $clientRequestStatement = new Statement(
             sprintf(
                 '%s->request(\'GET\', \'%s\')',
-                (string) $pantherClientPlaceholder,
-                $configuration->getUrl()
+                $pantherClientPlaceholder,
+                $test->getConfiguration()->getUrl()
             ),
             (new Metadata())
-                ->withVariableDependencies($requestStatementVariableDependencies)
+                ->withVariableDependencies($variableDependencies)
         );
 
-        return new MethodDefinition('testOpen', new LineList([$requestStatement]));
+        return $clientRequestStatement;
     }
 }
