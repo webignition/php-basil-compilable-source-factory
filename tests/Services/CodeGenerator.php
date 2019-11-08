@@ -11,10 +11,7 @@ use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilationSource\ClassDefinitionInterface;
 use webignition\BasilCompilationSource\Comment;
 use webignition\BasilCompilationSource\LineInterface;
-use webignition\BasilCompilationSource\Metadata;
-use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilCompilationSource\MethodDefinitionInterface;
-use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\LineList;
 
@@ -110,38 +107,6 @@ EOD;
             $returnTypeCode,
             $linesCode
         );
-    }
-
-    public function createForLines(
-        SourceInterface $source,
-        array $variableIdentifiers = [],
-        ?LineList $setupStatements = null,
-        ?LineList $teardownStatements = null,
-        ?MetadataInterface $additionalMetadata = null
-    ): string {
-        $setupStatements = $setupStatements ?? new LineList();
-        $teardownStatements = $teardownStatements ?? new LineList();
-        $additionalMetadata = $additionalMetadata ?? new Metadata();
-
-        $metadata = new Metadata();
-        $metadata->add($source->getMetadata());
-        $metadata->add($additionalMetadata);
-
-        $classDependencies = $metadata->getClassDependencies();
-
-        $lineList = new LineList();
-
-        foreach ($classDependencies as $key => $value) {
-            $lineList->addLinesFromSource($this->classDependencyHandler->handle($value));
-        }
-
-        $lineList->addLinesFromSource($setupStatements);
-        $lineList->addLinesFromSources($source->getSources());
-        $lineList->addLinesFromSource($teardownStatements);
-
-        $lines = $this->createCodeLinesFromLineList($lineList);
-
-        return $this->resolveCodeLines($lines, $variableIdentifiers);
     }
 
     private function createCodeLinesFromLineList(LineList $lineList): array

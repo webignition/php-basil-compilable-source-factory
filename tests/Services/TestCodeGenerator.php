@@ -1,7 +1,12 @@
-<?php declare(strict_types=1);
+<?php
+
+/** @noinspection PhpUnhandledExceptionInspection */
+
+declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
+use webignition\BasilCodeGenerator\CodeBlockGenerator;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\ClassDefinitionInterface;
 use webignition\BasilCompilationSource\LineList;
@@ -21,15 +26,20 @@ class TestCodeGenerator
     const WEBDRIVER_ELEMENT_MUTATOR_VARIABLE_NAME = 'self::$mutator';
 
     private $codeGenerator;
+    private $codeBlockGenerator;
 
-    public function __construct(CodeGenerator $codeGenerator)
+    public function __construct(CodeGenerator $codeGenerator, CodeBlockGenerator $codeBlockGenerator)
     {
         $this->codeGenerator = $codeGenerator;
+        $this->codeBlockGenerator = $codeBlockGenerator;
     }
 
     public static function create(): TestCodeGenerator
     {
-        return new TestCodeGenerator(CodeGenerator::create());
+        return new TestCodeGenerator(
+            CodeGenerator::create(),
+            CodeBlockGenerator::create()
+        );
     }
 
     public function createPhpUnitTestForLineList(
@@ -45,7 +55,7 @@ class TestCodeGenerator
             $additionalVariableIdentifiers
         );
 
-        $initializerCode = $this->codeGenerator->createForLines(new LineList([
+        $initializerCode = $this->codeBlockGenerator->createFromLineList(new LineList([
             new Statement('(new ' . $classDefinition->getName() . '())->testGeneratedCode()')
         ]));
 
