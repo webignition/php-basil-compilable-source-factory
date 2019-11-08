@@ -61,15 +61,15 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
             $source->mutateLastStatement(function ($content) {
                 return 'return ' . $content;
             });
+
+            $code = $this->codeBlockGenerator->createFromLineList($source, [
+                'VALUE' => '$value',
+            ]);
+
+            $assignedValue = eval($code);
+
+            $this->assertSame($expectedAssignedValue, $assignedValue);
         }
-
-        $code = $this->codeBlockGenerator->createFromLineList($source, [
-            'VALUE' => '$value',
-        ]);
-
-        $assignedValue = eval($code);
-
-        $this->assertSame($expectedAssignedValue, $assignedValue);
     }
 
     public function createForValueAccessorDataProvider(): array
