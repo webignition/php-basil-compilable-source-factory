@@ -46,7 +46,14 @@ class TestHandler implements HandlerInterface
         return $model instanceof TestInterface;
     }
 
-    public function createSource(object $model): SourceInterface
+    /**
+     * @param object $model
+     *
+     * @return SourceInterface
+     *
+     * @throws UnsupportedModelException
+     */
+    public function handle(object $model): SourceInterface
     {
         if (!$model instanceof TestInterface) {
             throw new UnsupportedModelException($model);
@@ -66,7 +73,7 @@ class TestHandler implements HandlerInterface
                 $stepMethodName,
                 new LineList([
                     new Comment($stepName),
-                    $this->stepHandler->createSource($step),
+                    $this->stepHandler->handle($step),
                 ])
             );
         }
