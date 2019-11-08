@@ -6,8 +6,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 
+use webignition\BasilCodeGenerator\CodeBlockGenerator;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
-use webignition\BasilCompilableSourceFactory\Tests\Services\CodeGenerator;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\SourceInterface;
@@ -24,16 +24,16 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
     private $factory;
 
     /**
-     * @var CodeGenerator
+     * @var CodeBlockGenerator
      */
-    private $codeGenerator;
+    private $codeBlockGenerator;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->factory = VariableAssignmentFactory::createFactory();
-        $this->codeGenerator = CodeGenerator::create();
+        $this->codeBlockGenerator = CodeBlockGenerator::create();
     }
 
     /**
@@ -63,7 +63,7 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
             });
         }
 
-        $code = $this->codeGenerator->createForLines($source, [
+        $code = $this->codeBlockGenerator->createFromLineList($source, [
             'VALUE' => '$value',
         ]);
 
