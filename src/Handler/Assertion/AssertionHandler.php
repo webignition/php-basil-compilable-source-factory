@@ -2,13 +2,12 @@
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
-use webignition\BasilCompilableSourceFactory\DelegatorInterface;
-use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Handler\AbstractDelegatingHandler;
+use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilModel\Assertion\ComparisonAssertionInterface;
 use webignition\BasilModel\Assertion\ExaminationAssertionInterface;
 
-class AssertionHandler extends AbstractDelegatingHandler implements DelegatorInterface, HandlerInterface
+class AssertionHandler extends AbstractDelegatingHandler
 {
     public static function createHandler(): HandlerInterface
     {

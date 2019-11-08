@@ -2,12 +2,11 @@
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
-use webignition\BasilCompilableSourceFactory\DelegatorInterface;
-use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Handler\AbstractDelegatingHandler;
+use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilModel\Action\ActionInterface;
 
-class ActionHandler extends AbstractDelegatingHandler implements DelegatorInterface, HandlerInterface
+class ActionHandler extends AbstractDelegatingHandler
 {
     public static function createHandler(): HandlerInterface
     {

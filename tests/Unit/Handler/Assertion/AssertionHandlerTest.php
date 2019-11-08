@@ -84,14 +84,18 @@ class AssertionHandlerTest extends AbstractHandlerTest
      * @dataProvider createFromMatchesAssertionDataProvider
      * @dataProvider createFromNotExistsAssertionDataProvider
      */
-    public function testCreateSource(
+    public function testHandle(
         AssertionInterface $assertion,
         SourceInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
-        $source = $this->handler->createSource($assertion);
+        $source = $this->handler->handle($assertion);
 
-        $this->assertSourceContentEquals($expectedContent, $source);
-        $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
+        $this->assertInstanceOf(SourceInterface::class, $source);
+
+        if ($source instanceof SourceInterface) {
+            $this->assertSourceContentEquals($expectedContent, $source);
+            $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
+        }
     }
 }

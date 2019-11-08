@@ -79,6 +79,6 @@ class SetActionHandlerTest extends AbstractHandlerTest
 
         $this->expectException(UnsupportedModelException::class);
 
-        $this->handler->createSource($action);
+        $this->handler->handle($action);
     }
 }

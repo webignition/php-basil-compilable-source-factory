@@ -25,14 +25,14 @@ abstract class AbstractHandlerTest extends AbstractTestCase
 
     abstract protected function createHandler(): HandlerInterface;
 
-    public function testCreateSourceForUnsupportedModel()
+    public function testHandleForUnsupportedModel()
     {
         $this->expectException(UnsupportedModelException::class);
         $this->expectExceptionMessage('Unsupported model "stdClass"');
 
         $model = new \stdClass();
 
-        $this->handler->createSource($model);
+        $this->handler->handle($model);
     }
 
     public function testHandlesUnhandledModel()

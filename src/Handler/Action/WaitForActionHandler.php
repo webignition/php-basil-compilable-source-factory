@@ -41,7 +41,7 @@ class WaitForActionHandler implements HandlerInterface
      *
      * @throws UnsupportedModelException
      */
-    public function createSource(object $model): SourceInterface
+    public function handle(object $model): SourceInterface
     {
         if (!$model instanceof InteractionActionInterface) {
             throw new UnsupportedModelException($model);

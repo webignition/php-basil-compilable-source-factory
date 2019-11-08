@@ -34,18 +34,18 @@ class ClassDependencyHandlerTest extends AbstractHandlerTest
     }
 
     /**
-     * @dataProvider createSourceDataProvider
+     * @dataProvider handleDataProvider
      */
-    public function testCreateSource(
+    public function testHandle(
         ClassDependency $classDependency,
         StatementInterface $expectedStatement
     ) {
-        $source = $this->handler->createSource($classDependency);
+        $source = $this->handler->handle($classDependency);
 
         $this->assertEquals($expectedStatement, $source);
     }
 
-    public function createSourceDataProvider(): array
+    public function handleDataProvider(): array
     {
         return [
             'without alias' => [

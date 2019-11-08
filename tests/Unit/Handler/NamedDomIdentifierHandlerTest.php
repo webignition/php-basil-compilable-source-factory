@@ -60,20 +60,24 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
     }
 
     /**
-     * @dataProvider createSourceDataProvider
+     * @dataProvider handleDataProvider
      */
-    public function testCreateSource(
+    public function testHandle(
         ValueInterface $model,
         SourceInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
-        $source = $this->handler->createSource($model);
+        $source = $this->handler->handle($model);
 
-        $this->assertSourceContentEquals($expectedContent, $source);
-        $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
+        $this->assertInstanceOf(SourceInterface::class, $source);
+
+        if ($source instanceof SourceInterface) {
+            $this->assertSourceContentEquals($expectedContent, $source);
+            $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
+        }
     }
 
-    public function createSourceDataProvider(): array
+    public function handleDataProvider(): array
     {
         return [
             'element value, no parent' => [

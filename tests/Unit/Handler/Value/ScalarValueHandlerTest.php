@@ -55,14 +55,18 @@ class ScalarValueHandlerTest extends AbstractHandlerTest
     /**
      * @dataProvider createFromValueDataProvider
      */
-    public function testCreateSource(
+    public function testHandle(
         ValueInterface $model,
         SourceInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
-        $source = $this->handler->createSource($model);
+        $source = $this->handler->handle($model);
 
-        $this->assertSourceContentEquals($expectedContent, $source);
-        $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
+        $this->assertInstanceOf(SourceInterface::class, $source);
+
+        if ($source instanceof SourceInterface) {
+            $this->assertSourceContentEquals($expectedContent, $source);
+            $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
+        }
     }
 }

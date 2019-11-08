@@ -68,7 +68,7 @@ class ExistenceComparisonHandler implements HandlerInterface
      *
      * @throws UnsupportedModelException
      */
-    public function createSource(object $model): SourceInterface
+    public function handle(object $model): SourceInterface
     {
         if (!$model instanceof ExaminationAssertionInterface) {
             throw new UnsupportedModelException($model);
@@ -84,7 +84,7 @@ class ExistenceComparisonHandler implements HandlerInterface
         $existence = null;
 
         if ($this->isScalarValue($value)) {
-            $accessor = $this->scalarValueHandler->createSource($value);
+            $accessor = $this->scalarValueHandler->handle($value);
 
             if ($accessor instanceof MutableListLineListInterface) {
                 $accessor->mutateLastStatement(function (string $content) {
@@ -133,7 +133,7 @@ class ExistenceComparisonHandler implements HandlerInterface
                 );
             }
 
-            $accessor = $this->namedDomIdentifierHandler->createSource(
+            $accessor = $this->namedDomIdentifierHandler->handle(
                 new NamedDomIdentifierValue($value, $valuePlaceholder)
             );
 

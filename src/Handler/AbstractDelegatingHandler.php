@@ -22,12 +22,12 @@ abstract class AbstractDelegatingHandler extends AbstractDelegator implements De
      *
      * @throws UnsupportedModelException
      */
-    public function createSource(object $model): SourceInterface
+    public function handle(object $model): SourceInterface
     {
         $handler = $this->findHandler($model);
 
         if ($handler instanceof HandlerInterface) {
-            return $handler->createSource($model);
+            return $handler->handle($model);
         }
 
         throw new UnsupportedModelException($model);

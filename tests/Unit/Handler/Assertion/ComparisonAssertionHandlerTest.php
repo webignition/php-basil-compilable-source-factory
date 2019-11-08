@@ -59,7 +59,7 @@ class ComparisonAssertionHandlerTest extends AbstractHandlerTest
         $this->assertFalse($this->handler->handles($model));
     }
 
-    public function testCreateSourceWrongComparisonType()
+    public function testHandleWrongComparisonType()
     {
         $assertionFactory = AssertionFactory::createFactory();
         $model = $assertionFactory->createFromAssertionString('".selector" exists');
@@ -67,6 +67,6 @@ class ComparisonAssertionHandlerTest extends AbstractHandlerTest
         $this->expectException(UnsupportedModelException::class);
         $this->expectExceptionMessage('Unsupported model "' . ExaminationAssertion::class . '"');
 
-        $this->handler->createSource($model);
+        $this->handler->handle($model);
     }
 }

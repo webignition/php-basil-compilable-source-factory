@@ -51,7 +51,7 @@ class PagePropertyHandler implements HandlerInterface
      * @throws UnsupportedModelException
      * @throws UnknownObjectPropertyException
      */
-    public function createSource(object $model): SourceInterface
+    public function handle(object $model): SourceInterface
     {
         if ($this->handles($model) && $model instanceof ObjectValueInterface) {
             $statementContent = $this->contentMap[$model->getProperty()] ?? null;

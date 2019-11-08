@@ -58,7 +58,7 @@ class ActionHandlerTest extends AbstractHandlerTest
         ?LineList $teardownStatements = null,
         array $additionalVariableIdentifiers = []
     ) {
-        $source = $this->handler->createSource($action);
+        $source = $this->handler->handle($action);
 
         $classCode = $this->testCodeGenerator->createBrowserTestForLineList(
             $source,
@@ -92,7 +92,7 @@ class ActionHandlerTest extends AbstractHandlerTest
         ?LineList $teardownStatements = null,
         array $additionalVariableIdentifiers = []
     ) {
-        $source = $this->handler->createSource($action);
+        $source = $this->handler->handle($action);
 
         $classCode = $this->testCodeGenerator->createBrowserTestForLineList(
             $source,

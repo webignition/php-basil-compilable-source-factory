@@ -31,7 +31,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractHandlerTest
         string $expectedExpectationFailedExceptionMessage,
         array $additionalVariableIdentifiers = []
     ) {
-        $source = $this->handler->createSource($assertion);
+        $source = $this->handler->handle($assertion);
 
         $classCode = $this->testCodeGenerator->createBrowserTestForLineList(
             $source,

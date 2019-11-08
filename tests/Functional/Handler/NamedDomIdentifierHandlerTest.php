@@ -33,7 +33,7 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
         NamedDomIdentifierInterface $namedDomIdentifier,
         LineList $teardownStatements
     ) {
-        $source = $this->handler->createSource($namedDomIdentifier);
+        $source = $this->handler->handle($namedDomIdentifier);
 
         $classCode = $this->testCodeGenerator->createBrowserTestForLineList(
             $source,

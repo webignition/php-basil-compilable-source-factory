@@ -48,7 +48,7 @@ class CodeGenerator
         $useStatementLineList = new LineList();
 
         foreach ($classDependencies as $classDependency) {
-            $useStatementLineList->addLinesFromSource($this->classDependencyHandler->createSource($classDependency));
+            $useStatementLineList->addLinesFromSource($this->classDependencyHandler->handle($classDependency));
         }
 
         $useStatementLines = $this->createCodeLinesFromLineList($useStatementLineList);
@@ -132,7 +132,7 @@ EOD;
         $lineList = new LineList();
 
         foreach ($classDependencies as $key => $value) {
-            $lineList->addLinesFromSource($this->classDependencyHandler->createSource($value));
+            $lineList->addLinesFromSource($this->classDependencyHandler->handle($value));
         }
 
         $lineList->addLinesFromSource($setupStatements);
