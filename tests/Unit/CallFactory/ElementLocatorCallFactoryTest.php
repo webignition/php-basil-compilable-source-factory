@@ -6,12 +6,14 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 
+use webignition\BasilCodeGenerator\CodeBlockGenerator;
+use webignition\BasilCodeGenerator\LineGenerator;
 use webignition\BasilCompilableSourceFactory\CallFactory\ElementLocatorCallFactory;
-use webignition\BasilCompilableSourceFactory\Tests\Services\CodeGenerator;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestCodeGenerator;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
+use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilModel\Identifier\DomIdentifier;
 use webignition\BasilModel\Identifier\DomIdentifierInterface;
@@ -26,22 +28,28 @@ class ElementLocatorCallFactoryTest extends AbstractTestCase
     private $factory;
 
     /**
-     * @var CodeGenerator
-     */
-    private $codeGenerator;
-
-    /**
      * @var TestCodeGenerator
      */
     private $testCodeGenerator;
+
+    /**
+     * @var CodeBlockGenerator
+     */
+    private $codeBlockGenerator;
+
+    /**
+     * @var LineGenerator
+     */
+    private $lineGenerator;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->factory = ElementLocatorCallFactory::createFactory();
-        $this->codeGenerator = CodeGenerator::create();
         $this->testCodeGenerator = TestCodeGenerator::create();
+        $this->codeBlockGenerator = CodeBlockGenerator::create();
+        $this->lineGenerator = LineGenerator::create();
     }
 
     /**
@@ -63,7 +71,10 @@ class ElementLocatorCallFactoryTest extends AbstractTestCase
 
         $this->assertMetadataEquals($expectedMetadata, $statement->getMetadata());
 
-        $code = $this->codeGenerator->createForLines($statement);
+        $code = $this->codeBlockGenerator->createWithUseStatementsFromLineList(new LineList([
+            $statement,
+        ]), []);
+
         $elementLocator = eval($code);
 
         $this->assertEquals($expectedElementLocator, $elementLocator);

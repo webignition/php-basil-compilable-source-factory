@@ -1,9 +1,14 @@
-<?php declare(strict_types=1);
+<?php
+
+/** @noinspection PhpUnhandledExceptionInspection */
+
+declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
+use webignition\BasilCodeGenerator\ClassGenerator;
+use webignition\BasilCodeGenerator\CodeBlockGenerator;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\ClassDefinitionInterface;
 use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\LineListInterface;
 use webignition\BasilCompilationSource\SourceInterface;
@@ -20,16 +25,23 @@ class TestCodeGenerator
     const WEBDRIVER_ELEMENT_INSPECTOR_VARIABLE_NAME = 'self::$inspector';
     const WEBDRIVER_ELEMENT_MUTATOR_VARIABLE_NAME = 'self::$mutator';
 
-    private $codeGenerator;
+    private $classGenerator;
+    private $codeBlockGenerator;
 
-    public function __construct(CodeGenerator $codeGenerator)
-    {
-        $this->codeGenerator = $codeGenerator;
+    public function __construct(
+        ClassGenerator $classGenerator,
+        CodeBlockGenerator $codeBlockGenerator
+    ) {
+        $this->classGenerator = $classGenerator;
+        $this->codeBlockGenerator = $codeBlockGenerator;
     }
 
     public static function create(): TestCodeGenerator
     {
-        return new TestCodeGenerator(CodeGenerator::create());
+        return new TestCodeGenerator(
+            ClassGenerator::create(),
+            CodeBlockGenerator::create()
+        );
     }
 
     public function createPhpUnitTestForLineList(
@@ -39,13 +51,13 @@ class TestCodeGenerator
         $codeSource = LineListFactory::createForSourceLineList($source);
         $classDefinition = ClassDefinitionFactory::createPhpUnitTestForLineList($codeSource);
 
-        $classCode = $this->createForClassDefinition(
+        $classCode = $this->classGenerator->createForClassDefinition(
             $classDefinition,
             '\PHPUnit\Framework\TestCase',
             $additionalVariableIdentifiers
         );
 
-        $initializerCode = $this->codeGenerator->createForLines(new LineList([
+        $initializerCode = $this->codeBlockGenerator->createFromLineList(new LineList([
             new Statement('(new ' . $classDefinition->getName() . '())->testGeneratedCode()')
         ]));
 
@@ -66,28 +78,16 @@ class TestCodeGenerator
             $additionalSetupStatements
         );
 
-        return $this->createForClassDefinition(
-            $classDefinition,
-            'AbstractGeneratedTestCase',
-            $additionalVariableIdentifiers
-        );
-    }
-
-    private function createForClassDefinition(
-        ClassDefinitionInterface $classDefinition,
-        string $baseClass,
-        array $variableIdentifiers
-    ): string {
         $variableDependencyIdentifiers = $this->createVariableIdentifiersForVariableDependencies(
             $classDefinition->getMetadata()->getVariableDependencies()
         );
 
-        return $this->codeGenerator->createForClassDefinition(
+        return $this->classGenerator->createForClassDefinition(
             $classDefinition,
-            $baseClass,
+            'AbstractGeneratedTestCase',
             array_merge(
                 $variableDependencyIdentifiers,
-                $variableIdentifiers
+                $additionalVariableIdentifiers
             )
         );
     }
