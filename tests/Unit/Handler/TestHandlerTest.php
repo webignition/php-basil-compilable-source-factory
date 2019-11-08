@@ -49,20 +49,21 @@ class TestHandlerTest extends AbstractHandlerTest
     }
 
     /**
-     * @dataProvider createSourceDataProvider
+     * @dataProvider handleDataProvider
      */
-    public function testCreateSource(
+    public function testHandle(
         TestInterface $test,
         string $expectedClassName,
         array $expectedMethods,
         MetadataInterface $expectedMetadata
     ) {
-        $source = $this->handler->createSource($test);
+        $source = $this->handler->handle($test);
 
         $this->assertInstanceOf(ClassDefinitionInterface::class, $source);
-        $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
 
         if ($source instanceof ClassDefinitionInterface) {
+            $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
+
             $this->assertSame($expectedClassName, $source->getName());
 
             $methods = $source->getMethods();
@@ -79,7 +80,7 @@ class TestHandlerTest extends AbstractHandlerTest
         }
     }
 
-    public function createSourceDataProvider(): array
+    public function handleDataProvider(): array
     {
         $actionFactory = ActionFactory::createFactory();
         $assertionFactory = AssertionFactory::createFactory();
