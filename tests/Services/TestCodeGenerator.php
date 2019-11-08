@@ -25,12 +25,12 @@ class TestCodeGenerator
     const WEBDRIVER_ELEMENT_INSPECTOR_VARIABLE_NAME = 'self::$inspector';
     const WEBDRIVER_ELEMENT_MUTATOR_VARIABLE_NAME = 'self::$mutator';
 
-    private $codeGenerator;
+    private $codeGeneratorService;
     private $codeBlockGenerator;
 
     public function __construct(CodeGeneratorService $codeGenerator, CodeBlockGenerator $codeBlockGenerator)
     {
-        $this->codeGenerator = $codeGenerator;
+        $this->codeGeneratorService = $codeGenerator;
         $this->codeBlockGenerator = $codeBlockGenerator;
     }
 
@@ -92,7 +92,7 @@ class TestCodeGenerator
             $classDefinition->getMetadata()->getVariableDependencies()
         );
 
-        return $this->codeGenerator->createForClassDefinition(
+        return $this->codeGeneratorService->createForClassDefinition(
             $classDefinition,
             $baseClass,
             array_merge(
