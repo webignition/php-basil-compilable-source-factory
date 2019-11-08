@@ -9,7 +9,6 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 use webignition\BasilCodeGenerator\CodeBlockGenerator;
 use webignition\BasilCodeGenerator\LineGenerator;
 use webignition\BasilCompilableSourceFactory\CallFactory\ElementLocatorCallFactory;
-use webignition\BasilCompilableSourceFactory\Tests\Services\CodeGeneratorService;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestCodeGenerator;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilationSource\ClassDependency;
@@ -27,11 +26,6 @@ class ElementLocatorCallFactoryTest extends AbstractTestCase
      * @var ElementLocatorCallFactory
      */
     private $factory;
-
-    /**
-     * @var CodeGeneratorService
-     */
-    private $codeGenerator;
 
     /**
      * @var TestCodeGenerator
@@ -53,7 +47,6 @@ class ElementLocatorCallFactoryTest extends AbstractTestCase
         parent::setUp();
 
         $this->factory = ElementLocatorCallFactory::createFactory();
-        $this->codeGenerator = CodeGeneratorService::create();
         $this->testCodeGenerator = TestCodeGenerator::create();
         $this->codeBlockGenerator = CodeBlockGenerator::create();
         $this->lineGenerator = LineGenerator::create();
