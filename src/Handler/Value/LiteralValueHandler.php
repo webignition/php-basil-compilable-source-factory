@@ -20,7 +20,7 @@ class LiteralValueHandler implements HandlerInterface
         return $model instanceof LiteralValueInterface;
     }
 
-    public function createSource(object $model): SourceInterface
+    public function handle(object $model): SourceInterface
     {
         if ($this->handles($model)) {
             return new Statement((string) $model);

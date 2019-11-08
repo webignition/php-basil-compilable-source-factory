@@ -33,7 +33,7 @@ class StepHandlerTest extends AbstractHandlerTest
         ?LineList $teardownStatements = null,
         array $additionalVariableIdentifiers = []
     ) {
-        $source = $this->handler->createSource($step);
+        $source = $this->handler->handle($step);
 
         $classCode = $this->testCodeGenerator->createBrowserTestForLineList(
             $source,

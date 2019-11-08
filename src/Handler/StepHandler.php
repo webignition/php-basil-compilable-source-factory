@@ -37,7 +37,14 @@ class StepHandler implements HandlerInterface
         return $model instanceof StepInterface;
     }
 
-    public function createSource(object $model): SourceInterface
+    /**
+     * @param object $model
+     *
+     * @return SourceInterface
+     *
+     * @throws UnsupportedModelException
+     */
+    public function handle(object $model): SourceInterface
     {
         if (!$model instanceof StepInterface) {
             throw new UnsupportedModelException($model);
@@ -46,11 +53,11 @@ class StepHandler implements HandlerInterface
         $lineList = new LineList([]);
 
         foreach ($model->getActions() as $action) {
-            $this->addSourceToLineList($lineList, $action, $this->actionHandler->createSource($action));
+            $this->addSourceToLineList($lineList, $action, $this->actionHandler->handle($action));
         }
 
         foreach ($model->getAssertions() as $assertion) {
-            $this->addSourceToLineList($lineList, $assertion, $this->assertionHandler->createSource($assertion));
+            $this->addSourceToLineList($lineList, $assertion, $this->assertionHandler->handle($assertion));
         }
 
         return $lineList;

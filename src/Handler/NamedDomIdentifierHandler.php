@@ -53,7 +53,14 @@ class NamedDomIdentifierHandler implements HandlerInterface
         return $model instanceof NamedDomIdentifierInterface;
     }
 
-    public function createSource(object $model): SourceInterface
+    /**
+     * @param object $model
+     *
+     * @return SourceInterface
+     *
+     * @throws UnsupportedModelException
+     */
+    public function handle(object $model): SourceInterface
     {
         if (!$model instanceof NamedDomIdentifierInterface) {
             throw new UnsupportedModelException($model);

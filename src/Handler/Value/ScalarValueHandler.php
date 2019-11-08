@@ -2,12 +2,11 @@
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Value;
 
-use webignition\BasilCompilableSourceFactory\DelegatorInterface;
-use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Handler\AbstractDelegatingHandler;
+use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilModel\Value\ValueInterface;
 
-class ScalarValueHandler extends AbstractDelegatingHandler implements DelegatorInterface, HandlerInterface
+class ScalarValueHandler extends AbstractDelegatingHandler
 {
     public static function createHandler(): HandlerInterface
     {

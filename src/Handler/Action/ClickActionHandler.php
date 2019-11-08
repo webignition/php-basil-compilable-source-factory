@@ -7,7 +7,7 @@ use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilModel\Action\ActionTypes;
 
-class ClickActionHandler extends AbstractInteractionActionHandler implements HandlerInterface
+class ClickActionHandler extends AbstractInteractionActionHandler
 {
     public static function createHandler(): HandlerInterface
     {

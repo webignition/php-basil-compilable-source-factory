@@ -59,7 +59,7 @@ class SetActionHandler implements HandlerInterface
      *
      * @throws UnsupportedModelException
      */
-    public function createSource(object $model): SourceInterface
+    public function handle(object $model): SourceInterface
     {
         if (!$model instanceof InputActionInterface) {
             throw new UnsupportedModelException($model);
@@ -79,7 +79,7 @@ class SetActionHandler implements HandlerInterface
         $collectionPlaceholder = $variableExports->create('COLLECTION');
         $valuePlaceholder = $variableExports->create('VALUE');
 
-        $collectionAssignment = $this->namedDomIdentifierHandler->createSource(new NamedDomIdentifier(
+        $collectionAssignment = $this->namedDomIdentifierHandler->handle(new NamedDomIdentifier(
             $identifier,
             $collectionPlaceholder
         ));
@@ -87,7 +87,7 @@ class SetActionHandler implements HandlerInterface
         $value = $model->getValue();
 
         if ($value instanceof DomIdentifierValueInterface) {
-            $valueAccessor = $this->namedDomIdentifierHandler->createSource(
+            $valueAccessor = $this->namedDomIdentifierHandler->handle(
                 new NamedDomIdentifierValue($value, $valuePlaceholder)
             );
 
@@ -97,7 +97,7 @@ class SetActionHandler implements HandlerInterface
                 });
             }
         } else {
-            $valueAccessor = $this->scalarValueHandler->createSource($value);
+            $valueAccessor = $this->scalarValueHandler->handle($value);
         }
 
         $valueAssignment = $this->variableAssignmentFactory->createForValueAccessor($valueAccessor, $valuePlaceholder);

@@ -71,7 +71,14 @@ class ComparisonAssertionHandler implements HandlerInterface
         return in_array($model->getComparison(), self::HANDLED_COMPARISONS);
     }
 
-    public function createSource(object $model): SourceInterface
+    /**
+     * @param object $model
+     *
+     * @return SourceInterface
+     *
+     * @throws UnsupportedModelException
+     */
+    public function handle(object $model): SourceInterface
     {
         if (!$model instanceof ComparisonAssertionInterface) {
             throw new UnsupportedModelException($model);
@@ -88,7 +95,7 @@ class ComparisonAssertionHandler implements HandlerInterface
         $expectedValue = $model->getExpectedValue();
 
         if ($examinedValue instanceof DomIdentifierValueInterface) {
-            $examinedValueAccessor = $this->namedDomIdentifierHandler->createSource(
+            $examinedValueAccessor = $this->namedDomIdentifierHandler->handle(
                 new NamedDomIdentifierValue($examinedValue, $examinedValuePlaceholder)
             );
 
@@ -98,11 +105,11 @@ class ComparisonAssertionHandler implements HandlerInterface
                 });
             }
         } else {
-            $examinedValueAccessor = $this->scalarValueHandler->createSource($examinedValue);
+            $examinedValueAccessor = $this->scalarValueHandler->handle($examinedValue);
         }
 
         if ($expectedValue instanceof DomIdentifierValueInterface) {
-            $expectedValueAccessor = $this->namedDomIdentifierHandler->createSource(
+            $expectedValueAccessor = $this->namedDomIdentifierHandler->handle(
                 new NamedDomIdentifierValue($expectedValue, $expectedValuePlaceholder)
             );
 
@@ -112,7 +119,7 @@ class ComparisonAssertionHandler implements HandlerInterface
                 });
             }
         } else {
-            $expectedValueAccessor = $this->scalarValueHandler->createSource($expectedValue);
+            $expectedValueAccessor = $this->scalarValueHandler->handle($expectedValue);
         }
 
         $examinedValueAssignment = $this->variableAssignmentFactory->createForValueAccessor(

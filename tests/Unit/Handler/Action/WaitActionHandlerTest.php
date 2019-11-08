@@ -63,7 +63,7 @@ class WaitActionHandlerTest extends AbstractHandlerTest
         $this->assertFalse($this->handler->handles($model));
     }
 
-    public function testCreateSourceForUnsupportedValue()
+    public function testHandleForUnsupportedValue()
     {
         $action = new WaitAction(
             'wait 30',
@@ -76,6 +76,6 @@ class WaitActionHandlerTest extends AbstractHandlerTest
 
         $this->expectException(UnsupportedModelException::class);
 
-        $this->handler->createSource($action);
+        $this->handler->handle($action);
     }
 }

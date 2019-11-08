@@ -89,14 +89,18 @@ class ActionHandlerTest extends AbstractHandlerTest
      * @dataProvider createFromWaitActionDataProvider
      * @dataProvider createFromWaitForActionDataProvider
      */
-    public function testCreateSource(
+    public function testHandle(
         ActionInterface $action,
         SourceInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
-        $source = $this->handler->createSource($action);
+        $source = $this->handler->handle($action);
 
-        $this->assertSourceContentEquals($expectedContent, $source);
-        $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
+        $this->assertInstanceOf(SourceInterface::class, $source);
+
+        if ($source instanceof SourceInterface) {
+            $this->assertSourceContentEquals($expectedContent, $source);
+            $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
+        }
     }
 }

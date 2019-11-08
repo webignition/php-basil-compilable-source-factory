@@ -31,7 +31,7 @@ class EnvironmentValueHandler implements HandlerInterface
      *
      * @throws UnsupportedModelException
      */
-    public function createSource(object $model): SourceInterface
+    public function handle(object $model): SourceInterface
     {
         if ($this->handles($model) && $model instanceof ObjectValueInterface) {
             $variableDependencies = new VariablePlaceholderCollection();

@@ -56,7 +56,7 @@ class WaitActionHandler implements HandlerInterface
      *
      * @throws UnsupportedModelException
      */
-    public function createSource(object $model): SourceInterface
+    public function handle(object $model): SourceInterface
     {
         if (!$model instanceof WaitActionInterface) {
             throw new UnsupportedModelException($model);
@@ -68,7 +68,7 @@ class WaitActionHandler implements HandlerInterface
         $duration = $model->getDuration();
 
         if ($duration instanceof DomIdentifierValueInterface) {
-            $durationAccessor = $this->namedDomIdentifierHandler->createSource(
+            $durationAccessor = $this->namedDomIdentifierHandler->handle(
                 new NamedDomIdentifierValue($duration, $durationPlaceholder)
             );
 
@@ -78,7 +78,7 @@ class WaitActionHandler implements HandlerInterface
                 });
             }
         } else {
-            $durationAccessor = $this->scalarValueHandler->createSource($duration);
+            $durationAccessor = $this->scalarValueHandler->handle($duration);
         }
 
         $durationAssignment = $this->variableAssignmentFactory->createForValueAccessor(

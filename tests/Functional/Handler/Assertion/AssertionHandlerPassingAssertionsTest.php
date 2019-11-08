@@ -52,7 +52,7 @@ class AssertionHandlerPassingAssertionsTest extends AbstractHandlerTest
         AssertionInterface $model,
         array $additionalVariableIdentifiers = []
     ) {
-        $source = $this->handler->createSource($model);
+        $source = $this->handler->handle($model);
 
         $classCode = $this->testCodeGenerator->createBrowserTestForLineList(
             $source,

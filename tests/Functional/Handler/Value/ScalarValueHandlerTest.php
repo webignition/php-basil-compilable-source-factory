@@ -33,7 +33,7 @@ class ScalarValueHandlerTest extends AbstractHandlerTest
         LineList $teardownStatements,
         array $additionalVariableIdentifiers = []
     ) {
-        $source = $this->handler->createSource($model);
+        $source = $this->handler->handle($model);
 
         $instrumentedSource = clone $source;
         if ($instrumentedSource instanceof MutableListLineListInterface) {

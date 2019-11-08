@@ -38,21 +38,24 @@ class StepHandlerTest extends AbstractHandlerTest
     }
 
     /**
-     * @dataProvider createSourceDataProvider
+     * @dataProvider handleDataProvider
      */
-    public function testCreateSource(
+    public function testHandle(
         StepInterface $step,
         SourceInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
-        $source = $this->handler->createSource($step);
+        $source = $this->handler->handle($step);
 
         $this->assertInstanceOf(SourceInterface::class, $source);
-        $this->assertSourceContentEquals($expectedContent, $source);
-        $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
+
+        if ($source instanceof SourceInterface) {
+            $this->assertSourceContentEquals($expectedContent, $source);
+            $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
+        }
     }
 
-    public function createSourceDataProvider(): array
+    public function handleDataProvider(): array
     {
         $actionFactory = ActionFactory::createFactory();
         $assertionFactory = AssertionFactory::createFactory();

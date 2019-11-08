@@ -41,7 +41,7 @@ abstract class AbstractInteractionActionHandler implements HandlerInterface
      *
      * @throws UnsupportedModelException
      */
-    public function createSource(object $model): SourceInterface
+    public function handle(object $model): SourceInterface
     {
         if (!$model instanceof InteractionActionInterface) {
             throw new UnsupportedModelException($model);
@@ -60,7 +60,7 @@ abstract class AbstractInteractionActionHandler implements HandlerInterface
         $variableExports = new VariablePlaceholderCollection();
         $elementPlaceholder = $variableExports->create('ELEMENT');
 
-        $accessor = $this->namedDomIdentifierHandler->createSource(new NamedDomElementIdentifier(
+        $accessor = $this->namedDomIdentifierHandler->handle(new NamedDomElementIdentifier(
             $identifier,
             $elementPlaceholder
         ));
