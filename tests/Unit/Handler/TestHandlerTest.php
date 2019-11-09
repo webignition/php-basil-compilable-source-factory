@@ -12,14 +12,11 @@ use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\ClassDefinitionInterface;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
-use webignition\BasilCompilationSource\Comment;
-use webignition\BasilCompilationSource\EmptyLine;
 use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilCompilationSource\MethodDefinition;
 use webignition\BasilCompilationSource\MethodDefinitionInterface;
-use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Step\Step;
 use webignition\BasilModel\Test\Configuration;
@@ -119,25 +116,21 @@ class TestHandlerTest extends AbstractHandlerTest
                     'setUpBeforeClass' => $this->createExpectedSetUpBeforeClassMethodDefinition('http://example.com'),
                     'testBdc4b8bd83e5660d1c62908dc7a7c43a' => new MethodDefinition(
                         'testBdc4b8bd83e5660d1c62908dc7a7c43a',
-                        new LineList([
-                            new Comment('step one'),
-                            new Comment('click ".selector"'),
-                            new Statement(
-                                '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'
-                            ),
-                            new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
-                            new Statement(
-                                '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'
-                            ),
-                            new Statement('{{ ELEMENT }}->click()'),
-                            new EmptyLine(),
-                            new Comment('$page.title is "value"'),
-                            new Statement('{{ EXPECTED }} = "value" ?? null'),
-                            new Statement('{{ EXPECTED }} = (string) {{ EXPECTED }}'),
-                            new Statement('{{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null'),
-                            new Statement('{{ EXAMINED }} = (string) {{ EXAMINED }}'),
-                            new Statement('{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})'),
-                            new EmptyLine(),
+                        LineList::fromContent([
+                            '//step one',
+                            '//click ".selector"',
+                            '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
+                            '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                            '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
+                            '{{ ELEMENT }}->click()',
+                            '',
+                            '//$page.title is "value"',
+                            '{{ EXPECTED }} = "value" ?? null',
+                            '{{ EXPECTED }} = (string) {{ EXPECTED }}',
+                            '{{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null',
+                            '{{ EXAMINED }} = (string) {{ EXAMINED }}',
+                            '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
+                            '',
                         ])
                     ),
                 ],
@@ -162,9 +155,9 @@ class TestHandlerTest extends AbstractHandlerTest
 
     private function createExpectedSetUpBeforeClassMethodDefinition(string $requestUrl): MethodDefinitionInterface
     {
-        $method = new MethodDefinition('setUpBeforeClass', new LineList([
-            new Statement('parent::setUpBeforeClass()'),
-            new Statement('{{ CLIENT }}->request(\'GET\', \'' . $requestUrl . '\')'),
+        $method = new MethodDefinition('setUpBeforeClass', LineList::fromContent([
+            'parent::setUpBeforeClass()',
+            '{{ CLIENT }}->request(\'GET\', \'' . $requestUrl . '\')',
         ]));
         $method->setReturnType('void');
         $method->setStatic();
