@@ -70,7 +70,8 @@ class TestHandler
                 new CodeBlock([
                     new Comment($stepName),
                     $this->stepHandler->handle($step),
-                ])
+                ]),
+                $step->getDataSetCollection()->getParameterNames()
             );
         }
 
