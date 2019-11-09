@@ -2,21 +2,21 @@
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
-use webignition\BasilCompilationSource\ClassDefinition;
-use webignition\BasilCompilationSource\ClassDefinitionInterface;
-use webignition\BasilCompilationSource\LineList;
-use webignition\BasilCompilationSource\LineListInterface;
-use webignition\BasilCompilationSource\MethodDefinition;
+use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Block\BlockInterface;
+use webignition\BasilCompilationSource\ClassDefinition\ClassDefinition;
+use webignition\BasilCompilationSource\ClassDefinition\ClassDefinitionInterface;
+use webignition\BasilCompilationSource\MethodDefinition\MethodDefinition;
 
 class ClassDefinitionFactory
 {
-    public static function createGeneratedBrowserTestForLineList(
+    public static function createGeneratedBrowserTestForBlock(
         string $fixture,
-        LineList $lineList,
-        ?LineListInterface $additionalSetupStatements
+        Block $block,
+        ?BlockInterface $additionalSetupStatements
     ): ClassDefinitionInterface {
         $methodName = 'test' . md5((string) rand());
-        $methodDefinition = new MethodDefinition($methodName, $lineList);
+        $methodDefinition = new MethodDefinition($methodName, $block);
 
         $className = 'Generated' . md5((string) rand()) . 'Test';
 
@@ -27,10 +27,10 @@ class ClassDefinitionFactory
         ]);
     }
 
-    public static function createPhpUnitTestForLineList(LineList $lineList): ClassDefinitionInterface
+    public static function createPhpUnitTestForBlock(Block $block): ClassDefinitionInterface
     {
         $methodName = 'testGeneratedCode';
-        $methodDefinition = new MethodDefinition($methodName, $lineList);
+        $methodDefinition = new MethodDefinition($methodName, $block);
 
         $className = 'Generated' . md5((string) rand()) . 'Test';
 

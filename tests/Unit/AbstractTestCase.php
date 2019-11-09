@@ -6,12 +6,10 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
-use webignition\BasilCompilationSource\AbstractUniqueCollection;
-use webignition\BasilCompilationSource\ClassDependencyCollection;
-use webignition\BasilCompilationSource\LineInterface;
-use webignition\BasilCompilationSource\MetadataInterface;
+use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
+use webignition\BasilCompilationSource\Line\LineInterface;
+use webignition\BasilCompilationSource\Metadata\MetadataInterface;
 use webignition\BasilCompilationSource\SourceInterface;
-use webignition\BasilCompilationSource\UniqueItemInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
 abstract class AbstractTestCase extends \PHPUnit\Framework\TestCase
@@ -93,10 +91,23 @@ abstract class AbstractTestCase extends \PHPUnit\Framework\TestCase
         ClassDependencyCollection $expected,
         ClassDependencyCollection $actual
     ) {
-        $expectedClassNames = $this->getCollectionIds($expected);
-        $actualClassNames = $this->getCollectionIds($actual);
+        $expectedClassNames = $this->getClassDependencyNames($expected);
+        $actualClassNames = $this->getClassDependencyNames($actual);
 
         $this->assertSame($expectedClassNames, $actualClassNames);
+    }
+
+    private function getClassDependencyNames(ClassDependencyCollection $classDependencyCollection)
+    {
+        $names = [];
+
+        foreach ($classDependencyCollection->getLines() as $classDependency) {
+            $names[] = $classDependency->getContent();
+        }
+
+        sort($names);
+
+        return $names;
     }
 
     private function assertVariablePlaceholderCollection(
@@ -104,26 +115,25 @@ abstract class AbstractTestCase extends \PHPUnit\Framework\TestCase
         VariablePlaceholderCollection $actual,
         string $collectionName
     ) {
-        $expectedPlaceholderNames = $this->getCollectionIds($expected);
-        $actualPlaceholderNames = $this->getCollectionIds($actual);
+        $expectedPlaceholderNames = $this->getVariablePlaceholderNames($expected);
+        $actualPlaceholderNames = $this->getVariablePlaceholderNames($actual);
 
         $message = $collectionName . ' are not equal';
 
         $this->assertSame($expectedPlaceholderNames, $actualPlaceholderNames, $message);
     }
 
-    private function getCollectionIds(AbstractUniqueCollection $collection)
+    private function getVariablePlaceholderNames(VariablePlaceholderCollection $variablePlaceholderCollection)
     {
-        $ids = array_map(
-            function (UniqueItemInterface $placeholder) {
-                return $placeholder->getId();
-            },
-            $collection->getAll()
-        );
+        $names = [];
 
-        sort($ids);
+        foreach ($variablePlaceholderCollection as $variablePlaceholder) {
+            $names[] = $variablePlaceholder->getName();
+        }
 
-        return $ids;
+        sort($names);
+
+        return $names;
     }
 
     /**

@@ -3,9 +3,9 @@
 namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Statement;
-use webignition\BasilCompilationSource\Metadata;
-use webignition\BasilCompilationSource\StatementInterface;
+use webignition\BasilCompilationSource\Line\Statement;
+use webignition\BasilCompilationSource\Line\StatementInterface;
+use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
@@ -21,7 +21,8 @@ class WebDriverElementMutatorCallFactory
         VariablePlaceholder $valuePlaceholder
     ): StatementInterface {
         $variableExports = new VariablePlaceholderCollection();
-        $variableExports = $variableExports->withAdditionalItems([$collectionPlaceholder, $valuePlaceholder]);
+        $variableExports->add($collectionPlaceholder);
+        $variableExports->add($valuePlaceholder);
 
         $variableDependencies = new VariablePlaceholderCollection();
         $mutatorPlaceholder = $variableDependencies->create(VariableNames::WEBDRIVER_ELEMENT_MUTATOR);

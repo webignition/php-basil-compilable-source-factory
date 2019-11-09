@@ -10,11 +10,11 @@ use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestCodeGenerator;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Metadata;
-use webignition\BasilCompilationSource\MetadataInterface;
+use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Line\Statement;
+use webignition\BasilCompilationSource\Metadata\Metadata;
+use webignition\BasilCompilationSource\Metadata\MetadataInterface;
 use webignition\BasilCompilationSource\SourceInterface;
-use webignition\BasilCompilationSource\Statement;
-use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
@@ -90,7 +90,7 @@ class AssertionCallFactoryTest extends AbstractTestCase
                 'expectedValuePlaceholder' => $expectedValuePlaceholder,
                 'actualValuePlaceholder' => $examinedValuePlaceholder,
                 'assertionTemplate' => AssertionCallFactory::ASSERT_EQUALS_TEMPLATE,
-                'expectedContent' => LineList::fromContent([
+                'expectedContent' => Block::fromContent([
                     '{{ EXPECTED }} = "equals"',
                     '{{ EXAMINED }} = "equals"',
                     '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
@@ -118,7 +118,7 @@ class AssertionCallFactoryTest extends AbstractTestCase
                 'expectedValuePlaceholder' => $expectedValuePlaceholder,
                 'actualValuePlaceholder' => $examinedValuePlaceholder,
                 'assertionTemplate' => AssertionCallFactory::ASSERT_NOT_EQUALS_TEMPLATE,
-                'expectedContent' => LineList::fromContent([
+                'expectedContent' => Block::fromContent([
                     '{{ EXPECTED }} = "equals"',
                     '{{ EXAMINED }} = "not equals"',
                     '{{ PHPUNIT }}->assertNotEquals({{ EXPECTED }}, {{ EXAMINED }})',
@@ -146,7 +146,7 @@ class AssertionCallFactoryTest extends AbstractTestCase
                 'expectedValuePlaceholder' => $expectedValuePlaceholder,
                 'actualValuePlaceholder' => $examinedValuePlaceholder,
                 'assertionTemplate' => AssertionCallFactory::ASSERT_STRING_CONTAINS_STRING_TEMPLATE,
-                'expectedContent' => LineList::fromContent([
+                'expectedContent' => Block::fromContent([
                     '{{ EXPECTED }} = "needle"',
                     '{{ EXAMINED }} = "haystack containing needle"',
                     '{{ PHPUNIT }}->assertStringContainsString((string) {{ EXPECTED }}, (string) {{ EXAMINED }})',
@@ -174,7 +174,7 @@ class AssertionCallFactoryTest extends AbstractTestCase
                 'expectedValuePlaceholder' => $expectedValuePlaceholder,
                 'actualValuePlaceholder' => $examinedValuePlaceholder,
                 'assertionTemplate' => AssertionCallFactory::ASSERT_STRING_NOT_CONTAINS_STRING_TEMPLATE,
-                'expectedContent' => LineList::fromContent([
+                'expectedContent' => Block::fromContent([
                     '{{ EXPECTED }} = "needle"',
                     '{{ EXAMINED }} = "haystack"',
                     '{{ PHPUNIT }}->assertStringNotContainsString((string) {{ EXPECTED }}, (string) {{ EXAMINED }})',
@@ -202,7 +202,7 @@ class AssertionCallFactoryTest extends AbstractTestCase
                 'expectedValuePlaceholder' => $expectedValuePlaceholder,
                 'actualValuePlaceholder' => $examinedValuePlaceholder,
                 'assertionTemplate' => AssertionCallFactory::ASSERT_MATCHES_TEMPLATE,
-                'expectedContent' => LineList::fromContent([
+                'expectedContent' => Block::fromContent([
                     '{{ EXPECTED }} = "/pattern/"',
                     '{{ EXAMINED }} = "matches pattern"',
                     '{{ PHPUNIT }}->assertRegExp({{ EXPECTED }}, {{ EXAMINED }})',
@@ -259,7 +259,7 @@ class AssertionCallFactoryTest extends AbstractTestCase
                 ),
                 'variablePlaceholder' => $examinedValuePlaceholder,
                 'assertionTemplate' => AssertionCallFactory::ASSERT_TRUE_TEMPLATE,
-                'expectedContent' => LineList::fromContent([
+                'expectedContent' => Block::fromContent([
                     '{{ EXAMINED }} = "value" !== null',
                     '{{ PHPUNIT }}->assertTrue({{ EXAMINED }})',
                 ]),
@@ -279,7 +279,7 @@ class AssertionCallFactoryTest extends AbstractTestCase
                 ),
                 'variablePlaceholder' => $examinedValuePlaceholder,
                 'assertionTemplate' => AssertionCallFactory::ASSERT_FALSE_TEMPLATE,
-                'expectedContent' => LineList::fromContent([
+                'expectedContent' => Block::fromContent([
                     '{{ EXAMINED }} = null !== null',
                     '{{ PHPUNIT }}->assertFalse({{ EXAMINED }})',
                 ]),

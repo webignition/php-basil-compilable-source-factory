@@ -4,22 +4,22 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
 use webignition\BasePantherTestCase\Options;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractGeneratedTestCase;
-use webignition\BasilCompilationSource\ClassDependency;
-use webignition\BasilCompilationSource\ClassDependencyCollection;
-use webignition\BasilCompilationSource\Comment;
-use webignition\BasilCompilationSource\EmptyLine;
-use webignition\BasilCompilationSource\LineList;
-use webignition\BasilCompilationSource\LineListInterface;
-use webignition\BasilCompilationSource\Metadata;
-use webignition\BasilCompilationSource\MethodDefinition;
-use webignition\BasilCompilationSource\MethodDefinitionInterface;
-use webignition\BasilCompilationSource\Statement;
+use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Block\BlockInterface;
+use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
+use webignition\BasilCompilationSource\Line\ClassDependency;
+use webignition\BasilCompilationSource\Line\Comment;
+use webignition\BasilCompilationSource\Line\EmptyLine;
+use webignition\BasilCompilationSource\Line\Statement;
+use webignition\BasilCompilationSource\Metadata\Metadata;
+use webignition\BasilCompilationSource\MethodDefinition\MethodDefinition;
+use webignition\BasilCompilationSource\MethodDefinition\MethodDefinitionInterface;
 
 class MethodDefinitionFactory
 {
     public static function createSetUpBeforeClassMethodDefinition(string $fixture): MethodDefinitionInterface
     {
-        $lineList = new LineList([
+        $block = new Block([
             new Comment('Test harness lines'),
             new Statement('parent::setUpBeforeClass()'),
             new Statement(
@@ -32,7 +32,7 @@ class MethodDefinitionFactory
             ),
         ]);
 
-        $methodDefinition = new MethodDefinition('setUpBeforeClass', $lineList);
+        $methodDefinition = new MethodDefinition('setUpBeforeClass', $block);
         $methodDefinition->setStatic();
         $methodDefinition->setReturnType('void');
 
@@ -40,9 +40,9 @@ class MethodDefinitionFactory
     }
 
     public static function createSetUpMethodDefinition(
-        ?LineListInterface $additionalSetupStatements
+        ?BlockInterface $additionalSetupStatements
     ): MethodDefinitionInterface {
-        $lineList = new LineList([
+        $block = new Block([
             new Comment('Test harness lines'),
             new Statement('parent::setUp()'),
             new EmptyLine(),
@@ -50,7 +50,7 @@ class MethodDefinitionFactory
             $additionalSetupStatements,
         ]);
 
-        $methodDefinition = new MethodDefinition('setUp', $lineList);
+        $methodDefinition = new MethodDefinition('setUp', $block);
         $methodDefinition->setProtected();
         $methodDefinition->setReturnType('void');
 

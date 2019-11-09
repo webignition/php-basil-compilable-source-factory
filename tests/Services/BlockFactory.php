@@ -2,19 +2,19 @@
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
-use webignition\BasilCompilationSource\Comment;
-use webignition\BasilCompilationSource\EmptyLine;
-use webignition\BasilCompilationSource\LineList;
-use webignition\BasilCompilationSource\LineListInterface;
+use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Block\BlockInterface;
+use webignition\BasilCompilationSource\Line\Comment;
+use webignition\BasilCompilationSource\Line\EmptyLine;
 use webignition\BasilCompilationSource\SourceInterface;
 
-class LineListFactory
+class BlockFactory
 {
-    public static function createForSourceLineList(
+    public static function createForSourceBlock(
         SourceInterface $source,
-        ?LineListInterface $teardownStatements = null
-    ): LineList {
-        return new LineList([
+        ?BlockInterface $teardownStatements = null
+    ): Block {
+        return new Block([
             new Comment('Code under test'),
             $source,
             new EmptyLine(),

@@ -10,10 +10,10 @@ use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\MutableListLineListInterface;
+use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Line\Statement;
+use webignition\BasilCompilationSource\MutableBlockInterface;
 use webignition\BasilCompilationSource\SourceInterface;
-use webignition\BasilCompilationSource\Statement;
-use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Assertion\AssertionComparison;
@@ -86,7 +86,7 @@ class ExistenceComparisonHandler implements HandlerInterface
         if ($this->isScalarValue($value)) {
             $accessor = $this->scalarValueHandler->handle($value);
 
-            if ($accessor instanceof MutableListLineListInterface) {
+            if ($accessor instanceof MutableBlockInterface) {
                 $accessor->mutateLastStatement(function (string $content) {
                     return $content . ' ?? null';
                 });
@@ -94,7 +94,7 @@ class ExistenceComparisonHandler implements HandlerInterface
 
             $assignment = clone $accessor;
 
-            if ($assignment instanceof MutableListLineListInterface) {
+            if ($assignment instanceof MutableBlockInterface) {
                 $assignment->mutateLastStatement(function (string $content) use ($valuePlaceholder) {
                     return $valuePlaceholder . ' = ' . $content;
                 });
@@ -104,7 +104,7 @@ class ExistenceComparisonHandler implements HandlerInterface
                 ]));
             }
 
-            $existence = new LineList([
+            $existence = new Block([
                 $assignment,
                 new Statement(sprintf('%s = %s !== null', $valuePlaceholder, $valuePlaceholder)),
             ]);
@@ -128,7 +128,7 @@ class ExistenceComparisonHandler implements HandlerInterface
 
                 return $this->createAssertionCall(
                     $model->getComparison(),
-                    new LineList([$assignment]),
+                    new Block([$assignment]),
                     $valuePlaceholder
                 );
             }
@@ -137,7 +137,7 @@ class ExistenceComparisonHandler implements HandlerInterface
                 new NamedDomIdentifierValue($value, $valuePlaceholder)
             );
 
-            $existence = new LineList([
+            $existence = new Block([
                 $accessor,
                 new Statement(sprintf('%s = %s !== null', $valuePlaceholder, $valuePlaceholder)),
             ]);

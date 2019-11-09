@@ -8,7 +8,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\LineList;
+use webignition\BasilCompilationSource\Block\Block;
 use webignition\BasilModel\Action\InputAction;
 use webignition\BasilModel\Identifier\DomIdentifier;
 use webignition\BasilModel\Value\DomIdentifierValue;
@@ -43,14 +43,14 @@ trait SetActionFunctionalDataProviderTrait
                         DomIdentifierValue::create('.textarea-non-empty'),
                         '"input[name=input-without-value]" to $elements.textarea'
                     ),
-                    'additionalSetupStatements' => new LineList([
+                    'additionalSetupStatements' => new Block([
                         StatementFactory::createCrawlerFilterCallForElement(
                             'input[name=input-without-value]',
                             '$input'
                         ),
                         StatementFactory::createAssertSame('""', '$input->getAttribute("value")'),
                     ]),
-                    'teardownStatements' => new LineList([
+                    'teardownStatements' => new Block([
                         StatementFactory::createCrawlerFilterCallForElement(
                             'input[name=input-without-value]',
                             '$input'
@@ -69,14 +69,14 @@ trait SetActionFunctionalDataProviderTrait
                         ),
                         '"input[name=input-without-value]" to $elements.form.action'
                     ),
-                    'additionalSetupStatements' => new LineList([
+                    'additionalSetupStatements' => new Block([
                         StatementFactory::createCrawlerFilterCallForElement(
                             'input[name=input-without-value]',
                             '$input'
                         ),
                         StatementFactory::createAssertSame('""', '$input->getAttribute("value")'),
                     ]),
-                    'teardownStatements' => new LineList([
+                    'teardownStatements' => new Block([
                         StatementFactory::createCrawlerFilterCallForElement(
                             'input[name=input-without-value]',
                             '$input'
@@ -93,14 +93,14 @@ trait SetActionFunctionalDataProviderTrait
                     'action' => $actionFactory->createFromActionString(
                         'set "input[name=input-without-value]" to $browser.size'
                     ),
-                    'additionalSetupStatements' => new LineList([
+                    'additionalSetupStatements' => new Block([
                         StatementFactory::createCrawlerFilterCallForElement(
                             'input[name=input-without-value]',
                             '$input'
                         ),
                         StatementFactory::createAssertSame('""', '$input->getAttribute("value")'),
                     ]),
-                    'teardownStatements' => new LineList([
+                    'teardownStatements' => new Block([
                         StatementFactory::createCrawlerFilterCallForElement(
                             'input[name=input-without-value]',
                             '$input'
@@ -119,14 +119,14 @@ trait SetActionFunctionalDataProviderTrait
                     'action' => $actionFactory->createFromActionString(
                         'set "input[name=input-without-value]" to $page.url'
                     ),
-                    'additionalSetupStatements' => new LineList([
+                    'additionalSetupStatements' => new Block([
                         StatementFactory::createCrawlerFilterCallForElement(
                             'input[name=input-without-value]',
                             '$input'
                         ),
                         StatementFactory::createAssertSame('""', '$input->getAttribute("value")'),
                     ]),
-                    'teardownStatements' => new LineList([
+                    'teardownStatements' => new Block([
                         StatementFactory::createCrawlerFilterCallForElement(
                             'input[name=input-without-value]',
                             '$input'
@@ -143,14 +143,14 @@ trait SetActionFunctionalDataProviderTrait
                     'action' => $actionFactory->createFromActionString(
                         'set "input[name=input-without-value]" to $env.TEST1'
                     ),
-                    'additionalSetupStatements' => new LineList([
+                    'additionalSetupStatements' => new Block([
                         StatementFactory::createCrawlerFilterCallForElement(
                             'input[name=input-without-value]',
                             '$input'
                         ),
                         StatementFactory::createAssertSame('""', '$input->getAttribute("value")'),
                     ]),
-                    'teardownStatements' => new LineList([
+                    'teardownStatements' => new Block([
                         StatementFactory::createCrawlerFilterCallForElement(
                             'input[name=input-without-value]',
                             '$input'
@@ -178,11 +178,11 @@ trait SetActionFunctionalDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set "input[name=input-without-value]" to ""'
                 ),
-                'additionalSetupStatements' => new LineList([
+                'additionalSetupStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('input[name=input-without-value]', '$input'),
                     StatementFactory::createAssertSame('""', '$input->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new LineList([
+                'teardownStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('input[name=input-without-value]', '$input'),
                     StatementFactory::createAssertSame('""', '$input->getAttribute("value")'),
                 ]),
@@ -193,11 +193,11 @@ trait SetActionFunctionalDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set "input[name=input-without-value]" to "non-empty value"'
                 ),
-                'additionalSetupStatements' => new LineList([
+                'additionalSetupStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('input[name=input-without-value]', '$input'),
                     StatementFactory::createAssertSame('""', '$input->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new LineList([
+                'teardownStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('input[name=input-without-value]', '$input'),
                     StatementFactory::createAssertSame('"non-empty value"', '$input->getAttribute("value")'),
                 ]),
@@ -208,11 +208,11 @@ trait SetActionFunctionalDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set "input[name=input-with-value]" to ""'
                 ),
-                'additionalSetupStatements' => new LineList([
+                'additionalSetupStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('input[name=input-with-value]', '$input'),
                     StatementFactory::createAssertSame('"test"', '$input->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new LineList([
+                'teardownStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('input[name=input-with-value]', '$input'),
                     StatementFactory::createAssertSame('""', '$input->getAttribute("value")'),
                 ]),
@@ -223,11 +223,11 @@ trait SetActionFunctionalDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set "input[name=input-with-value]" to "new value"'
                 ),
-                'additionalSetupStatements' => new LineList([
+                'additionalSetupStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('input[name=input-with-value]', '$input'),
                     StatementFactory::createAssertSame('"test"', '$input->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new LineList([
+                'teardownStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('input[name=input-with-value]', '$input'),
                     StatementFactory::createAssertSame('"new value"', '$input->getAttribute("value")'),
                 ]),
@@ -246,11 +246,11 @@ trait SetActionFunctionalDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set ".textarea-empty" to ""'
                 ),
-                'additionalSetupStatements' => new LineList([
+                'additionalSetupStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('.textarea-empty', '$textarea'),
                     StatementFactory::createAssertSame('""', '$textarea->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new LineList([
+                'teardownStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('.textarea-empty', '$textarea'),
                     StatementFactory::createAssertSame('""', '$textarea->getAttribute("value")'),
                 ]),
@@ -261,11 +261,11 @@ trait SetActionFunctionalDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set ".textarea-empty" to "non-empty value"'
                 ),
-                'additionalSetupStatements' => new LineList([
+                'additionalSetupStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('.textarea-empty', '$textarea'),
                     StatementFactory::createAssertSame('""', '$textarea->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new LineList([
+                'teardownStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('.textarea-empty', '$textarea'),
                     StatementFactory::createAssertSame('"non-empty value"', '$textarea->getAttribute("value")'),
                 ]),
@@ -276,11 +276,11 @@ trait SetActionFunctionalDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set ".textarea-non-empty" to ""'
                 ),
-                'additionalSetupStatements' => new LineList([
+                'additionalSetupStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('.textarea-non-empty', '$textarea'),
                     StatementFactory::createAssertSame('"textarea content"', '$textarea->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new LineList([
+                'teardownStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('.textarea-non-empty', '$textarea'),
                     StatementFactory::createAssertSame('""', '$textarea->getAttribute("value")'),
                 ]),
@@ -291,11 +291,11 @@ trait SetActionFunctionalDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set ".textarea-non-empty" to "new value"'
                 ),
-                'additionalSetupStatements' => new LineList([
+                'additionalSetupStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('.textarea-non-empty', '$textarea'),
                     StatementFactory::createAssertSame('"textarea content"', '$textarea->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new LineList([
+                'teardownStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('.textarea-non-empty', '$textarea'),
                     StatementFactory::createAssertSame('"new value"', '$textarea->getAttribute("value")'),
                 ]),
@@ -314,11 +314,11 @@ trait SetActionFunctionalDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set ".select-none-selected" to ""'
                 ),
-                'additionalSetupStatements' => new LineList([
+                'additionalSetupStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('.select-none-selected', '$select'),
                     StatementFactory::createAssertSame('"none-selected-1"', '$select->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new LineList([
+                'teardownStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('.select-none-selected', '$select'),
                     StatementFactory::createAssertSame('"none-selected-1"', '$select->getAttribute("value")'),
                 ]),
@@ -329,11 +329,11 @@ trait SetActionFunctionalDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set ".select-none-selected" to "invalid"'
                 ),
-                'additionalSetupStatements' => new LineList([
+                'additionalSetupStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('.select-none-selected', '$select'),
                     StatementFactory::createAssertSame('"none-selected-1"', '$select->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new LineList([
+                'teardownStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('.select-none-selected', '$select'),
                     StatementFactory::createAssertSame('"none-selected-1"', '$select->getAttribute("value")'),
                 ]),
@@ -344,11 +344,11 @@ trait SetActionFunctionalDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set ".select-none-selected" to "none-selected-2"'
                 ),
-                'additionalSetupStatements' => new LineList([
+                'additionalSetupStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('.select-none-selected', '$select'),
                     StatementFactory::createAssertSame('"none-selected-1"', '$select->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new LineList([
+                'teardownStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('.select-none-selected', '$select'),
                     StatementFactory::createAssertSame('"none-selected-2"', '$select->getAttribute("value")'),
                 ]),
@@ -359,11 +359,11 @@ trait SetActionFunctionalDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set ".select-has-selected" to ""'
                 ),
-                'additionalSetupStatements' => new LineList([
+                'additionalSetupStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('.select-has-selected', '$select'),
                     StatementFactory::createAssertSame('"has-selected-2"', '$select->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new LineList([
+                'teardownStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('.select-has-selected', '$select'),
                     StatementFactory::createAssertSame('"has-selected-2"', '$select->getAttribute("value")'),
                 ]),
@@ -374,11 +374,11 @@ trait SetActionFunctionalDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set ".select-has-selected" to "invalid"'
                 ),
-                'additionalSetupStatements' => new LineList([
+                'additionalSetupStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('.select-has-selected', '$select'),
                     StatementFactory::createAssertSame('"has-selected-2"', '$select->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new LineList([
+                'teardownStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('.select-has-selected', '$select'),
                     StatementFactory::createAssertSame('"has-selected-2"', '$select->getAttribute("value")'),
                 ]),
@@ -389,11 +389,11 @@ trait SetActionFunctionalDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set ".select-has-selected" to "has-selected-3"'
                 ),
-                'additionalSetupStatements' => new LineList([
+                'additionalSetupStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('.select-has-selected', '$select'),
                     StatementFactory::createAssertSame('"has-selected-2"', '$select->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new LineList([
+                'teardownStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('.select-has-selected', '$select'),
                     StatementFactory::createAssertSame('"has-selected-3"', '$select->getAttribute("value")'),
                 ]),
@@ -412,11 +412,11 @@ trait SetActionFunctionalDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set ".select-none-selected option" to ""'
                 ),
-                'additionalSetupStatements' => new LineList([
+                'additionalSetupStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('.select-none-selected', '$select'),
                     StatementFactory::createAssertSame('"none-selected-1"', '$select->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new LineList([
+                'teardownStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('.select-none-selected', '$select'),
                     StatementFactory::createAssertSame('"none-selected-1"', '$select->getAttribute("value")'),
                 ]),
@@ -427,11 +427,11 @@ trait SetActionFunctionalDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set ".select-none-selected option" to "invalid"'
                 ),
-                'additionalSetupStatements' => new LineList([
+                'additionalSetupStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('.select-none-selected', '$select'),
                     StatementFactory::createAssertSame('"none-selected-1"', '$select->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new LineList([
+                'teardownStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('.select-none-selected', '$select'),
                     StatementFactory::createAssertSame('"none-selected-1"', '$select->getAttribute("value")'),
                 ]),
@@ -442,11 +442,11 @@ trait SetActionFunctionalDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set ".select-none-selected option" to "none-selected-2"'
                 ),
-                'additionalSetupStatements' => new LineList([
+                'additionalSetupStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('.select-none-selected', '$select'),
                     StatementFactory::createAssertSame('"none-selected-1"', '$select->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new LineList([
+                'teardownStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('.select-none-selected', '$select'),
                     StatementFactory::createAssertSame('"none-selected-2"', '$select->getAttribute("value")'),
                 ]),
@@ -457,11 +457,11 @@ trait SetActionFunctionalDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set ".select-has-selected option" to ""'
                 ),
-                'additionalSetupStatements' => new LineList([
+                'additionalSetupStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('.select-has-selected', '$select'),
                     StatementFactory::createAssertSame('"has-selected-2"', '$select->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new LineList([
+                'teardownStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('.select-has-selected', '$select'),
                     StatementFactory::createAssertSame('"has-selected-2"', '$select->getAttribute("value")'),
                 ]),
@@ -472,11 +472,11 @@ trait SetActionFunctionalDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set ".select-has-selected option" to "invalid"'
                 ),
-                'additionalSetupStatements' => new LineList([
+                'additionalSetupStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('.select-has-selected', '$select'),
                     StatementFactory::createAssertSame('"has-selected-2"', '$select->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new LineList([
+                'teardownStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('.select-has-selected', '$select'),
                     StatementFactory::createAssertSame('"has-selected-2"', '$select->getAttribute("value")'),
                 ]),
@@ -487,11 +487,11 @@ trait SetActionFunctionalDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set ".select-has-selected option" to "has-selected-3"'
                 ),
-                'additionalSetupStatements' => new LineList([
+                'additionalSetupStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('.select-has-selected', '$select'),
                     StatementFactory::createAssertSame('"has-selected-2"', '$select->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new LineList([
+                'teardownStatements' => new Block([
                     StatementFactory::createCrawlerFilterCallForElement('.select-has-selected', '$select'),
                     StatementFactory::createAssertSame('"has-selected-3"', '$select->getAttribute("value")'),
                 ]),
@@ -510,13 +510,13 @@ trait SetActionFunctionalDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set "input[name=radio-not-checked]" to ""'
                 ),
-                'additionalSetupStatements' => new LineList([
+                'additionalSetupStatements' => new Block([
                     StatementFactory::createCrawlerFilterCall('input[name=radio-not-checked]', '$radioGroup'),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(0)->isSelected()'),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(1)->isSelected()'),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(2)->isSelected()'),
                 ]),
-                'teardownStatements' => new LineList([
+                'teardownStatements' => new Block([
                     StatementFactory::createCrawlerFilterCall('input[name=radio-not-checked]', '$radioGroup'),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(0)->isSelected()'),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(1)->isSelected()'),
@@ -529,13 +529,13 @@ trait SetActionFunctionalDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set "input[name=radio-not-checked]" to "invalid"'
                 ),
-                'additionalSetupStatements' => new LineList([
+                'additionalSetupStatements' => new Block([
                     StatementFactory::createCrawlerFilterCall('input[name=radio-not-checked]', '$radioGroup'),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(0)->isSelected()'),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(1)->isSelected()'),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(2)->isSelected()'),
                 ]),
-                'teardownStatements' => new LineList([
+                'teardownStatements' => new Block([
                     StatementFactory::createCrawlerFilterCall('input[name=radio-not-checked]', '$radioGroup'),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(0)->isSelected()'),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(1)->isSelected()'),
@@ -548,13 +548,13 @@ trait SetActionFunctionalDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set "input[name=radio-not-checked]" to "not-checked-2"'
                 ),
-                'additionalSetupStatements' => new LineList([
+                'additionalSetupStatements' => new Block([
                     StatementFactory::createCrawlerFilterCall('input[name=radio-not-checked]', '$radioGroup'),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(0)->isSelected()'),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(1)->isSelected()'),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(2)->isSelected()'),
                 ]),
-                'teardownStatements' => new LineList([
+                'teardownStatements' => new Block([
                     StatementFactory::createCrawlerFilterCall('input[name=radio-not-checked]', '$radioGroup'),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(0)->isSelected()'),
                     StatementFactory::createAssertTrue('$radioGroup->getElement(1)->isSelected()'),
@@ -567,13 +567,13 @@ trait SetActionFunctionalDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set "input[name=radio-checked]" to ""'
                 ),
-                'additionalSetupStatements' => new LineList([
+                'additionalSetupStatements' => new Block([
                     StatementFactory::createCrawlerFilterCall('input[name=radio-checked]', '$radioGroup'),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(0)->isSelected()'),
                     StatementFactory::createAssertTrue('$radioGroup->getElement(1)->isSelected()'),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(2)->isSelected()'),
                 ]),
-                'teardownStatements' => new LineList([
+                'teardownStatements' => new Block([
                     StatementFactory::createCrawlerFilterCall('input[name=radio-checked]', '$radioGroup'),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(0)->isSelected()'),
                     StatementFactory::createAssertTrue('$radioGroup->getElement(1)->isSelected()'),
@@ -586,13 +586,13 @@ trait SetActionFunctionalDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set "input[name=radio-checked]" to "invalid"'
                 ),
-                'additionalSetupStatements' => new LineList([
+                'additionalSetupStatements' => new Block([
                     StatementFactory::createCrawlerFilterCall('input[name=radio-checked]', '$radioGroup'),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(0)->isSelected()'),
                     StatementFactory::createAssertTrue('$radioGroup->getElement(1)->isSelected()'),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(2)->isSelected()'),
                 ]),
-                'teardownStatements' => new LineList([
+                'teardownStatements' => new Block([
                     StatementFactory::createCrawlerFilterCall('input[name=radio-checked]', '$radioGroup'),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(0)->isSelected()'),
                     StatementFactory::createAssertTrue('$radioGroup->getElement(1)->isSelected()'),
@@ -605,13 +605,13 @@ trait SetActionFunctionalDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set "input[name=radio-checked]" to "checked-3"'
                 ),
-                'additionalSetupStatements' => new LineList([
+                'additionalSetupStatements' => new Block([
                     StatementFactory::createCrawlerFilterCall('input[name=radio-checked]', '$radioGroup'),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(0)->isSelected()'),
                     StatementFactory::createAssertTrue('$radioGroup->getElement(1)->isSelected()'),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(2)->isSelected()'),
                 ]),
-                'teardownStatements' => new LineList([
+                'teardownStatements' => new Block([
                     StatementFactory::createCrawlerFilterCall('input[name=radio-checked]', '$radioGroup'),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(0)->isSelected()'),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(1)->isSelected()'),

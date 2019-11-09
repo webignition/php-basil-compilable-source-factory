@@ -3,9 +3,9 @@
 namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Statement;
-use webignition\BasilCompilationSource\Metadata;
-use webignition\BasilCompilationSource\StatementInterface;
+use webignition\BasilCompilationSource\Line\Statement;
+use webignition\BasilCompilationSource\Line\StatementInterface;
+use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
@@ -19,9 +19,7 @@ class WebDriverElementInspectorCallFactory
     public function createGetValueCall(VariablePlaceholder $collectionPlaceholder): StatementInterface
     {
         $variableExports = new VariablePlaceholderCollection();
-        $variableExports = $variableExports->withAdditionalItems([
-            $collectionPlaceholder,
-        ]);
+        $variableExports->add($collectionPlaceholder);
 
         $variableDependencies = new VariablePlaceholderCollection();
         $inspectorPlaceholder = $variableDependencies->create(VariableNames::WEBDRIVER_ELEMENT_INSPECTOR);

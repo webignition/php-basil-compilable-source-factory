@@ -6,15 +6,15 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 
-use webignition\BasilCodeGenerator\CodeBlockGenerator;
+use webignition\BasilCodeGenerator\BlockGenerator;
 use webignition\BasilCodeGenerator\LineGenerator;
 use webignition\BasilCompilableSourceFactory\CallFactory\ElementLocatorCallFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestCodeGenerator;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
-use webignition\BasilCompilationSource\ClassDependency;
-use webignition\BasilCompilationSource\ClassDependencyCollection;
-use webignition\BasilCompilationSource\LineList;
-use webignition\BasilCompilationSource\Metadata;
+use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
+use webignition\BasilCompilationSource\Line\ClassDependency;
+use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilModel\Identifier\DomIdentifier;
 use webignition\BasilModel\Identifier\DomIdentifierInterface;
 use webignition\DomElementLocator\ElementLocator;
@@ -33,9 +33,9 @@ class ElementLocatorCallFactoryTest extends AbstractTestCase
     private $testCodeGenerator;
 
     /**
-     * @var CodeBlockGenerator
+     * @var BlockGenerator
      */
-    private $codeBlockGenerator;
+    private $blockGenerator;
 
     /**
      * @var LineGenerator
@@ -48,7 +48,7 @@ class ElementLocatorCallFactoryTest extends AbstractTestCase
 
         $this->factory = ElementLocatorCallFactory::createFactory();
         $this->testCodeGenerator = TestCodeGenerator::create();
-        $this->codeBlockGenerator = CodeBlockGenerator::create();
+        $this->blockGenerator = BlockGenerator::create();
         $this->lineGenerator = LineGenerator::create();
     }
 
@@ -71,7 +71,7 @@ class ElementLocatorCallFactoryTest extends AbstractTestCase
 
         $this->assertMetadataEquals($expectedMetadata, $statement->getMetadata());
 
-        $code = $this->codeBlockGenerator->createWithUseStatementsFromLineList(new LineList([
+        $code = $this->blockGenerator->createWithUseStatementsFromBlock(new Block([
             $statement,
         ]), []);
 

@@ -10,9 +10,9 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierInterface;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
+use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\SourceInterface;
-use webignition\BasilCompilationSource\Statement;
-use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
 class NamedDomIdentifierHandler implements HandlerInterface
@@ -103,7 +103,7 @@ class NamedDomIdentifierHandler implements HandlerInterface
             AssertionCallFactory::ASSERT_TRUE_TEMPLATE
         );
 
-        $lineList = new LineList([
+        $block = new Block([
             $elementExistsAssertion,
             $elementOrCollectionAssignment,
         ]);
@@ -125,9 +125,9 @@ class NamedDomIdentifierHandler implements HandlerInterface
                 });
             }
 
-            $lineList->addLinesFromSource($valueAssignment);
+            $block->addLinesFromSource($valueAssignment);
         }
 
-        return $lineList;
+        return $block;
     }
 }

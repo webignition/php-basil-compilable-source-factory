@@ -6,8 +6,6 @@ namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Value;
 
 use webignition\BasilModel\Value\DomIdentifierReference;
 use webignition\BasilModel\Value\DomIdentifierReferenceType;
-use webignition\BasilModel\Value\ObjectValue;
-use webignition\BasilModel\Value\ObjectValueType;
 use webignition\BasilModel\Value\PageElementReference;
 
 trait UnhandledValueDataProviderTrait

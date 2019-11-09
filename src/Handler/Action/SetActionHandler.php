@@ -10,9 +10,9 @@ use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifier;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
-use webignition\BasilCompilationSource\MutableListLineListInterface;
+use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\MutableBlockInterface;
 use webignition\BasilCompilationSource\SourceInterface;
-use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Action\InputActionInterface;
 use webignition\BasilModel\Identifier\DomIdentifierInterface;
@@ -91,7 +91,7 @@ class SetActionHandler implements HandlerInterface
                 new NamedDomIdentifierValue($value, $valuePlaceholder)
             );
 
-            if ($valueAccessor instanceof MutableListLineListInterface) {
+            if ($valueAccessor instanceof MutableBlockInterface) {
                 $valueAccessor->mutateLastStatement(function (string $content) use ($valuePlaceholder) {
                     return str_replace((string) $valuePlaceholder . ' = ', '', $content);
                 });
@@ -107,7 +107,7 @@ class SetActionHandler implements HandlerInterface
             $valuePlaceholder
         );
 
-        return new LineList([
+        return new Block([
             $collectionAssignment,
             $valueAssignment,
             $mutationCall

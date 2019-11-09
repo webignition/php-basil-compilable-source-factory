@@ -2,10 +2,11 @@
 
 namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
-use webignition\BasilCompilationSource\MutableListLineListInterface;
+use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Line\Statement;
+use webignition\BasilCompilationSource\MutableBlockInterface;
 use webignition\BasilCompilationSource\SourceInterface;
-use webignition\BasilCompilationSource\Statement;
-use webignition\BasilCompilationSource\LineList;
+
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
@@ -24,7 +25,7 @@ class VariableAssignmentFactory
     ): SourceInterface {
         $assignment = clone $accessor;
 
-        if ($assignment instanceof MutableListLineListInterface) {
+        if ($assignment instanceof MutableBlockInterface) {
             $assignment->mutateLastStatement(function (string $content) use ($placeholder, $default) {
                 return $placeholder . ' = ' . $content . ' ?? ' . $default;
             });
@@ -34,7 +35,7 @@ class VariableAssignmentFactory
             ]));
         }
 
-        return new LineList([
+        return new Block([
             $assignment,
             new Statement(sprintf('%s = (%s) %s', (string) $placeholder, $type, (string) $placeholder))
         ]);

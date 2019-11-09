@@ -9,15 +9,15 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler;
 use webignition\BasilCompilableSourceFactory\Handler\StepHandler;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\ClassDependency;
-use webignition\BasilCompilationSource\ClassDependencyCollection;
-use webignition\BasilCompilationSource\Comment;
-use webignition\BasilCompilationSource\EmptyLine;
-use webignition\BasilCompilationSource\LineList;
-use webignition\BasilCompilationSource\Metadata;
-use webignition\BasilCompilationSource\MetadataInterface;
+use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
+use webignition\BasilCompilationSource\Line\ClassDependency;
+use webignition\BasilCompilationSource\Line\Comment;
+use webignition\BasilCompilationSource\Line\EmptyLine;
+use webignition\BasilCompilationSource\Line\Statement;
+use webignition\BasilCompilationSource\Metadata\Metadata;
+use webignition\BasilCompilationSource\Metadata\MetadataInterface;
 use webignition\BasilCompilationSource\SourceInterface;
-use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Step\Step;
 use webignition\BasilModel\Step\StepInterface;
@@ -63,7 +63,7 @@ class StepHandlerTest extends AbstractHandlerTest
         return [
             'empty step' => [
                 'step' => new Step([], []),
-                'expectedContent' => new LineList(),
+                'expectedContent' => new Block(),
                 'expectedMetadata' => new Metadata(),
             ],
             'one action' => [
@@ -73,7 +73,7 @@ class StepHandlerTest extends AbstractHandlerTest
                     ],
                     []
                 ),
-                'expectedContent' => new LineList([
+                'expectedContent' => new Block([
                     new Comment('click ".selector"'),
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
@@ -104,7 +104,7 @@ class StepHandlerTest extends AbstractHandlerTest
                     ],
                     []
                 ),
-                'expectedContent' => new LineList([
+                'expectedContent' => new Block([
                     new Comment('click ".selector"'),
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
@@ -140,7 +140,7 @@ class StepHandlerTest extends AbstractHandlerTest
                         $assertionFactory->createFromAssertionString('$page.title is "value"'),
                     ]
                 ),
-                'expectedContent' => new LineList([
+                'expectedContent' => new Block([
                     new Comment('$page.title is "value"'),
                     new Statement('{{ EXPECTED }} = "value" ?? null'),
                     new Statement('{{ EXPECTED }} = (string) {{ EXPECTED }}'),
@@ -167,7 +167,7 @@ class StepHandlerTest extends AbstractHandlerTest
                         $assertionFactory->createFromAssertionString('$page.url is "http://example.com"'),
                     ]
                 ),
-                'expectedContent' => new LineList([
+                'expectedContent' => new Block([
                     new Comment('$page.title is "value"'),
                     new Statement('{{ EXPECTED }} = "value" ?? null'),
                     new Statement('{{ EXPECTED }} = (string) {{ EXPECTED }}'),
@@ -202,7 +202,7 @@ class StepHandlerTest extends AbstractHandlerTest
                         $assertionFactory->createFromAssertionString('$page.title is "value"'),
                     ]
                 ),
-                'expectedContent' => new LineList([
+                'expectedContent' => new Block([
                     new Comment('click ".selector"'),
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),

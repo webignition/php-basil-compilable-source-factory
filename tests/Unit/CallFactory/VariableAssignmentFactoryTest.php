@@ -6,13 +6,13 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 
-use webignition\BasilCodeGenerator\CodeBlockGenerator;
+use webignition\BasilCodeGenerator\BlockGenerator;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
-use webignition\BasilCompilationSource\Metadata;
+use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Line\Statement;
+use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\SourceInterface;
-use webignition\BasilCompilationSource\Statement;
-use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
@@ -24,16 +24,16 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
     private $factory;
 
     /**
-     * @var CodeBlockGenerator
+     * @var BlockGenerator
      */
-    private $codeBlockGenerator;
+    private $blockGenerator;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->factory = VariableAssignmentFactory::createFactory();
-        $this->codeBlockGenerator = CodeBlockGenerator::create();
+        $this->blockGenerator = BlockGenerator::create();
     }
 
     /**
@@ -57,12 +57,12 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
         $this->assertSourceContentEquals($expectedContent, $source);
         $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
 
-        if ($source instanceof LineList) {
+        if ($source instanceof Block) {
             $source->mutateLastStatement(function ($content) {
                 return 'return ' . $content;
             });
 
-            $code = $this->codeBlockGenerator->createFromLineList($source, [
+            $code = $this->blockGenerator->createFromBlock($source, [
                 'VALUE' => '$value',
             ]);
 
@@ -78,7 +78,7 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
             'string value cast to string' => [
                 'accessor' => new Statement('"value"'),
                 'type' => 'string',
-                'expectedContent' => LineList::fromContent([
+                'expectedContent' => Block::fromContent([
                     '{{ VALUE }} = "value" ?? null',
                     '{{ VALUE }} = (string) {{ VALUE }}',
                 ]),
@@ -87,7 +87,7 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
             'null value cast to string' => [
                 'accessor' => new Statement('null'),
                 'type' => 'string',
-                'expectedContent' => LineList::fromContent([
+                'expectedContent' => Block::fromContent([
                     '{{ VALUE }} = null ?? null',
                     '{{ VALUE }} = (string) {{ VALUE }}',
                 ]),
@@ -96,7 +96,7 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
             'int value cast to string' => [
                 'accessor' => new Statement('30'),
                 'type' => 'string',
-                'expectedContent' => LineList::fromContent([
+                'expectedContent' => Block::fromContent([
                     '{{ VALUE }} = 30 ?? null',
                     '{{ VALUE }} = (string) {{ VALUE }}',
                 ]),
@@ -105,7 +105,7 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
             'string value cast to int' => [
                 'accessor' => new Statement('"value"'),
                 'type' => 'int',
-                'expectedContent' => LineList::fromContent([
+                'expectedContent' => Block::fromContent([
                     '{{ VALUE }} = "value" ?? null',
                     '{{ VALUE }} = (int) {{ VALUE }}',
                 ]),
@@ -114,7 +114,7 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
             'int value cast to int' => [
                 'accessor' => new Statement('30'),
                 'type' => 'int',
-                'expectedContent' => LineList::fromContent([
+                'expectedContent' => Block::fromContent([
                     '{{ VALUE }} = 30 ?? null',
                     '{{ VALUE }} = (int) {{ VALUE }}',
                 ]),
@@ -123,20 +123,20 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
             'null value cast to int' => [
                 'accessor' => new Statement('null'),
                 'type' => 'int',
-                'expectedContent' => LineList::fromContent([
+                'expectedContent' => Block::fromContent([
                     '{{ VALUE }} = null ?? null',
                     '{{ VALUE }} = (int) {{ VALUE }}',
                 ]),
                 'expectedAssignedValue' => 0,
             ],
             'only last statement is modified' => [
-                'accessor' => LineList::fromContent([
+                'accessor' => Block::fromContent([
                     '$a = "content"',
                     '$b = $a',
                     '$b',
                 ]),
                 'type' => 'string',
-                'expectedContent' => LineList::fromContent([
+                'expectedContent' => Block::fromContent([
                     '$a = "content"',
                     '$b = $a',
                     '{{ VALUE }} = $b ?? null',

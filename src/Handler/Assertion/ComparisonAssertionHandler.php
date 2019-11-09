@@ -10,7 +10,7 @@ use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\MutableListLineListInterface;
+use webignition\BasilCompilationSource\MutableBlockInterface;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilModel\Assertion\AssertionComparison;
@@ -99,7 +99,7 @@ class ComparisonAssertionHandler implements HandlerInterface
                 new NamedDomIdentifierValue($examinedValue, $examinedValuePlaceholder)
             );
 
-            if ($examinedValueAccessor instanceof MutableListLineListInterface) {
+            if ($examinedValueAccessor instanceof MutableBlockInterface) {
                 $examinedValueAccessor->mutateLastStatement(function (string $content) use ($examinedValuePlaceholder) {
                     return str_replace((string) $examinedValuePlaceholder . ' = ', '', $content);
                 });
@@ -113,7 +113,7 @@ class ComparisonAssertionHandler implements HandlerInterface
                 new NamedDomIdentifierValue($expectedValue, $expectedValuePlaceholder)
             );
 
-            if ($expectedValueAccessor instanceof MutableListLineListInterface) {
+            if ($expectedValueAccessor instanceof MutableBlockInterface) {
                 $expectedValueAccessor->mutateLastStatement(function (string $content) use ($expectedValuePlaceholder) {
                     return str_replace((string) $expectedValuePlaceholder . ' = ', '', $content);
                 });
