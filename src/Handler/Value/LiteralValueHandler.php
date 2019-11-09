@@ -4,8 +4,8 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Value;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
+use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\SourceInterface;
-use webignition\BasilCompilationSource\Statement;
 use webignition\BasilModel\Value\LiteralValueInterface;
 
 class LiteralValueHandler implements HandlerInterface
@@ -20,6 +20,13 @@ class LiteralValueHandler implements HandlerInterface
         return $model instanceof LiteralValueInterface;
     }
 
+    /**
+     * @param object $model
+     *
+     * @return SourceInterface
+     *
+     * @throws UnsupportedModelException
+     */
     public function handle(object $model): SourceInterface
     {
         if ($this->handles($model)) {
