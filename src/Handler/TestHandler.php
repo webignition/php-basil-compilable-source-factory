@@ -6,15 +6,15 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\ClassDefinition;
-use webignition\BasilCompilationSource\Comment;
-use webignition\BasilCompilationSource\LineList;
-use webignition\BasilCompilationSource\Metadata;
-use webignition\BasilCompilationSource\MethodDefinition;
-use webignition\BasilCompilationSource\MethodDefinitionInterface;
+use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\ClassDefinition\ClassDefinition;
+use webignition\BasilCompilationSource\Line\Comment;
+use webignition\BasilCompilationSource\Line\Statement;
+use webignition\BasilCompilationSource\Line\StatementInterface;
+use webignition\BasilCompilationSource\Metadata\Metadata;
+use webignition\BasilCompilationSource\MethodDefinition\MethodDefinition;
+use webignition\BasilCompilationSource\MethodDefinition\MethodDefinitionInterface;
 use webignition\BasilCompilationSource\SourceInterface;
-use webignition\BasilCompilationSource\Statement;
-use webignition\BasilCompilationSource\StatementInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Test\TestInterface;
 
@@ -66,7 +66,7 @@ class TestHandler implements HandlerInterface
 
             $methodDefinitions[] = new MethodDefinition(
                 $stepMethodName,
-                new LineList([
+                new Block([
                     new Comment($stepName),
                     $this->stepHandler->handle($step),
                 ])
@@ -84,7 +84,7 @@ class TestHandler implements HandlerInterface
         $parentCallStatement = new Statement('parent::setUpBeforeClass()');
         $clientRequestStatement = $this->createClientRequestStatement($test);
 
-        $setupBeforeClassMethod = new MethodDefinition('setUpBeforeClass', new LineList([
+        $setupBeforeClassMethod = new MethodDefinition('setUpBeforeClass', new Block([
             $parentCallStatement,
             $clientRequestStatement,
         ]));
