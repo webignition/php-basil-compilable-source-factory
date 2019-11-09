@@ -44,7 +44,7 @@ trait CreateFromWaitActionDataProviderTrait
                 ),
                 'expectedContent' => new LineList([
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.duration-selector\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
                     new Statement('{{ DURATION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.duration-selector\'))'),
                     new Statement('{{ DURATION }} = '
                         . '{{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ DURATION }}) ?? 0'),
@@ -74,7 +74,7 @@ trait CreateFromWaitActionDataProviderTrait
                 ),
                 'expectedContent' => new LineList([
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.duration-selector\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
                     new Statement(
                         '{{ DURATION }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.duration-selector\'))'
                     ),

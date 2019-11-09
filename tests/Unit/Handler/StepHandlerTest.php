@@ -76,7 +76,7 @@ class StepHandlerTest extends AbstractHandlerTest
                 'expectedContent' => new LineList([
                     new Comment('click ".selector"'),
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
                     new Statement(
                         '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'
                     ),
@@ -107,7 +107,7 @@ class StepHandlerTest extends AbstractHandlerTest
                 'expectedContent' => new LineList([
                     new Comment('click ".selector"'),
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
                     new Statement(
                         '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'
                     ),
@@ -146,8 +146,7 @@ class StepHandlerTest extends AbstractHandlerTest
                     new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
                     new Statement('{{ EXAMINED_VALUE }} = {{ CLIENT }}->getTitle() ?? null'),
                     new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}'
-                        . '->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})'),
+                    new Statement('{{ PHPUNIT }}->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})'),
                     new EmptyLine(),
                 ]),
                 'expectedMetadata' => (new Metadata())
@@ -174,14 +173,14 @@ class StepHandlerTest extends AbstractHandlerTest
                     new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
                     new Statement('{{ EXAMINED_VALUE }} = {{ CLIENT }}->getTitle() ?? null'),
                     new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})'),
+                    new Statement('{{ PHPUNIT }}->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})'),
                     new EmptyLine(),
                     new Comment('$page.url is "http://example.com"'),
                     new Statement('{{ EXPECTED_VALUE }} = "http://example.com" ?? null'),
                     new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
                     new Statement('{{ EXAMINED_VALUE }} = {{ CLIENT }}->getCurrentURL() ?? null'),
                     new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})'),
+                    new Statement('{{ PHPUNIT }}->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})'),
                     new EmptyLine(),
                 ]),
                 'expectedMetadata' => (new Metadata())
@@ -206,7 +205,7 @@ class StepHandlerTest extends AbstractHandlerTest
                 'expectedContent' => new LineList([
                     new Comment('click ".selector"'),
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
                     new Statement(
                         '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'
                     ),
@@ -217,7 +216,7 @@ class StepHandlerTest extends AbstractHandlerTest
                     new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
                     new Statement('{{ EXAMINED_VALUE }} = {{ CLIENT }}->getTitle() ?? null'),
                     new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})'),
+                    new Statement('{{ PHPUNIT }}->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})'),
                     new EmptyLine(),
                 ]),
                 'expectedMetadata' => (new Metadata())

@@ -87,7 +87,7 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                 ),
                 'expectedContent' => new LineList([
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
                     new Statement('{{ E }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ E }} = {{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ E }})'),
                 ]),
@@ -117,7 +117,7 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                         '{{ HAS }} = '
                         . '{{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))'
                     ),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
                     new Statement(
                         '{{ E }} = '
                         . '{{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))'
@@ -147,7 +147,7 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                 ),
                 'expectedContent' => new LineList([
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
                     new Statement('{{ E }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ E }} = {{ E }}->getAttribute(\'attribute_name\')'),
                 ]),
@@ -178,7 +178,7 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                         '{{ HAS }} = '
                         . '{{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))'
                     ),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
                     new Statement(
                         '{{ E }} = '
                         . '{{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))'

@@ -28,7 +28,7 @@ trait CreateFromNotExistsAssertionDataProviderTrait
                 ),
                 'expectedContent' => new LineList([
                     new Statement('{{ EXAMINED_VALUE }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertFalse({{ EXAMINED_VALUE }})'),
+                    new Statement('{{ PHPUNIT }}->assertFalse({{ EXAMINED_VALUE }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -48,12 +48,12 @@ trait CreateFromNotExistsAssertionDataProviderTrait
                 ),
                 'expectedContent' => new LineList([
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
                     new Statement('{{ EXAMINED_VALUE }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ EXAMINED_VALUE }} = '
                         . '{{ EXAMINED_VALUE }}->getAttribute(\'attribute_name\')'),
                     new Statement('{{ EXAMINED_VALUE }} = {{ EXAMINED_VALUE }} !== null'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertFalse({{ EXAMINED_VALUE }})'),
+                    new Statement('{{ PHPUNIT }}->assertFalse({{ EXAMINED_VALUE }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([

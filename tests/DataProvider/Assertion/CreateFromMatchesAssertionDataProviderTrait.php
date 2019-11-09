@@ -30,13 +30,12 @@ trait CreateFromMatchesAssertionDataProviderTrait
                     new Statement('{{ EXPECTED_VALUE }} = "/^value/" ?? null'),
                     new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
                     new Statement('{{ EXAMINED_VALUE }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ EXAMINED_VALUE }} = '
                         . '{{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ EXAMINED_VALUE }}) ?? null'),
                     new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}'
-                        . '->assertRegExp({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})'),
+                    new Statement('{{ PHPUNIT }}->assertRegExp({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -61,13 +60,12 @@ trait CreateFromMatchesAssertionDataProviderTrait
                     new Statement('{{ EXPECTED_VALUE }} = "/^value/" ?? null'),
                     new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
                     new Statement('{{ EXAMINED_VALUE }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ EXAMINED_VALUE }} = '
                         . '{{ EXAMINED_VALUE }}->getAttribute(\'attribute_name\') ?? null'),
                     new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}'
-                        . '->assertRegExp({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})'),
+                    new Statement('{{ PHPUNIT }}->assertRegExp({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([

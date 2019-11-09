@@ -28,7 +28,7 @@ trait CreateFromClickActionDataProviderTrait
                 ),
                 'expectedContent' => new LineList([
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
                     new Statement('{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ ELEMENT }}->click()'),
                 ]),

@@ -31,7 +31,7 @@ trait CreateFromSetActionDataProviderTrait
                 ),
                 'expectedContent' => new LineList([
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
                     new Statement('{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ VALUE }} = "value" ?? null'),
                     new Statement('{{ VALUE }} = (string) {{ VALUE }}'),
@@ -63,10 +63,10 @@ trait CreateFromSetActionDataProviderTrait
                 ),
                 'expectedContent' => new LineList([
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
                     new Statement('{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.source\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
                     new Statement('{{ VALUE }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.source\'))'),
                     new Statement('{{ VALUE }} = '
                         . '{{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ VALUE }}) ?? null'),
@@ -100,10 +100,10 @@ trait CreateFromSetActionDataProviderTrait
                 ),
                 'expectedContent' => new LineList([
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
                     new Statement('{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.source\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
                     new Statement('{{ VALUE }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.source\'))'),
                     new Statement('{{ VALUE }} = {{ VALUE }}->getAttribute(\'attribute_name\') ?? null'),
                     new Statement('{{ VALUE }} = (string) {{ VALUE }}'),
@@ -130,7 +130,7 @@ trait CreateFromSetActionDataProviderTrait
                 ),
                 'expectedContent' => new LineList([
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
                     new Statement('{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
                     new Statement(
                         '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()'
@@ -164,7 +164,7 @@ trait CreateFromSetActionDataProviderTrait
                 ),
                 'expectedContent' => new LineList([
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
                     new Statement('{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ VALUE }} = {{ CLIENT }}->getCurrentURL() ?? null'),
                     new Statement('{{ VALUE }} = (string) {{ VALUE }}'),
@@ -192,7 +192,7 @@ trait CreateFromSetActionDataProviderTrait
                 ),
                 'expectedContent' => new LineList([
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
                     new Statement('{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ VALUE }} = {{ ENV }}[\'KEY\'] ?? null'),
                     new Statement('{{ VALUE }} = (string) {{ VALUE }}'),
