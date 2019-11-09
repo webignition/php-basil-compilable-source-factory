@@ -43,13 +43,10 @@ trait CreateFromWaitActionDataProviderTrait
                     new DomIdentifierValue(new DomIdentifier('.duration-selector'))
                 ),
                 'expectedContent' => new LineList([
-                    new Statement('{{ HAS }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.duration-selector\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ DURATION }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.duration-selector\'))'),
-                    new Statement('{{ DURATION }} = '
-                        . '{{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ DURATION }}) ?? 0'),
+                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.duration-selector\'))'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ DURATION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.duration-selector\'))'),
+                    new Statement('{{ DURATION }} = {{ INSPECTOR }}->getValue({{ DURATION }}) ?? 0'),
                     new Statement('{{ DURATION }} = (int) {{ DURATION }}'),
                     new Statement('usleep({{ DURATION }} * 1000)'),
                 ]),
@@ -75,11 +72,11 @@ trait CreateFromWaitActionDataProviderTrait
                     )
                 ),
                 'expectedContent' => new LineList([
-                    new Statement('{{ HAS }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.duration-selector\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ DURATION }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.duration-selector\'))'),
+                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.duration-selector\'))'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
+                    new Statement(
+                        '{{ DURATION }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.duration-selector\'))'
+                    ),
                     new Statement('{{ DURATION }} = {{ DURATION }}->getAttribute(\'attribute_name\') ?? 0'),
                     new Statement('{{ DURATION }} = (int) {{ DURATION }}'),
                     new Statement('usleep({{ DURATION }} * 1000)'),
@@ -100,8 +97,9 @@ trait CreateFromWaitActionDataProviderTrait
             'wait action, browser property' => [
                 'action' => $actionFactory->createFromActionString('wait $browser.size'),
                 'expectedContent' => new LineList([
-                    new Statement('{{ WEBDRIVER_DIMENSION }} = '
-                        . '{{ PANTHER_CLIENT }}->getWebDriver()->manage()->window()->getSize()'),
+                    new Statement(
+                        '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()'
+                    ),
                     new Statement('{{ DURATION }} = '
                         . '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
                         . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? 0'),
@@ -120,7 +118,7 @@ trait CreateFromWaitActionDataProviderTrait
             'wait action, page property' => [
                 'action' => $actionFactory->createFromActionString('wait $page.title'),
                 'expectedContent' => new LineList([
-                    new Statement('{{ DURATION }} = {{ PANTHER_CLIENT }}->getTitle() ?? 0'),
+                    new Statement('{{ DURATION }} = {{ CLIENT }}->getTitle() ?? 0'),
                     new Statement('{{ DURATION }} = (int) {{ DURATION }}'),
                     new Statement('usleep({{ DURATION }} * 1000)'),
                 ]),
@@ -135,7 +133,7 @@ trait CreateFromWaitActionDataProviderTrait
             'wait action, environment value' => [
                 'action' => $actionFactory->createFromActionString('wait $env.DURATION'),
                 'expectedContent' => new LineList([
-                    new Statement('{{ DURATION }} = {{ ENVIRONMENT_VARIABLE_ARRAY }}[\'DURATION\'] ?? 0'),
+                    new Statement('{{ DURATION }} = {{ ENV }}[\'DURATION\'] ?? 0'),
                     new Statement('{{ DURATION }} = (int) {{ DURATION }}'),
                     new Statement('usleep({{ DURATION }} * 1000)'),
                 ]),

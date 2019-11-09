@@ -27,19 +27,15 @@ trait CreateFromIncludesAssertionDataProviderTrait
                     '".selector" includes "value"'
                 ),
                 'expectedContent' => new LineList([
-                    new Statement('{{ EXPECTED_VALUE }} = "value" ?? null'),
-                    new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
-                    new Statement('{{ HAS }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ EXAMINED_VALUE }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ EXAMINED_VALUE }} = '
-                        . '{{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ EXAMINED_VALUE }}) ?? null'),
-                    new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}'
-                        . '->assertStringContainsString((string) {{ EXPECTED_VALUE }}, '
-                        . '(string) {{ EXAMINED_VALUE }})'),
+                    new Statement('{{ EXPECTED }} = "value" ?? null'),
+                    new Statement('{{ EXPECTED }} = (string) {{ EXPECTED }}'),
+                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ EXAMINED }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ EXAMINED }} = {{ INSPECTOR }}->getValue({{ EXAMINED }}) ?? null'),
+                    new Statement('{{ EXAMINED }} = (string) {{ EXAMINED }}'),
+                    new Statement('{{ PHPUNIT }}->'
+                        . 'assertStringContainsString((string) {{ EXPECTED }}, (string) {{ EXAMINED }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -61,19 +57,15 @@ trait CreateFromIncludesAssertionDataProviderTrait
                     '".selector".attribute_name includes "value"'
                 ),
                 'expectedContent' => new LineList([
-                    new Statement('{{ EXPECTED_VALUE }} = "value" ?? null'),
-                    new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
-                    new Statement('{{ HAS }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ EXAMINED_VALUE }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ EXAMINED_VALUE }} = '
-                        . '{{ EXAMINED_VALUE }}->getAttribute(\'attribute_name\') ?? null'),
-                    new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}'
-                        . '->assertStringContainsString((string) {{ EXPECTED_VALUE }}, '
-                        . '(string) {{ EXAMINED_VALUE }})'),
+                    new Statement('{{ EXPECTED }} = "value" ?? null'),
+                    new Statement('{{ EXPECTED }} = (string) {{ EXPECTED }}'),
+                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ EXAMINED }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ EXAMINED }} = {{ EXAMINED }}->getAttribute(\'attribute_name\') ?? null'),
+                    new Statement('{{ EXAMINED }} = (string) {{ EXAMINED }}'),
+                    new Statement('{{ PHPUNIT }}'
+                        . '->assertStringContainsString((string) {{ EXPECTED }}, (string) {{ EXAMINED }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([

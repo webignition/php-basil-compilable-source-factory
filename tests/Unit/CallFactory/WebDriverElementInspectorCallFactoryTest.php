@@ -48,7 +48,7 @@ class WebDriverElementInspectorCallFactoryTest extends AbstractTestCase
             'default' => [
                 'collectionPlaceholder' => new VariablePlaceholder('COLLECTION'),
                 'expectedStatement' => new Statement(
-                    '{{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ COLLECTION }})',
+                    '{{ INSPECTOR }}->getValue({{ COLLECTION }})',
                     (new Metadata())
                         ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                             VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,

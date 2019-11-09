@@ -50,7 +50,7 @@ class WebDriverElementMutatorCallFactoryTest extends AbstractTestCase
                 'collectionPlaceholder' => new VariablePlaceholder('COLLECTION'),
                 'valuePlaceholder' => new VariablePlaceholder('VALUE'),
                 'expectedStatement' => new Statement(
-                    '{{ WEBDRIVER_ELEMENT_MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
+                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
                     (new Metadata())
                         ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                             VariableNames::WEBDRIVER_ELEMENT_MUTATOR,

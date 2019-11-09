@@ -30,14 +30,12 @@ trait CreateFromSetActionDataProviderTrait
                     'set ".selector" to "value"'
                 ),
                 'expectedContent' => new LineList([
-                    new Statement('{{ HAS }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ COLLECTION }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ VALUE }} = "value" ?? null'),
                     new Statement('{{ VALUE }} = (string) {{ VALUE }}'),
-                    new Statement('{{ WEBDRIVER_ELEMENT_MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})'),
+                    new Statement('{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -64,20 +62,15 @@ trait CreateFromSetActionDataProviderTrait
                     '".selector" to ".source"'
                 ),
                 'expectedContent' => new LineList([
-                    new Statement('{{ HAS }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ COLLECTION }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ HAS }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.source\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ VALUE }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.source\'))'),
-                    new Statement('{{ VALUE }} = '
-                        . '{{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ VALUE }}) ?? null'),
+                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.source\'))'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ VALUE }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.source\'))'),
+                    new Statement('{{ VALUE }} = {{ INSPECTOR }}->getValue({{ VALUE }}) ?? null'),
                     new Statement('{{ VALUE }} = (string) {{ VALUE }}'),
-                    new Statement('{{ WEBDRIVER_ELEMENT_MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})'),
+                    new Statement('{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -105,19 +98,15 @@ trait CreateFromSetActionDataProviderTrait
                     '".selector" to ".source"'
                 ),
                 'expectedContent' => new LineList([
-                    new Statement('{{ HAS }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ COLLECTION }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ HAS }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.source\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ VALUE }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.source\'))'),
+                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.source\'))'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ VALUE }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.source\'))'),
                     new Statement('{{ VALUE }} = {{ VALUE }}->getAttribute(\'attribute_name\') ?? null'),
                     new Statement('{{ VALUE }} = (string) {{ VALUE }}'),
-                    new Statement('{{ WEBDRIVER_ELEMENT_MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})'),
+                    new Statement('{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -139,18 +128,17 @@ trait CreateFromSetActionDataProviderTrait
                     'set ".selector" to $browser.size'
                 ),
                 'expectedContent' => new LineList([
-                    new Statement('{{ HAS }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ COLLECTION }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ WEBDRIVER_DIMENSION }} = '
-                        . '{{ PANTHER_CLIENT }}->getWebDriver()->manage()->window()->getSize()'),
+                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
+                    new Statement(
+                        '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()'
+                    ),
                     new Statement('{{ VALUE }} = '
                         . '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
                         . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null'),
                     new Statement('{{ VALUE }} = (string) {{ VALUE }}'),
-                    new Statement('{{ WEBDRIVER_ELEMENT_MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})'),
+                    new Statement('{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -174,14 +162,12 @@ trait CreateFromSetActionDataProviderTrait
                     'set ".selector" to $page.url'
                 ),
                 'expectedContent' => new LineList([
-                    new Statement('{{ HAS }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ COLLECTION }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ VALUE }} = {{ PANTHER_CLIENT }}->getCurrentURL() ?? null'),
+                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ VALUE }} = {{ CLIENT }}->getCurrentURL() ?? null'),
                     new Statement('{{ VALUE }} = (string) {{ VALUE }}'),
-                    new Statement('{{ WEBDRIVER_ELEMENT_MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})'),
+                    new Statement('{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -204,14 +190,12 @@ trait CreateFromSetActionDataProviderTrait
                     'set ".selector" to $env.KEY'
                 ),
                 'expectedContent' => new LineList([
-                    new Statement('{{ HAS }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ COLLECTION }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ VALUE }} = {{ ENVIRONMENT_VARIABLE_ARRAY }}[\'KEY\'] ?? null'),
+                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ VALUE }} = {{ ENV }}[\'KEY\'] ?? null'),
                     new Statement('{{ VALUE }} = (string) {{ VALUE }}'),
-                    new Statement('{{ WEBDRIVER_ELEMENT_MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})'),
+                    new Statement('{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([

@@ -27,9 +27,9 @@ trait CreateFromExistsAssertionDataProviderTrait
                     '$page.url exists'
                 ),
                 'expectedContent' => new LineList([
-                    new Statement('{{ EXAMINED_VALUE }} = {{ PANTHER_CLIENT }}->getCurrentURL() ?? null'),
-                    new Statement('{{ EXAMINED_VALUE }} = {{ EXAMINED_VALUE }} !== null'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ EXAMINED_VALUE }})'),
+                    new Statement('{{ EXAMINED }} = {{ CLIENT }}->getCurrentURL() ?? null'),
+                    new Statement('{{ EXAMINED }} = {{ EXAMINED }} !== null'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ EXAMINED }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
@@ -45,9 +45,8 @@ trait CreateFromExistsAssertionDataProviderTrait
                     '".selector" exists'
                 ),
                 'expectedContent' => new LineList([
-                    new Statement('{{ EXAMINED_VALUE }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ EXAMINED_VALUE }})'),
+                    new Statement('{{ EXAMINED }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ EXAMINED }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -66,15 +65,12 @@ trait CreateFromExistsAssertionDataProviderTrait
                     '".selector".attribute_name exists'
                 ),
                 'expectedContent' => new LineList([
-                    new Statement('{{ HAS }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ EXAMINED_VALUE }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ EXAMINED_VALUE }} = '
-                        . '{{ EXAMINED_VALUE }}->getAttribute(\'attribute_name\')'),
-                    new Statement('{{ EXAMINED_VALUE }} = {{ EXAMINED_VALUE }} !== null'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ EXAMINED_VALUE }})'),
+                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ EXAMINED }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ EXAMINED }} = {{ EXAMINED }}->getAttribute(\'attribute_name\')'),
+                    new Statement('{{ EXAMINED }} = {{ EXAMINED }} !== null'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ EXAMINED }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([

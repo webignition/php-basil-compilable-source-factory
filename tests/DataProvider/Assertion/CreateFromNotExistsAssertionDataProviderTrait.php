@@ -27,9 +27,8 @@ trait CreateFromNotExistsAssertionDataProviderTrait
                     '".selector" not-exists'
                 ),
                 'expectedContent' => new LineList([
-                    new Statement('{{ EXAMINED_VALUE }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertFalse({{ EXAMINED_VALUE }})'),
+                    new Statement('{{ EXAMINED }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ PHPUNIT }}->assertFalse({{ EXAMINED }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -48,15 +47,12 @@ trait CreateFromNotExistsAssertionDataProviderTrait
                     '".selector".attribute_name not-exists'
                 ),
                 'expectedContent' => new LineList([
-                    new Statement('{{ HAS }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ EXAMINED_VALUE }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ EXAMINED_VALUE }} = '
-                        . '{{ EXAMINED_VALUE }}->getAttribute(\'attribute_name\')'),
-                    new Statement('{{ EXAMINED_VALUE }} = {{ EXAMINED_VALUE }} !== null'),
-                    new Statement('{{ PHPUNIT_TEST_CASE }}->assertFalse({{ EXAMINED_VALUE }})'),
+                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
+                    new Statement('{{ EXAMINED }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ EXAMINED }} = {{ EXAMINED }}->getAttribute(\'attribute_name\')'),
+                    new Statement('{{ EXAMINED }} = {{ EXAMINED }} !== null'),
+                    new Statement('{{ PHPUNIT }}->assertFalse({{ EXAMINED }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([

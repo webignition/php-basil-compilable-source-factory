@@ -22,7 +22,7 @@ trait CreateFromBackActionDataProviderTrait
             'no-arguments action (back)' => [
                 'action' => $actionFactory->createFromActionString('back'),
                 'expectedContent' => new LineList([
-                    new Statement('{{ CRAWLER }} = {{ PANTHER_CLIENT }}->back()'),
+                    new Statement('{{ CRAWLER }} = {{ CLIENT }}->back()'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
