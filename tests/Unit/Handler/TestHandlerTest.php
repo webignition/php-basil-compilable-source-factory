@@ -123,22 +123,20 @@ class TestHandlerTest extends AbstractHandlerTest
                             new Comment('step one'),
                             new Comment('click ".selector"'),
                             new Statement(
-                                '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'
+                                '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'
                             ),
-                            new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
+                            new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
                             new Statement(
-                                '{{ ELEMENT }} = '
-                                . '{{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'
+                                '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'
                             ),
                             new Statement('{{ ELEMENT }}->click()'),
                             new EmptyLine(),
                             new Comment('$page.title is "value"'),
-                            new Statement('{{ EXPECTED_VALUE }} = "value" ?? null'),
-                            new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
-                            new Statement('{{ EXAMINED_VALUE }} = {{ PANTHER_CLIENT }}->getTitle() ?? null'),
-                            new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
-                            new Statement('{{ PHPUNIT_TEST_CASE }}'
-                                . '->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})'),
+                            new Statement('{{ EXPECTED }} = "value" ?? null'),
+                            new Statement('{{ EXPECTED }} = (string) {{ EXPECTED }}'),
+                            new Statement('{{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null'),
+                            new Statement('{{ EXAMINED }} = (string) {{ EXAMINED }}'),
+                            new Statement('{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})'),
                             new EmptyLine(),
                         ])
                     ),
@@ -155,8 +153,8 @@ class TestHandlerTest extends AbstractHandlerTest
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
                         'HAS',
                         'ELEMENT',
-                        'EXAMINED_VALUE',
-                        'EXPECTED_VALUE',
+                        VariableNames::EXAMINED_VALUE,
+                        VariableNames::EXPECTED_VALUE,
                     ])),
             ],
         ];
@@ -166,7 +164,7 @@ class TestHandlerTest extends AbstractHandlerTest
     {
         $method = new MethodDefinition('setUpBeforeClass', new LineList([
             new Statement('parent::setUpBeforeClass()'),
-            new Statement('{{ PANTHER_CLIENT }}->request(\'GET\', \'' . $requestUrl . '\')'),
+            new Statement('{{ CLIENT }}->request(\'GET\', \'' . $requestUrl . '\')'),
         ]));
         $method->setReturnType('void');
         $method->setStatic();
