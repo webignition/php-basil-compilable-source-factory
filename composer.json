@@ -34,7 +34,7 @@
     "require": {
         "php": ">=7.2",
         "ext-json": "*",
-        "webignition/php-basil-compilation-source": ">=0.49,<1",
+        "webignition/php-basil-compilation-source": ">=0.50,<1",
         "webignition/php-basil-models": ">=0.89,<1",
         "webignition/symfony-panther-dom-crawler-navigator": ">=0.13,<1",
         "webignition/webdriver-element-inspector": ">=0.6,<1",
