@@ -6,9 +6,9 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException
 use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
-use webignition\BasilCompilationSource\Comment;
-use webignition\BasilCompilationSource\EmptyLine;
-use webignition\BasilCompilationSource\LineList;
+use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Line\Comment;
+use webignition\BasilCompilationSource\Line\EmptyLine;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilModel\StatementInterface;
 use webignition\BasilModel\Step\StepInterface;
@@ -50,22 +50,22 @@ class StepHandler implements HandlerInterface
             throw new UnsupportedModelException($model);
         }
 
-        $lineList = new LineList([]);
+        $block = new Block([]);
 
         foreach ($model->getActions() as $action) {
-            $this->addSourceToLineList($lineList, $action, $this->actionHandler->handle($action));
+            $this->addSourceToLineList($block, $action, $this->actionHandler->handle($action));
         }
 
         foreach ($model->getAssertions() as $assertion) {
-            $this->addSourceToLineList($lineList, $assertion, $this->assertionHandler->handle($assertion));
+            $this->addSourceToLineList($block, $assertion, $this->assertionHandler->handle($assertion));
         }
 
-        return $lineList;
+        return $block;
     }
 
-    private function addSourceToLineList(LineList $lineList, StatementInterface $statement, SourceInterface $source)
+    private function addSourceToLineList(Block $block, StatementInterface $statement, SourceInterface $source)
     {
-        $lineList->addLinesFromSources([
+        $block->addLinesFromSources([
             new Comment($statement->getSource()),
             $source,
             new EmptyLine(),

@@ -12,7 +12,7 @@ use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableName
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\LineList;
+use webignition\BasilCompilationSource\Block\Block;
 use webignition\BasilModel\Step\Step;
 use webignition\BasilModel\Step\StepInterface;
 use webignition\BasilModelFactory\Action\ActionFactory;
@@ -30,7 +30,7 @@ class StepHandlerTest extends AbstractHandlerTest
     public function testCreateSource(
         string $fixture,
         StepInterface $step,
-        ?LineList $teardownStatements = null,
+        ?Block $teardownStatements = null,
         array $additionalVariableIdentifiers = []
     ) {
         $source = $this->handler->handle($step);
@@ -70,7 +70,7 @@ class StepHandlerTest extends AbstractHandlerTest
                     ],
                     []
                 ),
-                'teardownStatements' => new LineList([
+                'teardownStatements' => new Block([
                     StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
                 ]),
                 'additionalVariableIdentifiers' => [
