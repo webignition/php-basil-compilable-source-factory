@@ -6,11 +6,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
+use webignition\BasilCodeGenerator\BlockGenerator;
 use webignition\BasilCodeGenerator\ClassGenerator;
-use webignition\BasilCodeGenerator\CodeBlockGenerator;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\LineList;
-use webignition\BasilCompilationSource\LineListInterface;
+use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
@@ -29,17 +29,17 @@ class TestCodeGenerator
 
     public function __construct(
         ClassGenerator $classGenerator,
-        CodeBlockGenerator $codeBlockGenerator
+        BlockGenerator $blockGenerator
     ) {
         $this->classGenerator = $classGenerator;
-        $this->codeBlockGenerator = $codeBlockGenerator;
+        $this->codeBlockGenerator = $blockGenerator;
     }
 
     public static function create(): TestCodeGenerator
     {
         return new TestCodeGenerator(
             ClassGenerator::create(),
-            CodeBlockGenerator::create()
+            BlockGenerator::create()
         );
     }
 
@@ -47,8 +47,8 @@ class TestCodeGenerator
         SourceInterface $source,
         array $additionalVariableIdentifiers = []
     ): string {
-        $codeSource = LineListFactory::createForSourceLineList($source);
-        $classDefinition = ClassDefinitionFactory::createPhpUnitTestForLineList($codeSource);
+        $blockSource = BlockFactory::createForSourceBlock($source);
+        $classDefinition = ClassDefinitionFactory::createPhpUnitTestForBlock($blockSource);
 
         $classCode = $this->classGenerator->createForClassDefinition(
             $classDefinition,
@@ -56,7 +56,7 @@ class TestCodeGenerator
             $additionalVariableIdentifiers
         );
 
-        $initializerCode = $this->codeBlockGenerator->createFromLineList(LineList::fromContent([
+        $initializerCode = $this->codeBlockGenerator->createFromBlock(Block::fromContent([
             '(new ' . $classDefinition->getName() . '())->testGeneratedCode()'
         ]));
 
@@ -66,12 +66,12 @@ class TestCodeGenerator
     public function createBrowserTestForLineList(
         SourceInterface $source,
         string $fixture,
-        ?LineListInterface $additionalSetupStatements = null,
-        ?LineListInterface $teardownStatements = null,
+        ?BlockInterface $additionalSetupStatements = null,
+        ?BlockInterface $teardownStatements = null,
         array $additionalVariableIdentifiers = []
     ): string {
-        $codeSource = LineListFactory::createForSourceLineList($source, $teardownStatements);
-        $classDefinition = ClassDefinitionFactory::createGeneratedBrowserTestForLineList(
+        $codeSource = BlockFactory::createForSourceBlock($source, $teardownStatements);
+        $classDefinition = ClassDefinitionFactory::createGeneratedBrowserTestForBlock(
             $fixture,
             $codeSource,
             $additionalSetupStatements
@@ -107,14 +107,14 @@ class TestCodeGenerator
         $variableIdentifiers = [];
 
         foreach ($variableDependencies as $variableDependency) {
-            $id = $variableDependency->getId();
-            $externalVariable = $externalVariables[$id] ?? null;
+            $name = $variableDependency->getName();
+            $externalVariable = $externalVariables[$name] ?? null;
 
             if (null === $externalVariable) {
-                throw new \RuntimeException(sprintf('Undefined dependent variable "%s"', $id));
+                throw new \RuntimeException(sprintf('Undefined dependent variable "%s"', $name));
             }
 
-            $variableIdentifiers[$variableDependency->getId()] = $externalVariable;
+            $variableIdentifiers[$variableDependency->getName()] = $externalVariable;
         }
 
         return $variableIdentifiers;

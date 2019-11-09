@@ -3,10 +3,10 @@
 namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
 use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Line\Statement;
+use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\SourceInterface;
-use webignition\BasilCompilationSource\Statement;
-use webignition\BasilCompilationSource\LineList;
-use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
@@ -42,9 +42,7 @@ class AssertionCallFactory
         string $assertionTemplate
     ): SourceInterface {
         $variableDependencies = new VariablePlaceholderCollection();
-        $variableDependencies = $variableDependencies->withAdditionalItems([
-            $this->phpUnitTestCasePlaceholder,
-        ]);
+        $variableDependencies->add($this->phpUnitTestCasePlaceholder);
 
         $metadata = (new Metadata())->withVariableDependencies($variableDependencies);
 
@@ -55,7 +53,7 @@ class AssertionCallFactory
             $actualValuePlaceholder
         );
 
-        return new LineList([
+        return new Block([
             $expectedValueAssignment,
             $actualValueAssignment,
             new Statement($assertionStatementContent, $metadata)
@@ -76,7 +74,7 @@ class AssertionCallFactory
         $metadata = (new Metadata())
             ->withVariableDependencies($this->variableDependencies);
 
-        return new LineList([
+        return new Block([
             $assignment,
             new Statement($assertionStatementContent, $metadata),
         ]);
