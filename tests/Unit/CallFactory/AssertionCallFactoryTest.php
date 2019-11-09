@@ -90,10 +90,10 @@ class AssertionCallFactoryTest extends AbstractTestCase
                 'expectedValuePlaceholder' => $expectedValuePlaceholder,
                 'actualValuePlaceholder' => $examinedValuePlaceholder,
                 'assertionTemplate' => AssertionCallFactory::ASSERT_EQUALS_TEMPLATE,
-                'expectedContent' => new LineList([
-                    new Statement('{{ EXPECTED }} = "equals"'),
-                    new Statement('{{ EXAMINED }} = "equals"'),
-                    new Statement('{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})'),
+                'expectedContent' => LineList::fromContent([
+                    '{{ EXPECTED }} = "equals"',
+                    '{{ EXAMINED }} = "equals"',
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(new VariablePlaceholderCollection([
@@ -118,10 +118,10 @@ class AssertionCallFactoryTest extends AbstractTestCase
                 'expectedValuePlaceholder' => $expectedValuePlaceholder,
                 'actualValuePlaceholder' => $examinedValuePlaceholder,
                 'assertionTemplate' => AssertionCallFactory::ASSERT_NOT_EQUALS_TEMPLATE,
-                'expectedContent' => new LineList([
-                    new Statement('{{ EXPECTED }} = "equals"'),
-                    new Statement('{{ EXAMINED }} = "not equals"'),
-                    new Statement('{{ PHPUNIT }}->assertNotEquals({{ EXPECTED }}, {{ EXAMINED }})'),
+                'expectedContent' => LineList::fromContent([
+                    '{{ EXPECTED }} = "equals"',
+                    '{{ EXAMINED }} = "not equals"',
+                    '{{ PHPUNIT }}->assertNotEquals({{ EXPECTED }}, {{ EXAMINED }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(new VariablePlaceholderCollection([
@@ -146,11 +146,10 @@ class AssertionCallFactoryTest extends AbstractTestCase
                 'expectedValuePlaceholder' => $expectedValuePlaceholder,
                 'actualValuePlaceholder' => $examinedValuePlaceholder,
                 'assertionTemplate' => AssertionCallFactory::ASSERT_STRING_CONTAINS_STRING_TEMPLATE,
-                'expectedContent' => new LineList([
-                    new Statement('{{ EXPECTED }} = "needle"'),
-                    new Statement('{{ EXAMINED }} = "haystack containing needle"'),
-                    new Statement('{{ PHPUNIT }}->'
-                        . 'assertStringContainsString((string) {{ EXPECTED }}, (string) {{ EXAMINED }})'),
+                'expectedContent' => LineList::fromContent([
+                    '{{ EXPECTED }} = "needle"',
+                    '{{ EXAMINED }} = "haystack containing needle"',
+                    '{{ PHPUNIT }}->assertStringContainsString((string) {{ EXPECTED }}, (string) {{ EXAMINED }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(new VariablePlaceholderCollection([
@@ -175,11 +174,10 @@ class AssertionCallFactoryTest extends AbstractTestCase
                 'expectedValuePlaceholder' => $expectedValuePlaceholder,
                 'actualValuePlaceholder' => $examinedValuePlaceholder,
                 'assertionTemplate' => AssertionCallFactory::ASSERT_STRING_NOT_CONTAINS_STRING_TEMPLATE,
-                'expectedContent' => new LineList([
-                    new Statement('{{ EXPECTED }} = "needle"'),
-                    new Statement('{{ EXAMINED }} = "haystack"'),
-                    new Statement('{{ PHPUNIT }}->'
-                        . 'assertStringNotContainsString((string) {{ EXPECTED }}, (string) {{ EXAMINED }})'),
+                'expectedContent' => LineList::fromContent([
+                    '{{ EXPECTED }} = "needle"',
+                    '{{ EXAMINED }} = "haystack"',
+                    '{{ PHPUNIT }}->assertStringNotContainsString((string) {{ EXPECTED }}, (string) {{ EXAMINED }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(new VariablePlaceholderCollection([
@@ -204,10 +202,10 @@ class AssertionCallFactoryTest extends AbstractTestCase
                 'expectedValuePlaceholder' => $expectedValuePlaceholder,
                 'actualValuePlaceholder' => $examinedValuePlaceholder,
                 'assertionTemplate' => AssertionCallFactory::ASSERT_MATCHES_TEMPLATE,
-                'expectedContent' => new LineList([
-                    new Statement('{{ EXPECTED }} = "/pattern/"'),
-                    new Statement('{{ EXAMINED }} = "matches pattern"'),
-                    new Statement('{{ PHPUNIT }}->assertRegExp({{ EXPECTED }}, {{ EXAMINED }})'),
+                'expectedContent' => LineList::fromContent([
+                    '{{ EXPECTED }} = "/pattern/"',
+                    '{{ EXAMINED }} = "matches pattern"',
+                    '{{ PHPUNIT }}->assertRegExp({{ EXPECTED }}, {{ EXAMINED }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(new VariablePlaceholderCollection([
@@ -261,9 +259,9 @@ class AssertionCallFactoryTest extends AbstractTestCase
                 ),
                 'variablePlaceholder' => $examinedValuePlaceholder,
                 'assertionTemplate' => AssertionCallFactory::ASSERT_TRUE_TEMPLATE,
-                'expectedContent' => new LineList([
-                    new Statement('{{ EXAMINED }} = "value" !== null'),
-                    new Statement('{{ PHPUNIT }}->assertTrue({{ EXAMINED }})'),
+                'expectedContent' => LineList::fromContent([
+                    '{{ EXAMINED }} = "value" !== null',
+                    '{{ PHPUNIT }}->assertTrue({{ EXAMINED }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(new VariablePlaceholderCollection([
@@ -281,9 +279,9 @@ class AssertionCallFactoryTest extends AbstractTestCase
                 ),
                 'variablePlaceholder' => $examinedValuePlaceholder,
                 'assertionTemplate' => AssertionCallFactory::ASSERT_FALSE_TEMPLATE,
-                'expectedContent' => new LineList([
-                    new Statement('{{ EXAMINED }} = null !== null'),
-                    new Statement('{{ PHPUNIT }}->assertFalse({{ EXAMINED }})'),
+                'expectedContent' => LineList::fromContent([
+                    '{{ EXAMINED }} = null !== null',
+                    '{{ PHPUNIT }}->assertFalse({{ EXAMINED }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(new VariablePlaceholderCollection([
