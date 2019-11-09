@@ -18,7 +18,6 @@ abstract class AbstractTestCase extends \PHPUnit\Framework\TestCase
 {
     protected function assertSourceContentEquals(SourceInterface $expected, SourceInterface $actual)
     {
-        $this->assertSourceClassEquals($expected, $actual);
         $this->assertSourceLines($expected, $actual);
     }
 
@@ -27,7 +26,15 @@ abstract class AbstractTestCase extends \PHPUnit\Framework\TestCase
         $expectedLines = $this->getSourceLines($expected);
         $actualLines = $this->getSourceLines($actual);
 
-        $this->assertCount(count($expectedLines), $actualLines);
+        $expectedLineContent = [];
+        foreach ($expectedLines as $expectedLine) {
+            $expectedLineContent[] = $expectedLine->getContent();
+        }
+
+        $expectedLineContent = $this->getSourceLineContent($expectedLines);
+        $actualLineContent = $this->getSourceLineContent($actualLines);
+
+        $this->assertSame($expectedLineContent, $actualLineContent);
 
         foreach ($expectedLines as $lineIndex => $expectedLine) {
             $actualLine = $actualLines[$lineIndex];
@@ -117,5 +124,17 @@ abstract class AbstractTestCase extends \PHPUnit\Framework\TestCase
         sort($ids);
 
         return $ids;
+    }
+
+    /**
+     * @param LineInterface[] $lines
+     *
+     * @return string[]
+     */
+    private function getSourceLineContent(array $lines): array
+    {
+        return array_map(function (LineInterface $line) {
+            return $line->getContent();
+        }, $lines);
     }
 }
