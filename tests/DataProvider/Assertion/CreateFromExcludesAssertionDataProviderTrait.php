@@ -31,12 +31,11 @@ trait CreateFromExcludesAssertionDataProviderTrait
                     new Statement('{{ EXPECTED }} = (string) {{ EXPECTED }}'),
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ EXAMINED_VALUE }} = '
-                        . '{{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ EXAMINED_VALUE }} = {{ INSPECTOR }}->getValue({{ EXAMINED_VALUE }}) ?? null'),
-                    new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
-                    new Statement('{{ PHPUNIT }}->assertStringNotContainsString'
-                        . '((string) {{ EXPECTED }}, (string) {{ EXAMINED_VALUE }})'),
+                    new Statement('{{ EXAMINED }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ EXAMINED }} = {{ INSPECTOR }}->getValue({{ EXAMINED }}) ?? null'),
+                    new Statement('{{ EXAMINED }} = (string) {{ EXAMINED }}'),
+                    new Statement('{{ PHPUNIT }}->'
+                        . 'assertStringNotContainsString((string) {{ EXPECTED }}, (string) {{ EXAMINED }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -62,13 +61,11 @@ trait CreateFromExcludesAssertionDataProviderTrait
                     new Statement('{{ EXPECTED }} = (string) {{ EXPECTED }}'),
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ EXAMINED_VALUE }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ EXAMINED_VALUE }} = '
-                        . '{{ EXAMINED_VALUE }}->getAttribute(\'attribute_name\') ?? null'),
-                    new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
-                    new Statement('{{ PHPUNIT }}'
-                        . '->assertStringNotContainsString((string) {{ EXPECTED }}, '
-                        . '(string) {{ EXAMINED_VALUE }})'),
+                    new Statement('{{ EXAMINED }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ EXAMINED }} = {{ EXAMINED }}->getAttribute(\'attribute_name\') ?? null'),
+                    new Statement('{{ EXAMINED }} = (string) {{ EXAMINED }}'),
+                    new Statement('{{ PHPUNIT }}->'
+                        . 'assertStringNotContainsString((string) {{ EXPECTED }}, (string) {{ EXAMINED }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([

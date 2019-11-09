@@ -13,5 +13,5 @@ class VariableNames
     const PANTHER_CRAWLER = 'CRAWLER';
 
     const EXPECTED_VALUE = 'EXPECTED';
-    const EXAMINED_VALUE = 'EXAMINED_VALUE';
+    const EXAMINED_VALUE = 'EXAMINED';
 }
