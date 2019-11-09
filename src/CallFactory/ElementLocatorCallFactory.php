@@ -4,11 +4,11 @@ namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
 use webignition\BasilCompilableSourceFactory\PlaceholderFactory;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
-use webignition\BasilCompilationSource\ClassDependency;
-use webignition\BasilCompilationSource\ClassDependencyCollection;
-use webignition\BasilCompilationSource\Statement;
-use webignition\BasilCompilationSource\Metadata;
-use webignition\BasilCompilationSource\StatementInterface;
+use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
+use webignition\BasilCompilationSource\Line\ClassDependency;
+use webignition\BasilCompilationSource\Line\Statement;
+use webignition\BasilCompilationSource\Line\StatementInterface;
+use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilModel\Identifier\DomIdentifierInterface;
 use webignition\DomElementLocator\ElementLocator;
 
