@@ -9,14 +9,14 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler;
 use webignition\BasilCompilableSourceFactory\Handler\TestHandler;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\ClassDefinitionInterface;
-use webignition\BasilCompilationSource\ClassDependency;
-use webignition\BasilCompilationSource\ClassDependencyCollection;
-use webignition\BasilCompilationSource\LineList;
-use webignition\BasilCompilationSource\Metadata;
-use webignition\BasilCompilationSource\MetadataInterface;
-use webignition\BasilCompilationSource\MethodDefinition;
-use webignition\BasilCompilationSource\MethodDefinitionInterface;
+use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
+use webignition\BasilCompilationSource\ClassDefinition\ClassDefinitionInterface;
+use webignition\BasilCompilationSource\Line\ClassDependency;
+use webignition\BasilCompilationSource\Metadata\Metadata;
+use webignition\BasilCompilationSource\Metadata\MetadataInterface;
+use webignition\BasilCompilationSource\MethodDefinition\MethodDefinition;
+use webignition\BasilCompilationSource\MethodDefinition\MethodDefinitionInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Step\Step;
 use webignition\BasilModel\Test\Configuration;
@@ -116,7 +116,7 @@ class TestHandlerTest extends AbstractHandlerTest
                     'setUpBeforeClass' => $this->createExpectedSetUpBeforeClassMethodDefinition('http://example.com'),
                     'testBdc4b8bd83e5660d1c62908dc7a7c43a' => new MethodDefinition(
                         'testBdc4b8bd83e5660d1c62908dc7a7c43a',
-                        LineList::fromContent([
+                        Block::fromContent([
                             '//step one',
                             '//click ".selector"',
                             '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
@@ -155,7 +155,7 @@ class TestHandlerTest extends AbstractHandlerTest
 
     private function createExpectedSetUpBeforeClassMethodDefinition(string $requestUrl): MethodDefinitionInterface
     {
-        $method = new MethodDefinition('setUpBeforeClass', LineList::fromContent([
+        $method = new MethodDefinition('setUpBeforeClass', Block::fromContent([
             'parent::setUpBeforeClass()',
             '{{ CLIENT }}->request(\'GET\', \'' . $requestUrl . '\')',
         ]));
