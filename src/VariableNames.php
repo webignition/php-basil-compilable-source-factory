@@ -12,6 +12,6 @@ class VariableNames
     const WEBDRIVER_ELEMENT_MUTATOR = 'MUTATOR';
     const PANTHER_CRAWLER = 'CRAWLER';
 
-    const EXPECTED_VALUE = 'EXPECTED_VALUE';
+    const EXPECTED_VALUE = 'EXPECTED';
     const EXAMINED_VALUE = 'EXAMINED_VALUE';
 }

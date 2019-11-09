@@ -27,15 +27,15 @@ trait CreateFromIncludesAssertionDataProviderTrait
                     '".selector" includes "value"'
                 ),
                 'expectedContent' => new LineList([
-                    new Statement('{{ EXPECTED_VALUE }} = "value" ?? null'),
-                    new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
+                    new Statement('{{ EXPECTED }} = "value" ?? null'),
+                    new Statement('{{ EXPECTED }} = (string) {{ EXPECTED }}'),
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
                     new Statement('{{ EXAMINED_VALUE }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ EXAMINED_VALUE }} = {{ INSPECTOR }}->getValue({{ EXAMINED_VALUE }}) ?? null'),
                     new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
                     new Statement('{{ PHPUNIT }}'
-                        . '->assertStringContainsString((string) {{ EXPECTED_VALUE }}, '
+                        . '->assertStringContainsString((string) {{ EXPECTED }}, '
                         . '(string) {{ EXAMINED_VALUE }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
@@ -58,8 +58,8 @@ trait CreateFromIncludesAssertionDataProviderTrait
                     '".selector".attribute_name includes "value"'
                 ),
                 'expectedContent' => new LineList([
-                    new Statement('{{ EXPECTED_VALUE }} = "value" ?? null'),
-                    new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
+                    new Statement('{{ EXPECTED }} = "value" ?? null'),
+                    new Statement('{{ EXPECTED }} = (string) {{ EXPECTED }}'),
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
                     new Statement('{{ EXAMINED_VALUE }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'),
@@ -67,7 +67,7 @@ trait CreateFromIncludesAssertionDataProviderTrait
                         . '{{ EXAMINED_VALUE }}->getAttribute(\'attribute_name\') ?? null'),
                     new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
                     new Statement('{{ PHPUNIT }}'
-                        . '->assertStringContainsString((string) {{ EXPECTED_VALUE }}, '
+                        . '->assertStringContainsString((string) {{ EXPECTED }}, '
                         . '(string) {{ EXAMINED_VALUE }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())

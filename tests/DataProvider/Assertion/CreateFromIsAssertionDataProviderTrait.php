@@ -42,14 +42,14 @@ trait CreateFromIsAssertionDataProviderTrait
                     '".selector" is "value"'
                 ),
                 'expectedContent' => new LineList([
-                    new Statement('{{ EXPECTED_VALUE }} = "value" ?? null'),
-                    new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
+                    new Statement('{{ EXPECTED }} = "value" ?? null'),
+                    new Statement('{{ EXPECTED }} = (string) {{ EXPECTED }}'),
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
                     new Statement('{{ EXAMINED_VALUE }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ EXAMINED_VALUE }} = {{ INSPECTOR }}->getValue({{ EXAMINED_VALUE }}) ?? null'),
                     new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
-                    new Statement('{{ PHPUNIT }}->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})'),
+                    new Statement('{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED_VALUE }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -71,15 +71,15 @@ trait CreateFromIsAssertionDataProviderTrait
                     '".selector".attribute_name is "value"'
                 ),
                 'expectedContent' => new LineList([
-                    new Statement('{{ EXPECTED_VALUE }} = "value" ?? null'),
-                    new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
+                    new Statement('{{ EXPECTED }} = "value" ?? null'),
+                    new Statement('{{ EXPECTED }} = (string) {{ EXPECTED }}'),
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
                     new Statement('{{ EXAMINED_VALUE }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ EXAMINED_VALUE }} = '
                         . '{{ EXAMINED_VALUE }}->getAttribute(\'attribute_name\') ?? null'),
                     new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
-                    new Statement('{{ PHPUNIT }}->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})'),
+                    new Statement('{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED_VALUE }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -100,8 +100,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     '$browser.size is "value"'
                 ),
                 'expectedContent' => new LineList([
-                    new Statement('{{ EXPECTED_VALUE }} = "value" ?? null'),
-                    new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
+                    new Statement('{{ EXPECTED }} = "value" ?? null'),
+                    new Statement('{{ EXPECTED }} = (string) {{ EXPECTED }}'),
                     new Statement(
                         '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()'
                     ),
@@ -109,7 +109,7 @@ trait CreateFromIsAssertionDataProviderTrait
                         . '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
                         . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null'),
                     new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
-                    new Statement('{{ PHPUNIT }}->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})'),
+                    new Statement('{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED_VALUE }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
@@ -127,11 +127,11 @@ trait CreateFromIsAssertionDataProviderTrait
                     '$env.KEY is "value"'
                 ),
                 'expectedContent' => new LineList([
-                    new Statement('{{ EXPECTED_VALUE }} = "value" ?? null'),
-                    new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
+                    new Statement('{{ EXPECTED }} = "value" ?? null'),
+                    new Statement('{{ EXPECTED }} = (string) {{ EXPECTED }}'),
                     new Statement('{{ EXAMINED_VALUE }} = {{ ENV }}[\'KEY\'] ?? null'),
                     new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
-                    new Statement('{{ PHPUNIT }}->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})'),
+                    new Statement('{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED_VALUE }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
@@ -148,11 +148,11 @@ trait CreateFromIsAssertionDataProviderTrait
                     '$page.title is "value"'
                 ),
                 'expectedContent' => new LineList([
-                    new Statement('{{ EXPECTED_VALUE }} = "value" ?? null'),
-                    new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
+                    new Statement('{{ EXPECTED }} = "value" ?? null'),
+                    new Statement('{{ EXPECTED }} = (string) {{ EXPECTED }}'),
                     new Statement('{{ EXAMINED_VALUE }} = {{ CLIENT }}->getTitle() ?? null'),
                     new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
-                    new Statement('{{ PHPUNIT }}->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})'),
+                    new Statement('{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED_VALUE }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
@@ -174,9 +174,9 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedContent' => new LineList([
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ EXPECTED_VALUE }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ EXPECTED_VALUE }} = {{ INSPECTOR }}->getValue({{ EXPECTED_VALUE }}) ?? null'),
-                    new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
+                    new Statement('{{ EXPECTED }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ EXPECTED }} = {{ INSPECTOR }}->getValue({{ EXPECTED }}) ?? null'),
+                    new Statement('{{ EXPECTED }} = (string) {{ EXPECTED }}'),
                     new Statement(
                         '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()'
                     ),
@@ -184,7 +184,7 @@ trait CreateFromIsAssertionDataProviderTrait
                         . '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
                         . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null'),
                     new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
-                    new Statement('{{ PHPUNIT }}->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})'),
+                    new Statement('{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED_VALUE }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -213,10 +213,9 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedContent' => new LineList([
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ EXPECTED_VALUE }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ EXPECTED_VALUE }} = '
-                        . '{{ EXPECTED_VALUE }}->getAttribute(\'attribute_name\') ?? null'),
-                    new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
+                    new Statement('{{ EXPECTED }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ EXPECTED }} = {{ EXPECTED }}->getAttribute(\'attribute_name\') ?? null'),
+                    new Statement('{{ EXPECTED }} = (string) {{ EXPECTED }}'),
                     new Statement(
                         '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()'
                     ),
@@ -224,7 +223,7 @@ trait CreateFromIsAssertionDataProviderTrait
                         . '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
                         . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null'),
                     new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
-                    new Statement('{{ PHPUNIT }}->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})'),
+                    new Statement('{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED_VALUE }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -250,8 +249,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     $environmentValue
                 ),
                 'expectedContent' => new LineList([
-                    new Statement('{{ EXPECTED_VALUE }} = {{ ENV }}[\'KEY\'] ?? null'),
-                    new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
+                    new Statement('{{ EXPECTED }} = {{ ENV }}[\'KEY\'] ?? null'),
+                    new Statement('{{ EXPECTED }} = (string) {{ EXPECTED }}'),
                     new Statement(
                         '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()'
                     ),
@@ -259,7 +258,7 @@ trait CreateFromIsAssertionDataProviderTrait
                         . '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
                         . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null'),
                     new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
-                    new Statement('{{ PHPUNIT }}->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})'),
+                    new Statement('{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED_VALUE }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
@@ -281,8 +280,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     $pageProperty
                 ),
                 'expectedContent' => new LineList([
-                    new Statement('{{ EXPECTED_VALUE }} = {{ CLIENT }}->getCurrentURL() ?? null'),
-                    new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
+                    new Statement('{{ EXPECTED }} = {{ CLIENT }}->getCurrentURL() ?? null'),
+                    new Statement('{{ EXPECTED }} = (string) {{ EXPECTED }}'),
                     new Statement(
                         '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()'
                     ),
@@ -290,7 +289,7 @@ trait CreateFromIsAssertionDataProviderTrait
                         . '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
                         . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null'),
                     new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
-                    new Statement('{{ PHPUNIT }}->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})'),
+                    new Statement('{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED_VALUE }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([

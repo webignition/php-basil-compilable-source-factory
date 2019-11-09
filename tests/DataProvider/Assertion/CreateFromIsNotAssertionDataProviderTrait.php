@@ -27,14 +27,14 @@ trait CreateFromIsNotAssertionDataProviderTrait
                     '".selector" is-not "value"'
                 ),
                 'expectedContent' => new LineList([
-                    new Statement('{{ EXPECTED_VALUE }} = "value" ?? null'),
-                    new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
+                    new Statement('{{ EXPECTED }} = "value" ?? null'),
+                    new Statement('{{ EXPECTED }} = (string) {{ EXPECTED }}'),
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
                     new Statement('{{ EXAMINED_VALUE }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ EXAMINED_VALUE }} = {{ INSPECTOR }}->getValue({{ EXAMINED_VALUE }}) ?? null'),
                     new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
-                    new Statement('{{ PHPUNIT }}->assertNotEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})'),
+                    new Statement('{{ PHPUNIT }}->assertNotEquals({{ EXPECTED }}, {{ EXAMINED_VALUE }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -56,15 +56,15 @@ trait CreateFromIsNotAssertionDataProviderTrait
                     '".selector".attribute_name is-not "value"'
                 ),
                 'expectedContent' => new LineList([
-                    new Statement('{{ EXPECTED_VALUE }} = "value" ?? null'),
-                    new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
+                    new Statement('{{ EXPECTED }} = "value" ?? null'),
+                    new Statement('{{ EXPECTED }} = (string) {{ EXPECTED }}'),
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
                     new Statement('{{ EXAMINED_VALUE }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ EXAMINED_VALUE }} = '
                         . '{{ EXAMINED_VALUE }}->getAttribute(\'attribute_name\') ?? null'),
                     new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
-                    new Statement('{{ PHPUNIT }}->assertNotEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})'),
+                    new Statement('{{ PHPUNIT }}->assertNotEquals({{ EXPECTED }}, {{ EXAMINED_VALUE }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
