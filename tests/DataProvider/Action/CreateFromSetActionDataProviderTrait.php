@@ -35,7 +35,7 @@ trait CreateFromSetActionDataProviderTrait
                     new Statement('{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ VALUE }} = "value" ?? null'),
                     new Statement('{{ VALUE }} = (string) {{ VALUE }}'),
-                    new Statement('{{ WEBDRIVER_ELEMENT_MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})'),
+                    new Statement('{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -70,7 +70,7 @@ trait CreateFromSetActionDataProviderTrait
                     new Statement('{{ VALUE }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.source\'))'),
                     new Statement('{{ VALUE }} = {{ INSPECTOR }}->getValue({{ VALUE }}) ?? null'),
                     new Statement('{{ VALUE }} = (string) {{ VALUE }}'),
-                    new Statement('{{ WEBDRIVER_ELEMENT_MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})'),
+                    new Statement('{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -106,7 +106,7 @@ trait CreateFromSetActionDataProviderTrait
                     new Statement('{{ VALUE }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.source\'))'),
                     new Statement('{{ VALUE }} = {{ VALUE }}->getAttribute(\'attribute_name\') ?? null'),
                     new Statement('{{ VALUE }} = (string) {{ VALUE }}'),
-                    new Statement('{{ WEBDRIVER_ELEMENT_MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})'),
+                    new Statement('{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -138,7 +138,7 @@ trait CreateFromSetActionDataProviderTrait
                         . '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
                         . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null'),
                     new Statement('{{ VALUE }} = (string) {{ VALUE }}'),
-                    new Statement('{{ WEBDRIVER_ELEMENT_MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})'),
+                    new Statement('{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -167,7 +167,7 @@ trait CreateFromSetActionDataProviderTrait
                     new Statement('{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ VALUE }} = {{ CLIENT }}->getCurrentURL() ?? null'),
                     new Statement('{{ VALUE }} = (string) {{ VALUE }}'),
-                    new Statement('{{ WEBDRIVER_ELEMENT_MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})'),
+                    new Statement('{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -195,7 +195,7 @@ trait CreateFromSetActionDataProviderTrait
                     new Statement('{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ VALUE }} = {{ ENV }}[\'KEY\'] ?? null'),
                     new Statement('{{ VALUE }} = (string) {{ VALUE }}'),
-                    new Statement('{{ WEBDRIVER_ELEMENT_MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})'),
+                    new Statement('{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
