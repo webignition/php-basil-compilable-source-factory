@@ -76,83 +76,71 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
     {
         return [
             'string value cast to string' => [
-                'accessor' => new LineList([
-                    new Statement('"value"'),
-                ]),
+                'accessor' => new Statement('"value"'),
                 'type' => 'string',
-                'expectedContent' => new LineList([
-                    new Statement('{{ VALUE }} = "value" ?? null'),
-                    new Statement('{{ VALUE }} = (string) {{ VALUE }}'),
+                'expectedContent' => LineList::fromContent([
+                    '{{ VALUE }} = "value" ?? null',
+                    '{{ VALUE }} = (string) {{ VALUE }}',
                 ]),
                 'expectedAssignedValue' => 'value',
             ],
             'null value cast to string' => [
-                'accessor' => new LineList([
-                    new Statement('null'),
-                ]),
+                'accessor' => new Statement('null'),
                 'type' => 'string',
-                'expectedContent' => new LineList([
-                    new Statement('{{ VALUE }} = null ?? null'),
-                    new Statement('{{ VALUE }} = (string) {{ VALUE }}'),
+                'expectedContent' => LineList::fromContent([
+                    '{{ VALUE }} = null ?? null',
+                    '{{ VALUE }} = (string) {{ VALUE }}',
                 ]),
                 'expectedAssignedValue' => '',
             ],
             'int value cast to string' => [
-                'accessor' => new LineList([
-                    new Statement('30'),
-                ]),
+                'accessor' => new Statement('30'),
                 'type' => 'string',
-                'expectedContent' => new LineList([
-                    new Statement('{{ VALUE }} = 30 ?? null'),
-                    new Statement('{{ VALUE }} = (string) {{ VALUE }}'),
+                'expectedContent' => LineList::fromContent([
+                    '{{ VALUE }} = 30 ?? null',
+                    '{{ VALUE }} = (string) {{ VALUE }}',
                 ]),
                 'expectedAssignedValue' => '30',
             ],
             'string value cast to int' => [
-                'accessor' => new LineList([
-                    new Statement('"value"'),
-                ]),
+                'accessor' => new Statement('"value"'),
                 'type' => 'int',
-                'expectedContent' => new LineList([
-                    new Statement('{{ VALUE }} = "value" ?? null'),
-                    new Statement('{{ VALUE }} = (int) {{ VALUE }}'),
+                'expectedContent' => LineList::fromContent([
+                    '{{ VALUE }} = "value" ?? null',
+                    '{{ VALUE }} = (int) {{ VALUE }}',
                 ]),
                 'expectedAssignedValue' => 0,
             ],
             'int value cast to int' => [
-                'accessor' => new LineList([
-                    new Statement('30'),
-                ]),
+                'accessor' => new Statement('30'),
                 'type' => 'int',
-                'expectedContent' => new LineList([
-                    new Statement('{{ VALUE }} = 30 ?? null'),
-                    new Statement('{{ VALUE }} = (int) {{ VALUE }}'),
+                'expectedContent' => LineList::fromContent([
+                    '{{ VALUE }} = 30 ?? null',
+                    '{{ VALUE }} = (int) {{ VALUE }}',
                 ]),
                 'expectedAssignedValue' => 30,
             ],
             'null value cast to int' => [
-                'accessor' => new LineList([
-                    new Statement('null'),
-                ]),
+                'accessor' => new Statement('null'),
                 'type' => 'int',
-                'expectedContent' => new LineList([
-                    new Statement('{{ VALUE }} = null ?? null'),
-                    new Statement('{{ VALUE }} = (int) {{ VALUE }}'),
+                'expectedContent' => LineList::fromContent([
+                    '{{ VALUE }} = null ?? null',
+                    '{{ VALUE }} = (int) {{ VALUE }}',
                 ]),
                 'expectedAssignedValue' => 0,
             ],
             'only last statement is modified' => [
-                'accessor' => new LineList([
-                    new Statement('$a = "content"'),
-                    new Statement('$b = $a'),
-                    new Statement('$b'),
+                'accessor' => LineList::fromContent([
+                    '$a = "content"',
+                    '$b = $a',
+                    '$b',
                 ]),
                 'type' => 'string',
-                'expectedContent' => new LineList([
-                    new Statement('$a = "content"'),
-                    new Statement('$b = $a'),
-                    new Statement('{{ VALUE }} = $b ?? null'),
-                    new Statement('{{ VALUE }} = (string) {{ VALUE }}'),
+                'expectedContent' => LineList::fromContent([
+                    '$a = "content"',
+                    '$b = $a',
+                    '{{ VALUE }} = $b ?? null',
+                    '{{ VALUE }} = (string) {{ VALUE }}',
                 ]),
                 'expectedAssignedValue' => 'content',
             ],

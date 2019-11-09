@@ -12,7 +12,6 @@ use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\LineListInterface;
 use webignition\BasilCompilationSource\SourceInterface;
-use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
 class TestCodeGenerator
@@ -57,8 +56,8 @@ class TestCodeGenerator
             $additionalVariableIdentifiers
         );
 
-        $initializerCode = $this->codeBlockGenerator->createFromLineList(new LineList([
-            new Statement('(new ' . $classDefinition->getName() . '())->testGeneratedCode()')
+        $initializerCode = $this->codeBlockGenerator->createFromLineList(LineList::fromContent([
+            '(new ' . $classDefinition->getName() . '())->testGeneratedCode()'
         ]));
 
         return $classCode . "\n\n" . $initializerCode;

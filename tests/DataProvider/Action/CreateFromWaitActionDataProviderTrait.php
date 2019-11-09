@@ -10,7 +10,6 @@ use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
 use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\Metadata;
-use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Action\WaitAction;
 use webignition\BasilModel\Identifier\DomIdentifier;
@@ -27,10 +26,10 @@ trait CreateFromWaitActionDataProviderTrait
         return [
             'wait action, literal' => [
                 'action' => $actionFactory->createFromActionString('wait 30'),
-                'expectedContent' => new LineList([
-                    new Statement('{{ DURATION }} = "30" ?? 0'),
-                    new Statement('{{ DURATION }} = (int) {{ DURATION }}'),
-                    new Statement('usleep({{ DURATION }} * 1000)'),
+                'expectedContent' => LineList::fromContent([
+                    '{{ DURATION }} = "30" ?? 0',
+                    '{{ DURATION }} = (int) {{ DURATION }}',
+                    'usleep({{ DURATION }} * 1000)',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
@@ -42,13 +41,13 @@ trait CreateFromWaitActionDataProviderTrait
                     'wait $elements.element_name',
                     new DomIdentifierValue(new DomIdentifier('.duration-selector'))
                 ),
-                'expectedContent' => new LineList([
-                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.duration-selector\'))'),
-                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ DURATION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.duration-selector\'))'),
-                    new Statement('{{ DURATION }} = {{ INSPECTOR }}->getValue({{ DURATION }}) ?? 0'),
-                    new Statement('{{ DURATION }} = (int) {{ DURATION }}'),
-                    new Statement('usleep({{ DURATION }} * 1000)'),
+                'expectedContent' => LineList::fromContent([
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.duration-selector\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ DURATION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.duration-selector\'))',
+                    '{{ DURATION }} = {{ INSPECTOR }}->getValue({{ DURATION }}) ?? 0',
+                    '{{ DURATION }} = (int) {{ DURATION }}',
+                    'usleep({{ DURATION }} * 1000)',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -71,15 +70,13 @@ trait CreateFromWaitActionDataProviderTrait
                         (new DomIdentifier('.duration-selector'))->withAttributeName('attribute_name')
                     )
                 ),
-                'expectedContent' => new LineList([
-                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.duration-selector\'))'),
-                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
-                    new Statement(
-                        '{{ DURATION }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.duration-selector\'))'
-                    ),
-                    new Statement('{{ DURATION }} = {{ DURATION }}->getAttribute(\'attribute_name\') ?? 0'),
-                    new Statement('{{ DURATION }} = (int) {{ DURATION }}'),
-                    new Statement('usleep({{ DURATION }} * 1000)'),
+                'expectedContent' => LineList::fromContent([
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.duration-selector\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ DURATION }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.duration-selector\'))',
+                    '{{ DURATION }} = {{ DURATION }}->getAttribute(\'attribute_name\') ?? 0',
+                    '{{ DURATION }} = (int) {{ DURATION }}',
+                    'usleep({{ DURATION }} * 1000)',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -96,15 +93,13 @@ trait CreateFromWaitActionDataProviderTrait
             ],
             'wait action, browser property' => [
                 'action' => $actionFactory->createFromActionString('wait $browser.size'),
-                'expectedContent' => new LineList([
-                    new Statement(
-                        '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()'
-                    ),
-                    new Statement('{{ DURATION }} = '
+                'expectedContent' => LineList::fromContent([
+                    '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()',
+                    '{{ DURATION }} = '
                         . '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
-                        . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? 0'),
-                    new Statement('{{ DURATION }} = (int) {{ DURATION }}'),
-                    new Statement('usleep({{ DURATION }} * 1000)'),
+                        . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? 0',
+                    '{{ DURATION }} = (int) {{ DURATION }}',
+                    'usleep({{ DURATION }} * 1000)',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
@@ -117,10 +112,10 @@ trait CreateFromWaitActionDataProviderTrait
             ],
             'wait action, page property' => [
                 'action' => $actionFactory->createFromActionString('wait $page.title'),
-                'expectedContent' => new LineList([
-                    new Statement('{{ DURATION }} = {{ CLIENT }}->getTitle() ?? 0'),
-                    new Statement('{{ DURATION }} = (int) {{ DURATION }}'),
-                    new Statement('usleep({{ DURATION }} * 1000)'),
+                'expectedContent' => LineList::fromContent([
+                    '{{ DURATION }} = {{ CLIENT }}->getTitle() ?? 0',
+                    '{{ DURATION }} = (int) {{ DURATION }}',
+                    'usleep({{ DURATION }} * 1000)',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
@@ -132,10 +127,10 @@ trait CreateFromWaitActionDataProviderTrait
             ],
             'wait action, environment value' => [
                 'action' => $actionFactory->createFromActionString('wait $env.DURATION'),
-                'expectedContent' => new LineList([
-                    new Statement('{{ DURATION }} = {{ ENV }}[\'DURATION\'] ?? 0'),
-                    new Statement('{{ DURATION }} = (int) {{ DURATION }}'),
-                    new Statement('usleep({{ DURATION }} * 1000)'),
+                'expectedContent' => LineList::fromContent([
+                    '{{ DURATION }} = {{ ENV }}[\'DURATION\'] ?? 0',
+                    '{{ DURATION }} = (int) {{ DURATION }}',
+                    'usleep({{ DURATION }} * 1000)',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([

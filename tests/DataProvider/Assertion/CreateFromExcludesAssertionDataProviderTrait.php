@@ -10,7 +10,6 @@ use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
 use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\Metadata;
-use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModelFactory\AssertionFactory;
 use webignition\DomElementLocator\ElementLocator;
@@ -26,16 +25,15 @@ trait CreateFromExcludesAssertionDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '".selector" excludes "value"'
                 ),
-                'expectedContent' => new LineList([
-                    new Statement('{{ EXPECTED }} = "value" ?? null'),
-                    new Statement('{{ EXPECTED }} = (string) {{ EXPECTED }}'),
-                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ EXAMINED }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ EXAMINED }} = {{ INSPECTOR }}->getValue({{ EXAMINED }}) ?? null'),
-                    new Statement('{{ EXAMINED }} = (string) {{ EXAMINED }}'),
-                    new Statement('{{ PHPUNIT }}->'
-                        . 'assertStringNotContainsString((string) {{ EXPECTED }}, (string) {{ EXAMINED }})'),
+                'expectedContent' => LineList::fromContent([
+                    '{{ EXPECTED }} = "value" ?? null',
+                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ EXAMINED }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
+                    '{{ EXAMINED }} = {{ INSPECTOR }}->getValue({{ EXAMINED }}) ?? null',
+                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
+                    '{{ PHPUNIT }}->assertStringNotContainsString((string) {{ EXPECTED }}, (string) {{ EXAMINED }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -56,16 +54,15 @@ trait CreateFromExcludesAssertionDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '".selector".attribute_name excludes "value"'
                 ),
-                'expectedContent' => new LineList([
-                    new Statement('{{ EXPECTED }} = "value" ?? null'),
-                    new Statement('{{ EXPECTED }} = (string) {{ EXPECTED }}'),
-                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ EXAMINED }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ EXAMINED }} = {{ EXAMINED }}->getAttribute(\'attribute_name\') ?? null'),
-                    new Statement('{{ EXAMINED }} = (string) {{ EXAMINED }}'),
-                    new Statement('{{ PHPUNIT }}->'
-                        . 'assertStringNotContainsString((string) {{ EXPECTED }}, (string) {{ EXAMINED }})'),
+                'expectedContent' => LineList::fromContent([
+                    '{{ EXPECTED }} = "value" ?? null',
+                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ EXAMINED }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
+                    '{{ EXAMINED }} = {{ EXAMINED }}->getAttribute(\'attribute_name\') ?? null',
+                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
+                    '{{ PHPUNIT }}->assertStringNotContainsString((string) {{ EXPECTED }}, (string) {{ EXAMINED }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([

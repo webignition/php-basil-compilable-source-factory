@@ -8,7 +8,6 @@ namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\Metadata;
-use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModelFactory\Action\ActionFactory;
 
@@ -21,8 +20,8 @@ trait CreateFromForwardActionDataProviderTrait
         return [
             'no-arguments action (forward)' => [
                 'action' => $actionFactory->createFromActionString('forward'),
-                'expectedContent' => new LineList([
-                    new Statement('{{ CRAWLER }} = {{ CLIENT }}->forward()'),
+                'expectedContent' => LineList::fromContent([
+                    '{{ CRAWLER }} = {{ CLIENT }}->forward()',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([

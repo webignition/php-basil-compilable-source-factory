@@ -18,7 +18,6 @@ use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilCompilationSource\SourceInterface;
-use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Identifier\DomIdentifier;
@@ -85,11 +84,11 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                     new DomIdentifierValue(new DomIdentifier('.selector')),
                     new VariablePlaceholder('E')
                 ),
-                'expectedContent' => new LineList([
-                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ E }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ E }} = {{ INSPECTOR }}->getValue({{ E }})'),
+                'expectedContent' => LineList::fromContent([
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ E }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
+                    '{{ E }} = {{ INSPECTOR }}->getValue({{ E }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -112,17 +111,13 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                     ),
                     new VariablePlaceholder('E')
                 ),
-                'expectedContent' => new LineList([
-                    new Statement(
-                        '{{ HAS }} = '
-                        . '{{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))'
-                    ),
-                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
-                    new Statement(
-                        '{{ E }} = '
-                        . '{{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))'
-                    ),
-                    new Statement('{{ E }} = {{ INSPECTOR }}->getValue({{ E }})'),
+                'expectedContent' => LineList::fromContent([
+                    '{{ HAS }} = '
+                        . '{{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ E }} = '
+                        . '{{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))',
+                    '{{ E }} = {{ INSPECTOR }}->getValue({{ E }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -145,11 +140,11 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                     ),
                     new VariablePlaceholder('E')
                 ),
-                'expectedContent' => new LineList([
-                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ E }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ E }} = {{ E }}->getAttribute(\'attribute_name\')'),
+                'expectedContent' => LineList::fromContent([
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ E }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
+                    '{{ E }} = {{ E }}->getAttribute(\'attribute_name\')',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -173,17 +168,13 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                     ),
                     new VariablePlaceholder('E')
                 ),
-                'expectedContent' => new LineList([
-                    new Statement(
-                        '{{ HAS }} = '
-                        . '{{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))'
-                    ),
-                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
-                    new Statement(
-                        '{{ E }} = '
-                        . '{{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))'
-                    ),
-                    new Statement('{{ E }} = {{ E }}->getAttribute(\'attribute_name\')'),
+                'expectedContent' => LineList::fromContent([
+                    '{{ HAS }} = {{ NAVIGATOR }}'
+                    . '->hasOne(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ E }} = {{ NAVIGATOR }}'
+                    . '->findOne(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))',
+                    '{{ E }} = {{ E }}->getAttribute(\'attribute_name\')',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
