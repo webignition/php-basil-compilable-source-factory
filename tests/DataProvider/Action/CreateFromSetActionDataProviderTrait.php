@@ -10,7 +10,6 @@ use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
 use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\Metadata;
-use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Action\InputAction;
 use webignition\BasilModel\Identifier\DomIdentifier;
@@ -29,13 +28,13 @@ trait CreateFromSetActionDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set ".selector" to "value"'
                 ),
-                'expectedContent' => new LineList([
-                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ VALUE }} = "value" ?? null'),
-                    new Statement('{{ VALUE }} = (string) {{ VALUE }}'),
-                    new Statement('{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})'),
+                'expectedContent' => LineList::fromContent([
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
+                    '{{ VALUE }} = "value" ?? null',
+                    '{{ VALUE }} = (string) {{ VALUE }}',
+                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -61,16 +60,16 @@ trait CreateFromSetActionDataProviderTrait
                     ),
                     '".selector" to ".source"'
                 ),
-                'expectedContent' => new LineList([
-                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.source\'))'),
-                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ VALUE }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.source\'))'),
-                    new Statement('{{ VALUE }} = {{ INSPECTOR }}->getValue({{ VALUE }}) ?? null'),
-                    new Statement('{{ VALUE }} = (string) {{ VALUE }}'),
-                    new Statement('{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})'),
+                'expectedContent' => LineList::fromContent([
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.source\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ VALUE }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.source\'))',
+                    '{{ VALUE }} = {{ INSPECTOR }}->getValue({{ VALUE }}) ?? null',
+                    '{{ VALUE }} = (string) {{ VALUE }}',
+                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -97,16 +96,16 @@ trait CreateFromSetActionDataProviderTrait
                     ),
                     '".selector" to ".source"'
                 ),
-                'expectedContent' => new LineList([
-                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.source\'))'),
-                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ VALUE }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.source\'))'),
-                    new Statement('{{ VALUE }} = {{ VALUE }}->getAttribute(\'attribute_name\') ?? null'),
-                    new Statement('{{ VALUE }} = (string) {{ VALUE }}'),
-                    new Statement('{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})'),
+                'expectedContent' => LineList::fromContent([
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.source\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ VALUE }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.source\'))',
+                    '{{ VALUE }} = {{ VALUE }}->getAttribute(\'attribute_name\') ?? null',
+                    '{{ VALUE }} = (string) {{ VALUE }}',
+                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -127,18 +126,16 @@ trait CreateFromSetActionDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set ".selector" to $browser.size'
                 ),
-                'expectedContent' => new LineList([
-                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
-                    new Statement(
-                        '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()'
-                    ),
-                    new Statement('{{ VALUE }} = '
+                'expectedContent' => LineList::fromContent([
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
+                    '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()',
+                    '{{ VALUE }} = '
                         . '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
-                        . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null'),
-                    new Statement('{{ VALUE }} = (string) {{ VALUE }}'),
-                    new Statement('{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})'),
+                        . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null',
+                    '{{ VALUE }} = (string) {{ VALUE }}',
+                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -161,13 +158,13 @@ trait CreateFromSetActionDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set ".selector" to $page.url'
                 ),
-                'expectedContent' => new LineList([
-                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ VALUE }} = {{ CLIENT }}->getCurrentURL() ?? null'),
-                    new Statement('{{ VALUE }} = (string) {{ VALUE }}'),
-                    new Statement('{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})'),
+                'expectedContent' => LineList::fromContent([
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
+                    '{{ VALUE }} = {{ CLIENT }}->getCurrentURL() ?? null',
+                    '{{ VALUE }} = (string) {{ VALUE }}',
+                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -189,13 +186,13 @@ trait CreateFromSetActionDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set ".selector" to $env.KEY'
                 ),
-                'expectedContent' => new LineList([
-                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ VALUE }} = {{ ENV }}[\'KEY\'] ?? null'),
-                    new Statement('{{ VALUE }} = (string) {{ VALUE }}'),
-                    new Statement('{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})'),
+                'expectedContent' => LineList::fromContent([
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
+                    '{{ VALUE }} = {{ ENV }}[\'KEY\'] ?? null',
+                    '{{ VALUE }} = (string) {{ VALUE }}',
+                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([

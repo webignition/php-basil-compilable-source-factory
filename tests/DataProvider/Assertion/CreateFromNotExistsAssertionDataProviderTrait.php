@@ -10,7 +10,6 @@ use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
 use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\Metadata;
-use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModelFactory\AssertionFactory;
 use webignition\DomElementLocator\ElementLocator;
@@ -26,9 +25,9 @@ trait CreateFromNotExistsAssertionDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '".selector" not-exists'
                 ),
-                'expectedContent' => new LineList([
-                    new Statement('{{ EXAMINED }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT }}->assertFalse({{ EXAMINED }})'),
+                'expectedContent' => LineList::fromContent([
+                    '{{ EXAMINED }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
+                    '{{ PHPUNIT }}->assertFalse({{ EXAMINED }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -46,13 +45,13 @@ trait CreateFromNotExistsAssertionDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '".selector".attribute_name not-exists'
                 ),
-                'expectedContent' => new LineList([
-                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ EXAMINED }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ EXAMINED }} = {{ EXAMINED }}->getAttribute(\'attribute_name\')'),
-                    new Statement('{{ EXAMINED }} = {{ EXAMINED }} !== null'),
-                    new Statement('{{ PHPUNIT }}->assertFalse({{ EXAMINED }})'),
+                'expectedContent' => LineList::fromContent([
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ EXAMINED }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
+                    '{{ EXAMINED }} = {{ EXAMINED }}->getAttribute(\'attribute_name\')',
+                    '{{ EXAMINED }} = {{ EXAMINED }} !== null',
+                    '{{ PHPUNIT }}->assertFalse({{ EXAMINED }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([

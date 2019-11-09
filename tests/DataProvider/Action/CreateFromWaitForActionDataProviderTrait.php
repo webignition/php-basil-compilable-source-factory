@@ -8,7 +8,6 @@ namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\Metadata;
-use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModelFactory\Action\ActionFactory;
 
@@ -23,8 +22,8 @@ trait CreateFromWaitForActionDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'wait-for ".selector"'
                 ),
-                'expectedContent' => new LineList([
-                    new Statement('{{ CRAWLER }} = {{ CLIENT }}->waitFor(\'.selector\')'),
+                'expectedContent' => LineList::fromContent([
+                    '{{ CRAWLER }} = {{ CLIENT }}->waitFor(\'.selector\')',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([

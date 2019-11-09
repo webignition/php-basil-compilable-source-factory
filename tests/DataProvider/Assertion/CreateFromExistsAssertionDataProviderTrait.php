@@ -10,7 +10,6 @@ use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
 use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\Metadata;
-use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModelFactory\AssertionFactory;
 use webignition\DomElementLocator\ElementLocator;
@@ -26,10 +25,10 @@ trait CreateFromExistsAssertionDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '$page.url exists'
                 ),
-                'expectedContent' => new LineList([
-                    new Statement('{{ EXAMINED }} = {{ CLIENT }}->getCurrentURL() ?? null'),
-                    new Statement('{{ EXAMINED }} = {{ EXAMINED }} !== null'),
-                    new Statement('{{ PHPUNIT }}->assertTrue({{ EXAMINED }})'),
+                'expectedContent' => LineList::fromContent([
+                    '{{ EXAMINED }} = {{ CLIENT }}->getCurrentURL() ?? null',
+                    '{{ EXAMINED }} = {{ EXAMINED }} !== null',
+                    '{{ PHPUNIT }}->assertTrue({{ EXAMINED }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
@@ -44,9 +43,9 @@ trait CreateFromExistsAssertionDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '".selector" exists'
                 ),
-                'expectedContent' => new LineList([
-                    new Statement('{{ EXAMINED }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT }}->assertTrue({{ EXAMINED }})'),
+                'expectedContent' => LineList::fromContent([
+                    '{{ EXAMINED }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ EXAMINED }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -64,13 +63,13 @@ trait CreateFromExistsAssertionDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '".selector".attribute_name exists'
                 ),
-                'expectedContent' => new LineList([
-                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ EXAMINED }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ EXAMINED }} = {{ EXAMINED }}->getAttribute(\'attribute_name\')'),
-                    new Statement('{{ EXAMINED }} = {{ EXAMINED }} !== null'),
-                    new Statement('{{ PHPUNIT }}->assertTrue({{ EXAMINED }})'),
+                'expectedContent' => LineList::fromContent([
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ EXAMINED }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
+                    '{{ EXAMINED }} = {{ EXAMINED }}->getAttribute(\'attribute_name\')',
+                    '{{ EXAMINED }} = {{ EXAMINED }} !== null',
+                    '{{ PHPUNIT }}->assertTrue({{ EXAMINED }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
