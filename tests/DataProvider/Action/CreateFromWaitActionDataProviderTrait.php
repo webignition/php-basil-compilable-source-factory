@@ -46,8 +46,7 @@ trait CreateFromWaitActionDataProviderTrait
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.duration-selector\'))'),
                     new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
                     new Statement('{{ DURATION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.duration-selector\'))'),
-                    new Statement('{{ DURATION }} = '
-                        . '{{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ DURATION }}) ?? 0'),
+                    new Statement('{{ DURATION }} = {{ INSPECTOR }}->getValue({{ DURATION }}) ?? 0'),
                     new Statement('{{ DURATION }} = (int) {{ DURATION }}'),
                     new Statement('usleep({{ DURATION }} * 1000)'),
                 ]),

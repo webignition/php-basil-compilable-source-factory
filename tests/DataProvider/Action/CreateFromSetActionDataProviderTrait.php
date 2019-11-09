@@ -68,8 +68,7 @@ trait CreateFromSetActionDataProviderTrait
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.source\'))'),
                     new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
                     new Statement('{{ VALUE }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.source\'))'),
-                    new Statement('{{ VALUE }} = '
-                        . '{{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ VALUE }}) ?? null'),
+                    new Statement('{{ VALUE }} = {{ INSPECTOR }}->getValue({{ VALUE }}) ?? null'),
                     new Statement('{{ VALUE }} = (string) {{ VALUE }}'),
                     new Statement('{{ WEBDRIVER_ELEMENT_MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})'),
                 ]),

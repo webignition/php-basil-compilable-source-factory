@@ -89,7 +89,7 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
                     new Statement('{{ E }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ E }} = {{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ E }})'),
+                    new Statement('{{ E }} = {{ INSPECTOR }}->getValue({{ E }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -122,7 +122,7 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                         '{{ E }} = '
                         . '{{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))'
                     ),
-                    new Statement('{{ E }} = {{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ E }})'),
+                    new Statement('{{ E }} = {{ INSPECTOR }}->getValue({{ E }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([

@@ -32,8 +32,7 @@ trait CreateFromIncludesAssertionDataProviderTrait
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
                     new Statement('{{ EXAMINED_VALUE }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ EXAMINED_VALUE }} = '
-                        . '{{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ EXAMINED_VALUE }}) ?? null'),
+                    new Statement('{{ EXAMINED_VALUE }} = {{ INSPECTOR }}->getValue({{ EXAMINED_VALUE }}) ?? null'),
                     new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
                     new Statement('{{ PHPUNIT }}'
                         . '->assertStringContainsString((string) {{ EXPECTED_VALUE }}, '
