@@ -43,11 +43,9 @@ trait CreateFromWaitActionDataProviderTrait
                     new DomIdentifierValue(new DomIdentifier('.duration-selector'))
                 ),
                 'expectedContent' => new LineList([
-                    new Statement('{{ HAS }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.duration-selector\'))'),
+                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.duration-selector\'))'),
                     new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ DURATION }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.duration-selector\'))'),
+                    new Statement('{{ DURATION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.duration-selector\'))'),
                     new Statement('{{ DURATION }} = '
                         . '{{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ DURATION }}) ?? 0'),
                     new Statement('{{ DURATION }} = (int) {{ DURATION }}'),
@@ -75,11 +73,11 @@ trait CreateFromWaitActionDataProviderTrait
                     )
                 ),
                 'expectedContent' => new LineList([
-                    new Statement('{{ HAS }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.duration-selector\'))'),
+                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.duration-selector\'))'),
                     new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ DURATION }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.duration-selector\'))'),
+                    new Statement(
+                        '{{ DURATION }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.duration-selector\'))'
+                    ),
                     new Statement('{{ DURATION }} = {{ DURATION }}->getAttribute(\'attribute_name\') ?? 0'),
                     new Statement('{{ DURATION }} = (int) {{ DURATION }}'),
                     new Statement('usleep({{ DURATION }} * 1000)'),

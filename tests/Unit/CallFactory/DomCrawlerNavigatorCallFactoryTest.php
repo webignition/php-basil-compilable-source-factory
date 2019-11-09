@@ -126,7 +126,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
             'no parent, no ordinal position' => [
                 'identifier' => new DomIdentifier('.selector'),
                 'expectedStatement' => new Statement(
-                    '{{ DOM_CRAWLER_NAVIGATOR }}->{{ METHOD }}(new ElementLocator(\'.selector\'))',
+                    '{{ NAVIGATOR }}->{{ METHOD }}(new ElementLocator(\'.selector\'))',
                     (new Metadata())
                         ->withClassDependencies(new ClassDependencyCollection([
                             new ClassDependency(ElementLocator::class),
@@ -139,7 +139,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
             'no parent, has ordinal position' => [
                 'identifier' => new DomIdentifier('.selector', 3),
                 'expectedStatement' => new Statement(
-                    '{{ DOM_CRAWLER_NAVIGATOR }}->{{ METHOD }}(new ElementLocator(\'.selector\', 3))',
+                    '{{ NAVIGATOR }}->{{ METHOD }}(new ElementLocator(\'.selector\', 3))',
                     (new Metadata())
                         ->withClassDependencies(new ClassDependencyCollection([
                             new ClassDependency(ElementLocator::class),
@@ -153,8 +153,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
                 'identifier' => (new DomIdentifier('.selector'))
                     ->withParentIdentifier(new DomIdentifier('.parent')),
                 'expectedStatement' => new Statement(
-                    '{{ DOM_CRAWLER_NAVIGATOR }}'
-                    .'->{{ METHOD }}(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))',
+                    '{{ NAVIGATOR }}->{{ METHOD }}(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))',
                     (new Metadata())
                         ->withClassDependencies(new ClassDependencyCollection([
                             new ClassDependency(ElementLocator::class),
@@ -168,8 +167,8 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
                 'identifier' => (new DomIdentifier('.selector', 2))
                     ->withParentIdentifier(new DomIdentifier('.parent')),
                 'expectedStatement' => new Statement(
-                    '{{ DOM_CRAWLER_NAVIGATOR }}'
-                    .'->{{ METHOD }}(new ElementLocator(\'.selector\', 2), new ElementLocator(\'.parent\'))',
+                    '{{ NAVIGATOR }}'
+                    . '->{{ METHOD }}(new ElementLocator(\'.selector\', 2), new ElementLocator(\'.parent\'))',
                     (new Metadata())
                         ->withClassDependencies(new ClassDependencyCollection([
                             new ClassDependency(ElementLocator::class),
@@ -183,8 +182,8 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
                 'identifier' => (new DomIdentifier('.selector', 3))
                     ->withParentIdentifier(new DomIdentifier('.parent', 4)),
                 'expectedStatement' => new Statement(
-                    '{{ DOM_CRAWLER_NAVIGATOR }}'
-                    .'->{{ METHOD }}(new ElementLocator(\'.selector\', 3), new ElementLocator(\'.parent\', 4))',
+                    '{{ NAVIGATOR }}'
+                    . '->{{ METHOD }}(new ElementLocator(\'.selector\', 3), new ElementLocator(\'.parent\', 4))',
                     (new Metadata())
                         ->withClassDependencies(new ClassDependencyCollection([
                             new ClassDependency(ElementLocator::class),

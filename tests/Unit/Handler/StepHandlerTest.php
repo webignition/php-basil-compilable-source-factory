@@ -75,10 +75,10 @@ class StepHandlerTest extends AbstractHandlerTest
                 ),
                 'expectedContent' => new LineList([
                     new Comment('click ".selector"'),
-                    new Statement('{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
                     new Statement(
-                        '{{ ELEMENT }} = {{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'
+                        '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'
                     ),
                     new Statement('{{ ELEMENT }}->click()'),
                     new EmptyLine(),
@@ -106,10 +106,10 @@ class StepHandlerTest extends AbstractHandlerTest
                 ),
                 'expectedContent' => new LineList([
                     new Comment('click ".selector"'),
-                    new Statement('{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
                     new Statement(
-                        '{{ ELEMENT }} = {{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'
+                        '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'
                     ),
                     new Statement('{{ ELEMENT }}->click()'),
                     new EmptyLine(),
@@ -205,10 +205,10 @@ class StepHandlerTest extends AbstractHandlerTest
                 ),
                 'expectedContent' => new LineList([
                     new Comment('click ".selector"'),
-                    new Statement('{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
                     new Statement(
-                        '{{ ELEMENT }} = {{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'
+                        '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'
                     ),
                     new Statement('{{ ELEMENT }}->click()'),
                     new EmptyLine(),

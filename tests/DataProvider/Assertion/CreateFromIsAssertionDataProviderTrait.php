@@ -44,11 +44,9 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedContent' => new LineList([
                     new Statement('{{ EXPECTED_VALUE }} = "value" ?? null'),
                     new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
-                    new Statement('{{ HAS }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ EXAMINED_VALUE }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ EXAMINED_VALUE }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ EXAMINED_VALUE }} = '
                         . '{{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ EXAMINED_VALUE }}) ?? null'),
                     new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
@@ -77,11 +75,9 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedContent' => new LineList([
                     new Statement('{{ EXPECTED_VALUE }} = "value" ?? null'),
                     new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
-                    new Statement('{{ HAS }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ EXAMINED_VALUE }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ EXAMINED_VALUE }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ EXAMINED_VALUE }} = '
                         . '{{ EXAMINED_VALUE }}->getAttribute(\'attribute_name\') ?? null'),
                     new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
@@ -182,11 +178,9 @@ trait CreateFromIsAssertionDataProviderTrait
                     $elementValue
                 ),
                 'expectedContent' => new LineList([
-                    new Statement('{{ HAS }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ EXPECTED_VALUE }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ EXPECTED_VALUE }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ EXPECTED_VALUE }} = '
                         . '{{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ EXPECTED_VALUE }}) ?? null'),
                     new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
@@ -225,11 +219,9 @@ trait CreateFromIsAssertionDataProviderTrait
                     $attributeValue
                 ),
                 'expectedContent' => new LineList([
-                    new Statement('{{ HAS }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ EXPECTED_VALUE }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ EXPECTED_VALUE }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ EXPECTED_VALUE }} = '
                         . '{{ EXPECTED_VALUE }}->getAttribute(\'attribute_name\') ?? null'),
                     new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),

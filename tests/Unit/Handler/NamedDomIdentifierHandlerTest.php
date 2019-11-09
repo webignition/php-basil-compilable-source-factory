@@ -86,9 +86,9 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                     new VariablePlaceholder('E')
                 ),
                 'expectedContent' => new LineList([
-                    new Statement('{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ E }} = {{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ E }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ E }} = {{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ E }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
@@ -114,13 +114,13 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                 ),
                 'expectedContent' => new LineList([
                     new Statement(
-                        '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}'
-                        . '->has(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))'
+                        '{{ HAS }} = '
+                        . '{{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))'
                     ),
                     new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
                     new Statement(
-                        '{{ E }} = {{ DOM_CRAWLER_NAVIGATOR }}'
-                        . '->find(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))'
+                        '{{ E }} = '
+                        . '{{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))'
                     ),
                     new Statement('{{ E }} = {{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ E }})'),
                 ]),
@@ -146,13 +146,9 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                     new VariablePlaceholder('E')
                 ),
                 'expectedContent' => new LineList([
-                    new Statement(
-                        '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'
-                    ),
+                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
-                    new Statement(
-                        '{{ E }} = {{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'
-                    ),
+                    new Statement('{{ E }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ E }} = {{ E }}->getAttribute(\'attribute_name\')'),
                 ]),
                 'expectedMetadata' => (new Metadata())
@@ -179,13 +175,13 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
                 ),
                 'expectedContent' => new LineList([
                     new Statement(
-                        '{{ HAS }} = {{ DOM_CRAWLER_NAVIGATOR }}'
-                        . '->hasOne(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))'
+                        '{{ HAS }} = '
+                        . '{{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))'
                     ),
                     new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
                     new Statement(
-                        '{{ E }} = {{ DOM_CRAWLER_NAVIGATOR }}'
-                        . '->findOne(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))'
+                        '{{ E }} = '
+                        . '{{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))'
                     ),
                     new Statement('{{ E }} = {{ E }}->getAttribute(\'attribute_name\')'),
                 ]),

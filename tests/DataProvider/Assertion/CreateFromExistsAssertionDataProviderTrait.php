@@ -45,8 +45,7 @@ trait CreateFromExistsAssertionDataProviderTrait
                     '".selector" exists'
                 ),
                 'expectedContent' => new LineList([
-                    new Statement('{{ EXAMINED_VALUE }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ EXAMINED_VALUE }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ EXAMINED_VALUE }})'),
                 ]),
                 'expectedMetadata' => (new Metadata())
@@ -66,11 +65,9 @@ trait CreateFromExistsAssertionDataProviderTrait
                     '".selector".attribute_name exists'
                 ),
                 'expectedContent' => new LineList([
-                    new Statement('{{ HAS }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
-                    new Statement('{{ EXAMINED_VALUE }} = '
-                        . '{{ DOM_CRAWLER_NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'),
+                    new Statement('{{ EXAMINED_VALUE }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ EXAMINED_VALUE }} = '
                         . '{{ EXAMINED_VALUE }}->getAttribute(\'attribute_name\')'),
                     new Statement('{{ EXAMINED_VALUE }} = {{ EXAMINED_VALUE }} !== null'),
