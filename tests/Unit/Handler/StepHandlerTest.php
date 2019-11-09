@@ -11,13 +11,10 @@ use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\ClassDependency;
 use webignition\BasilCompilationSource\ClassDependencyCollection;
-use webignition\BasilCompilationSource\Comment;
-use webignition\BasilCompilationSource\EmptyLine;
 use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\Metadata;
 use webignition\BasilCompilationSource\MetadataInterface;
 use webignition\BasilCompilationSource\SourceInterface;
-use webignition\BasilCompilationSource\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Step\Step;
 use webignition\BasilModel\Step\StepInterface;
@@ -73,15 +70,13 @@ class StepHandlerTest extends AbstractHandlerTest
                     ],
                     []
                 ),
-                'expectedContent' => new LineList([
-                    new Comment('click ".selector"'),
-                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
-                    new Statement(
-                        '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'
-                    ),
-                    new Statement('{{ ELEMENT }}->click()'),
-                    new EmptyLine(),
+                'expectedContent' => LineList::fromContent([
+                    '//click ".selector"',
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
+                    '{{ ELEMENT }}->click()',
+                    '',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -104,20 +99,18 @@ class StepHandlerTest extends AbstractHandlerTest
                     ],
                     []
                 ),
-                'expectedContent' => new LineList([
-                    new Comment('click ".selector"'),
-                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
-                    new Statement(
-                        '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'
-                    ),
-                    new Statement('{{ ELEMENT }}->click()'),
-                    new EmptyLine(),
-                    new Comment('wait 1'),
-                    new Statement('{{ DURATION }} = "1" ?? 0'),
-                    new Statement('{{ DURATION }} = (int) {{ DURATION }}'),
-                    new Statement('usleep({{ DURATION }} * 1000)'),
-                    new EmptyLine(),
+                'expectedContent' => LineList::fromContent([
+                    '//click ".selector"',
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
+                    '{{ ELEMENT }}->click()',
+                    '',
+                    '//wait 1',
+                    '{{ DURATION }} = "1" ?? 0',
+                    '{{ DURATION }} = (int) {{ DURATION }}',
+                    'usleep({{ DURATION }} * 1000)',
+                    '',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -140,14 +133,14 @@ class StepHandlerTest extends AbstractHandlerTest
                         $assertionFactory->createFromAssertionString('$page.title is "value"'),
                     ]
                 ),
-                'expectedContent' => new LineList([
-                    new Comment('$page.title is "value"'),
-                    new Statement('{{ EXPECTED }} = "value" ?? null'),
-                    new Statement('{{ EXPECTED }} = (string) {{ EXPECTED }}'),
-                    new Statement('{{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null'),
-                    new Statement('{{ EXAMINED }} = (string) {{ EXAMINED }}'),
-                    new Statement('{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})'),
-                    new EmptyLine(),
+                'expectedContent' => LineList::fromContent([
+                    '//$page.title is "value"',
+                    '{{ EXPECTED }} = "value" ?? null',
+                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
+                    '{{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null',
+                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
+                    '',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
@@ -167,21 +160,21 @@ class StepHandlerTest extends AbstractHandlerTest
                         $assertionFactory->createFromAssertionString('$page.url is "http://example.com"'),
                     ]
                 ),
-                'expectedContent' => new LineList([
-                    new Comment('$page.title is "value"'),
-                    new Statement('{{ EXPECTED }} = "value" ?? null'),
-                    new Statement('{{ EXPECTED }} = (string) {{ EXPECTED }}'),
-                    new Statement('{{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null'),
-                    new Statement('{{ EXAMINED }} = (string) {{ EXAMINED }}'),
-                    new Statement('{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})'),
-                    new EmptyLine(),
-                    new Comment('$page.url is "http://example.com"'),
-                    new Statement('{{ EXPECTED }} = "http://example.com" ?? null'),
-                    new Statement('{{ EXPECTED }} = (string) {{ EXPECTED }}'),
-                    new Statement('{{ EXAMINED }} = {{ CLIENT }}->getCurrentURL() ?? null'),
-                    new Statement('{{ EXAMINED }} = (string) {{ EXAMINED }}'),
-                    new Statement('{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})'),
-                    new EmptyLine(),
+                'expectedContent' => LineList::fromContent([
+                    '//$page.title is "value"',
+                    '{{ EXPECTED }} = "value" ?? null',
+                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
+                    '{{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null',
+                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
+                    '',
+                    '//$page.url is "http://example.com"',
+                    '{{ EXPECTED }} = "http://example.com" ?? null',
+                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
+                    '{{ EXAMINED }} = {{ CLIENT }}->getCurrentURL() ?? null',
+                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
+                    '',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
@@ -202,22 +195,20 @@ class StepHandlerTest extends AbstractHandlerTest
                         $assertionFactory->createFromAssertionString('$page.title is "value"'),
                     ]
                 ),
-                'expectedContent' => new LineList([
-                    new Comment('click ".selector"'),
-                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
-                    new Statement(
-                        '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'
-                    ),
-                    new Statement('{{ ELEMENT }}->click()'),
-                    new EmptyLine(),
-                    new Comment('$page.title is "value"'),
-                    new Statement('{{ EXPECTED }} = "value" ?? null'),
-                    new Statement('{{ EXPECTED }} = (string) {{ EXPECTED }}'),
-                    new Statement('{{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null'),
-                    new Statement('{{ EXAMINED }} = (string) {{ EXAMINED }}'),
-                    new Statement('{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})'),
-                    new EmptyLine(),
+                'expectedContent' => LineList::fromContent([
+                    '//click ".selector"',
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
+                    '{{ ELEMENT }}->click()',
+                    '',
+                    '//$page.title is "value"',
+                    '{{ EXPECTED }} = "value" ?? null',
+                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
+                    '{{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null',
+                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
+                    '',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
