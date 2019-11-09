@@ -8,10 +8,10 @@ use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
-use webignition\BasilCompilationSource\MutableListLineListInterface;
+use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Line\Statement;
+use webignition\BasilCompilationSource\MutableBlockInterface;
 use webignition\BasilCompilationSource\SourceInterface;
-use webignition\BasilCompilationSource\Statement;
-use webignition\BasilCompilationSource\LineList;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Action\WaitActionInterface;
 use webignition\BasilModel\Value\DomIdentifierValueInterface;
@@ -72,7 +72,7 @@ class WaitActionHandler implements HandlerInterface
                 new NamedDomIdentifierValue($duration, $durationPlaceholder)
             );
 
-            if ($durationAccessor instanceof MutableListLineListInterface) {
+            if ($durationAccessor instanceof MutableBlockInterface) {
                 $durationAccessor->mutateLastStatement(function (string $content) use ($durationPlaceholder) {
                     return str_replace((string) $durationPlaceholder . ' = ', '', $content);
                 });
@@ -88,7 +88,7 @@ class WaitActionHandler implements HandlerInterface
             '0'
         );
 
-        return new LineList([
+        return new Block([
             $durationAssignment,
             new Statement(sprintf(
                 'usleep(%s * %s)',

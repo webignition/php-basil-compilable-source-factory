@@ -6,10 +6,10 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\ClassDependency;
-use webignition\BasilCompilationSource\ClassDependencyCollection;
-use webignition\BasilCompilationSource\LineList;
-use webignition\BasilCompilationSource\Metadata;
+use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
+use webignition\BasilCompilationSource\Line\ClassDependency;
+use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Action\InputAction;
 use webignition\BasilModel\Identifier\DomIdentifier;
@@ -28,7 +28,7 @@ trait CreateFromSetActionDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set ".selector" to "value"'
                 ),
-                'expectedContent' => LineList::fromContent([
+                'expectedContent' => Block::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
@@ -60,7 +60,7 @@ trait CreateFromSetActionDataProviderTrait
                     ),
                     '".selector" to ".source"'
                 ),
-                'expectedContent' => LineList::fromContent([
+                'expectedContent' => Block::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
@@ -96,7 +96,7 @@ trait CreateFromSetActionDataProviderTrait
                     ),
                     '".selector" to ".source"'
                 ),
-                'expectedContent' => LineList::fromContent([
+                'expectedContent' => Block::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
@@ -126,7 +126,7 @@ trait CreateFromSetActionDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set ".selector" to $browser.size'
                 ),
-                'expectedContent' => LineList::fromContent([
+                'expectedContent' => Block::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
@@ -158,7 +158,7 @@ trait CreateFromSetActionDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set ".selector" to $page.url'
                 ),
-                'expectedContent' => LineList::fromContent([
+                'expectedContent' => Block::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
@@ -186,7 +186,7 @@ trait CreateFromSetActionDataProviderTrait
                 'action' => $actionFactory->createFromActionString(
                     'set ".selector" to $env.KEY'
                 ),
-                'expectedContent' => LineList::fromContent([
+                'expectedContent' => Block::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
