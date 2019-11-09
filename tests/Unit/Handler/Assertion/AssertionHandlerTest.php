@@ -25,7 +25,7 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\NotExi
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\UnhandledAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\AbstractHandlerTest;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
-use webignition\BasilCompilationSource\MetadataInterface;
+use webignition\BasilCompilationSource\Metadata\MetadataInterface;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilModel\Assertion\AssertionInterface;
 
