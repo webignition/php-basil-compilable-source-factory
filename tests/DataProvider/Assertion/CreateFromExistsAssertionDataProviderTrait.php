@@ -27,7 +27,7 @@ trait CreateFromExistsAssertionDataProviderTrait
                     '$page.url exists'
                 ),
                 'expectedContent' => new LineList([
-                    new Statement('{{ EXAMINED_VALUE }} = {{ PANTHER_CLIENT }}->getCurrentURL() ?? null'),
+                    new Statement('{{ EXAMINED_VALUE }} = {{ CLIENT }}->getCurrentURL() ?? null'),
                     new Statement('{{ EXAMINED_VALUE }} = {{ EXAMINED_VALUE }} !== null'),
                     new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ EXAMINED_VALUE }})'),
                 ]),

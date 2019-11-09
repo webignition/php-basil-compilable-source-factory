@@ -100,8 +100,9 @@ trait CreateFromWaitActionDataProviderTrait
             'wait action, browser property' => [
                 'action' => $actionFactory->createFromActionString('wait $browser.size'),
                 'expectedContent' => new LineList([
-                    new Statement('{{ WEBDRIVER_DIMENSION }} = '
-                        . '{{ PANTHER_CLIENT }}->getWebDriver()->manage()->window()->getSize()'),
+                    new Statement(
+                        '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()'
+                    ),
                     new Statement('{{ DURATION }} = '
                         . '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
                         . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? 0'),
@@ -120,7 +121,7 @@ trait CreateFromWaitActionDataProviderTrait
             'wait action, page property' => [
                 'action' => $actionFactory->createFromActionString('wait $page.title'),
                 'expectedContent' => new LineList([
-                    new Statement('{{ DURATION }} = {{ PANTHER_CLIENT }}->getTitle() ?? 0'),
+                    new Statement('{{ DURATION }} = {{ CLIENT }}->getTitle() ?? 0'),
                     new Statement('{{ DURATION }} = (int) {{ DURATION }}'),
                     new Statement('usleep({{ DURATION }} * 1000)'),
                 ]),

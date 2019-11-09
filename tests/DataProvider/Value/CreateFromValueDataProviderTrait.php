@@ -43,8 +43,9 @@ trait CreateFromValueDataProviderTrait
             'browser property, size' => [
                 'value' => new ObjectValue(ObjectValueType::BROWSER_PROPERTY, '$browser.size', 'size'),
                 'expectedContent' => new LineList([
-                    new Statement('{{ WEBDRIVER_DIMENSION }} = '
-                        . '{{ PANTHER_CLIENT }}->getWebDriver()->manage()->window()->getSize()'),
+                    new Statement(
+                        '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()'
+                    ),
                     new Statement('(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
                         . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight()'),
                 ]),
@@ -57,7 +58,7 @@ trait CreateFromValueDataProviderTrait
             ],
             'page property, url' => [
                 'value' => new ObjectValue(ObjectValueType::PAGE_PROPERTY, '$page.url', 'url'),
-                'expectedContent' => new Statement('{{ PANTHER_CLIENT }}->getCurrentURL()'),
+                'expectedContent' => new Statement('{{ CLIENT }}->getCurrentURL()'),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::PANTHER_CLIENT,
@@ -65,7 +66,7 @@ trait CreateFromValueDataProviderTrait
             ],
             'page property, title' => [
                 'value' => new ObjectValue(ObjectValueType::PAGE_PROPERTY, '$page.title', 'title'),
-                'expectedContent' => new Statement('{{ PANTHER_CLIENT }}->getTitle()'),
+                'expectedContent' => new Statement('{{ CLIENT }}->getTitle()'),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::PANTHER_CLIENT,

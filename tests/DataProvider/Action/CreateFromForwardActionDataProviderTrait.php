@@ -22,7 +22,7 @@ trait CreateFromForwardActionDataProviderTrait
             'no-arguments action (forward)' => [
                 'action' => $actionFactory->createFromActionString('forward'),
                 'expectedContent' => new LineList([
-                    new Statement('{{ CRAWLER }} = {{ PANTHER_CLIENT }}->forward()'),
+                    new Statement('{{ CRAWLER }} = {{ CLIENT }}->forward()'),
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([

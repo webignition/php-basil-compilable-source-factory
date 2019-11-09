@@ -4,7 +4,7 @@ namespace webignition\BasilCompilableSourceFactory;
 
 class VariableNames
 {
-    const PANTHER_CLIENT = 'PANTHER_CLIENT';
+    const PANTHER_CLIENT = 'CLIENT';
     const ENVIRONMENT_VARIABLE_ARRAY = 'ENVIRONMENT_VARIABLE_ARRAY';
     const DOM_CRAWLER_NAVIGATOR = 'DOM_CRAWLER_NAVIGATOR';
     const PHPUNIT_TEST_CASE = 'PHPUNIT_TEST_CASE';

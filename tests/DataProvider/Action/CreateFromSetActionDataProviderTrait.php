@@ -144,8 +144,9 @@ trait CreateFromSetActionDataProviderTrait
                     new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
                     new Statement('{{ COLLECTION }} = '
                         . '{{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ WEBDRIVER_DIMENSION }} = '
-                        . '{{ PANTHER_CLIENT }}->getWebDriver()->manage()->window()->getSize()'),
+                    new Statement(
+                        '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()'
+                    ),
                     new Statement('{{ VALUE }} = '
                         . '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
                         . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null'),
@@ -179,7 +180,7 @@ trait CreateFromSetActionDataProviderTrait
                     new Statement('{{ PHPUNIT_TEST_CASE }}->assertTrue({{ HAS }})'),
                     new Statement('{{ COLLECTION }} = '
                         . '{{ DOM_CRAWLER_NAVIGATOR }}->find(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ VALUE }} = {{ PANTHER_CLIENT }}->getCurrentURL() ?? null'),
+                    new Statement('{{ VALUE }} = {{ CLIENT }}->getCurrentURL() ?? null'),
                     new Statement('{{ VALUE }} = (string) {{ VALUE }}'),
                     new Statement('{{ WEBDRIVER_ELEMENT_MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})'),
                 ]),

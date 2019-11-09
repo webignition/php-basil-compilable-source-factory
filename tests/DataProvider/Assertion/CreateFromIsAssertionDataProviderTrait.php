@@ -109,8 +109,9 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedContent' => new LineList([
                     new Statement('{{ EXPECTED_VALUE }} = "value" ?? null'),
                     new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
-                    new Statement('{{ WEBDRIVER_DIMENSION }} = '
-                        . '{{ PANTHER_CLIENT }}->getWebDriver()->manage()->window()->getSize()'),
+                    new Statement(
+                        '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()'
+                    ),
                     new Statement('{{ EXAMINED_VALUE }} = '
                         . '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
                         . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null'),
@@ -158,7 +159,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedContent' => new LineList([
                     new Statement('{{ EXPECTED_VALUE }} = "value" ?? null'),
                     new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
-                    new Statement('{{ EXAMINED_VALUE }} = {{ PANTHER_CLIENT }}->getTitle() ?? null'),
+                    new Statement('{{ EXAMINED_VALUE }} = {{ CLIENT }}->getTitle() ?? null'),
                     new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
                     new Statement('{{ PHPUNIT_TEST_CASE }}'
                         . '->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})'),
@@ -189,8 +190,9 @@ trait CreateFromIsAssertionDataProviderTrait
                     new Statement('{{ EXPECTED_VALUE }} = '
                         . '{{ WEBDRIVER_ELEMENT_INSPECTOR }}->getValue({{ EXPECTED_VALUE }}) ?? null'),
                     new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
-                    new Statement('{{ WEBDRIVER_DIMENSION }} = '
-                        . '{{ PANTHER_CLIENT }}->getWebDriver()->manage()->window()->getSize()'),
+                    new Statement(
+                        '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()'
+                    ),
                     new Statement('{{ EXAMINED_VALUE }} = '
                         . '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
                         . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null'),
@@ -231,8 +233,9 @@ trait CreateFromIsAssertionDataProviderTrait
                     new Statement('{{ EXPECTED_VALUE }} = '
                         . '{{ EXPECTED_VALUE }}->getAttribute(\'attribute_name\') ?? null'),
                     new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
-                    new Statement('{{ WEBDRIVER_DIMENSION }} = '
-                        . '{{ PANTHER_CLIENT }}->getWebDriver()->manage()->window()->getSize()'),
+                    new Statement(
+                        '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()'
+                    ),
                     new Statement('{{ EXAMINED_VALUE }} = '
                         . '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
                         . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null'),
@@ -266,8 +269,9 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedContent' => new LineList([
                     new Statement('{{ EXPECTED_VALUE }} = {{ ENVIRONMENT_VARIABLE_ARRAY }}[\'KEY\'] ?? null'),
                     new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
-                    new Statement('{{ WEBDRIVER_DIMENSION }} = '
-                        . '{{ PANTHER_CLIENT }}->getWebDriver()->manage()->window()->getSize()'),
+                    new Statement(
+                        '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()'
+                    ),
                     new Statement('{{ EXAMINED_VALUE }} = '
                         . '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
                         . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null'),
@@ -295,10 +299,11 @@ trait CreateFromIsAssertionDataProviderTrait
                     $pageProperty
                 ),
                 'expectedContent' => new LineList([
-                    new Statement('{{ EXPECTED_VALUE }} = {{ PANTHER_CLIENT }}->getCurrentURL() ?? null'),
+                    new Statement('{{ EXPECTED_VALUE }} = {{ CLIENT }}->getCurrentURL() ?? null'),
                     new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
-                    new Statement('{{ WEBDRIVER_DIMENSION }} = '
-                        . '{{ PANTHER_CLIENT }}->getWebDriver()->manage()->window()->getSize()'),
+                    new Statement(
+                        '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()'
+                    ),
                     new Statement('{{ EXAMINED_VALUE }} = '
                         . '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
                         . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null'),
