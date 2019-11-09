@@ -34,7 +34,7 @@ trait CreateFromValueDataProviderTrait
                     '$env.KEY',
                     'KEY'
                 ),
-                'expectedContent' => new Statement('{{ ENVIRONMENT_VARIABLE_ARRAY }}[\'KEY\']'),
+                'expectedContent' => new Statement('{{ ENV }}[\'KEY\']'),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY,

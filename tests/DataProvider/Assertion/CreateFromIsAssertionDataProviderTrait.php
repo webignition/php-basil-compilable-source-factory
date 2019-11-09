@@ -137,7 +137,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedContent' => new LineList([
                     new Statement('{{ EXPECTED_VALUE }} = "value" ?? null'),
                     new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
-                    new Statement('{{ EXAMINED_VALUE }} = {{ ENVIRONMENT_VARIABLE_ARRAY }}[\'KEY\'] ?? null'),
+                    new Statement('{{ EXAMINED_VALUE }} = {{ ENV }}[\'KEY\'] ?? null'),
                     new Statement('{{ EXAMINED_VALUE }} = (string) {{ EXAMINED_VALUE }}'),
                     new Statement('{{ PHPUNIT_TEST_CASE }}'
                         . '->assertEquals({{ EXPECTED_VALUE }}, {{ EXAMINED_VALUE }})'),
@@ -267,7 +267,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     $environmentValue
                 ),
                 'expectedContent' => new LineList([
-                    new Statement('{{ EXPECTED_VALUE }} = {{ ENVIRONMENT_VARIABLE_ARRAY }}[\'KEY\'] ?? null'),
+                    new Statement('{{ EXPECTED_VALUE }} = {{ ENV }}[\'KEY\'] ?? null'),
                     new Statement('{{ EXPECTED_VALUE }} = (string) {{ EXPECTED_VALUE }}'),
                     new Statement(
                         '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()'

@@ -136,7 +136,7 @@ trait CreateFromWaitActionDataProviderTrait
             'wait action, environment value' => [
                 'action' => $actionFactory->createFromActionString('wait $env.DURATION'),
                 'expectedContent' => new LineList([
-                    new Statement('{{ DURATION }} = {{ ENVIRONMENT_VARIABLE_ARRAY }}[\'DURATION\'] ?? 0'),
+                    new Statement('{{ DURATION }} = {{ ENV }}[\'DURATION\'] ?? 0'),
                     new Statement('{{ DURATION }} = (int) {{ DURATION }}'),
                     new Statement('usleep({{ DURATION }} * 1000)'),
                 ]),
