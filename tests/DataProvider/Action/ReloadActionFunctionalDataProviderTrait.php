@@ -7,8 +7,8 @@ namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
 use webignition\BasilCompilableSourceFactory\Tests\Services\PlaceholderFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
-use webignition\BasilCompilationSource\LineList;
-use webignition\BasilCompilationSource\Statement;
+use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilModelFactory\Action\ActionFactory;
 
 trait ReloadActionFunctionalDataProviderTrait
@@ -17,7 +17,7 @@ trait ReloadActionFunctionalDataProviderTrait
     {
         $actionFactory = ActionFactory::createFactory();
 
-        $setupTeardownStatements = new LineList([
+        $setupTeardownStatements = new Block([
             StatementFactory::create(
                 '%s->assertCount(0, %s->filter("#hello"))',
                 [

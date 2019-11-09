@@ -19,7 +19,7 @@ use webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\AbstractHa
 use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
-use webignition\BasilCompilationSource\LineList;
+use webignition\BasilCompilationSource\Block\Block;
 use webignition\BasilModel\Action\ActionInterface;
 use webignition\BasilModel\Action\WaitAction;
 use webignition\BasilModel\Identifier\DomIdentifier;
@@ -54,8 +54,8 @@ class ActionHandlerTest extends AbstractHandlerTest
     public function testCreateSourceForExecutableActions(
         string $fixture,
         ActionInterface $action,
-        ?LineList $additionalSetupStatements = null,
-        ?LineList $teardownStatements = null,
+        ?Block $additionalSetupStatements = null,
+        ?Block $teardownStatements = null,
         array $additionalVariableIdentifiers = []
     ) {
         $source = $this->handler->handle($action);
@@ -88,8 +88,8 @@ class ActionHandlerTest extends AbstractHandlerTest
         string $fixture,
         ActionInterface $action,
         string $expectedExpectationFailedExceptionMessage,
-        ?LineList $additionalSetupStatements = null,
-        ?LineList $teardownStatements = null,
+        ?Block $additionalSetupStatements = null,
+        ?Block $teardownStatements = null,
         array $additionalVariableIdentifiers = []
     ) {
         $source = $this->handler->handle($action);
