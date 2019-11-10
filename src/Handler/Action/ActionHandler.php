@@ -9,6 +9,7 @@ use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilModel\Action\ActionTypes;
 use webignition\BasilModel\Action\InputActionInterface;
 use webignition\BasilModel\Action\InteractionActionInterface;
+use webignition\BasilModel\Action\NoArgumentsAction;
 use webignition\BasilModel\Action\WaitActionInterface;
 
 class ActionHandler implements HandlerInterface
@@ -50,7 +51,7 @@ class ActionHandler implements HandlerInterface
 
     public function handles(object $model): bool
     {
-        if ($this->browserOperationActionHandler->handles($model)) {
+        if ($this->isBrowserOperationAction($model)) {
             return true;
         }
 
@@ -87,7 +88,7 @@ class ActionHandler implements HandlerInterface
      */
     public function handle(object $model): BlockInterface
     {
-        if ($this->browserOperationActionHandler->handles($model)) {
+        if ($this->isBrowserOperationAction($model)) {
             return $this->browserOperationActionHandler->handle($model);
         }
 
@@ -112,6 +113,15 @@ class ActionHandler implements HandlerInterface
         }
 
         throw new UnsupportedModelException($model);
+    }
+
+    private function isBrowserOperationAction(object $model): bool
+    {
+        return $model instanceof NoArgumentsAction && in_array($model->getType(), [
+            ActionTypes::BACK,
+            ActionTypes::FORWARD,
+            ActionTypes::RELOAD,
+        ]);
     }
 
     private function isSetAction(object $model): bool
