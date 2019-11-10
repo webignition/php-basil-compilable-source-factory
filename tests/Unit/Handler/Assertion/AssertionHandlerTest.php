@@ -16,8 +16,8 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\Create
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromNotExistsAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
+use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilCompilationSource\Metadata\MetadataInterface;
-use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilModel\Assertion\AssertionInterface;
 
 class AssertionHandlerTest extends AbstractTestCase
@@ -53,15 +53,15 @@ class AssertionHandlerTest extends AbstractTestCase
      */
     public function testHandle(
         AssertionInterface $assertion,
-        SourceInterface $expectedContent,
+        BlockInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
         $source = $this->handler->handle($assertion);
 
-        $this->assertInstanceOf(SourceInterface::class, $source);
+        $this->assertInstanceOf(BlockInterface::class, $source);
 
-        if ($source instanceof SourceInterface) {
-            $this->assertSourceContentEquals($expectedContent, $source);
+        if ($source instanceof BlockInterface) {
+            $this->assertBlockContentEquals($expectedContent, $source);
             $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
         }
     }

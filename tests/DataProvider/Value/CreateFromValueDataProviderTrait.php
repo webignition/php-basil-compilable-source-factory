@@ -20,12 +20,16 @@ trait CreateFromValueDataProviderTrait
         return [
             'literal string value: string' => [
                 'value' => new LiteralValue('value'),
-                'expectedContent' => new Statement('"value"'),
+                'expectedContent' => new Block([
+                    new Statement('"value"'),
+                ]),
                 'expectedMetadata' => new Metadata(),
             ],
             'literal string value: integer' => [
                 'value' => new LiteralValue('100'),
-                'expectedContent' => new Statement('"100"'),
+                'expectedContent' => new Block([
+                    new Statement('"100"'),
+                ]),
                 'expectedMetadata' => new Metadata(),
             ],
             'environment parameter value' => [
@@ -34,7 +38,9 @@ trait CreateFromValueDataProviderTrait
                     '$env.KEY',
                     'KEY'
                 ),
-                'expectedContent' => new Statement('{{ ENV }}[\'KEY\']'),
+                'expectedContent' => new Block([
+                    new Statement('{{ ENV }}[\'KEY\']'),
+                ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
@@ -56,7 +62,9 @@ trait CreateFromValueDataProviderTrait
             ],
             'page property, url' => [
                 'value' => new ObjectValue(ObjectValueType::PAGE_PROPERTY, '$page.url', 'url'),
-                'expectedContent' => new Statement('{{ CLIENT }}->getCurrentURL()'),
+                'expectedContent' => new Block([
+                    new Statement('{{ CLIENT }}->getCurrentURL()'),
+                ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::PANTHER_CLIENT,
@@ -64,7 +72,9 @@ trait CreateFromValueDataProviderTrait
             ],
             'page property, title' => [
                 'value' => new ObjectValue(ObjectValueType::PAGE_PROPERTY, '$page.title', 'title'),
-                'expectedContent' => new Statement('{{ CLIENT }}->getTitle()'),
+                'expectedContent' => new Block([
+                    new Statement('{{ CLIENT }}->getTitle()'),
+                ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::PANTHER_CLIENT,
@@ -76,7 +86,9 @@ trait CreateFromValueDataProviderTrait
                     '$data.key',
                     'key'
                 ),
-                'expectedContent' => new Statement('$key'),
+                'expectedContent' => new Block([
+                    new Statement('$key'),
+                ]),
                 'expectedMetadata' => new Metadata(),
             ],
         ];

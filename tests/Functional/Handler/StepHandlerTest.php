@@ -43,7 +43,7 @@ class StepHandlerTest extends AbstractBrowserTestCase
     ) {
         $source = $this->handler->handle($step);
 
-        $classCode = $this->testCodeGenerator->createBrowserTestForLineList(
+        $classCode = $this->testCodeGenerator->createBrowserTestForBlock(
             $source,
             $fixture,
             null,

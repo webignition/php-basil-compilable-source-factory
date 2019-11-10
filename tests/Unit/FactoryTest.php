@@ -32,6 +32,6 @@ class FactoryTest extends \PHPUnit\Framework\TestCase
             []
         );
 
-        $this->factory->createSource($test);
+        $this->factory->createClassDefinition($test);
     }
 }

@@ -48,7 +48,7 @@ class ScalarValueHandlerTest extends AbstractBrowserTestCase
             });
         }
 
-        $classCode = $this->testCodeGenerator->createBrowserTestForLineList(
+        $classCode = $this->testCodeGenerator->createBrowserTestForBlock(
             $instrumentedSource,
             $fixture,
             null,

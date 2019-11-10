@@ -14,7 +14,6 @@ use webignition\BasilCompilationSource\Block\Block;
 use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\MutableBlockInterface;
-use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Assertion\AssertionComparison;
@@ -138,7 +137,7 @@ class ExistenceComparisonHandler
 
     private function createAssertionCall(
         string $comparison,
-        SourceInterface $lineList,
+        BlockInterface $block,
         VariablePlaceholder $valuePlaceholder
     ): BlockInterface {
         $assertionTemplate = AssertionComparison::EXISTS === $comparison
@@ -146,7 +145,7 @@ class ExistenceComparisonHandler
             : AssertionCallFactory::ASSERT_FALSE_TEMPLATE;
 
         return $this->assertionCallFactory->createValueExistenceAssertionCall(
-            $lineList,
+            $block,
             $valuePlaceholder,
             $assertionTemplate
         );

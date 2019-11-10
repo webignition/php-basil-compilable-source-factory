@@ -6,12 +6,11 @@ use webignition\BasilCompilationSource\Block\Block;
 use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilCompilationSource\Line\Comment;
 use webignition\BasilCompilationSource\Line\EmptyLine;
-use webignition\BasilCompilationSource\SourceInterface;
 
 class BlockFactory
 {
     public static function createForSourceBlock(
-        SourceInterface $source,
+        BlockInterface $source,
         ?BlockInterface $teardownStatements = null
     ): Block {
         return new Block([

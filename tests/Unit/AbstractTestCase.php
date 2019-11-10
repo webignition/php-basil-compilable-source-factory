@@ -6,23 +6,23 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
+use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Line\LineInterface;
 use webignition\BasilCompilationSource\Metadata\MetadataInterface;
-use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
 abstract class AbstractTestCase extends \PHPUnit\Framework\TestCase
 {
-    protected function assertSourceContentEquals(SourceInterface $expected, SourceInterface $actual)
+    protected function assertBlockContentEquals(BlockInterface $expected, BlockInterface $actual)
     {
-        $this->assertSourceLines($expected, $actual);
+        $this->assertBlockLines($expected, $actual);
     }
 
-    private function assertSourceLines(SourceInterface $expected, SourceInterface $actual)
+    private function assertBlockLines(BlockInterface $expected, BlockInterface $actual)
     {
-        $expectedLines = $this->getSourceLines($expected);
-        $actualLines = $this->getSourceLines($actual);
+        $expectedLines = $expected->getLines();
+        $actualLines = $actual->getLines();
 
         $expectedLineContent = [];
         foreach ($expectedLines as $expectedLine) {
@@ -37,34 +37,9 @@ abstract class AbstractTestCase extends \PHPUnit\Framework\TestCase
         foreach ($expectedLines as $lineIndex => $expectedLine) {
             $actualLine = $actualLines[$lineIndex];
 
-            $this->assertSourceClassEquals($expectedLine, $actualLine);
+            $this->assertEquals(get_class($expectedLine), get_class($actualLine));
             $this->assertEquals($expectedLine->getContent(), $actualLine->getContent());
         }
-    }
-
-    private function assertSourceClassEquals(SourceInterface $expected, SourceInterface $actual)
-    {
-        $this->assertEquals(get_class($expected), get_class($actual));
-    }
-
-    /**
-     * @param SourceInterface $source
-     *
-     * @return LineInterface[]
-     */
-    private function getSourceLines(SourceInterface $source): array
-    {
-        $lines = [];
-
-        foreach ($source->getSources() as $innerSource) {
-            if ($innerSource instanceof LineInterface) {
-                $lines[] = $innerSource;
-            } else {
-                $lines = array_merge($lines, $this->getSourceLines($innerSource));
-            }
-        }
-
-        return $lines;
     }
 
     protected function assertMetadataEquals(MetadataInterface $expected, MetadataInterface $actual)

@@ -3,10 +3,9 @@
 namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
 use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\MutableBlockInterface;
-use webignition\BasilCompilationSource\SourceInterface;
-
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
@@ -18,11 +17,11 @@ class VariableAssignmentFactory
     }
 
     public function createForValueAccessor(
-        SourceInterface $accessor,
+        BlockInterface $accessor,
         VariablePlaceholder $placeholder,
         string $type = 'string',
         string $default = 'null'
-    ): SourceInterface {
+    ): BlockInterface {
         $assignment = clone $accessor;
 
         if ($assignment instanceof MutableBlockInterface) {

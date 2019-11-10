@@ -53,7 +53,7 @@ class ActionHandlerTest extends AbstractTestCase
         $this->assertInstanceOf(BlockInterface::class, $source);
 
         if ($source instanceof BlockInterface) {
-            $this->assertSourceContentEquals($expectedContent, $source);
+            $this->assertBlockContentEquals($expectedContent, $source);
             $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
         }
     }

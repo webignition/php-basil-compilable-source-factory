@@ -10,6 +10,7 @@ use webignition\BasilCompilableSourceFactory\Handler\StepHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Line\Comment;
@@ -17,7 +18,6 @@ use webignition\BasilCompilationSource\Line\EmptyLine;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\Metadata\MetadataInterface;
-use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Step\Step;
 use webignition\BasilModel\Step\StepInterface;
@@ -32,17 +32,15 @@ class StepHandlerTest extends AbstractTestCase
      */
     public function testHandle(
         StepInterface $step,
-        SourceInterface $expectedContent,
+        BlockInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
         $handler = StepHandler::createHandler();
 
         $source = $handler->handle($step);
 
-        $this->assertInstanceOf(SourceInterface::class, $source);
-
-        if ($source instanceof SourceInterface) {
-            $this->assertSourceContentEquals($expectedContent, $source);
+        if ($source instanceof BlockInterface) {
+            $this->assertBlockContentEquals($expectedContent, $source);
             $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
         }
     }

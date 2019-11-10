@@ -11,7 +11,6 @@ use webignition\BasilCodeGenerator\ClassGenerator;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\Block;
 use webignition\BasilCompilationSource\Block\BlockInterface;
-use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
 class TestCodeGenerator
@@ -43,11 +42,11 @@ class TestCodeGenerator
         );
     }
 
-    public function createPhpUnitTestForLineList(
-        SourceInterface $source,
+    public function createPhpUnitTestForBlock(
+        BlockInterface $block,
         array $additionalVariableIdentifiers = []
     ): string {
-        $blockSource = BlockFactory::createForSourceBlock($source);
+        $blockSource = BlockFactory::createForSourceBlock($block);
         $classDefinition = ClassDefinitionFactory::createPhpUnitTestForBlock($blockSource);
 
         $classCode = $this->classGenerator->createForClassDefinition(
@@ -63,14 +62,14 @@ class TestCodeGenerator
         return $classCode . "\n\n" . $initializerCode;
     }
 
-    public function createBrowserTestForLineList(
-        SourceInterface $source,
+    public function createBrowserTestForBlock(
+        BlockInterface $block,
         string $fixture,
         ?BlockInterface $additionalSetupStatements = null,
         ?BlockInterface $teardownStatements = null,
         array $additionalVariableIdentifiers = []
     ): string {
-        $codeSource = BlockFactory::createForSourceBlock($source, $teardownStatements);
+        $codeSource = BlockFactory::createForSourceBlock($block, $teardownStatements);
         $classDefinition = ClassDefinitionFactory::createGeneratedBrowserTestForBlock(
             $fixture,
             $codeSource,
