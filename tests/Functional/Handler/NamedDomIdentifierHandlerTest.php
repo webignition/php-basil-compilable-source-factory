@@ -13,7 +13,8 @@ use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
-use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Block\CodeBlock;
+use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilModel\Identifier\DomIdentifier;
@@ -39,7 +40,7 @@ class NamedDomIdentifierHandlerTest extends AbstractBrowserTestCase
     public function testCreateSource(
         string $fixture,
         NamedDomIdentifierInterface $namedDomIdentifier,
-        Block $teardownStatements
+        CodeBlockInterface $teardownStatements
     ) {
         $source = $this->handler->handle($namedDomIdentifier);
 
@@ -78,7 +79,7 @@ class NamedDomIdentifierHandlerTest extends AbstractBrowserTestCase
                     ),
                     new VariablePlaceholder('ELEMENT')
                 ),
-                'teardownStatements' => new Block([
+                'teardownStatements' => new CodeBlock([
                     StatementFactory::createAssertSame('""', '$value'),
                 ]),
             ],
@@ -91,7 +92,7 @@ class NamedDomIdentifierHandlerTest extends AbstractBrowserTestCase
                     ),
                     new VariablePlaceholder('ELEMENT')
                 ),
-                'teardownStatements' => new Block([
+                'teardownStatements' => new CodeBlock([
                     StatementFactory::createAssertSame('"test"', '$value'),
                 ]),
             ],
@@ -103,7 +104,7 @@ class NamedDomIdentifierHandlerTest extends AbstractBrowserTestCase
                     ),
                     new VariablePlaceholder('ELEMENT')
                 ),
-                'teardownStatements' => new Block([
+                'teardownStatements' => new CodeBlock([
                     StatementFactory::createAssertSame('"input-without-value"', '$value'),
                 ]),
             ],
@@ -117,7 +118,7 @@ class NamedDomIdentifierHandlerTest extends AbstractBrowserTestCase
                     ),
                     new VariablePlaceholder('ELEMENT')
                 ),
-                'teardownStatements' => new Block([
+                'teardownStatements' => new CodeBlock([
                     StatementFactory::createAssertSame('"input-2"', '$value'),
                 ]),
             ],
@@ -127,7 +128,7 @@ class NamedDomIdentifierHandlerTest extends AbstractBrowserTestCase
                     new DomIdentifier('input', 1),
                     new VariablePlaceholder('ELEMENT')
                 ),
-                'teardownStatements' => new Block([
+                'teardownStatements' => new CodeBlock([
                     StatementFactory::createAssertCount('1', '$value'),
                     new Statement('$element = $value->current()'),
                     StatementFactory::createAssertSame('""', '$element->getAttribute(\'value\')'),
@@ -140,7 +141,7 @@ class NamedDomIdentifierHandlerTest extends AbstractBrowserTestCase
                         ->withParentIdentifier(new DomIdentifier('form[action="/action2"]')),
                     new VariablePlaceholder('ELEMENT')
                 ),
-                'teardownStatements' => new Block([
+                'teardownStatements' => new CodeBlock([
                     StatementFactory::createAssertCount('1', '$value'),
                     new Statement('$element = $value->current()'),
                     StatementFactory::createAssertSame('null', '$element->getAttribute(\'test\')'),

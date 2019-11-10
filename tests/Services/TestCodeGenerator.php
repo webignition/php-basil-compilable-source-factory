@@ -10,6 +10,7 @@ use webignition\BasilCodeGenerator\ClassGenerator;
 use webignition\BasilCodeGenerator\CodeBlockGenerator;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlock;
+use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
 class TestCodeGenerator
@@ -42,7 +43,7 @@ class TestCodeGenerator
     }
 
     public function createPhpUnitTestForBlock(
-        CodeBlock $block,
+        CodeBlockInterface $block,
         array $additionalVariableIdentifiers = []
     ): string {
         $blockSource = CodeBlockFactory::createForSourceBlock($block);
@@ -62,10 +63,10 @@ class TestCodeGenerator
     }
 
     public function createBrowserTestForBlock(
-        CodeBlock $block,
+        CodeBlockInterface $block,
         string $fixture,
-        ?CodeBlock $additionalSetupStatements = null,
-        ?CodeBlock $teardownStatements = null,
+        ?CodeBlockInterface $additionalSetupStatements = null,
+        ?CodeBlockInterface $teardownStatements = null,
         array $additionalVariableIdentifiers = []
     ): string {
         $codeSource = CodeBlockFactory::createForSourceBlock($block, $teardownStatements);

@@ -11,7 +11,8 @@ use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCall
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
-use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Block\CodeBlock;
+use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\MutableBlockInterface;
 use webignition\BasilModel\Identifier\DomIdentifier;
@@ -37,7 +38,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
     public function testCreateFindCall(
         string $fixture,
         DomIdentifierInterface $identifier,
-        Block $teardownStatements
+        CodeBlockInterface $teardownStatements
     ) {
         $source = $this->factory->createFindCall($identifier);
 
@@ -75,7 +76,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
             'no parent, has ordinal position' => [
                 'fixture' => '/form.html',
                 'identifier' => new DomIdentifier('input', 1),
-                'teardownStatements' => new Block([
+                'teardownStatements' => new CodeBlock([
                     StatementFactory::createAssertCount('1', '$collection'),
                     new Statement('$element = $collection->get(0)'),
                     StatementFactory::createAssertInstanceOf('\'' . WebDriverElement::class . '\'', '$element'),
@@ -86,7 +87,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
                 'fixture' => '/form.html',
                 'identifier' => (new DomIdentifier('input'))
                     ->withParentIdentifier(new DomIdentifier('form[action="/action2"]')),
-                'teardownStatements' => new Block([
+                'teardownStatements' => new CodeBlock([
                     StatementFactory::createAssertCount('1', '$collection'),
                     new Statement('$element = $collection->get(0)'),
                     StatementFactory::createAssertInstanceOf('\'' . WebDriverElement::class . '\'', '$element'),

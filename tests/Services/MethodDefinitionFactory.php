@@ -4,9 +4,9 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
 use webignition\BasePantherTestCase\Options;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractGeneratedTestCase;
-use webignition\BasilCompilationSource\Block\Block;
-use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
+use webignition\BasilCompilationSource\Block\CodeBlock;
+use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Line\Comment;
 use webignition\BasilCompilationSource\Line\EmptyLine;
@@ -19,7 +19,7 @@ class MethodDefinitionFactory
 {
     public static function createSetUpBeforeClassMethodDefinition(string $fixture): MethodDefinitionInterface
     {
-        $block = new Block([
+        $block = new CodeBlock([
             new Comment('Test harness lines'),
             new Statement('parent::setUpBeforeClass()'),
             new Statement(
@@ -40,9 +40,9 @@ class MethodDefinitionFactory
     }
 
     public static function createSetUpMethodDefinition(
-        ?BlockInterface $additionalSetupStatements
+        ?CodeBlockInterface $additionalSetupStatements
     ): MethodDefinitionInterface {
-        $block = new Block([
+        $block = new CodeBlock([
             new Comment('Test harness lines'),
             new Statement('parent::setUp()'),
             new EmptyLine(),
