@@ -4,6 +4,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
+use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
@@ -43,7 +44,7 @@ class ComparisonAssertionHandler implements HandlerInterface
     public function __construct(
         AssertionCallFactory $assertionCallFactory,
         VariableAssignmentFactory $variableAssignmentFactory,
-        HandlerInterface $scalarValueHandler,
+        ScalarValueHandler $scalarValueHandler,
         NamedDomIdentifierHandler $namedDomIdentifierHandler
     ) {
         $this->assertionCallFactory = $assertionCallFactory;
@@ -77,6 +78,7 @@ class ComparisonAssertionHandler implements HandlerInterface
      * @return BlockInterface
      *
      * @throws UnsupportedModelException
+     * @throws UnknownObjectPropertyException
      */
     public function handle(object $model): BlockInterface
     {

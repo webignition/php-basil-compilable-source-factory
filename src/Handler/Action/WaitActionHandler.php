@@ -3,6 +3,7 @@
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
+use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
@@ -27,7 +28,7 @@ class WaitActionHandler implements HandlerInterface
 
     public function __construct(
         VariableAssignmentFactory $variableAssignmentFactory,
-        HandlerInterface $scalarValueHandler,
+        ScalarValueHandler $scalarValueHandler,
         NamedDomIdentifierHandler $namedDomIdentifierHandler
     ) {
         $this->variableAssignmentFactory = $variableAssignmentFactory;
@@ -55,6 +56,7 @@ class WaitActionHandler implements HandlerInterface
      * @return BlockInterface
      *
      * @throws UnsupportedModelException
+     * @throws UnknownObjectPropertyException
      */
     public function handle(object $model): BlockInterface
     {

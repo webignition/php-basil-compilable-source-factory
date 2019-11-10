@@ -4,6 +4,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\WebDriverElementMutatorCallFactory;
+use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifier;
@@ -28,7 +29,7 @@ class SetActionHandler implements HandlerInterface
     public function __construct(
         VariableAssignmentFactory $variableAssignmentFactory,
         WebDriverElementMutatorCallFactory $webDriverElementMutatorCallFactory,
-        HandlerInterface $scalarValueHandler,
+        ScalarValueHandler $scalarValueHandler,
         NamedDomIdentifierHandler $namedDomIdentifierHandler
     ) {
         $this->variableAssignmentFactory = $variableAssignmentFactory;
@@ -58,6 +59,7 @@ class SetActionHandler implements HandlerInterface
      * @return BlockInterface
      *
      * @throws UnsupportedModelException
+     * @throws UnknownObjectPropertyException
      */
     public function handle(object $model): BlockInterface
     {
