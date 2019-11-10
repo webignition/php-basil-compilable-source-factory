@@ -6,7 +6,6 @@ use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyExce
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
-use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilationSource\Block\Block;
 use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilCompilationSource\Line\Comment;
@@ -15,7 +14,7 @@ use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilModel\StatementInterface;
 use webignition\BasilModel\Step\StepInterface;
 
-class StepHandler implements HandlerInterface
+class StepHandler
 {
     private $actionHandler;
     private $assertionHandler;
@@ -34,32 +33,23 @@ class StepHandler implements HandlerInterface
         );
     }
 
-    public function handles(object $model): bool
-    {
-        return $model instanceof StepInterface;
-    }
-
     /**
-     * @param object $model
+     * @param StepInterface $step
      *
      * @return BlockInterface
      *
      * @throws UnsupportedModelException
      * @throws UnknownObjectPropertyException
      */
-    public function handle(object $model): BlockInterface
+    public function handle(StepInterface $step): BlockInterface
     {
-        if (!$model instanceof StepInterface) {
-            throw new UnsupportedModelException($model);
-        }
-
         $block = new Block([]);
 
-        foreach ($model->getActions() as $action) {
+        foreach ($step->getActions() as $action) {
             $this->addSourceToBlock($block, $action, $this->actionHandler->handle($action));
         }
 
-        foreach ($model->getAssertions() as $assertion) {
+        foreach ($step->getAssertions() as $assertion) {
             $this->addSourceToBlock($block, $assertion, $this->assertionHandler->handle($assertion));
         }
 

@@ -7,7 +7,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler;
 
 use webignition\BasilCompilableSourceFactory\Handler\StepHandler;
-use webignition\BasilCompilableSourceFactory\HandlerInterface;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\Block;
 use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
@@ -25,18 +25,8 @@ use webignition\BasilModelFactory\Action\ActionFactory;
 use webignition\BasilModelFactory\AssertionFactory;
 use webignition\DomElementLocator\ElementLocator;
 
-class StepHandlerTest extends AbstractHandlerTest
+class StepHandlerTest extends AbstractTestCase
 {
-    protected function createHandler(): HandlerInterface
-    {
-        return StepHandler::createHandler();
-    }
-
-    public function testHandlesDoesHandle()
-    {
-        $this->assertTrue($this->handler->handles(new Step([], [])));
-    }
-
     /**
      * @dataProvider handleDataProvider
      */
@@ -45,7 +35,9 @@ class StepHandlerTest extends AbstractHandlerTest
         SourceInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
-        $source = $this->handler->handle($step);
+        $handler = StepHandler::createHandler();
+
+        $source = $handler->handle($step);
 
         $this->assertInstanceOf(SourceInterface::class, $source);
 
