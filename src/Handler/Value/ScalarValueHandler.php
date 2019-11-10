@@ -16,19 +16,9 @@ use webignition\BasilModel\Value\ObjectValueType;
 
 class ScalarValueHandler
 {
-    private $pagePropertyHandler;
-
-    public function __construct(
-        PagePropertyHandler $pagePropertyHandler
-    ) {
-        $this->pagePropertyHandler = $pagePropertyHandler;
-    }
-
     public static function createHandler(): ScalarValueHandler
     {
-        return new ScalarValueHandler(
-            new PagePropertyHandler()
-        );
+        return new ScalarValueHandler();
     }
 
     /**
@@ -61,8 +51,8 @@ class ScalarValueHandler
             ]);
         }
 
-        if ($this->pagePropertyHandler->handles($model)) {
-            return $this->pagePropertyHandler->handle($model);
+        if ($this->isPageProperty($model) && $model instanceof ObjectValueInterface) {
+            return $this->handlePageProperty($model);
         }
 
         throw new UnsupportedModelException($model);
@@ -88,6 +78,11 @@ class ScalarValueHandler
     private function isLiteralValue(object $model): bool
     {
         return $model instanceof LiteralValueInterface;
+    }
+
+    private function isPageProperty(object $model): bool
+    {
+        return $model instanceof ObjectValueInterface && ObjectValueType::PAGE_PROPERTY === $model->getType();
     }
 
     private function handleBrowserProperty(): BlockInterface
@@ -117,7 +112,7 @@ class ScalarValueHandler
         return new Block([$dimensionAssignment, $dimensionConcatenation]);
     }
 
-    private function handleEnvironmentValue(ObjectValueInterface $value)
+    private function handleEnvironmentValue(ObjectValueInterface $value): BlockInterface
     {
         $variableDependencies = new VariablePlaceholderCollection();
         $environmentVariableArrayPlaceholder = $variableDependencies->create(
@@ -133,5 +128,36 @@ class ScalarValueHandler
                 (new Metadata())->withVariableDependencies($variableDependencies)
             )
         ]);
+    }
+
+    /**
+     * @param ObjectValueInterface $value
+     *
+     * @return BlockInterface
+     *
+     * @throws UnknownObjectPropertyException
+     */
+    private function handlePageProperty(ObjectValueInterface $value): BlockInterface
+    {
+        $variableDependencies = new VariablePlaceholderCollection();
+        $pantherClientPlaceholder = $variableDependencies->create(VariableNames::PANTHER_CLIENT);
+
+        $contentMap = [
+            'title' => (string) $pantherClientPlaceholder . '->getTitle()',
+            'url' => (string) $pantherClientPlaceholder . '->getCurrentURL()',
+        ];
+
+        $statementContent = $contentMap[$value->getProperty()] ?? null;
+
+        if (is_string($statementContent)) {
+            $metadata = (new Metadata())
+                ->withVariableDependencies($variableDependencies);
+
+            return new Block([
+                new Statement($statementContent, $metadata)
+            ]);
+        }
+
+        throw new UnknownObjectPropertyException($value);
     }
 }
