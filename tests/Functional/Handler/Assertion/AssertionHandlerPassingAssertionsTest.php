@@ -6,7 +6,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\Assertion;
 
-use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\EqualityAssertionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\ExcludesAssertionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\ExistsAssertionFunctionalDataProviderTrait;
@@ -16,12 +15,12 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\IsAsse
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\IsNotAssertionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\MatchesAssertionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\NotExistsAssertionFunctionalDataProviderTrait;
-use webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\AbstractHandlerTest;
+use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilModel\Assertion\AssertionInterface;
 
-class AssertionHandlerPassingAssertionsTest extends AbstractHandlerTest
+class AssertionHandlerPassingAssertionsTest extends AbstractBrowserTestCase
 {
     use EqualityAssertionFunctionalDataProviderTrait;
     use InclusionAssertionFunctionalDataProviderTrait;
@@ -33,9 +32,16 @@ class AssertionHandlerPassingAssertionsTest extends AbstractHandlerTest
     use MatchesAssertionFunctionalDataProviderTrait;
     use NotExistsAssertionFunctionalDataProviderTrait;
 
-    protected function createHandler(): HandlerInterface
+    /**
+     * @var AssertionHandler
+     */
+    private $handler;
+
+    protected function setUp(): void
     {
-        return AssertionHandler::createHandler();
+        parent::setUp();
+
+        $this->handler = AssertionHandler::createHandler();
     }
 
     /**

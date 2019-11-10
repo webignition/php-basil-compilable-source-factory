@@ -6,8 +6,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\Assertion;
 
-use webignition\BasilCompilableSourceFactory\HandlerInterface;
-use webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\AbstractHandlerTest;
+use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
@@ -15,11 +14,18 @@ use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModel\Assertion\AssertionInterface;
 use webignition\BasilModelFactory\AssertionFactory;
 
-class AssertionHandlerFailingAssertionsTest extends AbstractHandlerTest
+class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
 {
-    protected function createHandler(): HandlerInterface
+    /**
+     * @var AssertionHandler
+     */
+    private $handler;
+
+    protected function setUp(): void
     {
-        return AssertionHandler::createHandler();
+        parent::setUp();
+
+        $this->handler = AssertionHandler::createHandler();
     }
 
     /**

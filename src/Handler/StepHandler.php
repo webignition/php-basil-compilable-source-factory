@@ -2,6 +2,7 @@
 
 namespace webignition\BasilCompilableSourceFactory\Handler;
 
+use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
@@ -44,6 +45,7 @@ class StepHandler implements HandlerInterface
      * @return BlockInterface
      *
      * @throws UnsupportedModelException
+     * @throws UnknownObjectPropertyException
      */
     public function handle(object $model): BlockInterface
     {

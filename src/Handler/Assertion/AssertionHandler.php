@@ -4,13 +4,12 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
-use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilModel\Assertion\AssertionComparison;
 use webignition\BasilModel\Assertion\ComparisonAssertionInterface;
 use webignition\BasilModel\Assertion\ExaminationAssertionInterface;
 
-class AssertionHandler implements HandlerInterface
+class AssertionHandler
 {
     private $existenceComparisonHandler;
     private $comparisonAssertionHandler;
@@ -29,19 +28,6 @@ class AssertionHandler implements HandlerInterface
             ExistenceComparisonHandler::createHandler(),
             ComparisonAssertionHandler::createHandler()
         );
-    }
-
-    public function handles(object $model): bool
-    {
-        if ($this->isExistenceAssertion($model)) {
-            return true;
-        }
-
-        if ($this->isComparisonAssertion($model)) {
-            return true;
-        }
-
-        return false;
     }
 
     /**

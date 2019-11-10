@@ -7,7 +7,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Assertion;
 
-use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromExcludesAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromExistsAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromIncludesAssertionDataProviderTrait;
@@ -15,31 +14,14 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\Create
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromIsNotAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromMatchesAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromNotExistsAssertionDataProviderTrait;
-use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\ExcludesAssertionDataProviderTrait;
-use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\ExistsAssertionDataProviderTrait;
-use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\IncludesAssertionDataProviderTrait;
-use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\IsAssertionDataProviderTrait;
-use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\IsNotAssertionDataProviderTrait;
-use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\MatchesAssertionDataProviderTrait;
-use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\NotExistsAssertionDataProviderTrait;
-use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\UnhandledAssertionDataProviderTrait;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\AbstractHandlerTest;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
 use webignition\BasilCompilationSource\Metadata\MetadataInterface;
 use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilModel\Assertion\AssertionInterface;
 
-class AssertionHandlerTest extends AbstractHandlerTest
+class AssertionHandlerTest extends AbstractTestCase
 {
-    use ExcludesAssertionDataProviderTrait;
-    use ExistsAssertionDataProviderTrait;
-    use IncludesAssertionDataProviderTrait;
-    use IsAssertionDataProviderTrait;
-    use IsNotAssertionDataProviderTrait;
-    use MatchesAssertionDataProviderTrait;
-    use NotExistsAssertionDataProviderTrait;
-    use UnhandledAssertionDataProviderTrait;
-
     use CreateFromExcludesAssertionDataProviderTrait;
     use CreateFromExistsAssertionDataProviderTrait;
     use CreateFromIncludesAssertionDataProviderTrait;
@@ -48,31 +30,16 @@ class AssertionHandlerTest extends AbstractHandlerTest
     use CreateFromMatchesAssertionDataProviderTrait;
     use CreateFromNotExistsAssertionDataProviderTrait;
 
-    protected function createHandler(): HandlerInterface
-    {
-        return AssertionHandler::createHandler();
-    }
-
     /**
-     * @dataProvider excludesAssertionDataProvider
-     * @dataProvider existsAssertionDataProvider
-     * @dataProvider includesAssertionDataProvider
-     * @dataProvider isAssertionDataProvider
-     * @dataProvider isNotAssertionDataProvider
-     * @dataProvider matchesAssertionDataProvider
-     * @dataProvider notExistsAssertionDataProvider
+     * @var AssertionHandler
      */
-    public function testHandlesDoesHandle(AssertionInterface $model)
-    {
-        $this->assertTrue($this->handler->handles($model));
-    }
+    private $handler;
 
-    /**
-     * @dataProvider unhandledAssertionDataProvider
-     */
-    public function testHandlesDoesNotHandle(object $model)
+    protected function setUp(): void
     {
-        $this->assertFalse($this->handler->handles($model));
+        parent::setUp();
+
+        $this->handler = AssertionHandler::createHandler();
     }
 
     /**
