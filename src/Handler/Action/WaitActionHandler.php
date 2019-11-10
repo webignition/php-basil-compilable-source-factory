@@ -3,8 +3,8 @@
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
+use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
-use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
@@ -16,7 +16,7 @@ use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Action\WaitActionInterface;
 use webignition\BasilModel\Value\DomIdentifierValueInterface;
 
-class WaitActionHandler implements HandlerInterface
+class WaitActionHandler
 {
     const DURATION_PLACEHOLDER = 'DURATION';
     const MICROSECONDS_PER_MILLISECOND = 1000;
@@ -27,48 +27,37 @@ class WaitActionHandler implements HandlerInterface
 
     public function __construct(
         VariableAssignmentFactory $variableAssignmentFactory,
-        HandlerInterface $scalarValueHandler,
-        HandlerInterface $namedDomIdentifierHandler
+        ScalarValueHandler $scalarValueHandler,
+        NamedDomIdentifierHandler $namedDomIdentifierHandler
     ) {
         $this->variableAssignmentFactory = $variableAssignmentFactory;
         $this->scalarValueHandler = $scalarValueHandler;
         $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
     }
 
-    /**
-     * @return WaitActionHandler
-     */
-    public static function createHandler(): HandlerInterface
+    public static function createHandler(): WaitActionHandler
     {
         return new WaitActionHandler(
             VariableAssignmentFactory::createFactory(),
-            ScalarValueHandler::createHandler(),
+            new ScalarValueHandler(),
             NamedDomIdentifierHandler::createHandler()
         );
     }
 
-    public function handles(object $model): bool
-    {
-        return $model instanceof WaitActionInterface;
-    }
-
     /**
-     * @param object $model
+     * @param WaitActionInterface $waitAction
      *
      * @return BlockInterface
      *
      * @throws UnsupportedModelException
+     * @throws UnknownObjectPropertyException
      */
-    public function handle(object $model): BlockInterface
+    public function handle(WaitActionInterface $waitAction): BlockInterface
     {
-        if (!$model instanceof WaitActionInterface) {
-            throw new UnsupportedModelException($model);
-        }
-
         $variableExports = new VariablePlaceholderCollection();
         $durationPlaceholder = $variableExports->create(self::DURATION_PLACEHOLDER);
 
-        $duration = $model->getDuration();
+        $duration = $waitAction->getDuration();
 
         if ($duration instanceof DomIdentifierValueInterface) {
             $durationAccessor = $this->namedDomIdentifierHandler->handle(

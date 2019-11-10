@@ -2,109 +2,111 @@
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
+use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
-use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilationSource\Block\BlockInterface;
+use webignition\BasilModel\Action\ActionInterface;
+use webignition\BasilModel\Action\ActionTypes;
+use webignition\BasilModel\Action\InputActionInterface;
+use webignition\BasilModel\Action\InteractionActionInterface;
+use webignition\BasilModel\Action\NoArgumentsAction;
+use webignition\BasilModel\Action\WaitActionInterface;
 
-class ActionHandler implements HandlerInterface
+class ActionHandler
 {
     private $browserOperationActionHandler;
-    private $clickActionHandler;
     private $setActionHandler;
-    private $submitActionHandler;
     private $waitActionHandler;
     private $waitForActionHandler;
+    private $interactionActionHandler;
 
     public function __construct(
         BrowserOperationActionHandler $browserOperationActionHandler,
-        ClickActionHandler $clickActionHandler,
+        InteractionActionHandler $interactionActionHandler,
         SetActionHandler $setActionHandler,
-        SubmitActionHandler $submitActionHandler,
         WaitActionHandler $waitActionHandler,
         WaitForActionHandler $waitForActionHandler
     ) {
         $this->browserOperationActionHandler = $browserOperationActionHandler;
-        $this->clickActionHandler = $clickActionHandler;
+        $this->interactionActionHandler = $interactionActionHandler;
         $this->setActionHandler = $setActionHandler;
-        $this->submitActionHandler = $submitActionHandler;
         $this->waitActionHandler = $waitActionHandler;
         $this->waitForActionHandler = $waitForActionHandler;
     }
 
-    public static function createHandler(): HandlerInterface
+    public static function createHandler(): ActionHandler
     {
         return new ActionHandler(
             BrowserOperationActionHandler::createHandler(),
-            ClickActionHandler::createHandler(),
+            InteractionActionHandler::createHandler(),
             SetActionHandler::createHandler(),
-            SubmitActionHandler::createHandler(),
             WaitActionHandler::createHandler(),
             WaitForActionHandler::createHandler()
         );
     }
 
-    public function handles(object $model): bool
-    {
-        if ($this->browserOperationActionHandler->handles($model)) {
-            return true;
-        }
-
-        if ($this->clickActionHandler->handles($model)) {
-            return true;
-        }
-
-        if ($this->setActionHandler->handles($model)) {
-            return true;
-        }
-
-        if ($this->submitActionHandler->handles($model)) {
-            return true;
-        }
-
-        if ($this->waitActionHandler->handles($model)) {
-            return true;
-        }
-
-        if ($this->waitForActionHandler->handles($model)) {
-            return true;
-        }
-
-        return false;
-    }
-
     /**
-     * @param object $model
+     * @param ActionInterface $action
      *
      * @return BlockInterface
      *
      * @throws UnsupportedModelException
+     * @throws UnknownObjectPropertyException
      */
-    public function handle(object $model): BlockInterface
+    public function handle(ActionInterface $action): BlockInterface
     {
-        if ($this->browserOperationActionHandler->handles($model)) {
-            return $this->browserOperationActionHandler->handle($model);
+        if ($this->isBrowserOperationAction($action) && $action instanceof NoArgumentsAction) {
+            return $this->browserOperationActionHandler->handle($action);
         }
 
-        if ($this->clickActionHandler->handles($model)) {
-            return $this->clickActionHandler->handle($model);
+        if ($this->isInteractionAction($action) && $action instanceof InteractionActionInterface) {
+            return $this->interactionActionHandler->handle($action);
         }
 
-        if ($this->setActionHandler->handles($model)) {
-            return $this->setActionHandler->handle($model);
+        if ($this->isSetAction($action) && $action instanceof InputActionInterface) {
+            return $this->setActionHandler->handle($action);
         }
 
-        if ($this->submitActionHandler->handles($model)) {
-            return $this->submitActionHandler->handle($model);
+        if ($this->isWaitAction($action) && $action instanceof WaitActionInterface) {
+            return $this->waitActionHandler->handle($action);
         }
 
-        if ($this->waitActionHandler->handles($model)) {
-            return $this->waitActionHandler->handle($model);
+        if ($this->isWaitForAction($action) && $action instanceof InteractionActionInterface) {
+            return $this->waitForActionHandler->handle($action);
         }
 
-        if ($this->waitForActionHandler->handles($model)) {
-            return $this->waitForActionHandler->handle($model);
-        }
+        throw new UnsupportedModelException($action);
+    }
 
-        throw new UnsupportedModelException($model);
+    private function isBrowserOperationAction(object $model): bool
+    {
+        return $model instanceof NoArgumentsAction && in_array($model->getType(), [
+            ActionTypes::BACK,
+            ActionTypes::FORWARD,
+            ActionTypes::RELOAD,
+        ]);
+    }
+
+    private function isInteractionAction(object $model): bool
+    {
+        return $model instanceof InteractionActionInterface && in_array($model->getType(), [
+            ActionTypes::CLICK,
+            ActionTypes::SUBMIT,
+        ]);
+    }
+
+    private function isSetAction(object $model): bool
+    {
+        return $model instanceof InputActionInterface;
+    }
+
+    private function isWaitAction(object $model): bool
+    {
+        return $model instanceof WaitActionInterface;
+    }
+
+    private function isWaitForAction(object $model): bool
+    {
+        return $model instanceof InteractionActionInterface && ActionTypes::WAIT_FOR === $model->getType();
     }
 }

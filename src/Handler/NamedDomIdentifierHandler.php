@@ -7,7 +7,6 @@ use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCall
 use webignition\BasilCompilableSourceFactory\CallFactory\ElementLocatorCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\WebDriverElementInspectorCallFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
-use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierInterface;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilationSource\Block\Block;
@@ -15,7 +14,7 @@ use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
-class NamedDomIdentifierHandler implements HandlerInterface
+class NamedDomIdentifierHandler
 {
     private $domCrawlerNavigatorCallFactory;
     private $elementLocatorCallFactory;
@@ -37,7 +36,7 @@ class NamedDomIdentifierHandler implements HandlerInterface
         $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
     }
 
-    public static function createHandler(): HandlerInterface
+    public static function createHandler(): NamedDomIdentifierHandler
     {
         return new NamedDomIdentifierHandler(
             DomCrawlerNavigatorCallFactory::createFactory(),
@@ -46,11 +45,6 @@ class NamedDomIdentifierHandler implements HandlerInterface
             WebDriverElementInspectorCallFactory::createFactory(),
             SingleQuotedStringEscaper::create()
         );
-    }
-
-    public function handles(object $model): bool
-    {
-        return $model instanceof NamedDomIdentifierInterface;
     }
 
     /**

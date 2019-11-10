@@ -7,7 +7,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler;
 
 use webignition\BasilCompilableSourceFactory\Handler\StepHandler;
-use webignition\BasilCompilableSourceFactory\HandlerInterface;
+use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
@@ -18,12 +18,20 @@ use webignition\BasilModel\Step\StepInterface;
 use webignition\BasilModelFactory\Action\ActionFactory;
 use webignition\BasilModelFactory\AssertionFactory;
 
-class StepHandlerTest extends AbstractHandlerTest
+class StepHandlerTest extends AbstractBrowserTestCase
 {
-    protected function createHandler(): HandlerInterface
+    /**
+     * @var StepHandler
+     */
+    private $handler;
+
+    protected function setUp(): void
     {
-        return StepHandler::createHandler();
+        parent::setUp();
+
+        $this->handler = StepHandler::createHandler();
     }
+
     /**
      * @dataProvider createSourceDataProvider
      */

@@ -4,10 +4,10 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
+use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
-use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\BlockInterface;
@@ -17,16 +17,8 @@ use webignition\BasilModel\Assertion\AssertionComparison;
 use webignition\BasilModel\Assertion\ComparisonAssertionInterface;
 use webignition\BasilModel\Value\DomIdentifierValueInterface;
 
-class ComparisonAssertionHandler implements HandlerInterface
+class ComparisonAssertionHandler
 {
-    const HANDLED_COMPARISONS = [
-        AssertionComparison::INCLUDES,
-        AssertionComparison::EXCLUDES,
-        AssertionComparison::IS,
-        AssertionComparison::IS_NOT,
-        AssertionComparison::MATCHES,
-    ];
-
     const COMPARISON_TO_ASSERTION_TEMPLATE_MAP = [
         AssertionComparison::INCLUDES => AssertionCallFactory::ASSERT_STRING_CONTAINS_STRING_TEMPLATE,
         AssertionComparison::EXCLUDES => AssertionCallFactory::ASSERT_STRING_NOT_CONTAINS_STRING_TEMPLATE,
@@ -43,8 +35,8 @@ class ComparisonAssertionHandler implements HandlerInterface
     public function __construct(
         AssertionCallFactory $assertionCallFactory,
         VariableAssignmentFactory $variableAssignmentFactory,
-        HandlerInterface $scalarValueHandler,
-        HandlerInterface $namedDomIdentifierHandler
+        ScalarValueHandler $scalarValueHandler,
+        NamedDomIdentifierHandler $namedDomIdentifierHandler
     ) {
         $this->assertionCallFactory = $assertionCallFactory;
         $this->variableAssignmentFactory = $variableAssignmentFactory;
@@ -52,50 +44,31 @@ class ComparisonAssertionHandler implements HandlerInterface
         $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
     }
 
-    /**
-     * @return ComparisonAssertionHandler
-     */
-    public static function createHandler(): HandlerInterface
+    public static function createHandler(): ComparisonAssertionHandler
     {
         return new ComparisonAssertionHandler(
             AssertionCallFactory::createFactory(),
             VariableAssignmentFactory::createFactory(),
-            ScalarValueHandler::createHandler(),
+            new ScalarValueHandler(),
             NamedDomIdentifierHandler::createHandler()
         );
     }
 
-    public function handles(object $model): bool
-    {
-        if (!$model instanceof ComparisonAssertionInterface) {
-            return false;
-        }
-
-        return in_array($model->getComparison(), self::HANDLED_COMPARISONS);
-    }
-
     /**
-     * @param object $model
+     * @param ComparisonAssertionInterface $assertion
      *
      * @return BlockInterface
      *
      * @throws UnsupportedModelException
+     * @throws UnknownObjectPropertyException
      */
-    public function handle(object $model): BlockInterface
+    public function handle(ComparisonAssertionInterface $assertion): BlockInterface
     {
-        if (!$model instanceof ComparisonAssertionInterface) {
-            throw new UnsupportedModelException($model);
-        }
-
-        if (!in_array($model->getComparison(), self::HANDLED_COMPARISONS)) {
-            throw new UnsupportedModelException($model);
-        }
-
         $examinedValuePlaceholder = new VariablePlaceholder(VariableNames::EXAMINED_VALUE);
         $expectedValuePlaceholder = new VariablePlaceholder(VariableNames::EXPECTED_VALUE);
 
-        $examinedValue = $model->getExaminedValue();
-        $expectedValue = $model->getExpectedValue();
+        $examinedValue = $assertion->getExaminedValue();
+        $expectedValue = $assertion->getExpectedValue();
 
         if ($examinedValue instanceof DomIdentifierValueInterface) {
             $examinedValueAccessor = $this->namedDomIdentifierHandler->handle(
@@ -140,7 +113,7 @@ class ComparisonAssertionHandler implements HandlerInterface
             $examinedValueAssignment,
             $expectedValuePlaceholder,
             $examinedValuePlaceholder,
-            self::COMPARISON_TO_ASSERTION_TEMPLATE_MAP[$model->getComparison()]
+            self::COMPARISON_TO_ASSERTION_TEMPLATE_MAP[$assertion->getComparison()]
         );
     }
 }

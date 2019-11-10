@@ -4,8 +4,8 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
+use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
-use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
@@ -24,7 +24,7 @@ use webignition\BasilModel\Value\ObjectValueInterface;
 use webignition\BasilModel\Value\ObjectValueType;
 use webignition\BasilModel\Value\ValueInterface;
 
-class ExistenceComparisonHandler implements HandlerInterface
+class ExistenceComparisonHandler
 {
     private $assertionCallFactory;
     private $scalarValueHandler;
@@ -33,9 +33,9 @@ class ExistenceComparisonHandler implements HandlerInterface
 
     public function __construct(
         AssertionCallFactory $assertionCallFactory,
-        HandlerInterface $scalarValueHandler,
+        ScalarValueHandler $scalarValueHandler,
         DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory,
-        HandlerInterface $namedDomIdentifierHandler
+        NamedDomIdentifierHandler $namedDomIdentifierHandler
     ) {
         $this->assertionCallFactory = $assertionCallFactory;
         $this->scalarValueHandler = $scalarValueHandler;
@@ -43,46 +43,27 @@ class ExistenceComparisonHandler implements HandlerInterface
         $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
     }
 
-    /**
-     * @return ExistenceComparisonHandler
-     */
-    public static function createHandler(): HandlerInterface
+    public static function createHandler(): ExistenceComparisonHandler
     {
         return new ExistenceComparisonHandler(
             AssertionCallFactory::createFactory(),
-            ScalarValueHandler::createHandler(),
+            new ScalarValueHandler(),
             DomCrawlerNavigatorCallFactory::createFactory(),
             NamedDomIdentifierHandler::createHandler()
         );
     }
 
-    public function handles(object $model): bool
-    {
-        if (!$model instanceof ExaminationAssertionInterface) {
-            return false;
-        }
-
-        return in_array($model->getComparison(), [AssertionComparison::EXISTS, AssertionComparison::NOT_EXISTS]);
-    }
-
     /**
-     * @param object $model
+     * @param ExaminationAssertionInterface $assertion
      *
      * @return BlockInterface
      *
      * @throws UnsupportedModelException
+     * @throws UnknownObjectPropertyException
      */
-    public function handle(object $model): BlockInterface
+    public function handle(ExaminationAssertionInterface $assertion): BlockInterface
     {
-        if (!$model instanceof ExaminationAssertionInterface) {
-            throw new UnsupportedModelException($model);
-        }
-
-        if (!in_array($model->getComparison(), [AssertionComparison::EXISTS, AssertionComparison::NOT_EXISTS])) {
-            throw new UnsupportedModelException($model);
-        }
-
-        $value = $model->getExaminedValue();
+        $value = $assertion->getExaminedValue();
         $valuePlaceholder = new VariablePlaceholder(VariableNames::EXAMINED_VALUE);
 
         $existence = null;
@@ -113,7 +94,7 @@ class ExistenceComparisonHandler implements HandlerInterface
                 new Statement(sprintf('%s = %s !== null', $valuePlaceholder, $valuePlaceholder)),
             ]);
 
-            return $this->createAssertionCall($model->getComparison(), $existence, $valuePlaceholder);
+            return $this->createAssertionCall($assertion->getComparison(), $existence, $valuePlaceholder);
         }
 
         if ($value instanceof DomIdentifierValueInterface) {
@@ -134,7 +115,7 @@ class ExistenceComparisonHandler implements HandlerInterface
                 ]));
 
                 return $this->createAssertionCall(
-                    $model->getComparison(),
+                    $assertion->getComparison(),
                     new Block([$assignment]),
                     $valuePlaceholder
                 );
@@ -149,10 +130,10 @@ class ExistenceComparisonHandler implements HandlerInterface
                 new Statement(sprintf('%s = %s !== null', $valuePlaceholder, $valuePlaceholder)),
             ]);
 
-            return $this->createAssertionCall($model->getComparison(), $existence, $valuePlaceholder);
+            return $this->createAssertionCall($assertion->getComparison(), $existence, $valuePlaceholder);
         }
 
-        throw new UnsupportedModelException($model);
+        throw new UnsupportedModelException($assertion);
     }
 
     private function createAssertionCall(

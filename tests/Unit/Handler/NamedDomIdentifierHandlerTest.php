@@ -6,18 +6,16 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler;
 
-use webignition\BasilCompilableSourceFactory\HandlerInterface;
-use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifier;
-use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\Metadata\MetadataInterface;
-use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Identifier\DomIdentifier;
@@ -25,37 +23,18 @@ use webignition\BasilModel\Value\DomIdentifierValue;
 use webignition\BasilModel\Value\ValueInterface;
 use webignition\DomElementLocator\ElementLocator;
 
-class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
+class NamedDomIdentifierHandlerTest extends AbstractTestCase
 {
-    protected function createHandler(): HandlerInterface
-    {
-        return NamedDomIdentifierHandler::createHandler();
-    }
-
     /**
-     * @dataProvider handlesDoesHandleDataProvider
+     * @var NamedDomIdentifierHandler
      */
-    public function testHandlesDoesHandle(NamedDomIdentifierInterface $model)
-    {
-        $this->assertTrue($this->handler->handles($model));
-    }
+    private $handler;
 
-    public function handlesDoesHandleDataProvider(): array
+    protected function setUp(): void
     {
-        return [
-            'element identifier' => [
-                'model' => new NamedDomIdentifier(
-                    new DomIdentifier('.selector'),
-                    new VariablePlaceholder('ELEMENT_PLACEHOLDER')
-                ),
-            ],
-            'attribute identifier' => [
-                'model' => new NamedDomIdentifier(
-                    (new DomIdentifier('.selector'))->withAttributeName('attribute_name'),
-                    new VariablePlaceholder('ATTRIBUTE_PLACEHOLDER')
-                ),
-            ],
-        ];
+        parent::setUp();
+
+        $this->handler = NamedDomIdentifierHandler::createHandler();
     }
 
     /**
@@ -63,14 +42,14 @@ class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
      */
     public function testHandle(
         ValueInterface $model,
-        SourceInterface $expectedContent,
+        BlockInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
         $source = $this->handler->handle($model);
 
-        $this->assertInstanceOf(SourceInterface::class, $source);
+        $this->assertInstanceOf(BlockInterface::class, $source);
 
-        if ($source instanceof SourceInterface) {
+        if ($source instanceof BlockInterface) {
             $this->assertSourceContentEquals($expectedContent, $source);
             $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
         }

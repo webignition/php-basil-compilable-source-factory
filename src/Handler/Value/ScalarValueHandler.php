@@ -4,97 +4,156 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Value;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
-use webignition\BasilCompilableSourceFactory\HandlerInterface;
+use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilCompilationSource\Block\Block;
 use webignition\BasilCompilationSource\Block\BlockInterface;
+use webignition\BasilCompilationSource\Line\Statement;
+use webignition\BasilCompilationSource\Metadata\Metadata;
+use webignition\BasilCompilationSource\VariablePlaceholderCollection;
+use webignition\BasilModel\Value\LiteralValueInterface;
+use webignition\BasilModel\Value\ObjectValueInterface;
+use webignition\BasilModel\Value\ObjectValueType;
+use webignition\BasilModel\Value\ValueInterface;
 
-class ScalarValueHandler implements HandlerInterface
+class ScalarValueHandler
 {
-    private $browserPropertyHandler;
-    private $dataParameterHandler;
-    private $environmentValueHandler;
-    private $literalValueHandler;
-    private $pagePropertyHandler;
-
-    public function __construct(
-        BrowserPropertyHandler $browserPropertyHandler,
-        DataParameterHandler $dataParameterHandler,
-        EnvironmentValueHandler $environmentValueHandler,
-        LiteralValueHandler $literalValueHandler,
-        PagePropertyHandler $pagePropertyHandler
-    ) {
-        $this->browserPropertyHandler = $browserPropertyHandler;
-        $this->dataParameterHandler = $dataParameterHandler;
-        $this->environmentValueHandler = $environmentValueHandler;
-        $this->literalValueHandler = $literalValueHandler;
-        $this->pagePropertyHandler = $pagePropertyHandler;
-    }
-
-    public static function createHandler(): HandlerInterface
-    {
-        return new ScalarValueHandler(
-            new BrowserPropertyHandler(),
-            new DataParameterHandler(),
-            new EnvironmentValueHandler(),
-            new LiteralValueHandler(),
-            new PagePropertyHandler()
-        );
-    }
-
-    public function handles(object $model): bool
-    {
-        if ($this->browserPropertyHandler->handles($model)) {
-            return true;
-        }
-
-        if ($this->dataParameterHandler->handles($model)) {
-            return true;
-        }
-
-        if ($this->environmentValueHandler->handles($model)) {
-            return true;
-        }
-
-        if ($this->literalValueHandler->handles($model)) {
-            return true;
-        }
-
-        if ($this->pagePropertyHandler->handles($model)) {
-            return true;
-        }
-
-        return false;
-    }
-
     /**
-     * @param object $model
+     * @param ValueInterface $value
      *
      * @return BlockInterface
      *
      * @throws UnsupportedModelException
      * @throws UnknownObjectPropertyException
      */
-    public function handle(object $model): BlockInterface
+    public function handle(ValueInterface $value): BlockInterface
     {
-        if ($this->browserPropertyHandler->handles($model)) {
-            return $this->browserPropertyHandler->handle($model);
+        if ($value instanceof ObjectValueInterface) {
+            if ($this->isBrowserProperty($value)) {
+                return $this->handleBrowserProperty();
+            }
+
+            if ($this->isDataParameter($value)) {
+                return new Block([
+                    new Statement('$' . $value->getProperty())
+                ]);
+            }
+
+            if ($this->isEnvironmentValue($value)) {
+                return $this->handleEnvironmentValue($value);
+            }
+
+            if ($this->isPageProperty($value)) {
+                return $this->handlePageProperty($value);
+            }
         }
 
-        if ($this->dataParameterHandler->handles($model)) {
-            return $this->dataParameterHandler->handle($model);
+        if ($this->isLiteralValue($value)) {
+            return new Block([
+                new Statement((string) $value)
+            ]);
         }
 
-        if ($this->environmentValueHandler->handles($model)) {
-            return $this->environmentValueHandler->handle($model);
+        throw new UnsupportedModelException($value);
+    }
+
+    private function isBrowserProperty(ObjectValueInterface $value): bool
+    {
+        return ObjectValueType::BROWSER_PROPERTY === $value->getType() && 'size' === $value->getProperty();
+    }
+
+    private function isDataParameter(ObjectValueInterface $value): bool
+    {
+        return $value->getType() === ObjectValueType::DATA_PARAMETER;
+    }
+
+    private function isEnvironmentValue(ObjectValueInterface $value): bool
+    {
+        return ObjectValueType::ENVIRONMENT_PARAMETER === $value->getType();
+    }
+
+    private function isLiteralValue(ValueInterface $value): bool
+    {
+        return $value instanceof LiteralValueInterface;
+    }
+
+    private function isPageProperty(ObjectValueInterface $value): bool
+    {
+        return ObjectValueType::PAGE_PROPERTY === $value->getType();
+    }
+
+    private function handleBrowserProperty(): BlockInterface
+    {
+        $variableExports = new VariablePlaceholderCollection();
+        $webDriverDimensionPlaceholder = $variableExports->create('WEBDRIVER_DIMENSION');
+
+        $variableDependencies = new VariablePlaceholderCollection();
+        $pantherClientPlaceholder = $variableDependencies->create(VariableNames::PANTHER_CLIENT);
+
+        $dimensionAssignment = new Statement(
+            sprintf(
+                '%s = %s->getWebDriver()->manage()->window()->getSize()',
+                $webDriverDimensionPlaceholder,
+                $pantherClientPlaceholder
+            ),
+            (new Metadata())
+                ->withVariableDependencies($variableDependencies)
+                ->withVariableExports($variableExports)
+        );
+
+        $getWidthCall = $webDriverDimensionPlaceholder . '->getWidth()';
+        $getHeightCall = $webDriverDimensionPlaceholder . '->getHeight()';
+
+        $dimensionConcatenation = new Statement('(string) ' . $getWidthCall . ' . \'x\' . (string) ' . $getHeightCall);
+
+        return new Block([$dimensionAssignment, $dimensionConcatenation]);
+    }
+
+    private function handleEnvironmentValue(ObjectValueInterface $value): BlockInterface
+    {
+        $variableDependencies = new VariablePlaceholderCollection();
+        $environmentVariableArrayPlaceholder = $variableDependencies->create(
+            VariableNames::ENVIRONMENT_VARIABLE_ARRAY
+        );
+
+        return new Block([
+            new Statement(
+                sprintf(
+                    (string) $environmentVariableArrayPlaceholder . '[\'%s\']',
+                    $value->getProperty()
+                ),
+                (new Metadata())->withVariableDependencies($variableDependencies)
+            )
+        ]);
+    }
+
+    /**
+     * @param ObjectValueInterface $value
+     *
+     * @return BlockInterface
+     *
+     * @throws UnknownObjectPropertyException
+     */
+    private function handlePageProperty(ObjectValueInterface $value): BlockInterface
+    {
+        $variableDependencies = new VariablePlaceholderCollection();
+        $pantherClientPlaceholder = $variableDependencies->create(VariableNames::PANTHER_CLIENT);
+
+        $contentMap = [
+            'title' => (string) $pantherClientPlaceholder . '->getTitle()',
+            'url' => (string) $pantherClientPlaceholder . '->getCurrentURL()',
+        ];
+
+        $statementContent = $contentMap[$value->getProperty()] ?? null;
+
+        if (is_string($statementContent)) {
+            $metadata = (new Metadata())
+                ->withVariableDependencies($variableDependencies);
+
+            return new Block([
+                new Statement($statementContent, $metadata)
+            ]);
         }
 
-        if ($this->literalValueHandler->handles($model)) {
-            return $this->literalValueHandler->handle($model);
-        }
-
-        if ($this->pagePropertyHandler->handles($model)) {
-            return $this->pagePropertyHandler->handle($model);
-        }
-
-        throw new UnsupportedModelException($model);
+        throw new UnknownObjectPropertyException($value);
     }
 }

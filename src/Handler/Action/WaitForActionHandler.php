@@ -3,7 +3,6 @@
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
-use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\Block;
@@ -11,11 +10,10 @@ use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\BasilModel\Action\ActionTypes;
 use webignition\BasilModel\Action\InteractionActionInterface;
 use webignition\BasilModel\Identifier\DomIdentifierInterface;
 
-class WaitForActionHandler implements HandlerInterface
+class WaitForActionHandler
 {
     private $singleQuotedStringEscaper;
 
@@ -24,46 +22,30 @@ class WaitForActionHandler implements HandlerInterface
         $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
     }
 
-    /**
-     * @return WaitForActionHandler
-     */
-    public static function createHandler(): HandlerInterface
+    public static function createHandler(): WaitForActionHandler
     {
         return new WaitForActionHandler(SingleQuotedStringEscaper::create());
     }
 
-    public function handles(object $model): bool
-    {
-        return $model instanceof InteractionActionInterface && ActionTypes::WAIT_FOR === $model->getType();
-    }
-
     /**
-     * @param object $model
+     * @param InteractionActionInterface $action
      *
      * @return BlockInterface
      *
      * @throws UnsupportedModelException
      */
-    public function handle(object $model): BlockInterface
+    public function handle(InteractionActionInterface $action): BlockInterface
     {
-        if (!$model instanceof InteractionActionInterface) {
-            throw new UnsupportedModelException($model);
-        }
-
-        if (ActionTypes::WAIT_FOR !== $model->getType()) {
-            throw new UnsupportedModelException($model);
-        }
-
-        $identifier = $model->getIdentifier();
+        $identifier = $action->getIdentifier();
 
         if (!$identifier instanceof DomIdentifierInterface) {
-            throw new UnsupportedModelException($model);
+            throw new UnsupportedModelException($action);
         }
 
         $elementLocator = $identifier->getLocator();
 
         if ('/' === $elementLocator[0]) {
-            throw new UnsupportedModelException($model);
+            throw new UnsupportedModelException($action);
         }
 
         $variableDependencies = new VariablePlaceholderCollection();

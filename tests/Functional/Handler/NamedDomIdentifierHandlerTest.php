@@ -6,11 +6,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler;
 
-use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifier;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
+use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilCompilationSource\Block\Block;
@@ -19,12 +19,20 @@ use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilModel\Identifier\DomIdentifier;
 use webignition\BasilModel\Value\DomIdentifierValue;
 
-class NamedDomIdentifierHandlerTest extends AbstractHandlerTest
+class NamedDomIdentifierHandlerTest extends AbstractBrowserTestCase
 {
-    protected function createHandler(): HandlerInterface
+    /**
+     * @var NamedDomIdentifierHandler
+     */
+    private $handler;
+
+    protected function setUp(): void
     {
-        return NamedDomIdentifierHandler::createHandler();
+        parent::setUp();
+
+        $this->handler = NamedDomIdentifierHandler::createHandler();
     }
+
     /**
      * @dataProvider createSourceDataProvider
      */

@@ -4,8 +4,8 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\WebDriverElementMutatorCallFactory;
+use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
-use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifier;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
@@ -18,7 +18,7 @@ use webignition\BasilModel\Action\InputActionInterface;
 use webignition\BasilModel\Identifier\DomIdentifierInterface;
 use webignition\BasilModel\Value\DomIdentifierValueInterface;
 
-class SetActionHandler implements HandlerInterface
+class SetActionHandler
 {
     private $variableAssignmentFactory;
     private $webDriverElementMutatorCallFactory;
@@ -28,8 +28,8 @@ class SetActionHandler implements HandlerInterface
     public function __construct(
         VariableAssignmentFactory $variableAssignmentFactory,
         WebDriverElementMutatorCallFactory $webDriverElementMutatorCallFactory,
-        HandlerInterface $scalarValueHandler,
-        HandlerInterface $namedDomIdentifierHandler
+        ScalarValueHandler $scalarValueHandler,
+        NamedDomIdentifierHandler $namedDomIdentifierHandler
     ) {
         $this->variableAssignmentFactory = $variableAssignmentFactory;
         $this->webDriverElementMutatorCallFactory = $webDriverElementMutatorCallFactory;
@@ -37,45 +37,34 @@ class SetActionHandler implements HandlerInterface
         $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
     }
 
-    /**
-     * @return SetActionHandler
-     */
-    public static function createHandler(): HandlerInterface
+    public static function createHandler(): SetActionHandler
     {
         return new SetActionHandler(
             VariableAssignmentFactory::createFactory(),
             WebDriverElementMutatorCallFactory::createFactory(),
-            ScalarValueHandler::createHandler(),
+            new ScalarValueHandler(),
             NamedDomIdentifierHandler::createHandler()
         );
     }
 
-    public function handles(object $model): bool
-    {
-        return $model instanceof InputActionInterface;
-    }
-
     /**
-     * @param object $model
+     * @param InputActionInterface $action
      *
      * @return BlockInterface
      *
      * @throws UnsupportedModelException
+     * @throws UnknownObjectPropertyException
      */
-    public function handle(object $model): BlockInterface
+    public function handle(InputActionInterface $action): BlockInterface
     {
-        if (!$model instanceof InputActionInterface) {
-            throw new UnsupportedModelException($model);
-        }
-
-        $identifier = $model->getIdentifier();
+        $identifier = $action->getIdentifier();
 
         if (!$identifier instanceof DomIdentifierInterface) {
-            throw new UnsupportedModelException($model);
+            throw new UnsupportedModelException($action);
         }
 
         if (null !== $identifier->getAttributeName()) {
-            throw new UnsupportedModelException($model);
+            throw new UnsupportedModelException($action);
         }
 
         $variableExports = new VariablePlaceholderCollection();
@@ -87,7 +76,7 @@ class SetActionHandler implements HandlerInterface
             $collectionPlaceholder
         ));
 
-        $value = $model->getValue();
+        $value = $action->getValue();
 
         if ($value instanceof DomIdentifierValueInterface) {
             $valueAccessor = $this->namedDomIdentifierHandler->handle(
