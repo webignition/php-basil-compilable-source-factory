@@ -21,6 +21,9 @@ class BrowserOperationActionHandler implements HandlerInterface
         ActionTypes::RELOAD,
     ];
 
+    /**
+     * @return BrowserOperationActionHandler
+     */
     public static function createHandler(): HandlerInterface
     {
         return new BrowserOperationActionHandler();
