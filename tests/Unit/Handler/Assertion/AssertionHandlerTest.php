@@ -57,9 +57,7 @@ class AssertionHandlerTest extends AbstractTestCase
     ) {
         $source = $this->handler->handle($assertion);
 
-        if ($source instanceof CodeBlockInterface) {
-            $this->assertBlockContentEquals($expectedContent, $source);
-            $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
-        }
+        $this->assertBlockContentEquals($expectedContent, $source);
+        $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
     }
 }

@@ -57,19 +57,17 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
         $this->assertBlockContentEquals($expectedContent, $source);
         $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
 
-        if ($source instanceof CodeBlockInterface) {
-            $source->mutateLastStatement(function ($content) {
-                return 'return ' . $content;
-            });
+        $source->mutateLastStatement(function ($content) {
+            return 'return ' . $content;
+        });
 
-            $code = $this->codeBlockGenerator->createFromBlock($source, [
-                'VALUE' => '$value',
-            ]);
+        $code = $this->codeBlockGenerator->createFromBlock($source, [
+            'VALUE' => '$value',
+        ]);
 
-            $assignedValue = eval($code);
+        $assignedValue = eval($code);
 
-            $this->assertSame($expectedAssignedValue, $assignedValue);
-        }
+        $this->assertSame($expectedAssignedValue, $assignedValue);
     }
 
     public function createForValueAccessorDataProvider(): array

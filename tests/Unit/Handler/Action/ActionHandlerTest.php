@@ -49,9 +49,7 @@ class ActionHandlerTest extends AbstractTestCase
         $handler = ActionHandler::createHandler();
         $source = $handler->handle($action);
 
-        if ($source instanceof CodeBlockInterface) {
-            $this->assertBlockContentEquals($expectedContent, $source);
-            $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
-        }
+        $this->assertBlockContentEquals($expectedContent, $source);
+        $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
     }
 }

@@ -39,10 +39,8 @@ class StepHandlerTest extends AbstractTestCase
 
         $source = $handler->handle($step);
 
-        if ($source instanceof CodeBlockInterface) {
-            $this->assertBlockContentEquals($expectedContent, $source);
-            $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
-        }
+        $this->assertBlockContentEquals($expectedContent, $source);
+        $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
     }
 
     public function handleDataProvider(): array

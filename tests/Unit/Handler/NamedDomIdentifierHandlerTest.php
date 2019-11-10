@@ -49,10 +49,8 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
 
         $this->assertInstanceOf(CodeBlockInterface::class, $source);
 
-        if ($source instanceof CodeBlockInterface) {
-            $this->assertBlockContentEquals($expectedContent, $source);
-            $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
-        }
+        $this->assertBlockContentEquals($expectedContent, $source);
+        $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
     }
 
     public function handleDataProvider(): array
