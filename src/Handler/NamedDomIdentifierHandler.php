@@ -125,7 +125,7 @@ class NamedDomIdentifierHandler implements HandlerInterface
                 });
             }
 
-            $block->addLinesFromSource($valueAssignment);
+            $block->addLine($valueAssignment);
         }
 
         return $block;
