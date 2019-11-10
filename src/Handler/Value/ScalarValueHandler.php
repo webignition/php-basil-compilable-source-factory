@@ -10,26 +10,23 @@ use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
+use webignition\BasilModel\Value\LiteralValueInterface;
 use webignition\BasilModel\Value\ObjectValueInterface;
 use webignition\BasilModel\Value\ObjectValueType;
 
 class ScalarValueHandler
 {
-    private $literalValueHandler;
     private $pagePropertyHandler;
 
     public function __construct(
-        LiteralValueHandler $literalValueHandler,
         PagePropertyHandler $pagePropertyHandler
     ) {
-        $this->literalValueHandler = $literalValueHandler;
         $this->pagePropertyHandler = $pagePropertyHandler;
     }
 
     public static function createHandler(): ScalarValueHandler
     {
         return new ScalarValueHandler(
-            new LiteralValueHandler(),
             new PagePropertyHandler()
         );
     }
@@ -58,8 +55,10 @@ class ScalarValueHandler
             return $this->handleEnvironmentValue($model);
         }
 
-        if ($this->literalValueHandler->handles($model)) {
-            return $this->literalValueHandler->handle($model);
+        if ($this->isLiteralValue($model)) {
+            return new Block([
+                new Statement((string) $model)
+            ]);
         }
 
         if ($this->pagePropertyHandler->handles($model)) {
@@ -84,6 +83,11 @@ class ScalarValueHandler
     private function isEnvironmentValue(object $model): bool
     {
         return $model instanceof ObjectValueInterface && ObjectValueType::ENVIRONMENT_PARAMETER === $model->getType();
+    }
+
+    private function isLiteralValue(object $model): bool
+    {
+        return $model instanceof LiteralValueInterface;
     }
 
     private function handleBrowserProperty(): BlockInterface
