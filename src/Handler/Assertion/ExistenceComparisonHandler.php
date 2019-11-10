@@ -6,7 +6,6 @@ use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
-use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
@@ -25,7 +24,7 @@ use webignition\BasilModel\Value\ObjectValueInterface;
 use webignition\BasilModel\Value\ObjectValueType;
 use webignition\BasilModel\Value\ValueInterface;
 
-class ExistenceComparisonHandler implements HandlerInterface
+class ExistenceComparisonHandler
 {
     private $assertionCallFactory;
     private $scalarValueHandler;
@@ -52,15 +51,6 @@ class ExistenceComparisonHandler implements HandlerInterface
             DomCrawlerNavigatorCallFactory::createFactory(),
             NamedDomIdentifierHandler::createHandler()
         );
-    }
-
-    public function handles(object $model): bool
-    {
-        if (!$model instanceof ExaminationAssertionInterface) {
-            return false;
-        }
-
-        return in_array($model->getComparison(), [AssertionComparison::EXISTS, AssertionComparison::NOT_EXISTS]);
     }
 
     /**

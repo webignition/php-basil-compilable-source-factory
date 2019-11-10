@@ -8,7 +8,6 @@ use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyExce
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
-use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\BlockInterface;
@@ -18,7 +17,7 @@ use webignition\BasilModel\Assertion\AssertionComparison;
 use webignition\BasilModel\Assertion\ComparisonAssertionInterface;
 use webignition\BasilModel\Value\DomIdentifierValueInterface;
 
-class ComparisonAssertionHandler implements HandlerInterface
+class ComparisonAssertionHandler
 {
     const HANDLED_COMPARISONS = [
         AssertionComparison::INCLUDES,
@@ -61,15 +60,6 @@ class ComparisonAssertionHandler implements HandlerInterface
             new ScalarValueHandler(),
             NamedDomIdentifierHandler::createHandler()
         );
-    }
-
-    public function handles(object $model): bool
-    {
-        if (!$model instanceof ComparisonAssertionInterface) {
-            return false;
-        }
-
-        return in_array($model->getComparison(), self::HANDLED_COMPARISONS);
     }
 
     /**

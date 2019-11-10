@@ -2,9 +2,13 @@
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
+use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilationSource\Block\BlockInterface;
+use webignition\BasilModel\Assertion\AssertionComparison;
+use webignition\BasilModel\Assertion\ComparisonAssertionInterface;
+use webignition\BasilModel\Assertion\ExaminationAssertionInterface;
 
 class AssertionHandler implements HandlerInterface
 {
@@ -29,11 +33,11 @@ class AssertionHandler implements HandlerInterface
 
     public function handles(object $model): bool
     {
-        if ($this->existenceComparisonHandler->handles($model)) {
+        if ($this->isExistenceAssertion($model)) {
             return true;
         }
 
-        if ($this->comparisonAssertionHandler->handles($model)) {
+        if ($this->isComparisonAssertion($model)) {
             return true;
         }
 
@@ -46,17 +50,43 @@ class AssertionHandler implements HandlerInterface
      * @return BlockInterface
      *
      * @throws UnsupportedModelException
+     * @throws UnknownObjectPropertyException
      */
     public function handle(object $model): BlockInterface
     {
-        if ($this->existenceComparisonHandler->handles($model)) {
-            return $this->existenceComparisonHandler->handle($model);
+        if ($this->isComparisonAssertion($model)) {
+            return $this->comparisonAssertionHandler->handle($model);
         }
 
-        if ($this->comparisonAssertionHandler->handles($model)) {
-            return $this->comparisonAssertionHandler->handle($model);
+        if ($this->isExistenceAssertion($model)) {
+            return $this->existenceComparisonHandler->handle($model);
         }
 
         throw new UnsupportedModelException($model);
     }
+
+    private function isComparisonAssertion(object $model): bool
+    {
+        if (!$model instanceof ComparisonAssertionInterface) {
+            return false;
+        }
+
+        return in_array($model->getComparison(), [
+            AssertionComparison::INCLUDES,
+            AssertionComparison::EXCLUDES,
+            AssertionComparison::IS,
+            AssertionComparison::IS_NOT,
+            AssertionComparison::MATCHES,
+        ]);
+    }
+
+    private function isExistenceAssertion(object $model): bool
+    {
+        if (!$model instanceof ExaminationAssertionInterface) {
+            return false;
+        }
+
+        return in_array($model->getComparison(), [AssertionComparison::EXISTS, AssertionComparison::NOT_EXISTS]);
+    }
+
 }

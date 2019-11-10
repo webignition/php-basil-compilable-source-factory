@@ -7,57 +7,24 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
-use webignition\BasilCompilableSourceFactory\HandlerInterface;
-use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\ExcludesAssertionDataProviderTrait;
-use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\ExistsAssertionDataProviderTrait;
-use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\IncludesAssertionDataProviderTrait;
-use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\IsAssertionDataProviderTrait;
-use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\IsNotAssertionDataProviderTrait;
-use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\MatchesAssertionDataProviderTrait;
-use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\NotExistsAssertionDataProviderTrait;
-use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\UnhandledAssertionDataProviderTrait;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\AbstractHandlerTest;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\ExistenceComparisonHandler;
-use webignition\BasilModel\Assertion\AssertionInterface;
 use webignition\BasilModel\Assertion\ComparisonAssertion;
 use webignition\BasilModel\Assertion\ExaminationAssertion;
 use webignition\BasilModelFactory\AssertionFactory;
 
-class ExistenceComparisonHandlerTest extends AbstractHandlerTest
+class ExistenceComparisonHandlerTest extends AbstractTestCase
 {
-    use ExcludesAssertionDataProviderTrait;
-    use ExistsAssertionDataProviderTrait;
-    use IncludesAssertionDataProviderTrait;
-    use IsAssertionDataProviderTrait;
-    use IsNotAssertionDataProviderTrait;
-    use MatchesAssertionDataProviderTrait;
-    use NotExistsAssertionDataProviderTrait;
-    use UnhandledAssertionDataProviderTrait;
-
-    protected function createHandler(): HandlerInterface
-    {
-        return ExistenceComparisonHandler::createHandler();
-    }
-
     /**
-     * @dataProvider existsAssertionDataProvider
-     * @dataProvider notExistsAssertionDataProvider
+     * @var ExistenceComparisonHandler
      */
-    public function testHandlesDoesHandle(AssertionInterface $model)
-    {
-        $this->assertTrue($this->handler->handles($model));
-    }
+    private $handler;
 
-    /**
-     * @dataProvider excludesAssertionDataProvider
-     * @dataProvider includesAssertionDataProvider
-     * @dataProvider isAssertionDataProvider
-     * @dataProvider isNotAssertionDataProvider
-     * @dataProvider matchesAssertionDataProvider
-     */
-    public function testHandlesDoesNotHandle(object $model)
+    protected function setUp(): void
     {
-        $this->assertFalse($this->handler->handles($model));
+        parent::setUp();
+
+        $this->handler = ExistenceComparisonHandler::createHandler();
     }
 
     public function testHandleWrongComparisonType()
