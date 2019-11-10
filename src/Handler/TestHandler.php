@@ -2,34 +2,34 @@
 
 namespace webignition\BasilCompilableSourceFactory\Handler;
 
+use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
-use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\Block;
 use webignition\BasilCompilationSource\ClassDefinition\ClassDefinition;
+use webignition\BasilCompilationSource\ClassDefinition\ClassDefinitionInterface;
 use webignition\BasilCompilationSource\Line\Comment;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Line\StatementInterface;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\MethodDefinition\MethodDefinition;
 use webignition\BasilCompilationSource\MethodDefinition\MethodDefinitionInterface;
-use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Test\TestInterface;
 
-class TestHandler implements HandlerInterface
+class TestHandler
 {
     private $stepHandler;
     private $singleQuotedStringEscaper;
 
-    public function __construct(HandlerInterface $stepHandler, SingleQuotedStringEscaper $singleQuotedStringEscaper)
+    public function __construct(StepHandler $stepHandler, SingleQuotedStringEscaper $singleQuotedStringEscaper)
     {
         $this->stepHandler = $stepHandler;
         $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
     }
 
-    public static function createHandler(): HandlerInterface
+    public static function createHandler(): TestHandler
     {
         return new TestHandler(
             StepHandler::createHandler(),
@@ -43,23 +43,20 @@ class TestHandler implements HandlerInterface
     }
 
     /**
-     * @param object $model
+     * @param TestInterface $test
      *
-     * @return SourceInterface
+     * @return ClassDefinitionInterface
      *
      * @throws UnsupportedModelException
+     * @throws UnknownObjectPropertyException
      */
-    public function handle(object $model): SourceInterface
+    public function handle(TestInterface $test): ClassDefinitionInterface
     {
-        if (!$model instanceof TestInterface) {
-            throw new UnsupportedModelException($model);
-        }
-
         $methodDefinitions = [
-            $this->createSetupBeforeClassMethod($model),
+            $this->createSetupBeforeClassMethod($test),
         ];
 
-        foreach ($model->getSteps() as $stepName => $step) {
+        foreach ($test->getSteps() as $stepName => $step) {
             $stepName = (string) $stepName;
 
             $stepMethodName = sprintf('test%s', ucfirst(md5($stepName)));
@@ -73,7 +70,7 @@ class TestHandler implements HandlerInterface
             );
         }
 
-        $testName = (string) $model->getName();
+        $testName = (string) $test->getName();
         $className = sprintf('Generated%sTest', ucfirst(md5($testName)));
 
         return new ClassDefinition($className, $methodDefinitions);

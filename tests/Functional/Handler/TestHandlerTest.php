@@ -9,7 +9,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler;
 use webignition\BasePantherTestCase\Options;
 use webignition\BasilCodeGenerator\ClassGenerator;
 use webignition\BasilCompilableSourceFactory\Handler\TestHandler;
-use webignition\BasilCompilableSourceFactory\HandlerInterface;
+use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractGeneratedTestCase;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
@@ -27,24 +27,26 @@ use webignition\BasilModel\Test\TestInterface;
 use webignition\BasilModelFactory\Action\ActionFactory;
 use webignition\BasilModelFactory\AssertionFactory;
 
-class TestHandlerTest extends AbstractHandlerTest
+class TestHandlerTest extends AbstractBrowserTestCase
 {
     /**
      * @var ClassGenerator
      */
     private $classGenerator;
 
+    /**
+     * @var TestHandler
+     */
+    private $handler;
+
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->classGenerator = ClassGenerator::create();
+        $this->handler = TestHandler::createHandler();
     }
 
-    protected function createHandler(): HandlerInterface
-    {
-        return TestHandler::createHandler();
-    }
     /**
      * @dataProvider createSourceDataProvider
      */

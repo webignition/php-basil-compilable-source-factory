@@ -7,7 +7,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler;
 
 use webignition\BasilCompilableSourceFactory\Handler\TestHandler;
-use webignition\BasilCompilableSourceFactory\HandlerInterface;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\Block;
 use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
@@ -26,22 +26,8 @@ use webignition\BasilModelFactory\Action\ActionFactory;
 use webignition\BasilModelFactory\AssertionFactory;
 use webignition\DomElementLocator\ElementLocator;
 
-class TestHandlerTest extends AbstractHandlerTest
+class TestHandlerTest extends AbstractTestCase
 {
-    protected function createHandler(): HandlerInterface
-    {
-        return TestHandler::createHandler();
-    }
-
-    public function testHandlesDoesHandle()
-    {
-        $this->assertTrue($this->handler->handles(new Test(
-            'test name',
-            new Configuration('chrome', 'http://example.com'),
-            []
-        )));
-    }
-
     /**
      * @dataProvider handleDataProvider
      */
@@ -51,7 +37,9 @@ class TestHandlerTest extends AbstractHandlerTest
         array $expectedMethods,
         MetadataInterface $expectedMetadata
     ) {
-        $source = $this->handler->handle($test);
+        $handler = TestHandler::createHandler();
+
+        $source = $handler->handle($test);
 
         $this->assertInstanceOf(ClassDefinitionInterface::class, $source);
 
