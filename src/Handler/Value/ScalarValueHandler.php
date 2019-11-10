@@ -48,15 +48,11 @@ class ScalarValueHandler
      */
     public function handle(object $model): BlockInterface
     {
-        $isBrowserProperty = $model instanceof ObjectValueInterface
-            && ObjectValueType::BROWSER_PROPERTY === $model->getType()
-            && 'size' === $model->getProperty();
-
-        if ($isBrowserProperty) {
-            return $this->handleFoo();
+        if ($this->isBrowserProperty()) {
+            return $this->handleBrowserProperty();
         }
 
-        if ($model instanceof ObjectValueInterface && $model->getType() === ObjectValueType::DATA_PARAMETER) {
+        if ($this->isDataParameter($model)) {
             return new Block([
                 new Statement('$' . $model->getProperty())
             ]);
@@ -77,7 +73,19 @@ class ScalarValueHandler
         throw new UnsupportedModelException($model);
     }
 
-    private function handleFoo()
+    private function isBrowserProperty(object $model): bool
+    {
+        return $model instanceof ObjectValueInterface
+            && ObjectValueType::BROWSER_PROPERTY === $model->getType()
+            && 'size' === $model->getProperty();
+    }
+
+    private function isDataParameter(object $model): bool
+    {
+        return $model instanceof ObjectValueInterface && $model->getType() === ObjectValueType::DATA_PARAMETER;
+    }
+
+    private function handleBrowserProperty()
     {
         $variableExports = new VariablePlaceholderCollection();
         $webDriverDimensionPlaceholder = $variableExports->create('WEBDRIVER_DIMENSION');
