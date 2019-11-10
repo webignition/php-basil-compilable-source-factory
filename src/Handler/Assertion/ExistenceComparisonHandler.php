@@ -43,6 +43,9 @@ class ExistenceComparisonHandler implements HandlerInterface
         $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
     }
 
+    /**
+     * @return ExistenceComparisonHandler
+     */
     public static function createHandler(): HandlerInterface
     {
         return new ExistenceComparisonHandler(
