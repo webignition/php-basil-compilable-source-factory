@@ -7,6 +7,7 @@ use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilCompilationSource\Line\Comment;
 use webignition\BasilCompilationSource\Line\EmptyLine;
 use webignition\BasilCompilationSource\SourceInterface;
@@ -65,10 +66,14 @@ class StepHandler implements HandlerInterface
 
     private function addSourceToLineList(Block $block, StatementInterface $statement, SourceInterface $source)
     {
-        $block->addLinesFromSources([
-            new Comment($statement->getSource()),
-            $source,
-            new EmptyLine(),
-        ]);
+        $block->addLine(new Comment($statement->getSource()));
+
+        if ($source instanceof BlockInterface) {
+            foreach ($source->getLines() as $sourceLine) {
+                $block->addLine($sourceLine);
+            }
+        }
+
+        $block->addLine(new EmptyLine());
     }
 }
