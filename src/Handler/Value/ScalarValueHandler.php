@@ -5,7 +5,6 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Value;
 use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
@@ -21,7 +20,7 @@ class ScalarValueHandler
     /**
      * @param ValueInterface $value
      *
-     * @return CodeBlock
+     * @return CodeBlockInterface
      *
      * @throws UnsupportedModelException
      * @throws UnknownObjectPropertyException
@@ -130,7 +129,7 @@ class ScalarValueHandler
     /**
      * @param ObjectValueInterface $value
      *
-     * @return BlockInterface
+     * @return CodeBlockInterface
      *
      * @throws UnknownObjectPropertyException
      */
