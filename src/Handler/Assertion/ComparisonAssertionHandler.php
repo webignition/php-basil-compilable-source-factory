@@ -58,7 +58,7 @@ class ComparisonAssertionHandler implements HandlerInterface
         return new ComparisonAssertionHandler(
             AssertionCallFactory::createFactory(),
             VariableAssignmentFactory::createFactory(),
-            ScalarValueHandler::createHandler(),
+            new ScalarValueHandler(),
             NamedDomIdentifierHandler::createHandler()
         );
     }

@@ -40,7 +40,7 @@ class WaitActionHandler implements HandlerInterface
     {
         return new WaitActionHandler(
             VariableAssignmentFactory::createFactory(),
-            ScalarValueHandler::createHandler(),
+            new ScalarValueHandler(),
             NamedDomIdentifierHandler::createHandler()
         );
     }

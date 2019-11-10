@@ -27,7 +27,7 @@ class ScalarValueHandlerTest extends AbstractBrowserTestCase
     {
         parent::setUp();
 
-        $this->handler = ScalarValueHandler::createHandler();
+        $this->handler = new ScalarValueHandler();
     }
 
     /**

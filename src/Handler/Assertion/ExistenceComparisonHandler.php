@@ -48,7 +48,7 @@ class ExistenceComparisonHandler implements HandlerInterface
     {
         return new ExistenceComparisonHandler(
             AssertionCallFactory::createFactory(),
-            ScalarValueHandler::createHandler(),
+            new ScalarValueHandler(),
             DomCrawlerNavigatorCallFactory::createFactory(),
             NamedDomIdentifierHandler::createHandler()
         );

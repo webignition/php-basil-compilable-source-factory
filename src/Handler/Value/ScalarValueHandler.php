@@ -16,11 +16,6 @@ use webignition\BasilModel\Value\ObjectValueType;
 
 class ScalarValueHandler
 {
-    public static function createHandler(): ScalarValueHandler
-    {
-        return new ScalarValueHandler();
-    }
-
     /**
      * @param object $model
      *
