@@ -10,8 +10,8 @@ use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\Block;
-use webignition\BasilCompilationSource\Block\BlockInterface;
+use webignition\BasilCompilationSource\Block\CodeBlock;
+use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Metadata\Metadata;
@@ -42,14 +42,14 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
      */
     public function testHandle(
         ValueInterface $model,
-        BlockInterface $expectedContent,
+        CodeBlockInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
         $source = $this->handler->handle($model);
 
-        $this->assertInstanceOf(BlockInterface::class, $source);
+        $this->assertInstanceOf(CodeBlockInterface::class, $source);
 
-        if ($source instanceof BlockInterface) {
+        if ($source instanceof CodeBlockInterface) {
             $this->assertBlockContentEquals($expectedContent, $source);
             $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
         }
@@ -63,7 +63,7 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                     new DomIdentifierValue(new DomIdentifier('.selector')),
                     new VariablePlaceholder('E')
                 ),
-                'expectedContent' => Block::fromContent([
+                'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '{{ E }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
@@ -90,7 +90,7 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                     ),
                     new VariablePlaceholder('E')
                 ),
-                'expectedContent' => Block::fromContent([
+                'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = '
                         . '{{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
@@ -119,7 +119,7 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                     ),
                     new VariablePlaceholder('E')
                 ),
-                'expectedContent' => Block::fromContent([
+                'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '{{ E }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
@@ -147,7 +147,7 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                     ),
                     new VariablePlaceholder('E')
                 ),
-                'expectedContent' => Block::fromContent([
+                'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}'
                     . '->hasOne(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',

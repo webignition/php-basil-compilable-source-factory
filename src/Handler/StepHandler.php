@@ -6,8 +6,8 @@ use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyExce
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
-use webignition\BasilCompilationSource\Block\Block;
-use webignition\BasilCompilationSource\Block\BlockInterface;
+use webignition\BasilCompilationSource\Block\CodeBlock;
+use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Comment;
 use webignition\BasilCompilationSource\Line\EmptyLine;
 use webignition\BasilModel\StatementInterface;
@@ -35,14 +35,14 @@ class StepHandler
     /**
      * @param StepInterface $step
      *
-     * @return BlockInterface
+     * @return CodeBlockInterface
      *
      * @throws UnsupportedModelException
      * @throws UnknownObjectPropertyException
      */
-    public function handle(StepInterface $step): BlockInterface
+    public function handle(StepInterface $step): CodeBlockInterface
     {
-        $block = new Block([]);
+        $block = new CodeBlock([]);
 
         foreach ($step->getActions() as $action) {
             $this->addSourceToBlock($block, $action, $this->actionHandler->handle($action));
@@ -55,11 +55,14 @@ class StepHandler
         return $block;
     }
 
-    private function addSourceToBlock(Block $block, StatementInterface $statement, BlockInterface $source)
-    {
+    private function addSourceToBlock(
+        CodeBlockInterface $block,
+        StatementInterface $statement,
+        CodeBlockInterface $source
+    ) {
         $block->addLine(new Comment($statement->getSource()));
 
-        if ($source instanceof BlockInterface) {
+        if ($source instanceof CodeBlockInterface) {
             foreach ($source->getLines() as $sourceLine) {
                 $block->addLine($sourceLine);
             }
