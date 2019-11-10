@@ -4,7 +4,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
-use webignition\BasilCompilationSource\Block\BlockInterface;
+use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilModel\Action\ActionInterface;
 use webignition\BasilModel\Action\ActionTypes;
 use webignition\BasilModel\Action\InputActionInterface;
@@ -48,12 +48,12 @@ class ActionHandler
     /**
      * @param ActionInterface $action
      *
-     * @return BlockInterface
+     * @return CodeBlockInterface
      *
      * @throws UnsupportedModelException
      * @throws UnknownObjectPropertyException
      */
-    public function handle(ActionInterface $action): BlockInterface
+    public function handle(ActionInterface $action): CodeBlockInterface
     {
         if ($this->isBrowserOperationAction($action) && $action instanceof NoArgumentsAction) {
             return $this->browserOperationActionHandler->handle($action);
