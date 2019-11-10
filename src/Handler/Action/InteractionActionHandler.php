@@ -5,7 +5,6 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
-use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomElementIdentifier;
 use webignition\BasilCompilationSource\Block\Block;
 use webignition\BasilCompilationSource\Block\BlockInterface;
@@ -14,7 +13,7 @@ use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Action\InteractionActionInterface;
 use webignition\BasilModel\Identifier\DomIdentifierInterface;
 
-abstract class AbstractInteractionActionHandler implements HandlerInterface
+class InteractionActionHandler
 {
     private $variableAssignmentFactory;
     private $namedDomIdentifierHandler;
@@ -27,12 +26,12 @@ abstract class AbstractInteractionActionHandler implements HandlerInterface
         $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
     }
 
-    abstract protected function getHandledActionType(): string;
-    abstract protected function getElementActionMethod(): string;
-
-    public function handles(object $model): bool
+    public static function createHandler(): InteractionActionHandler
     {
-        return $model instanceof InteractionActionInterface && $this->getHandledActionType() === $model->getType();
+        return new InteractionActionHandler(
+            VariableAssignmentFactory::createFactory(),
+            NamedDomIdentifierHandler::createHandler()
+        );
     }
 
     /**
@@ -45,10 +44,6 @@ abstract class AbstractInteractionActionHandler implements HandlerInterface
     public function handle(object $model): BlockInterface
     {
         if (!$model instanceof InteractionActionInterface) {
-            throw new UnsupportedModelException($model);
-        }
-
-        if ($this->getHandledActionType() !== $model->getType()) {
             throw new UnsupportedModelException($model);
         }
 
@@ -71,7 +66,7 @@ abstract class AbstractInteractionActionHandler implements HandlerInterface
             new Statement(sprintf(
                 '%s->%s()',
                 (string) $elementPlaceholder,
-                $this->getElementActionMethod()
+                $model->getType()
             )),
         ]);
     }

@@ -4,7 +4,6 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
-use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilModel\Action\ActionTypes;
 use webignition\BasilModel\Action\InputActionInterface;
@@ -12,27 +11,24 @@ use webignition\BasilModel\Action\InteractionActionInterface;
 use webignition\BasilModel\Action\NoArgumentsAction;
 use webignition\BasilModel\Action\WaitActionInterface;
 
-class ActionHandler implements HandlerInterface
+class ActionHandler
 {
     private $browserOperationActionHandler;
-    private $clickActionHandler;
     private $setActionHandler;
-    private $submitActionHandler;
     private $waitActionHandler;
     private $waitForActionHandler;
+    private $interactionActionHandler;
 
     public function __construct(
         BrowserOperationActionHandler $browserOperationActionHandler,
-        ClickActionHandler $clickActionHandler,
+        InteractionActionHandler $interactionActionHandler,
         SetActionHandler $setActionHandler,
-        SubmitActionHandler $submitActionHandler,
         WaitActionHandler $waitActionHandler,
         WaitForActionHandler $waitForActionHandler
     ) {
         $this->browserOperationActionHandler = $browserOperationActionHandler;
-        $this->clickActionHandler = $clickActionHandler;
+        $this->interactionActionHandler = $interactionActionHandler;
         $this->setActionHandler = $setActionHandler;
-        $this->submitActionHandler = $submitActionHandler;
         $this->waitActionHandler = $waitActionHandler;
         $this->waitForActionHandler = $waitForActionHandler;
     }
@@ -41,41 +37,11 @@ class ActionHandler implements HandlerInterface
     {
         return new ActionHandler(
             BrowserOperationActionHandler::createHandler(),
-            ClickActionHandler::createHandler(),
+            InteractionActionHandler::createHandler(),
             SetActionHandler::createHandler(),
-            SubmitActionHandler::createHandler(),
             WaitActionHandler::createHandler(),
             WaitForActionHandler::createHandler()
         );
-    }
-
-    public function handles(object $model): bool
-    {
-        if ($this->isBrowserOperationAction($model)) {
-            return true;
-        }
-
-        if ($this->clickActionHandler->handles($model)) {
-            return true;
-        }
-
-        if ($this->isSetAction($model)) {
-            return true;
-        }
-
-        if ($this->submitActionHandler->handles($model)) {
-            return true;
-        }
-
-        if ($this->isWaitAction($model)) {
-            return true;
-        }
-
-        if ($this->isWaitForAction($model)) {
-            return true;
-        }
-
-        return false;
     }
 
     /**
@@ -92,16 +58,12 @@ class ActionHandler implements HandlerInterface
             return $this->browserOperationActionHandler->handle($model);
         }
 
-        if ($this->clickActionHandler->handles($model)) {
-            return $this->clickActionHandler->handle($model);
+        if ($this->isInteractionAction($model)) {
+            return $this->interactionActionHandler->handle($model);
         }
 
         if ($this->isSetAction($model)) {
             return $this->setActionHandler->handle($model);
-        }
-
-        if ($this->submitActionHandler->handles($model)) {
-            return $this->submitActionHandler->handle($model);
         }
 
         if ($this->isWaitAction($model)) {
@@ -121,6 +83,14 @@ class ActionHandler implements HandlerInterface
             ActionTypes::BACK,
             ActionTypes::FORWARD,
             ActionTypes::RELOAD,
+        ]);
+    }
+
+    private function isInteractionAction(object $model): bool
+    {
+        return $model instanceof InteractionActionInterface && in_array($model->getType(), [
+            ActionTypes::CLICK,
+            ActionTypes::SUBMIT,
         ]);
     }
 

@@ -6,7 +6,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\Action;
 
-use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\BackActionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\ClickActionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\ForwardActionFunctionalDataProviderTrait;
@@ -15,7 +14,7 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\SetAction
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\SubmitActionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\WaitActionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\WaitForActionFunctionalDataProviderTrait;
-use webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\AbstractHandlerTest;
+use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
@@ -25,7 +24,7 @@ use webignition\BasilModel\Action\WaitAction;
 use webignition\BasilModel\Identifier\DomIdentifier;
 use webignition\BasilModel\Value\DomIdentifierValue;
 
-class ActionHandlerTest extends AbstractHandlerTest
+class ActionHandlerTest extends AbstractBrowserTestCase
 {
     use BackActionFunctionalDataProviderTrait;
     use ClickActionFunctionalDataProviderTrait;
@@ -36,9 +35,16 @@ class ActionHandlerTest extends AbstractHandlerTest
     use WaitActionFunctionalDataProviderTrait;
     use WaitForActionFunctionalDataProviderTrait;
 
-    protected function createHandler(): HandlerInterface
+    /**
+     * @var ActionHandler
+     */
+    private $handler;
+
+    protected function setUp(): void
     {
-        return ActionHandler::createHandler();
+        parent::setUp();
+
+        $this->handler = ActionHandler::createHandler();
     }
 
     /**
