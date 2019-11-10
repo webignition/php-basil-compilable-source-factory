@@ -10,8 +10,8 @@ use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\Block;
-use webignition\BasilCompilationSource\Block\BlockInterface;
+use webignition\BasilCompilationSource\Block\CodeBlock;
+use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\MutableBlockInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
@@ -55,12 +55,12 @@ class ExistenceComparisonHandler
     /**
      * @param ExaminationAssertionInterface $assertion
      *
-     * @return BlockInterface
+     * @return CodeBlockInterface
      *
      * @throws UnsupportedModelException
      * @throws UnknownObjectPropertyException
      */
-    public function handle(ExaminationAssertionInterface $assertion): BlockInterface
+    public function handle(ExaminationAssertionInterface $assertion): CodeBlockInterface
     {
         $value = $assertion->getExaminedValue();
         $valuePlaceholder = new VariablePlaceholder(VariableNames::EXAMINED_VALUE);
@@ -88,7 +88,7 @@ class ExistenceComparisonHandler
                 ]));
             }
 
-            $existence = new Block([
+            $existence = new CodeBlock([
                 $assignment,
                 new Statement(sprintf('%s = %s !== null', $valuePlaceholder, $valuePlaceholder)),
             ]);
@@ -102,7 +102,7 @@ class ExistenceComparisonHandler
             if (null === $identifier->getAttributeName()) {
                 $accessor = $this->domCrawlerNavigatorCallFactory->createHasCall($identifier);
 
-                $assignment = new Block([
+                $assignment = new CodeBlock([
                     $accessor,
                 ]);
 
@@ -115,7 +115,7 @@ class ExistenceComparisonHandler
 
                 return $this->createAssertionCall(
                     $assertion->getComparison(),
-                    new Block([$assignment]),
+                    new CodeBlock([$assignment]),
                     $valuePlaceholder
                 );
             }
@@ -124,7 +124,7 @@ class ExistenceComparisonHandler
                 new NamedDomIdentifierValue($value, $valuePlaceholder)
             );
 
-            $existence = new Block([
+            $existence = new CodeBlock([
                 $accessor,
                 new Statement(sprintf('%s = %s !== null', $valuePlaceholder, $valuePlaceholder)),
             ]);
@@ -137,9 +137,9 @@ class ExistenceComparisonHandler
 
     private function createAssertionCall(
         string $comparison,
-        BlockInterface $block,
+        CodeBlockInterface $block,
         VariablePlaceholder $valuePlaceholder
-    ): BlockInterface {
+    ): CodeBlockInterface {
         $assertionTemplate = AssertionComparison::EXISTS === $comparison
             ? AssertionCallFactory::ASSERT_TRUE_TEMPLATE
             : AssertionCallFactory::ASSERT_FALSE_TEMPLATE;

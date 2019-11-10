@@ -1,5 +1,4 @@
 <?php
-/** @noinspection DuplicatedCode */
 /** @noinspection PhpDocSignatureInspection */
 /** @noinspection PhpUnhandledExceptionInspection */
 

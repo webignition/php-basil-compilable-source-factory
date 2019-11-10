@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Metadata\Metadata;
@@ -25,7 +25,7 @@ trait CreateFromMatchesAssertionDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '".selector" matches "/^value/"'
                 ),
-                'expectedContent' => Block::fromContent([
+                'expectedContent' => CodeBlock::fromContent([
                     '{{ EXPECTED }} = "/^value/" ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
                     '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
@@ -54,7 +54,7 @@ trait CreateFromMatchesAssertionDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '".selector".attribute_name matches "/^value/"'
                 ),
-                'expectedContent' => Block::fromContent([
+                'expectedContent' => CodeBlock::fromContent([
                     '{{ EXPECTED }} = "/^value/" ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',

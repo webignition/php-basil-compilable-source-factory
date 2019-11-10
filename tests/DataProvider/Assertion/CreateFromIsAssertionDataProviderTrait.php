@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Metadata\Metadata;
@@ -40,7 +40,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '".selector" is "value"'
                 ),
-                'expectedContent' => Block::fromContent([
+                'expectedContent' => CodeBlock::fromContent([
                     '{{ EXPECTED }} = "value" ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
                     '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
@@ -69,7 +69,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '".selector".attribute_name is "value"'
                 ),
-                'expectedContent' => Block::fromContent([
+                'expectedContent' => CodeBlock::fromContent([
                     '{{ EXPECTED }} = "value" ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
@@ -97,7 +97,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '$browser.size is "value"'
                 ),
-                'expectedContent' => Block::fromContent([
+                'expectedContent' => CodeBlock::fromContent([
                     '{{ EXPECTED }} = "value" ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
                     '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()',
@@ -122,7 +122,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '$env.KEY is "value"'
                 ),
-                'expectedContent' => Block::fromContent([
+                'expectedContent' => CodeBlock::fromContent([
                     '{{ EXPECTED }} = "value" ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
                     '{{ EXAMINED }} = {{ ENV }}[\'KEY\'] ?? null',
@@ -143,7 +143,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'assertion' => $assertionFactory->createFromAssertionString(
                     '$page.title is "value"'
                 ),
-                'expectedContent' => Block::fromContent([
+                'expectedContent' => CodeBlock::fromContent([
                     '{{ EXPECTED }} = "value" ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
                     '{{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null',
@@ -167,7 +167,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     AssertionComparison::IS,
                     $elementValue
                 ),
-                'expectedContent' => Block::fromContent([
+                'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '{{ EXPECTED }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
@@ -204,7 +204,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     AssertionComparison::IS,
                     $attributeValue
                 ),
-                'expectedContent' => Block::fromContent([
+                'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '{{ EXPECTED }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
@@ -240,7 +240,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     AssertionComparison::IS,
                     $environmentValue
                 ),
-                'expectedContent' => Block::fromContent([
+                'expectedContent' => CodeBlock::fromContent([
                     '{{ EXPECTED }} = {{ ENV }}[\'KEY\'] ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
                     '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()',
@@ -269,7 +269,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     AssertionComparison::IS,
                     $pageProperty
                 ),
-                'expectedContent' => Block::fromContent([
+                'expectedContent' => CodeBlock::fromContent([
                     '{{ EXPECTED }} = {{ CLIENT }}->getCurrentURL() ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
                     '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()',
