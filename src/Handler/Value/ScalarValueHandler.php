@@ -5,8 +5,9 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Value;
 use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\Block;
 use webignition\BasilCompilationSource\Block\BlockInterface;
+use webignition\BasilCompilationSource\Block\CodeBlock;
+use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
@@ -20,12 +21,12 @@ class ScalarValueHandler
     /**
      * @param ValueInterface $value
      *
-     * @return BlockInterface
+     * @return CodeBlock
      *
      * @throws UnsupportedModelException
      * @throws UnknownObjectPropertyException
      */
-    public function handle(ValueInterface $value): BlockInterface
+    public function handle(ValueInterface $value): CodeBlockInterface
     {
         if ($value instanceof ObjectValueInterface) {
             if ($this->isBrowserProperty($value)) {
@@ -33,7 +34,7 @@ class ScalarValueHandler
             }
 
             if ($this->isDataParameter($value)) {
-                return new Block([
+                return new CodeBlock([
                     new Statement('$' . $value->getProperty())
                 ]);
             }
@@ -48,7 +49,7 @@ class ScalarValueHandler
         }
 
         if ($this->isLiteralValue($value)) {
-            return new Block([
+            return new CodeBlock([
                 new Statement((string) $value)
             ]);
         }
@@ -81,7 +82,7 @@ class ScalarValueHandler
         return ObjectValueType::PAGE_PROPERTY === $value->getType();
     }
 
-    private function handleBrowserProperty(): BlockInterface
+    private function handleBrowserProperty(): CodeBlockInterface
     {
         $variableExports = new VariablePlaceholderCollection();
         $webDriverDimensionPlaceholder = $variableExports->create('WEBDRIVER_DIMENSION');
@@ -105,17 +106,17 @@ class ScalarValueHandler
 
         $dimensionConcatenation = new Statement('(string) ' . $getWidthCall . ' . \'x\' . (string) ' . $getHeightCall);
 
-        return new Block([$dimensionAssignment, $dimensionConcatenation]);
+        return new CodeBlock([$dimensionAssignment, $dimensionConcatenation]);
     }
 
-    private function handleEnvironmentValue(ObjectValueInterface $value): BlockInterface
+    private function handleEnvironmentValue(ObjectValueInterface $value): CodeBlockInterface
     {
         $variableDependencies = new VariablePlaceholderCollection();
         $environmentVariableArrayPlaceholder = $variableDependencies->create(
             VariableNames::ENVIRONMENT_VARIABLE_ARRAY
         );
 
-        return new Block([
+        return new CodeBlock([
             new Statement(
                 sprintf(
                     (string) $environmentVariableArrayPlaceholder . '[\'%s\']',
@@ -133,7 +134,7 @@ class ScalarValueHandler
      *
      * @throws UnknownObjectPropertyException
      */
-    private function handlePageProperty(ObjectValueInterface $value): BlockInterface
+    private function handlePageProperty(ObjectValueInterface $value): CodeBlockInterface
     {
         $variableDependencies = new VariablePlaceholderCollection();
         $pantherClientPlaceholder = $variableDependencies->create(VariableNames::PANTHER_CLIENT);
@@ -149,7 +150,7 @@ class ScalarValueHandler
             $metadata = (new Metadata())
                 ->withVariableDependencies($variableDependencies);
 
-            return new Block([
+            return new CodeBlock([
                 new Statement($statementContent, $metadata)
             ]);
         }
