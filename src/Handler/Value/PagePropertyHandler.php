@@ -6,8 +6,9 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException
 use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
-use webignition\BasilCompilationSource\Line\StatementInterface;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Value\ObjectValueInterface;
@@ -41,12 +42,12 @@ class PagePropertyHandler implements HandlerInterface
     /**
      * @param object $model
      *
-     * @return StatementInterface
+     * @return BlockInterface
      *
      * @throws UnsupportedModelException
      * @throws UnknownObjectPropertyException
      */
-    public function handle(object $model): StatementInterface
+    public function handle(object $model): BlockInterface
     {
         if ($this->handles($model) && $model instanceof ObjectValueInterface) {
             $statementContent = $this->contentMap[$model->getProperty()] ?? null;
@@ -55,7 +56,9 @@ class PagePropertyHandler implements HandlerInterface
                 $metadata = (new Metadata())
                     ->withVariableDependencies($this->variableDependencies);
 
-                return new Statement($statementContent, $metadata);
+                return new Block([
+                    new Statement($statementContent, $metadata)
+                ]);
             }
 
             throw new UnknownObjectPropertyException($model);

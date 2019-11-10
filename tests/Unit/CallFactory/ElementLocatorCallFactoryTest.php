@@ -59,8 +59,12 @@ class ElementLocatorCallFactoryTest extends AbstractTestCase
         DomIdentifierInterface $elementIdentifier,
         ElementLocatorInterface $expectedElementLocator
     ) {
-        $statement = $this->factory->createConstructorCall($elementIdentifier);
-        $statement->mutate(function ($content) {
+        $block = $this->factory->createConstructorCall($elementIdentifier);
+        $block = new Block([
+            $block,
+        ]);
+
+        $block->mutateLastStatement(function ($content) {
             return 'return ' . $content;
         });
 
@@ -69,10 +73,10 @@ class ElementLocatorCallFactoryTest extends AbstractTestCase
                 new ClassDependency(ElementLocator::class)
             ]));
 
-        $this->assertMetadataEquals($expectedMetadata, $statement->getMetadata());
+        $this->assertMetadataEquals($expectedMetadata, $block->getMetadata());
 
         $code = $this->blockGenerator->createWithUseStatementsFromBlock(new Block([
-            $statement,
+            $block,
         ]), []);
 
         $elementLocator = eval($code);

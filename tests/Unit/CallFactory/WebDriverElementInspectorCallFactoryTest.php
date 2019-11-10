@@ -9,8 +9,9 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\WebDriverElementInspectorCallFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
-use webignition\BasilCompilationSource\Line\StatementInterface;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
@@ -34,12 +35,11 @@ class WebDriverElementInspectorCallFactoryTest extends AbstractTestCase
      */
     public function testCreateGetValueCall(
         VariablePlaceholder $collectionPlaceholder,
-        StatementInterface $expectedStatement
+        BlockInterface $expectedBlock
     ) {
         $statement = $this->factory->createGetValueCall($collectionPlaceholder);
 
-        $this->assertInstanceOf(StatementInterface::class, $statement);
-        $this->assertEquals($expectedStatement, $statement);
+        $this->assertEquals($expectedBlock, $statement);
     }
 
     public function createGetValueCallDataProvider(): array
@@ -47,16 +47,18 @@ class WebDriverElementInspectorCallFactoryTest extends AbstractTestCase
         return [
             'default' => [
                 'collectionPlaceholder' => new VariablePlaceholder('COLLECTION'),
-                'expectedStatement' => new Statement(
-                    '{{ INSPECTOR }}->getValue({{ COLLECTION }})',
-                    (new Metadata())
-                        ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                            VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
-                        ]))
-                        ->withVariableExports(VariablePlaceholderCollection::createCollection([
-                            'COLLECTION',
-                        ]))
-                ),
+                'expectedBlock' => new Block([
+                    new Statement(
+                        '{{ INSPECTOR }}->getValue({{ COLLECTION }})',
+                        (new Metadata())
+                            ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                                VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
+                            ]))
+                            ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                                'COLLECTION',
+                            ]))
+                    )
+                ]),
             ],
         ];
     }
