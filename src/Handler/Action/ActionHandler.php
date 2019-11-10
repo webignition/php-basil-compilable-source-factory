@@ -7,6 +7,7 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilModel\Action\ActionTypes;
+use webignition\BasilModel\Action\InputActionInterface;
 use webignition\BasilModel\Action\InteractionActionInterface;
 use webignition\BasilModel\Action\WaitActionInterface;
 
@@ -57,7 +58,7 @@ class ActionHandler implements HandlerInterface
             return true;
         }
 
-        if ($this->setActionHandler->handles($model)) {
+        if ($this->isSetAction($model)) {
             return true;
         }
 
@@ -94,7 +95,7 @@ class ActionHandler implements HandlerInterface
             return $this->clickActionHandler->handle($model);
         }
 
-        if ($this->setActionHandler->handles($model)) {
+        if ($this->isSetAction($model)) {
             return $this->setActionHandler->handle($model);
         }
 
@@ -111,6 +112,11 @@ class ActionHandler implements HandlerInterface
         }
 
         throw new UnsupportedModelException($model);
+    }
+
+    private function isSetAction(object $model): bool
+    {
+        return $model instanceof InputActionInterface;
     }
 
     private function isWaitAction(object $model): bool

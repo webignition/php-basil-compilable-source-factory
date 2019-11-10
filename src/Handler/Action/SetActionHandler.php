@@ -6,7 +6,6 @@ use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFacto
 use webignition\BasilCompilableSourceFactory\CallFactory\WebDriverElementMutatorCallFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
-use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifier;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
@@ -19,7 +18,7 @@ use webignition\BasilModel\Action\InputActionInterface;
 use webignition\BasilModel\Identifier\DomIdentifierInterface;
 use webignition\BasilModel\Value\DomIdentifierValueInterface;
 
-class SetActionHandler implements HandlerInterface
+class SetActionHandler
 {
     private $variableAssignmentFactory;
     private $webDriverElementMutatorCallFactory;
@@ -46,11 +45,6 @@ class SetActionHandler implements HandlerInterface
             new ScalarValueHandler(),
             NamedDomIdentifierHandler::createHandler()
         );
-    }
-
-    public function handles(object $model): bool
-    {
-        return $model instanceof InputActionInterface;
     }
 
     /**
