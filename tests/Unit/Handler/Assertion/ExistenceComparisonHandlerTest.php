@@ -9,6 +9,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Assertion;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\ExistenceComparisonHandler;
+use webignition\BasilModel\Assertion\AssertionInterface;
 use webignition\BasilModel\Assertion\ComparisonAssertion;
 use webignition\BasilModel\Assertion\ExaminationAssertion;
 use webignition\BasilModelFactory\AssertionFactory;
@@ -41,12 +42,12 @@ class ExistenceComparisonHandlerTest extends AbstractTestCase
     /**
      * @dataProvider handleWrongValueTypeDataProvider
      */
-    public function testHandleWrongValueType(object $model, string $expectedExceptionMessage)
+    public function testHandleWrongValueType(AssertionInterface $assertion, string $expectedExceptionMessage)
     {
         $this->expectException(UnsupportedModelException::class);
         $this->expectExceptionMessage($expectedExceptionMessage);
 
-        $this->handler->handle($model);
+        $this->handler->handle($assertion);
     }
 
     public function handleWrongValueTypeDataProvider(): array

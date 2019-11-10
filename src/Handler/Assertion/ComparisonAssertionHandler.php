@@ -14,6 +14,7 @@ use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilCompilationSource\MutableBlockInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilModel\Assertion\AssertionComparison;
+use webignition\BasilModel\Assertion\AssertionInterface;
 use webignition\BasilModel\Assertion\ComparisonAssertionInterface;
 use webignition\BasilModel\Value\DomIdentifierValueInterface;
 
@@ -63,28 +64,28 @@ class ComparisonAssertionHandler
     }
 
     /**
-     * @param object $model
+     * @param AssertionInterface $assertion
      *
      * @return BlockInterface
      *
      * @throws UnsupportedModelException
      * @throws UnknownObjectPropertyException
      */
-    public function handle(object $model): BlockInterface
+    public function handle(AssertionInterface $assertion): BlockInterface
     {
-        if (!$model instanceof ComparisonAssertionInterface) {
-            throw new UnsupportedModelException($model);
+        if (!$assertion instanceof ComparisonAssertionInterface) {
+            throw new UnsupportedModelException($assertion);
         }
 
-        if (!in_array($model->getComparison(), self::HANDLED_COMPARISONS)) {
-            throw new UnsupportedModelException($model);
+        if (!in_array($assertion->getComparison(), self::HANDLED_COMPARISONS)) {
+            throw new UnsupportedModelException($assertion);
         }
 
         $examinedValuePlaceholder = new VariablePlaceholder(VariableNames::EXAMINED_VALUE);
         $expectedValuePlaceholder = new VariablePlaceholder(VariableNames::EXPECTED_VALUE);
 
-        $examinedValue = $model->getExaminedValue();
-        $expectedValue = $model->getExpectedValue();
+        $examinedValue = $assertion->getExaminedValue();
+        $expectedValue = $assertion->getExpectedValue();
 
         if ($examinedValue instanceof DomIdentifierValueInterface) {
             $examinedValueAccessor = $this->namedDomIdentifierHandler->handle(
@@ -129,7 +130,7 @@ class ComparisonAssertionHandler
             $examinedValueAssignment,
             $expectedValuePlaceholder,
             $examinedValuePlaceholder,
-            self::COMPARISON_TO_ASSERTION_TEMPLATE_MAP[$model->getComparison()]
+            self::COMPARISON_TO_ASSERTION_TEMPLATE_MAP[$assertion->getComparison()]
         );
     }
 }

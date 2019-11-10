@@ -18,6 +18,7 @@ use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Assertion\AssertionComparison;
+use webignition\BasilModel\Assertion\AssertionInterface;
 use webignition\BasilModel\Assertion\ExaminationAssertionInterface;
 use webignition\BasilModel\Value\DomIdentifierValueInterface;
 use webignition\BasilModel\Value\ObjectValueInterface;
@@ -54,24 +55,24 @@ class ExistenceComparisonHandler
     }
 
     /**
-     * @param object $model
+     * @param AssertionInterface $assertion
      *
      * @return BlockInterface
      *
      * @throws UnsupportedModelException
      * @throws UnknownObjectPropertyException
      */
-    public function handle(object $model): BlockInterface
+    public function handle(AssertionInterface $assertion): BlockInterface
     {
-        if (!$model instanceof ExaminationAssertionInterface) {
-            throw new UnsupportedModelException($model);
+        if (!$assertion instanceof ExaminationAssertionInterface) {
+            throw new UnsupportedModelException($assertion);
         }
 
-        if (!in_array($model->getComparison(), [AssertionComparison::EXISTS, AssertionComparison::NOT_EXISTS])) {
-            throw new UnsupportedModelException($model);
+        if (!in_array($assertion->getComparison(), [AssertionComparison::EXISTS, AssertionComparison::NOT_EXISTS])) {
+            throw new UnsupportedModelException($assertion);
         }
 
-        $value = $model->getExaminedValue();
+        $value = $assertion->getExaminedValue();
         $valuePlaceholder = new VariablePlaceholder(VariableNames::EXAMINED_VALUE);
 
         $existence = null;
@@ -102,7 +103,7 @@ class ExistenceComparisonHandler
                 new Statement(sprintf('%s = %s !== null', $valuePlaceholder, $valuePlaceholder)),
             ]);
 
-            return $this->createAssertionCall($model->getComparison(), $existence, $valuePlaceholder);
+            return $this->createAssertionCall($assertion->getComparison(), $existence, $valuePlaceholder);
         }
 
         if ($value instanceof DomIdentifierValueInterface) {
@@ -123,7 +124,7 @@ class ExistenceComparisonHandler
                 ]));
 
                 return $this->createAssertionCall(
-                    $model->getComparison(),
+                    $assertion->getComparison(),
                     new Block([$assignment]),
                     $valuePlaceholder
                 );
@@ -138,10 +139,10 @@ class ExistenceComparisonHandler
                 new Statement(sprintf('%s = %s !== null', $valuePlaceholder, $valuePlaceholder)),
             ]);
 
-            return $this->createAssertionCall($model->getComparison(), $existence, $valuePlaceholder);
+            return $this->createAssertionCall($assertion->getComparison(), $existence, $valuePlaceholder);
         }
 
-        throw new UnsupportedModelException($model);
+        throw new UnsupportedModelException($assertion);
     }
 
     private function createAssertionCall(

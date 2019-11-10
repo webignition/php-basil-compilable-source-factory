@@ -6,6 +6,7 @@ use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyExce
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilModel\Assertion\AssertionComparison;
+use webignition\BasilModel\Assertion\AssertionInterface;
 use webignition\BasilModel\Assertion\ComparisonAssertionInterface;
 use webignition\BasilModel\Assertion\ExaminationAssertionInterface;
 
@@ -31,33 +32,33 @@ class AssertionHandler
     }
 
     /**
-     * @param object $model
+     * @param AssertionInterface $assertion
      *
      * @return BlockInterface
      *
      * @throws UnsupportedModelException
      * @throws UnknownObjectPropertyException
      */
-    public function handle(object $model): BlockInterface
+    public function handle(AssertionInterface $assertion): BlockInterface
     {
-        if ($this->isComparisonAssertion($model)) {
-            return $this->comparisonAssertionHandler->handle($model);
+        if ($this->isComparisonAssertion($assertion)) {
+            return $this->comparisonAssertionHandler->handle($assertion);
         }
 
-        if ($this->isExistenceAssertion($model)) {
-            return $this->existenceComparisonHandler->handle($model);
+        if ($this->isExistenceAssertion($assertion)) {
+            return $this->existenceComparisonHandler->handle($assertion);
         }
 
-        throw new UnsupportedModelException($model);
+        throw new UnsupportedModelException($assertion);
     }
 
-    private function isComparisonAssertion(object $model): bool
+    private function isComparisonAssertion(AssertionInterface $assertion): bool
     {
-        if (!$model instanceof ComparisonAssertionInterface) {
+        if (!$assertion instanceof ComparisonAssertionInterface) {
             return false;
         }
 
-        return in_array($model->getComparison(), [
+        return in_array($assertion->getComparison(), [
             AssertionComparison::INCLUDES,
             AssertionComparison::EXCLUDES,
             AssertionComparison::IS,
@@ -66,13 +67,12 @@ class AssertionHandler
         ]);
     }
 
-    private function isExistenceAssertion(object $model): bool
+    private function isExistenceAssertion(AssertionInterface $assertion): bool
     {
-        if (!$model instanceof ExaminationAssertionInterface) {
+        if (!$assertion instanceof ExaminationAssertionInterface) {
             return false;
         }
 
-        return in_array($model->getComparison(), [AssertionComparison::EXISTS, AssertionComparison::NOT_EXISTS]);
+        return in_array($assertion->getComparison(), [AssertionComparison::EXISTS, AssertionComparison::NOT_EXISTS]);
     }
-
 }
