@@ -4,27 +4,26 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Value;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
+use webignition\BasilCompilationSource\Block\Block;
 use webignition\BasilCompilationSource\Block\BlockInterface;
+use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilModel\Value\ObjectValueInterface;
 use webignition\BasilModel\Value\ObjectValueType;
 
 class ScalarValueHandler
 {
     private $browserPropertyHandler;
-    private $dataParameterHandler;
     private $environmentValueHandler;
     private $literalValueHandler;
     private $pagePropertyHandler;
 
     public function __construct(
         BrowserPropertyHandler $browserPropertyHandler,
-        DataParameterHandler $dataParameterHandler,
         EnvironmentValueHandler $environmentValueHandler,
         LiteralValueHandler $literalValueHandler,
         PagePropertyHandler $pagePropertyHandler
     ) {
         $this->browserPropertyHandler = $browserPropertyHandler;
-        $this->dataParameterHandler = $dataParameterHandler;
         $this->environmentValueHandler = $environmentValueHandler;
         $this->literalValueHandler = $literalValueHandler;
         $this->pagePropertyHandler = $pagePropertyHandler;
@@ -34,7 +33,6 @@ class ScalarValueHandler
     {
         return new ScalarValueHandler(
             new BrowserPropertyHandler(),
-            new DataParameterHandler(),
             new EnvironmentValueHandler(),
             new LiteralValueHandler(),
             new PagePropertyHandler()
@@ -55,8 +53,10 @@ class ScalarValueHandler
             return $this->browserPropertyHandler->handle($model);
         }
 
-        if ($this->dataParameterHandler->handles($model)) {
-            return $this->dataParameterHandler->handle($model);
+        if ($model instanceof ObjectValueInterface && $model->getType() === ObjectValueType::DATA_PARAMETER) {
+            return new Block([
+                new Statement('$' . $model->getProperty())
+            ]);
         }
 
         if ($this->environmentValueHandler->handles($model)) {
