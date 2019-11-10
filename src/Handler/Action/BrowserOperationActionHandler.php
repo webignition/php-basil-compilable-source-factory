@@ -2,7 +2,6 @@
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\Block;
 use webignition\BasilCompilationSource\Block\BlockInterface;
@@ -18,19 +17,8 @@ class BrowserOperationActionHandler
         return new BrowserOperationActionHandler();
     }
 
-    /**
-     * @param object $model
-     *
-     * @return BlockInterface
-     *
-     * @throws UnsupportedModelException
-     */
-    public function handle(object $model): BlockInterface
+    public function handle(NoArgumentsAction $action): BlockInterface
     {
-        if (!$model instanceof NoArgumentsAction) {
-            throw new UnsupportedModelException($model);
-        }
-
         $variableDependencies = new VariablePlaceholderCollection();
         $pantherCrawlerPlaceholder = $variableDependencies->create(VariableNames::PANTHER_CRAWLER);
         $pantherClientPlaceholder = $variableDependencies->create(VariableNames::PANTHER_CLIENT);
@@ -43,7 +31,7 @@ class BrowserOperationActionHandler
                     '%s = %s->%s()',
                     $pantherCrawlerPlaceholder,
                     $pantherClientPlaceholder,
-                    $model->getType()
+                    $action->getType()
                 ),
                 $metadata
             )

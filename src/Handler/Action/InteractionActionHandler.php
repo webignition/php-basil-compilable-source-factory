@@ -35,22 +35,18 @@ class InteractionActionHandler
     }
 
     /**
-     * @param object $model
+     * @param InteractionActionInterface $action
      *
      * @return BlockInterface
      *
      * @throws UnsupportedModelException
      */
-    public function handle(object $model): BlockInterface
+    public function handle(InteractionActionInterface $action): BlockInterface
     {
-        if (!$model instanceof InteractionActionInterface) {
-            throw new UnsupportedModelException($model);
-        }
-
-        $identifier = $model->getIdentifier();
+        $identifier = $action->getIdentifier();
 
         if (!$identifier instanceof DomIdentifierInterface) {
-            throw new UnsupportedModelException($model);
+            throw new UnsupportedModelException($action);
         }
 
         $variableExports = new VariablePlaceholderCollection();
@@ -66,7 +62,7 @@ class InteractionActionHandler
             new Statement(sprintf(
                 '%s->%s()',
                 (string) $elementPlaceholder,
-                $model->getType()
+                $action->getType()
             )),
         ]);
     }

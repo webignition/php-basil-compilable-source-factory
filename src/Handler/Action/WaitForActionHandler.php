@@ -10,7 +10,6 @@ use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\BasilModel\Action\ActionTypes;
 use webignition\BasilModel\Action\InteractionActionInterface;
 use webignition\BasilModel\Identifier\DomIdentifierInterface;
 
@@ -29,32 +28,24 @@ class WaitForActionHandler
     }
 
     /**
-     * @param object $model
+     * @param InteractionActionInterface $action
      *
      * @return BlockInterface
      *
      * @throws UnsupportedModelException
      */
-    public function handle(object $model): BlockInterface
+    public function handle(InteractionActionInterface $action): BlockInterface
     {
-        if (!$model instanceof InteractionActionInterface) {
-            throw new UnsupportedModelException($model);
-        }
-
-        if (ActionTypes::WAIT_FOR !== $model->getType()) {
-            throw new UnsupportedModelException($model);
-        }
-
-        $identifier = $model->getIdentifier();
+        $identifier = $action->getIdentifier();
 
         if (!$identifier instanceof DomIdentifierInterface) {
-            throw new UnsupportedModelException($model);
+            throw new UnsupportedModelException($action);
         }
 
         $elementLocator = $identifier->getLocator();
 
         if ('/' === $elementLocator[0]) {
-            throw new UnsupportedModelException($model);
+            throw new UnsupportedModelException($action);
         }
 
         $variableDependencies = new VariablePlaceholderCollection();

@@ -5,6 +5,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilationSource\Block\BlockInterface;
+use webignition\BasilModel\Action\ActionInterface;
 use webignition\BasilModel\Action\ActionTypes;
 use webignition\BasilModel\Action\InputActionInterface;
 use webignition\BasilModel\Action\InteractionActionInterface;
@@ -45,36 +46,36 @@ class ActionHandler
     }
 
     /**
-     * @param object $model
+     * @param ActionInterface $action
      *
      * @return BlockInterface
      *
      * @throws UnsupportedModelException
      * @throws UnknownObjectPropertyException
      */
-    public function handle(object $model): BlockInterface
+    public function handle(ActionInterface $action): BlockInterface
     {
-        if ($this->isBrowserOperationAction($model)) {
-            return $this->browserOperationActionHandler->handle($model);
+        if ($this->isBrowserOperationAction($action) && $action instanceof NoArgumentsAction) {
+            return $this->browserOperationActionHandler->handle($action);
         }
 
-        if ($this->isInteractionAction($model)) {
-            return $this->interactionActionHandler->handle($model);
+        if ($this->isInteractionAction($action) && $action instanceof InteractionActionInterface) {
+            return $this->interactionActionHandler->handle($action);
         }
 
-        if ($this->isSetAction($model)) {
-            return $this->setActionHandler->handle($model);
+        if ($this->isSetAction($action) && $action instanceof InputActionInterface) {
+            return $this->setActionHandler->handle($action);
         }
 
-        if ($this->isWaitAction($model)) {
-            return $this->waitActionHandler->handle($model);
+        if ($this->isWaitAction($action) && $action instanceof WaitActionInterface) {
+            return $this->waitActionHandler->handle($action);
         }
 
-        if ($this->isWaitForAction($model)) {
-            return $this->waitForActionHandler->handle($model);
+        if ($this->isWaitForAction($action) && $action instanceof InteractionActionInterface) {
+            return $this->waitForActionHandler->handle($action);
         }
 
-        throw new UnsupportedModelException($model);
+        throw new UnsupportedModelException($action);
     }
 
     private function isBrowserOperationAction(object $model): bool

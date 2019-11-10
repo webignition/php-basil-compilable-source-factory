@@ -45,23 +45,19 @@ class WaitActionHandler
     }
 
     /**
-     * @param object $model
+     * @param WaitActionInterface $waitAction
      *
      * @return BlockInterface
      *
      * @throws UnsupportedModelException
      * @throws UnknownObjectPropertyException
      */
-    public function handle(object $model): BlockInterface
+    public function handle(WaitActionInterface $waitAction): BlockInterface
     {
-        if (!$model instanceof WaitActionInterface) {
-            throw new UnsupportedModelException($model);
-        }
-
         $variableExports = new VariablePlaceholderCollection();
         $durationPlaceholder = $variableExports->create(self::DURATION_PLACEHOLDER);
 
-        $duration = $model->getDuration();
+        $duration = $waitAction->getDuration();
 
         if ($duration instanceof DomIdentifierValueInterface) {
             $durationAccessor = $this->namedDomIdentifierHandler->handle(

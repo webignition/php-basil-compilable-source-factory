@@ -48,27 +48,23 @@ class SetActionHandler
     }
 
     /**
-     * @param object $model
+     * @param InputActionInterface $action
      *
      * @return BlockInterface
      *
      * @throws UnsupportedModelException
      * @throws UnknownObjectPropertyException
      */
-    public function handle(object $model): BlockInterface
+    public function handle(InputActionInterface $action): BlockInterface
     {
-        if (!$model instanceof InputActionInterface) {
-            throw new UnsupportedModelException($model);
-        }
-
-        $identifier = $model->getIdentifier();
+        $identifier = $action->getIdentifier();
 
         if (!$identifier instanceof DomIdentifierInterface) {
-            throw new UnsupportedModelException($model);
+            throw new UnsupportedModelException($action);
         }
 
         if (null !== $identifier->getAttributeName()) {
-            throw new UnsupportedModelException($model);
+            throw new UnsupportedModelException($action);
         }
 
         $variableExports = new VariablePlaceholderCollection();
@@ -80,7 +76,7 @@ class SetActionHandler
             $collectionPlaceholder
         ));
 
-        $value = $model->getValue();
+        $value = $action->getValue();
 
         if ($value instanceof DomIdentifierValueInterface) {
             $valueAccessor = $this->namedDomIdentifierHandler->handle(
