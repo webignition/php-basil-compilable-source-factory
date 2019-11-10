@@ -18,11 +18,6 @@ class BrowserPropertyHandler implements HandlerInterface
 {
     const PROPERTY_NAME_SIZE = 'size';
 
-    public static function createHandler(): HandlerInterface
-    {
-        return new BrowserPropertyHandler();
-    }
-
     public function handles(object $model): bool
     {
         return $model instanceof ObjectValueInterface && ObjectValueType::BROWSER_PROPERTY === $model->getType();

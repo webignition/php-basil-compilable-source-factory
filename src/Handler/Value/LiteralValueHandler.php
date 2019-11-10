@@ -10,11 +10,6 @@ use webignition\BasilModel\Value\LiteralValueInterface;
 
 class LiteralValueHandler implements HandlerInterface
 {
-    public static function createHandler(): HandlerInterface
-    {
-        return new LiteralValueHandler();
-    }
-
     public function handles(object $model): bool
     {
         return $model instanceof LiteralValueInterface;

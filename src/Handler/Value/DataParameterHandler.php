@@ -11,11 +11,6 @@ use webignition\BasilModel\Value\ObjectValueType;
 
 class DataParameterHandler implements HandlerInterface
 {
-    public static function createHandler(): HandlerInterface
-    {
-        return new DataParameterHandler();
-    }
-
     public function handles(object $model): bool
     {
         return $model instanceof ObjectValueInterface && $model->getType() === ObjectValueType::DATA_PARAMETER;

@@ -33,11 +33,6 @@ class PagePropertyHandler implements HandlerInterface
         ];
     }
 
-    public static function createHandler(): HandlerInterface
-    {
-        return new PagePropertyHandler();
-    }
-
     public function handles(object $model): bool
     {
         return $model instanceof ObjectValueInterface && ObjectValueType::PAGE_PROPERTY === $model->getType();

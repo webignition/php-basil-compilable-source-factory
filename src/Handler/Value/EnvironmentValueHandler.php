@@ -14,11 +14,6 @@ use webignition\BasilModel\Value\ObjectValueType;
 
 class EnvironmentValueHandler implements HandlerInterface
 {
-    public static function createHandler(): HandlerInterface
-    {
-        return new EnvironmentValueHandler();
-    }
-
     public function handles(object $model): bool
     {
         return $model instanceof ObjectValueInterface && ObjectValueType::ENVIRONMENT_PARAMETER === $model->getType();

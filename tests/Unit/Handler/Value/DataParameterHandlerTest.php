@@ -28,7 +28,7 @@ class DataParameterHandlerTest extends AbstractHandlerTest
 
     protected function createHandler(): HandlerInterface
     {
-        return DataParameterHandler::createHandler();
+        return new DataParameterHandler();
     }
 
     /**
