@@ -13,71 +13,72 @@ use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Value\LiteralValueInterface;
 use webignition\BasilModel\Value\ObjectValueInterface;
 use webignition\BasilModel\Value\ObjectValueType;
+use webignition\BasilModel\Value\ValueInterface;
 
 class ScalarValueHandler
 {
     /**
-     * @param object $model
+     * @param ValueInterface $value
      *
      * @return BlockInterface
      *
      * @throws UnsupportedModelException
      * @throws UnknownObjectPropertyException
      */
-    public function handle(object $model): BlockInterface
+    public function handle(ValueInterface $value): BlockInterface
     {
-        if ($this->isBrowserProperty($model)) {
-            return $this->handleBrowserProperty();
+        if ($value instanceof ObjectValueInterface) {
+            if ($this->isBrowserProperty($value)) {
+                return $this->handleBrowserProperty();
+            }
+
+            if ($this->isDataParameter($value)) {
+                return new Block([
+                    new Statement('$' . $value->getProperty())
+                ]);
+            }
+
+            if ($this->isEnvironmentValue($value)) {
+                return $this->handleEnvironmentValue($value);
+            }
+
+            if ($this->isPageProperty($value)) {
+                return $this->handlePageProperty($value);
+            }
         }
 
-        if ($this->isDataParameter($model) &&  $model instanceof ObjectValueInterface) {
+        if ($this->isLiteralValue($value)) {
             return new Block([
-                new Statement('$' . $model->getProperty())
+                new Statement((string) $value)
             ]);
         }
 
-        if ($this->isEnvironmentValue($model) && $model instanceof ObjectValueInterface) {
-            return $this->handleEnvironmentValue($model);
-        }
-
-        if ($this->isLiteralValue($model)) {
-            return new Block([
-                new Statement((string) $model)
-            ]);
-        }
-
-        if ($this->isPageProperty($model) && $model instanceof ObjectValueInterface) {
-            return $this->handlePageProperty($model);
-        }
-
-        throw new UnsupportedModelException($model);
+        throw new UnsupportedModelException($value);
     }
 
-    private function isBrowserProperty(object $model): bool
+    private function isBrowserProperty(ObjectValueInterface $value): bool
     {
-        return $model instanceof ObjectValueInterface
-            && ObjectValueType::BROWSER_PROPERTY === $model->getType()
-            && 'size' === $model->getProperty();
+        return ObjectValueType::BROWSER_PROPERTY === $value->getType() && 'size' === $value->getProperty();
     }
 
-    private function isDataParameter(object $model): bool
+    private function isDataParameter(ObjectValueInterface $value): bool
     {
-        return $model instanceof ObjectValueInterface && $model->getType() === ObjectValueType::DATA_PARAMETER;
+        return $value->getType() === ObjectValueType::DATA_PARAMETER;
     }
 
-    private function isEnvironmentValue(object $model): bool
+    private function isEnvironmentValue(ObjectValueInterface $value): bool
     {
-        return $model instanceof ObjectValueInterface && ObjectValueType::ENVIRONMENT_PARAMETER === $model->getType();
+        return ObjectValueType::ENVIRONMENT_PARAMETER === $value->getType();
     }
 
-    private function isLiteralValue(object $model): bool
+    private function isLiteralValue(ValueInterface $value): bool
     {
-        return $model instanceof LiteralValueInterface;
+        return $value instanceof LiteralValueInterface;
     }
 
-    private function isPageProperty(object $model): bool
+    private function isPageProperty(ObjectValueInterface $value): bool
     {
-        return $model instanceof ObjectValueInterface && ObjectValueType::PAGE_PROPERTY === $model->getType();
+        return ObjectValueType::PAGE_PROPERTY === $value->getType();
     }
 
     private function handleBrowserProperty(): BlockInterface
