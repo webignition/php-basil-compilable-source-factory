@@ -7,7 +7,6 @@ use webignition\BasilCompilationSource\Block\Block;
 use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
-use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
@@ -36,8 +35,8 @@ class AssertionCallFactory
     }
 
     public function createValueComparisonAssertionCall(
-        SourceInterface $expectedValueAssignment,
-        SourceInterface $actualValueAssignment,
+        BlockInterface $expectedValueAssignment,
+        BlockInterface $actualValueAssignment,
         VariablePlaceholder $expectedValuePlaceholder,
         VariablePlaceholder $actualValuePlaceholder,
         string $assertionTemplate
@@ -62,7 +61,7 @@ class AssertionCallFactory
     }
 
     public function createValueExistenceAssertionCall(
-        SourceInterface $assignment,
+        BlockInterface $assignment,
         VariablePlaceholder $variablePlaceholder,
         string $assertionTemplate
     ): BlockInterface {

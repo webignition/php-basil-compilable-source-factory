@@ -10,7 +10,6 @@ use webignition\BasilCompilationSource\Block\Block;
 use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilCompilationSource\Line\Comment;
 use webignition\BasilCompilationSource\Line\EmptyLine;
-use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilModel\StatementInterface;
 use webignition\BasilModel\Step\StepInterface;
 
@@ -56,7 +55,7 @@ class StepHandler
         return $block;
     }
 
-    private function addSourceToBlock(Block $block, StatementInterface $statement, SourceInterface $source)
+    private function addSourceToBlock(Block $block, StatementInterface $statement, BlockInterface $source)
     {
         $block->addLine(new Comment($statement->getSource()));
 
