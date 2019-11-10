@@ -31,7 +31,7 @@ class ActionHandler implements HandlerInterface
         $this->waitForActionHandler = $waitForActionHandler;
     }
 
-    public static function createHandler(): HandlerInterface
+    public static function createHandler(): ActionHandler
     {
         return new ActionHandler(
             BrowserOperationActionHandler::createHandler(),

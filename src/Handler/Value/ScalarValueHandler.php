@@ -29,7 +29,7 @@ class ScalarValueHandler implements HandlerInterface
         $this->pagePropertyHandler = $pagePropertyHandler;
     }
 
-    public static function createHandler(): HandlerInterface
+    public static function createHandler(): ScalarValueHandler
     {
         return new ScalarValueHandler(
             new BrowserPropertyHandler(),

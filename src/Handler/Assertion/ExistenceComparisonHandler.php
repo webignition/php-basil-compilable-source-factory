@@ -43,10 +43,7 @@ class ExistenceComparisonHandler implements HandlerInterface
         $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
     }
 
-    /**
-     * @return ExistenceComparisonHandler
-     */
-    public static function createHandler(): HandlerInterface
+    public static function createHandler(): ExistenceComparisonHandler
     {
         return new ExistenceComparisonHandler(
             AssertionCallFactory::createFactory(),

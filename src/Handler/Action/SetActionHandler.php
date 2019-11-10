@@ -37,10 +37,7 @@ class SetActionHandler implements HandlerInterface
         $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
     }
 
-    /**
-     * @return SetActionHandler
-     */
-    public static function createHandler(): HandlerInterface
+    public static function createHandler(): SetActionHandler
     {
         return new SetActionHandler(
             VariableAssignmentFactory::createFactory(),

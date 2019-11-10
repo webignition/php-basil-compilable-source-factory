@@ -35,10 +35,7 @@ class WaitActionHandler implements HandlerInterface
         $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
     }
 
-    /**
-     * @return WaitActionHandler
-     */
-    public static function createHandler(): HandlerInterface
+    public static function createHandler(): WaitActionHandler
     {
         return new WaitActionHandler(
             VariableAssignmentFactory::createFactory(),

@@ -3,16 +3,12 @@
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
-use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilModel\Action\ActionTypes;
 
 class ClickActionHandler extends AbstractInteractionActionHandler
 {
-    /**
-     * @return ClickActionHandler
-     */
-    public static function createHandler(): HandlerInterface
+    public static function createHandler(): ClickActionHandler
     {
         return new ClickActionHandler(
             VariableAssignmentFactory::createFactory(),

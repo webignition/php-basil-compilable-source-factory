@@ -19,7 +19,7 @@ class AssertionHandler implements HandlerInterface
         $this->comparisonAssertionHandler = $comparisonAssertionHandler;
     }
 
-    public static function createHandler(): HandlerInterface
+    public static function createHandler(): AssertionHandler
     {
         return new AssertionHandler(
             ExistenceComparisonHandler::createHandler(),

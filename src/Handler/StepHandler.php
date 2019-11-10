@@ -19,13 +19,13 @@ class StepHandler implements HandlerInterface
     private $actionHandler;
     private $assertionHandler;
 
-    public function __construct(HandlerInterface $actionHandler, HandlerInterface $assertionHandler)
+    public function __construct(ActionHandler $actionHandler, AssertionHandler $assertionHandler)
     {
         $this->actionHandler = $actionHandler;
         $this->assertionHandler = $assertionHandler;
     }
 
-    public static function createHandler(): HandlerInterface
+    public static function createHandler(): StepHandler
     {
         return new StepHandler(
             ActionHandler::createHandler(),

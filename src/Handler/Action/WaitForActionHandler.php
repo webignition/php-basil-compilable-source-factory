@@ -24,10 +24,7 @@ class WaitForActionHandler implements HandlerInterface
         $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
     }
 
-    /**
-     * @return WaitForActionHandler
-     */
-    public static function createHandler(): HandlerInterface
+    public static function createHandler(): WaitForActionHandler
     {
         return new WaitForActionHandler(SingleQuotedStringEscaper::create());
     }

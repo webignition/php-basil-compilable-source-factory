@@ -52,10 +52,7 @@ class ComparisonAssertionHandler implements HandlerInterface
         $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
     }
 
-    /**
-     * @return ComparisonAssertionHandler
-     */
-    public static function createHandler(): HandlerInterface
+    public static function createHandler(): ComparisonAssertionHandler
     {
         return new ComparisonAssertionHandler(
             AssertionCallFactory::createFactory(),
