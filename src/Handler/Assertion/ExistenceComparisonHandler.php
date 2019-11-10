@@ -18,7 +18,6 @@ use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Assertion\AssertionComparison;
-use webignition\BasilModel\Assertion\AssertionInterface;
 use webignition\BasilModel\Assertion\ExaminationAssertionInterface;
 use webignition\BasilModel\Value\DomIdentifierValueInterface;
 use webignition\BasilModel\Value\ObjectValueInterface;
@@ -55,23 +54,15 @@ class ExistenceComparisonHandler
     }
 
     /**
-     * @param AssertionInterface $assertion
+     * @param ExaminationAssertionInterface $assertion
      *
      * @return BlockInterface
      *
      * @throws UnsupportedModelException
      * @throws UnknownObjectPropertyException
      */
-    public function handle(AssertionInterface $assertion): BlockInterface
+    public function handle(ExaminationAssertionInterface $assertion): BlockInterface
     {
-        if (!$assertion instanceof ExaminationAssertionInterface) {
-            throw new UnsupportedModelException($assertion);
-        }
-
-        if (!in_array($assertion->getComparison(), [AssertionComparison::EXISTS, AssertionComparison::NOT_EXISTS])) {
-            throw new UnsupportedModelException($assertion);
-        }
-
         $value = $assertion->getExaminedValue();
         $valuePlaceholder = new VariablePlaceholder(VariableNames::EXAMINED_VALUE);
 

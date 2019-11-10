@@ -14,20 +14,11 @@ use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilCompilationSource\MutableBlockInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilModel\Assertion\AssertionComparison;
-use webignition\BasilModel\Assertion\AssertionInterface;
 use webignition\BasilModel\Assertion\ComparisonAssertionInterface;
 use webignition\BasilModel\Value\DomIdentifierValueInterface;
 
 class ComparisonAssertionHandler
 {
-    const HANDLED_COMPARISONS = [
-        AssertionComparison::INCLUDES,
-        AssertionComparison::EXCLUDES,
-        AssertionComparison::IS,
-        AssertionComparison::IS_NOT,
-        AssertionComparison::MATCHES,
-    ];
-
     const COMPARISON_TO_ASSERTION_TEMPLATE_MAP = [
         AssertionComparison::INCLUDES => AssertionCallFactory::ASSERT_STRING_CONTAINS_STRING_TEMPLATE,
         AssertionComparison::EXCLUDES => AssertionCallFactory::ASSERT_STRING_NOT_CONTAINS_STRING_TEMPLATE,
@@ -64,23 +55,15 @@ class ComparisonAssertionHandler
     }
 
     /**
-     * @param AssertionInterface $assertion
+     * @param ComparisonAssertionInterface $assertion
      *
      * @return BlockInterface
      *
      * @throws UnsupportedModelException
      * @throws UnknownObjectPropertyException
      */
-    public function handle(AssertionInterface $assertion): BlockInterface
+    public function handle(ComparisonAssertionInterface $assertion): BlockInterface
     {
-        if (!$assertion instanceof ComparisonAssertionInterface) {
-            throw new UnsupportedModelException($assertion);
-        }
-
-        if (!in_array($assertion->getComparison(), self::HANDLED_COMPARISONS)) {
-            throw new UnsupportedModelException($assertion);
-        }
-
         $examinedValuePlaceholder = new VariablePlaceholder(VariableNames::EXAMINED_VALUE);
         $expectedValuePlaceholder = new VariablePlaceholder(VariableNames::EXPECTED_VALUE);
 

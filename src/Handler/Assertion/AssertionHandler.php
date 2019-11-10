@@ -41,11 +41,11 @@ class AssertionHandler
      */
     public function handle(AssertionInterface $assertion): BlockInterface
     {
-        if ($this->isComparisonAssertion($assertion)) {
+        if ($this->isComparisonAssertion($assertion) && $assertion instanceof ComparisonAssertionInterface) {
             return $this->comparisonAssertionHandler->handle($assertion);
         }
 
-        if ($this->isExistenceAssertion($assertion)) {
+        if ($this->isExistenceAssertion($assertion) && $assertion instanceof ExaminationAssertionInterface) {
             return $this->existenceComparisonHandler->handle($assertion);
         }
 

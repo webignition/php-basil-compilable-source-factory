@@ -9,9 +9,8 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Assertion;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\ExistenceComparisonHandler;
-use webignition\BasilModel\Assertion\AssertionInterface;
-use webignition\BasilModel\Assertion\ComparisonAssertion;
 use webignition\BasilModel\Assertion\ExaminationAssertion;
+use webignition\BasilModel\Assertion\ExaminationAssertionInterface;
 use webignition\BasilModelFactory\AssertionFactory;
 
 class ExistenceComparisonHandlerTest extends AbstractTestCase
@@ -28,21 +27,10 @@ class ExistenceComparisonHandlerTest extends AbstractTestCase
         $this->handler = ExistenceComparisonHandler::createHandler();
     }
 
-    public function testHandleWrongComparisonType()
-    {
-        $assertionFactory = AssertionFactory::createFactory();
-        $model = $assertionFactory->createFromAssertionString('".selector" is "value"');
-
-        $this->expectException(UnsupportedModelException::class);
-        $this->expectExceptionMessage('Unsupported model "' . ComparisonAssertion::class . '"');
-
-        $this->handler->handle($model);
-    }
-
     /**
      * @dataProvider handleWrongValueTypeDataProvider
      */
-    public function testHandleWrongValueType(AssertionInterface $assertion, string $expectedExceptionMessage)
+    public function testHandleWrongValueType(ExaminationAssertionInterface $assertion, string $expectedExceptionMessage)
     {
         $this->expectException(UnsupportedModelException::class);
         $this->expectExceptionMessage($expectedExceptionMessage);
