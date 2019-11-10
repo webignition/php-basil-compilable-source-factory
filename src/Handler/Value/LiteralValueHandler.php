@@ -5,7 +5,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Value;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilationSource\Line\Statement;
-use webignition\BasilCompilationSource\SourceInterface;
+use webignition\BasilCompilationSource\Line\StatementInterface;
 use webignition\BasilModel\Value\LiteralValueInterface;
 
 class LiteralValueHandler implements HandlerInterface
@@ -23,11 +23,11 @@ class LiteralValueHandler implements HandlerInterface
     /**
      * @param object $model
      *
-     * @return SourceInterface
+     * @return StatementInterface
      *
      * @throws UnsupportedModelException
      */
-    public function handle(object $model): SourceInterface
+    public function handle(object $model): StatementInterface
     {
         if ($this->handles($model)) {
             return new Statement((string) $model);

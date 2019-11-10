@@ -11,8 +11,8 @@ use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierInterface;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
-use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
 class NamedDomIdentifierHandler implements HandlerInterface
@@ -56,11 +56,11 @@ class NamedDomIdentifierHandler implements HandlerInterface
     /**
      * @param object $model
      *
-     * @return SourceInterface
+     * @return BlockInterface
      *
      * @throws UnsupportedModelException
      */
-    public function handle(object $model): SourceInterface
+    public function handle(object $model): BlockInterface
     {
         if (!$model instanceof NamedDomIdentifierInterface) {
             throw new UnsupportedModelException($model);

@@ -10,8 +10,8 @@ use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilCompilationSource\MutableBlockInterface;
-use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilModel\Assertion\AssertionComparison;
 use webignition\BasilModel\Assertion\ComparisonAssertionInterface;
@@ -74,11 +74,11 @@ class ComparisonAssertionHandler implements HandlerInterface
     /**
      * @param object $model
      *
-     * @return SourceInterface
+     * @return BlockInterface
      *
      * @throws UnsupportedModelException
      */
-    public function handle(object $model): SourceInterface
+    public function handle(object $model): BlockInterface
     {
         if (!$model instanceof ComparisonAssertionInterface) {
             throw new UnsupportedModelException($model);

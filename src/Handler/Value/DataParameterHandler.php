@@ -5,7 +5,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Value;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilationSource\Line\Statement;
-use webignition\BasilCompilationSource\SourceInterface;
+use webignition\BasilCompilationSource\Line\StatementInterface;
 use webignition\BasilModel\Value\ObjectValueInterface;
 use webignition\BasilModel\Value\ObjectValueType;
 
@@ -24,11 +24,11 @@ class DataParameterHandler implements HandlerInterface
     /**
      * @param object $model
      *
-     * @return SourceInterface
+     * @return StatementInterface
      *
      * @throws UnsupportedModelException
      */
-    public function handle(object $model): SourceInterface
+    public function handle(object $model): StatementInterface
     {
         if ($this->handles($model) && $model instanceof ObjectValueInterface) {
             return new Statement('$' . $model->getProperty());

@@ -11,8 +11,8 @@ use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilCompilationSource\MutableBlockInterface;
-use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Action\InputActionInterface;
 use webignition\BasilModel\Identifier\DomIdentifierInterface;
@@ -55,11 +55,11 @@ class SetActionHandler implements HandlerInterface
     /**
      * @param object $model
      *
-     * @return SourceInterface
+     * @return BlockInterface
      *
      * @throws UnsupportedModelException
      */
-    public function handle(object $model): SourceInterface
+    public function handle(object $model): BlockInterface
     {
         if (!$model instanceof InputActionInterface) {
             throw new UnsupportedModelException($model);

@@ -41,11 +41,11 @@ class StepHandler implements HandlerInterface
     /**
      * @param object $model
      *
-     * @return SourceInterface
+     * @return BlockInterface
      *
      * @throws UnsupportedModelException
      */
-    public function handle(object $model): SourceInterface
+    public function handle(object $model): BlockInterface
     {
         if (!$model instanceof StepInterface) {
             throw new UnsupportedModelException($model);
