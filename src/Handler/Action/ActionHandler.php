@@ -2,9 +2,12 @@
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
+use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilationSource\Block\BlockInterface;
+use webignition\BasilModel\Action\ActionTypes;
+use webignition\BasilModel\Action\InteractionActionInterface;
 
 class ActionHandler implements HandlerInterface
 {
@@ -65,7 +68,7 @@ class ActionHandler implements HandlerInterface
             return true;
         }
 
-        if ($this->waitForActionHandler->handles($model)) {
+        if ($this->isWaitForAction($model)) {
             return true;
         }
 
@@ -78,6 +81,7 @@ class ActionHandler implements HandlerInterface
      * @return BlockInterface
      *
      * @throws UnsupportedModelException
+     * @throws UnknownObjectPropertyException
      */
     public function handle(object $model): BlockInterface
     {
@@ -101,10 +105,15 @@ class ActionHandler implements HandlerInterface
             return $this->waitActionHandler->handle($model);
         }
 
-        if ($this->waitForActionHandler->handles($model)) {
+        if ($this->isWaitForAction($model)) {
             return $this->waitForActionHandler->handle($model);
         }
 
         throw new UnsupportedModelException($model);
+    }
+
+    private function isWaitForAction(object $model): bool
+    {
+        return $model instanceof InteractionActionInterface && ActionTypes::WAIT_FOR === $model->getType();
     }
 }

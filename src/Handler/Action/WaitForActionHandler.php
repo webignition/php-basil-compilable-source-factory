@@ -3,7 +3,6 @@
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
-use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\Block;
@@ -15,7 +14,7 @@ use webignition\BasilModel\Action\ActionTypes;
 use webignition\BasilModel\Action\InteractionActionInterface;
 use webignition\BasilModel\Identifier\DomIdentifierInterface;
 
-class WaitForActionHandler implements HandlerInterface
+class WaitForActionHandler
 {
     private $singleQuotedStringEscaper;
 
@@ -27,11 +26,6 @@ class WaitForActionHandler implements HandlerInterface
     public static function createHandler(): WaitForActionHandler
     {
         return new WaitForActionHandler(SingleQuotedStringEscaper::create());
-    }
-
-    public function handles(object $model): bool
-    {
-        return $model instanceof InteractionActionInterface && ActionTypes::WAIT_FOR === $model->getType();
     }
 
     /**
