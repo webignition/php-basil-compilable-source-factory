@@ -44,7 +44,7 @@ class ComparisonAssertionHandler implements HandlerInterface
         AssertionCallFactory $assertionCallFactory,
         VariableAssignmentFactory $variableAssignmentFactory,
         HandlerInterface $scalarValueHandler,
-        HandlerInterface $namedDomIdentifierHandler
+        NamedDomIdentifierHandler $namedDomIdentifierHandler
     ) {
         $this->assertionCallFactory = $assertionCallFactory;
         $this->variableAssignmentFactory = $variableAssignmentFactory;

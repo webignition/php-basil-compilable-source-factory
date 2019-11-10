@@ -4,6 +4,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
+use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomElementIdentifier;
 use webignition\BasilCompilationSource\Block\Block;
@@ -20,7 +21,7 @@ abstract class AbstractInteractionActionHandler implements HandlerInterface
 
     public function __construct(
         VariableAssignmentFactory $variableAssignmentFactory,
-        HandlerInterface $namedDomIdentifierHandler
+        NamedDomIdentifierHandler $namedDomIdentifierHandler
     ) {
         $this->variableAssignmentFactory = $variableAssignmentFactory;
         $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;

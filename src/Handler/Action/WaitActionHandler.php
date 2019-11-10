@@ -28,7 +28,7 @@ class WaitActionHandler implements HandlerInterface
     public function __construct(
         VariableAssignmentFactory $variableAssignmentFactory,
         HandlerInterface $scalarValueHandler,
-        HandlerInterface $namedDomIdentifierHandler
+        NamedDomIdentifierHandler $namedDomIdentifierHandler
     ) {
         $this->variableAssignmentFactory = $variableAssignmentFactory;
         $this->scalarValueHandler = $scalarValueHandler;

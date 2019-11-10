@@ -35,7 +35,7 @@ class ExistenceComparisonHandler implements HandlerInterface
         AssertionCallFactory $assertionCallFactory,
         HandlerInterface $scalarValueHandler,
         DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory,
-        HandlerInterface $namedDomIdentifierHandler
+        NamedDomIdentifierHandler $namedDomIdentifierHandler
     ) {
         $this->assertionCallFactory = $assertionCallFactory;
         $this->scalarValueHandler = $scalarValueHandler;
