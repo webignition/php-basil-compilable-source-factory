@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "cd64b9f116e4a0f4229b336d91b3f650",
+    "content-hash": "7122ad1c2eb6ac9519e96d3ef9b3165c",
     "packages": [
         {
             "name": "facebook/webdriver",
@@ -754,22 +754,22 @@
         },
         {
             "name": "webignition/basil-code-generator",
-            "version": "0.4",
+            "version": "0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/basil-code-generator.git",
-                "reference": "c5535a3b1b925e56f63dc9acef274bd2f173ac6a"
+                "reference": "a2c004091b9083b2a735ac2310603598b11c5166"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/basil-code-generator/zipball/c5535a3b1b925e56f63dc9acef274bd2f173ac6a",
-                "reference": "c5535a3b1b925e56f63dc9acef274bd2f173ac6a",
+                "url": "https://api.github.com/repos/webignition/basil-code-generator/zipball/a2c004091b9083b2a735ac2310603598b11c5166",
+                "reference": "a2c004091b9083b2a735ac2310603598b11c5166",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "php": ">=7.2",
-                "webignition/php-basil-compilation-source": ">=0.55,<1"
+                "webignition/php-basil-compilation-source": ">=0.63,<1"
             },
             "require-dev": {
                 "phpstan/phpstan": "^0.11.5",
@@ -795,20 +795,20 @@
                 }
             ],
             "homepage": "https://github.com/webignition/basil-code-generator",
-            "time": "2019-11-09T17:55:25+00:00"
+            "time": "2019-11-10T18:02:56+00:00"
         },
         {
             "name": "webignition/php-basil-compilation-source",
-            "version": "0.62",
+            "version": "0.63",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/php-basil-compilation-source.git",
-                "reference": "565fed9a97baeb4da618a1221b34419ef4c7e622"
+                "reference": "0a360f99d4c1eb5f99996a4bc98a3900f64cf7e6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/php-basil-compilation-source/zipball/565fed9a97baeb4da618a1221b34419ef4c7e622",
-                "reference": "565fed9a97baeb4da618a1221b34419ef4c7e622",
+                "url": "https://api.github.com/repos/webignition/php-basil-compilation-source/zipball/0a360f99d4c1eb5f99996a4bc98a3900f64cf7e6",
+                "reference": "0a360f99d4c1eb5f99996a4bc98a3900f64cf7e6",
                 "shasum": ""
             },
             "require": {
@@ -837,7 +837,7 @@
                 }
             ],
             "homepage": "https://github.com/webignition/php-basil-compilation-source",
-            "time": "2019-11-10T17:22:56+00:00"
+            "time": "2019-11-10T17:41:57+00:00"
         },
         {
             "name": "webignition/php-basil-context-aware-exception",

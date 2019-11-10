@@ -4,9 +4,9 @@ namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
 use webignition\BasilCompilableSourceFactory\PlaceholderFactory;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
-use webignition\BasilCompilationSource\Block\Block;
-use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
+use webignition\BasilCompilationSource\Block\CodeBlock;
+use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
@@ -36,7 +36,7 @@ class ElementLocatorCallFactory
         );
     }
 
-    public function createConstructorCall(DomIdentifierInterface $elementIdentifier): BlockInterface
+    public function createConstructorCall(DomIdentifierInterface $elementIdentifier): CodeBlockInterface
     {
         $elementLocator = $elementIdentifier->getLocator();
 
@@ -52,7 +52,7 @@ class ElementLocatorCallFactory
             new ClassDependency(ElementLocator::class),
         ]));
 
-        return new Block([
+        return new CodeBlock([
             new Statement(sprintf(self::TEMPLATE, $arguments), $metadata)
         ]);
     }

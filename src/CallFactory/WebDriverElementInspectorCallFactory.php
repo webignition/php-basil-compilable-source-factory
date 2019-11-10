@@ -3,8 +3,8 @@
 namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\Block;
-use webignition\BasilCompilationSource\Block\BlockInterface;
+use webignition\BasilCompilationSource\Block\CodeBlock;
+use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholder;
@@ -17,7 +17,7 @@ class WebDriverElementInspectorCallFactory
         return new WebDriverElementInspectorCallFactory();
     }
 
-    public function createGetValueCall(VariablePlaceholder $collectionPlaceholder): BlockInterface
+    public function createGetValueCall(VariablePlaceholder $collectionPlaceholder): CodeBlockInterface
     {
         $variableExports = new VariablePlaceholderCollection();
         $variableExports->add($collectionPlaceholder);
@@ -29,7 +29,7 @@ class WebDriverElementInspectorCallFactory
         $metadata->addVariableDependencies($variableDependencies);
         $metadata->addVariableExports($variableExports);
 
-        return new Block([
+        return new CodeBlock([
             new Statement($inspectorPlaceholder . '->getValue(' . $collectionPlaceholder . ')', $metadata)
         ]);
     }

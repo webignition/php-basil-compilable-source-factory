@@ -3,8 +3,8 @@
 namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\Block;
-use webignition\BasilCompilationSource\Block\BlockInterface;
+use webignition\BasilCompilationSource\Block\CodeBlock;
+use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
@@ -26,27 +26,27 @@ class DomCrawlerNavigatorCallFactory
         );
     }
 
-    public function createFindCall(DomIdentifierInterface $identifier): BlockInterface
+    public function createFindCall(DomIdentifierInterface $identifier): CodeBlockInterface
     {
         return $this->createElementCall($identifier, 'find');
     }
 
-    public function createFindOneCall(DomIdentifierInterface $identifier): BlockInterface
+    public function createFindOneCall(DomIdentifierInterface $identifier): CodeBlockInterface
     {
         return $this->createElementCall($identifier, 'findOne');
     }
 
-    public function createHasCall(DomIdentifierInterface $identifier): BlockInterface
+    public function createHasCall(DomIdentifierInterface $identifier): CodeBlockInterface
     {
         return $this->createElementCall($identifier, 'has');
     }
 
-    public function createHasOneCall(DomIdentifierInterface $identifier): BlockInterface
+    public function createHasOneCall(DomIdentifierInterface $identifier): CodeBlockInterface
     {
         return $this->createElementCall($identifier, 'hasOne');
     }
 
-    private function createElementCall(DomIdentifierInterface $identifier, string $methodName): BlockInterface
+    private function createElementCall(DomIdentifierInterface $identifier, string $methodName): CodeBlockInterface
     {
         $arguments = $this->createElementCallArguments($identifier);
 
@@ -64,12 +64,12 @@ class DomCrawlerNavigatorCallFactory
             (string) $argumentsStatement
         );
 
-        return new Block([
+        return new CodeBlock([
             new Statement($statementContent, $metadata),
         ]);
     }
 
-    private function createElementCallArguments(DomIdentifierInterface $elementIdentifier): BlockInterface
+    private function createElementCallArguments(DomIdentifierInterface $elementIdentifier): CodeBlockInterface
     {
         $elementConstructorBlock = $this->elementLocatorCallFactory->createConstructorCall($elementIdentifier);
 
@@ -90,7 +90,7 @@ class DomCrawlerNavigatorCallFactory
                 (string) $parentConstructorStatement
             );
 
-            return new Block([
+            return new CodeBlock([
                 new Statement($statementContent, $metadata),
             ]);
         }
