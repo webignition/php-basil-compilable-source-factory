@@ -15,16 +15,13 @@ use webignition\BasilModel\Value\ObjectValueType;
 
 class ScalarValueHandler
 {
-    private $environmentValueHandler;
     private $literalValueHandler;
     private $pagePropertyHandler;
 
     public function __construct(
-        EnvironmentValueHandler $environmentValueHandler,
         LiteralValueHandler $literalValueHandler,
         PagePropertyHandler $pagePropertyHandler
     ) {
-        $this->environmentValueHandler = $environmentValueHandler;
         $this->literalValueHandler = $literalValueHandler;
         $this->pagePropertyHandler = $pagePropertyHandler;
     }
@@ -32,7 +29,6 @@ class ScalarValueHandler
     public static function createHandler(): ScalarValueHandler
     {
         return new ScalarValueHandler(
-            new EnvironmentValueHandler(),
             new LiteralValueHandler(),
             new PagePropertyHandler()
         );
@@ -48,18 +44,18 @@ class ScalarValueHandler
      */
     public function handle(object $model): BlockInterface
     {
-        if ($this->isBrowserProperty()) {
+        if ($this->isBrowserProperty($model)) {
             return $this->handleBrowserProperty();
         }
 
-        if ($this->isDataParameter($model)) {
+        if ($this->isDataParameter($model) &&  $model instanceof ObjectValueInterface) {
             return new Block([
                 new Statement('$' . $model->getProperty())
             ]);
         }
 
-        if ($this->environmentValueHandler->handles($model)) {
-            return $this->environmentValueHandler->handle($model);
+        if ($this->isEnvironmentValue($model) && $model instanceof ObjectValueInterface) {
+            return $this->handleEnvironmentValue($model);
         }
 
         if ($this->literalValueHandler->handles($model)) {
@@ -85,7 +81,12 @@ class ScalarValueHandler
         return $model instanceof ObjectValueInterface && $model->getType() === ObjectValueType::DATA_PARAMETER;
     }
 
-    private function handleBrowserProperty()
+    private function isEnvironmentValue(object $model): bool
+    {
+        return $model instanceof ObjectValueInterface && ObjectValueType::ENVIRONMENT_PARAMETER === $model->getType();
+    }
+
+    private function handleBrowserProperty(): BlockInterface
     {
         $variableExports = new VariablePlaceholderCollection();
         $webDriverDimensionPlaceholder = $variableExports->create('WEBDRIVER_DIMENSION');
@@ -110,5 +111,23 @@ class ScalarValueHandler
         $dimensionConcatenation = new Statement('(string) ' . $getWidthCall . ' . \'x\' . (string) ' . $getHeightCall);
 
         return new Block([$dimensionAssignment, $dimensionConcatenation]);
+    }
+
+    private function handleEnvironmentValue(ObjectValueInterface $value)
+    {
+        $variableDependencies = new VariablePlaceholderCollection();
+        $environmentVariableArrayPlaceholder = $variableDependencies->create(
+            VariableNames::ENVIRONMENT_VARIABLE_ARRAY
+        );
+
+        return new Block([
+            new Statement(
+                sprintf(
+                    (string) $environmentVariableArrayPlaceholder . '[\'%s\']',
+                    $value->getProperty()
+                ),
+                (new Metadata())->withVariableDependencies($variableDependencies)
+            )
+        ]);
     }
 }
