@@ -5,6 +5,8 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Value;
 use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilationSource\Block\BlockInterface;
+use webignition\BasilModel\Value\ObjectValueInterface;
+use webignition\BasilModel\Value\ObjectValueType;
 
 class ScalarValueHandler
 {
@@ -49,7 +51,7 @@ class ScalarValueHandler
      */
     public function handle(object $model): BlockInterface
     {
-        if ($this->browserPropertyHandler->handles($model)) {
+        if ($model instanceof ObjectValueInterface && ObjectValueType::BROWSER_PROPERTY === $model->getType()) {
             return $this->browserPropertyHandler->handle($model);
         }
 
