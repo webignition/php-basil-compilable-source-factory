@@ -5,7 +5,6 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
-use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
@@ -17,7 +16,7 @@ use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Action\WaitActionInterface;
 use webignition\BasilModel\Value\DomIdentifierValueInterface;
 
-class WaitActionHandler implements HandlerInterface
+class WaitActionHandler
 {
     const DURATION_PLACEHOLDER = 'DURATION';
     const MICROSECONDS_PER_MILLISECOND = 1000;
@@ -43,11 +42,6 @@ class WaitActionHandler implements HandlerInterface
             new ScalarValueHandler(),
             NamedDomIdentifierHandler::createHandler()
         );
-    }
-
-    public function handles(object $model): bool
-    {
-        return $model instanceof WaitActionInterface;
     }
 
     /**
