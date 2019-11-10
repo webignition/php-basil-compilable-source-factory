@@ -3,8 +3,9 @@
 namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
 use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
-use webignition\BasilCompilationSource\Line\StatementInterface;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Identifier\DomIdentifierInterface;
@@ -25,27 +26,27 @@ class DomCrawlerNavigatorCallFactory
         );
     }
 
-    public function createFindCall(DomIdentifierInterface $identifier): StatementInterface
+    public function createFindCall(DomIdentifierInterface $identifier): BlockInterface
     {
         return $this->createElementCall($identifier, 'find');
     }
 
-    public function createFindOneCall(DomIdentifierInterface $identifier): StatementInterface
+    public function createFindOneCall(DomIdentifierInterface $identifier): BlockInterface
     {
         return $this->createElementCall($identifier, 'findOne');
     }
 
-    public function createHasCall(DomIdentifierInterface $identifier): StatementInterface
+    public function createHasCall(DomIdentifierInterface $identifier): BlockInterface
     {
         return $this->createElementCall($identifier, 'has');
     }
 
-    public function createHasOneCall(DomIdentifierInterface $identifier): StatementInterface
+    public function createHasOneCall(DomIdentifierInterface $identifier): BlockInterface
     {
         return $this->createElementCall($identifier, 'hasOne');
     }
 
-    private function createElementCall(DomIdentifierInterface $identifier, string $methodName): StatementInterface
+    private function createElementCall(DomIdentifierInterface $identifier, string $methodName): BlockInterface
     {
         $arguments = $this->createElementCallArguments($identifier);
 
@@ -56,25 +57,32 @@ class DomCrawlerNavigatorCallFactory
         $metadata->add($arguments->getMetadata());
         $metadata->addVariableDependencies($variableDependencies);
 
+        $argumentsStatement = $arguments->getLines()[0];
+
         $statementContent = sprintf(
             (string) $domCrawlerNavigatorPlaceholder . '->' . $methodName . '(%s)',
-            (string) $arguments
+            (string) $argumentsStatement
         );
 
-        return new Statement($statementContent, $metadata);
+        return new Block([
+            new Statement($statementContent, $metadata),
+        ]);
     }
 
-    private function createElementCallArguments(DomIdentifierInterface $elementIdentifier): StatementInterface
+    private function createElementCallArguments(DomIdentifierInterface $elementIdentifier): BlockInterface
     {
-        $elementConstructorStatement = $this->elementLocatorCallFactory->createConstructorCall($elementIdentifier);
+        $elementConstructorBlock = $this->elementLocatorCallFactory->createConstructorCall($elementIdentifier);
 
         $parentIdentifier = $elementIdentifier->getParentIdentifier();
         if ($parentIdentifier instanceof DomIdentifierInterface) {
-            $parentConstructorStatement = $this->elementLocatorCallFactory->createConstructorCall($parentIdentifier);
+            $parentConstructorBlock = $this->elementLocatorCallFactory->createConstructorCall($parentIdentifier);
 
             $metadata = new Metadata();
-            $metadata->add($elementConstructorStatement->getMetadata());
-            $metadata->add($parentConstructorStatement->getMetadata());
+            $metadata->add($elementConstructorBlock->getMetadata());
+            $metadata->add($parentConstructorBlock->getMetadata());
+
+            $elementConstructorStatement = $elementConstructorBlock->getLines()[0];
+            $parentConstructorStatement = $parentConstructorBlock->getLines()[0];
 
             $statementContent = sprintf(
                 '%s, %s',
@@ -82,9 +90,11 @@ class DomCrawlerNavigatorCallFactory
                 (string) $parentConstructorStatement
             );
 
-            return new Statement($statementContent, $metadata);
+            return new Block([
+                new Statement($statementContent, $metadata),
+            ]);
         }
 
-        return $elementConstructorStatement;
+        return $elementConstructorBlock;
     }
 }

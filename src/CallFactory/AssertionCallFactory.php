@@ -4,6 +4,7 @@ namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\SourceInterface;
@@ -40,7 +41,7 @@ class AssertionCallFactory
         VariablePlaceholder $expectedValuePlaceholder,
         VariablePlaceholder $actualValuePlaceholder,
         string $assertionTemplate
-    ): SourceInterface {
+    ): BlockInterface {
         $variableDependencies = new VariablePlaceholderCollection();
         $variableDependencies->add($this->phpUnitTestCasePlaceholder);
 
@@ -64,7 +65,7 @@ class AssertionCallFactory
         SourceInterface $assignment,
         VariablePlaceholder $variablePlaceholder,
         string $assertionTemplate
-    ): SourceInterface {
+    ): BlockInterface {
         $assertionStatementContent = sprintf(
             $assertionTemplate,
             (string) $this->phpUnitTestCasePlaceholder,

@@ -28,7 +28,7 @@ class EnvironmentValueHandlerTest extends AbstractHandlerTest
 
     protected function createHandler(): HandlerInterface
     {
-        return EnvironmentValueHandler::createHandler();
+        return new EnvironmentValueHandler();
     }
 
     /**

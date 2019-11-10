@@ -11,6 +11,7 @@ use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\MutableBlockInterface;
 use webignition\BasilCompilationSource\SourceInterface;
@@ -42,6 +43,9 @@ class ExistenceComparisonHandler implements HandlerInterface
         $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
     }
 
+    /**
+     * @return ExistenceComparisonHandler
+     */
     public static function createHandler(): HandlerInterface
     {
         return new ExistenceComparisonHandler(
@@ -64,11 +68,11 @@ class ExistenceComparisonHandler implements HandlerInterface
     /**
      * @param object $model
      *
-     * @return SourceInterface
+     * @return BlockInterface
      *
      * @throws UnsupportedModelException
      */
-    public function handle(object $model): SourceInterface
+    public function handle(object $model): BlockInterface
     {
         if (!$model instanceof ExaminationAssertionInterface) {
             throw new UnsupportedModelException($model);
@@ -118,11 +122,14 @@ class ExistenceComparisonHandler implements HandlerInterface
             if (null === $identifier->getAttributeName()) {
                 $accessor = $this->domCrawlerNavigatorCallFactory->createHasCall($identifier);
 
-                $assignment = clone $accessor;
-                $assignment->mutate(function (string $content) use ($valuePlaceholder) {
+                $assignment = new Block([
+                    $accessor,
+                ]);
+
+                $assignment->mutateLastStatement(function (string $content) use ($valuePlaceholder) {
                     return $valuePlaceholder . ' = ' . $content;
                 });
-                $assignment->addVariableExports(new VariablePlaceholderCollection([
+                $assignment->addVariableExportsToLastStatement(new VariablePlaceholderCollection([
                     $valuePlaceholder,
                 ]));
 
@@ -152,7 +159,7 @@ class ExistenceComparisonHandler implements HandlerInterface
         string $comparison,
         SourceInterface $lineList,
         VariablePlaceholder $valuePlaceholder
-    ): SourceInterface {
+    ): BlockInterface {
         $assertionTemplate = AssertionComparison::EXISTS === $comparison
             ? AssertionCallFactory::ASSERT_TRUE_TEMPLATE
             : AssertionCallFactory::ASSERT_FALSE_TEMPLATE;

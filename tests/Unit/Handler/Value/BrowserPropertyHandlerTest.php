@@ -31,7 +31,7 @@ class BrowserPropertyHandlerTest extends AbstractHandlerTest
 
     protected function createHandler(): HandlerInterface
     {
-        return BrowserPropertyHandler::createHandler();
+        return new BrowserPropertyHandler();
     }
 
     /**

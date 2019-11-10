@@ -9,6 +9,9 @@ use webignition\BasilModel\Action\ActionTypes;
 
 class SubmitActionHandler extends AbstractInteractionActionHandler
 {
+    /**
+     * @return SubmitActionHandler
+     */
     public static function createHandler(): HandlerInterface
     {
         return new SubmitActionHandler(

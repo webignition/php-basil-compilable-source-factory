@@ -28,7 +28,7 @@ class LiteralValueHandlerTest extends AbstractHandlerTest
 
     protected function createHandler(): HandlerInterface
     {
-        return LiteralValueHandler::createHandler();
+        return new LiteralValueHandler();
     }
 
     /**

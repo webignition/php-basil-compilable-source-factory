@@ -31,7 +31,7 @@ class PagePropertyHandlerTest extends AbstractHandlerTest
 
     protected function createHandler(): HandlerInterface
     {
-        return PagePropertyHandler::createHandler();
+        return new PagePropertyHandler();
     }
 
     /**

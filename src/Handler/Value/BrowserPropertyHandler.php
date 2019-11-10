@@ -7,9 +7,9 @@ use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyExce
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
-use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Value\ObjectValueInterface;
 use webignition\BasilModel\Value\ObjectValueType;
@@ -17,11 +17,6 @@ use webignition\BasilModel\Value\ObjectValueType;
 class BrowserPropertyHandler implements HandlerInterface
 {
     const PROPERTY_NAME_SIZE = 'size';
-
-    public static function createHandler(): HandlerInterface
-    {
-        return new BrowserPropertyHandler();
-    }
 
     public function handles(object $model): bool
     {
@@ -31,12 +26,12 @@ class BrowserPropertyHandler implements HandlerInterface
     /**
      * @param object $model
      *
-     * @return SourceInterface
+     * @return BlockInterface
      *
      * @throws UnsupportedModelException
      * @throws UnknownObjectPropertyException
      */
-    public function handle(object $model): SourceInterface
+    public function handle(object $model): BlockInterface
     {
         if (!$this->handles($model) || !$model instanceof ObjectValueInterface) {
             throw new UnsupportedModelException($model);

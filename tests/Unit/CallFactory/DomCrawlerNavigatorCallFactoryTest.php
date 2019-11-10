@@ -9,10 +9,11 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Line\Statement;
-use webignition\BasilCompilationSource\Line\StatementInterface;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Identifier\DomIdentifier;
@@ -38,12 +39,11 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
      */
     public function testCreateFindCall(
         DomIdentifierInterface $identifier,
-        StatementInterface $expectedStatement
+        BlockInterface $expectedBlock
     ) {
         $statement = $this->factory->createFindCall($identifier);
 
-        $this->assertInstanceOf(StatementInterface::class, $statement);
-        $this->assertEquals($expectedStatement, $statement);
+        $this->assertEquals($expectedBlock, $statement);
     }
 
     public function createFindCallDataProvider(): array
@@ -56,12 +56,11 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
      */
     public function testCreateFindOneCall(
         DomIdentifierInterface $identifier,
-        StatementInterface $expectedStatement
+        BlockInterface $expectedBlock
     ) {
         $statement = $this->factory->createFindOneCall($identifier);
 
-        $this->assertInstanceOf(StatementInterface::class, $statement);
-        $this->assertEquals($expectedStatement, $statement);
+        $this->assertEquals($expectedBlock, $statement);
     }
 
     public function createFindOneCallDataProvider(): array
@@ -74,12 +73,11 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
      */
     public function testCreateHasCall(
         DomIdentifierInterface $identifier,
-        StatementInterface $expectedStatement
+        BlockInterface $expectedBlock
     ) {
         $statement = $this->factory->createHasCall($identifier);
 
-        $this->assertInstanceOf(StatementInterface::class, $statement);
-        $this->assertEquals($expectedStatement, $statement);
+        $this->assertEquals($expectedBlock, $statement);
     }
 
     public function createHasCallDataProvider(): array
@@ -92,12 +90,11 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
      */
     public function testCreateHasOneCall(
         DomIdentifierInterface $identifier,
-        StatementInterface $expectedStatement
+        BlockInterface $expectedBlock
     ) {
         $statement = $this->factory->createHasOneCall($identifier);
 
-        $this->assertInstanceOf(StatementInterface::class, $statement);
-        $this->assertEquals($expectedStatement, $statement);
+        $this->assertEquals($expectedBlock, $statement);
     }
 
     public function createHasOneCallDataProvider(): array
@@ -110,9 +107,11 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
         $testCases = $this->elementCallDataProvider();
 
         foreach ($testCases as $testCaseIndex => $testCase) {
-            /* @var StatementInterface $statement */
-            $statement = $testCase['expectedStatement'];
-            $statement->mutate(function (string $content) use ($method) {
+            $block = new Block([
+                $testCase['expectedBlock'],
+            ]);
+
+            $block->mutateLastStatement(function (string $content) use ($method) {
                 return str_replace('{{ METHOD }}', $method, $content);
             });
         }
@@ -125,73 +124,84 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
         return [
             'no parent, no ordinal position' => [
                 'identifier' => new DomIdentifier('.selector'),
-                'expectedStatement' => new Statement(
-                    '{{ NAVIGATOR }}->{{ METHOD }}(new ElementLocator(\'.selector\'))',
-                    (new Metadata())
-                        ->withClassDependencies(new ClassDependencyCollection([
-                            new ClassDependency(ElementLocator::class),
-                        ]))
-                        ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                            VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        ]))
-                ),
+                'expectedBlock' => new Block([
+                    new Statement(
+                        '{{ NAVIGATOR }}->{{ METHOD }}(new ElementLocator(\'.selector\'))',
+                        (new Metadata())
+                            ->withClassDependencies(new ClassDependencyCollection([
+                                new ClassDependency(ElementLocator::class),
+                            ]))
+                            ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                                VariableNames::DOM_CRAWLER_NAVIGATOR,
+                            ]))
+                    )
+                ]),
             ],
             'no parent, has ordinal position' => [
                 'identifier' => new DomIdentifier('.selector', 3),
-                'expectedStatement' => new Statement(
-                    '{{ NAVIGATOR }}->{{ METHOD }}(new ElementLocator(\'.selector\', 3))',
-                    (new Metadata())
-                        ->withClassDependencies(new ClassDependencyCollection([
-                            new ClassDependency(ElementLocator::class),
-                        ]))
-                        ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                            VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        ]))
-                ),
+                'expectedBlock' => new Block([
+                    new Statement(
+                        '{{ NAVIGATOR }}->{{ METHOD }}(new ElementLocator(\'.selector\', 3))',
+                        (new Metadata())
+                            ->withClassDependencies(new ClassDependencyCollection([
+                                new ClassDependency(ElementLocator::class),
+                            ]))
+                            ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                                VariableNames::DOM_CRAWLER_NAVIGATOR,
+                            ]))
+                    )
+                ]),
             ],
             'has parent, no ordinal position' => [
                 'identifier' => (new DomIdentifier('.selector'))
                     ->withParentIdentifier(new DomIdentifier('.parent')),
-                'expectedStatement' => new Statement(
-                    '{{ NAVIGATOR }}->{{ METHOD }}(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))',
-                    (new Metadata())
-                        ->withClassDependencies(new ClassDependencyCollection([
-                            new ClassDependency(ElementLocator::class),
-                        ]))
-                        ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                            VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        ]))
-                ),
+                'expectedBlock' => new Block([
+                    new Statement(
+                        '{{ NAVIGATOR }}->'
+                        . '{{ METHOD }}(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))',
+                        (new Metadata())
+                            ->withClassDependencies(new ClassDependencyCollection([
+                                new ClassDependency(ElementLocator::class),
+                            ]))
+                            ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                                VariableNames::DOM_CRAWLER_NAVIGATOR,
+                            ]))
+                    )
+                ]),
             ],
             'has parent, has ordinal position' => [
                 'identifier' => (new DomIdentifier('.selector', 2))
                     ->withParentIdentifier(new DomIdentifier('.parent')),
-                'expectedStatement' => new Statement(
-                    '{{ NAVIGATOR }}'
-                    . '->{{ METHOD }}(new ElementLocator(\'.selector\', 2), new ElementLocator(\'.parent\'))',
-                    (new Metadata())
-                        ->withClassDependencies(new ClassDependencyCollection([
-                            new ClassDependency(ElementLocator::class),
-                        ]))
-                        ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                            VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        ]))
-                ),
+                'expectedBlock' => new Block([
+                    new Statement(
+                        '{{ NAVIGATOR }}'
+                        . '->{{ METHOD }}(new ElementLocator(\'.selector\', 2), new ElementLocator(\'.parent\'))',
+                        (new Metadata())
+                            ->withClassDependencies(new ClassDependencyCollection([
+                                new ClassDependency(ElementLocator::class),
+                            ]))
+                            ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                                VariableNames::DOM_CRAWLER_NAVIGATOR,
+                            ]))
+                    )
+                ]),
             ],
             'has parent, has ordinal positions' => [
                 'identifier' => (new DomIdentifier('.selector', 3))
                     ->withParentIdentifier(new DomIdentifier('.parent', 4)),
-                'expectedStatement' => new Statement(
-                    '{{ NAVIGATOR }}'
-                    . '->{{ METHOD }}(new ElementLocator(\'.selector\', 3), new ElementLocator(\'.parent\', 4))',
-                    (new Metadata())
-                        ->withClassDependencies(new ClassDependencyCollection([
-                            new ClassDependency(ElementLocator::class),
-                        ]))
-                        ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                            VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        ]))
-                ),
+                'expectedBlock' => new Block([
+                    new Statement(
+                        '{{ NAVIGATOR }}'
+                        . '->{{ METHOD }}(new ElementLocator(\'.selector\', 3), new ElementLocator(\'.parent\', 4))',
+                        (new Metadata())
+                            ->withClassDependencies(new ClassDependencyCollection([
+                                new ClassDependency(ElementLocator::class),
+                            ]))
+                            ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                                VariableNames::DOM_CRAWLER_NAVIGATOR,
+                            ]))
+                    )
+                ]),
             ],
         ];
     }

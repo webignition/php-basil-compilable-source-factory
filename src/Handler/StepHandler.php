@@ -41,11 +41,11 @@ class StepHandler implements HandlerInterface
     /**
      * @param object $model
      *
-     * @return SourceInterface
+     * @return BlockInterface
      *
      * @throws UnsupportedModelException
      */
-    public function handle(object $model): SourceInterface
+    public function handle(object $model): BlockInterface
     {
         if (!$model instanceof StepInterface) {
             throw new UnsupportedModelException($model);
@@ -54,17 +54,17 @@ class StepHandler implements HandlerInterface
         $block = new Block([]);
 
         foreach ($model->getActions() as $action) {
-            $this->addSourceToLineList($block, $action, $this->actionHandler->handle($action));
+            $this->addSourceToBlock($block, $action, $this->actionHandler->handle($action));
         }
 
         foreach ($model->getAssertions() as $assertion) {
-            $this->addSourceToLineList($block, $assertion, $this->assertionHandler->handle($assertion));
+            $this->addSourceToBlock($block, $assertion, $this->assertionHandler->handle($assertion));
         }
 
         return $block;
     }
 
-    private function addSourceToLineList(Block $block, StatementInterface $statement, SourceInterface $source)
+    private function addSourceToBlock(Block $block, StatementInterface $statement, SourceInterface $source)
     {
         $block->addLine(new Comment($statement->getSource()));
 

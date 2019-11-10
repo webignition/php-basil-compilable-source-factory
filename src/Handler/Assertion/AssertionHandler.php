@@ -2,29 +2,61 @@
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
-use webignition\BasilCompilableSourceFactory\Handler\AbstractDelegatingHandler;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
-use webignition\BasilModel\Assertion\ComparisonAssertionInterface;
-use webignition\BasilModel\Assertion\ExaminationAssertionInterface;
+use webignition\BasilCompilationSource\Block\BlockInterface;
 
-class AssertionHandler extends AbstractDelegatingHandler
+class AssertionHandler implements HandlerInterface
 {
+    private $existenceComparisonHandler;
+    private $comparisonAssertionHandler;
+
+    public function __construct(
+        ExistenceComparisonHandler $existenceComparisonHandler,
+        ComparisonAssertionHandler $comparisonAssertionHandler
+    ) {
+        $this->existenceComparisonHandler = $existenceComparisonHandler;
+        $this->comparisonAssertionHandler = $comparisonAssertionHandler;
+    }
+
     public static function createHandler(): HandlerInterface
     {
         return new AssertionHandler(
-            [
-                ExistenceComparisonHandler::createHandler(),
-                ComparisonAssertionHandler::createHandler(),
-            ]
+            ExistenceComparisonHandler::createHandler(),
+            ComparisonAssertionHandler::createHandler()
         );
     }
 
     public function handles(object $model): bool
     {
-        if ($model instanceof ExaminationAssertionInterface || $model instanceof ComparisonAssertionInterface) {
-            return null !== $this->findHandler($model);
+        if ($this->existenceComparisonHandler->handles($model)) {
+            return true;
+        }
+
+        if ($this->comparisonAssertionHandler->handles($model)) {
+            return true;
         }
 
         return false;
+    }
+
+    /**
+     * @param object $model
+     *
+     * @return BlockInterface
+     *
+     * @throws UnsupportedModelException
+     */
+    public function handle(object $model): BlockInterface
+    {
+        if ($this->existenceComparisonHandler->handles($model)) {
+            return $this->existenceComparisonHandler->handle($model);
+        }
+
+        if ($this->comparisonAssertionHandler->handles($model)) {
+            return $this->comparisonAssertionHandler->handle($model);
+        }
+
+        throw new UnsupportedModelException($model);
     }
 }

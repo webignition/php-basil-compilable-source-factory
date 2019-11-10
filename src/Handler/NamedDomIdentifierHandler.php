@@ -11,8 +11,8 @@ use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierInterface;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
-use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
 class NamedDomIdentifierHandler implements HandlerInterface
@@ -56,11 +56,11 @@ class NamedDomIdentifierHandler implements HandlerInterface
     /**
      * @param object $model
      *
-     * @return SourceInterface
+     * @return BlockInterface
      *
      * @throws UnsupportedModelException
      */
-    public function handle(object $model): SourceInterface
+    public function handle(object $model): BlockInterface
     {
         if (!$model instanceof NamedDomIdentifierInterface) {
             throw new UnsupportedModelException($model);
@@ -80,22 +80,27 @@ class NamedDomIdentifierHandler implements HandlerInterface
         $hasAssignmentVariableExports = new VariablePlaceholderCollection();
         $hasPlaceholder = $hasAssignmentVariableExports->create('HAS');
 
-        $hasAssignment = clone $hasCall;
-        $hasAssignment->mutate(function ($content) use ($hasPlaceholder) {
+        $hasAssignment = new Block([
+            $hasCall,
+        ]);
+
+        $hasAssignment->mutateLastStatement(function ($content) use ($hasPlaceholder) {
             return $hasPlaceholder . ' = ' . $content;
         });
-        $hasAssignment->addVariableExports($hasAssignmentVariableExports);
+        $hasAssignment->addVariableExportsToLastStatement($hasAssignmentVariableExports);
 
         $elementPlaceholder = $model->getPlaceholder();
         $collectionAssignmentVariableExports = new VariablePlaceholderCollection([
             $elementPlaceholder,
         ]);
 
-        $elementOrCollectionAssignment = clone $findCall;
-        $elementOrCollectionAssignment->mutate(function ($content) use ($elementPlaceholder) {
+        $elementOrCollectionAssignment = new Block([
+            $findCall,
+        ]);
+        $elementOrCollectionAssignment->mutateLastStatement(function ($content) use ($elementPlaceholder) {
             return $elementPlaceholder . ' = ' . $content;
         });
-        $elementOrCollectionAssignment->addVariableExports($collectionAssignmentVariableExports);
+        $elementOrCollectionAssignment->addVariableExportsToLastStatement($collectionAssignmentVariableExports);
 
         $elementExistsAssertion = $this->assertionCallFactory->createValueExistenceAssertionCall(
             $hasAssignment,
@@ -110,22 +115,27 @@ class NamedDomIdentifierHandler implements HandlerInterface
 
         if ($model->includeValue()) {
             if ($hasAttribute) {
-                $valueAssignment = new Statement(sprintf(
-                    '%s = %s->getAttribute(\'%s\')',
-                    $elementPlaceholder,
-                    $elementPlaceholder,
-                    $this->singleQuotedStringEscaper->escape((string) $identifier->getAttributeName())
-                ));
+                $valueAssignment = new Block([
+                    new Statement(sprintf(
+                        '%s = %s->getAttribute(\'%s\')',
+                        $elementPlaceholder,
+                        $elementPlaceholder,
+                        $this->singleQuotedStringEscaper->escape((string) $identifier->getAttributeName())
+                    ))
+                ]);
             } else {
                 $getValueCall = $this->webDriverElementInspectorCallFactory->createGetValueCall($elementPlaceholder);
+                $getValueCall = new Block([
+                    $getValueCall,
+                ]);
 
                 $valueAssignment = clone $getValueCall;
-                $valueAssignment->mutate(function ($content) use ($elementPlaceholder) {
+                $valueAssignment->mutateLastStatement(function ($content) use ($elementPlaceholder) {
                     return $elementPlaceholder . ' = ' . $content;
                 });
             }
 
-            $block->addLine($valueAssignment);
+            $block->addLinesFromBlock($valueAssignment);
         }
 
         return $block;

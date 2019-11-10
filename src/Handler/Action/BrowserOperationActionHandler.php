@@ -6,9 +6,9 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException
 use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
-use webignition\BasilCompilationSource\SourceInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Action\ActionTypes;
 use webignition\BasilModel\Action\NoArgumentsAction;
@@ -21,6 +21,9 @@ class BrowserOperationActionHandler implements HandlerInterface
         ActionTypes::RELOAD,
     ];
 
+    /**
+     * @return BrowserOperationActionHandler
+     */
     public static function createHandler(): HandlerInterface
     {
         return new BrowserOperationActionHandler();
@@ -34,11 +37,11 @@ class BrowserOperationActionHandler implements HandlerInterface
     /**
      * @param object $model
      *
-     * @return SourceInterface
+     * @return BlockInterface
      *
      * @throws UnsupportedModelException
      */
-    public function handle(object $model): SourceInterface
+    public function handle(object $model): BlockInterface
     {
         if (!$model instanceof NoArgumentsAction) {
             throw new UnsupportedModelException($model);
