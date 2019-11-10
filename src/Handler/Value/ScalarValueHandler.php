@@ -4,10 +4,9 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Value;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
-use webignition\BasilCompilableSourceFactory\HandlerInterface;
 use webignition\BasilCompilationSource\Block\BlockInterface;
 
-class ScalarValueHandler implements HandlerInterface
+class ScalarValueHandler
 {
     private $browserPropertyHandler;
     private $dataParameterHandler;
@@ -38,31 +37,6 @@ class ScalarValueHandler implements HandlerInterface
             new LiteralValueHandler(),
             new PagePropertyHandler()
         );
-    }
-
-    public function handles(object $model): bool
-    {
-        if ($this->browserPropertyHandler->handles($model)) {
-            return true;
-        }
-
-        if ($this->dataParameterHandler->handles($model)) {
-            return true;
-        }
-
-        if ($this->environmentValueHandler->handles($model)) {
-            return true;
-        }
-
-        if ($this->literalValueHandler->handles($model)) {
-            return true;
-        }
-
-        if ($this->pagePropertyHandler->handles($model)) {
-            return true;
-        }
-
-        return false;
     }
 
     /**

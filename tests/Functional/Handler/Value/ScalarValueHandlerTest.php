@@ -6,8 +6,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\Value;
 
-use webignition\BasilCompilableSourceFactory\HandlerInterface;
-use webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\AbstractHandlerTest;
+use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
@@ -17,11 +16,18 @@ use webignition\BasilModel\Value\ObjectValue;
 use webignition\BasilModel\Value\ObjectValueType;
 use webignition\BasilModel\Value\ValueInterface;
 
-class ScalarValueHandlerTest extends AbstractHandlerTest
+class ScalarValueHandlerTest extends AbstractBrowserTestCase
 {
-    protected function createHandler(): HandlerInterface
+    /**
+     * @var ScalarValueHandler
+     */
+    protected $handler;
+
+    protected function setUp(): void
     {
-        return ScalarValueHandler::createHandler();
+        parent::setUp();
+
+        $this->handler = ScalarValueHandler::createHandler();
     }
 
     /**
