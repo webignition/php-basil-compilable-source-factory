@@ -66,7 +66,7 @@ class ActionHandlerTest extends AbstractBrowserTestCase
     ) {
         $source = $this->handler->handle($action);
 
-        $classCode = $this->testCodeGenerator->createBrowserTestForLineList(
+        $classCode = $this->testCodeGenerator->createBrowserTestForBlock(
             $source,
             $fixture,
             $additionalSetupStatements,
@@ -100,7 +100,7 @@ class ActionHandlerTest extends AbstractBrowserTestCase
     ) {
         $source = $this->handler->handle($action);
 
-        $classCode = $this->testCodeGenerator->createBrowserTestForLineList(
+        $classCode = $this->testCodeGenerator->createBrowserTestForBlock(
             $source,
             $fixture,
             $additionalSetupStatements,

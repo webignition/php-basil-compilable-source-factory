@@ -54,7 +54,7 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
 
         $source = $this->factory->createForValueAccessor($accessor, $placeholder, $type);
 
-        $this->assertSourceContentEquals($expectedContent, $source);
+        $this->assertBlockContentEquals($expectedContent, $source);
         $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
 
         if ($source instanceof Block) {

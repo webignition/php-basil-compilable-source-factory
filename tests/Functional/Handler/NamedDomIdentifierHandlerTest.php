@@ -43,7 +43,7 @@ class NamedDomIdentifierHandlerTest extends AbstractBrowserTestCase
     ) {
         $source = $this->handler->handle($namedDomIdentifier);
 
-        $classCode = $this->testCodeGenerator->createBrowserTestForLineList(
+        $classCode = $this->testCodeGenerator->createBrowserTestForBlock(
             $source,
             $fixture,
             null,

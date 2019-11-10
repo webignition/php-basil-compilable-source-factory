@@ -39,7 +39,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
     ) {
         $source = $this->handler->handle($assertion);
 
-        $classCode = $this->testCodeGenerator->createBrowserTestForLineList(
+        $classCode = $this->testCodeGenerator->createBrowserTestForBlock(
             $source,
             $fixture,
             null,

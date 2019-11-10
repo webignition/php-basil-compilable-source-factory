@@ -3,7 +3,7 @@
 namespace webignition\BasilCompilableSourceFactory;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
-use webignition\BasilCompilationSource\SourceInterface;
+use webignition\BasilCompilationSource\ClassDefinition\ClassDefinitionInterface;
 
 interface FactoryInterface
 {
@@ -12,9 +12,9 @@ interface FactoryInterface
     /**
      * @param object $model
      *
-     * @return SourceInterface
+     * @return ClassDefinitionInterface
      *
      * @throws UnsupportedModelException
      */
-    public function createSource(object $model): SourceInterface;
+    public function createClassDefinition(object $model): ClassDefinitionInterface;
 }

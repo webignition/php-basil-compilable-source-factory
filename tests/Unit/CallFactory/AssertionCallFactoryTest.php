@@ -58,10 +58,10 @@ class AssertionCallFactoryTest extends AbstractTestCase
             $assertionTemplate
         );
 
-        $this->assertSourceContentEquals($expectedContent, $source);
+        $this->assertBlockContentEquals($expectedContent, $source);
         $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
 
-        $code = $this->testCodeGenerator->createPhpUnitTestForLineList($source, [
+        $code = $this->testCodeGenerator->createPhpUnitTestForBlock($source, [
             VariableNames::EXPECTED_VALUE => '$expectedValue',
             VariableNames::EXAMINED_VALUE => '$examinedValue',
             VariableNames::PHPUNIT_TEST_CASE => '$this',
@@ -255,10 +255,10 @@ class AssertionCallFactoryTest extends AbstractTestCase
             $assertionTemplate
         );
 
-        $this->assertSourceContentEquals($expectedContent, $source);
+        $this->assertBlockContentEquals($expectedContent, $source);
         $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
 
-        $code = $this->testCodeGenerator->createPhpUnitTestForLineList($source, [
+        $code = $this->testCodeGenerator->createPhpUnitTestForBlock($source, [
             VariableNames::EXAMINED_VALUE => '$examinedValue',
             VariableNames::PHPUNIT_TEST_CASE => '$this',
         ]);
