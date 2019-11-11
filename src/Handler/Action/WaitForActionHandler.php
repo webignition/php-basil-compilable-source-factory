@@ -5,8 +5,8 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\Block;
-use webignition\BasilCompilationSource\Block\BlockInterface;
+use webignition\BasilCompilationSource\Block\CodeBlock;
+use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
@@ -30,11 +30,11 @@ class WaitForActionHandler
     /**
      * @param InteractionActionInterface $action
      *
-     * @return BlockInterface
+     * @return CodeBlockInterface
      *
      * @throws UnsupportedModelException
      */
-    public function handle(InteractionActionInterface $action): BlockInterface
+    public function handle(InteractionActionInterface $action): CodeBlockInterface
     {
         $identifier = $action->getIdentifier();
 
@@ -54,7 +54,7 @@ class WaitForActionHandler
 
         $metadata = (new Metadata())->withVariableDependencies($variableDependencies);
 
-        return new Block([
+        return new CodeBlock([
             new Statement(
                 sprintf(
                     '%s = %s->waitFor(\'%s\')',

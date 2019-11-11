@@ -9,7 +9,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Value;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Value\CreateFromValueDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
-use webignition\BasilCompilationSource\Block\BlockInterface;
+use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Metadata\MetadataInterface;
 use webignition\BasilModel\Value\ValueInterface;
 
@@ -34,14 +34,12 @@ class ScalarValueHandlerTest extends AbstractTestCase
      */
     public function testHandle(
         ValueInterface $model,
-        BlockInterface $expectedContent,
+        CodeBlockInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
         $source = $this->handler->handle($model);
 
-        if ($source instanceof BlockInterface) {
-            $this->assertBlockContentEquals($expectedContent, $source);
-            $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
-        }
+        $this->assertBlockContentEquals($expectedContent, $source);
+        $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
     }
 }

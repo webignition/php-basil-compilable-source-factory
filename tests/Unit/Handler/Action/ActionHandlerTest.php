@@ -16,7 +16,7 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\CreateFro
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\CreateFromWaitForActionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
-use webignition\BasilCompilationSource\Block\BlockInterface;
+use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Metadata\MetadataInterface;
 use webignition\BasilModel\Action\ActionInterface;
 
@@ -43,18 +43,13 @@ class ActionHandlerTest extends AbstractTestCase
      */
     public function testHandle(
         ActionInterface $action,
-        BlockInterface $expectedContent,
+        CodeBlockInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
         $handler = ActionHandler::createHandler();
-
         $source = $handler->handle($action);
 
-        $this->assertInstanceOf(BlockInterface::class, $source);
-
-        if ($source instanceof BlockInterface) {
-            $this->assertBlockContentEquals($expectedContent, $source);
-            $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
-        }
+        $this->assertBlockContentEquals($expectedContent, $source);
+        $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
     }
 }

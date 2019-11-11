@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
 use webignition\BasilCompilableSourceFactory\Tests\Services\PlaceholderFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
-use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilModelFactory\Action\ActionFactory;
 
 trait ForwardActionFunctionalDataProviderTrait
@@ -20,13 +20,13 @@ trait ForwardActionFunctionalDataProviderTrait
             'forward action' => [
                 'fixture' => '/index.html',
                 'action' => $actionFactory->createFromActionString('forward'),
-                'additionalSetupStatements' => new Block([
+                'additionalSetupStatements' => new CodeBlock([
                     StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
                     StatementFactory::createCrawlerActionCallForElement('#link-to-assertions', 'click'),
                     StatementFactory::createAssertBrowserTitle('Assertions fixture'),
                     StatementFactory::createClientAction('back')
                 ]),
-                'teardownStatements' => Block::fromContent([
+                'teardownStatements' => CodeBlock::fromContent([
                     sprintf(
                         '%s->assertEquals("Assertions fixture", %s->getTitle())',
                         PlaceholderFactory::phpUnitTestCase(),

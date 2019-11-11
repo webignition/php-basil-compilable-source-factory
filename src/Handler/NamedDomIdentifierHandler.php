@@ -9,8 +9,8 @@ use webignition\BasilCompilableSourceFactory\CallFactory\WebDriverElementInspect
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierInterface;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
-use webignition\BasilCompilationSource\Block\Block;
-use webignition\BasilCompilationSource\Block\BlockInterface;
+use webignition\BasilCompilationSource\Block\CodeBlock;
+use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
@@ -50,11 +50,11 @@ class NamedDomIdentifierHandler
     /**
      * @param object $model
      *
-     * @return BlockInterface
+     * @return CodeBlockInterface
      *
      * @throws UnsupportedModelException
      */
-    public function handle(object $model): BlockInterface
+    public function handle(object $model): CodeBlockInterface
     {
         if (!$model instanceof NamedDomIdentifierInterface) {
             throw new UnsupportedModelException($model);
@@ -74,7 +74,7 @@ class NamedDomIdentifierHandler
         $hasAssignmentVariableExports = new VariablePlaceholderCollection();
         $hasPlaceholder = $hasAssignmentVariableExports->create('HAS');
 
-        $hasAssignment = new Block([
+        $hasAssignment = new CodeBlock([
             $hasCall,
         ]);
 
@@ -88,7 +88,7 @@ class NamedDomIdentifierHandler
             $elementPlaceholder,
         ]);
 
-        $elementOrCollectionAssignment = new Block([
+        $elementOrCollectionAssignment = new CodeBlock([
             $findCall,
         ]);
         $elementOrCollectionAssignment->mutateLastStatement(function ($content) use ($elementPlaceholder) {
@@ -102,14 +102,14 @@ class NamedDomIdentifierHandler
             AssertionCallFactory::ASSERT_TRUE_TEMPLATE
         );
 
-        $block = new Block([
+        $block = new CodeBlock([
             $elementExistsAssertion,
             $elementOrCollectionAssignment,
         ]);
 
         if ($model->includeValue()) {
             if ($hasAttribute) {
-                $valueAssignment = new Block([
+                $valueAssignment = new CodeBlock([
                     new Statement(sprintf(
                         '%s = %s->getAttribute(\'%s\')',
                         $elementPlaceholder,
@@ -119,7 +119,7 @@ class NamedDomIdentifierHandler
                 ]);
             } else {
                 $getValueCall = $this->webDriverElementInspectorCallFactory->createGetValueCall($elementPlaceholder);
-                $getValueCall = new Block([
+                $getValueCall = new CodeBlock([
                     $getValueCall,
                 ]);
 

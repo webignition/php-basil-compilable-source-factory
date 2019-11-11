@@ -9,8 +9,8 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\WebDriverElementInspectorCallFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\Block;
-use webignition\BasilCompilationSource\Block\BlockInterface;
+use webignition\BasilCompilationSource\Block\CodeBlock;
+use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholder;
@@ -35,7 +35,7 @@ class WebDriverElementInspectorCallFactoryTest extends AbstractTestCase
      */
     public function testCreateGetValueCall(
         VariablePlaceholder $collectionPlaceholder,
-        BlockInterface $expectedBlock
+        CodeBlockInterface $expectedBlock
     ) {
         $statement = $this->factory->createGetValueCall($collectionPlaceholder);
 
@@ -47,7 +47,7 @@ class WebDriverElementInspectorCallFactoryTest extends AbstractTestCase
         return [
             'default' => [
                 'collectionPlaceholder' => new VariablePlaceholder('COLLECTION'),
-                'expectedBlock' => new Block([
+                'expectedBlock' => new CodeBlock([
                     new Statement(
                         '{{ INSPECTOR }}->getValue({{ COLLECTION }})',
                         (new Metadata())

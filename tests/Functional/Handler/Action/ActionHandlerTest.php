@@ -18,7 +18,7 @@ use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTes
 use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
-use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilModel\Action\ActionInterface;
 use webignition\BasilModel\Action\WaitAction;
 use webignition\BasilModel\Identifier\DomIdentifier;
@@ -60,8 +60,8 @@ class ActionHandlerTest extends AbstractBrowserTestCase
     public function testCreateSourceForExecutableActions(
         string $fixture,
         ActionInterface $action,
-        ?Block $additionalSetupStatements = null,
-        ?Block $teardownStatements = null,
+        ?CodeBlockInterface $additionalSetupStatements = null,
+        ?CodeBlockInterface $teardownStatements = null,
         array $additionalVariableIdentifiers = []
     ) {
         $source = $this->handler->handle($action);
@@ -94,8 +94,8 @@ class ActionHandlerTest extends AbstractBrowserTestCase
         string $fixture,
         ActionInterface $action,
         string $expectedExpectationFailedExceptionMessage,
-        ?Block $additionalSetupStatements = null,
-        ?Block $teardownStatements = null,
+        ?CodeBlockInterface $additionalSetupStatements = null,
+        ?CodeBlockInterface $teardownStatements = null,
         array $additionalVariableIdentifiers = []
     ) {
         $source = $this->handler->handle($action);

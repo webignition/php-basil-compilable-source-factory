@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
-use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilModelFactory\Action\ActionFactory;
 
 trait SubmitActionFunctionalDataProviderTrait
@@ -18,7 +18,7 @@ trait SubmitActionFunctionalDataProviderTrait
 
         $fixture = '/action-click-submit.html';
 
-        $setupStatements = new Block([
+        $setupStatements = new CodeBlock([
             StatementFactory::createAssertBrowserTitle('Click'),
             StatementFactory::createCrawlerFilterCallForElement('#form input[type="submit"]', '$submitButton'),
             StatementFactory::createCrawlerFilterCallForElement('#form', '$form'),
@@ -26,7 +26,7 @@ trait SubmitActionFunctionalDataProviderTrait
             StatementFactory::createAssertSame('"false"', '$form->getAttribute(\'data-submitted\')'),
         ]);
 
-        $teardownStatements = new Block([
+        $teardownStatements = new CodeBlock([
             StatementFactory::createCrawlerFilterCallForElement('#form input[type="submit"]', '$submitButton'),
             StatementFactory::createAssertSame('"false"', '$submitButton->getAttribute(\'data-submitted\')'),
             StatementFactory::createCrawlerFilterCallForElement('#form', '$form'),

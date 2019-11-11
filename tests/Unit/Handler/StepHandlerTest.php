@@ -9,9 +9,9 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler;
 use webignition\BasilCompilableSourceFactory\Handler\StepHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\Block;
-use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
+use webignition\BasilCompilationSource\Block\CodeBlock;
+use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Line\Comment;
 use webignition\BasilCompilationSource\Line\EmptyLine;
@@ -32,17 +32,15 @@ class StepHandlerTest extends AbstractTestCase
      */
     public function testHandle(
         StepInterface $step,
-        BlockInterface $expectedContent,
+        CodeBlockInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
         $handler = StepHandler::createHandler();
 
         $source = $handler->handle($step);
 
-        if ($source instanceof BlockInterface) {
-            $this->assertBlockContentEquals($expectedContent, $source);
-            $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
-        }
+        $this->assertBlockContentEquals($expectedContent, $source);
+        $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
     }
 
     public function handleDataProvider(): array
@@ -53,7 +51,7 @@ class StepHandlerTest extends AbstractTestCase
         return [
             'empty step' => [
                 'step' => new Step([], []),
-                'expectedContent' => new Block(),
+                'expectedContent' => new CodeBlock(),
                 'expectedMetadata' => new Metadata(),
             ],
             'one action' => [
@@ -63,7 +61,7 @@ class StepHandlerTest extends AbstractTestCase
                     ],
                     []
                 ),
-                'expectedContent' => new Block([
+                'expectedContent' => new CodeBlock([
                     new Comment('click ".selector"'),
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
@@ -94,7 +92,7 @@ class StepHandlerTest extends AbstractTestCase
                     ],
                     []
                 ),
-                'expectedContent' => new Block([
+                'expectedContent' => new CodeBlock([
                     new Comment('click ".selector"'),
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
@@ -130,7 +128,7 @@ class StepHandlerTest extends AbstractTestCase
                         $assertionFactory->createFromAssertionString('$page.title is "value"'),
                     ]
                 ),
-                'expectedContent' => new Block([
+                'expectedContent' => new CodeBlock([
                     new Comment('$page.title is "value"'),
                     new Statement('{{ EXPECTED }} = "value" ?? null'),
                     new Statement('{{ EXPECTED }} = (string) {{ EXPECTED }}'),
@@ -157,7 +155,7 @@ class StepHandlerTest extends AbstractTestCase
                         $assertionFactory->createFromAssertionString('$page.url is "http://example.com"'),
                     ]
                 ),
-                'expectedContent' => new Block([
+                'expectedContent' => new CodeBlock([
                     new Comment('$page.title is "value"'),
                     new Statement('{{ EXPECTED }} = "value" ?? null'),
                     new Statement('{{ EXPECTED }} = (string) {{ EXPECTED }}'),
@@ -192,7 +190,7 @@ class StepHandlerTest extends AbstractTestCase
                         $assertionFactory->createFromAssertionString('$page.title is "value"'),
                     ]
                 ),
-                'expectedContent' => new Block([
+                'expectedContent' => new CodeBlock([
                     new Comment('click ".selector"'),
                     new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
                     new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),

@@ -10,8 +10,8 @@ use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifier;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
-use webignition\BasilCompilationSource\Block\Block;
-use webignition\BasilCompilationSource\Block\BlockInterface;
+use webignition\BasilCompilationSource\Block\CodeBlock;
+use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\MutableBlockInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Action\InputActionInterface;
@@ -50,12 +50,12 @@ class SetActionHandler
     /**
      * @param InputActionInterface $action
      *
-     * @return BlockInterface
+     * @return CodeBlockInterface
      *
      * @throws UnsupportedModelException
      * @throws UnknownObjectPropertyException
      */
-    public function handle(InputActionInterface $action): BlockInterface
+    public function handle(InputActionInterface $action): CodeBlockInterface
     {
         $identifier = $action->getIdentifier();
 
@@ -99,7 +99,7 @@ class SetActionHandler
             $valuePlaceholder
         );
 
-        return new Block([
+        return new CodeBlock([
             $collectionAssignment,
             $valueAssignment,
             $mutationCall

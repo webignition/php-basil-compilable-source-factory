@@ -3,8 +3,8 @@
 namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\Block;
-use webignition\BasilCompilationSource\Block\BlockInterface;
+use webignition\BasilCompilationSource\Block\CodeBlock;
+use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholder;
@@ -35,12 +35,12 @@ class AssertionCallFactory
     }
 
     public function createValueComparisonAssertionCall(
-        BlockInterface $expectedValueAssignment,
-        BlockInterface $actualValueAssignment,
+        CodeBlockInterface $expectedValueAssignment,
+        CodeBlockInterface $actualValueAssignment,
         VariablePlaceholder $expectedValuePlaceholder,
         VariablePlaceholder $actualValuePlaceholder,
         string $assertionTemplate
-    ): BlockInterface {
+    ): CodeBlockInterface {
         $variableDependencies = new VariablePlaceholderCollection();
         $variableDependencies->add($this->phpUnitTestCasePlaceholder);
 
@@ -53,7 +53,7 @@ class AssertionCallFactory
             $actualValuePlaceholder
         );
 
-        return new Block([
+        return new CodeBlock([
             $expectedValueAssignment,
             $actualValueAssignment,
             new Statement($assertionStatementContent, $metadata)
@@ -61,10 +61,10 @@ class AssertionCallFactory
     }
 
     public function createValueExistenceAssertionCall(
-        BlockInterface $assignment,
+        CodeBlockInterface $assignment,
         VariablePlaceholder $variablePlaceholder,
         string $assertionTemplate
-    ): BlockInterface {
+    ): CodeBlockInterface {
         $assertionStatementContent = sprintf(
             $assertionTemplate,
             (string) $this->phpUnitTestCasePlaceholder,
@@ -74,7 +74,7 @@ class AssertionCallFactory
         $metadata = (new Metadata())
             ->withVariableDependencies($this->variableDependencies);
 
-        return new Block([
+        return new CodeBlock([
             $assignment,
             new Statement($assertionStatementContent, $metadata),
         ]);

@@ -4,7 +4,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
-use webignition\BasilCompilationSource\Block\BlockInterface;
+use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilModel\Assertion\AssertionComparison;
 use webignition\BasilModel\Assertion\AssertionInterface;
 use webignition\BasilModel\Assertion\ComparisonAssertionInterface;
@@ -34,12 +34,12 @@ class AssertionHandler
     /**
      * @param AssertionInterface $assertion
      *
-     * @return BlockInterface
+     * @return CodeBlockInterface
      *
      * @throws UnsupportedModelException
      * @throws UnknownObjectPropertyException
      */
-    public function handle(AssertionInterface $assertion): BlockInterface
+    public function handle(AssertionInterface $assertion): CodeBlockInterface
     {
         if ($this->isComparisonAssertion($assertion) && $assertion instanceof ComparisonAssertionInterface) {
             return $this->comparisonAssertionHandler->handle($assertion);

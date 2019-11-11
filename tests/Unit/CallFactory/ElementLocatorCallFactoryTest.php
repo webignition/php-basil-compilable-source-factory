@@ -6,13 +6,13 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 
-use webignition\BasilCodeGenerator\BlockGenerator;
+use webignition\BasilCodeGenerator\CodeBlockGenerator;
 use webignition\BasilCodeGenerator\LineGenerator;
 use webignition\BasilCompilableSourceFactory\CallFactory\ElementLocatorCallFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestCodeGenerator;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
-use webignition\BasilCompilationSource\Block\Block;
 use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
+use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilModel\Identifier\DomIdentifier;
@@ -33,9 +33,9 @@ class ElementLocatorCallFactoryTest extends AbstractTestCase
     private $testCodeGenerator;
 
     /**
-     * @var BlockGenerator
+     * @var CodeBlockGenerator
      */
-    private $blockGenerator;
+    private $codeBlockGenerator;
 
     /**
      * @var LineGenerator
@@ -48,7 +48,7 @@ class ElementLocatorCallFactoryTest extends AbstractTestCase
 
         $this->factory = ElementLocatorCallFactory::createFactory();
         $this->testCodeGenerator = TestCodeGenerator::create();
-        $this->blockGenerator = BlockGenerator::create();
+        $this->codeBlockGenerator = CodeBlockGenerator::create();
         $this->lineGenerator = LineGenerator::create();
     }
 
@@ -60,7 +60,7 @@ class ElementLocatorCallFactoryTest extends AbstractTestCase
         ElementLocatorInterface $expectedElementLocator
     ) {
         $block = $this->factory->createConstructorCall($elementIdentifier);
-        $block = new Block([
+        $block = new CodeBlock([
             $block,
         ]);
 
@@ -75,7 +75,7 @@ class ElementLocatorCallFactoryTest extends AbstractTestCase
 
         $this->assertMetadataEquals($expectedMetadata, $block->getMetadata());
 
-        $code = $this->blockGenerator->createWithUseStatementsFromBlock(new Block([
+        $code = $this->codeBlockGenerator->createWithUseStatementsFromBlock(new CodeBlock([
             $block,
         ]), []);
 

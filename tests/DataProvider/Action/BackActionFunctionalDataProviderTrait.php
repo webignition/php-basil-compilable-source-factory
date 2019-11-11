@@ -6,7 +6,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
-use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilModelFactory\Action\ActionFactory;
 
 trait BackActionFunctionalDataProviderTrait
@@ -19,12 +19,12 @@ trait BackActionFunctionalDataProviderTrait
             'back action' => [
                 'fixture' => '/index.html',
                 'action' => $actionFactory->createFromActionString('back'),
-                'additionalSetupStatements' => new Block([
+                'additionalSetupStatements' => new CodeBlock([
                     StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
                     StatementFactory::createCrawlerActionCallForElement('#link-to-assertions', 'click'),
                     StatementFactory::createAssertBrowserTitle('Assertions fixture'),
                 ]),
-                'teardownStatements' => new Block([
+                'teardownStatements' => new CodeBlock([
                     StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
                 ])
             ],

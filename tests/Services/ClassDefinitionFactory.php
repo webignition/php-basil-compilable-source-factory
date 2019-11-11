@@ -2,8 +2,8 @@
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
-use webignition\BasilCompilationSource\Block\Block;
-use webignition\BasilCompilationSource\Block\BlockInterface;
+use webignition\BasilCompilationSource\Block\CodeBlock;
+use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\ClassDefinition\ClassDefinition;
 use webignition\BasilCompilationSource\ClassDefinition\ClassDefinitionInterface;
 use webignition\BasilCompilationSource\MethodDefinition\MethodDefinition;
@@ -12,8 +12,8 @@ class ClassDefinitionFactory
 {
     public static function createGeneratedBrowserTestForBlock(
         string $fixture,
-        Block $block,
-        ?BlockInterface $additionalSetupStatements
+        CodeBlockInterface $block,
+        ?CodeBlockInterface $additionalSetupStatements
     ): ClassDefinitionInterface {
         $methodName = 'test' . md5((string) rand());
         $methodDefinition = new MethodDefinition($methodName, $block);
@@ -27,7 +27,7 @@ class ClassDefinitionFactory
         ]);
     }
 
-    public static function createPhpUnitTestForBlock(Block $block): ClassDefinitionInterface
+    public static function createPhpUnitTestForBlock(CodeBlock $block): ClassDefinitionInterface
     {
         $methodName = 'testGeneratedCode';
         $methodDefinition = new MethodDefinition($methodName, $block);

@@ -6,11 +6,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
-use webignition\BasilCodeGenerator\BlockGenerator;
 use webignition\BasilCodeGenerator\ClassGenerator;
+use webignition\BasilCodeGenerator\CodeBlockGenerator;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\Block;
-use webignition\BasilCompilationSource\Block\BlockInterface;
+use webignition\BasilCompilationSource\Block\CodeBlock;
+use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
 class TestCodeGenerator
@@ -28,7 +28,7 @@ class TestCodeGenerator
 
     public function __construct(
         ClassGenerator $classGenerator,
-        BlockGenerator $blockGenerator
+        CodeBlockGenerator $blockGenerator
     ) {
         $this->classGenerator = $classGenerator;
         $this->codeBlockGenerator = $blockGenerator;
@@ -38,15 +38,15 @@ class TestCodeGenerator
     {
         return new TestCodeGenerator(
             ClassGenerator::create(),
-            BlockGenerator::create()
+            CodeBlockGenerator::create()
         );
     }
 
     public function createPhpUnitTestForBlock(
-        BlockInterface $block,
+        CodeBlockInterface $block,
         array $additionalVariableIdentifiers = []
     ): string {
-        $blockSource = BlockFactory::createForSourceBlock($block);
+        $blockSource = CodeBlockFactory::createForSourceBlock($block);
         $classDefinition = ClassDefinitionFactory::createPhpUnitTestForBlock($blockSource);
 
         $classCode = $this->classGenerator->createForClassDefinition(
@@ -55,7 +55,7 @@ class TestCodeGenerator
             $additionalVariableIdentifiers
         );
 
-        $initializerCode = $this->codeBlockGenerator->createFromBlock(Block::fromContent([
+        $initializerCode = $this->codeBlockGenerator->createFromBlock(CodeBlock::fromContent([
             '(new ' . $classDefinition->getName() . '())->testGeneratedCode()'
         ]));
 
@@ -63,13 +63,13 @@ class TestCodeGenerator
     }
 
     public function createBrowserTestForBlock(
-        BlockInterface $block,
+        CodeBlockInterface $block,
         string $fixture,
-        ?BlockInterface $additionalSetupStatements = null,
-        ?BlockInterface $teardownStatements = null,
+        ?CodeBlockInterface $additionalSetupStatements = null,
+        ?CodeBlockInterface $teardownStatements = null,
         array $additionalVariableIdentifiers = []
     ): string {
-        $codeSource = BlockFactory::createForSourceBlock($block, $teardownStatements);
+        $codeSource = CodeBlockFactory::createForSourceBlock($block, $teardownStatements);
         $classDefinition = ClassDefinitionFactory::createGeneratedBrowserTestForBlock(
             $fixture,
             $codeSource,

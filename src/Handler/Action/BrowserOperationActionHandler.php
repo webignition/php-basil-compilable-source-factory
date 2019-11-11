@@ -3,8 +3,8 @@
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\Block;
-use webignition\BasilCompilationSource\Block\BlockInterface;
+use webignition\BasilCompilationSource\Block\CodeBlock;
+use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
@@ -17,7 +17,7 @@ class BrowserOperationActionHandler
         return new BrowserOperationActionHandler();
     }
 
-    public function handle(NoArgumentsAction $action): BlockInterface
+    public function handle(NoArgumentsAction $action): CodeBlockInterface
     {
         $variableDependencies = new VariablePlaceholderCollection();
         $pantherCrawlerPlaceholder = $variableDependencies->create(VariableNames::PANTHER_CRAWLER);
@@ -25,7 +25,7 @@ class BrowserOperationActionHandler
 
         $metadata = (new Metadata())->withVariableDependencies($variableDependencies);
 
-        return new Block([
+        return new CodeBlock([
             new Statement(
                 sprintf(
                     '%s = %s->%s()',

@@ -10,7 +10,8 @@ use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTes
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
-use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Block\CodeBlock;
+use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\MutableBlockInterface;
 use webignition\BasilModel\Value\ObjectValue;
 use webignition\BasilModel\Value\ObjectValueType;
@@ -36,7 +37,7 @@ class ScalarValueHandlerTest extends AbstractBrowserTestCase
     public function testCreateSource(
         string $fixture,
         ValueInterface $model,
-        Block $teardownStatements,
+        CodeBlockInterface $teardownStatements,
         array $additionalVariableIdentifiers = []
     ) {
         $source = $this->handler->handle($model);
@@ -75,7 +76,7 @@ class ScalarValueHandlerTest extends AbstractBrowserTestCase
             'browser property: size' => [
                 'fixture' => '/empty.html',
                 'model' => new ObjectValue(ObjectValueType::BROWSER_PROPERTY, '$browser.size', 'size'),
-                'teardownStatements' => new Block([
+                'teardownStatements' => new CodeBlock([
                     StatementFactory::createAssertSame('"1200x1100"', '$value'),
                 ]),
                 'additionalVariableIdentifiers' => [
@@ -85,14 +86,14 @@ class ScalarValueHandlerTest extends AbstractBrowserTestCase
             'page property: title' => [
                 'fixture' => '/index.html',
                 'model' => new ObjectValue(ObjectValueType::PAGE_PROPERTY, '$page.title', 'title'),
-                'teardownStatements' => new Block([
+                'teardownStatements' => new CodeBlock([
                     StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
                 ]),
             ],
             'page property: url' => [
                 'fixture' => '/index.html',
                 'model' => new ObjectValue(ObjectValueType::PAGE_PROPERTY, '$page.url', 'url'),
-                'teardownStatements' => new Block([
+                'teardownStatements' => new CodeBlock([
                     StatementFactory::createAssertSame('"http://127.0.0.1:9080/index.html"', '$value'),
                 ]),
             ],
