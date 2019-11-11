@@ -9,8 +9,8 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler;
 use webignition\BasilCompilableSourceFactory\Handler\TestHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\Block;
 use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
+use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\ClassDefinition\ClassDefinitionInterface;
 use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Metadata\Metadata;
@@ -103,7 +103,7 @@ class TestHandlerTest extends AbstractTestCase
                     'setUpBeforeClass' => $this->createExpectedSetUpBeforeClassMethodDefinition('http://example.com'),
                     'testBdc4b8bd83e5660d1c62908dc7a7c43a' => new MethodDefinition(
                         'testBdc4b8bd83e5660d1c62908dc7a7c43a',
-                        Block::fromContent([
+                        CodeBlock::fromContent([
                             '//step one',
                             '//click ".selector"',
                             '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
@@ -142,7 +142,7 @@ class TestHandlerTest extends AbstractTestCase
 
     private function createExpectedSetUpBeforeClassMethodDefinition(string $requestUrl): MethodDefinitionInterface
     {
-        $method = new MethodDefinition('setUpBeforeClass', Block::fromContent([
+        $method = new MethodDefinition('setUpBeforeClass', CodeBlock::fromContent([
             'parent::setUpBeforeClass()',
             '{{ CLIENT }}->request(\'GET\', \'' . $requestUrl . '\')',
         ]));

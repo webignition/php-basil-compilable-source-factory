@@ -6,7 +6,7 @@ use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyExce
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\Block;
+use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\ClassDefinition\ClassDefinition;
 use webignition\BasilCompilationSource\ClassDefinition\ClassDefinitionInterface;
 use webignition\BasilCompilationSource\Line\Comment;
@@ -67,7 +67,7 @@ class TestHandler
 
             $methodDefinitions[] = new MethodDefinition(
                 $stepMethodName,
-                new Block([
+                new CodeBlock([
                     new Comment($stepName),
                     $this->stepHandler->handle($step),
                 ])
@@ -85,7 +85,7 @@ class TestHandler
         $parentCallStatement = new Statement('parent::setUpBeforeClass()');
         $clientRequestStatement = $this->createClientRequestStatement($test);
 
-        $setupBeforeClassMethod = new MethodDefinition('setUpBeforeClass', new Block([
+        $setupBeforeClassMethod = new MethodDefinition('setUpBeforeClass', new CodeBlock([
             $parentCallStatement,
             $clientRequestStatement,
         ]));
