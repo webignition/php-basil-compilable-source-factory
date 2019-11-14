@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
+use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
@@ -25,15 +26,18 @@ class WaitActionHandler
     private $variableAssignmentFactory;
     private $scalarValueHandler;
     private $namedDomIdentifierHandler;
+    private $accessorDefaultValueFactory;
 
     public function __construct(
         VariableAssignmentFactory $variableAssignmentFactory,
         ScalarValueHandler $scalarValueHandler,
-        NamedDomIdentifierHandler $namedDomIdentifierHandler
+        NamedDomIdentifierHandler $namedDomIdentifierHandler,
+        AccessorDefaultValueFactory $accessorDefaultValueFactory
     ) {
         $this->variableAssignmentFactory = $variableAssignmentFactory;
         $this->scalarValueHandler = $scalarValueHandler;
         $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
+        $this->accessorDefaultValueFactory = $accessorDefaultValueFactory;
     }
 
     public static function createHandler(): WaitActionHandler
@@ -41,7 +45,8 @@ class WaitActionHandler
         return new WaitActionHandler(
             VariableAssignmentFactory::createFactory(),
             new ScalarValueHandler(),
-            NamedDomIdentifierHandler::createHandler()
+            NamedDomIdentifierHandler::createHandler(),
+            AccessorDefaultValueFactory::createFactory()
         );
     }
 
@@ -75,7 +80,7 @@ class WaitActionHandler
         $durationAssignment = $this->variableAssignmentFactory->createForValueAccessor(
             $durationAccessor,
             $durationPlaceholder,
-            0
+            $this->accessorDefaultValueFactory->create($duration) ?? 0
         );
 
         return new CodeBlock([

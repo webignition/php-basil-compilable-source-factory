@@ -209,6 +209,62 @@ trait CreateFromSetActionDataProviderTrait
                         'VALUE',
                     ])),
             ],
+            'input action, environment value with default' => [
+                'action' => $actionFactory->createFromActionString(
+                    'set ".selector" to $env.KEY|"default"'
+                ),
+                'expectedContent' => CodeBlock::fromContent([
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
+                    '{{ VALUE }} = {{ ENV }}[\'KEY\'] ?? \'default\'',
+                    '{{ VALUE }} = (string) {{ VALUE }}',
+                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
+                ]),
+                'expectedMetadata' => (new Metadata())
+                    ->withClassDependencies(new ClassDependencyCollection([
+                        new ClassDependency(ElementLocator::class),
+                    ]))
+                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
+                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
+                        VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
+                    ]))
+                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        'HAS',
+                        'COLLECTION',
+                        'VALUE',
+                    ])),
+            ],
+            'input action, environment value with default with whitespace' => [
+                'action' => $actionFactory->createFromActionString(
+                    'set ".selector" to $env.KEY|"default value"'
+                ),
+                'expectedContent' => CodeBlock::fromContent([
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
+                    '{{ VALUE }} = {{ ENV }}[\'KEY\'] ?? \'default value\'',
+                    '{{ VALUE }} = (string) {{ VALUE }}',
+                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
+                ]),
+                'expectedMetadata' => (new Metadata())
+                    ->withClassDependencies(new ClassDependencyCollection([
+                        new ClassDependency(ElementLocator::class),
+                    ]))
+                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
+                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
+                        VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
+                    ]))
+                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        'HAS',
+                        'COLLECTION',
+                        'VALUE',
+                    ])),
+            ],
         ];
     }
 }
