@@ -2,13 +2,11 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSourceFactory\Handler;
+namespace webignition\BasilCompilableSourceFactory;
 
-use webignition\BasilCompilableSourceFactory\ArrayStatementFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
-use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
-use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilCompilableSourceFactory\Handler\StepHandler;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\DocBlock;
 use webignition\BasilCompilationSource\ClassDefinition\ClassDefinition;
@@ -23,7 +21,7 @@ use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\DataSet\DataSetCollectionInterface;
 use webignition\BasilModel\Test\TestInterface;
 
-class TestHandler
+class ClassDefinitionFactory
 {
     private $stepHandler;
     private $singleQuotedStringEscaper;
@@ -39,9 +37,9 @@ class TestHandler
         $this->arrayStatementFactory = $arrayStatementFactory;
     }
 
-    public static function createHandler(): TestHandler
+    public static function createFactory(): ClassDefinitionFactory
     {
-        return new TestHandler(
+        return new ClassDefinitionFactory(
             StepHandler::createHandler(),
             SingleQuotedStringEscaper::create(),
             ArrayStatementFactory::createFactory()
@@ -49,24 +47,20 @@ class TestHandler
     }
 
     /**
-     * @param object $model
+     * @param TestInterface $test
      *
      * @return ClassDefinitionInterface
      *
      * @throws UnsupportedModelException
      * @throws UnknownObjectPropertyException
      */
-    public function handle(object $model): ClassDefinitionInterface
+    public function createClassDefinition(TestInterface $test): ClassDefinitionInterface
     {
-        if (!$model instanceof TestInterface) {
-            throw new UnsupportedModelException($model);
-        }
-
         $methodDefinitions = [
-            $this->createSetupBeforeClassMethod($model),
+            $this->createSetupBeforeClassMethod($test),
         ];
 
-        foreach ($model->getSteps() as $stepName => $step) {
+        foreach ($test->getSteps() as $stepName => $step) {
             $stepName = (string) $stepName;
             $dataSetCollection = $step->getDataSetCollection();
             $parameterNames = $dataSetCollection->getParameterNames();
@@ -99,7 +93,7 @@ class TestHandler
             }
         }
 
-        $testName = (string) $model->getName();
+        $testName = (string) $test->getName();
         $className = sprintf('Generated%sTest', ucfirst(md5($testName)));
 
         return new ClassDefinition($className, $methodDefinitions);

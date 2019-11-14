@@ -2,18 +2,15 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler;
+namespace webignition\BasilCompilableSourceFactory\Tests\Functional;
 
 use webignition\BasePantherTestCase\Options;
 use webignition\BasilCodeGenerator\ClassGenerator;
-use webignition\BasilCompilableSourceFactory\Handler\TestHandler;
-use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
-use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractGeneratedTestCase;
+use webignition\BasilCompilableSourceFactory\ClassDefinitionFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilationSource\ClassDefinition\ClassDefinitionInterface;
 use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
@@ -27,7 +24,7 @@ use webignition\BasilModel\Test\TestInterface;
 use webignition\BasilModelFactory\Action\ActionFactory;
 use webignition\BasilModelFactory\AssertionFactory;
 
-class TestHandlerTest extends AbstractBrowserTestCase
+class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
 {
     /**
      * @var ClassGenerator
@@ -35,16 +32,16 @@ class TestHandlerTest extends AbstractBrowserTestCase
     private $classGenerator;
 
     /**
-     * @var TestHandler
+     * @var ClassDefinitionFactory
      */
-    private $handler;
+    private $factory;
 
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->classGenerator = ClassGenerator::create();
-        $this->handler = TestHandler::createHandler();
+        $this->factory = ClassDefinitionFactory::createFactory();
     }
 
     /**
@@ -52,27 +49,23 @@ class TestHandlerTest extends AbstractBrowserTestCase
      */
     public function testCreateSource(TestInterface $test, array $additionalVariableIdentifiers = [])
     {
-        $source = $this->handler->handle($test);
+        $classDefinition = $this->factory->createClassDefinition($test);
 
-        $classCode = '';
-
-        if ($source instanceof ClassDefinitionInterface) {
-            $setupBeforeClassMethod = $source->getMethod('setUpBeforeClass');
-            if ($setupBeforeClassMethod instanceof MethodDefinitionInterface) {
-                $setupBeforeClassMethod->addLine(new Statement(
-                    '// Test harness addition for generating base test use statement',
-                    (new Metadata())
-                        ->withClassDependencies(new ClassDependencyCollection([
-                            new ClassDependency(AbstractGeneratedTestCase::class),
-                        ]))
-                ));
-            }
-
-            $classCode = $this->testCodeGenerator->createBrowserTestForClass(
-                $source,
-                $additionalVariableIdentifiers
-            );
+        $setupBeforeClassMethod = $classDefinition->getMethod('setUpBeforeClass');
+        if ($setupBeforeClassMethod instanceof MethodDefinitionInterface) {
+            $setupBeforeClassMethod->addLine(new Statement(
+                '// Test harness addition for generating base test use statement',
+                (new Metadata())
+                    ->withClassDependencies(new ClassDependencyCollection([
+                        new ClassDependency(AbstractGeneratedTestCase::class),
+                    ]))
+            ));
         }
+
+        $classCode = $this->testCodeGenerator->createBrowserTestForClass(
+            $classDefinition,
+            $additionalVariableIdentifiers
+        );
 
         $testRunJob = $this->testRunner->createTestRunJob($classCode);
 

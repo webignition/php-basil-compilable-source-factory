@@ -2,15 +2,13 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler;
+namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
-use webignition\BasilCompilableSourceFactory\Handler\TestHandler;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
+use webignition\BasilCompilableSourceFactory\ClassDefinitionFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\DocBlock;
-use webignition\BasilCompilationSource\ClassDefinition\ClassDefinitionInterface;
 use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Line\Comment;
 use webignition\BasilCompilationSource\Metadata\Metadata;
@@ -28,45 +26,40 @@ use webignition\BasilModelFactory\Action\ActionFactory;
 use webignition\BasilModelFactory\AssertionFactory;
 use webignition\DomElementLocator\ElementLocator;
 
-class TestHandlerTest extends AbstractTestCase
+class ClassDefinitionFactoryTest extends AbstractTestCase
 {
     /**
-     * @dataProvider handleDataProvider
+     * @dataProvider createClassDefinitionDataProvider
      */
-    public function testHandle(
+    public function testCreateClassDefinition(
         TestInterface $test,
         string $expectedClassName,
         array $expectedMethods,
         MetadataInterface $expectedMetadata
     ) {
-        $handler = TestHandler::createHandler();
-        $source = $handler->handle($test);
+        $factory = ClassDefinitionFactory::createFactory();
+        $classDefinition = $factory->createClassDefinition($test);
 
-        $this->assertInstanceOf(ClassDefinitionInterface::class, $source);
+        $this->assertMetadataEquals($expectedMetadata, $classDefinition->getMetadata());
+        $this->assertSame($expectedClassName, $classDefinition->getName());
 
-        if ($source instanceof ClassDefinitionInterface) {
-            $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
+        $methods = $classDefinition->getMethods();
+        $this->assertCount(count($expectedMethods), $methods);
 
-            $this->assertSame($expectedClassName, $source->getName());
+        foreach ($methods as $methodIndex => $method) {
+            /* @var MethodDefinitionInterface $expectedMethod */
+            $expectedMethod = $expectedMethods[$methodIndex];
 
-            $methods = $source->getMethods();
-            $this->assertCount(count($expectedMethods), $methods);
-
-            foreach ($methods as $methodIndex => $method) {
-                /* @var MethodDefinitionInterface $expectedMethod */
-                $expectedMethod = $expectedMethods[$methodIndex];
-
-                $this->assertSame($expectedMethod->getName(), $method->getName());
-                $this->assertEquals($expectedMethod->getDocBlock(), $method->getDocBlock());
-                $this->assertSame($expectedMethod->getReturnType(), $method->getReturnType());
-                $this->assertSame($expectedMethod->isStatic(), $method->isStatic());
-                $this->assertSame($expectedMethod->getArguments(), $method->getArguments());
-                $this->assertBlockContentEquals($expectedMethod, $method);
-            }
+            $this->assertSame($expectedMethod->getName(), $method->getName());
+            $this->assertEquals($expectedMethod->getDocBlock(), $method->getDocBlock());
+            $this->assertSame($expectedMethod->getReturnType(), $method->getReturnType());
+            $this->assertSame($expectedMethod->isStatic(), $method->isStatic());
+            $this->assertSame($expectedMethod->getArguments(), $method->getArguments());
+            $this->assertBlockContentEquals($expectedMethod, $method);
         }
     }
 
-    public function handleDataProvider(): array
+    public function createClassDefinitionDataProvider(): array
     {
         $actionFactory = ActionFactory::createFactory();
         $assertionFactory = AssertionFactory::createFactory();
