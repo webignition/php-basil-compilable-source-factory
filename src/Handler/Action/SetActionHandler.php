@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
+use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\WebDriverElementMutatorCallFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
@@ -25,17 +26,20 @@ class SetActionHandler
     private $webDriverElementMutatorCallFactory;
     private $scalarValueHandler;
     private $namedDomIdentifierHandler;
+    private $accessorDefaultValueFactory;
 
     public function __construct(
         VariableAssignmentFactory $variableAssignmentFactory,
         WebDriverElementMutatorCallFactory $webDriverElementMutatorCallFactory,
         ScalarValueHandler $scalarValueHandler,
-        NamedDomIdentifierHandler $namedDomIdentifierHandler
+        NamedDomIdentifierHandler $namedDomIdentifierHandler,
+        AccessorDefaultValueFactory $accessorDefaultValueFactory
     ) {
         $this->variableAssignmentFactory = $variableAssignmentFactory;
         $this->webDriverElementMutatorCallFactory = $webDriverElementMutatorCallFactory;
         $this->scalarValueHandler = $scalarValueHandler;
         $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
+        $this->accessorDefaultValueFactory = $accessorDefaultValueFactory;
     }
 
     public static function createHandler(): SetActionHandler
@@ -44,7 +48,8 @@ class SetActionHandler
             VariableAssignmentFactory::createFactory(),
             WebDriverElementMutatorCallFactory::createFactory(),
             new ScalarValueHandler(),
-            NamedDomIdentifierHandler::createHandler()
+            NamedDomIdentifierHandler::createHandler(),
+            AccessorDefaultValueFactory::createFactory()
         );
     }
 
@@ -91,7 +96,11 @@ class SetActionHandler
             $valueAccessor = $this->scalarValueHandler->handle($value);
         }
 
-        $valueAssignment = $this->variableAssignmentFactory->createForValueAccessor($valueAccessor, $valuePlaceholder);
+        $valueAssignment = $this->variableAssignmentFactory->createForValueAccessor(
+            $valueAccessor,
+            $valuePlaceholder,
+            $this->accessorDefaultValueFactory->create($value)
+        );
 
         $mutationCall = $this->webDriverElementMutatorCallFactory->createSetValueCall(
             $collectionPlaceholder,
