@@ -15,7 +15,6 @@ use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
-use webignition\BasilCompilationSource\MutableBlockInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Assertion\AssertionComparison;
@@ -72,23 +71,19 @@ class ExistenceComparisonHandler
         if ($this->isScalarValue($value)) {
             $accessor = $this->scalarValueHandler->handle($value);
 
-            if ($accessor instanceof MutableBlockInterface) {
-                $accessor->mutateLastStatement(function (string $content) {
-                    return $content . ' ?? null';
-                });
-            }
+            $accessor->mutateLastStatement(function (string $content) {
+                return $content . ' ?? null';
+            });
 
             $assignment = clone $accessor;
 
-            if ($assignment instanceof MutableBlockInterface) {
-                $assignment->mutateLastStatement(function (string $content) use ($valuePlaceholder) {
-                    return $valuePlaceholder . ' = ' . $content;
-                });
+            $assignment->mutateLastStatement(function (string $content) use ($valuePlaceholder) {
+                return $valuePlaceholder . ' = ' . $content;
+            });
 
-                $assignment->addVariableExportsToLastStatement(new VariablePlaceholderCollection([
-                    $valuePlaceholder,
-                ]));
-            }
+            $assignment->addVariableExportsToLastStatement(new VariablePlaceholderCollection([
+                $valuePlaceholder,
+            ]));
 
             $existence = new CodeBlock([
                 $assignment,

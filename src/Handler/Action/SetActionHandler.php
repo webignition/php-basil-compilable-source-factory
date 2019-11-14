@@ -14,7 +14,6 @@ use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
-use webignition\BasilCompilationSource\MutableBlockInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Action\InputActionInterface;
 use webignition\BasilModel\Identifier\DomIdentifierInterface;
@@ -85,11 +84,10 @@ class SetActionHandler
                 new NamedDomIdentifierValue($value, $valuePlaceholder)
             );
 
-            if ($valueAccessor instanceof MutableBlockInterface) {
-                $valueAccessor->mutateLastStatement(function (string $content) use ($valuePlaceholder) {
-                    return str_replace((string) $valuePlaceholder . ' = ', '', $content);
-                });
-            }
+            $valueAccessor->mutateLastStatement(function (string $content) use ($valuePlaceholder) {
+                return str_replace((string) $valuePlaceholder . ' = ', '', $content);
+            });
+
         } else {
             $valueAccessor = $this->scalarValueHandler->handle($value);
         }

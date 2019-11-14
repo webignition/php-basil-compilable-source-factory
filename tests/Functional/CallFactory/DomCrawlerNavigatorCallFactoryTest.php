@@ -12,7 +12,6 @@ use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
-use webignition\BasilCompilationSource\MutableBlockInterface;
 use webignition\BasilModel\Identifier\DomIdentifier;
 use webignition\BasilModel\Identifier\DomIdentifierInterface;
 
@@ -41,12 +40,9 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
         $source = $this->factory->createFindCall($identifier);
 
         $instrumentedSource = clone $source;
-
-        if ($instrumentedSource instanceof MutableBlockInterface) {
-            $instrumentedSource->mutateLastStatement(function ($content) {
-                return '$collection = ' . $content;
-            });
-        }
+        $instrumentedSource->mutateLastStatement(function ($content) {
+            return '$collection = ' . $content;
+        });
 
         $classCode = $this->testCodeGenerator->createBrowserTestForBlock(
             $instrumentedSource,
