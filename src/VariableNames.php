@@ -1,17 +1,19 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory;
 
 class VariableNames
 {
-    const PANTHER_CLIENT = 'CLIENT';
-    const ENVIRONMENT_VARIABLE_ARRAY = 'ENV';
-    const DOM_CRAWLER_NAVIGATOR = 'NAVIGATOR';
-    const PHPUNIT_TEST_CASE = 'PHPUNIT';
-    const WEBDRIVER_ELEMENT_INSPECTOR = 'INSPECTOR';
-    const WEBDRIVER_ELEMENT_MUTATOR = 'MUTATOR';
-    const PANTHER_CRAWLER = 'CRAWLER';
+    public const PANTHER_CLIENT = 'CLIENT';
+    public const ENVIRONMENT_VARIABLE_ARRAY = 'ENV';
+    public const DOM_CRAWLER_NAVIGATOR = 'NAVIGATOR';
+    public const PHPUNIT_TEST_CASE = 'PHPUNIT';
+    public const WEBDRIVER_ELEMENT_INSPECTOR = 'INSPECTOR';
+    public const WEBDRIVER_ELEMENT_MUTATOR = 'MUTATOR';
+    public const PANTHER_CRAWLER = 'CRAWLER';
 
-    const EXPECTED_VALUE = 'EXPECTED';
-    const EXAMINED_VALUE = 'EXAMINED';
+    public const EXPECTED_VALUE = 'EXPECTED';
+    public const EXAMINED_VALUE = 'EXAMINED';
 }

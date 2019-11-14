@@ -54,7 +54,7 @@ class ArrayStatementFactory
         $bodyIndent = str_repeat(' ', $indentCount * self::INDENT_SPACE_COUNT);
 
         $containerTemplate =
-            '['. "\n"
+            '[' . "\n"
             . '%s' . "\n"
             . $containerIndent . '],';
 

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
@@ -12,13 +14,14 @@ use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
 class AssertionCallFactory
 {
-    const ASSERT_TRUE_TEMPLATE = '%s->assertTrue(%s)';
-    const ASSERT_FALSE_TEMPLATE = '%s->assertFalse(%s)';
-    const ASSERT_EQUALS_TEMPLATE = '%s->assertEquals(%s, %s)';
-    const ASSERT_NOT_EQUALS_TEMPLATE = '%s->assertNotEquals(%s, %s)';
-    const ASSERT_STRING_CONTAINS_STRING_TEMPLATE = '%s->assertStringContainsString((string) %s, (string) %s)';
-    const ASSERT_STRING_NOT_CONTAINS_STRING_TEMPLATE = '%s->assertStringNotContainsString((string) %s, (string) %s)';
-    const ASSERT_MATCHES_TEMPLATE = '%s->assertRegExp(%s, %s)';
+    public const ASSERT_TRUE_TEMPLATE = '%s->assertTrue(%s)';
+    public const ASSERT_FALSE_TEMPLATE = '%s->assertFalse(%s)';
+    public const ASSERT_EQUALS_TEMPLATE = '%s->assertEquals(%s, %s)';
+    public const ASSERT_NOT_EQUALS_TEMPLATE = '%s->assertNotEquals(%s, %s)';
+    public const ASSERT_STRING_CONTAINS_STRING_TEMPLATE = '%s->assertStringContainsString((string) %s, (string) %s)';
+    public const ASSERT_STRING_NOT_CONTAINS_STRING_TEMPLATE =
+        '%s->assertStringNotContainsString((string) %s, (string) %s)';
+    public const ASSERT_MATCHES_TEMPLATE = '%s->assertRegExp(%s, %s)';
 
     private $phpUnitTestCasePlaceholder;
     private $variableDependencies;

@@ -1,10 +1,12 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory;
 
 class SingleQuotedStringEscaper
 {
-    const DEFAULT_SLASH_QUOTE_PLACEHOLDER_VALUE = 'slash-quote-placeholder';
+    private const DEFAULT_SLASH_QUOTE_PLACEHOLDER_VALUE = 'slash-quote-placeholder';
 
     private $placeholderFactory;
 

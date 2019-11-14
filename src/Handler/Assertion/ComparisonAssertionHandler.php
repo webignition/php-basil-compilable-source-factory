@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
@@ -19,7 +21,7 @@ use webignition\BasilModel\Value\DomIdentifierValueInterface;
 
 class ComparisonAssertionHandler
 {
-    const COMPARISON_TO_ASSERTION_TEMPLATE_MAP = [
+    private const COMPARISON_TO_ASSERTION_TEMPLATE_MAP = [
         AssertionComparison::INCLUDES => AssertionCallFactory::ASSERT_STRING_CONTAINS_STRING_TEMPLATE,
         AssertionComparison::EXCLUDES => AssertionCallFactory::ASSERT_STRING_NOT_CONTAINS_STRING_TEMPLATE,
         AssertionComparison::IS => AssertionCallFactory::ASSERT_EQUALS_TEMPLATE,

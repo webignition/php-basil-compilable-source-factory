@@ -1,6 +1,4 @@
 <?php
-/** @noinspection PhpDocSignatureInspection */
-/** @noinspection PhpUnhandledExceptionInspection */
 
 declare(strict_types=1);
 
@@ -8,7 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
 class TestRunner
 {
-    const PATH = __DIR__ . '/../Generated/';
+    private const PATH = __DIR__ . '/../Generated/';
 
     public function createTestRunJob(string $code, int $expectedExitCode = 0): ?TestRunJob
     {

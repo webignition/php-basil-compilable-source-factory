@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
@@ -18,8 +20,8 @@ use webignition\BasilModel\Value\DomIdentifierValueInterface;
 
 class WaitActionHandler
 {
-    const DURATION_PLACEHOLDER = 'DURATION';
-    const MICROSECONDS_PER_MILLISECOND = 1000;
+    private const DURATION_PLACEHOLDER = 'DURATION';
+    private const MICROSECONDS_PER_MILLISECOND = 1000;
 
     private $variableAssignmentFactory;
     private $scalarValueHandler;

@@ -1,7 +1,5 @@
 <?php
 
-/** @noinspection PhpUnhandledExceptionInspection */
-
 declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Services;
@@ -16,13 +14,13 @@ use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
 class TestCodeGenerator
 {
-    const DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME = '$this->navigator';
-    const ENVIRONMENT_VARIABLE_ARRAY_VARIABLE_NAME = '$_ENV';
-    const PANTHER_CLIENT_VARIABLE_NAME = 'self::$client';
-    const PANTHER_CRAWLER_VARIABLE_NAME = 'self::$crawler';
-    const PHPUNIT_TEST_CASE_VARIABLE_NAME = '$this';
-    const WEBDRIVER_ELEMENT_INSPECTOR_VARIABLE_NAME = 'self::$inspector';
-    const WEBDRIVER_ELEMENT_MUTATOR_VARIABLE_NAME = 'self::$mutator';
+    private const DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME = '$this->navigator';
+    private const ENVIRONMENT_VARIABLE_ARRAY_VARIABLE_NAME = '$_ENV';
+    private const PANTHER_CLIENT_VARIABLE_NAME = 'self::$client';
+    private const PANTHER_CRAWLER_VARIABLE_NAME = 'self::$crawler';
+    private const PHPUNIT_TEST_CASE_VARIABLE_NAME = '$this';
+    private const WEBDRIVER_ELEMENT_INSPECTOR_VARIABLE_NAME = 'self::$inspector';
+    private const WEBDRIVER_ELEMENT_MUTATOR_VARIABLE_NAME = 'self::$mutator';
 
     private $classGenerator;
     private $codeBlockGenerator;

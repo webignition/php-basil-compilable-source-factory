@@ -1,6 +1,4 @@
 <?php
-/** @noinspection PhpDocSignatureInspection */
-/** @noinspection PhpUnhandledExceptionInspection */
 
 declare(strict_types=1);
 
