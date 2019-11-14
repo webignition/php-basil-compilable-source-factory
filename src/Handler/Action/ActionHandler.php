@@ -65,11 +65,11 @@ class ActionHandler
             return $this->interactionActionHandler->handle($action);
         }
 
-        if ($this->isSetAction($action) && $action instanceof InputActionInterface) {
+        if ($action instanceof InputActionInterface) {
             return $this->setActionHandler->handle($action);
         }
 
-        if ($this->isWaitAction($action) && $action instanceof WaitActionInterface) {
+        if ($action instanceof WaitActionInterface) {
             return $this->waitActionHandler->handle($action);
         }
 
@@ -80,35 +80,25 @@ class ActionHandler
         throw new UnsupportedModelException($action);
     }
 
-    private function isBrowserOperationAction(object $model): bool
+    private function isBrowserOperationAction(ActionInterface $action): bool
     {
-        return $model instanceof NoArgumentsAction && in_array($model->getType(), [
+        return $action instanceof NoArgumentsAction && in_array($action->getType(), [
             ActionTypes::BACK,
             ActionTypes::FORWARD,
             ActionTypes::RELOAD,
         ]);
     }
 
-    private function isInteractionAction(object $model): bool
+    private function isInteractionAction(ActionInterface $action): bool
     {
-        return $model instanceof InteractionActionInterface && in_array($model->getType(), [
+        return $action instanceof InteractionActionInterface && in_array($action->getType(), [
             ActionTypes::CLICK,
             ActionTypes::SUBMIT,
         ]);
     }
 
-    private function isSetAction(object $model): bool
+    private function isWaitForAction(ActionInterface $action): bool
     {
-        return $model instanceof InputActionInterface;
-    }
-
-    private function isWaitAction(object $model): bool
-    {
-        return $model instanceof WaitActionInterface;
-    }
-
-    private function isWaitForAction(object $model): bool
-    {
-        return $model instanceof InteractionActionInterface && ActionTypes::WAIT_FOR === $model->getType();
+        return $action instanceof InteractionActionInterface && ActionTypes::WAIT_FOR === $action->getType();
     }
 }
