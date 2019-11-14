@@ -20,6 +20,8 @@ use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\MethodDefinition\MethodDefinitionInterface;
+use webignition\BasilModel\DataSet\DataSet;
+use webignition\BasilModel\DataSet\DataSetCollection;
 use webignition\BasilModel\Step\Step;
 use webignition\BasilModel\Test\Configuration;
 use webignition\BasilModel\Test\Test;
@@ -183,6 +185,65 @@ class TestHandlerTest extends AbstractBrowserTestCase
                     'ELEMENT' => ResolvedVariableNames::ELEMENT_VARIABLE_NAME,
                     'COLLECTION' => ResolvedVariableNames::COLLECTION_VARIABLE_NAME,
                     'VALUE' => ResolvedVariableNames::VALUE_VARIABLE_NAME,
+                ],
+            ],
+            'with data set collection' => [
+                'test' => new Test(
+                    'test name',
+                    new Configuration('chrome', Options::getBaseUri() . '/form.html'),
+                    [
+                        'verify form field values' => (new Step(
+                            [],
+                            [
+                                $assertionFactory->createFromAssertionString(
+                                    '"input[name=input-without-value]" is ""'
+                                ),
+                                $assertionFactory->createFromAssertionString(
+                                    '"input[name=input-with-value]" is "test"'
+                                ),
+                            ]
+                        )),
+                        'modify form field values' => (new Step(
+                            [
+                                $actionFactory->createFromActionString(
+                                    'set "input[name=input-without-value]" to $data.field_value'
+                                ),
+                                $actionFactory->createFromActionString(
+                                    'set "input[name=input-with-value]" to $data.field_value'
+                                ),
+                            ],
+                            [
+                                $assertionFactory->createFromAssertionString(
+                                    '"input[name=input-without-value]" is $data.expected_value'
+                                ),
+                                $assertionFactory->createFromAssertionString(
+                                    '"input[name=input-with-value]" is $data.expected_value'
+                                ),
+                            ]
+                        ))->withDataSetCollection(new DataSetCollection([
+                            new DataSet(
+                                '0',
+                                [
+                                    'field_value' => 'value0',
+                                    'expected_value' => 'value0',
+                                ]
+                            ),
+                            new DataSet(
+                                '1',
+                                [
+                                    'field_value' => 'value1',
+                                    'expected_value' => 'value1',
+                                ]
+                            ),
+                        ])),
+                    ]
+                ),
+                'additionalVariableIdentifiers' => [
+                    'COLLECTION' => ResolvedVariableNames::COLLECTION_VARIABLE_NAME,
+                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
+                    'VALUE' => ResolvedVariableNames::VALUE_VARIABLE_NAME,
+                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
+                    VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
                 ],
             ],
         ];
