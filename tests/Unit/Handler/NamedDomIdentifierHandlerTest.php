@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler;
 
+use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
@@ -18,7 +19,6 @@ use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Identifier\DomIdentifier;
 use webignition\BasilModel\Value\DomIdentifierValue;
-use webignition\BasilModel\Value\ValueInterface;
 use webignition\DomElementLocator\ElementLocator;
 
 class NamedDomIdentifierHandlerTest extends AbstractTestCase
@@ -39,11 +39,11 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
      * @dataProvider handleDataProvider
      */
     public function testHandle(
-        ValueInterface $model,
+        NamedDomIdentifierInterface $namedDomIdentifier,
         CodeBlockInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
-        $source = $this->handler->handle($model);
+        $source = $this->handler->handle($namedDomIdentifier);
 
         $this->assertInstanceOf(CodeBlockInterface::class, $source);
 
