@@ -46,11 +46,6 @@ class TestHandler
         );
     }
 
-    public function handles(object $model): bool
-    {
-        return $model instanceof TestInterface;
-    }
-
     /**
      * @param object $model
      *
