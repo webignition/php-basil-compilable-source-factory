@@ -1,15 +1,17 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
 class ResolvedVariableNames
 {
-    const EXAMINED_VALUE_VARIABLE_NAME = '$examinedValue';
-    const EXPECTED_VALUE_VARIABLE_NAME = '$expectedValue';
-    const HAS_VARIABLE_NAME = '$has';
-    const ENV_ARRAY_VARIABLE_NAME = '$_ENV';
-    const WEBDRIVER_DIMENSION_VARIABLE_NAME = '$webDriverDimension';
-    const ELEMENT_VARIABLE_NAME = '$element';
-    const COLLECTION_VARIABLE_NAME = '$collection';
-    const VALUE_VARIABLE_NAME = '$value';
+    public const EXAMINED_VALUE_VARIABLE_NAME = '$examinedValue';
+    public const EXPECTED_VALUE_VARIABLE_NAME = '$expectedValue';
+    public const HAS_VARIABLE_NAME = '$has';
+    public const ENV_ARRAY_VARIABLE_NAME = '$_ENV';
+    public const WEBDRIVER_DIMENSION_VARIABLE_NAME = '$webDriverDimension';
+    public const ELEMENT_VARIABLE_NAME = '$element';
+    public const COLLECTION_VARIABLE_NAME = '$collection';
+    public const VALUE_VARIABLE_NAME = '$value';
 }

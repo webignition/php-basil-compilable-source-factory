@@ -7,8 +7,8 @@ use webignition\BasePantherTestCase\AbstractBrowserTestCase as BaseAbstractBrows
 
 abstract class AbstractGeneratedTestCase extends BaseAbstractBrowserTestCase
 {
-    const FIXTURES_RELATIVE_PATH = '/Fixtures';
-    const FIXTURES_HTML_RELATIVE_PATH = '/html';
+    private const FIXTURES_RELATIVE_PATH = '/Fixtures';
+    private const FIXTURES_HTML_RELATIVE_PATH = '/html';
 
     public static function setUpBeforeClass(): void
     {

@@ -1,4 +1,6 @@
-<?php declare(strict_types=1);
+<?php
+
+declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
@@ -15,7 +17,7 @@ use webignition\DomElementLocator\ElementLocator;
 
 class ElementLocatorCallFactory
 {
-    const TEMPLATE = 'new ElementLocator(%s)';
+    private const TEMPLATE = 'new ElementLocator(%s)';
 
     private $placeholderFactory;
     private $singleQuotedStringEscaper;
