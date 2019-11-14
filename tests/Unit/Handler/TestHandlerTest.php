@@ -207,8 +207,8 @@ class TestHandlerTest extends AbstractTestCase
                         CodeBlock::fromContent([
                             "return [
     '0' => [
-        'field_value' => 'value1',
         'expected_value' => 'value1',
+        'field_value' => 'value1',
     ],
 ]",
                         ])

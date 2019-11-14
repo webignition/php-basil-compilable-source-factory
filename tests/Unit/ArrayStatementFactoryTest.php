@@ -40,88 +40,106 @@ class ArrayStatementFactoryTest extends \PHPUnit\Framework\TestCase
     public function createDataProvider(): array
     {
         return [
-            'empty' => [
-                'dataSetCollection' => new DataSetCollection(),
-                'expectedStatement' => new Statement('return []'),
-            ],
-            'single data set with single key:value numerical name' => [
+//            'empty' => [
+//                'dataSetCollection' => new DataSetCollection(),
+//                'expectedStatement' => new Statement('return []'),
+//            ],
+//            'single data set with single key:value numerical name' => [
+//                'dataSetCollection' => new DataSetCollection([
+//                    new DataSet('0', [
+//                        'key1' => 'value1',
+//                    ]),
+//                ]),
+//                'expectedStatement' => new Statement(
+//                    "return [
+//    '0' => [
+//        'key1' => 'value1',
+//    ],
+//]"
+//                ),
+//            ],
+//            'single data set with single key:value string name' => [
+//                'dataSetCollection' => new DataSetCollection([
+//                    new DataSet('data-set-one', [
+//                        'key1' => 'value1',
+//                    ]),
+//                ]),
+//                'expectedStatement' => new Statement(
+//                    "return [
+//    'data-set-one' => [
+//        'key1' => 'value1',
+//    ],
+//]"
+//                ),
+//            ],
+//            'single data set with single key:value string name containing single quotes' => [
+//                'dataSetCollection' => new DataSetCollection([
+//                    new DataSet("'data-set-one'", [
+//                        "'key1'" => "'value1'",
+//                    ]),
+//                ]),
+//                'expectedStatement' => new Statement(
+//                    "return [
+//    '\'data-set-one\'' => [
+//        '\'key1\'' => '\'value1\'',
+//    ],
+//]"
+//                ),
+//            ],
+//            'single data set with multiple key:value numerical name' => [
+//                'dataSetCollection' => new DataSetCollection([
+//                    new DataSet('0', [
+//                        'key1' => 'value1',
+//                        'key2' => 'value2',
+//                    ]),
+//                ]),
+//                'expectedStatement' => new Statement(
+//                    "return [
+//    '0' => [
+//        'key1' => 'value1',
+//        'key2' => 'value2',
+//    ],
+//]"
+//                ),
+//            ],
+//            'multiple data sets with multiple key:value numerical name' => [
+//                'dataSetCollection' => new DataSetCollection([
+//                    new DataSet('0', [
+//                        'key1' => 'value1',
+//                        'key2' => 'value2',
+//                    ]),
+//                    new DataSet('1', [
+//                        'key1' => 'value3',
+//                        'key2' => 'value4',
+//                    ]),
+//                ]),
+//                'expectedStatement' => new Statement(
+//                    "return [
+//    '0' => [
+//        'key1' => 'value1',
+//        'key2' => 'value2',
+//    ],
+//    '1' => [
+//        'key1' => 'value3',
+//        'key2' => 'value4',
+//    ],
+//]"
+//                ),
+//            ],
+            'array keys are ordered alphabetically' => [
                 'dataSetCollection' => new DataSetCollection([
                     new DataSet('0', [
-                        'key1' => 'value1',
+                        'zebra' => 'zebra value',
+                        'apple' => 'apple value',
+                        'bee' => 'bee value',
                     ]),
                 ]),
                 'expectedStatement' => new Statement(
                     "return [
     '0' => [
-        'key1' => 'value1',
-    ],
-]"
-                ),
-            ],
-            'single data set with single key:value string name' => [
-                'dataSetCollection' => new DataSetCollection([
-                    new DataSet('data-set-one', [
-                        'key1' => 'value1',
-                    ]),
-                ]),
-                'expectedStatement' => new Statement(
-                    "return [
-    'data-set-one' => [
-        'key1' => 'value1',
-    ],
-]"
-                ),
-            ],
-            'single data set with single key:value string name containing single quotes' => [
-                'dataSetCollection' => new DataSetCollection([
-                    new DataSet("'data-set-one'", [
-                        "'key1'" => "'value1'",
-                    ]),
-                ]),
-                'expectedStatement' => new Statement(
-                    "return [
-    '\'data-set-one\'' => [
-        '\'key1\'' => '\'value1\'',
-    ],
-]"
-                ),
-            ],
-            'single data set with multiple key:value numerical name' => [
-                'dataSetCollection' => new DataSetCollection([
-                    new DataSet('0', [
-                        'key1' => 'value1',
-                        'key2' => 'value2',
-                    ]),
-                ]),
-                'expectedStatement' => new Statement(
-                    "return [
-    '0' => [
-        'key1' => 'value1',
-        'key2' => 'value2',
-    ],
-]"
-                ),
-            ],
-            'multiple data sets with multiple key:value numerical name' => [
-                'dataSetCollection' => new DataSetCollection([
-                    new DataSet('0', [
-                        'key1' => 'value1',
-                        'key2' => 'value2',
-                    ]),
-                    new DataSet('1', [
-                        'key1' => 'value3',
-                        'key2' => 'value4',
-                    ]),
-                ]),
-                'expectedStatement' => new Statement(
-                    "return [
-    '0' => [
-        'key1' => 'value1',
-        'key2' => 'value2',
-    ],
-    '1' => [
-        'key1' => 'value3',
-        'key2' => 'value4',
+        'apple' => 'apple value',
+        'bee' => 'bee value',
+        'zebra' => 'zebra value',
     ],
 ]"
                 ),

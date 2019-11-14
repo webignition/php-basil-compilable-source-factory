@@ -65,6 +65,8 @@ class ArrayStatementFactory
             $keyAsString = $this->singleQuotedStringEscaper->escape((string) $key);
 
             if (is_array($value)) {
+                ksort($value);
+
                 $valueAsString = $this->convertArrayToString($value, $indentCount + 1);
             } else {
                 $valueAsString = "'" . $this->singleQuotedStringEscaper->escape((string) $value) . "',";
