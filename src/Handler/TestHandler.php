@@ -2,11 +2,13 @@
 
 namespace webignition\BasilCompilableSourceFactory\Handler;
 
+use webignition\BasilCompilableSourceFactory\ArrayStatementFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlock;
+use webignition\BasilCompilationSource\Block\DocBlock;
 use webignition\BasilCompilationSource\ClassDefinition\ClassDefinition;
 use webignition\BasilCompilationSource\ClassDefinition\ClassDefinitionInterface;
 use webignition\BasilCompilationSource\Line\Comment;
@@ -16,24 +18,31 @@ use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\MethodDefinition\MethodDefinition;
 use webignition\BasilCompilationSource\MethodDefinition\MethodDefinitionInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
+use webignition\BasilModel\DataSet\DataSetCollectionInterface;
 use webignition\BasilModel\Test\TestInterface;
 
 class TestHandler
 {
     private $stepHandler;
     private $singleQuotedStringEscaper;
+    private $arrayStatementFactory;
 
-    public function __construct(StepHandler $stepHandler, SingleQuotedStringEscaper $singleQuotedStringEscaper)
-    {
+    public function __construct(
+        StepHandler $stepHandler,
+        SingleQuotedStringEscaper $singleQuotedStringEscaper,
+        ArrayStatementFactory $arrayStatementFactory
+    ) {
         $this->stepHandler = $stepHandler;
         $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
+        $this->arrayStatementFactory = $arrayStatementFactory;
     }
 
     public static function createHandler(): TestHandler
     {
         return new TestHandler(
             StepHandler::createHandler(),
-            SingleQuotedStringEscaper::create()
+            SingleQuotedStringEscaper::create(),
+            ArrayStatementFactory::createFactory()
         );
     }
 
@@ -62,16 +71,35 @@ class TestHandler
 
         foreach ($model->getSteps() as $stepName => $step) {
             $stepName = (string) $stepName;
+            $dataSetCollection = $step->getDataSetCollection();
+            $parameterNames = $dataSetCollection->getParameterNames();
 
-            $stepMethodName = sprintf('test%s', ucfirst(md5($stepName)));
+            $stepMethodIdentifier = ucfirst(md5($stepName));
+            $stepMethodName = sprintf('test%s', $stepMethodIdentifier);
 
-            $methodDefinitions[] = new MethodDefinition(
+            $stepMethod = new MethodDefinition(
                 $stepMethodName,
                 new CodeBlock([
                     new Comment($stepName),
                     $this->stepHandler->handle($step),
-                ])
+                ]),
+                $parameterNames
             );
+
+            $hasData = count($parameterNames) > 0;
+
+            if ($hasData) {
+                $dataProviderMethod = $this->createDataProviderMethod($stepMethodIdentifier, $dataSetCollection);
+
+                $stepMethod->setDocBlock(new DocBlock([
+                    new Comment('@dataProvider ' . $dataProviderMethod->getName()),
+                ]));
+
+                $methodDefinitions[] = $stepMethod;
+                $methodDefinitions[] = $dataProviderMethod;
+            } else {
+                $methodDefinitions[] = $stepMethod;
+            }
         }
 
         $testName = (string) $model->getName();
@@ -112,5 +140,14 @@ class TestHandler
         );
 
         return $clientRequestStatement;
+    }
+
+    private function createDataProviderMethod(
+        string $stepMethodIdentifier,
+        DataSetCollectionInterface $dataSetCollection
+    ): MethodDefinitionInterface {
+        return new MethodDefinition($stepMethodIdentifier . 'DataProvider', new CodeBlock([
+            $this->arrayStatementFactory->create($dataSetCollection),
+        ]));
     }
 }
