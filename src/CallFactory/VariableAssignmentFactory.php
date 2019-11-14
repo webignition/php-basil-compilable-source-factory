@@ -20,9 +20,11 @@ class VariableAssignmentFactory
     public function createForValueAccessor(
         CodeBlockInterface $accessor,
         VariablePlaceholder $placeholder,
-        string $type = 'string',
-        string $default = 'null'
+        $default = null
     ): CodeBlockInterface {
+        $type = is_int($default) ? 'int' : 'string';
+        $default = null === $default ? 'null' : (string) $default;
+
         $assignment = clone $accessor;
         $assignment->mutateLastStatement(function (string $content) use ($placeholder, $default) {
             return $placeholder . ' = ' . $content . ' ?? ' . $default;

@@ -39,7 +39,7 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
      */
     public function testCreateForValueAccessor(
         CodeBlockInterface $accessor,
-        string $type,
+        $default,
         CodeBlockInterface $expectedContent,
         $expectedAssignedValue
     ) {
@@ -50,7 +50,7 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
                 $placeholder,
             ]));
 
-        $source = $this->factory->createForValueAccessor($accessor, $placeholder, $type);
+        $source = $this->factory->createForValueAccessor($accessor, $placeholder, $default);
 
         $this->assertBlockContentEquals($expectedContent, $source);
         $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
@@ -75,7 +75,7 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
                 'accessor' => new CodeBlock([
                     new Statement('"value"'),
                 ]),
-                'type' => 'string',
+                'default' => null,
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ VALUE }} = "value" ?? null',
                     '{{ VALUE }} = (string) {{ VALUE }}',
@@ -86,7 +86,7 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
                 'accessor' => new CodeBlock([
                     new Statement('null'),
                 ]),
-                'type' => 'string',
+                'default' => null,
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ VALUE }} = null ?? null',
                     '{{ VALUE }} = (string) {{ VALUE }}',
@@ -97,7 +97,7 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
                 'accessor' => new CodeBlock([
                     new Statement('30'),
                 ]),
-                'type' => 'string',
+                'default' => null,
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ VALUE }} = 30 ?? null',
                     '{{ VALUE }} = (string) {{ VALUE }}',
@@ -108,9 +108,9 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
                 'accessor' => new CodeBlock([
                     new Statement('"value"'),
                 ]),
-                'type' => 'int',
+                'default' => 0,
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ VALUE }} = "value" ?? null',
+                    '{{ VALUE }} = "value" ?? 0',
                     '{{ VALUE }} = (int) {{ VALUE }}',
                 ]),
                 'expectedAssignedValue' => 0,
@@ -119,9 +119,9 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
                 'accessor' => new CodeBlock([
                     new Statement('30'),
                 ]),
-                'type' => 'int',
+                'default' => 0,
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ VALUE }} = 30 ?? null',
+                    '{{ VALUE }} = 30 ?? 0',
                     '{{ VALUE }} = (int) {{ VALUE }}',
                 ]),
                 'expectedAssignedValue' => 30,
@@ -130,9 +130,9 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
                 'accessor' => new CodeBlock([
                     new Statement('null'),
                 ]),
-                'type' => 'int',
+                'default' => 0,
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ VALUE }} = null ?? null',
+                    '{{ VALUE }} = null ?? 0',
                     '{{ VALUE }} = (int) {{ VALUE }}',
                 ]),
                 'expectedAssignedValue' => 0,
@@ -143,7 +143,7 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
                     '$b = $a',
                     '$b',
                 ]),
-                'type' => 'string',
+                'default' => null,
                 'expectedContent' => CodeBlock::fromContent([
                     '$a = "content"',
                     '$b = $a',
