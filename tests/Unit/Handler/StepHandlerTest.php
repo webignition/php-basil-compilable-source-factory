@@ -13,9 +13,6 @@ use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\ClassDependency;
-use webignition\BasilCompilationSource\Line\Comment;
-use webignition\BasilCompilationSource\Line\EmptyLine;
-use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\Metadata\MetadataInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
@@ -61,15 +58,13 @@ class StepHandlerTest extends AbstractTestCase
                     ],
                     []
                 ),
-                'expectedContent' => new CodeBlock([
-                    new Comment('click ".selector"'),
-                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
-                    new Statement(
-                        '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'
-                    ),
-                    new Statement('{{ ELEMENT }}->click()'),
-                    new EmptyLine(),
+                'expectedContent' => CodeBlock::fromContent([
+                    '//click ".selector"',
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
+                    '{{ ELEMENT }}->click()',
+                    '',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -92,20 +87,18 @@ class StepHandlerTest extends AbstractTestCase
                     ],
                     []
                 ),
-                'expectedContent' => new CodeBlock([
-                    new Comment('click ".selector"'),
-                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
-                    new Statement(
-                        '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'
-                    ),
-                    new Statement('{{ ELEMENT }}->click()'),
-                    new EmptyLine(),
-                    new Comment('wait 1'),
-                    new Statement('{{ DURATION }} = "1" ?? 0'),
-                    new Statement('{{ DURATION }} = (int) {{ DURATION }}'),
-                    new Statement('usleep({{ DURATION }} * 1000)'),
-                    new EmptyLine(),
+                'expectedContent' => CodeBlock::fromContent([
+                    '//click ".selector"',
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
+                    '{{ ELEMENT }}->click()',
+                    '',
+                    '//wait 1',
+                    '{{ DURATION }} = "1" ?? 0',
+                    '{{ DURATION }} = (int) {{ DURATION }}',
+                    'usleep({{ DURATION }} * 1000)',
+                    '',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -128,14 +121,14 @@ class StepHandlerTest extends AbstractTestCase
                         $assertionFactory->createFromAssertionString('$page.title is "value"'),
                     ]
                 ),
-                'expectedContent' => new CodeBlock([
-                    new Comment('$page.title is "value"'),
-                    new Statement('{{ EXPECTED }} = "value" ?? null'),
-                    new Statement('{{ EXPECTED }} = (string) {{ EXPECTED }}'),
-                    new Statement('{{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null'),
-                    new Statement('{{ EXAMINED }} = (string) {{ EXAMINED }}'),
-                    new Statement('{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})'),
-                    new EmptyLine(),
+                'expectedContent' => CodeBlock::fromContent([
+                    '//$page.title is "value"',
+                    '{{ EXPECTED }} = "value" ?? null',
+                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
+                    '{{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null',
+                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
+                    '',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
@@ -155,21 +148,21 @@ class StepHandlerTest extends AbstractTestCase
                         $assertionFactory->createFromAssertionString('$page.url is "http://example.com"'),
                     ]
                 ),
-                'expectedContent' => new CodeBlock([
-                    new Comment('$page.title is "value"'),
-                    new Statement('{{ EXPECTED }} = "value" ?? null'),
-                    new Statement('{{ EXPECTED }} = (string) {{ EXPECTED }}'),
-                    new Statement('{{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null'),
-                    new Statement('{{ EXAMINED }} = (string) {{ EXAMINED }}'),
-                    new Statement('{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})'),
-                    new EmptyLine(),
-                    new Comment('$page.url is "http://example.com"'),
-                    new Statement('{{ EXPECTED }} = "http://example.com" ?? null'),
-                    new Statement('{{ EXPECTED }} = (string) {{ EXPECTED }}'),
-                    new Statement('{{ EXAMINED }} = {{ CLIENT }}->getCurrentURL() ?? null'),
-                    new Statement('{{ EXAMINED }} = (string) {{ EXAMINED }}'),
-                    new Statement('{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})'),
-                    new EmptyLine(),
+                'expectedContent' => CodeBlock::fromContent([
+                    '//$page.title is "value"',
+                    '{{ EXPECTED }} = "value" ?? null',
+                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
+                    '{{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null',
+                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
+                    '',
+                    '//$page.url is "http://example.com"',
+                    '{{ EXPECTED }} = "http://example.com" ?? null',
+                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
+                    '{{ EXAMINED }} = {{ CLIENT }}->getCurrentURL() ?? null',
+                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
+                    '',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
@@ -190,22 +183,20 @@ class StepHandlerTest extends AbstractTestCase
                         $assertionFactory->createFromAssertionString('$page.title is "value"'),
                     ]
                 ),
-                'expectedContent' => new CodeBlock([
-                    new Comment('click ".selector"'),
-                    new Statement('{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))'),
-                    new Statement('{{ PHPUNIT }}->assertTrue({{ HAS }})'),
-                    new Statement(
-                        '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))'
-                    ),
-                    new Statement('{{ ELEMENT }}->click()'),
-                    new EmptyLine(),
-                    new Comment('$page.title is "value"'),
-                    new Statement('{{ EXPECTED }} = "value" ?? null'),
-                    new Statement('{{ EXPECTED }} = (string) {{ EXPECTED }}'),
-                    new Statement('{{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null'),
-                    new Statement('{{ EXAMINED }} = (string) {{ EXAMINED }}'),
-                    new Statement('{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})'),
-                    new EmptyLine(),
+                'expectedContent' => CodeBlock::fromContent([
+                    '//click ".selector"',
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
+                    '{{ ELEMENT }}->click()',
+                    '',
+                    '//$page.title is "value"',
+                    '{{ EXPECTED }} = "value" ?? null',
+                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
+                    '{{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null',
+                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
+                    '',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
