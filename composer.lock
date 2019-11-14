@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8e41dcb31a3cbd7eb298b5f5e8985ad7",
+    "content-hash": "f2f12c1634072e1dca0e49057cf505b6",
     "packages": [
         {
             "name": "facebook/webdriver",
@@ -4004,16 +4004,16 @@
         },
         {
             "name": "webignition/php-basil-model-factory",
-            "version": "0.33",
+            "version": "0.34",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/php-basil-model-factory.git",
-                "reference": "889c5bd80651028e08454d62d779ef59cc17c212"
+                "reference": "93d4ca256def8c52b2f56a54a9b25ad2cd13422c"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/php-basil-model-factory/zipball/889c5bd80651028e08454d62d779ef59cc17c212",
-                "reference": "889c5bd80651028e08454d62d779ef59cc17c212",
+                "url": "https://api.github.com/repos/webignition/php-basil-model-factory/zipball/93d4ca256def8c52b2f56a54a9b25ad2cd13422c",
+                "reference": "93d4ca256def8c52b2f56a54a9b25ad2cd13422c",
                 "shasum": ""
             },
             "require": {
@@ -4022,7 +4022,7 @@
                 "php": ">=7.2",
                 "webignition/php-basil-context-aware-exception": "^0.1.0",
                 "webignition/php-basil-data-structures": ">=0.2,<1",
-                "webignition/php-basil-models": ">=0.87,<1"
+                "webignition/php-basil-models": ">=0.89,<1"
             },
             "require-dev": {
                 "mockery/mockery": "^1.2",
@@ -4051,7 +4051,7 @@
             ],
             "description": "Factories to create basil models",
             "homepage": "https://github.com/webignition/php-basil-model-factory",
-            "time": "2019-09-26T18:15:22+00:00"
+            "time": "2019-11-14T18:25:01+00:00"
         },
         {
             "name": "webmozart/assert",

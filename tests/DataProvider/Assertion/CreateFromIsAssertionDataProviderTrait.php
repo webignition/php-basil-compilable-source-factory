@@ -14,9 +14,8 @@ use webignition\BasilModel\Assertion\AssertionComparison;
 use webignition\BasilModel\Assertion\ComparisonAssertion;
 use webignition\BasilModel\Identifier\DomIdentifier;
 use webignition\BasilModel\Value\DomIdentifierValue;
-use webignition\BasilModel\Value\ObjectValue;
-use webignition\BasilModel\Value\ObjectValueType;
 use webignition\BasilModelFactory\AssertionFactory;
+use webignition\BasilModelFactory\ValueFactory;
 use webignition\DomElementLocator\ElementLocator;
 
 trait CreateFromIsAssertionDataProviderTrait
@@ -24,11 +23,13 @@ trait CreateFromIsAssertionDataProviderTrait
     public function createFromIsAssertionDataProvider(): array
     {
         $assertionFactory = AssertionFactory::createFactory();
+        $valueFactory = ValueFactory::createFactory();
 
-        $browserProperty = new ObjectValue(ObjectValueType::BROWSER_PROPERTY, '$browser.size', 'size');
-        $environmentValue = new ObjectValue(ObjectValueType::ENVIRONMENT_PARAMETER, '$env.KEY', 'KEY');
+        $browserProperty = $valueFactory->createFromValueString('$browser.size');
+        $environmentValue = $valueFactory->createFromValueString('$env.KEY');
+        $environmentValueWithDefault = $valueFactory->createFromValueString('$env.KEY|"default value"');
         $elementValue = new DomIdentifierValue(new DomIdentifier('.selector'));
-        $pageProperty = new ObjectValue(ObjectValueType::PAGE_PROPERTY, '$page.url', 'url');
+        $pageProperty = $valueFactory->createFromValueString('$page.url');
 
         $attributeValue = new DomIdentifierValue(
             (new DomIdentifier('.selector'))->withAttributeName('attribute_name')
@@ -125,6 +126,48 @@ trait CreateFromIsAssertionDataProviderTrait
                     '{{ EXPECTED }} = "value" ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
                     '{{ EXAMINED }} = {{ ENV }}[\'KEY\'] ?? null',
+                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
+                ]),
+                'expectedMetadata' => (new Metadata())
+                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
+                        VariableNames::PHPUNIT_TEST_CASE,
+                    ]))
+                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        VariableNames::EXPECTED_VALUE,
+                        VariableNames::EXAMINED_VALUE,
+                    ])),
+            ],
+            'is comparison, environment examined value with default, literal string expected value' => [
+                'assertion' => $assertionFactory->createFromAssertionString(
+                    '$env.KEY|"default value" is "value"'
+                ),
+                'expectedContent' => CodeBlock::fromContent([
+                    '{{ EXPECTED }} = "value" ?? null',
+                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
+                    '{{ EXAMINED }} = {{ ENV }}[\'KEY\'] ?? \'default value\'',
+                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
+                ]),
+                'expectedMetadata' => (new Metadata())
+                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
+                        VariableNames::PHPUNIT_TEST_CASE,
+                    ]))
+                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        VariableNames::EXPECTED_VALUE,
+                        VariableNames::EXAMINED_VALUE,
+                    ])),
+            ],
+            'is comparison, environment examined value with default, environment examined value with default' => [
+                'assertion' => $assertionFactory->createFromAssertionString(
+                    '$env.KEY1|"default value 1" is $env.KEY2|"default value 2"'
+                ),
+                'expectedContent' => CodeBlock::fromContent([
+                    '{{ EXPECTED }} = {{ ENV }}[\'KEY2\'] ?? \'default value 2\'',
+                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
+                    '{{ EXAMINED }} = {{ ENV }}[\'KEY1\'] ?? \'default value 1\'',
                     '{{ EXAMINED }} = (string) {{ EXAMINED }}',
                     '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
                 ]),
@@ -241,6 +284,35 @@ trait CreateFromIsAssertionDataProviderTrait
                 ),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ EXPECTED }} = {{ ENV }}[\'KEY\'] ?? null',
+                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
+                    '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()',
+                    '{{ EXAMINED }} = '
+                    . '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
+                    . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null',
+                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
+                ]),
+                'expectedMetadata' => (new Metadata())
+                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
+                        VariableNames::PANTHER_CLIENT,
+                        VariableNames::PHPUNIT_TEST_CASE,
+                    ]))
+                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        VariableNames::EXPECTED_VALUE,
+                        'WEBDRIVER_DIMENSION',
+                        VariableNames::EXAMINED_VALUE,
+                    ])),
+            ],
+            'is comparison, browser object examined value, environment expected value with default' => [
+                'assertion' => new ComparisonAssertion(
+                    '$browser.size is $env.KEY',
+                    $browserProperty,
+                    AssertionComparison::IS,
+                    $environmentValueWithDefault
+                ),
+                'expectedContent' => CodeBlock::fromContent([
+                    '{{ EXPECTED }} = {{ ENV }}[\'KEY\'] ?? \'default value\'',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
                     '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()',
                     '{{ EXAMINED }} = '

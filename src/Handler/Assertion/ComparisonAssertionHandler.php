@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
+use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
@@ -32,17 +33,20 @@ class ComparisonAssertionHandler
     private $variableAssignmentFactory;
     private $scalarValueHandler;
     private $namedDomIdentifierHandler;
+    private $accessorDefaultValueFactory;
 
     public function __construct(
         AssertionCallFactory $assertionCallFactory,
         VariableAssignmentFactory $variableAssignmentFactory,
         ScalarValueHandler $scalarValueHandler,
-        NamedDomIdentifierHandler $namedDomIdentifierHandler
+        NamedDomIdentifierHandler $namedDomIdentifierHandler,
+        AccessorDefaultValueFactory $accessorDefaultValueFactory
     ) {
         $this->assertionCallFactory = $assertionCallFactory;
         $this->variableAssignmentFactory = $variableAssignmentFactory;
         $this->scalarValueHandler = $scalarValueHandler;
         $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
+        $this->accessorDefaultValueFactory = $accessorDefaultValueFactory;
     }
 
     public static function createHandler(): ComparisonAssertionHandler
@@ -51,7 +55,8 @@ class ComparisonAssertionHandler
             AssertionCallFactory::createFactory(),
             VariableAssignmentFactory::createFactory(),
             new ScalarValueHandler(),
-            NamedDomIdentifierHandler::createHandler()
+            NamedDomIdentifierHandler::createHandler(),
+            AccessorDefaultValueFactory::createFactory()
         );
     }
 
@@ -97,12 +102,14 @@ class ComparisonAssertionHandler
 
         $examinedValueAssignment = $this->variableAssignmentFactory->createForValueAccessor(
             $examinedValueAccessor,
-            $examinedValuePlaceholder
+            $examinedValuePlaceholder,
+            $this->accessorDefaultValueFactory->create($examinedValue)
         );
 
         $expectedValueAssignment = $this->variableAssignmentFactory->createForValueAccessor(
             $expectedValueAccessor,
-            $expectedValuePlaceholder
+            $expectedValuePlaceholder,
+            $this->accessorDefaultValueFactory->create($expectedValue)
         );
 
         return $this->assertionCallFactory->createValueComparisonAssertionCall(
