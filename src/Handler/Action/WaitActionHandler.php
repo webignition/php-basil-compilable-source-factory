@@ -75,8 +75,7 @@ class WaitActionHandler
         $durationAssignment = $this->variableAssignmentFactory->createForValueAccessor(
             $durationAccessor,
             $durationPlaceholder,
-            'int',
-            '0'
+            0
         );
 
         return new CodeBlock([
