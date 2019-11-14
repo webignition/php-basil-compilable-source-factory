@@ -17,6 +17,10 @@ trait WaitForActionFunctionalDataProviderTrait
                 'fixture' => '/action-wait-for.html',
                 'action' => $actionFactory->createFromActionString('wait-for "#hello"'),
             ],
+            'wait-for action, xpath expression' => [
+                'fixture' => '/action-wait-for.html',
+                'action' => $actionFactory->createFromActionString('wait-for "//*[@id="hello"]"'),
+            ],
         ];
     }
 }
