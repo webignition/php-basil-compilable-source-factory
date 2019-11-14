@@ -16,6 +16,9 @@ use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Action\WaitActionInterface;
 use webignition\BasilModel\Value\DomIdentifierValueInterface;
+use webignition\BasilModel\Value\ObjectValueInterface;
+use webignition\BasilModel\Value\ObjectValueType;
+use webignition\BasilModel\Value\ValueInterface;
 
 class WaitActionHandler
 {
@@ -75,7 +78,7 @@ class WaitActionHandler
         $durationAssignment = $this->variableAssignmentFactory->createForValueAccessor(
             $durationAccessor,
             $durationPlaceholder,
-            0
+            $this->createAccessorDefault($duration)
         );
 
         return new CodeBlock([
@@ -86,5 +89,18 @@ class WaitActionHandler
                 self::MICROSECONDS_PER_MILLISECOND
             )),
         ]);
+    }
+
+    private function createAccessorDefault(ValueInterface $value): int
+    {
+        if ($value instanceof ObjectValueInterface && ObjectValueType::ENVIRONMENT_PARAMETER === $value->getType()) {
+            $valueDefault = $value->getDefault();
+
+            if ('' !== $valueDefault) {
+                return (int) $valueDefault;
+            }
+        }
+
+        return 0;
     }
 }

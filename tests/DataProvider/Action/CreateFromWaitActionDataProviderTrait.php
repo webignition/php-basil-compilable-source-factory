@@ -139,6 +139,21 @@ trait CreateFromWaitActionDataProviderTrait
                         'DURATION',
                     ])),
             ],
+            'wait action, environment value with default' => [
+                'action' => $actionFactory->createFromActionString('wait $env.DURATION|"3"'),
+                'expectedContent' => CodeBlock::fromContent([
+                    '{{ DURATION }} = {{ ENV }}[\'DURATION\'] ?? 3',
+                    '{{ DURATION }} = (int) {{ DURATION }}',
+                    'usleep({{ DURATION }} * 1000)',
+                ]),
+                'expectedMetadata' => (new Metadata())
+                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
+                    ]))
+                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        'DURATION',
+                    ])),
+            ],
         ];
     }
 }
