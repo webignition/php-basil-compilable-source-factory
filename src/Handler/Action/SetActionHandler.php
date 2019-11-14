@@ -87,7 +87,6 @@ class SetActionHandler
             $valueAccessor->mutateLastStatement(function (string $content) use ($valuePlaceholder) {
                 return str_replace((string) $valuePlaceholder . ' = ', '', $content);
             });
-
         } else {
             $valueAccessor = $this->scalarValueHandler->handle($value);
         }
