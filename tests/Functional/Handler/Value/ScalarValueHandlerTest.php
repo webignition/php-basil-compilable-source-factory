@@ -10,7 +10,6 @@ use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
-use webignition\BasilCompilationSource\MutableBlockInterface;
 use webignition\BasilModel\Value\ObjectValue;
 use webignition\BasilModel\Value\ObjectValueType;
 use webignition\BasilModel\Value\ValueInterface;
@@ -41,11 +40,9 @@ class ScalarValueHandlerTest extends AbstractBrowserTestCase
         $source = $this->handler->handle($model);
 
         $instrumentedSource = clone $source;
-        if ($instrumentedSource instanceof MutableBlockInterface) {
-            $instrumentedSource->mutateLastStatement(function ($content) {
-                return '$value = ' . $content;
-            });
-        }
+        $instrumentedSource->mutateLastStatement(function ($content) {
+            return '$value = ' . $content;
+        });
 
         $classCode = $this->testCodeGenerator->createBrowserTestForBlock(
             $instrumentedSource,

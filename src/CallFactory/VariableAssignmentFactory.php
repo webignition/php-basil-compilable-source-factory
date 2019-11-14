@@ -7,7 +7,6 @@ namespace webignition\BasilCompilableSourceFactory\CallFactory;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
-use webignition\BasilCompilationSource\MutableBlockInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
@@ -25,16 +24,13 @@ class VariableAssignmentFactory
         string $default = 'null'
     ): CodeBlockInterface {
         $assignment = clone $accessor;
+        $assignment->mutateLastStatement(function (string $content) use ($placeholder, $default) {
+            return $placeholder . ' = ' . $content . ' ?? ' . $default;
+        });
 
-        if ($assignment instanceof MutableBlockInterface) {
-            $assignment->mutateLastStatement(function (string $content) use ($placeholder, $default) {
-                return $placeholder . ' = ' . $content . ' ?? ' . $default;
-            });
-
-            $assignment->addVariableExportsToLastStatement(new VariablePlaceholderCollection([
-                $placeholder,
-            ]));
-        }
+        $assignment->addVariableExportsToLastStatement(new VariablePlaceholderCollection([
+            $placeholder,
+        ]));
 
         return new CodeBlock([
             $assignment,

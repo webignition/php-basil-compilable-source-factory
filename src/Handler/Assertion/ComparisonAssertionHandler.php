@@ -13,7 +13,6 @@ use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
-use webignition\BasilCompilationSource\MutableBlockInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilModel\Assertion\AssertionComparison;
 use webignition\BasilModel\Assertion\ComparisonAssertionInterface;
@@ -77,11 +76,9 @@ class ComparisonAssertionHandler
                 new NamedDomIdentifierValue($examinedValue, $examinedValuePlaceholder)
             );
 
-            if ($examinedValueAccessor instanceof MutableBlockInterface) {
-                $examinedValueAccessor->mutateLastStatement(function (string $content) use ($examinedValuePlaceholder) {
-                    return str_replace((string) $examinedValuePlaceholder . ' = ', '', $content);
-                });
-            }
+            $examinedValueAccessor->mutateLastStatement(function (string $content) use ($examinedValuePlaceholder) {
+                return str_replace((string) $examinedValuePlaceholder . ' = ', '', $content);
+            });
         } else {
             $examinedValueAccessor = $this->scalarValueHandler->handle($examinedValue);
         }
@@ -91,11 +88,9 @@ class ComparisonAssertionHandler
                 new NamedDomIdentifierValue($expectedValue, $expectedValuePlaceholder)
             );
 
-            if ($expectedValueAccessor instanceof MutableBlockInterface) {
-                $expectedValueAccessor->mutateLastStatement(function (string $content) use ($expectedValuePlaceholder) {
-                    return str_replace((string) $expectedValuePlaceholder . ' = ', '', $content);
-                });
-            }
+            $expectedValueAccessor->mutateLastStatement(function (string $content) use ($expectedValuePlaceholder) {
+                return str_replace((string) $expectedValuePlaceholder . ' = ', '', $content);
+            });
         } else {
             $expectedValueAccessor = $this->scalarValueHandler->handle($expectedValue);
         }

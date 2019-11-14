@@ -13,7 +13,6 @@ use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
-use webignition\BasilCompilationSource\MutableBlockInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Action\WaitActionInterface;
 use webignition\BasilModel\Value\DomIdentifierValueInterface;
@@ -66,11 +65,9 @@ class WaitActionHandler
                 new NamedDomIdentifierValue($duration, $durationPlaceholder)
             );
 
-            if ($durationAccessor instanceof MutableBlockInterface) {
-                $durationAccessor->mutateLastStatement(function (string $content) use ($durationPlaceholder) {
-                    return str_replace((string) $durationPlaceholder . ' = ', '', $content);
-                });
-            }
+            $durationAccessor->mutateLastStatement(function (string $content) use ($durationPlaceholder) {
+                return str_replace((string) $durationPlaceholder . ' = ', '', $content);
+            });
         } else {
             $durationAccessor = $this->scalarValueHandler->handle($duration);
         }
