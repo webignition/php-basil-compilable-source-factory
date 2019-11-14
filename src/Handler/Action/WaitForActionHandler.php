@@ -44,12 +44,6 @@ class WaitForActionHandler
             throw new UnsupportedModelException($action);
         }
 
-        $elementLocator = $identifier->getLocator();
-
-        if ('/' === $elementLocator[0]) {
-            throw new UnsupportedModelException($action);
-        }
-
         $variableDependencies = new VariablePlaceholderCollection();
         $pantherCrawlerPlaceholder = $variableDependencies->create(VariableNames::PANTHER_CRAWLER);
         $pantherClientPlaceholder = $variableDependencies->create(VariableNames::PANTHER_CLIENT);
@@ -62,7 +56,7 @@ class WaitForActionHandler
                     '%s = %s->waitFor(\'%s\')',
                     $pantherCrawlerPlaceholder,
                     $pantherClientPlaceholder,
-                    $this->singleQuotedStringEscaper->escape($elementLocator)
+                    $this->singleQuotedStringEscaper->escape($identifier->getLocator())
                 ),
                 $metadata
             )
