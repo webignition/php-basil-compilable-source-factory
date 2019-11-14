@@ -8,7 +8,6 @@ use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\ElementLocatorCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\WebDriverElementInspectorCallFactory;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierInterface;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilationSource\Block\CodeBlock;
@@ -50,22 +49,16 @@ class NamedDomIdentifierHandler
     }
 
     /**
-     * @param object $model
+     * @param NamedDomIdentifierInterface $value
      *
      * @return CodeBlockInterface
-     *
-     * @throws UnsupportedModelException
      */
-    public function handle(object $model): CodeBlockInterface
+    public function handle(NamedDomIdentifierInterface $value): CodeBlockInterface
     {
-        if (!$model instanceof NamedDomIdentifierInterface) {
-            throw new UnsupportedModelException($model);
-        }
-
-        $identifier = $model->getIdentifier();
+        $identifier = $value->getIdentifier();
         $hasAttribute = null !== $identifier->getAttributeName();
 
-        if ($model->asCollection()) {
+        if ($value->asCollection()) {
             $hasCall = $this->domCrawlerNavigatorCallFactory->createHasCall($identifier);
             $findCall = $this->domCrawlerNavigatorCallFactory->createFindCall($identifier);
         } else {
@@ -85,7 +78,7 @@ class NamedDomIdentifierHandler
         });
         $hasAssignment->addVariableExportsToLastStatement($hasAssignmentVariableExports);
 
-        $elementPlaceholder = $model->getPlaceholder();
+        $elementPlaceholder = $value->getPlaceholder();
         $collectionAssignmentVariableExports = new VariablePlaceholderCollection([
             $elementPlaceholder,
         ]);
@@ -109,7 +102,7 @@ class NamedDomIdentifierHandler
             $elementOrCollectionAssignment,
         ]);
 
-        if ($model->includeValue()) {
+        if ($value->includeValue()) {
             if ($hasAttribute) {
                 $valueAssignment = new CodeBlock([
                     new Statement(sprintf(
