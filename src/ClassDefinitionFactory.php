@@ -26,15 +26,18 @@ class ClassDefinitionFactory
     private $stepHandler;
     private $singleQuotedStringEscaper;
     private $arrayStatementFactory;
+    private $classNameFactory;
 
     public function __construct(
         StepHandler $stepHandler,
         SingleQuotedStringEscaper $singleQuotedStringEscaper,
-        ArrayStatementFactory $arrayStatementFactory
+        ArrayStatementFactory $arrayStatementFactory,
+        ClassNameFactory $classNameFactory
     ) {
         $this->stepHandler = $stepHandler;
         $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
         $this->arrayStatementFactory = $arrayStatementFactory;
+        $this->classNameFactory = $classNameFactory;
     }
 
     public static function createFactory(): ClassDefinitionFactory
@@ -42,7 +45,8 @@ class ClassDefinitionFactory
         return new ClassDefinitionFactory(
             StepHandler::createHandler(),
             SingleQuotedStringEscaper::create(),
-            ArrayStatementFactory::createFactory()
+            ArrayStatementFactory::createFactory(),
+            new ClassNameFactory()
         );
     }
 
@@ -93,10 +97,7 @@ class ClassDefinitionFactory
             }
         }
 
-        $testName = (string) $test->getName();
-        $className = sprintf('Generated%sTest', ucfirst(md5($testName)));
-
-        return new ClassDefinition($className, $methodDefinitions);
+        return new ClassDefinition($this->classNameFactory->create($test), $methodDefinitions);
     }
 
     private function createSetupBeforeClassMethod(TestInterface $test): MethodDefinitionInterface
