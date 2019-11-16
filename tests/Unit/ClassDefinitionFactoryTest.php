@@ -4,7 +4,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
+use webignition\BasilCompilableSourceFactory\ArrayStatementFactory;
 use webignition\BasilCompilableSourceFactory\ClassDefinitionFactory;
+use webignition\BasilCompilableSourceFactory\ClassNameFactory;
+use webignition\BasilCompilableSourceFactory\Handler\StepHandler;
+use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Block\CodeBlock;
@@ -33,15 +37,18 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
      */
     public function testCreateClassDefinition(
         TestInterface $test,
-        string $expectedClassName,
         array $expectedMethods,
         MetadataInterface $expectedMetadata
     ) {
-        $factory = ClassDefinitionFactory::createFactory();
+        $className = 'GeneratedMockClassName';
+        $factory = $this->createClassDefinitionFactory(
+            $this->createClassNameFactory($className)
+        );
+
         $classDefinition = $factory->createClassDefinition($test);
 
         $this->assertMetadataEquals($expectedMetadata, $classDefinition->getMetadata());
-        $this->assertSame($expectedClassName, $classDefinition->getName());
+        $this->assertSame($className, $classDefinition->getName());
 
         $methods = $classDefinition->getMethods();
         $this->assertCount(count($expectedMethods), $methods);
@@ -71,7 +78,6 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
                     new Configuration('chrome', 'http://example.com'),
                     []
                 ),
-                'expectedClassName' => 'Generated69ef658fb6e99440777d8bbe69f5bc89Test',
                 'expectedMethods' => [
                     'setUpBeforeClass' => $this->createExpectedSetUpBeforeClassMethodDefinition('http://example.com'),
                 ],
@@ -95,7 +101,6 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
                         ),
                     ]
                 ),
-                'expectedClassName' => 'Generated69ef658fb6e99440777d8bbe69f5bc89Test',
                 'expectedMethods' => [
                     'setUpBeforeClass' => $this->createExpectedSetUpBeforeClassMethodDefinition('http://example.com'),
                     'testBdc4b8bd83e5660d1c62908dc7a7c43a' => new MethodDefinition(
@@ -157,7 +162,6 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
                         ])),
                     ]
                 ),
-                'expectedClassName' => 'Generated69ef658fb6e99440777d8bbe69f5bc89Test',
                 'expectedMethods' => [
                     'setUpBeforeClass' => $this->createExpectedSetUpBeforeClassMethodDefinition('http://example.com'),
                     'testBdc4b8bd83e5660d1c62908dc7a7c43a' => $this->createMethodDefinitionWithDocblock(
@@ -246,5 +250,30 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
         $methodDefinition->setDocBlock($docBlock);
 
         return $methodDefinition;
+    }
+
+    private function createClassDefinitionFactory(ClassNameFactory $classNameFactory): ClassDefinitionFactory
+    {
+        return new ClassDefinitionFactory(
+            StepHandler::createHandler(),
+            SingleQuotedStringEscaper::create(),
+            ArrayStatementFactory::createFactory(),
+            $classNameFactory
+        );
+    }
+
+    private function createClassNameFactory(string $className): ClassNameFactory
+    {
+        $classNameFactory = \Mockery::mock(ClassNameFactory::class);
+        $classNameFactory
+            ->shouldReceive('create')
+            ->withArgs(function ($test) {
+                $this->assertInstanceOf(TestInterface::class, $test);
+
+                return true;
+            })
+            ->andReturn($className);
+
+        return $classNameFactory;
     }
 }
