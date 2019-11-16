@@ -8,6 +8,7 @@ use webignition\BasilCompilableSourceFactory\ArrayStatementFactory;
 use webignition\BasilCompilableSourceFactory\Handler\StepHandler;
 use webignition\BasilCompilableSourceFactory\StepMethodFactory;
 use webignition\BasilCompilableSourceFactory\StepMethodNameFactory;
+use webignition\BasilCompilableSourceFactory\Tests\Services\StepMethodNameFactoryFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Block\CodeBlock;
@@ -64,12 +65,17 @@ class StepMethodFactoryTest extends AbstractTestCase
     {
         $actionFactory = ActionFactory::createFactory();
         $assertionFactory = AssertionFactory::createFactory();
+        $stepMethodNameFactoryFactory = new StepMethodNameFactoryFactory();
 
         return [
             'empty test' => [
-                'stepMethodNameFactory' => $this->createStepMethodNameFactory(
-                    'Step Name',
-                    'testMethodName'
+                'stepMethodNameFactory' => $stepMethodNameFactoryFactory->create(
+                    [
+                        'Step Name' => [
+                            'testMethodName',
+                        ],
+                    ],
+                    []
                 ),
                 'stepName' => 'Step Name',
                 'step' => new Step([], []),
@@ -80,9 +86,13 @@ class StepMethodFactoryTest extends AbstractTestCase
                 'expectedDataProviderMethod' => null
             ],
             'single step with single action and single assertion' => [
-                'stepMethodNameFactory' => $this->createStepMethodNameFactory(
-                    'Step Name',
-                    'testMethodName'
+                'stepMethodNameFactory' => $stepMethodNameFactoryFactory->create(
+                    [
+                        'Step Name' => [
+                            'testMethodName',
+                        ],
+                    ],
+                    []
                 ),
                 'stepName' => 'Step Name',
                 'step' => new Step(
@@ -127,10 +137,17 @@ class StepMethodFactoryTest extends AbstractTestCase
                 'expectedDataProviderMethod' => null,
             ],
             'single step with single action and single assertion with data provider' => [
-                'stepMethodNameFactory' => $this->createStepMethodNameFactory(
-                    'Step Name',
-                    'testMethodName',
-                    'dataProviderMethodName'
+                'stepMethodNameFactory' => $stepMethodNameFactoryFactory->create(
+                    [
+                        'Step Name' => [
+                            'testMethodName',
+                        ],
+                    ],
+                    [
+                        'Step Name' => [
+                            'dataProviderMethodName',
+                        ],
+                    ]
                 ),
                 'stepName' => 'Step Name',
                 'step' => (new Step(
@@ -221,25 +238,5 @@ class StepMethodFactoryTest extends AbstractTestCase
         $methodDefinition->setDocBlock($docBlock);
 
         return $methodDefinition;
-    }
-
-    private function createStepMethodNameFactory(
-        string $stepName,
-        string $testMethodName,
-        ?string $dataProviderMethodName = null
-    ): StepMethodNameFactory {
-        $stepMethodNameFactory = \Mockery::mock(StepMethodNameFactory::class);
-
-        $stepMethodNameFactory
-            ->shouldReceive('createTestMethodName')
-            ->with($stepName)
-            ->andReturn($testMethodName);
-
-        $stepMethodNameFactory
-            ->shouldReceive('createDataProviderMethodName')
-            ->with($stepName)
-            ->andReturn($dataProviderMethodName);
-
-        return $stepMethodNameFactory;
     }
 }

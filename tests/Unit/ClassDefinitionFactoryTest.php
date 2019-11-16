@@ -4,15 +4,17 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
+use webignition\BasilCompilableSourceFactory\ArrayStatementFactory;
 use webignition\BasilCompilableSourceFactory\ClassDefinitionFactory;
 use webignition\BasilCompilableSourceFactory\ClassNameFactory;
+use webignition\BasilCompilableSourceFactory\Handler\StepHandler;
 use webignition\BasilCompilableSourceFactory\StepMethodFactory;
+use webignition\BasilCompilableSourceFactory\StepMethodNameFactory;
+use webignition\BasilCompilableSourceFactory\Tests\Services\StepMethodNameFactoryFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\Block\DocBlock;
 use webignition\BasilCompilationSource\Line\ClassDependency;
-use webignition\BasilCompilationSource\Line\Comment;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\Metadata\MetadataInterface;
 use webignition\BasilCompilationSource\MethodDefinition\MethodDefinition;
@@ -34,33 +36,34 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
      * @dataProvider createClassDefinitionDataProvider
      */
     public function testCreateClassDefinition(
+        ClassDefinitionFactory $factory,
+        string $expectedClassName,
         TestInterface $test,
-        array $expectedMethods,
+        int $expectedMethodCount,
+        MethodDefinitionInterface $expectedSetUpBeforeClassMethod,
         MetadataInterface $expectedMetadata
     ) {
-        $className = 'GeneratedMockClassName';
-        $factory = $this->createClassDefinitionFactory(
-            $this->createClassNameFactory($className)
-        );
-
         $classDefinition = $factory->createClassDefinition($test);
 
         $this->assertMetadataEquals($expectedMetadata, $classDefinition->getMetadata());
-        $this->assertSame($className, $classDefinition->getName());
+        $this->assertSame($expectedClassName, $classDefinition->getName());
 
         $methods = $classDefinition->getMethods();
-        $this->assertCount(count($expectedMethods), $methods);
+        $this->assertCount($expectedMethodCount, $methods);
 
-        foreach ($methods as $methodIndex => $method) {
-            /* @var MethodDefinitionInterface $expectedMethod */
-            $expectedMethod = $expectedMethods[$methodIndex];
+        $setUpBeforeClassMethod = $methods['setUpBeforeClass'] ?? null;
 
-            $this->assertSame($expectedMethod->getName(), $method->getName());
-            $this->assertEquals($expectedMethod->getDocBlock(), $method->getDocBlock());
-            $this->assertSame($expectedMethod->getReturnType(), $method->getReturnType());
-            $this->assertSame($expectedMethod->isStatic(), $method->isStatic());
-            $this->assertSame($expectedMethod->getArguments(), $method->getArguments());
-            $this->assertBlockContentEquals($expectedMethod, $method);
+        $this->assertInstanceOf(MethodDefinitionInterface::class, $setUpBeforeClassMethod);
+
+        if ($setUpBeforeClassMethod instanceof MethodDefinitionInterface) {
+            $this->assertMethodEquals($expectedSetUpBeforeClassMethod, $setUpBeforeClassMethod);
+            $this->assertMetadataEquals(
+                (new Metadata())
+                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        VariableNames::PANTHER_CLIENT,
+                    ])),
+                $setUpBeforeClassMethod->getMetadata()
+            );
         }
     }
 
@@ -68,24 +71,47 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
     {
         $actionFactory = ActionFactory::createFactory();
         $assertionFactory = AssertionFactory::createFactory();
+        $stepMethodNameFactoryFactory = new StepMethodNameFactoryFactory();
 
         return [
             'empty test' => [
-                'step' => new Test(
+                'classDefinitionFactory' => $this->createClassDefinitionFactory(
+                    $this->createClassNameFactory('GeneratedClassName'),
+                    $this->createStepMethodFactory(
+                        $stepMethodNameFactoryFactory->create([], [])
+                    )
+                ),
+                'expectedClassName' => 'GeneratedClassName',
+                'test' => new Test(
                     'test name',
                     new Configuration('chrome', 'http://example.com'),
                     []
                 ),
-                'expectedMethods' => [
-                    'setUpBeforeClass' => $this->createExpectedSetUpBeforeClassMethodDefinition('http://example.com'),
-                ],
+                'expectedMethodCount' => 1,
+                'expectedSetUpBeforeClassMethod' => $this->createExpectedSetUpBeforeClassMethodDefinition(
+                    'http://example.com'
+                ),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::PANTHER_CLIENT,
                     ])),
             ],
             'single step with single action and single assertion' => [
-                'step' => new Test(
+                'classDefinitionFactory' => $this->createClassDefinitionFactory(
+                    $this->createClassNameFactory('GeneratedClassName'),
+                    $this->createStepMethodFactory(
+                        $stepMethodNameFactoryFactory->create(
+                            [
+                                'step one' => [
+                                    'testStepOneMethodName',
+                                ],
+                            ],
+                            []
+                        )
+                    )
+                ),
+                'expectedClassName' => 'GeneratedClassName',
+                'test' => new Test(
                     'test name',
                     new Configuration('chrome', 'http://example.com'),
                     [
@@ -99,28 +125,10 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
                         ),
                     ]
                 ),
-                'expectedMethods' => [
-                    'setUpBeforeClass' => $this->createExpectedSetUpBeforeClassMethodDefinition('http://example.com'),
-                    'testBdc4b8bd83e5660d1c62908dc7a7c43a' => new MethodDefinition(
-                        'testBdc4b8bd83e5660d1c62908dc7a7c43a',
-                        CodeBlock::fromContent([
-                            '//step one',
-                            '//click ".selector"',
-                            '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
-                            '{{ PHPUNIT }}->assertTrue({{ HAS }})',
-                            '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
-                            '{{ ELEMENT }}->click()',
-                            '',
-                            '//$page.title is "value"',
-                            '{{ EXPECTED }} = "value" ?? null',
-                            '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-                            '{{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null',
-                            '{{ EXAMINED }} = (string) {{ EXAMINED }}',
-                            '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
-                            '',
-                        ])
-                    ),
-                ],
+                'expectedMethodCount' => 2,
+                'expectedSetUpBeforeClassMethod' => $this->createExpectedSetUpBeforeClassMethodDefinition(
+                    'http://example.com'
+                ),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
                         new ClassDependency(ElementLocator::class),
@@ -138,7 +146,25 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
                     ])),
             ],
             'single step with single action and single assertion with data provider' => [
-                'step' => new Test(
+                'classDefinitionFactory' => $this->createClassDefinitionFactory(
+                    $this->createClassNameFactory('GeneratedClassName'),
+                    $this->createStepMethodFactory(
+                        $stepMethodNameFactoryFactory->create(
+                            [
+                                'step one' => [
+                                    'testStepOneMethodName',
+                                ],
+                            ],
+                            [
+                                'step one' => [
+                                    'stepOneDataProviderMethodName',
+                                ],
+                            ]
+                        )
+                    )
+                ),
+                'expectedClassName' => 'GeneratedClassName',
+                'test' => new Test(
                     'test name',
                     new Configuration('chrome', 'http://example.com'),
                     [
@@ -160,53 +186,10 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
                         ])),
                     ]
                 ),
-                'expectedMethods' => [
-                    'setUpBeforeClass' => $this->createExpectedSetUpBeforeClassMethodDefinition('http://example.com'),
-                    'testBdc4b8bd83e5660d1c62908dc7a7c43a' => $this->createMethodDefinitionWithDocblock(
-                        new MethodDefinition(
-                            'testBdc4b8bd83e5660d1c62908dc7a7c43a',
-                            CodeBlock::fromContent([
-                                '//step one',
-                                '//set ".selector" to $data.field_value',
-                                '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
-                                '{{ PHPUNIT }}->assertTrue({{ HAS }})',
-                                '{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
-                                '{{ VALUE }} = $field_value ?? null',
-                                '{{ VALUE }} = (string) {{ VALUE }}',
-                                '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
-                                '',
-                                '//".selector" is $data.expected_value',
-                                '{{ EXPECTED }} = $expected_value ?? null',
-                                '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-                                '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
-                                '{{ PHPUNIT }}->assertTrue({{ HAS }})',
-                                '{{ EXAMINED }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
-                                '{{ EXAMINED }} = {{ INSPECTOR }}->getValue({{ EXAMINED }}) ?? null',
-                                '{{ EXAMINED }} = (string) {{ EXAMINED }}',
-                                '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
-                                '',
-                            ]),
-                            [
-                                'expected_value',
-                                'field_value',
-                            ]
-                        ),
-                        new DocBlock([
-                            new Comment('@dataProvider Bdc4b8bd83e5660d1c62908dc7a7c43aDataProvider'),
-                        ])
-                    ),
-                    'Bdc4b8bd83e5660d1c62908dc7a7c43aDataProvider' => new MethodDefinition(
-                        'Bdc4b8bd83e5660d1c62908dc7a7c43aDataProvider',
-                        CodeBlock::fromContent([
-                            "return [
-    '0' => [
-        'expected_value' => 'value1',
-        'field_value' => 'value1',
-    ],
-]",
-                        ])
-                    )
-                ],
+                'expectedMethodCount' => 3,
+                'expectedSetUpBeforeClassMethod' => $this->createExpectedSetUpBeforeClassMethodDefinition(
+                    'http://example.com'
+                ),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
                         new ClassDependency(ElementLocator::class),
@@ -241,21 +224,11 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
         return $method;
     }
 
-    private function createMethodDefinitionWithDocblock(
-        MethodDefinitionInterface $methodDefinition,
-        DocBlock $docBlock
-    ): MethodDefinitionInterface {
-        $methodDefinition->setDocBlock($docBlock);
-
-        return $methodDefinition;
-    }
-
-    private function createClassDefinitionFactory(ClassNameFactory $classNameFactory): ClassDefinitionFactory
-    {
-        return new ClassDefinitionFactory(
-            $classNameFactory,
-            StepMethodFactory::createFactory()
-        );
+    private function createClassDefinitionFactory(
+        ClassNameFactory $classNameFactory,
+        StepMethodFactory $stepMethodFactory
+    ): ClassDefinitionFactory {
+        return new ClassDefinitionFactory($classNameFactory, $stepMethodFactory);
     }
 
     private function createClassNameFactory(string $className): ClassNameFactory
@@ -271,5 +244,14 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
             ->andReturn($className);
 
         return $classNameFactory;
+    }
+
+    private function createStepMethodFactory(StepMethodNameFactory $stepMethodNameFactory): StepMethodFactory
+    {
+        return new StepMethodFactory(
+            StepHandler::createHandler(),
+            ArrayStatementFactory::createFactory(),
+            $stepMethodNameFactory
+        );
     }
 }
