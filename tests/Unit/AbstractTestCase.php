@@ -8,10 +8,22 @@ use webignition\BasilCompilationSource\Block\BlockInterface;
 use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Line\LineInterface;
 use webignition\BasilCompilationSource\Metadata\MetadataInterface;
+use webignition\BasilCompilationSource\MethodDefinition\MethodDefinition;
+use webignition\BasilCompilationSource\MethodDefinition\MethodDefinitionInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
 abstract class AbstractTestCase extends \PHPUnit\Framework\TestCase
 {
+    protected function assertMethodEquals(MethodDefinitionInterface $expected, MethodDefinitionInterface $actual)
+    {
+        $this->assertSame($expected->getName(), $actual->getName());
+        $this->assertEquals($expected->getDocBlock(), $actual->getDocBlock());
+        $this->assertSame($expected->getReturnType(), $actual->getReturnType());
+        $this->assertSame($expected->isStatic(), $actual->isStatic());
+        $this->assertSame($expected->getArguments(), $actual->getArguments());
+        $this->assertBlockContentEquals($expected, $actual);
+    }
+
     protected function assertBlockContentEquals(BlockInterface $expected, BlockInterface $actual)
     {
         $this->assertBlockLines($expected, $actual);
