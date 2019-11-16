@@ -54,10 +54,14 @@ class StepMethodFactoryTest extends AbstractTestCase
         $this->assertMetadataEquals($expectedTestMethodMetadata, $testMethod->getMetadata());
 
         $dataProviderMethod = $stepMethods->getDataProviderMethod();
-        if (null === $expectedDataProviderMethod) {
-            $this->assertNull($dataProviderMethod);
-        } else {
+
+        if (
+            $dataProviderMethod instanceof MethodDefinitionInterface &&
+            $expectedDataProviderMethod instanceof MethodDefinitionInterface
+        ) {
             $this->assertMethodEquals($expectedDataProviderMethod, $dataProviderMethod);
+        } else {
+            $this->assertNull($dataProviderMethod);
         }
     }
 
