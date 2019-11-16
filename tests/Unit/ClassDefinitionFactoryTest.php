@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
-use webignition\BasilCompilableSourceFactory\ArrayStatementFactory;
 use webignition\BasilCompilableSourceFactory\ClassDefinitionFactory;
 use webignition\BasilCompilableSourceFactory\ClassNameFactory;
-use webignition\BasilCompilableSourceFactory\Handler\StepHandler;
-use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
+use webignition\BasilCompilableSourceFactory\StepMethodFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Block\CodeBlock;
@@ -255,10 +253,8 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
     private function createClassDefinitionFactory(ClassNameFactory $classNameFactory): ClassDefinitionFactory
     {
         return new ClassDefinitionFactory(
-            StepHandler::createHandler(),
-            SingleQuotedStringEscaper::create(),
-            ArrayStatementFactory::createFactory(),
-            $classNameFactory
+            $classNameFactory,
+            StepMethodFactory::createFactory()
         );
     }
 
