@@ -4,41 +4,41 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
+use webignition\BasilAssertionGenerator\AssertionGenerator;
 use webignition\BasilModel\Assertion\AssertionComparison;
 use webignition\BasilModel\Assertion\ComparisonAssertion;
 use webignition\BasilModel\Identifier\DomIdentifier;
 use webignition\BasilModel\Value\DomIdentifierValue;
-use webignition\BasilModelFactory\AssertionFactory;
 
 trait IsNotAssertionFunctionalDataProviderTrait
 {
     public function isNotAssertionFunctionalDataProvider(): array
     {
-        $assertionFactory = AssertionFactory::createFactory();
+        $assertionGenerator = AssertionGenerator::createGenerator();
 
         $assertions =  [
             'element identifier examined value, scalar expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".selector" is-not "incorrect value"'
                 ),
             ],
             'attribute identifier examined value, scalar expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".selector".data-test-attribute is-not "incorrect value"'
                 ),
             ],
             'environment examined value, scalar expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '$env.TEST1 is-not "incorrect value"'
                 ),
             ],
             'browser object examined value, scalar expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '$browser.size is-not "1x1"'
                 ),
             ],
             'page object examined value, scalar expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '$page.title is-not "incorrect value"'
                 ),
             ],
@@ -61,47 +61,47 @@ trait IsNotAssertionFunctionalDataProviderTrait
                 ),
             ],
             'attribute identifier examined value, environment expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".selector".data-environment-value is-not $env.NON-EXISTENT'
                 ),
             ],
             'attribute identifier examined value, browser object expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".selector".data-test-attribute is-not $browser.size'
                 ),
             ],
             'attribute identifier examined value, page object expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".selector".data-browser-size is-not $page.title'
                 ),
             ],
             'select element identifier examined value, scalar expected value (1)' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".select-none-selected" is-not "incorrect value"'
                 ),
             ],
             'select element identifier examined value, scalar expected value (2)' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".select-has-selected" is-not "incorrect value"'
                 ),
             ],
             'option collection element identifier examined value, scalar expected value (1)' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".select-none-selected option" is-not "incorrect value"'
                 ),
             ],
             'option collection element identifier examined value, scalar expected value (2)' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".select-has-selected option" is-not "incorrect value"'
                 ),
             ],
             'radio group element identifier examined value, scalar expected value (1)' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '"input[name=radio-not-checked]" is-not "incorrect value"'
                 ),
             ],
             'radio group element identifier examined value, scalar expected value (2)' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '"input[name=radio-checked]" is-not "incorrect value"'
                 ),
             ],

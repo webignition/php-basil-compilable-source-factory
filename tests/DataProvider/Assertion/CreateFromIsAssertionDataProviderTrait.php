@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
+use webignition\BasilAssertionGenerator\AssertionGenerator;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
@@ -14,7 +15,6 @@ use webignition\BasilModel\Assertion\AssertionComparison;
 use webignition\BasilModel\Assertion\ComparisonAssertion;
 use webignition\BasilModel\Identifier\DomIdentifier;
 use webignition\BasilModel\Value\DomIdentifierValue;
-use webignition\BasilModelFactory\AssertionFactory;
 use webignition\BasilModelFactory\ValueFactory;
 use webignition\DomElementLocator\ElementLocator;
 
@@ -22,7 +22,7 @@ trait CreateFromIsAssertionDataProviderTrait
 {
     public function createFromIsAssertionDataProvider(): array
     {
-        $assertionFactory = AssertionFactory::createFactory();
+        $assertionGenerator = AssertionGenerator::createGenerator();
         $valueFactory = ValueFactory::createFactory();
 
         $browserProperty = $valueFactory->createFromValueString('$browser.size');
@@ -37,7 +37,7 @@ trait CreateFromIsAssertionDataProviderTrait
 
         return [
             'is comparison, element identifier examined value, literal string expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".selector" is "value"'
                 ),
                 'expectedContent' => CodeBlock::fromContent([
@@ -66,7 +66,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     ])),
             ],
             'is comparison, attribute identifier examined value, literal string expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".selector".attribute_name is "value"'
                 ),
                 'expectedContent' => CodeBlock::fromContent([
@@ -94,7 +94,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     ])),
             ],
             'is comparison, browser object examined value, literal string expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '$browser.size is "value"'
                 ),
                 'expectedContent' => CodeBlock::fromContent([
@@ -119,7 +119,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     ])),
             ],
             'is comparison, environment examined value, literal string expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '$env.KEY is "value"'
                 ),
                 'expectedContent' => CodeBlock::fromContent([
@@ -140,7 +140,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     ])),
             ],
             'is comparison, environment examined value with default, literal string expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '$env.KEY|"default value" is "value"'
                 ),
                 'expectedContent' => CodeBlock::fromContent([
@@ -161,7 +161,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     ])),
             ],
             'is comparison, environment examined value with default, environment examined value with default' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '$env.KEY1|"default value 1" is $env.KEY2|"default value 2"'
                 ),
                 'expectedContent' => CodeBlock::fromContent([
@@ -182,7 +182,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     ])),
             ],
             'is comparison, page object examined value, literal string expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '$page.title is "value"'
                 ),
                 'expectedContent' => CodeBlock::fromContent([

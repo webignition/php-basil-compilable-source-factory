@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler;
 
+use webignition\BasilActionGenerator\ActionGenerator;
+use webignition\BasilAssertionGenerator\AssertionGenerator;
 use webignition\BasilCompilableSourceFactory\Handler\StepHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
@@ -16,8 +18,6 @@ use webignition\BasilCompilationSource\Metadata\MetadataInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Step\Step;
 use webignition\BasilModel\Step\StepInterface;
-use webignition\BasilModelFactory\Action\ActionFactory;
-use webignition\BasilModelFactory\AssertionFactory;
 use webignition\DomElementLocator\ElementLocator;
 
 class StepHandlerTest extends AbstractTestCase
@@ -40,8 +40,8 @@ class StepHandlerTest extends AbstractTestCase
 
     public function handleDataProvider(): array
     {
-        $actionFactory = ActionFactory::createFactory();
-        $assertionFactory = AssertionFactory::createFactory();
+        $actionGenerator = ActionGenerator::createGenerator();
+        $assertionGenerator = AssertionGenerator::createGenerator();
 
         return [
             'empty step' => [
@@ -52,7 +52,7 @@ class StepHandlerTest extends AbstractTestCase
             'one action' => [
                 'step' => new Step(
                     [
-                        $actionFactory->createFromActionString('click ".selector"'),
+                        $actionGenerator->generate('click ".selector"'),
                     ],
                     []
                 ),
@@ -80,8 +80,8 @@ class StepHandlerTest extends AbstractTestCase
             'two action' => [
                 'step' => new Step(
                     [
-                        $actionFactory->createFromActionString('click ".selector"'),
-                        $actionFactory->createFromActionString('wait 1'),
+                        $actionGenerator->generate('click ".selector"'),
+                        $actionGenerator->generate('wait 1'),
                     ],
                     []
                 ),
@@ -116,7 +116,7 @@ class StepHandlerTest extends AbstractTestCase
                 'step' => new Step(
                     [],
                     [
-                        $assertionFactory->createFromAssertionString('$page.title is "value"'),
+                        $assertionGenerator->generate('$page.title is "value"'),
                     ]
                 ),
                 'expectedContent' => CodeBlock::fromContent([
@@ -142,8 +142,8 @@ class StepHandlerTest extends AbstractTestCase
                 'step' => new Step(
                     [],
                     [
-                        $assertionFactory->createFromAssertionString('$page.title is "value"'),
-                        $assertionFactory->createFromAssertionString('$page.url is "http://example.com"'),
+                        $assertionGenerator->generate('$page.title is "value"'),
+                        $assertionGenerator->generate('$page.url is "http://example.com"'),
                     ]
                 ),
                 'expectedContent' => CodeBlock::fromContent([
@@ -175,10 +175,10 @@ class StepHandlerTest extends AbstractTestCase
             'one action, one assertion' => [
                 'step' => new Step(
                     [
-                        $actionFactory->createFromActionString('click ".selector"'),
+                        $actionGenerator->generate('click ".selector"'),
                     ],
                     [
-                        $assertionFactory->createFromAssertionString('$page.title is "value"'),
+                        $assertionGenerator->generate('$page.title is "value"'),
                     ]
                 ),
                 'expectedContent' => CodeBlock::fromContent([

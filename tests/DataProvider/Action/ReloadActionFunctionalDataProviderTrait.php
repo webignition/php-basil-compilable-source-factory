@@ -4,17 +4,17 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
+use webignition\BasilActionGenerator\ActionGenerator;
 use webignition\BasilCompilableSourceFactory\Tests\Services\PlaceholderFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Line\Statement;
-use webignition\BasilModelFactory\Action\ActionFactory;
 
 trait ReloadActionFunctionalDataProviderTrait
 {
     public function reloadActionFunctionalDataProvider(): array
     {
-        $actionFactory = ActionFactory::createFactory();
+        $actionGenerator = ActionGenerator::createGenerator();
 
         $setupTeardownStatements = new CodeBlock([
             StatementFactory::create(
@@ -37,7 +37,7 @@ trait ReloadActionFunctionalDataProviderTrait
         return [
             'reload action' => [
                 'fixture' => '/action-wait-for.html',
-                'action' => $actionFactory->createFromActionString('reload'),
+                'action' => $actionGenerator->generate('reload'),
                 'additionalSetupStatements' => $setupTeardownStatements,
                 'teardownStatements' => $setupTeardownStatements,
             ],

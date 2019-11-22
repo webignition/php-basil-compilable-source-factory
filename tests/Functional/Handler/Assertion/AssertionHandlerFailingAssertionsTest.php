@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\Assertion;
 
+use webignition\BasilAssertionGenerator\AssertionGenerator;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModel\Assertion\AssertionInterface;
-use webignition\BasilModelFactory\AssertionFactory;
 
 class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
 {
@@ -65,12 +65,12 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
 
     public function createSourceForFailingAssertionsDataProvider(): array
     {
-        $assertionFactory = AssertionFactory::createFactory();
+        $assertionGenerator = AssertionGenerator::createGenerator();
 
         return [
             'exists comparison, element identifier examined value, element does not exist' => [
                 'fixture' => '/index.html',
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".selector" exists'
                 ),
                 'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
@@ -80,7 +80,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
             ],
             'exists comparison, attribute identifier examined value, element does not exist' => [
                 'fixture' => '/index.html',
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".selector".attribute_name exists'
                 ),
                 'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
@@ -91,7 +91,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
             ],
             'exists comparison, attribute identifier examined value, attribute does not exist' => [
                 'fixture' => '/index.html',
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '"h1".attribute_name exists'
                 ),
                 'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
@@ -102,7 +102,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
             ],
             'exists comparison, environment examined value, environment variable does not exist' => [
                 'fixture' => '/index.html',
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '$env.FOO exists'
                 ),
                 'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',

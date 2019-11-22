@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
+use webignition\BasilActionGenerator\ActionGenerator;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\BasilModelFactory\Action\ActionFactory;
 
 trait CreateFromWaitForActionDataProviderTrait
 {
     public function createFromWaitForActionDataProvider(): array
     {
-        $actionFactory = ActionFactory::createFactory();
+        $actionGenerator = ActionGenerator::createGenerator();
 
         return [
             'interaction action (wait-for), element identifier' => [
-                'action' => $actionFactory->createFromActionString(
+                'action' => $actionGenerator->generate(
                     'wait-for ".selector"'
                 ),
                 'expectedContent' => CodeBlock::fromContent([

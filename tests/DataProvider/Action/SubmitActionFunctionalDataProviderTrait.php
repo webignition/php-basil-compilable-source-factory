@@ -4,16 +4,16 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
+use webignition\BasilActionGenerator\ActionGenerator;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilModelFactory\Action\ActionFactory;
 
 trait SubmitActionFunctionalDataProviderTrait
 {
     public function submitActionFunctionalDataProvider(): array
     {
-        $actionFactory = ActionFactory::createFactory();
+        $actionGenerator = ActionGenerator::createGenerator();
 
         $fixture = '/action-click-submit.html';
 
@@ -41,14 +41,14 @@ trait SubmitActionFunctionalDataProviderTrait
         return [
             'interaction action (submit), form submit button' => [
                 'fixture' => $fixture,
-                'action' => $actionFactory->createFromActionString('submit "#form input[type=\'submit\']"'),
+                'action' => $actionGenerator->generate('submit "#form input[type=\'submit\']"'),
                 'additionalSetupStatements' => $setupStatements,
                 'teardownStatements' => $teardownStatements,
                 'additionalVariableIdentifiers' => $variableIdentifiers,
             ],
             'interaction action (submit), form' => [
                 'fixture' => $fixture,
-                'action' => $actionFactory->createFromActionString('submit "#form"'),
+                'action' => $actionGenerator->generate('submit "#form"'),
                 'additionalSetupStatements' => $setupStatements,
                 'teardownStatements' => $teardownStatements,
                 'additionalVariableIdentifiers' => $variableIdentifiers,

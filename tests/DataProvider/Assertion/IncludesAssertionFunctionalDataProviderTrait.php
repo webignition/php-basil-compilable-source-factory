@@ -4,41 +4,41 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
+use webignition\BasilAssertionGenerator\AssertionGenerator;
 use webignition\BasilModel\Assertion\AssertionComparison;
 use webignition\BasilModel\Assertion\ComparisonAssertion;
 use webignition\BasilModel\Identifier\DomIdentifier;
 use webignition\BasilModel\Value\DomIdentifierValue;
-use webignition\BasilModelFactory\AssertionFactory;
 
 trait IncludesAssertionFunctionalDataProviderTrait
 {
     public function includesAssertionFunctionalDataProvider(): array
     {
-        $assertionFactory = AssertionFactory::createFactory();
+        $assertionGenerator = AssertionGenerator::createGenerator();
 
         $assertions = [
             'element identifier examined value, scalar expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".selector" includes "content"'
                 ),
             ],
             'attribute identifier examined value, scalar expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".selector".data-test-attribute includes "attribute"'
                 ),
             ],
             'environment examined value, scalar expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '$env.TEST1 includes "environment"'
                 ),
             ],
             'browser object examined value, scalar expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '$browser.size includes "200x11"'
                 ),
             ],
             'page object examined value, scalar expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '$page.title includes "Assertions"'
                 ),
             ],
@@ -61,17 +61,17 @@ trait IncludesAssertionFunctionalDataProviderTrait
                 ),
             ],
             'attribute identifier examined value, environment expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".selector".data-includes-environment-value includes $env.TEST1'
                 ),
             ],
             'attribute identifier examined value, browser object expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".selector".data-includes-browser-size includes $browser.size'
                 ),
             ],
             'attribute identifier examined value, page object expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".selector".data-includes-page-title includes $page.title'
                 ),
             ],

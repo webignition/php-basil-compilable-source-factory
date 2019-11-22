@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler;
 
+use webignition\BasilActionGenerator\ActionGenerator;
+use webignition\BasilAssertionGenerator\AssertionGenerator;
 use webignition\BasilCompilableSourceFactory\Handler\StepHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
@@ -14,8 +16,6 @@ use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilModel\Step\Step;
 use webignition\BasilModel\Step\StepInterface;
-use webignition\BasilModelFactory\Action\ActionFactory;
-use webignition\BasilModelFactory\AssertionFactory;
 
 class StepHandlerTest extends AbstractBrowserTestCase
 {
@@ -65,15 +65,15 @@ class StepHandlerTest extends AbstractBrowserTestCase
 
     public function createSourceDataProvider(): array
     {
-        $actionFactory = ActionFactory::createFactory();
-        $assertionFactory = AssertionFactory::createFactory();
+        $actionGenerator = ActionGenerator::createGenerator();
+        $assertionGenerator = AssertionGenerator::createGenerator();
 
         return [
             'single click action' => [
                 'fixture' => '/action-click-submit.html',
                 'model' => new Step(
                     [
-                        $actionFactory->createFromActionString('click "#link-to-index"'),
+                        $actionGenerator->generate('click "#link-to-index"'),
                     ],
                     []
                 ),
@@ -90,7 +90,7 @@ class StepHandlerTest extends AbstractBrowserTestCase
                 'model' => new Step(
                     [],
                     [
-                        $assertionFactory->createFromAssertionString('".selector" is ".selector content"')
+                        $assertionGenerator->generate('".selector" is ".selector content"')
                     ]
                 ),
                 'teardownStatements' => null,
@@ -104,10 +104,10 @@ class StepHandlerTest extends AbstractBrowserTestCase
                 'fixture' => '/action-click-submit.html',
                 'model' => new Step(
                     [
-                        $actionFactory->createFromActionString('click "#link-to-index"'),
+                        $actionGenerator->generate('click "#link-to-index"'),
                     ],
                     [
-                        $assertionFactory->createFromAssertionString(
+                        $assertionGenerator->generate(
                             '$page.title is "Test fixture web server default document"'
                         )
                     ]
@@ -124,18 +124,18 @@ class StepHandlerTest extends AbstractBrowserTestCase
                 'fixture' => '/form.html',
                 'model' => new Step(
                     [
-                        $actionFactory->createFromActionString(
+                        $actionGenerator->generate(
                             'click "input[name=radio-not-checked][value=not-checked-2]"'
                         ),
-                        $actionFactory->createFromActionString(
+                        $actionGenerator->generate(
                             'click "input[name=radio-checked][value=checked-3]"'
                         ),
                     ],
                     [
-                        $assertionFactory->createFromAssertionString(
+                        $assertionGenerator->generate(
                             '"input[name=radio-not-checked]" is "not-checked-2"'
                         ),
-                        $assertionFactory->createFromAssertionString(
+                        $assertionGenerator->generate(
                             '"input[name=radio-checked]" is "checked-3"'
                         ),
                     ]

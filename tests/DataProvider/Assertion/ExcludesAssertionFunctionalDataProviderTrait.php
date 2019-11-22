@@ -4,41 +4,41 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
+use webignition\BasilAssertionGenerator\AssertionGenerator;
 use webignition\BasilModel\Assertion\AssertionComparison;
 use webignition\BasilModel\Assertion\ComparisonAssertion;
 use webignition\BasilModel\Identifier\DomIdentifier;
 use webignition\BasilModel\Value\DomIdentifierValue;
-use webignition\BasilModelFactory\AssertionFactory;
 
 trait ExcludesAssertionFunctionalDataProviderTrait
 {
     public function excludesAssertionFunctionalDataProvider(): array
     {
-        $assertionFactory = AssertionFactory::createFactory();
+        $assertionGenerator = AssertionGenerator::createGenerator();
 
         $assertions = [
             'element identifier examined value, scalar expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".selector" excludes "not-present value"'
                 ),
             ],
             'attribute identifier examined value, scalar expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".selector".data-test-attribute excludes "not-present value"'
                 ),
             ],
             'environment examined value, scalar expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '$env.TEST1 excludes "not-present value"'
                 ),
             ],
             'browser object examined value, scalar expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '$browser.size excludes "1x2"'
                 ),
             ],
             'page object examined value, scalar expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '$page.title excludes "not-present value"'
                 ),
             ],
@@ -61,17 +61,17 @@ trait ExcludesAssertionFunctionalDataProviderTrait
                 ),
             ],
             'attribute identifier examined value, environment expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".selector".data-test-attribute excludes $env.TEST1'
                 ),
             ],
             'attribute identifier examined value, browser object expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".selector".data-test-attribute excludes $browser.size'
                 ),
             ],
             'attribute identifier examined value, page object expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".selector".data-test-attribute excludes $page.title'
                 ),
             ],

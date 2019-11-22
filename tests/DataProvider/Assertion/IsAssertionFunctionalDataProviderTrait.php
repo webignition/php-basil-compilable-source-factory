@@ -4,41 +4,41 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
+use webignition\BasilAssertionGenerator\AssertionGenerator;
 use webignition\BasilModel\Assertion\AssertionComparison;
 use webignition\BasilModel\Assertion\ComparisonAssertion;
 use webignition\BasilModel\Identifier\DomIdentifier;
 use webignition\BasilModel\Value\DomIdentifierValue;
-use webignition\BasilModelFactory\AssertionFactory;
 
 trait IsAssertionFunctionalDataProviderTrait
 {
     public function isAssertionFunctionalDataProvider(): array
     {
-        $assertionFactory = AssertionFactory::createFactory();
+        $assertionGenerator = AssertionGenerator::createGenerator();
 
         $assertions = [
             'element identifier examined value, scalar expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".selector" is ".selector content"'
                 ),
             ],
             'attribute identifier examined value, scalar expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".selector".data-test-attribute is "attribute content"'
                 ),
             ],
             'environment examined value, scalar expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '$env.TEST1 is "environment value"'
                 ),
             ],
             'browser object examined value, scalar expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '$browser.size is "1200x1100"'
                 ),
             ],
             'page object examined value, scalar expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '$page.title is "Test fixture web server default document"'
                 ),
             ],
@@ -61,47 +61,47 @@ trait IsAssertionFunctionalDataProviderTrait
                 ),
             ],
             'attribute identifier examined value, environment expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".selector".data-environment-value is $env.TEST1'
                 ),
             ],
             'attribute identifier examined value, browser object expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".selector".data-browser-size is $browser.size'
                 ),
             ],
             'attribute identifier examined value, page object expected value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".selector".data-page-title is $page.title'
                 ),
             ],
             'select element identifier examined value, scalar expected value (1)' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".select-none-selected" is "none-selected-1"'
                 ),
             ],
             'select element identifier examined value, scalar expected value (2)' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".select-has-selected" is "has-selected-2"'
                 ),
             ],
             'option collection element identifier examined value, scalar expected value (1)' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".select-none-selected option" is "none-selected-1"'
                 ),
             ],
             'option collection element identifier examined value, scalar expected value (2)' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".select-has-selected option" is "has-selected-2"'
                 ),
             ],
             'radio group element identifier examined value, scalar expected value (1)' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '"input[name=radio-not-checked]" is ""'
                 ),
             ],
             'radio group element identifier examined value, scalar expected value (2)' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '"input[name=radio-checked]" is "checked-2"'
                 ),
             ],
