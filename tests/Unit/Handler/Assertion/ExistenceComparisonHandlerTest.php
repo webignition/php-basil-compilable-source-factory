@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Assertion;
 
+use webignition\BasilAssertionGenerator\AssertionGenerator;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\ExistenceComparisonHandler;
 use webignition\BasilModel\Assertion\ExaminationAssertion;
 use webignition\BasilModel\Assertion\ExaminationAssertionInterface;
-use webignition\BasilModelFactory\AssertionFactory;
 
 class ExistenceComparisonHandlerTest extends AbstractTestCase
 {
@@ -38,17 +38,17 @@ class ExistenceComparisonHandlerTest extends AbstractTestCase
 
     public function handleWrongValueTypeDataProvider(): array
     {
-        $assertionFactory = AssertionFactory::createFactory();
+        $assertionGenerator = AssertionGenerator::createGenerator();
 
         return [
             'page element reference' => [
-                'model' => $assertionFactory->createFromAssertionString(
+                'model' => $assertionGenerator->generate(
                     'page_import_name.elements.element_name exists'
                 ),
                 'expectedExceptionMessage' => 'Unsupported model "' . ExaminationAssertion::class . '"',
             ],
             'non-scalar object value' => [
-                'model' => $assertionFactory->createFromAssertionString(
+                'model' => $assertionGenerator->generate(
                     '$data.key exists'
                 ),
                 'expectedExceptionMessage' => 'Unsupported model "' . ExaminationAssertion::class . '"',

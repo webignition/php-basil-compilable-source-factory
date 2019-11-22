@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
+use webignition\BasilActionGenerator\ActionGenerator;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModel\Action\WaitAction;
 use webignition\BasilModel\Identifier\DomIdentifier;
 use webignition\BasilModel\Value\DomIdentifierValue;
-use webignition\BasilModelFactory\Action\ActionFactory;
 
 trait WaitActionFunctionalDataProviderTrait
 {
     public function waitActionFunctionalDataProvider(): array
     {
-        $actionFactory = ActionFactory::createFactory();
+        $actionGenerator = ActionGenerator::createGenerator();
         $fixture = '/action-wait.html';
 
         return [
             'wait action, literal duration' => [
                 'fixture' => $fixture,
-                'action' => $actionFactory->createFromActionString('wait 10'),
+                'action' => $actionGenerator->generate('wait 10'),
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [
@@ -77,7 +77,7 @@ trait WaitActionFunctionalDataProviderTrait
             ],
             'wait action, browser property' => [
                 'fixture' => $fixture,
-                'action' => $actionFactory->createFromActionString('wait $browser.size'),
+                'action' => $actionGenerator->generate('wait $browser.size'),
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [
@@ -88,7 +88,7 @@ trait WaitActionFunctionalDataProviderTrait
             ],
             'wait action, page property' => [
                 'fixture' => $fixture,
-                'action' => $actionFactory->createFromActionString('wait $page.title'),
+                'action' => $actionGenerator->generate('wait $page.title'),
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [
@@ -98,7 +98,7 @@ trait WaitActionFunctionalDataProviderTrait
             ],
             'wait action, environment value, value exists' => [
                 'fixture' => $fixture,
-                'action' => $actionFactory->createFromActionString('wait $env.DURATION'),
+                'action' => $actionGenerator->generate('wait $env.DURATION'),
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [
@@ -109,7 +109,7 @@ trait WaitActionFunctionalDataProviderTrait
             ],
             'wait action, environment value, value does not exist' => [
                 'fixture' => $fixture,
-                'action' => $actionFactory->createFromActionString('wait $env.NON_EXISTENT'),
+                'action' => $actionGenerator->generate('wait $env.NON_EXISTENT'),
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
+use webignition\BasilActionGenerator\ActionGenerator;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
@@ -11,7 +12,6 @@ use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilModel\Action\InputAction;
 use webignition\BasilModel\Identifier\DomIdentifier;
 use webignition\BasilModel\Value\DomIdentifierValue;
-use webignition\BasilModelFactory\Action\ActionFactory;
 
 trait SetActionFunctionalDataProviderTrait
 {
@@ -25,7 +25,7 @@ trait SetActionFunctionalDataProviderTrait
 
     public function setActionFunctionalDataProvider(): array
     {
-        $actionFactory = ActionFactory::createFactory();
+        $actionGenerator = ActionGenerator::createGenerator();
 
         return array_merge(
             $this->setActionForTextInputFunctionalDataProvider(),
@@ -89,7 +89,7 @@ trait SetActionFunctionalDataProviderTrait
                 ],
                 'input action, browser property' => [
                     'fixture' => $this->setActionFunctionalFixture,
-                    'action' => $actionFactory->createFromActionString(
+                    'action' => $actionGenerator->generate(
                         'set "input[name=input-without-value]" to $browser.size'
                     ),
                     'additionalSetupStatements' => new CodeBlock([
@@ -115,7 +115,7 @@ trait SetActionFunctionalDataProviderTrait
                 ],
                 'input action, page property' => [
                     'fixture' => $this->setActionFunctionalFixture,
-                    'action' => $actionFactory->createFromActionString(
+                    'action' => $actionGenerator->generate(
                         'set "input[name=input-without-value]" to $page.url'
                     ),
                     'additionalSetupStatements' => new CodeBlock([
@@ -139,7 +139,7 @@ trait SetActionFunctionalDataProviderTrait
                 ],
                 'input action, environment value' => [
                     'fixture' => $this->setActionFunctionalFixture,
-                    'action' => $actionFactory->createFromActionString(
+                    'action' => $actionGenerator->generate(
                         'set "input[name=input-without-value]" to $env.TEST1'
                     ),
                     'additionalSetupStatements' => new CodeBlock([
@@ -169,12 +169,12 @@ trait SetActionFunctionalDataProviderTrait
 
     private function setActionForTextInputFunctionalDataProvider(): array
     {
-        $actionFactory = ActionFactory::createFactory();
+        $actionGenerator = ActionGenerator::createGenerator();
 
         return [
             'input action, literal value: empty text input, empty value' => [
                 'fixture' => $this->setActionFunctionalFixture,
-                'action' => $actionFactory->createFromActionString(
+                'action' => $actionGenerator->generate(
                     'set "input[name=input-without-value]" to ""'
                 ),
                 'additionalSetupStatements' => new CodeBlock([
@@ -189,7 +189,7 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: empty text input, non-empty value' => [
                 'fixture' => $this->setActionFunctionalFixture,
-                'action' => $actionFactory->createFromActionString(
+                'action' => $actionGenerator->generate(
                     'set "input[name=input-without-value]" to "non-empty value"'
                 ),
                 'additionalSetupStatements' => new CodeBlock([
@@ -204,7 +204,7 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: non-empty text input, empty value' => [
                 'fixture' => $this->setActionFunctionalFixture,
-                'action' => $actionFactory->createFromActionString(
+                'action' => $actionGenerator->generate(
                     'set "input[name=input-with-value]" to ""'
                 ),
                 'additionalSetupStatements' => new CodeBlock([
@@ -219,7 +219,7 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: non-empty text input, non-empty value' => [
                 'fixture' => $this->setActionFunctionalFixture,
-                'action' => $actionFactory->createFromActionString(
+                'action' => $actionGenerator->generate(
                     'set "input[name=input-with-value]" to "new value"'
                 ),
                 'additionalSetupStatements' => new CodeBlock([
@@ -237,12 +237,12 @@ trait SetActionFunctionalDataProviderTrait
 
     private function setActionForTextareaFunctionalDataProvider(): array
     {
-        $actionFactory = ActionFactory::createFactory();
+        $actionGenerator = ActionGenerator::createGenerator();
 
         return [
             'input action, literal value: empty textarea, empty value' => [
                 'fixture' => $this->setActionFunctionalFixture,
-                'action' => $actionFactory->createFromActionString(
+                'action' => $actionGenerator->generate(
                     'set ".textarea-empty" to ""'
                 ),
                 'additionalSetupStatements' => new CodeBlock([
@@ -257,7 +257,7 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: empty textarea, non-empty value' => [
                 'fixture' => $this->setActionFunctionalFixture,
-                'action' => $actionFactory->createFromActionString(
+                'action' => $actionGenerator->generate(
                     'set ".textarea-empty" to "non-empty value"'
                 ),
                 'additionalSetupStatements' => new CodeBlock([
@@ -272,7 +272,7 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: non-empty textarea, empty value' => [
                 'fixture' => $this->setActionFunctionalFixture,
-                'action' => $actionFactory->createFromActionString(
+                'action' => $actionGenerator->generate(
                     'set ".textarea-non-empty" to ""'
                 ),
                 'additionalSetupStatements' => new CodeBlock([
@@ -287,7 +287,7 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: non-empty textarea, non-empty value' => [
                 'fixture' => $this->setActionFunctionalFixture,
-                'action' => $actionFactory->createFromActionString(
+                'action' => $actionGenerator->generate(
                     'set ".textarea-non-empty" to "new value"'
                 ),
                 'additionalSetupStatements' => new CodeBlock([
@@ -305,12 +305,12 @@ trait SetActionFunctionalDataProviderTrait
 
     private function setActionForSelectFunctionalDataProvider(): array
     {
-        $actionFactory = ActionFactory::createFactory();
+        $actionGenerator = ActionGenerator::createGenerator();
 
         return [
             'input action, literal value: select none selected, empty value' => [
                 'fixture' => $this->setActionFunctionalFixture,
-                'action' => $actionFactory->createFromActionString(
+                'action' => $actionGenerator->generate(
                     'set ".select-none-selected" to ""'
                 ),
                 'additionalSetupStatements' => new CodeBlock([
@@ -325,7 +325,7 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: select none selected, invalid non-empty value' => [
                 'fixture' => $this->setActionFunctionalFixture,
-                'action' => $actionFactory->createFromActionString(
+                'action' => $actionGenerator->generate(
                     'set ".select-none-selected" to "invalid"'
                 ),
                 'additionalSetupStatements' => new CodeBlock([
@@ -340,7 +340,7 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: select none selected, valid non-empty value' => [
                 'fixture' => $this->setActionFunctionalFixture,
-                'action' => $actionFactory->createFromActionString(
+                'action' => $actionGenerator->generate(
                     'set ".select-none-selected" to "none-selected-2"'
                 ),
                 'additionalSetupStatements' => new CodeBlock([
@@ -355,7 +355,7 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: select has selected, empty value' => [
                 'fixture' => $this->setActionFunctionalFixture,
-                'action' => $actionFactory->createFromActionString(
+                'action' => $actionGenerator->generate(
                     'set ".select-has-selected" to ""'
                 ),
                 'additionalSetupStatements' => new CodeBlock([
@@ -370,7 +370,7 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: select has selected, invalid non-empty value' => [
                 'fixture' => $this->setActionFunctionalFixture,
-                'action' => $actionFactory->createFromActionString(
+                'action' => $actionGenerator->generate(
                     'set ".select-has-selected" to "invalid"'
                 ),
                 'additionalSetupStatements' => new CodeBlock([
@@ -385,7 +385,7 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: select has selected, valid non-empty value' => [
                 'fixture' => $this->setActionFunctionalFixture,
-                'action' => $actionFactory->createFromActionString(
+                'action' => $actionGenerator->generate(
                     'set ".select-has-selected" to "has-selected-3"'
                 ),
                 'additionalSetupStatements' => new CodeBlock([
@@ -403,12 +403,12 @@ trait SetActionFunctionalDataProviderTrait
 
     private function setActionForOptionCollectionFunctionalDataProvider(): array
     {
-        $actionFactory = ActionFactory::createFactory();
+        $actionGenerator = ActionGenerator::createGenerator();
 
         return [
             'input action, literal value: option group none selected, empty value' => [
                 'fixture' => $this->setActionFunctionalFixture,
-                'action' => $actionFactory->createFromActionString(
+                'action' => $actionGenerator->generate(
                     'set ".select-none-selected option" to ""'
                 ),
                 'additionalSetupStatements' => new CodeBlock([
@@ -423,7 +423,7 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: option group none selected, invalid non-empty value' => [
                 'fixture' => $this->setActionFunctionalFixture,
-                'action' => $actionFactory->createFromActionString(
+                'action' => $actionGenerator->generate(
                     'set ".select-none-selected option" to "invalid"'
                 ),
                 'additionalSetupStatements' => new CodeBlock([
@@ -438,7 +438,7 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: option group none selected, valid non-empty value' => [
                 'fixture' => $this->setActionFunctionalFixture,
-                'action' => $actionFactory->createFromActionString(
+                'action' => $actionGenerator->generate(
                     'set ".select-none-selected option" to "none-selected-2"'
                 ),
                 'additionalSetupStatements' => new CodeBlock([
@@ -453,7 +453,7 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: option group has selected, empty value' => [
                 'fixture' => $this->setActionFunctionalFixture,
-                'action' => $actionFactory->createFromActionString(
+                'action' => $actionGenerator->generate(
                     'set ".select-has-selected option" to ""'
                 ),
                 'additionalSetupStatements' => new CodeBlock([
@@ -468,7 +468,7 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: option group has selected, invalid non-empty value' => [
                 'fixture' => $this->setActionFunctionalFixture,
-                'action' => $actionFactory->createFromActionString(
+                'action' => $actionGenerator->generate(
                     'set ".select-has-selected option" to "invalid"'
                 ),
                 'additionalSetupStatements' => new CodeBlock([
@@ -483,7 +483,7 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: option group has selected, valid non-empty value' => [
                 'fixture' => $this->setActionFunctionalFixture,
-                'action' => $actionFactory->createFromActionString(
+                'action' => $actionGenerator->generate(
                     'set ".select-has-selected option" to "has-selected-3"'
                 ),
                 'additionalSetupStatements' => new CodeBlock([
@@ -501,12 +501,12 @@ trait SetActionFunctionalDataProviderTrait
 
     private function setActionForRadioGroupFunctionalDataProvider(): array
     {
-        $actionFactory = ActionFactory::createFactory();
+        $actionGenerator = ActionGenerator::createGenerator();
 
         return [
             'input action, literal value: radio group none checked, empty value' => [
                 'fixture' => $this->setActionFunctionalFixture,
-                'action' => $actionFactory->createFromActionString(
+                'action' => $actionGenerator->generate(
                     'set "input[name=radio-not-checked]" to ""'
                 ),
                 'additionalSetupStatements' => new CodeBlock([
@@ -525,7 +525,7 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: radio group none checked, invalid non-empty value' => [
                 'fixture' => $this->setActionFunctionalFixture,
-                'action' => $actionFactory->createFromActionString(
+                'action' => $actionGenerator->generate(
                     'set "input[name=radio-not-checked]" to "invalid"'
                 ),
                 'additionalSetupStatements' => new CodeBlock([
@@ -544,7 +544,7 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: radio group none checked, valid non-empty value' => [
                 'fixture' => $this->setActionFunctionalFixture,
-                'action' => $actionFactory->createFromActionString(
+                'action' => $actionGenerator->generate(
                     'set "input[name=radio-not-checked]" to "not-checked-2"'
                 ),
                 'additionalSetupStatements' => new CodeBlock([
@@ -563,7 +563,7 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: radio group has checked, empty value' => [
                 'fixture' => $this->setActionFunctionalFixture,
-                'action' => $actionFactory->createFromActionString(
+                'action' => $actionGenerator->generate(
                     'set "input[name=radio-checked]" to ""'
                 ),
                 'additionalSetupStatements' => new CodeBlock([
@@ -582,7 +582,7 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: radio group has checked, invalid non-empty value' => [
                 'fixture' => $this->setActionFunctionalFixture,
-                'action' => $actionFactory->createFromActionString(
+                'action' => $actionGenerator->generate(
                     'set "input[name=radio-checked]" to "invalid"'
                 ),
                 'additionalSetupStatements' => new CodeBlock([
@@ -601,7 +601,7 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: radio group has checked, valid non-empty value' => [
                 'fixture' => $this->setActionFunctionalFixture,
-                'action' => $actionFactory->createFromActionString(
+                'action' => $actionGenerator->generate(
                     'set "input[name=radio-checked]" to "checked-3"'
                 ),
                 'additionalSetupStatements' => new CodeBlock([

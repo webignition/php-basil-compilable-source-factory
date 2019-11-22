@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
+use webignition\BasilActionGenerator\ActionGenerator;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
@@ -13,18 +14,17 @@ use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Action\WaitAction;
 use webignition\BasilModel\Identifier\DomIdentifier;
 use webignition\BasilModel\Value\DomIdentifierValue;
-use webignition\BasilModelFactory\Action\ActionFactory;
 use webignition\DomElementLocator\ElementLocator;
 
 trait CreateFromWaitActionDataProviderTrait
 {
     public function createFromWaitActionDataProvider(): array
     {
-        $actionFactory = ActionFactory::createFactory();
+        $actionGenerator = ActionGenerator::createGenerator();
 
         return [
             'wait action, literal' => [
-                'action' => $actionFactory->createFromActionString('wait 30'),
+                'action' => $actionGenerator->generate('wait 30'),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ DURATION }} = "30" ?? 0',
                     '{{ DURATION }} = (int) {{ DURATION }}',
@@ -91,7 +91,7 @@ trait CreateFromWaitActionDataProviderTrait
                     ])),
             ],
             'wait action, browser property' => [
-                'action' => $actionFactory->createFromActionString('wait $browser.size'),
+                'action' => $actionGenerator->generate('wait $browser.size'),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()',
                     '{{ DURATION }} = '
@@ -110,7 +110,7 @@ trait CreateFromWaitActionDataProviderTrait
                     ])),
             ],
             'wait action, page property' => [
-                'action' => $actionFactory->createFromActionString('wait $page.title'),
+                'action' => $actionGenerator->generate('wait $page.title'),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ DURATION }} = {{ CLIENT }}->getTitle() ?? 0',
                     '{{ DURATION }} = (int) {{ DURATION }}',
@@ -125,7 +125,7 @@ trait CreateFromWaitActionDataProviderTrait
                     ])),
             ],
             'wait action, environment value' => [
-                'action' => $actionFactory->createFromActionString('wait $env.DURATION'),
+                'action' => $actionGenerator->generate('wait $env.DURATION'),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ DURATION }} = {{ ENV }}[\'DURATION\'] ?? 0',
                     '{{ DURATION }} = (int) {{ DURATION }}',
@@ -140,7 +140,7 @@ trait CreateFromWaitActionDataProviderTrait
                     ])),
             ],
             'wait action, environment value with default' => [
-                'action' => $actionFactory->createFromActionString('wait $env.DURATION|"3"'),
+                'action' => $actionGenerator->generate('wait $env.DURATION|"3"'),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ DURATION }} = {{ ENV }}[\'DURATION\'] ?? 3',
                     '{{ DURATION }} = (int) {{ DURATION }}',

@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional;
 
 use webignition\BasePantherTestCase\Options;
+use webignition\BasilActionGenerator\ActionGenerator;
+use webignition\BasilAssertionGenerator\AssertionGenerator;
 use webignition\BasilCodeGenerator\ClassGenerator;
 use webignition\BasilCompilableSourceFactory\ClassDefinitionFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
@@ -21,8 +23,6 @@ use webignition\BasilModel\Step\Step;
 use webignition\BasilModel\Test\Configuration;
 use webignition\BasilModel\Test\Test;
 use webignition\BasilModel\Test\TestInterface;
-use webignition\BasilModelFactory\Action\ActionFactory;
-use webignition\BasilModelFactory\AssertionFactory;
 
 class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
 {
@@ -82,8 +82,8 @@ class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
 
     public function createSourceDataProvider(): array
     {
-        $actionFactory = ActionFactory::createFactory();
-        $assertionFactory = AssertionFactory::createFactory();
+        $actionGenerator = ActionGenerator::createGenerator();
+        $assertionGenerator = AssertionGenerator::createGenerator();
 
         return [
             'single step with single action and single assertion' => [
@@ -94,10 +94,10 @@ class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
                         'verify correct page is open' => new Step(
                             [],
                             [
-                                $assertionFactory->createFromAssertionString(
+                                $assertionGenerator->generate(
                                     '$page.url is "' . Options::getBaseUri() . '/index.html"'
                                 ),
-                                $assertionFactory->createFromAssertionString(
+                                $assertionGenerator->generate(
                                     '$page.title is "Test fixture web server default document"'
                                 ),
                             ]
@@ -117,23 +117,23 @@ class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
                         'verify starting page is open' => new Step(
                             [],
                             [
-                                $assertionFactory->createFromAssertionString(
+                                $assertionGenerator->generate(
                                     '$page.url is "' . Options::getBaseUri() . '/index.html"'
                                 ),
-                                $assertionFactory->createFromAssertionString(
+                                $assertionGenerator->generate(
                                     '$page.title is "Test fixture web server default document"'
                                 ),
                             ]
                         ),
                         'navigate to form' => new Step(
                             [
-                                $actionFactory->createFromActionString('click "#link-to-form"'),
+                                $actionGenerator->generate('click "#link-to-form"'),
                             ],
                             [
-                                $assertionFactory->createFromAssertionString(
+                                $assertionGenerator->generate(
                                     '$page.url is "' . Options::getBaseUri() . '/form.html"'
                                 ),
-                                $assertionFactory->createFromAssertionString(
+                                $assertionGenerator->generate(
                                     '$page.title is "Form"'
                                 ),
                             ]
@@ -141,28 +141,28 @@ class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
                         'verify select menu starting values' => new Step(
                             [],
                             [
-                                $assertionFactory->createFromAssertionString(
+                                $assertionGenerator->generate(
                                     '".select-none-selected" is "none-selected-1"'
                                 ),
-                                $assertionFactory->createFromAssertionString(
+                                $assertionGenerator->generate(
                                     '".select-has-selected" is "has-selected-2"'
                                 ),
                             ]
                         ),
                         'modify select menu starting values' => new Step(
                             [
-                                $actionFactory->createFromActionString(
+                                $actionGenerator->generate(
                                     'set ".select-none-selected" to "none-selected-3"'
                                 ),
-                                $actionFactory->createFromActionString(
+                                $actionGenerator->generate(
                                     'set ".select-has-selected" to "has-selected-1"'
                                 ),
                             ],
                             [
-                                $assertionFactory->createFromAssertionString(
+                                $assertionGenerator->generate(
                                     '".select-none-selected" is "none-selected-3"'
                                 ),
-                                $assertionFactory->createFromAssertionString(
+                                $assertionGenerator->generate(
                                     '".select-has-selected" is "has-selected-1"'
                                 ),
                             ]
@@ -186,28 +186,28 @@ class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
                         'verify form field values' => (new Step(
                             [],
                             [
-                                $assertionFactory->createFromAssertionString(
+                                $assertionGenerator->generate(
                                     '"input[name=input-without-value]" is ""'
                                 ),
-                                $assertionFactory->createFromAssertionString(
+                                $assertionGenerator->generate(
                                     '"input[name=input-with-value]" is "test"'
                                 ),
                             ]
                         )),
                         'modify form field values' => (new Step(
                             [
-                                $actionFactory->createFromActionString(
+                                $actionGenerator->generate(
                                     'set "input[name=input-without-value]" to $data.field_value'
                                 ),
-                                $actionFactory->createFromActionString(
+                                $actionGenerator->generate(
                                     'set "input[name=input-with-value]" to $data.field_value'
                                 ),
                             ],
                             [
-                                $assertionFactory->createFromAssertionString(
+                                $assertionGenerator->generate(
                                     '"input[name=input-without-value]" is $data.expected_value'
                                 ),
-                                $assertionFactory->createFromAssertionString(
+                                $assertionGenerator->generate(
                                     '"input[name=input-with-value]" is $data.expected_value'
                                 ),
                             ]

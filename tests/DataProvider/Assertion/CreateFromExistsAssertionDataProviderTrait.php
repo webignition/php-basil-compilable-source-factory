@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
+use webignition\BasilAssertionGenerator\AssertionGenerator;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\BasilModelFactory\AssertionFactory;
 use webignition\DomElementLocator\ElementLocator;
 
 trait CreateFromExistsAssertionDataProviderTrait
 {
     public function createFromExistsAssertionDataProvider(): array
     {
-        $assertionFactory = AssertionFactory::createFactory();
+        $assertionGenerator = AssertionGenerator::createGenerator();
 
         return [
             'exists comparison, page property examined value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '$page.url exists'
                 ),
                 'expectedContent' => CodeBlock::fromContent([
@@ -39,7 +39,7 @@ trait CreateFromExistsAssertionDataProviderTrait
                     ])),
             ],
             'exists comparison, element identifier examined value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".selector" exists'
                 ),
                 'expectedContent' => CodeBlock::fromContent([
@@ -59,7 +59,7 @@ trait CreateFromExistsAssertionDataProviderTrait
                     ])),
             ],
             'exists comparison, attribute identifier examined value' => [
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".selector".attribute_name exists'
                 ),
                 'expectedContent' => CodeBlock::fromContent([

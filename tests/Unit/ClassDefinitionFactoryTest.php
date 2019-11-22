@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
+use webignition\BasilActionGenerator\ActionGenerator;
+use webignition\BasilAssertionGenerator\AssertionGenerator;
 use webignition\BasilCompilableSourceFactory\ArrayStatementFactory;
 use webignition\BasilCompilableSourceFactory\ClassDefinitionFactory;
 use webignition\BasilCompilableSourceFactory\ClassNameFactory;
@@ -26,8 +28,6 @@ use webignition\BasilModel\Step\Step;
 use webignition\BasilModel\Test\Configuration;
 use webignition\BasilModel\Test\Test;
 use webignition\BasilModel\Test\TestInterface;
-use webignition\BasilModelFactory\Action\ActionFactory;
-use webignition\BasilModelFactory\AssertionFactory;
 use webignition\DomElementLocator\ElementLocator;
 
 class ClassDefinitionFactoryTest extends AbstractTestCase
@@ -69,8 +69,9 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
 
     public function createClassDefinitionDataProvider(): array
     {
-        $actionFactory = ActionFactory::createFactory();
-        $assertionFactory = AssertionFactory::createFactory();
+        $actionGenerator = ActionGenerator::createGenerator();
+        $assertionGenerator = AssertionGenerator::createGenerator();
+
         $stepMethodNameFactoryFactory = new StepMethodNameFactoryFactory();
 
         return [
@@ -117,10 +118,10 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
                     [
                         'step one' => new Step(
                             [
-                                $actionFactory->createFromActionString('click ".selector"'),
+                                $actionGenerator->generate('click ".selector"'),
                             ],
                             [
-                                $assertionFactory->createFromAssertionString('$page.title is "value"'),
+                                $assertionGenerator->generate('$page.title is "value"'),
                             ]
                         ),
                     ]
@@ -170,10 +171,10 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
                     [
                         'step one' => (new Step(
                             [
-                                $actionFactory->createFromActionString('set ".selector" to $data.field_value'),
+                                $actionGenerator->generate('set ".selector" to $data.field_value'),
                             ],
                             [
-                                $assertionFactory->createFromAssertionString('".selector" is $data.expected_value'),
+                                $assertionGenerator->generate('".selector" is $data.expected_value'),
                             ]
                         ))->withDataSetCollection(new DataSetCollection([
                             new DataSet(

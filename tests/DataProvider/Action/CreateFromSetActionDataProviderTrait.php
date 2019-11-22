@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
+use webignition\BasilActionGenerator\ActionGenerator;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
@@ -13,18 +14,17 @@ use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModel\Action\InputAction;
 use webignition\BasilModel\Identifier\DomIdentifier;
 use webignition\BasilModel\Value\DomIdentifierValue;
-use webignition\BasilModelFactory\Action\ActionFactory;
 use webignition\DomElementLocator\ElementLocator;
 
 trait CreateFromSetActionDataProviderTrait
 {
     public function createFromSetActionDataProvider(): array
     {
-        $actionFactory = ActionFactory::createFactory();
+        $actionGenerator = ActionGenerator::createGenerator();
 
         return [
             'input action, element identifier, literal value' => [
-                'action' => $actionFactory->createFromActionString(
+                'action' => $actionGenerator->generate(
                     'set ".selector" to "value"'
                 ),
                 'expectedContent' => CodeBlock::fromContent([
@@ -122,7 +122,7 @@ trait CreateFromSetActionDataProviderTrait
                     ])),
             ],
             'input action, browser property' => [
-                'action' => $actionFactory->createFromActionString(
+                'action' => $actionGenerator->generate(
                     'set ".selector" to $browser.size'
                 ),
                 'expectedContent' => CodeBlock::fromContent([
@@ -154,7 +154,7 @@ trait CreateFromSetActionDataProviderTrait
                     ])),
             ],
             'input action, page property' => [
-                'action' => $actionFactory->createFromActionString(
+                'action' => $actionGenerator->generate(
                     'set ".selector" to $page.url'
                 ),
                 'expectedContent' => CodeBlock::fromContent([
@@ -182,7 +182,7 @@ trait CreateFromSetActionDataProviderTrait
                     ])),
             ],
             'input action, environment value' => [
-                'action' => $actionFactory->createFromActionString(
+                'action' => $actionGenerator->generate(
                     'set ".selector" to $env.KEY'
                 ),
                 'expectedContent' => CodeBlock::fromContent([
@@ -210,7 +210,7 @@ trait CreateFromSetActionDataProviderTrait
                     ])),
             ],
             'input action, environment value with default' => [
-                'action' => $actionFactory->createFromActionString(
+                'action' => $actionGenerator->generate(
                     'set ".selector" to $env.KEY|"default"'
                 ),
                 'expectedContent' => CodeBlock::fromContent([
@@ -238,7 +238,7 @@ trait CreateFromSetActionDataProviderTrait
                     ])),
             ],
             'input action, environment value with default with whitespace' => [
-                'action' => $actionFactory->createFromActionString(
+                'action' => $actionGenerator->generate(
                     'set ".selector" to $env.KEY|"default value"'
                 ),
                 'expectedContent' => CodeBlock::fromContent([

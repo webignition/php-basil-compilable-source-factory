@@ -4,24 +4,24 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
+use webignition\BasilAssertionGenerator\AssertionGenerator;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModel\Assertion\AssertionComparison;
 use webignition\BasilModel\Assertion\ComparisonAssertion;
 use webignition\BasilModel\Identifier\DomIdentifier;
 use webignition\BasilModel\Value\DomIdentifierValue;
-use webignition\BasilModelFactory\AssertionFactory;
 
 trait MatchesAssertionFunctionalDataProviderTrait
 {
     public function matchesAssertionFunctionalDataProvider(): array
     {
-        $assertionFactory = AssertionFactory::createFactory();
+        $assertionGenerator = AssertionGenerator::createGenerator();
 
         return [
             'matches comparison, element identifier examined value, scalar expected value' => [
                 'fixture' => '/assertions.html',
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".selector" matches "/^\.selector [a-z]+$/"'
                 ),
                 'variableIdentifiers' => [
@@ -32,7 +32,7 @@ trait MatchesAssertionFunctionalDataProviderTrait
             ],
             'matches comparison, attribute identifier examined value, scalar expected value' => [
                 'fixture' => '/assertions.html',
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".selector".data-test-attribute matches "/^[a-z]+ content$/"'
                 ),
                 'variableIdentifiers' => [
@@ -43,7 +43,7 @@ trait MatchesAssertionFunctionalDataProviderTrait
             ],
             'matches comparison, environment examined value, scalar expected value' => [
                 'fixture' => '/empty.html',
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '$env.TEST1 matches "/^environment/"'
                 ),
                 'variableIdentifiers' => [
@@ -54,7 +54,7 @@ trait MatchesAssertionFunctionalDataProviderTrait
             ],
             'matches comparison, browser object examined value, scalar expected value' => [
                 'fixture' => '/empty.html',
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '$browser.size matches "/[0-9]+x[0-9]+/"'
                 ),
                 'variableIdentifiers' => [
@@ -65,7 +65,7 @@ trait MatchesAssertionFunctionalDataProviderTrait
             ],
             'matches comparison, page object examined value, scalar expected value' => [
                 'fixture' => '/assertions.html',
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '$page.title matches "/fixture$/"'
                 ),
                 'variableIdentifiers' => [
@@ -105,7 +105,7 @@ trait MatchesAssertionFunctionalDataProviderTrait
             ],
             'matches comparison, attribute identifier examined value, environment expected value' => [
                 'fixture' => '/assertions.html',
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".selector".data-environment-value matches $env.MATCHES'
                 ),
                 'variableIdentifiers' => [

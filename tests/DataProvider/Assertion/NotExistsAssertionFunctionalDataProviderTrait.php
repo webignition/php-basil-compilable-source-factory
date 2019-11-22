@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
+use webignition\BasilAssertionGenerator\AssertionGenerator;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilModelFactory\AssertionFactory;
 
 trait NotExistsAssertionFunctionalDataProviderTrait
 {
     public function notExistsAssertionFunctionalDataProvider(): array
     {
-        $assertionFactory = AssertionFactory::createFactory();
+        $assertionGenerator = AssertionGenerator::createGenerator();
 
         return [
             'not-exists comparison, element identifier examined value' => [
                 'fixture' => '/empty.html',
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".selector" not-exists'
                 ),
                 'variableIdentifiers' => [
@@ -26,7 +26,7 @@ trait NotExistsAssertionFunctionalDataProviderTrait
             ],
             'not-exists comparison, attribute identifier examined value' => [
                 'fixture' => '/assertions.html',
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".selector".data-non-existent-attribute not-exists'
                 ),
                 'variableIdentifiers' => [
@@ -36,7 +36,7 @@ trait NotExistsAssertionFunctionalDataProviderTrait
             ],
             'not-exists comparison, environment examined value' => [
                 'fixture' => '/empty.html',
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '$env.NON-EXISTENT not-exists'
                 ),
                 'variableIdentifiers' => [

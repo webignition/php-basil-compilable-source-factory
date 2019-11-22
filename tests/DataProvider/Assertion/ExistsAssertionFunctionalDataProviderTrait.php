@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
+use webignition\BasilAssertionGenerator\AssertionGenerator;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilModelFactory\AssertionFactory;
 
 trait ExistsAssertionFunctionalDataProviderTrait
 {
     public function existsAssertionFunctionalDataProvider(): array
     {
-        $assertionFactory = AssertionFactory::createFactory();
+        $assertionGenerator = AssertionGenerator::createGenerator();
 
         return [
             'exists comparison, element identifier examined value' => [
                 'fixture' => '/assertions.html',
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".selector" exists'
                 ),
                 'variableIdentifiers' => [
@@ -27,7 +27,7 @@ trait ExistsAssertionFunctionalDataProviderTrait
             ],
             'exists comparison, attribute identifier examined value' => [
                 'fixture' => '/assertions.html',
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '".selector".data-test-attribute exists'
                 ),
                 'variableIdentifiers' => [
@@ -37,7 +37,7 @@ trait ExistsAssertionFunctionalDataProviderTrait
             ],
             'exists comparison, environment examined value' => [
                 'fixture' => '/empty.html',
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '$env.TEST1 exists'
                 ),
                 'variableIdentifiers' => [
@@ -47,7 +47,7 @@ trait ExistsAssertionFunctionalDataProviderTrait
             ],
             'exists comparison, browser object value' => [
                 'fixture' => '/empty.html',
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '$browser.size exists'
                 ),
                 'variableIdentifiers' => [
@@ -57,7 +57,7 @@ trait ExistsAssertionFunctionalDataProviderTrait
             ],
             'exists comparison, page object value' => [
                 'fixture' => '/empty.html',
-                'assertion' => $assertionFactory->createFromAssertionString(
+                'assertion' => $assertionGenerator->generate(
                     '$page.title exists'
                 ),
                 'variableIdentifiers' => [
