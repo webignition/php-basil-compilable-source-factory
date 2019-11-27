@@ -69,7 +69,9 @@ class ExistenceComparisonHandler
         $existence = null;
 
         if ($this->isScalarValue($value)) {
-            $accessor = $this->scalarValueHandler->handle($value);
+//            $accessor = $this->scalarValueHandler->handle($value);
+            // @todo fix in #211
+            $accessor = $this->scalarValueHandler->handle('Fix in #211');
 
             $accessor->mutateLastStatement(function (string $content) {
                 return $content . ' ?? null';

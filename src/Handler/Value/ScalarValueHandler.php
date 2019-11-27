@@ -5,48 +5,43 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Value;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\BasilModel\Value\LiteralValueInterface;
-use webignition\BasilModel\Value\ObjectValueInterface;
-use webignition\BasilModel\Value\ObjectValueType;
-use webignition\BasilModel\Value\ValueInterface;
 
 class ScalarValueHandler
 {
     /**
-     * @param ValueInterface $value
+     * @param string $value
      *
      * @return CodeBlockInterface
      *
-     * @throws UnsupportedModelException
-     * @throws UnknownObjectPropertyException
+     * @throws UnsupportedValueException
      */
-    public function handle(ValueInterface $value): CodeBlockInterface
+    public function handle(string $value): CodeBlockInterface
     {
-        if ($value instanceof ObjectValueInterface) {
-            if ($this->isBrowserProperty($value)) {
-                return $this->handleBrowserProperty();
-            }
+        if ($this->isBrowserProperty($value)) {
+            return $this->handleBrowserProperty();
+        }
 
-            if ($this->isDataParameter($value)) {
-                return new CodeBlock([
-                    new Statement('$' . $value->getProperty())
-                ]);
-            }
+        if ($this->isDataParameter($value)) {
+            $property = (string) preg_replace('/^\$data\./', '', $value);
 
-            if ($this->isEnvironmentValue($value)) {
-                return $this->handleEnvironmentValue($value);
-            }
+            return new CodeBlock([
+                new Statement('$' . $property)
+            ]);
+        }
 
-            if ($this->isPageProperty($value)) {
-                return $this->handlePageProperty($value);
-            }
+        if ($this->isEnvironmentValue($value)) {
+            return $this->handleEnvironmentValue($value);
+        }
+
+        if ($this->isPageProperty($value)) {
+            return $this->handlePageProperty($value);
         }
 
         if ($this->isLiteralValue($value)) {
@@ -55,32 +50,32 @@ class ScalarValueHandler
             ]);
         }
 
-        throw new UnsupportedModelException($value);
+        throw new UnsupportedValueException($value);
     }
 
-    private function isBrowserProperty(ObjectValueInterface $value): bool
+    private function isBrowserProperty(string $value): bool
     {
-        return ObjectValueType::BROWSER_PROPERTY === $value->getType() && 'size' === $value->getProperty();
+        return '$browser.size' === $value;
     }
 
-    private function isDataParameter(ObjectValueInterface $value): bool
+    private function isDataParameter(string $value): bool
     {
-        return $value->getType() === ObjectValueType::DATA_PARAMETER;
+        return preg_match('/^\$data\..+/', $value) > 0;
     }
 
-    private function isEnvironmentValue(ObjectValueInterface $value): bool
+    private function isEnvironmentValue(string $value): bool
     {
-        return ObjectValueType::ENVIRONMENT_PARAMETER === $value->getType();
+        return preg_match('/^\$env\..+/', $value) > 0;
     }
 
-    private function isLiteralValue(ValueInterface $value): bool
+    private function isLiteralValue(string $value): bool
     {
-        return $value instanceof LiteralValueInterface;
+        return '' !== $value && '"' === $value[0];
     }
 
-    private function isPageProperty(ObjectValueInterface $value): bool
+    private function isPageProperty(string $value): bool
     {
-        return ObjectValueType::PAGE_PROPERTY === $value->getType();
+        return preg_match('/^\$page\..+/', $value) > 0;
     }
 
     private function handleBrowserProperty(): CodeBlockInterface
@@ -110,8 +105,10 @@ class ScalarValueHandler
         return new CodeBlock([$dimensionAssignment, $dimensionConcatenation]);
     }
 
-    private function handleEnvironmentValue(ObjectValueInterface $value): CodeBlockInterface
+    private function handleEnvironmentValue(string $value): CodeBlockInterface
     {
+        $property = (string) preg_replace('/^\$env\./', '', $value);
+
         $variableDependencies = new VariablePlaceholderCollection();
         $environmentVariableArrayPlaceholder = $variableDependencies->create(
             VariableNames::ENVIRONMENT_VARIABLE_ARRAY
@@ -121,7 +118,7 @@ class ScalarValueHandler
             new Statement(
                 sprintf(
                     (string) $environmentVariableArrayPlaceholder . '[\'%s\']',
-                    $value->getProperty()
+                    $property
                 ),
                 (new Metadata())->withVariableDependencies($variableDependencies)
             )
@@ -129,14 +126,16 @@ class ScalarValueHandler
     }
 
     /**
-     * @param ObjectValueInterface $value
+     * @param string $value
      *
      * @return CodeBlockInterface
      *
-     * @throws UnknownObjectPropertyException
+     * @throws UnsupportedValueException
      */
-    private function handlePageProperty(ObjectValueInterface $value): CodeBlockInterface
+    private function handlePageProperty(string $value): CodeBlockInterface
     {
+        $property = (string) preg_replace('/^\$page\./', '', $value);
+
         $variableDependencies = new VariablePlaceholderCollection();
         $pantherClientPlaceholder = $variableDependencies->create(VariableNames::PANTHER_CLIENT);
 
@@ -145,7 +144,7 @@ class ScalarValueHandler
             'url' => (string) $pantherClientPlaceholder . '->getCurrentURL()',
         ];
 
-        $statementContent = $contentMap[$value->getProperty()] ?? null;
+        $statementContent = $contentMap[$property] ?? null;
 
         if (is_string($statementContent)) {
             $metadata = (new Metadata())
@@ -156,6 +155,6 @@ class ScalarValueHandler
             ]);
         }
 
-        throw new UnknownObjectPropertyException($value);
+        throw new UnsupportedValueException($value);
     }
 }

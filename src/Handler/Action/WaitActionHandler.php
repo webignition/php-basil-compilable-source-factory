@@ -74,7 +74,9 @@ class WaitActionHandler
                 return str_replace((string) $durationPlaceholder . ' = ', '', $content);
             });
         } else {
-            $durationAccessor = $this->scalarValueHandler->handle($duration);
+//            $durationAccessor = $this->scalarValueHandler->handle($duration);
+            // @todo fix in #211
+            $durationAccessor = $this->scalarValueHandler->handle('Fix in #211');
         }
 
         $durationAssignment = $this->variableAssignmentFactory->createForValueAccessor(

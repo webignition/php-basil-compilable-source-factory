@@ -24,7 +24,7 @@
     "scripts": {
         "cs": "./vendor/bin/phpcs src tests --colors --standard=PSR12",
         "static-analysis": "./vendor/bin/phpstan analyse src tests --level=7",
-        "test": "./vendor/bin/phpunit --colors=always",
+        "test": "./vendor/bin/phpunit --colors=always --group=poc208",
         "ci": [
             "@composer cs",
             "@composer static-analysis",
@@ -50,6 +50,7 @@
         "phpstan/phpstan": "^0.11.5",
         "webignition/base-panther-test-case": "^0.2.0",
         "webignition/basil-action-generator": ">=0.2,<1",
-        "webignition/basil-assertion-generator": ">=0.2,<1"
+        "webignition/basil-assertion-generator": ">=0.2,<1",
+        "webignition/basil-parser": ">=0.5,<1"
     }
 }

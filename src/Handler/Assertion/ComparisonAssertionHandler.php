@@ -85,7 +85,9 @@ class ComparisonAssertionHandler
                 return str_replace((string) $examinedValuePlaceholder . ' = ', '', $content);
             });
         } else {
-            $examinedValueAccessor = $this->scalarValueHandler->handle($examinedValue);
+//            $examinedValueAccessor = $this->scalarValueHandler->handle($examinedValue);
+            // @todo fix in #211
+            $examinedValueAccessor = $this->scalarValueHandler->handle('Fix in #211');
         }
 
         if ($expectedValue instanceof DomIdentifierValueInterface) {
@@ -97,7 +99,9 @@ class ComparisonAssertionHandler
                 return str_replace((string) $expectedValuePlaceholder . ' = ', '', $content);
             });
         } else {
-            $expectedValueAccessor = $this->scalarValueHandler->handle($expectedValue);
+//            $expectedValueAccessor = $this->scalarValueHandler->handle($expectedValue);
+            // @todo fix in #211
+            $expectedValueAccessor = $this->scalarValueHandler->handle('Fix in #211');
         }
 
         $examinedValueAssignment = $this->variableAssignmentFactory->createForValueAccessor(

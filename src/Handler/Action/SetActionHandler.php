@@ -93,7 +93,9 @@ class SetActionHandler
                 return str_replace((string) $valuePlaceholder . ' = ', '', $content);
             });
         } else {
-            $valueAccessor = $this->scalarValueHandler->handle($value);
+//            $valueAccessor = $this->scalarValueHandler->handle($value);
+            // @todo fix in #211
+            $valueAccessor = $this->scalarValueHandler->handle('Fix in #211');
         }
 
         $valueAssignment = $this->variableAssignmentFactory->createForValueAccessor(
