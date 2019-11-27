@@ -12,18 +12,16 @@ use webignition\BasilCompilableSourceFactory\Model\DomIdentifier;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
+use webignition\BasilCompilableSourceFactory\ValueTypeIdentifier;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
+use webignition\BasilDataStructure\AssertionInterface;
 use webignition\BasilModel\Assertion\AssertionComparison;
-use webignition\BasilModel\Assertion\ExaminationAssertionInterface;
 use webignition\BasilModel\Value\DomIdentifierValueInterface;
-use webignition\BasilModel\Value\ObjectValueInterface;
-use webignition\BasilModel\Value\ObjectValueType;
-use webignition\BasilModel\Value\ValueInterface;
 
 class ExistenceComparisonHandler
 {
@@ -31,17 +29,20 @@ class ExistenceComparisonHandler
     private $scalarValueHandler;
     private $domCrawlerNavigatorCallFactory;
     private $namedDomIdentifierHandler;
+    private $valueTypeIdentifier;
 
     public function __construct(
         AssertionCallFactory $assertionCallFactory,
         ScalarValueHandler $scalarValueHandler,
         DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory,
-        NamedDomIdentifierHandler $namedDomIdentifierHandler
+        NamedDomIdentifierHandler $namedDomIdentifierHandler,
+        ValueTypeIdentifier $valueTypeIdentifier
     ) {
         $this->assertionCallFactory = $assertionCallFactory;
         $this->scalarValueHandler = $scalarValueHandler;
         $this->domCrawlerNavigatorCallFactory = $domCrawlerNavigatorCallFactory;
         $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
+        $this->valueTypeIdentifier = $valueTypeIdentifier;
     }
 
     public static function createHandler(): ExistenceComparisonHandler
@@ -50,29 +51,30 @@ class ExistenceComparisonHandler
             AssertionCallFactory::createFactory(),
             ScalarValueHandler::createHandler(),
             DomCrawlerNavigatorCallFactory::createFactory(),
-            NamedDomIdentifierHandler::createHandler()
+            NamedDomIdentifierHandler::createHandler(),
+            new ValueTypeIdentifier()
         );
     }
 
     /**
-     * @param ExaminationAssertionInterface $assertion
+     * @param AssertionInterface $assertion
      *
      * @return CodeBlockInterface
      *
      * @throws UnsupportedModelException
      * @throws UnknownObjectPropertyException
      */
-    public function handle(ExaminationAssertionInterface $assertion): CodeBlockInterface
+    public function handle(AssertionInterface $assertion): CodeBlockInterface
     {
-        $value = $assertion->getExaminedValue();
+//        $value = $assertion->getExaminedValue();
         $valuePlaceholder = new VariablePlaceholder(VariableNames::EXAMINED_VALUE);
 
         $existence = null;
 
-        if ($this->isScalarValue($value)) {
-//            $accessor = $this->scalarValueHandler->handle($value);
-            // @todo fix in #211
-            $accessor = $this->scalarValueHandler->handle('Fix in #211');
+        $identifier = $assertion->getIdentifier();
+
+        if ($this->valueTypeIdentifier->isScalarValue($identifier)) {
+            $accessor = $this->scalarValueHandler->handle($identifier);
 
             $accessor->mutateLastStatement(function (string $content) {
                 return $content . ' ?? null';
@@ -157,28 +159,5 @@ class ExistenceComparisonHandler
             $valuePlaceholder,
             $assertionTemplate
         );
-    }
-
-    private function isScalarValue(ValueInterface $value): bool
-    {
-        if (!$value instanceof ObjectValueInterface) {
-            return false;
-        }
-
-        $valueType = $value->getType();
-
-        $types = [
-            ObjectValueType::BROWSER_PROPERTY,
-            ObjectValueType::ENVIRONMENT_PARAMETER,
-            ObjectValueType::PAGE_PROPERTY,
-        ];
-
-        foreach ($types as $type) {
-            if ($type === $valueType) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }
