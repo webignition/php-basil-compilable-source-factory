@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Value;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
+use webignition\BasilCompilableSourceFactory\Model\EnvironmentValue;
+use webignition\BasilCompilableSourceFactory\ModelFactory\EnvironmentValueFactory;
 use webignition\BasilCompilableSourceFactory\ValueTypeIdentifier;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlock;
@@ -16,16 +18,21 @@ use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 class ScalarValueHandler
 {
     private $valueTypeIdentifier;
+    private $environmentValueFactory;
 
-    public function __construct(ValueTypeIdentifier $valueTypeIdentifier)
-    {
+    public function __construct(
+        ValueTypeIdentifier $valueTypeIdentifier,
+        EnvironmentValueFactory $environmentValueFactory
+    ) {
         $this->valueTypeIdentifier = $valueTypeIdentifier;
+        $this->environmentValueFactory = $environmentValueFactory;
     }
 
     public static function createHandler(): ScalarValueHandler
     {
         return new ScalarValueHandler(
-            new ValueTypeIdentifier()
+            new ValueTypeIdentifier(),
+            EnvironmentValueFactory::createFactory()
         );
     }
 
@@ -50,7 +57,7 @@ class ScalarValueHandler
             ]);
         }
 
-        if ($this->valueTypeIdentifier->isEnvironmentValue($value)) {
+        if (EnvironmentValue::is($value)) {
             return $this->handleEnvironmentValue($value);
         }
 
@@ -96,7 +103,8 @@ class ScalarValueHandler
 
     private function handleEnvironmentValue(string $value): CodeBlockInterface
     {
-        $property = (string) preg_replace('/^\$env\./', '', $value);
+        $environmentValue = $this->environmentValueFactory->create($value);
+        $property = $environmentValue->getProperty();
 
         $variableDependencies = new VariablePlaceholderCollection();
         $environmentVariableArrayPlaceholder = $variableDependencies->create(
