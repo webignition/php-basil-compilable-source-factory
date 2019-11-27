@@ -26,7 +26,7 @@ class ScalarValueHandlerTest extends AbstractTestCase
     {
         parent::setUp();
 
-        $this->handler = new ScalarValueHandler();
+        $this->handler = ScalarValueHandler::createHandler();
     }
 
     /**

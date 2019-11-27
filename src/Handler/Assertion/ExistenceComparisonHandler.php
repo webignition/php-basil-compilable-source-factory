@@ -47,7 +47,7 @@ class ExistenceComparisonHandler
     {
         return new ExistenceComparisonHandler(
             AssertionCallFactory::createFactory(),
-            new ScalarValueHandler(),
+            ScalarValueHandler::createHandler(),
             DomCrawlerNavigatorCallFactory::createFactory(),
             NamedDomIdentifierHandler::createHandler()
         );

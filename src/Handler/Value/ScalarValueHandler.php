@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Value;
 
-use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
+use webignition\BasilCompilableSourceFactory\Model\EnvironmentValue;
+use webignition\BasilCompilableSourceFactory\ModelFactory\EnvironmentValueFactory;
+use webignition\BasilCompilableSourceFactory\ValueTypeIdentifier;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
@@ -15,6 +17,25 @@ use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
 class ScalarValueHandler
 {
+    private $valueTypeIdentifier;
+    private $environmentValueFactory;
+
+    public function __construct(
+        ValueTypeIdentifier $valueTypeIdentifier,
+        EnvironmentValueFactory $environmentValueFactory
+    ) {
+        $this->valueTypeIdentifier = $valueTypeIdentifier;
+        $this->environmentValueFactory = $environmentValueFactory;
+    }
+
+    public static function createHandler(): ScalarValueHandler
+    {
+        return new ScalarValueHandler(
+            new ValueTypeIdentifier(),
+            EnvironmentValueFactory::createFactory()
+        );
+    }
+
     /**
      * @param string $value
      *
@@ -24,11 +45,11 @@ class ScalarValueHandler
      */
     public function handle(string $value): CodeBlockInterface
     {
-        if ($this->isBrowserProperty($value)) {
+        if ($this->valueTypeIdentifier->isBrowserProperty($value)) {
             return $this->handleBrowserProperty();
         }
 
-        if ($this->isDataParameter($value)) {
+        if ($this->valueTypeIdentifier->isDataParameter($value)) {
             $property = (string) preg_replace('/^\$data\./', '', $value);
 
             return new CodeBlock([
@@ -36,46 +57,21 @@ class ScalarValueHandler
             ]);
         }
 
-        if ($this->isEnvironmentValue($value)) {
+        if (EnvironmentValue::is($value)) {
             return $this->handleEnvironmentValue($value);
         }
 
-        if ($this->isPageProperty($value)) {
+        if ($this->valueTypeIdentifier->isPageProperty($value)) {
             return $this->handlePageProperty($value);
         }
 
-        if ($this->isLiteralValue($value)) {
+        if ($this->valueTypeIdentifier->isLiteralValue($value)) {
             return new CodeBlock([
                 new Statement((string) $value)
             ]);
         }
 
         throw new UnsupportedValueException($value);
-    }
-
-    private function isBrowserProperty(string $value): bool
-    {
-        return '$browser.size' === $value;
-    }
-
-    private function isDataParameter(string $value): bool
-    {
-        return preg_match('/^\$data\..+/', $value) > 0;
-    }
-
-    private function isEnvironmentValue(string $value): bool
-    {
-        return preg_match('/^\$env\..+/', $value) > 0;
-    }
-
-    private function isLiteralValue(string $value): bool
-    {
-        return '' !== $value && '"' === $value[0];
-    }
-
-    private function isPageProperty(string $value): bool
-    {
-        return preg_match('/^\$page\..+/', $value) > 0;
     }
 
     private function handleBrowserProperty(): CodeBlockInterface
@@ -107,7 +103,8 @@ class ScalarValueHandler
 
     private function handleEnvironmentValue(string $value): CodeBlockInterface
     {
-        $property = (string) preg_replace('/^\$env\./', '', $value);
+        $environmentValue = $this->environmentValueFactory->create($value);
+        $property = $environmentValue->getProperty();
 
         $variableDependencies = new VariablePlaceholderCollection();
         $environmentVariableArrayPlaceholder = $variableDependencies->create(
