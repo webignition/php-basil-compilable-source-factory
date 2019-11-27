@@ -47,7 +47,7 @@ class SetActionHandler
         return new SetActionHandler(
             VariableAssignmentFactory::createFactory(),
             WebDriverElementMutatorCallFactory::createFactory(),
-            new ScalarValueHandler(),
+            ScalarValueHandler::createHandler(),
             NamedDomIdentifierHandler::createHandler(),
             AccessorDefaultValueFactory::createFactory()
         );

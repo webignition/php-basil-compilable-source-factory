@@ -44,7 +44,7 @@ class WaitActionHandler
     {
         return new WaitActionHandler(
             VariableAssignmentFactory::createFactory(),
-            new ScalarValueHandler(),
+            ScalarValueHandler::createHandler(),
             NamedDomIdentifierHandler::createHandler(),
             AccessorDefaultValueFactory::createFactory()
         );

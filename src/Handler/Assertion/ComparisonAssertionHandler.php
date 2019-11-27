@@ -54,7 +54,7 @@ class ComparisonAssertionHandler
         return new ComparisonAssertionHandler(
             AssertionCallFactory::createFactory(),
             VariableAssignmentFactory::createFactory(),
-            new ScalarValueHandler(),
+            ScalarValueHandler::createHandler(),
             NamedDomIdentifierHandler::createHandler(),
             AccessorDefaultValueFactory::createFactory()
         );
