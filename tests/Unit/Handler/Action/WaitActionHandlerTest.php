@@ -19,11 +19,11 @@ class WaitActionHandlerTest extends AbstractTestCase
     /**
      * @dataProvider createForUnsupportedActionDataProvider
      */
-    public function testCreateForUnsupportedActon(WaitAction $action, string $expectedException)
+    public function testCreateForUnsupportedActon(WaitAction $action, \Exception $expectedException)
     {
         $handler = WaitActionHandler::createHandler();
 
-        $this->expectException($expectedException);
+        $this->expectExceptionObject($expectedException);
 
         $handler->handle($action);
     }
@@ -33,13 +33,9 @@ class WaitActionHandlerTest extends AbstractTestCase
         $actionParser = ActionParser::create();
 
         return [
-            'value is element reference' => [
-                'action' => $actionParser->parse('wait $elements.element_name'),
-                'expectedException' => UnsupportedValueException::class,
-            ],
             'value is null' => [
                 'action' => $actionParser->parse('wait'),
-                'expectedException' => UnsupportedActionException::class,
+                'expectedException' => new UnsupportedValueException('')
             ],
         ];
     }

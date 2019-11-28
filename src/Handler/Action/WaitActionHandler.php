@@ -7,7 +7,6 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedActionException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
 use webignition\BasilCompilableSourceFactory\IdentifierTypeFinder;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
@@ -62,7 +61,6 @@ class WaitActionHandler
      * @return CodeBlockInterface
      *
      * @throws UnsupportedIdentifierException
-     * @throws UnsupportedActionException
      * @throws UnsupportedValueException
      */
     public function handle(WaitAction $waitAction): CodeBlockInterface
@@ -73,7 +71,7 @@ class WaitActionHandler
         $duration = $waitAction->getDuration();
 
         if ('' === $duration) {
-            throw new UnsupportedActionException($waitAction);
+            throw new UnsupportedValueException('');
         }
 
         if (ctype_digit($duration)) {
