@@ -4,32 +4,40 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Action;
 
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedActionException;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\Handler\Action\SetActionHandler;
-use webignition\BasilModel\Action\InputAction;
-use webignition\BasilModel\Identifier\DomIdentifier;
-use webignition\BasilModel\Value\PageElementReference;
+use webignition\BasilDataStructure\Action\ActionInterface;
+use webignition\BasilParser\ActionParser;
 
+/**
+ * @group poc208
+ */
 class SetActionHandlerTest extends AbstractTestCase
 {
-    public function testCreatesSourceForUnsupportedValue()
+    /**
+     * @dataProvider createForUnsupportedActionDataProvider
+     */
+    public function testCreateForUnsupportedActon(ActionInterface $action)
     {
         $handler = SetActionHandler::createHandler();
 
-        $action = new InputAction(
-            'set ".selector" to "foo"',
-            new DomIdentifier('.selector'),
-            new PageElementReference(
-                'page_import_name.elements.element_name',
-                'page_import_name',
-                'element_name'
-            ),
-            '".selector" to "foo"'
-        );
-
-        $this->expectException(UnsupportedModelException::class);
+        $this->expectExceptionObject(new UnsupportedActionException($action));
 
         $handler->handle($action);
+    }
+
+    public function createForUnsupportedActionDataProvider(): array
+    {
+        $actionParser = ActionParser::create();
+
+        return [
+            'identifier is attribute reference' => [
+                'action' => $actionParser->parse('set $".selector".attribute_name to "value"')
+            ],
+            'value is null' => [
+                'action' => $actionParser->parse('set $".selector"')
+            ],
+        ];
     }
 }

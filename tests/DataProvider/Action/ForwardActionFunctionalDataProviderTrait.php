@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
-use webignition\BasilActionGenerator\ActionGenerator;
 use webignition\BasilCompilableSourceFactory\Tests\Services\PlaceholderFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilCompilationSource\Block\CodeBlock;
+use webignition\BasilParser\ActionParser;
 
 trait ForwardActionFunctionalDataProviderTrait
 {
     public function forwardActionFunctionalDataProvider(): array
     {
-        $actionGenerator = ActionGenerator::createGenerator();
+        $actionParser = ActionParser::create();
 
         return [
             'forward action' => [
                 'fixture' => '/index.html',
-                'action' => $actionGenerator->generate('forward'),
+                'action' => $actionParser->parse('forward'),
                 'additionalSetupStatements' => new CodeBlock([
                     StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
                     StatementFactory::createCrawlerActionCallForElement('#link-to-assertions', 'click'),
