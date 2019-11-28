@@ -4,37 +4,32 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory;
 
-use webignition\BasilCompilableSourceFactory\Model\EnvironmentValue;
-use webignition\BasilCompilableSourceFactory\ModelFactory\EnvironmentValueFactory;
+use webignition\BasilModel\Value\ObjectValueInterface;
+use webignition\BasilModel\Value\ObjectValueType;
+use webignition\BasilModel\Value\ValueInterface;
 
 class AccessorDefaultValueFactory
 {
     private $singleQuotedStringEscaper;
-    private $environmentValueFactory;
 
-    public function __construct(
-        SingleQuotedStringEscaper $singleQuotedStringEscaper,
-        EnvironmentValueFactory $environmentValueFactory
-    ) {
+    public function __construct(SingleQuotedStringEscaper $singleQuotedStringEscaper)
+    {
         $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
-        $this->environmentValueFactory = $environmentValueFactory;
     }
 
     public static function createFactory(): AccessorDefaultValueFactory
     {
         return new AccessorDefaultValueFactory(
-            SingleQuotedStringEscaper::create(),
-            EnvironmentValueFactory::createFactory()
+            SingleQuotedStringEscaper::create()
         );
     }
 
-    public function create(string $value)
+    public function create(ValueInterface $value)
     {
-        if (EnvironmentValue::is($value)) {
-            $environmentValue = $this->environmentValueFactory->create($value);
-            $valueDefault = $environmentValue->getDefault();
+        if ($value instanceof ObjectValueInterface && ObjectValueType::ENVIRONMENT_PARAMETER === $value->getType()) {
+            $valueDefault = $value->getDefault();
 
-            if (null !== $valueDefault) {
+            if ('' !== $valueDefault) {
                 return ctype_digit($valueDefault)
                     ? (int) $valueDefault
                     : "'" . $this->singleQuotedStringEscaper->escape($valueDefault) . "'";

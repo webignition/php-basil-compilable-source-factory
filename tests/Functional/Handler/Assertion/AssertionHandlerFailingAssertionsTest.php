@@ -4,17 +4,14 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\Assertion;
 
+use webignition\BasilAssertionGenerator\AssertionGenerator;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilDataStructure\AssertionInterface;
-use webignition\BasilParser\AssertionParser;
+use webignition\BasilModel\Assertion\AssertionInterface;
 
-/**
- * @group poc208
- */
 class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
 {
     /**
@@ -68,12 +65,14 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
 
     public function createSourceForFailingAssertionsDataProvider(): array
     {
-        $assertionParser = AssertionParser::create();
+        $assertionGenerator = AssertionGenerator::createGenerator();
 
         return [
             'exists comparison, element identifier examined value, element does not exist' => [
                 'fixture' => '/index.html',
-                'assertion' => $assertionParser->parse('$".selector" exists'),
+                'assertion' => $assertionGenerator->generate(
+                    '".selector" exists'
+                ),
                 'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
                 'additionalVariableIdentifiers' => [
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
@@ -81,7 +80,9 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
             ],
             'exists comparison, attribute identifier examined value, element does not exist' => [
                 'fixture' => '/index.html',
-                'assertion' => $assertionParser->parse('$".selector".attribute_name exists'),
+                'assertion' => $assertionGenerator->generate(
+                    '".selector".attribute_name exists'
+                ),
                 'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
                 'additionalVariableIdentifiers' => [
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
@@ -90,7 +91,9 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
             ],
             'exists comparison, attribute identifier examined value, attribute does not exist' => [
                 'fixture' => '/index.html',
-                'assertion' => $assertionParser->parse('$"h1".attribute_name exists'),
+                'assertion' => $assertionGenerator->generate(
+                    '"h1".attribute_name exists'
+                ),
                 'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
                 'additionalVariableIdentifiers' => [
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
@@ -99,7 +102,9 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
             ],
             'exists comparison, environment examined value, environment variable does not exist' => [
                 'fixture' => '/index.html',
-                'assertion' => $assertionParser->parse('$env.FOO exists'),
+                'assertion' => $assertionGenerator->generate(
+                    '$env.FOO exists'
+                ),
                 'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
                 'additionalVariableIdentifiers' => [
                     VariableNames::ENVIRONMENT_VARIABLE_ARRAY => '$_ENV',

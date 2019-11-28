@@ -4,21 +4,24 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
+use webignition\BasilActionGenerator\ActionGenerator;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilParser\ActionParser;
+use webignition\BasilModel\Action\WaitAction;
+use webignition\BasilModel\Identifier\DomIdentifier;
+use webignition\BasilModel\Value\DomIdentifierValue;
 
 trait WaitActionFunctionalDataProviderTrait
 {
     public function waitActionFunctionalDataProvider(): array
     {
-        $actionParser = ActionParser::create();
+        $actionGenerator = ActionGenerator::createGenerator();
         $fixture = '/action-wait.html';
 
         return [
             'wait action, literal duration' => [
                 'fixture' => $fixture,
-                'action' => $actionParser->parse('wait 10'),
+                'action' => $actionGenerator->generate('wait 10'),
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [
@@ -28,7 +31,10 @@ trait WaitActionFunctionalDataProviderTrait
             ],
             'wait action, element value' => [
                 'fixture' => $fixture,
-                'action' => $actionParser->parse('wait $"[id="element-value"]"'),
+                'action' => new WaitAction(
+                    'wait $elements.element_name',
+                    new DomIdentifierValue(new DomIdentifier('[id="element-value"]'))
+                ),
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [
@@ -39,7 +45,12 @@ trait WaitActionFunctionalDataProviderTrait
             ],
             'wait action, attribute value, attribute exists' => [
                 'fixture' => $fixture,
-                'action' => $actionParser->parse('wait $"[id="attribute-value"]".data-duration'),
+                'action' => new WaitAction(
+                    'wait $elements.element_name.attribute_name',
+                    new DomIdentifierValue(
+                        (new DomIdentifier('[id="attribute-value"]'))->withAttributeName('data-duration')
+                    )
+                ),
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [
@@ -50,7 +61,12 @@ trait WaitActionFunctionalDataProviderTrait
             ],
             'wait action, attribute value, attribute does not exist' => [
                 'fixture' => $fixture,
-                'action' => $actionParser->parse('wait $"[id="attribute-value"]".data-non-existent'),
+                'action' => new WaitAction(
+                    'wait $elements.element_name.attribute_name',
+                    new DomIdentifierValue(
+                        (new DomIdentifier('[id="attribute-value"]'))->withAttributeName('data-non-existent')
+                    )
+                ),
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [
@@ -61,7 +77,7 @@ trait WaitActionFunctionalDataProviderTrait
             ],
             'wait action, browser property' => [
                 'fixture' => $fixture,
-                'action' => $actionParser->parse('wait $browser.size'),
+                'action' => $actionGenerator->generate('wait $browser.size'),
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [
@@ -72,7 +88,7 @@ trait WaitActionFunctionalDataProviderTrait
             ],
             'wait action, page property' => [
                 'fixture' => $fixture,
-                'action' => $actionParser->parse('wait $page.title'),
+                'action' => $actionGenerator->generate('wait $page.title'),
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [
@@ -82,7 +98,7 @@ trait WaitActionFunctionalDataProviderTrait
             ],
             'wait action, environment value, value exists' => [
                 'fixture' => $fixture,
-                'action' => $actionParser->parse('wait $env.DURATION'),
+                'action' => $actionGenerator->generate('wait $env.DURATION'),
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [
@@ -93,7 +109,7 @@ trait WaitActionFunctionalDataProviderTrait
             ],
             'wait action, environment value, value does not exist' => [
                 'fixture' => $fixture,
-                'action' => $actionParser->parse('wait $env.NON_EXISTENT'),
+                'action' => $actionGenerator->generate('wait $env.NON_EXISTENT'),
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [

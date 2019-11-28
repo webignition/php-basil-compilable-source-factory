@@ -49,16 +49,16 @@ class NamedDomIdentifierHandler
     }
 
     /**
-     * @param NamedDomIdentifierInterface $namedDomIdentifier
+     * @param NamedDomIdentifierInterface $value
      *
      * @return CodeBlockInterface
      */
-    public function handle(NamedDomIdentifierInterface $namedDomIdentifier): CodeBlockInterface
+    public function handle(NamedDomIdentifierInterface $value): CodeBlockInterface
     {
-        $identifier = $namedDomIdentifier->getIdentifier();
+        $identifier = $value->getIdentifier();
         $hasAttribute = null !== $identifier->getAttributeName();
 
-        if ($namedDomIdentifier->asCollection()) {
+        if ($value->asCollection()) {
             $hasCall = $this->domCrawlerNavigatorCallFactory->createHasCall($identifier);
             $findCall = $this->domCrawlerNavigatorCallFactory->createFindCall($identifier);
         } else {
@@ -78,7 +78,7 @@ class NamedDomIdentifierHandler
         });
         $hasAssignment->addVariableExportsToLastStatement($hasAssignmentVariableExports);
 
-        $elementPlaceholder = $namedDomIdentifier->getPlaceholder();
+        $elementPlaceholder = $value->getPlaceholder();
         $collectionAssignmentVariableExports = new VariablePlaceholderCollection([
             $elementPlaceholder,
         ]);
@@ -102,7 +102,7 @@ class NamedDomIdentifierHandler
             $elementOrCollectionAssignment,
         ]);
 
-        if ($namedDomIdentifier->includeValue()) {
+        if ($value->includeValue()) {
             if ($hasAttribute) {
                 $valueAssignment = new CodeBlock([
                     new Statement(sprintf(

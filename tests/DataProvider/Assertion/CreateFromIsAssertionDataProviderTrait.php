@@ -4,24 +4,42 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
+use webignition\BasilAssertionGenerator\AssertionGenerator;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\BasilParser\AssertionParser;
+use webignition\BasilModel\Assertion\AssertionComparison;
+use webignition\BasilModel\Assertion\ComparisonAssertion;
+use webignition\BasilModel\Identifier\DomIdentifier;
+use webignition\BasilModel\Value\DomIdentifierValue;
+use webignition\BasilModelFactory\ValueFactory;
 use webignition\DomElementLocator\ElementLocator;
 
 trait CreateFromIsAssertionDataProviderTrait
 {
     public function createFromIsAssertionDataProvider(): array
     {
-        $assertionParser = AssertionParser::create();
+        $assertionGenerator = AssertionGenerator::createGenerator();
+        $valueFactory = ValueFactory::createFactory();
+
+        $browserProperty = $valueFactory->createFromValueString('$browser.size');
+        $environmentValue = $valueFactory->createFromValueString('$env.KEY');
+        $environmentValueWithDefault = $valueFactory->createFromValueString('$env.KEY|"default value"');
+        $elementValue = new DomIdentifierValue(new DomIdentifier('.selector'));
+        $pageProperty = $valueFactory->createFromValueString('$page.url');
+
+        $attributeValue = new DomIdentifierValue(
+            (new DomIdentifier('.selector'))->withAttributeName('attribute_name')
+        );
 
         return [
             'is comparison, element identifier examined value, literal string expected value' => [
-                'assertion' => $assertionParser->parse('$".selector" is "value"'),
+                'assertion' => $assertionGenerator->generate(
+                    '".selector" is "value"'
+                ),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ EXPECTED }} = "value" ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
@@ -48,7 +66,9 @@ trait CreateFromIsAssertionDataProviderTrait
                     ])),
             ],
             'is comparison, attribute identifier examined value, literal string expected value' => [
-                'assertion' => $assertionParser->parse('$".selector".attribute_name is "value"'),
+                'assertion' => $assertionGenerator->generate(
+                    '".selector".attribute_name is "value"'
+                ),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ EXPECTED }} = "value" ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
@@ -74,7 +94,9 @@ trait CreateFromIsAssertionDataProviderTrait
                     ])),
             ],
             'is comparison, browser object examined value, literal string expected value' => [
-                'assertion' => $assertionParser->parse('$browser.size is "value"'),
+                'assertion' => $assertionGenerator->generate(
+                    '$browser.size is "value"'
+                ),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ EXPECTED }} = "value" ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
@@ -97,7 +119,9 @@ trait CreateFromIsAssertionDataProviderTrait
                     ])),
             ],
             'is comparison, environment examined value, literal string expected value' => [
-                'assertion' => $assertionParser->parse('$env.KEY is "value"'),
+                'assertion' => $assertionGenerator->generate(
+                    '$env.KEY is "value"'
+                ),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ EXPECTED }} = "value" ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
@@ -116,7 +140,9 @@ trait CreateFromIsAssertionDataProviderTrait
                     ])),
             ],
             'is comparison, environment examined value with default, literal string expected value' => [
-                'assertion' => $assertionParser->parse('$env.KEY|"default value" is "value"'),
+                'assertion' => $assertionGenerator->generate(
+                    '$env.KEY|"default value" is "value"'
+                ),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ EXPECTED }} = "value" ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
@@ -135,7 +161,9 @@ trait CreateFromIsAssertionDataProviderTrait
                     ])),
             ],
             'is comparison, environment examined value with default, environment examined value with default' => [
-                'assertion' => $assertionParser->parse('$env.KEY1|"default value 1" is $env.KEY2|"default value 2"'),
+                'assertion' => $assertionGenerator->generate(
+                    '$env.KEY1|"default value 1" is $env.KEY2|"default value 2"'
+                ),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ EXPECTED }} = {{ ENV }}[\'KEY2\'] ?? \'default value 2\'',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
@@ -154,7 +182,9 @@ trait CreateFromIsAssertionDataProviderTrait
                     ])),
             ],
             'is comparison, page object examined value, literal string expected value' => [
-                'assertion' => $assertionParser->parse('$page.title is "value"'),
+                'assertion' => $assertionGenerator->generate(
+                    '$page.title is "value"'
+                ),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ EXPECTED }} = "value" ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
@@ -173,7 +203,12 @@ trait CreateFromIsAssertionDataProviderTrait
                     ])),
             ],
             'is comparison, browser object examined value, element identifier expected value' => [
-                'assertion' => $assertionParser->parse('$browser.size is $".selector"'),
+                'assertion' => new ComparisonAssertion(
+                    '$browser.size is ".selector"',
+                    $browserProperty,
+                    AssertionComparison::IS,
+                    $elementValue
+                ),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
@@ -205,7 +240,12 @@ trait CreateFromIsAssertionDataProviderTrait
                     ])),
             ],
             'is comparison, browser object examined value, attribute identifier expected value' => [
-                'assertion' => $assertionParser->parse('$browser.size is $".selector".attribute_name'),
+                'assertion' => new ComparisonAssertion(
+                    '$browser.size is ".selector".attribute_name',
+                    $browserProperty,
+                    AssertionComparison::IS,
+                    $attributeValue
+                ),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
@@ -236,7 +276,12 @@ trait CreateFromIsAssertionDataProviderTrait
                     ])),
             ],
             'is comparison, browser object examined value, environment expected value' => [
-                'assertion' => $assertionParser->parse('$browser.size is $env.KEY'),
+                'assertion' => new ComparisonAssertion(
+                    '$browser.size is $env.KEY',
+                    $browserProperty,
+                    AssertionComparison::IS,
+                    $environmentValue
+                ),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ EXPECTED }} = {{ ENV }}[\'KEY\'] ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
@@ -260,7 +305,12 @@ trait CreateFromIsAssertionDataProviderTrait
                     ])),
             ],
             'is comparison, browser object examined value, environment expected value with default' => [
-                'assertion' => $assertionParser->parse('$browser.size is $env.KEY|"default value"'),
+                'assertion' => new ComparisonAssertion(
+                    '$browser.size is $env.KEY',
+                    $browserProperty,
+                    AssertionComparison::IS,
+                    $environmentValueWithDefault
+                ),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ EXPECTED }} = {{ ENV }}[\'KEY\'] ?? \'default value\'',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
@@ -284,7 +334,12 @@ trait CreateFromIsAssertionDataProviderTrait
                     ])),
             ],
             'is comparison, browser object examined value, page object expected value' => [
-                'assertion' => $assertionParser->parse('$browser.size is $page.url'),
+                'assertion' => new ComparisonAssertion(
+                    '$browser.size is $page.url',
+                    $browserProperty,
+                    AssertionComparison::IS,
+                    $pageProperty
+                ),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ EXPECTED }} = {{ CLIENT }}->getCurrentURL() ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',

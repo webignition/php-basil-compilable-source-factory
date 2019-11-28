@@ -6,19 +6,17 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
-use webignition\BasilCompilableSourceFactory\Exception\UnknownIdentifierException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedActionException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
-use webignition\BasilCompilableSourceFactory\IdentifierTypeFinder;
+use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
-use webignition\BasilCompilableSourceFactory\ModelFactory\DomIdentifier\DomIdentifierFactory;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\BasilDataStructure\Action\WaitAction;
+use webignition\BasilModel\Action\WaitActionInterface;
+use webignition\BasilModel\Value\DomIdentifierValueInterface;
 
 class WaitActionHandler
 {
@@ -29,65 +27,47 @@ class WaitActionHandler
     private $scalarValueHandler;
     private $namedDomIdentifierHandler;
     private $accessorDefaultValueFactory;
-    private $domIdentifierFactory;
 
     public function __construct(
         VariableAssignmentFactory $variableAssignmentFactory,
         ScalarValueHandler $scalarValueHandler,
         NamedDomIdentifierHandler $namedDomIdentifierHandler,
-        AccessorDefaultValueFactory $accessorDefaultValueFactory,
-        DomIdentifierFactory $domIdentifierFactory
+        AccessorDefaultValueFactory $accessorDefaultValueFactory
     ) {
         $this->variableAssignmentFactory = $variableAssignmentFactory;
         $this->scalarValueHandler = $scalarValueHandler;
         $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
         $this->accessorDefaultValueFactory = $accessorDefaultValueFactory;
-        $this->domIdentifierFactory = $domIdentifierFactory;
     }
 
     public static function createHandler(): WaitActionHandler
     {
         return new WaitActionHandler(
             VariableAssignmentFactory::createFactory(),
-            ScalarValueHandler::createHandler(),
+            new ScalarValueHandler(),
             NamedDomIdentifierHandler::createHandler(),
-            AccessorDefaultValueFactory::createFactory(),
-            DomIdentifierFactory::createFactory()
+            AccessorDefaultValueFactory::createFactory()
         );
     }
 
     /**
-     * @param WaitAction $waitAction
+     * @param WaitActionInterface $waitAction
      *
      * @return CodeBlockInterface
      *
-     * @throws UnknownIdentifierException
-     * @throws UnsupportedActionException
-     * @throws UnsupportedValueException
+     * @throws UnsupportedModelException
+     * @throws UnknownObjectPropertyException
      */
-    public function handle(WaitAction $waitAction): CodeBlockInterface
+    public function handle(WaitActionInterface $waitAction): CodeBlockInterface
     {
         $variableExports = new VariablePlaceholderCollection();
         $durationPlaceholder = $variableExports->create(self::DURATION_PLACEHOLDER);
 
         $duration = $waitAction->getDuration();
 
-        if ('' === $duration) {
-            throw new UnsupportedActionException($waitAction);
-        }
-
-        if (ctype_digit($duration)) {
-            $duration = '"' . $duration . '"';
-        }
-
-        if (
-            IdentifierTypeFinder::isDomIdentifier($duration) ||
-            IdentifierTypeFinder::isDescendantDomIdentifier($duration)
-        ) {
-            $durationIdentifier = $this->domIdentifierFactory->create($duration);
-
+        if ($duration instanceof DomIdentifierValueInterface) {
             $durationAccessor = $this->namedDomIdentifierHandler->handle(
-                new NamedDomIdentifierValue($durationIdentifier, $durationPlaceholder)
+                new NamedDomIdentifierValue($duration, $durationPlaceholder)
             );
 
             $durationAccessor->mutateLastStatement(function (string $content) use ($durationPlaceholder) {

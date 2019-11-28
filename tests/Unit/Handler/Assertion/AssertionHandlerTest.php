@@ -15,11 +15,8 @@ use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Metadata\MetadataInterface;
-use webignition\BasilDataStructure\AssertionInterface;
+use webignition\BasilModel\Assertion\AssertionInterface;
 
-/**
- * @group poc208
- */
 class AssertionHandlerTest extends AbstractTestCase
 {
     use CreateFromExcludesAssertionDataProviderTrait;
@@ -43,13 +40,13 @@ class AssertionHandlerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider createFromExcludesAssertionDataProvider
-     * @dataProvider createFromExistsAssertionDataProvider
-     * @dataProvider createFromIncludesAssertionDataProvider
+     * @!dataProvider createFromExcludesAssertionDataProvider
+     * @!dataProvider createFromExistsAssertionDataProvider
+     * @!dataProvider createFromIncludesAssertionDataProvider
      * @dataProvider createFromIsAssertionDataProvider
-     * @dataProvider createFromIsNotAssertionDataProvider
-     * @dataProvider createFromMatchesAssertionDataProvider
-     * @dataProvider createFromNotExistsAssertionDataProvider
+     * @!dataProvider createFromIsNotAssertionDataProvider
+     * @!dataProvider createFromMatchesAssertionDataProvider
+     * @!dataProvider createFromNotExistsAssertionDataProvider
      */
     public function testHandle(
         AssertionInterface $assertion,

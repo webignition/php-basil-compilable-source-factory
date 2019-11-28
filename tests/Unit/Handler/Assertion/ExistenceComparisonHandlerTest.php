@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Assertion;
 
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedAssertionException;
+use webignition\BasilAssertionGenerator\AssertionGenerator;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\ExistenceComparisonHandler;
-use webignition\BasilDataStructure\AssertionInterface;
-use webignition\BasilParser\AssertionParser;
+use webignition\BasilModel\Assertion\ExaminationAssertion;
+use webignition\BasilModel\Assertion\ExaminationAssertionInterface;
 
-/**
- * @group poc208
- */
 class ExistenceComparisonHandlerTest extends AbstractTestCase
 {
     /**
@@ -30,23 +28,30 @@ class ExistenceComparisonHandlerTest extends AbstractTestCase
     /**
      * @dataProvider handleWrongValueTypeDataProvider
      */
-    public function testHandleWrongValueType(AssertionInterface $assertion)
+    public function testHandleWrongValueType(ExaminationAssertionInterface $assertion, string $expectedExceptionMessage)
     {
-        $this->expectExceptionObject(new UnsupportedAssertionException($assertion));
+        $this->expectException(UnsupportedModelException::class);
+        $this->expectExceptionMessage($expectedExceptionMessage);
 
         $this->handler->handle($assertion);
     }
 
     public function handleWrongValueTypeDataProvider(): array
     {
-        $assertionParser = AssertionParser::create();
+        $assertionGenerator = AssertionGenerator::createGenerator();
 
         return [
-            'element reference' => [
-                'model' => $assertionParser->parse('$elements.element_name exists'),
-            ],
             'page element reference' => [
-                'model' => $assertionParser->parse('$page_import_name.elements.element_name exists'),
+                'model' => $assertionGenerator->generate(
+                    'page_import_name.elements.element_name exists'
+                ),
+                'expectedExceptionMessage' => 'Unsupported model "' . ExaminationAssertion::class . '"',
+            ],
+            'non-scalar object value' => [
+                'model' => $assertionGenerator->generate(
+                    '$data.key exists'
+                ),
+                'expectedExceptionMessage' => 'Unsupported model "' . ExaminationAssertion::class . '"',
             ],
         ];
     }
