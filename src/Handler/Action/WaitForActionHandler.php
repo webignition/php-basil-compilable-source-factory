@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
-use webignition\BasilCompilableSourceFactory\Exception\UnknownIdentifierException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedActionException;
 use webignition\BasilCompilableSourceFactory\IdentifierTypeFinder;
 use webignition\BasilCompilableSourceFactory\ModelFactory\DomIdentifier\DomIdentifierFactory;
@@ -43,7 +43,7 @@ class WaitForActionHandler
      *
      * @return CodeBlockInterface
      *
-     * @throws UnknownIdentifierException
+     * @throws UnsupportedIdentifierException
      * @throws UnsupportedActionException
      */
     public function handle(InteractionAction $action): CodeBlockInterface

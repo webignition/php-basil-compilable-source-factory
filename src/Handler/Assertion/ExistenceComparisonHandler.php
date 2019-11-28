@@ -6,7 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
-use webignition\BasilCompilableSourceFactory\Exception\UnknownIdentifierException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedAssertionException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
 use webignition\BasilCompilableSourceFactory\IdentifierTypeFinder;
@@ -66,7 +66,7 @@ class ExistenceComparisonHandler extends AbstractAssertionHandler
      *
      * @return CodeBlockInterface
      *
-     * @throws UnknownIdentifierException
+     * @throws UnsupportedIdentifierException
      * @throws UnsupportedValueException
      * @throws UnsupportedAssertionException
      */

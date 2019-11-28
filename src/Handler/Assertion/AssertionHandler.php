@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
-use webignition\BasilCompilableSourceFactory\Exception\UnknownIdentifierException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedAssertionException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
@@ -37,7 +37,7 @@ class AssertionHandler
      *
      * @return CodeBlockInterface
      *
-     * @throws UnknownIdentifierException
+     * @throws UnsupportedIdentifierException
      * @throws UnsupportedAssertionException
      * @throws UnsupportedValueException
      */

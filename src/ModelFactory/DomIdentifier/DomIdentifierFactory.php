@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\ModelFactory\DomIdentifier;
 
-use webignition\BasilCompilableSourceFactory\Exception\UnknownIdentifierException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
 use webignition\BasilCompilableSourceFactory\Model\DomIdentifier;
 
 class DomIdentifierFactory
@@ -33,7 +33,7 @@ class DomIdentifierFactory
      *
      * @return DomIdentifier
      *
-     * @throws UnknownIdentifierException
+     * @throws UnsupportedIdentifierException
      */
     public function create(string $identifierString): DomIdentifier
     {
@@ -47,6 +47,6 @@ class DomIdentifierFactory
             return $identifier;
         }
 
-        throw new UnknownIdentifierException($identifierString);
+        throw new UnsupportedIdentifierException($identifierString);
     }
 }
