@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSourceFactory\Tests\Unit\ModelFactory;
+namespace webignition\BasilCompilableSourceFactory\Tests\Unit\ModelFactory\DomIdentifier;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnknownIdentifierException;
 use webignition\BasilCompilableSourceFactory\Model\DomIdentifier;
-use webignition\BasilCompilableSourceFactory\ModelFactory\DomIdentifierFactory;
+use webignition\BasilCompilableSourceFactory\ModelFactory\DomIdentifier\DomIdentifierFactory;
 
 class DomIdentifierFactoryTest extends \PHPUnit\Framework\TestCase
 {
