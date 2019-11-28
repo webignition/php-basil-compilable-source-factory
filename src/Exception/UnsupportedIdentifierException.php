@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Exception;
 
-class UnknownIdentifierException extends \Exception
+class UnsupportedIdentifierException extends \Exception
 {
     private $identifier;
 

@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\WebDriverElementMutatorCallFactory;
-use webignition\BasilCompilableSourceFactory\Exception\UnknownIdentifierException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedActionException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
 use webignition\BasilCompilableSourceFactory\IdentifierTypeFinder;
@@ -63,7 +63,7 @@ class SetActionHandler
      *
      * @return CodeBlockInterface
      *
-     * @throws UnknownIdentifierException
+     * @throws UnsupportedIdentifierException
      * @throws UnsupportedActionException
      * @throws UnsupportedValueException
      */

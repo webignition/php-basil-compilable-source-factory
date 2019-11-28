@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\ModelFactory\DomIdentifier;
 
-use webignition\BasilCompilableSourceFactory\Exception\UnknownIdentifierException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
 use webignition\BasilCompilableSourceFactory\Model\DomIdentifier;
 use webignition\BasilCompilableSourceFactory\ModelFactory\DomIdentifier\DomIdentifierFactory;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Identifier\AttributeIdentifierDataProviderTrait;
@@ -55,7 +55,7 @@ class DomIdentifierFactoryTest extends \PHPUnit\Framework\TestCase
      */
     public function testCreateWithUnknownIdentifierString(string $identifierString)
     {
-        $this->expectExceptionObject(new UnknownIdentifierException($identifierString));
+        $this->expectExceptionObject(new UnsupportedIdentifierException($identifierString));
 
         $this->factory->create($identifierString);
     }
@@ -63,7 +63,7 @@ class DomIdentifierFactoryTest extends \PHPUnit\Framework\TestCase
     public function testCreateUnknownIdentifier()
     {
         $identifierString = 'foo';
-        $this->expectExceptionObject(new UnknownIdentifierException($identifierString));
+        $this->expectExceptionObject(new UnsupportedIdentifierException($identifierString));
 
         $this->factory->create($identifierString);
     }
