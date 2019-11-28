@@ -17,6 +17,9 @@ use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Metadata\MetadataInterface;
 use webignition\BasilDataStructure\AssertionInterface;
 
+/**
+ * @group poc208
+ */
 class AssertionHandlerTest extends AbstractTestCase
 {
     use CreateFromExcludesAssertionDataProviderTrait;

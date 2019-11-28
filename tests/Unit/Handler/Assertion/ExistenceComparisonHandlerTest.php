@@ -5,13 +5,14 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedAssertionException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\ExistenceComparisonHandler;
 use webignition\BasilDataStructure\AssertionInterface;
-use webignition\BasilModel\Assertion\ExaminationAssertion;
 use webignition\BasilParser\AssertionParser;
 
+/**
+ * @group poc208
+ */
 class ExistenceComparisonHandlerTest extends AbstractTestCase
 {
     /**
