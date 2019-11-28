@@ -4,26 +4,24 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
-use webignition\BasilAssertionGenerator\AssertionGenerator;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
+use webignition\BasilParser\AssertionParser;
 use webignition\DomElementLocator\ElementLocator;
 
 trait CreateFromIncludesAssertionDataProviderTrait
 {
     public function createFromIncludesAssertionDataProvider(): array
     {
-        $assertionGenerator = AssertionGenerator::createGenerator();
+        $assertionParser = AssertionParser::create();
 
         return [
             'includes comparison, element identifier examined value, literal string expected value' => [
-                'assertion' => $assertionGenerator->generate(
-                    '".selector" includes "value"'
-                ),
+                'assertion' => $assertionParser->parse('$".selector" includes "value"'),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ EXPECTED }} = "value" ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
@@ -50,9 +48,7 @@ trait CreateFromIncludesAssertionDataProviderTrait
                     ])),
             ],
             'includes comparison, attribute identifier examined value, literal string expected value' => [
-                'assertion' => $assertionGenerator->generate(
-                    '".selector".attribute_name includes "value"'
-                ),
+                'assertion' => $assertionParser->parse('$".selector".attribute_name includes "value"'),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ EXPECTED }} = "value" ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',

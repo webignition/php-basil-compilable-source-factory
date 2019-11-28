@@ -4,83 +4,74 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Value;
 
-use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
+use webignition\BasilCompilableSourceFactory\Model\EnvironmentValue;
+use webignition\BasilCompilableSourceFactory\ModelFactory\EnvironmentValueFactory;
+use webignition\BasilCompilableSourceFactory\ValueTypeIdentifier;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\BasilModel\Value\LiteralValueInterface;
-use webignition\BasilModel\Value\ObjectValueInterface;
-use webignition\BasilModel\Value\ObjectValueType;
-use webignition\BasilModel\Value\ValueInterface;
 
 class ScalarValueHandler
 {
+    private $valueTypeIdentifier;
+    private $environmentValueFactory;
+
+    public function __construct(
+        ValueTypeIdentifier $valueTypeIdentifier,
+        EnvironmentValueFactory $environmentValueFactory
+    ) {
+        $this->valueTypeIdentifier = $valueTypeIdentifier;
+        $this->environmentValueFactory = $environmentValueFactory;
+    }
+
+    public static function createHandler(): ScalarValueHandler
+    {
+        return new ScalarValueHandler(
+            new ValueTypeIdentifier(),
+            EnvironmentValueFactory::createFactory()
+        );
+    }
+
     /**
-     * @param ValueInterface $value
+     * @param string $value
      *
      * @return CodeBlockInterface
      *
-     * @throws UnsupportedModelException
-     * @throws UnknownObjectPropertyException
+     * @throws UnsupportedValueException
      */
-    public function handle(ValueInterface $value): CodeBlockInterface
+    public function handle(string $value): CodeBlockInterface
     {
-        if ($value instanceof ObjectValueInterface) {
-            if ($this->isBrowserProperty($value)) {
-                return $this->handleBrowserProperty();
-            }
-
-            if ($this->isDataParameter($value)) {
-                return new CodeBlock([
-                    new Statement('$' . $value->getProperty())
-                ]);
-            }
-
-            if ($this->isEnvironmentValue($value)) {
-                return $this->handleEnvironmentValue($value);
-            }
-
-            if ($this->isPageProperty($value)) {
-                return $this->handlePageProperty($value);
-            }
+        if ($this->valueTypeIdentifier->isBrowserProperty($value)) {
+            return $this->handleBrowserProperty();
         }
 
-        if ($this->isLiteralValue($value)) {
+        if ($this->valueTypeIdentifier->isDataParameter($value)) {
+            $property = (string) preg_replace('/^\$data\./', '', $value);
+
+            return new CodeBlock([
+                new Statement('$' . $property)
+            ]);
+        }
+
+        if (EnvironmentValue::is($value)) {
+            return $this->handleEnvironmentValue($value);
+        }
+
+        if ($this->valueTypeIdentifier->isPageProperty($value)) {
+            return $this->handlePageProperty($value);
+        }
+
+        if ($this->valueTypeIdentifier->isLiteralValue($value)) {
             return new CodeBlock([
                 new Statement((string) $value)
             ]);
         }
 
-        throw new UnsupportedModelException($value);
-    }
-
-    private function isBrowserProperty(ObjectValueInterface $value): bool
-    {
-        return ObjectValueType::BROWSER_PROPERTY === $value->getType() && 'size' === $value->getProperty();
-    }
-
-    private function isDataParameter(ObjectValueInterface $value): bool
-    {
-        return $value->getType() === ObjectValueType::DATA_PARAMETER;
-    }
-
-    private function isEnvironmentValue(ObjectValueInterface $value): bool
-    {
-        return ObjectValueType::ENVIRONMENT_PARAMETER === $value->getType();
-    }
-
-    private function isLiteralValue(ValueInterface $value): bool
-    {
-        return $value instanceof LiteralValueInterface;
-    }
-
-    private function isPageProperty(ObjectValueInterface $value): bool
-    {
-        return ObjectValueType::PAGE_PROPERTY === $value->getType();
+        throw new UnsupportedValueException($value);
     }
 
     private function handleBrowserProperty(): CodeBlockInterface
@@ -110,8 +101,11 @@ class ScalarValueHandler
         return new CodeBlock([$dimensionAssignment, $dimensionConcatenation]);
     }
 
-    private function handleEnvironmentValue(ObjectValueInterface $value): CodeBlockInterface
+    private function handleEnvironmentValue(string $value): CodeBlockInterface
     {
+        $environmentValue = $this->environmentValueFactory->create($value);
+        $property = $environmentValue->getProperty();
+
         $variableDependencies = new VariablePlaceholderCollection();
         $environmentVariableArrayPlaceholder = $variableDependencies->create(
             VariableNames::ENVIRONMENT_VARIABLE_ARRAY
@@ -121,7 +115,7 @@ class ScalarValueHandler
             new Statement(
                 sprintf(
                     (string) $environmentVariableArrayPlaceholder . '[\'%s\']',
-                    $value->getProperty()
+                    $property
                 ),
                 (new Metadata())->withVariableDependencies($variableDependencies)
             )
@@ -129,14 +123,16 @@ class ScalarValueHandler
     }
 
     /**
-     * @param ObjectValueInterface $value
+     * @param string $value
      *
      * @return CodeBlockInterface
      *
-     * @throws UnknownObjectPropertyException
+     * @throws UnsupportedValueException
      */
-    private function handlePageProperty(ObjectValueInterface $value): CodeBlockInterface
+    private function handlePageProperty(string $value): CodeBlockInterface
     {
+        $property = (string) preg_replace('/^\$page\./', '', $value);
+
         $variableDependencies = new VariablePlaceholderCollection();
         $pantherClientPlaceholder = $variableDependencies->create(VariableNames::PANTHER_CLIENT);
 
@@ -145,7 +141,7 @@ class ScalarValueHandler
             'url' => (string) $pantherClientPlaceholder . '->getCurrentURL()',
         ];
 
-        $statementContent = $contentMap[$value->getProperty()] ?? null;
+        $statementContent = $contentMap[$property] ?? null;
 
         if (is_string($statementContent)) {
             $metadata = (new Metadata())
@@ -156,6 +152,6 @@ class ScalarValueHandler
             ]);
         }
 
-        throw new UnknownObjectPropertyException($value);
+        throw new UnsupportedValueException($value);
     }
 }

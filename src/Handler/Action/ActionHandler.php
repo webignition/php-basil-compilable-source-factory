@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
-use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
+use webignition\BasilCompilableSourceFactory\Exception\UnknownIdentifierException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedActionException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
-use webignition\BasilModel\Action\ActionInterface;
-use webignition\BasilModel\Action\ActionTypes;
-use webignition\BasilModel\Action\InputActionInterface;
-use webignition\BasilModel\Action\InteractionActionInterface;
-use webignition\BasilModel\Action\NoArgumentsAction;
-use webignition\BasilModel\Action\WaitActionInterface;
+use webignition\BasilDataStructure\Action\ActionInterface;
+use webignition\BasilDataStructure\Action\InputAction;
+use webignition\BasilDataStructure\Action\InteractionAction;
+use webignition\BasilDataStructure\Action\WaitAction;
 
 class ActionHandler
 {
@@ -52,28 +52,30 @@ class ActionHandler
      *
      * @return CodeBlockInterface
      *
+     * @throws UnknownIdentifierException
+     * @throws UnsupportedActionException
      * @throws UnsupportedModelException
-     * @throws UnknownObjectPropertyException
+     * @throws UnsupportedValueException
      */
     public function handle(ActionInterface $action): CodeBlockInterface
     {
-        if ($this->isBrowserOperationAction($action) && $action instanceof NoArgumentsAction) {
+        if ($this->isBrowserOperationAction($action)) {
             return $this->browserOperationActionHandler->handle($action);
         }
 
-        if ($this->isInteractionAction($action) && $action instanceof InteractionActionInterface) {
+        if ($action instanceof InteractionAction && in_array($action->getType(), ['click', 'submit'])) {
             return $this->interactionActionHandler->handle($action);
         }
 
-        if ($action instanceof InputActionInterface) {
+        if ($action instanceof InputAction) {
             return $this->setActionHandler->handle($action);
         }
 
-        if ($action instanceof WaitActionInterface) {
+        if ($action instanceof WaitAction) {
             return $this->waitActionHandler->handle($action);
         }
 
-        if ($this->isWaitForAction($action) && $action instanceof InteractionActionInterface) {
+        if ($action instanceof InteractionAction && in_array($action->getType(), ['wait-for'])) {
             return $this->waitForActionHandler->handle($action);
         }
 
@@ -82,23 +84,10 @@ class ActionHandler
 
     private function isBrowserOperationAction(ActionInterface $action): bool
     {
-        return $action instanceof NoArgumentsAction && in_array($action->getType(), [
-            ActionTypes::BACK,
-            ActionTypes::FORWARD,
-            ActionTypes::RELOAD,
+        return in_array($action->getType(), [
+            'back',
+            'forward',
+            'reload',
         ]);
-    }
-
-    private function isInteractionAction(ActionInterface $action): bool
-    {
-        return $action instanceof InteractionActionInterface && in_array($action->getType(), [
-            ActionTypes::CLICK,
-            ActionTypes::SUBMIT,
-        ]);
-    }
-
-    private function isWaitForAction(ActionInterface $action): bool
-    {
-        return $action instanceof InteractionActionInterface && ActionTypes::WAIT_FOR === $action->getType();
     }
 }
