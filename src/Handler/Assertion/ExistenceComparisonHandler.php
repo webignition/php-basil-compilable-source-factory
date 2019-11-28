@@ -24,14 +24,10 @@ use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilDataStructure\AssertionInterface;
 use webignition\BasilModel\Assertion\AssertionComparison;
 
-class ExistenceComparisonHandler
+class ExistenceComparisonHandler extends AbstractAssertionHandler
 {
-    private $assertionCallFactory;
-    private $scalarValueHandler;
     private $domCrawlerNavigatorCallFactory;
-    private $namedDomIdentifierHandler;
     private $valueTypeIdentifier;
-    private $domIdentifierFactory;
 
     public function __construct(
         AssertionCallFactory $assertionCallFactory,
@@ -41,12 +37,16 @@ class ExistenceComparisonHandler
         ValueTypeIdentifier $valueTypeIdentifier,
         DomIdentifierFactory $domIdentifierFactory
     ) {
-        $this->assertionCallFactory = $assertionCallFactory;
-        $this->scalarValueHandler = $scalarValueHandler;
+        parent::__construct(
+            $assertionCallFactory,
+            $scalarValueHandler,
+            $namedDomIdentifierHandler,
+            $domIdentifierFactory
+        );
+
         $this->domCrawlerNavigatorCallFactory = $domCrawlerNavigatorCallFactory;
         $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
         $this->valueTypeIdentifier = $valueTypeIdentifier;
-        $this->domIdentifierFactory = $domIdentifierFactory;
     }
 
     public static function createHandler(): ExistenceComparisonHandler

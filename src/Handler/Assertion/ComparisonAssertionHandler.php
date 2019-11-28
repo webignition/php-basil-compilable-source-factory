@@ -21,7 +21,7 @@ use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilDataStructure\AssertionInterface;
 use webignition\BasilModel\Assertion\AssertionComparison;
 
-class ComparisonAssertionHandler
+class ComparisonAssertionHandler extends AbstractAssertionHandler
 {
     private const COMPARISON_TO_ASSERTION_TEMPLATE_MAP = [
         AssertionComparison::INCLUDES => AssertionCallFactory::ASSERT_STRING_CONTAINS_STRING_TEMPLATE,
@@ -31,12 +31,8 @@ class ComparisonAssertionHandler
         AssertionComparison::MATCHES => AssertionCallFactory::ASSERT_MATCHES_TEMPLATE,
     ];
 
-    protected $assertionCallFactory;
     private $variableAssignmentFactory;
-    private $scalarValueHandler;
-    private $namedDomIdentifierHandler;
     private $accessorDefaultValueFactory;
-    private $domIdentifierFactory;
 
     public function __construct(
         AssertionCallFactory $assertionCallFactory,
@@ -46,12 +42,15 @@ class ComparisonAssertionHandler
         AccessorDefaultValueFactory $accessorDefaultValueFactory,
         DomIdentifierFactory $domIdentifierFactory
     ) {
-        $this->assertionCallFactory = $assertionCallFactory;
+        parent::__construct(
+            $assertionCallFactory,
+            $scalarValueHandler,
+            $namedDomIdentifierHandler,
+            $domIdentifierFactory
+        );
+
         $this->variableAssignmentFactory = $variableAssignmentFactory;
-        $this->scalarValueHandler = $scalarValueHandler;
-        $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
         $this->accessorDefaultValueFactory = $accessorDefaultValueFactory;
-        $this->domIdentifierFactory = $domIdentifierFactory;
     }
 
     public static function createHandler(): ComparisonAssertionHandler
