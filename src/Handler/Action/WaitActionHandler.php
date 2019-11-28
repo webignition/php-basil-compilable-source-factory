@@ -70,10 +70,6 @@ class WaitActionHandler
 
         $duration = $waitAction->getDuration();
 
-        if ('' === $duration) {
-            throw new UnsupportedValueException('');
-        }
-
         if (ctype_digit($duration)) {
             $duration = '"' . $duration . '"';
         }
