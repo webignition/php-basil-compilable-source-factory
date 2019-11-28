@@ -13,6 +13,9 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Identifier\Desce
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Identifier\UnknownIdentifierDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Identifier\XpathExpressionIdentifierDataProviderTrait;
 
+/**
+ * @group poc208
+ */
 class DomIdentifierFactoryTest extends \PHPUnit\Framework\TestCase
 {
     use AttributeIdentifierDataProviderTrait;

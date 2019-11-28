@@ -12,6 +12,9 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Identifier\Desce
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Identifier\UnknownIdentifierDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Identifier\XpathExpressionIdentifierDataProviderTrait;
 
+/**
+ * @group poc208
+ */
 class IdentifierHandlerTest extends \PHPUnit\Framework\TestCase
 {
     use AttributeIdentifierDataProviderTrait;

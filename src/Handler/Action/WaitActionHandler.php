@@ -8,6 +8,7 @@ use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
+use webignition\BasilCompilableSourceFactory\Model\DomIdentifier;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
@@ -66,8 +67,16 @@ class WaitActionHandler
         $duration = $waitAction->getDuration();
 
         if ($duration instanceof DomIdentifierValueInterface) {
+//            $durationAccessor = $this->namedDomIdentifierHandler->handle(
+//                new NamedDomIdentifierValue($duration, $durationPlaceholder)
+//            );
+
+            // @@todo: fix in #211
             $durationAccessor = $this->namedDomIdentifierHandler->handle(
-                new NamedDomIdentifierValue($duration, $durationPlaceholder)
+                new NamedDomIdentifierValue(
+                    new DomIdentifier(''),
+                    $durationPlaceholder
+                )
             );
 
             $durationAccessor->mutateLastStatement(function (string $content) use ($durationPlaceholder) {

@@ -8,6 +8,7 @@ use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
+use webignition\BasilCompilableSourceFactory\Model\DomIdentifier;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
@@ -99,7 +100,9 @@ class ExistenceComparisonHandler
             $identifier = $value->getIdentifier();
 
             if (null === $identifier->getAttributeName()) {
-                $accessor = $this->domCrawlerNavigatorCallFactory->createHasCall($identifier);
+//                $accessor = $this->domCrawlerNavigatorCallFactory->createHasCall($identifier);
+                // @todo fix in #209
+                $accessor = $this->domCrawlerNavigatorCallFactory->createHasCall(new DomIdentifier(''));
 
                 $assignment = new CodeBlock([
                     $accessor,
@@ -119,9 +122,15 @@ class ExistenceComparisonHandler
                 );
             }
 
-            $accessor = $this->namedDomIdentifierHandler->handle(
-                new NamedDomIdentifierValue($value, $valuePlaceholder)
-            );
+//            $accessor = $this->namedDomIdentifierHandler->handle(
+//                new NamedDomIdentifierValue($value, $valuePlaceholder)
+//            );
+
+            // @todo: fix in #209
+            $accessor = $this->namedDomIdentifierHandler->handle(new NamedDomIdentifierValue(
+                new DomIdentifier(''),
+                $valuePlaceholder
+            ));
 
             $existence = new CodeBlock([
                 $accessor,
