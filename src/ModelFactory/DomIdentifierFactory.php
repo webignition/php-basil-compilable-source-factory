@@ -34,33 +34,29 @@ class DomIdentifierFactory
      */
     public function create(string $identifierString): DomIdentifier
     {
+        $identifier = $this->createNonDescendantIdentifier($identifierString);
+        if ($identifier instanceof DomIdentifier) {
+            return $identifier;
+        }
+
+        $identifier = $this->createDescendantIdentifier($identifierString);
+        if ($identifier instanceof DomIdentifier) {
+            return $identifier;
+        }
+
+        throw new UnknownIdentifierException($identifierString);
+    }
+
+    private function createNonDescendantIdentifier(string $identifierString): ?DomIdentifier
+    {
         $identifierString = trim($identifierString);
+
+        if (!IdentifierTypeFinder::isDomIdentifier($identifierString)) {
+            return null;
+        }
+
         $elementLocatorAndPosition = $identifierString;
         $attributeName = '';
-
-        if (
-            !IdentifierTypeFinder::isDomIdentifier($identifierString) &&
-            !IdentifierTypeFinder::isDescendantDomIdentifier($identifierString)
-        ) {
-            throw new UnknownIdentifierException($identifierString);
-        }
-
-        if (IdentifierTypeFinder::isDescendantDomIdentifier($identifierString)) {
-            $parentIdentifierStringMatches = [];
-            preg_match(IdentifierTypeFinder::PARENT_PREFIX_REGEX, $identifierString, $parentIdentifierStringMatches);
-
-            $parentIdentifierMatch = $parentIdentifierStringMatches[0];
-            $parentIdentifierString = trim($parentIdentifierMatch, ' {}');
-            $parentIdentifier = $this->create($parentIdentifierString);
-
-            $parentIdentifierMatchLength = mb_strlen($parentIdentifierMatch);
-
-            $childIdentifierString = mb_substr($identifierString, $parentIdentifierMatchLength);
-
-            $childIdentifier = $this->create($childIdentifierString);
-
-            return $childIdentifier->withParentIdentifier($parentIdentifier);
-        }
 
         if (IdentifierTypeFinder::isAttributeIdentifier($identifierString)) {
             list($elementLocatorAndPosition, $attributeName) = $this->extractAttributeNameAndElementIdentifier(
@@ -82,6 +78,30 @@ class DomIdentifierFactory
         }
 
         return $identifier;
+    }
+
+    public function createDescendantIdentifier(string $identifierString): ?DomIdentifier
+    {
+        $identifierString = trim($identifierString);
+
+        if (!IdentifierTypeFinder::isDescendantDomIdentifier($identifierString)) {
+            return null;
+        }
+
+        $parentIdentifierStringMatches = [];
+        preg_match(IdentifierTypeFinder::PARENT_PREFIX_REGEX, $identifierString, $parentIdentifierStringMatches);
+
+        $parentIdentifierMatch = $parentIdentifierStringMatches[0];
+        $parentIdentifierString = trim($parentIdentifierMatch, ' {}');
+        $parentIdentifier = $this->createNonDescendantIdentifier($parentIdentifierString);
+
+        $parentIdentifierMatchLength = mb_strlen($parentIdentifierMatch);
+
+        $childIdentifierString = mb_substr($identifierString, $parentIdentifierMatchLength);
+
+        $identifier = $this->createNonDescendantIdentifier($childIdentifierString);
+
+        return $identifier->withParentIdentifier($parentIdentifier);
     }
 
     private function extractAttributeNameAndElementIdentifier(string $identifier)
