@@ -6,12 +6,14 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
-use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
-use webignition\BasilCompilableSourceFactory\Model\DomIdentifier;
+use webignition\BasilCompilableSourceFactory\Exception\UnknownIdentifierException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedAssertionException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
+use webignition\BasilCompilableSourceFactory\IdentifierTypeFinder;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
+use webignition\BasilCompilableSourceFactory\ModelFactory\DomIdentifier\DomIdentifierFactory;
 use webignition\BasilCompilableSourceFactory\ValueTypeIdentifier;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlock;
@@ -21,7 +23,6 @@ use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilDataStructure\AssertionInterface;
 use webignition\BasilModel\Assertion\AssertionComparison;
-use webignition\BasilModel\Value\DomIdentifierValueInterface;
 
 class ExistenceComparisonHandler
 {
@@ -30,19 +31,22 @@ class ExistenceComparisonHandler
     private $domCrawlerNavigatorCallFactory;
     private $namedDomIdentifierHandler;
     private $valueTypeIdentifier;
+    private $domIdentifierFactory;
 
     public function __construct(
         AssertionCallFactory $assertionCallFactory,
         ScalarValueHandler $scalarValueHandler,
         DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory,
         NamedDomIdentifierHandler $namedDomIdentifierHandler,
-        ValueTypeIdentifier $valueTypeIdentifier
+        ValueTypeIdentifier $valueTypeIdentifier,
+        DomIdentifierFactory $domIdentifierFactory
     ) {
         $this->assertionCallFactory = $assertionCallFactory;
         $this->scalarValueHandler = $scalarValueHandler;
         $this->domCrawlerNavigatorCallFactory = $domCrawlerNavigatorCallFactory;
         $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
         $this->valueTypeIdentifier = $valueTypeIdentifier;
+        $this->domIdentifierFactory = $domIdentifierFactory;
     }
 
     public static function createHandler(): ExistenceComparisonHandler
@@ -52,7 +56,8 @@ class ExistenceComparisonHandler
             ScalarValueHandler::createHandler(),
             DomCrawlerNavigatorCallFactory::createFactory(),
             NamedDomIdentifierHandler::createHandler(),
-            new ValueTypeIdentifier()
+            new ValueTypeIdentifier(),
+            DomIdentifierFactory::createFactory()
         );
     }
 
@@ -61,16 +66,13 @@ class ExistenceComparisonHandler
      *
      * @return CodeBlockInterface
      *
-     * @throws UnsupportedModelException
-     * @throws UnknownObjectPropertyException
+     * @throws UnknownIdentifierException
+     * @throws UnsupportedValueException
+     * @throws UnsupportedAssertionException
      */
     public function handle(AssertionInterface $assertion): CodeBlockInterface
     {
-//        $value = $assertion->getExaminedValue();
         $valuePlaceholder = new VariablePlaceholder(VariableNames::EXAMINED_VALUE);
-
-        $existence = null;
-
         $identifier = $assertion->getIdentifier();
 
         if ($this->valueTypeIdentifier->isScalarValue($identifier)) {
@@ -98,13 +100,14 @@ class ExistenceComparisonHandler
             return $this->createAssertionCall($assertion->getComparison(), $existence, $valuePlaceholder);
         }
 
-        if ($value instanceof DomIdentifierValueInterface) {
-            $identifier = $value->getIdentifier();
+        if (
+            IdentifierTypeFinder::isDomIdentifier($identifier) ||
+            IdentifierTypeFinder::isDescendantDomIdentifier($identifier)
+        ) {
+            $domIdentifier = $this->domIdentifierFactory->create($identifier);
 
-            if (null === $identifier->getAttributeName()) {
-//                $accessor = $this->domCrawlerNavigatorCallFactory->createHasCall($identifier);
-                // @todo fix in #209
-                $accessor = $this->domCrawlerNavigatorCallFactory->createHasCall(new DomIdentifier(''));
+            if (null === $domIdentifier->getAttributeName()) {
+                $accessor = $this->domCrawlerNavigatorCallFactory->createHasCall($domIdentifier);
 
                 $assignment = new CodeBlock([
                     $accessor,
@@ -124,15 +127,9 @@ class ExistenceComparisonHandler
                 );
             }
 
-//            $accessor = $this->namedDomIdentifierHandler->handle(
-//                new NamedDomIdentifierValue($value, $valuePlaceholder)
-//            );
-
-            // @todo: fix in #209
-            $accessor = $this->namedDomIdentifierHandler->handle(new NamedDomIdentifierValue(
-                new DomIdentifier(''),
-                $valuePlaceholder
-            ));
+            $accessor = $this->namedDomIdentifierHandler->handle(
+                new NamedDomIdentifierValue($domIdentifier, $valuePlaceholder)
+            );
 
             $existence = new CodeBlock([
                 $accessor,
@@ -142,7 +139,7 @@ class ExistenceComparisonHandler
             return $this->createAssertionCall($assertion->getComparison(), $existence, $valuePlaceholder);
         }
 
-        throw new UnsupportedModelException($assertion);
+        throw new UnsupportedAssertionException($assertion);
     }
 
     private function createAssertionCall(

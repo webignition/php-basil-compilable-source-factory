@@ -43,10 +43,10 @@ class AssertionHandlerTest extends AbstractTestCase
      * @!dataProvider createFromExcludesAssertionDataProvider
      * @dataProvider createFromExistsAssertionDataProvider
      * @!dataProvider createFromIncludesAssertionDataProvider
-     * @dataProvider createFromIsAssertionDataProvider
+     * @!dataProvider createFromIsAssertionDataProvider
      * @!dataProvider createFromIsNotAssertionDataProvider
      * @!dataProvider createFromMatchesAssertionDataProvider
-     * @!dataProvider createFromNotExistsAssertionDataProvider
+     * @dataProvider createFromNotExistsAssertionDataProvider
      */
     public function testHandle(
         AssertionInterface $assertion,

@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
+use webignition\BasilCompilableSourceFactory\Exception\UnknownIdentifierException;
 use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedAssertionException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilDataStructure\AssertionInterface;
 use webignition\BasilModel\Assertion\AssertionComparison;
-use webignition\BasilModel\Assertion\ComparisonAssertionInterface;
-use webignition\BasilModel\Assertion\ExaminationAssertionInterface;
 
 class AssertionHandler
 {
@@ -38,8 +39,11 @@ class AssertionHandler
      *
      * @return CodeBlockInterface
      *
-     * @throws UnsupportedModelException
+     * @throws UnknownIdentifierException
      * @throws UnknownObjectPropertyException
+     * @throws UnsupportedAssertionException
+     * @throws UnsupportedModelException
+     * @throws UnsupportedValueException
      */
     public function handle(AssertionInterface $assertion): CodeBlockInterface
     {
