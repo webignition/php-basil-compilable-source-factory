@@ -16,9 +16,9 @@ use webignition\BasilParser\ActionParser;
 class WaitActionHandlerTest extends AbstractTestCase
 {
     /**
-     * @dataProvider createForUnsupportedActionDataProvider
+     * @dataProvider handleThrowsExceptionDataProvider
      */
-    public function testCreateForUnsupportedActon(WaitAction $action, \Exception $expectedException)
+    public function testHandleThrowsException(WaitAction $action, \Exception $expectedException)
     {
         $handler = WaitActionHandler::createHandler();
 
@@ -27,7 +27,7 @@ class WaitActionHandlerTest extends AbstractTestCase
         $handler->handle($action);
     }
 
-    public function createForUnsupportedActionDataProvider(): array
+    public function handleThrowsExceptionDataProvider(): array
     {
         $actionParser = ActionParser::create();
 
