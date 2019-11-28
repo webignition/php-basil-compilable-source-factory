@@ -51,7 +51,8 @@ class StepHandler
         }
 
         foreach ($step->getAssertions() as $assertion) {
-            $this->addSourceToBlock($block, $assertion, $this->assertionHandler->handle($assertion));
+            // @todo: fix in #225
+//            $this->addSourceToBlock($block, $assertion, $this->assertionHandler->handle($assertion));
         }
 
         return $block;

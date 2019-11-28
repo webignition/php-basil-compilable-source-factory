@@ -74,6 +74,11 @@ class ExistenceComparisonHandler
     {
         $valuePlaceholder = new VariablePlaceholder(VariableNames::EXAMINED_VALUE);
         $identifier = $assertion->getIdentifier();
+        $comparison = $assertion->getComparison();
+
+        if (null === $identifier || null === $comparison) {
+            throw new UnsupportedAssertionException($assertion);
+        }
 
         if ($this->valueTypeIdentifier->isScalarValue($identifier)) {
             $accessor = $this->scalarValueHandler->handle($identifier);
@@ -97,7 +102,7 @@ class ExistenceComparisonHandler
                 new Statement(sprintf('%s = %s !== null', $valuePlaceholder, $valuePlaceholder)),
             ]);
 
-            return $this->createAssertionCall($assertion->getComparison(), $existence, $valuePlaceholder);
+            return $this->createAssertionCall($comparison, $existence, $valuePlaceholder);
         }
 
         if (
@@ -120,11 +125,7 @@ class ExistenceComparisonHandler
                     $valuePlaceholder,
                 ]));
 
-                return $this->createAssertionCall(
-                    $assertion->getComparison(),
-                    new CodeBlock([$assignment]),
-                    $valuePlaceholder
-                );
+                return $this->createAssertionCall($comparison, new CodeBlock([$assignment]), $valuePlaceholder);
             }
 
             $accessor = $this->namedDomIdentifierHandler->handle(
@@ -136,7 +137,7 @@ class ExistenceComparisonHandler
                 new Statement(sprintf('%s = %s !== null', $valuePlaceholder, $valuePlaceholder)),
             ]);
 
-            return $this->createAssertionCall($assertion->getComparison(), $existence, $valuePlaceholder);
+            return $this->createAssertionCall($comparison, $existence, $valuePlaceholder);
         }
 
         throw new UnsupportedAssertionException($assertion);

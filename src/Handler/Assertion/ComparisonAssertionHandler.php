@@ -8,6 +8,7 @@ use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnknownIdentifierException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedAssertionException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
@@ -71,6 +72,7 @@ class ComparisonAssertionHandler
      * @return CodeBlockInterface
      *
      * @throws UnknownIdentifierException
+     * @throws UnsupportedAssertionException
      * @throws UnsupportedValueException
      */
     public function handle(AssertionInterface $assertion): CodeBlockInterface
@@ -80,6 +82,10 @@ class ComparisonAssertionHandler
 
         $examinedValue = $assertion->getIdentifier();
         $expectedValue = $assertion->getValue();
+
+        if (null === $examinedValue || null === $expectedValue) {
+            throw new UnsupportedAssertionException($assertion);
+        }
 
         if (
             IdentifierTypeFinder::isDomIdentifier($examinedValue) ||
