@@ -8,7 +8,6 @@ use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedAssertionException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
@@ -71,7 +70,6 @@ class ComparisonAssertionHandler extends AbstractAssertionHandler
      * @return CodeBlockInterface
      *
      * @throws UnsupportedIdentifierException
-     * @throws UnsupportedAssertionException
      * @throws UnsupportedValueException
      */
     public function handle(AssertionInterface $assertion): CodeBlockInterface
@@ -83,7 +81,7 @@ class ComparisonAssertionHandler extends AbstractAssertionHandler
         $expectedValue = $assertion->getValue();
 
         if (null === $examinedValue || null === $expectedValue) {
-            throw new UnsupportedAssertionException($assertion);
+            throw new UnsupportedValueException(null);
         }
 
         if (

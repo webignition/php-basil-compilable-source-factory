@@ -8,14 +8,14 @@ class UnsupportedIdentifierException extends \Exception
 {
     private $identifier;
 
-    public function __construct(string $identifier)
+    public function __construct(?string $identifier)
     {
         parent::__construct('Unknown identifier "' . $identifier . '"');
 
         $this->identifier = $identifier;
     }
 
-    public function getIdentifier(): string
+    public function getIdentifier(): ?string
     {
         return $this->identifier;
     }
