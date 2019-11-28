@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\ModelFactory;
 
+use webignition\BasilCompilableSourceFactory\Exception\UnknownIdentifierException;
 use webignition\BasilCompilableSourceFactory\Model\DomIdentifier;
 use webignition\BasilCompilableSourceFactory\ModelFactory\DomIdentifierFactory;
 
@@ -25,6 +26,7 @@ class DomIdentifierFactoryTest extends \PHPUnit\Framework\TestCase
      * @dataProvider attributeIdentifierDataProvider
      * @dataProvider cssSelectorIdentifierDataProvider
      * @dataProvider xpathExpressionIdentifierDataProvider
+     * @dataProvider descendantIdentifierDataProvider
      */
     public function testCreateSuccess(string $identifierString, DomIdentifier $expectedIdentifier)
     {
@@ -32,13 +34,6 @@ class DomIdentifierFactoryTest extends \PHPUnit\Framework\TestCase
 
         $this->assertInstanceOf(DomIdentifier::class, $identifier);
         $this->assertEquals($expectedIdentifier, $identifier);
-    }
-
-    public function testCreateReturnsNull()
-    {
-        $this->assertNull($this->factory->create(''));
-        $this->assertNull($this->factory->create('$elements.element_name'));
-        $this->assertNull($this->factory->create('$page_import_name.elements.element_name'));
     }
 
     public function attributeIdentifierDataProvider(): array
@@ -174,6 +169,57 @@ class DomIdentifierFactoryTest extends \PHPUnit\Framework\TestCase
             'xpath attribute selector; position: last' => [
                 'identifierString' => '$"//input[@type=\"submit\"]":last',
                 'expectedIdentifier' => new DomIdentifier('//input[@type="submit"]', -1),
+            ],
+        ];
+    }
+
+    public function descendantIdentifierDataProvider(): array
+    {
+        return [
+            'css parent, xpath child' => [
+                'identifierString' => '{{ $".parent" }} $"/child"',
+                'expectedIdentifier' => (new DomIdentifier('/child'))
+                    ->withParentIdentifier(new DomIdentifier('.parent')),
+            ],
+            'xpath parent, css child' => [
+                'identifierString' => '{{ $"/parent" }} $".child"',
+                'expectedIdentifier' => (new DomIdentifier('.child'))
+                    ->withParentIdentifier(new DomIdentifier('/parent')),
+            ],
+            'css parent, css child' => [
+                'identifierString' => '{{ $".parent" }} $".child"',
+                'expectedIdentifier' => (new DomIdentifier('.child'))
+                    ->withParentIdentifier(new DomIdentifier('.parent')),
+            ],
+            'xpath parent, xpath child' => [
+                'identifierString' => '{{ $"/parent" }} $"/child"',
+                'expectedIdentifier' => (new DomIdentifier('/child'))
+                    ->withParentIdentifier(new DomIdentifier('/parent')),
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider unknownIdentifierStringDataProvider
+     */
+    public function testCreateWithUnknownIdentifierString(string $identifierString)
+    {
+        $this->expectExceptionObject(new UnknownIdentifierException($identifierString));
+
+        $this->factory->create($identifierString);
+    }
+
+    public function unknownIdentifierStringDataProvider(): array
+    {
+        return [
+            'empty' => [
+                'identifierString' => '',
+            ],
+            'element reference' => [
+                'identifierString' => '$elements.element_name',
+            ],
+            'page element reference' => [
+                'identifierString' => '$page_import_name.elements.element_name',
             ],
         ];
     }

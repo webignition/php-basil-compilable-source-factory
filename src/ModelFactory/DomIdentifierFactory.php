@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\ModelFactory;
 
+use webignition\BasilCompilableSourceFactory\Exception\UnknownIdentifierException;
 use webignition\BasilCompilableSourceFactory\IdentifierTypeFinder;
 use webignition\BasilCompilableSourceFactory\Model\DomIdentifier;
 use webignition\BasilCompilableSourceFactory\QuotedStringExtractor;
@@ -24,14 +25,41 @@ class DomIdentifierFactory
         );
     }
 
-    public function create(string $identifierString): ?DomIdentifier
+    /**
+     * @param string $identifierString
+     *
+     * @return DomIdentifier
+     *
+     * @throws UnknownIdentifierException
+     */
+    public function create(string $identifierString): DomIdentifier
     {
         $identifierString = trim($identifierString);
         $elementLocatorAndPosition = $identifierString;
         $attributeName = '';
 
-        if (!IdentifierTypeFinder::isDomIdentifier($identifierString)) {
-            return null;
+        if (
+            !IdentifierTypeFinder::isDomIdentifier($identifierString) &&
+            !IdentifierTypeFinder::isDescendantDomIdentifier($identifierString)
+        ) {
+            throw new UnknownIdentifierException($identifierString);
+        }
+
+        if (IdentifierTypeFinder::isDescendantDomIdentifier($identifierString)) {
+            $parentIdentifierStringMatches = [];
+            preg_match(IdentifierTypeFinder::PARENT_PREFIX_REGEX, $identifierString, $parentIdentifierStringMatches);
+
+            $parentIdentifierMatch = $parentIdentifierStringMatches[0];
+            $parentIdentifierString = trim($parentIdentifierMatch, ' {}');
+            $parentIdentifier = $this->create($parentIdentifierString);
+
+            $parentIdentifierMatchLength = mb_strlen($parentIdentifierMatch);
+
+            $childIdentifierString = mb_substr($identifierString, $parentIdentifierMatchLength);
+
+            $childIdentifier = $this->create($childIdentifierString);
+
+            return $childIdentifier->withParentIdentifier($parentIdentifier);
         }
 
         if (IdentifierTypeFinder::isAttributeIdentifier($identifierString)) {

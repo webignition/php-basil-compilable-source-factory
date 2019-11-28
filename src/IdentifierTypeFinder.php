@@ -11,7 +11,7 @@ class IdentifierTypeFinder
     private const ELEMENT_IDENTIFIER_ENDING_PATTERN = '("|' . self::POSITION_PATTERN . ')';
     private const CSS_SELECTOR_STARTING_PATTERN = '((?!\/).).+';
     private const XPATH_EXPRESSION_STARTING_PATTERN = '\/.+';
-    private const PARENT_PREFIX_REGEX = '/^\{\{ [^\}]+ \}\} /';
+    public const PARENT_PREFIX_REGEX = '/^\{\{ [^\}]+ \}\} /';
 
     private const CSS_SELECTOR_REGEX =
         '/^' . self::ELEMENT_IDENTIFIER_STARTING_PATTERN .
