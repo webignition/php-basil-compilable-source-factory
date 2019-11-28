@@ -4,26 +4,24 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
-use webignition\BasilActionGenerator\ActionGenerator;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
+use webignition\BasilParser\ActionParser;
 use webignition\DomElementLocator\ElementLocator;
 
 trait CreateFromSubmitActionDataProviderTrait
 {
     public function createFromSubmitActionDataProvider(): array
     {
-        $actionGenerator = ActionGenerator::createGenerator();
+        $actionParser = ActionParser::create();
 
         return [
             'interaction action (submit), element identifier' => [
-                'action' => $actionGenerator->generate(
-                    'submit ".selector"'
-                ),
+                'action' => $actionParser->parse('submit $".selector"'),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',

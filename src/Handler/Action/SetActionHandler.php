@@ -7,19 +7,19 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\WebDriverElementMutatorCallFactory;
-use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
-use webignition\BasilCompilableSourceFactory\Model\DomIdentifier;
+use webignition\BasilCompilableSourceFactory\Exception\UnknownIdentifierException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedActionException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
+use webignition\BasilCompilableSourceFactory\IdentifierTypeFinder;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifier;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
+use webignition\BasilCompilableSourceFactory\ModelFactory\DomIdentifier\DomIdentifierFactory;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\BasilModel\Action\InputActionInterface;
-use webignition\BasilModel\Identifier\DomIdentifierInterface;
-use webignition\BasilModel\Value\DomIdentifierValueInterface;
+use webignition\BasilDataStructure\Action\InputAction;
 
 class SetActionHandler
 {
@@ -28,19 +28,22 @@ class SetActionHandler
     private $scalarValueHandler;
     private $namedDomIdentifierHandler;
     private $accessorDefaultValueFactory;
+    private $domIdentifierFactory;
 
     public function __construct(
         VariableAssignmentFactory $variableAssignmentFactory,
         WebDriverElementMutatorCallFactory $webDriverElementMutatorCallFactory,
         ScalarValueHandler $scalarValueHandler,
         NamedDomIdentifierHandler $namedDomIdentifierHandler,
-        AccessorDefaultValueFactory $accessorDefaultValueFactory
+        AccessorDefaultValueFactory $accessorDefaultValueFactory,
+        DomIdentifierFactory $domIdentifierFactory
     ) {
         $this->variableAssignmentFactory = $variableAssignmentFactory;
         $this->webDriverElementMutatorCallFactory = $webDriverElementMutatorCallFactory;
         $this->scalarValueHandler = $scalarValueHandler;
         $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
         $this->accessorDefaultValueFactory = $accessorDefaultValueFactory;
+        $this->domIdentifierFactory = $domIdentifierFactory;
     }
 
     public static function createHandler(): SetActionHandler
@@ -50,79 +53,72 @@ class SetActionHandler
             WebDriverElementMutatorCallFactory::createFactory(),
             ScalarValueHandler::createHandler(),
             NamedDomIdentifierHandler::createHandler(),
-            AccessorDefaultValueFactory::createFactory()
+            AccessorDefaultValueFactory::createFactory(),
+            DomIdentifierFactory::createFactory()
         );
     }
 
     /**
-     * @param InputActionInterface $action
+     * @param InputAction $action
      *
      * @return CodeBlockInterface
      *
-     * @throws UnsupportedModelException
-     * @throws UnknownObjectPropertyException
+     * @throws UnknownIdentifierException
+     * @throws UnsupportedActionException
+     * @throws UnsupportedValueException
      */
-    public function handle(InputActionInterface $action): CodeBlockInterface
+    public function handle(InputAction $action): CodeBlockInterface
     {
         $identifier = $action->getIdentifier();
 
-        if (!$identifier instanceof DomIdentifierInterface) {
-            throw new UnsupportedModelException($action);
+        if (
+            !IdentifierTypeFinder::isDomIdentifier($identifier) &&
+            !IdentifierTypeFinder::isDescendantDomIdentifier($identifier)
+        ) {
+            throw new UnsupportedActionException($action);
         }
 
-        if (null !== $identifier->getAttributeName()) {
-            throw new UnsupportedModelException($action);
+        $value = $action->getValue();
+
+        if (null === $value) {
+            throw new UnsupportedActionException($action);
+        }
+
+        $domIdentifier = $this->domIdentifierFactory->create($identifier);
+
+        if (null !== $domIdentifier->getAttributeName()) {
+            throw new UnsupportedActionException($action);
         }
 
         $variableExports = new VariablePlaceholderCollection();
         $collectionPlaceholder = $variableExports->create('COLLECTION');
         $valuePlaceholder = $variableExports->create('VALUE');
 
-//        $collectionAssignment = $this->namedDomIdentifierHandler->handle(new NamedDomIdentifier(
-//            $identifier,
-//            $collectionPlaceholder
-//        ));
-
-        // @todo: fix in #211
         $collectionAssignment = $this->namedDomIdentifierHandler->handle(
-            new NamedDomIdentifier(new DomIdentifier(''), $collectionPlaceholder)
+            new NamedDomIdentifier($domIdentifier, $collectionPlaceholder)
         );
 
-        $value = $action->getValue();
+        if (
+            IdentifierTypeFinder::isDomIdentifier($value) ||
+            IdentifierTypeFinder::isDescendantDomIdentifier($value)
+        ) {
+            $valueDomIdentifier = $this->domIdentifierFactory->create($value);
 
-        if ($value instanceof DomIdentifierValueInterface) {
-//            $valueAccessor = $this->namedDomIdentifierHandler->handle(
-//                new NamedDomIdentifierValue($value, $valuePlaceholder)
-//            );
-
-            // @todo: fix in #211
             $valueAccessor = $this->namedDomIdentifierHandler->handle(
-                new NamedDomIdentifierValue(
-                    new DomIdentifier(''),
-                    $valuePlaceholder
-                )
+                new NamedDomIdentifierValue($valueDomIdentifier, $valuePlaceholder)
             );
 
             $valueAccessor->mutateLastStatement(function (string $content) use ($valuePlaceholder) {
                 return str_replace((string) $valuePlaceholder . ' = ', '', $content);
             });
         } else {
-//            $valueAccessor = $this->scalarValueHandler->handle($value);
-            // @todo fix in #211
-            $valueAccessor = $this->scalarValueHandler->handle('Fix in #211');
+            $valueAccessor = $this->scalarValueHandler->handle($value);
         }
 
-//        $valueAssignment = $this->variableAssignmentFactory->createForValueAccessor(
-//            $valueAccessor,
-//            $valuePlaceholder,
-//            $this->accessorDefaultValueFactory->create($value)
-//        );
-
-        // @todo: fix in #211
         $valueAssignment = $this->variableAssignmentFactory->createForValueAccessor(
             $valueAccessor,
             $valuePlaceholder,
-            $this->accessorDefaultValueFactory->create('Fix in #211')
+            $this->accessorDefaultValueFactory->create($value)
         );
 
         $mutationCall = $this->webDriverElementMutatorCallFactory->createSetValueCall(

@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
-use webignition\BasilActionGenerator\ActionGenerator;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilCompilationSource\Block\CodeBlock;
+use webignition\BasilParser\ActionParser;
 
 trait ClickActionFunctionalDataProviderTrait
 {
     public function clickActionFunctionalDataProvider(): array
     {
-        $actionGenerator = ActionGenerator::createGenerator();
+        $actionParser = ActionParser::create();
 
         return [
             'interaction action (click), link' => [
                 'fixture' => '/action-click-submit.html',
-                'action' => $actionGenerator->generate('click "#link-to-index"'),
+                'action' => $actionParser->parse('click $"#link-to-index"'),
                 'additionalSetupStatements' => new CodeBlock([
                     StatementFactory::createAssertBrowserTitle('Click'),
                 ]),
@@ -32,7 +32,7 @@ trait ClickActionFunctionalDataProviderTrait
             ],
             'interaction action (click), submit button' => [
                 'fixture' => '/action-click-submit.html',
-                'action' => $actionGenerator->generate('click "#form input[type=\'submit\']"'),
+                'action' => $actionParser->parse('click $"#form input[type=\'submit\']"'),
                 'additionalSetupStatements' => new CodeBlock([
                     StatementFactory::createAssertBrowserTitle('Click'),
                     StatementFactory::createCrawlerFilterCallForElement('#form input[type="submit"]', '$submitButton'),
