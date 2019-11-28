@@ -4,20 +4,22 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
+use webignition\BasilAssertionGenerator\AssertionGenerator;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilParser\AssertionParser;
 
 trait ExistsAssertionFunctionalDataProviderTrait
 {
     public function existsAssertionFunctionalDataProvider(): array
     {
-        $assertionParser = AssertionParser::create();
+        $assertionGenerator = AssertionGenerator::createGenerator();
 
         return [
             'exists comparison, element identifier examined value' => [
                 'fixture' => '/assertions.html',
-                'assertion' => $assertionParser->parse('$".selector" exists'),
+                'assertion' => $assertionGenerator->generate(
+                    '".selector" exists'
+                ),
                 'variableIdentifiers' => [
                     'HAS' => '$has',
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
@@ -25,7 +27,9 @@ trait ExistsAssertionFunctionalDataProviderTrait
             ],
             'exists comparison, attribute identifier examined value' => [
                 'fixture' => '/assertions.html',
-                'assertion' => $assertionParser->parse('$".selector".data-test-attribute exists'),
+                'assertion' => $assertionGenerator->generate(
+                    '".selector".data-test-attribute exists'
+                ),
                 'variableIdentifiers' => [
                     'HAS' => '$has',
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
@@ -33,7 +37,9 @@ trait ExistsAssertionFunctionalDataProviderTrait
             ],
             'exists comparison, environment examined value' => [
                 'fixture' => '/empty.html',
-                'assertion' => $assertionParser->parse('$env.TEST1 exists'),
+                'assertion' => $assertionGenerator->generate(
+                    '$env.TEST1 exists'
+                ),
                 'variableIdentifiers' => [
                     VariableNames::ENVIRONMENT_VARIABLE_ARRAY => '$_ENV',
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
@@ -41,7 +47,9 @@ trait ExistsAssertionFunctionalDataProviderTrait
             ],
             'exists comparison, browser object value' => [
                 'fixture' => '/empty.html',
-                'assertion' => $assertionParser->parse('$browser.size exists'),
+                'assertion' => $assertionGenerator->generate(
+                    '$browser.size exists'
+                ),
                 'variableIdentifiers' => [
                     'WEBDRIVER_DIMENSION' => ResolvedVariableNames::WEBDRIVER_DIMENSION_VARIABLE_NAME,
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
@@ -49,7 +57,9 @@ trait ExistsAssertionFunctionalDataProviderTrait
             ],
             'exists comparison, page object value' => [
                 'fixture' => '/empty.html',
-                'assertion' => $assertionParser->parse('$page.title exists'),
+                'assertion' => $assertionGenerator->generate(
+                    '$page.title exists'
+                ),
                 'variableIdentifiers' => [
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                 ],

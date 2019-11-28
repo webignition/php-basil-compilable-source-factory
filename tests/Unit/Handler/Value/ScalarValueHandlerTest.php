@@ -9,10 +9,8 @@ use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Metadata\MetadataInterface;
+use webignition\BasilModel\Value\ValueInterface;
 
-/**
- * @group poc208
- */
 class ScalarValueHandlerTest extends AbstractTestCase
 {
     use CreateFromValueDataProviderTrait;
@@ -26,18 +24,18 @@ class ScalarValueHandlerTest extends AbstractTestCase
     {
         parent::setUp();
 
-        $this->handler = ScalarValueHandler::createHandler();
+        $this->handler = new ScalarValueHandler();
     }
 
     /**
      * @dataProvider createFromValueDataProvider
      */
     public function testHandle(
-        string $value,
+        ValueInterface $model,
         CodeBlockInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
-        $source = $this->handler->handle($value);
+        $source = $this->handler->handle($model);
 
         $this->assertBlockContentEquals($expectedContent, $source);
         $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());

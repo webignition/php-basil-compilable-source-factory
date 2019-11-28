@@ -6,17 +6,15 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Functional\CallFactory;
 
 use Facebook\WebDriver\WebDriverElement;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
-use webignition\BasilCompilableSourceFactory\Model\DomIdentifier;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
+use webignition\BasilModel\Identifier\DomIdentifier;
+use webignition\BasilModel\Identifier\DomIdentifierInterface;
 
-/**
- * @group poc208
- */
 class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
 {
     /**
@@ -36,7 +34,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
      */
     public function testCreateFindCall(
         string $fixture,
-        DomIdentifier $identifier,
+        DomIdentifierInterface $identifier,
         CodeBlockInterface $teardownStatements
     ) {
         $source = $this->factory->createFindCall($identifier);

@@ -17,12 +17,11 @@ use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
-use webignition\BasilDataStructure\Action\ActionInterface;
-use webignition\BasilParser\ActionParser;
+use webignition\BasilModel\Action\ActionInterface;
+use webignition\BasilModel\Action\WaitAction;
+use webignition\BasilModel\Identifier\DomIdentifier;
+use webignition\BasilModel\Value\DomIdentifierValue;
 
-/**
- * @group poc208
- */
 class ActionHandlerTest extends AbstractBrowserTestCase
 {
     use BackActionFunctionalDataProviderTrait;
@@ -56,7 +55,7 @@ class ActionHandlerTest extends AbstractBrowserTestCase
      * @dataProvider waitActionFunctionalDataProvider
      * @dataProvider waitForActionFunctionalDataProvider
      */
-    public function testHandleForExecutableActions(
+    public function testCreateSourceForExecutableActions(
         string $fixture,
         ActionInterface $action,
         ?CodeBlockInterface $additionalSetupStatements = null,
@@ -87,9 +86,9 @@ class ActionHandlerTest extends AbstractBrowserTestCase
     }
 
     /**
-     * @dataProvider handleForFailingActionsDataProvider
+     * @dataProvider createSourceForFailingActionsDataProvider
      */
-    public function testHandleForFailingActions(
+    public function testCreateSourceForFailingActions(
         string $fixture,
         ActionInterface $action,
         string $expectedExpectationFailedExceptionMessage,
@@ -125,14 +124,15 @@ class ActionHandlerTest extends AbstractBrowserTestCase
         }
     }
 
-    public function handleForFailingActionsDataProvider(): array
+    public function createSourceForFailingActionsDataProvider(): array
     {
-        $actionParser = ActionParser::create();
-
         return [
             'wait action, element identifier examined value, element does not exist' => [
                 'fixture' => '/action-wait.html',
-                'action' => $actionParser->parse('wait $".non-existent"'),
+                'action' => new WaitAction(
+                    'wait $elements.element_name',
+                    new DomIdentifierValue(new DomIdentifier('.non-existent'))
+                ),
                 'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
@@ -143,7 +143,12 @@ class ActionHandlerTest extends AbstractBrowserTestCase
             ],
             'wait, attribute identifier examined value, element does not exist' => [
                 'fixture' => '/action-wait.html',
-                'action' => $actionParser->parse('wait $".non-existent".attribute_name'),
+                'action' => new WaitAction(
+                    'wait $elements.element_name.attribute_name',
+                    new DomIdentifierValue(
+                        (new DomIdentifier('.non-existent'))->withAttributeName('attribute_name')
+                    )
+                ),
                 'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,

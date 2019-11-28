@@ -4,24 +4,27 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
+use webignition\BasilActionGenerator\ActionGenerator;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\BasilParser\ActionParser;
+use webignition\BasilModel\Action\WaitAction;
+use webignition\BasilModel\Identifier\DomIdentifier;
+use webignition\BasilModel\Value\DomIdentifierValue;
 use webignition\DomElementLocator\ElementLocator;
 
 trait CreateFromWaitActionDataProviderTrait
 {
     public function createFromWaitActionDataProvider(): array
     {
-        $actionParser = ActionParser::create();
+        $actionGenerator = ActionGenerator::createGenerator();
 
         return [
             'wait action, literal' => [
-                'action' => $actionParser->parse('wait 30'),
+                'action' => $actionGenerator->generate('wait 30'),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ DURATION }} = "30" ?? 0',
                     '{{ DURATION }} = (int) {{ DURATION }}',
@@ -33,7 +36,10 @@ trait CreateFromWaitActionDataProviderTrait
                     ])),
             ],
             'wait action, element value' => [
-                'action' => $actionParser->parse('wait $".duration-selector"'),
+                'action' => new WaitAction(
+                    'wait $elements.element_name',
+                    new DomIdentifierValue(new DomIdentifier('.duration-selector'))
+                ),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.duration-selector\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
@@ -57,7 +63,12 @@ trait CreateFromWaitActionDataProviderTrait
                     ])),
             ],
             'wait action, attribute value' => [
-                'action' => $actionParser->parse('wait $".duration-selector".attribute_name'),
+                'action' => new WaitAction(
+                    'wait $elements.element_name.attribute_name',
+                    new DomIdentifierValue(
+                        (new DomIdentifier('.duration-selector'))->withAttributeName('attribute_name')
+                    )
+                ),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.duration-selector\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
@@ -80,7 +91,7 @@ trait CreateFromWaitActionDataProviderTrait
                     ])),
             ],
             'wait action, browser property' => [
-                'action' => $actionParser->parse('wait $browser.size'),
+                'action' => $actionGenerator->generate('wait $browser.size'),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()',
                     '{{ DURATION }} = '
@@ -99,7 +110,7 @@ trait CreateFromWaitActionDataProviderTrait
                     ])),
             ],
             'wait action, page property' => [
-                'action' => $actionParser->parse('wait $page.title'),
+                'action' => $actionGenerator->generate('wait $page.title'),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ DURATION }} = {{ CLIENT }}->getTitle() ?? 0',
                     '{{ DURATION }} = (int) {{ DURATION }}',
@@ -114,7 +125,7 @@ trait CreateFromWaitActionDataProviderTrait
                     ])),
             ],
             'wait action, environment value' => [
-                'action' => $actionParser->parse('wait $env.DURATION'),
+                'action' => $actionGenerator->generate('wait $env.DURATION'),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ DURATION }} = {{ ENV }}[\'DURATION\'] ?? 0',
                     '{{ DURATION }} = (int) {{ DURATION }}',
@@ -129,7 +140,7 @@ trait CreateFromWaitActionDataProviderTrait
                     ])),
             ],
             'wait action, environment value with default' => [
-                'action' => $actionParser->parse('wait $env.DURATION|"3"'),
+                'action' => $actionGenerator->generate('wait $env.DURATION|"3"'),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ DURATION }} = {{ ENV }}[\'DURATION\'] ?? 3',
                     '{{ DURATION }} = (int) {{ DURATION }}',

@@ -16,11 +16,8 @@ use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Metadata\MetadataInterface;
-use webignition\BasilDataStructure\Action\ActionInterface;
+use webignition\BasilModel\Action\ActionInterface;
 
-/**
- * @group poc208
- */
 class ActionHandlerTest extends AbstractTestCase
 {
     use CreateFromBackActionDataProviderTrait;

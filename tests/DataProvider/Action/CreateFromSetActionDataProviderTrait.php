@@ -4,24 +4,29 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
+use webignition\BasilActionGenerator\ActionGenerator;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\BasilParser\ActionParser;
+use webignition\BasilModel\Action\InputAction;
+use webignition\BasilModel\Identifier\DomIdentifier;
+use webignition\BasilModel\Value\DomIdentifierValue;
 use webignition\DomElementLocator\ElementLocator;
 
 trait CreateFromSetActionDataProviderTrait
 {
     public function createFromSetActionDataProvider(): array
     {
-        $actionParser = ActionParser::create();
+        $actionGenerator = ActionGenerator::createGenerator();
 
         return [
             'input action, element identifier, literal value' => [
-                'action' => $actionParser->parse('set $".selector" to "value"'),
+                'action' => $actionGenerator->generate(
+                    'set ".selector" to "value"'
+                ),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
@@ -46,7 +51,14 @@ trait CreateFromSetActionDataProviderTrait
                     ])),
             ],
             'input action, element identifier, element value' => [
-                'action' => $actionParser->parse('set $".selector" to $".source"'),
+                'action' => new InputAction(
+                    'set ".selector" to ".source"',
+                    new DomIdentifier('.selector'),
+                    new DomIdentifierValue(
+                        new DomIdentifier('.source')
+                    ),
+                    '".selector" to ".source"'
+                ),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
@@ -75,7 +87,14 @@ trait CreateFromSetActionDataProviderTrait
                     ])),
             ],
             'input action, element identifier, attribute value' => [
-                'action' => $actionParser->parse('set $".selector" to $".source".attribute_name'),
+                'action' => new InputAction(
+                    'set ".selector" to ".source".attribute_name',
+                    new DomIdentifier('.selector'),
+                    new DomIdentifierValue(
+                        (new DomIdentifier('.source'))->withAttributeName('attribute_name')
+                    ),
+                    '".selector" to ".source"'
+                ),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
@@ -103,7 +122,9 @@ trait CreateFromSetActionDataProviderTrait
                     ])),
             ],
             'input action, browser property' => [
-                'action' => $actionParser->parse('set $".selector" to $browser.size'),
+                'action' => $actionGenerator->generate(
+                    'set ".selector" to $browser.size'
+                ),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
@@ -133,7 +154,9 @@ trait CreateFromSetActionDataProviderTrait
                     ])),
             ],
             'input action, page property' => [
-                'action' => $actionParser->parse('set $".selector" to $page.url'),
+                'action' => $actionGenerator->generate(
+                    'set ".selector" to $page.url'
+                ),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
@@ -159,7 +182,9 @@ trait CreateFromSetActionDataProviderTrait
                     ])),
             ],
             'input action, environment value' => [
-                'action' => $actionParser->parse('set $".selector" to $env.KEY'),
+                'action' => $actionGenerator->generate(
+                    'set ".selector" to $env.KEY'
+                ),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
@@ -185,7 +210,9 @@ trait CreateFromSetActionDataProviderTrait
                     ])),
             ],
             'input action, environment value with default' => [
-                'action' => $actionParser->parse('set $".selector" to $env.KEY|"default"'),
+                'action' => $actionGenerator->generate(
+                    'set ".selector" to $env.KEY|"default"'
+                ),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
@@ -211,7 +238,9 @@ trait CreateFromSetActionDataProviderTrait
                     ])),
             ],
             'input action, environment value with default with whitespace' => [
-                'action' => $actionParser->parse('set $".selector" to $env.KEY|"default value"'),
+                'action' => $actionGenerator->generate(
+                    'set ".selector" to $env.KEY|"default value"'
+                ),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',

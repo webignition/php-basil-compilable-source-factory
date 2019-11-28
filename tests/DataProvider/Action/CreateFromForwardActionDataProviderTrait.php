@@ -4,21 +4,21 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
+use webignition\BasilActionGenerator\ActionGenerator;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\BasilParser\ActionParser;
 
 trait CreateFromForwardActionDataProviderTrait
 {
     public function createFromForwardActionDataProvider(): array
     {
-        $actionParser = ActionParser::create();
+        $actionGenerator = ActionGenerator::createGenerator();
 
         return [
             'no-arguments action (forward)' => [
-                'action' => $actionParser->parse('forward'),
+                'action' => $actionGenerator->generate('forward'),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ CRAWLER }} = {{ CLIENT }}->forward()',
                 ]),

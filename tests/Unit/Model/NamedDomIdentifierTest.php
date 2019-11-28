@@ -4,13 +4,10 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 
-use webignition\BasilCompilableSourceFactory\Model\DomIdentifier;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifier;
 use webignition\BasilCompilationSource\VariablePlaceholder;
+use webignition\BasilModel\Identifier\DomIdentifier;
 
-/**
- * @group poc208
- */
 class NamedDomIdentifierTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreate()

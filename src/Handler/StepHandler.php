@@ -47,13 +47,11 @@ class StepHandler
         $block = new CodeBlock([]);
 
         foreach ($step->getActions() as $action) {
-            // @todo: fix in #225
-//            $this->addSourceToBlock($block, $action, $this->actionHandler->handle($action));
+            $this->addSourceToBlock($block, $action, $this->actionHandler->handle($action));
         }
 
         foreach ($step->getAssertions() as $assertion) {
-            // @todo: fix in #225
-//            $this->addSourceToBlock($block, $assertion, $this->assertionHandler->handle($assertion));
+            $this->addSourceToBlock($block, $assertion, $this->assertionHandler->handle($assertion));
         }
 
         return $block;

@@ -11,18 +11,19 @@ use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\BasilParser\ActionParser;
 use webignition\DomElementLocator\ElementLocator;
 
 trait CreateFromClickActionDataProviderTrait
 {
     public function createFromClickActionDataProvider(): array
     {
-        $actionParser = ActionParser::create();
+        $actionGenerator = ActionGenerator::createGenerator();
 
         return [
             'interaction action (click), element identifier' => [
-                'action' => $actionParser->parse('click $".selector"'),
+                'action' => $actionGenerator->generate(
+                    'click ".selector"'
+                ),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',

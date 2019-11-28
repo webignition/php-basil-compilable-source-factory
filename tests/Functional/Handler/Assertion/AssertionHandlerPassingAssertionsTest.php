@@ -16,11 +16,8 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\NotExi
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
-use webignition\BasilDataStructure\AssertionInterface;
+use webignition\BasilModel\Assertion\AssertionInterface;
 
-/**
- * @group poc208
- */
 class AssertionHandlerPassingAssertionsTest extends AbstractBrowserTestCase
 {
     use EqualityAssertionFunctionalDataProviderTrait;
@@ -56,10 +53,10 @@ class AssertionHandlerPassingAssertionsTest extends AbstractBrowserTestCase
      */
     public function testCreateSource(
         string $fixture,
-        AssertionInterface $assertion,
+        AssertionInterface $model,
         array $additionalVariableIdentifiers = []
     ) {
-        $source = $this->handler->handle($assertion);
+        $source = $this->handler->handle($model);
 
         $classCode = $this->testCodeGenerator->createBrowserTestForBlock(
             $source,
