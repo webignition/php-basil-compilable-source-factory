@@ -19,7 +19,7 @@ use webignition\BasilCompilableSourceFactory\ModelFactory\DomIdentifier\DomIdent
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\BasilDataStructure\Action\ActionInterface;
+use webignition\BasilDataStructure\Action\InputAction;
 
 class SetActionHandler
 {
@@ -59,7 +59,7 @@ class SetActionHandler
     }
 
     /**
-     * @param ActionInterface $action
+     * @param InputAction $action
      *
      * @return CodeBlockInterface
      *
@@ -67,7 +67,7 @@ class SetActionHandler
      * @throws UnsupportedActionException
      * @throws UnsupportedValueException
      */
-    public function handle(ActionInterface $action): CodeBlockInterface
+    public function handle(InputAction $action): CodeBlockInterface
     {
         $identifier = $action->getIdentifier();
 

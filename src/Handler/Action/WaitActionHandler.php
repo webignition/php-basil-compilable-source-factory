@@ -18,7 +18,7 @@ use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\BasilDataStructure\Action\ActionInterface;
+use webignition\BasilDataStructure\Action\WaitAction;
 
 class WaitActionHandler
 {
@@ -57,7 +57,7 @@ class WaitActionHandler
     }
 
     /**
-     * @param ActionInterface $waitAction
+     * @param WaitAction $waitAction
      *
      * @return CodeBlockInterface
      *
@@ -65,7 +65,7 @@ class WaitActionHandler
      * @throws UnsupportedActionException
      * @throws UnsupportedValueException
      */
-    public function handle(ActionInterface $waitAction): CodeBlockInterface
+    public function handle(WaitAction $waitAction): CodeBlockInterface
     {
         $variableExports = new VariablePlaceholderCollection();
         $durationPlaceholder = $variableExports->create(self::DURATION_PLACEHOLDER);

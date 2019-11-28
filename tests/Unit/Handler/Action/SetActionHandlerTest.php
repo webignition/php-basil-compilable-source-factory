@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Action;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedActionException;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\Handler\Action\SetActionHandler;
-use webignition\BasilDataStructure\Action\ActionInterface;
+use webignition\BasilDataStructure\Action\InputAction;
 use webignition\BasilParser\ActionParser;
 
 /**
@@ -18,7 +18,7 @@ class SetActionHandlerTest extends AbstractTestCase
     /**
      * @dataProvider createForUnsupportedActionDataProvider
      */
-    public function testCreateForUnsupportedActon(ActionInterface $action)
+    public function testCreateForUnsupportedActon(InputAction $action)
     {
         $handler = SetActionHandler::createHandler();
 

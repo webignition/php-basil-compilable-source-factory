@@ -47,7 +47,8 @@ class StepHandler
         $block = new CodeBlock([]);
 
         foreach ($step->getActions() as $action) {
-            $this->addSourceToBlock($block, $action, $this->actionHandler->handle($action));
+            // @todo: fix in #225
+//            $this->addSourceToBlock($block, $action, $this->actionHandler->handle($action));
         }
 
         foreach ($step->getAssertions() as $assertion) {

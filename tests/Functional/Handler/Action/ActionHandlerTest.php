@@ -20,6 +20,9 @@ use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilDataStructure\Action\ActionInterface;
 use webignition\BasilParser\ActionParser;
 
+/**
+ * @group poc208
+ */
 class ActionHandlerTest extends AbstractBrowserTestCase
 {
     use BackActionFunctionalDataProviderTrait;

@@ -10,6 +10,9 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilDataStructure\Action\ActionInterface;
+use webignition\BasilDataStructure\Action\InputAction;
+use webignition\BasilDataStructure\Action\InteractionAction;
+use webignition\BasilDataStructure\Action\WaitAction;
 
 class ActionHandler
 {
@@ -60,19 +63,19 @@ class ActionHandler
             return $this->browserOperationActionHandler->handle($action);
         }
 
-        if ($this->isInteractionAction($action)) {
+        if ($action instanceof InteractionAction && in_array($action->getType(), ['click', 'submit'])) {
             return $this->interactionActionHandler->handle($action);
         }
 
-        if ('set' === $action->getType()) {
+        if ($action instanceof InputAction) {
             return $this->setActionHandler->handle($action);
         }
 
-        if ('wait' === $action->getType()) {
+        if ($action instanceof WaitAction) {
             return $this->waitActionHandler->handle($action);
         }
 
-        if ('wait-for' === $action->getType()) {
+        if ($action instanceof InteractionAction && in_array($action->getType(), ['wait-for'])) {
             return $this->waitForActionHandler->handle($action);
         }
 
@@ -85,14 +88,6 @@ class ActionHandler
             'back',
             'forward',
             'reload',
-        ]);
-    }
-
-    private function isInteractionAction(ActionInterface $action): bool
-    {
-        return in_array($action->getType(), [
-            'click',
-            'submit',
         ]);
     }
 }

@@ -8,7 +8,7 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedActionExceptio
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
 use webignition\BasilCompilableSourceFactory\Handler\Action\WaitActionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
-use webignition\BasilDataStructure\Action\ActionInterface;
+use webignition\BasilDataStructure\Action\WaitAction;
 use webignition\BasilParser\ActionParser;
 
 /**
@@ -19,7 +19,7 @@ class WaitActionHandlerTest extends AbstractTestCase
     /**
      * @dataProvider createForUnsupportedActionDataProvider
      */
-    public function testCreateForUnsupportedActon(ActionInterface $action, string $expectedException)
+    public function testCreateForUnsupportedActon(WaitAction $action, string $expectedException)
     {
         $handler = WaitActionHandler::createHandler();
 

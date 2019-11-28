@@ -15,7 +15,7 @@ use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\BasilDataStructure\Action\ActionInterface;
+use webignition\BasilDataStructure\Action\InteractionAction;
 
 class WaitForActionHandler
 {
@@ -39,14 +39,14 @@ class WaitForActionHandler
     }
 
     /**
-     * @param ActionInterface $action
+     * @param InteractionAction $action
      *
      * @return CodeBlockInterface
      *
      * @throws UnknownIdentifierException
      * @throws UnsupportedActionException
      */
-    public function handle(ActionInterface $action): CodeBlockInterface
+    public function handle(InteractionAction $action): CodeBlockInterface
     {
         $identifier = $action->getIdentifier();
 
