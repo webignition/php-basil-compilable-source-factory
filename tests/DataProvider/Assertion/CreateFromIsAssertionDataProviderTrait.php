@@ -4,18 +4,12 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
-use webignition\BasilAssertionGenerator\AssertionGenerator;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\BasilModel\Assertion\AssertionComparison;
-use webignition\BasilModel\Assertion\ComparisonAssertion;
-use webignition\BasilModel\Identifier\DomIdentifier;
-use webignition\BasilModel\Value\DomIdentifierValue;
-use webignition\BasilModelFactory\ValueFactory;
 use webignition\BasilParser\AssertionParser;
 use webignition\DomElementLocator\ElementLocator;
 
@@ -23,78 +17,62 @@ trait CreateFromIsAssertionDataProviderTrait
 {
     public function createFromIsAssertionDataProvider(): array
     {
-        $assertionGenerator = AssertionGenerator::createGenerator();
         $assertionParser = AssertionParser::create();
-        $valueFactory = ValueFactory::createFactory();
-
-        $browserProperty = $valueFactory->createFromValueString('$browser.size');
-        $environmentValue = $valueFactory->createFromValueString('$env.KEY');
-        $environmentValueWithDefault = $valueFactory->createFromValueString('$env.KEY|"default value"');
-        $elementValue = new DomIdentifierValue(new DomIdentifier('.selector'));
-        $pageProperty = $valueFactory->createFromValueString('$page.url');
-
-        $attributeValue = new DomIdentifierValue(
-            (new DomIdentifier('.selector'))->withAttributeName('attribute_name')
-        );
 
         return [
-//            'is comparison, element identifier examined value, literal string expected value' => [
-//                'assertion' => $assertionGenerator->generate(
-//                    '".selector" is "value"'
-//                ),
-//                'expectedContent' => CodeBlock::fromContent([
-//                    '{{ EXPECTED }} = "value" ?? null',
-//                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-//                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
-//                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
-//                    '{{ EXAMINED }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
-//                    '{{ EXAMINED }} = {{ INSPECTOR }}->getValue({{ EXAMINED }}) ?? null',
-//                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
-//                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
-//                ]),
-//                'expectedMetadata' => (new Metadata())
-//                    ->withClassDependencies(new ClassDependencyCollection([
-//                        new ClassDependency(ElementLocator::class),
-//                    ]))
-//                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-//                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-//                        VariableNames::PHPUNIT_TEST_CASE,
-//                        VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
-//                    ]))
-//                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
-//                        VariableNames::EXPECTED_VALUE,
-//                        'HAS',
-//                        VariableNames::EXAMINED_VALUE,
-//                    ])),
-//            ],
-//            'is comparison, attribute identifier examined value, literal string expected value' => [
-//                'assertion' => $assertionGenerator->generate(
-//                    '".selector".attribute_name is "value"'
-//                ),
-//                'expectedContent' => CodeBlock::fromContent([
-//                    '{{ EXPECTED }} = "value" ?? null',
-//                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-//                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
-//                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
-//                    '{{ EXAMINED }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
-//                    '{{ EXAMINED }} = {{ EXAMINED }}->getAttribute(\'attribute_name\') ?? null',
-//                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
-//                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
-//                ]),
-//                'expectedMetadata' => (new Metadata())
-//                    ->withClassDependencies(new ClassDependencyCollection([
-//                        new ClassDependency(ElementLocator::class),
-//                    ]))
-//                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-//                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-//                        VariableNames::PHPUNIT_TEST_CASE,
-//                    ]))
-//                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
-//                        VariableNames::EXPECTED_VALUE,
-//                        'HAS',
-//                        VariableNames::EXAMINED_VALUE,
-//                    ])),
-//            ],
+            'is comparison, element identifier examined value, literal string expected value' => [
+                'assertion' => $assertionParser->parse('$".selector" is "value"'),
+                'expectedContent' => CodeBlock::fromContent([
+                    '{{ EXPECTED }} = "value" ?? null',
+                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ EXAMINED }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
+                    '{{ EXAMINED }} = {{ INSPECTOR }}->getValue({{ EXAMINED }}) ?? null',
+                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
+                ]),
+                'expectedMetadata' => (new Metadata())
+                    ->withClassDependencies(new ClassDependencyCollection([
+                        new ClassDependency(ElementLocator::class),
+                    ]))
+                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
+                        VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
+                    ]))
+                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        VariableNames::EXPECTED_VALUE,
+                        'HAS',
+                        VariableNames::EXAMINED_VALUE,
+                    ])),
+            ],
+            'is comparison, attribute identifier examined value, literal string expected value' => [
+                'assertion' => $assertionParser->parse('$".selector".attribute_name is "value"'),
+                'expectedContent' => CodeBlock::fromContent([
+                    '{{ EXPECTED }} = "value" ?? null',
+                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ EXAMINED }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
+                    '{{ EXAMINED }} = {{ EXAMINED }}->getAttribute(\'attribute_name\') ?? null',
+                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
+                ]),
+                'expectedMetadata' => (new Metadata())
+                    ->withClassDependencies(new ClassDependencyCollection([
+                        new ClassDependency(ElementLocator::class),
+                    ]))
+                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
+                    ]))
+                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        VariableNames::EXPECTED_VALUE,
+                        'HAS',
+                        VariableNames::EXAMINED_VALUE,
+                    ])),
+            ],
             'is comparison, browser object examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is "value"'),
                 'expectedContent' => CodeBlock::fromContent([
@@ -194,79 +172,69 @@ trait CreateFromIsAssertionDataProviderTrait
                         VariableNames::EXAMINED_VALUE,
                     ])),
             ],
-//            'is comparison, browser object examined value, element identifier expected value' => [
-//                'assertion' => new ComparisonAssertion(
-//                    '$browser.size is ".selector"',
-//                    $browserProperty,
-//                    AssertionComparison::IS,
-//                    $elementValue
-//                ),
-//                'expectedContent' => CodeBlock::fromContent([
-//                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
-//                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
-//                    '{{ EXPECTED }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
-//                    '{{ EXPECTED }} = {{ INSPECTOR }}->getValue({{ EXPECTED }}) ?? null',
-//                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-//                    '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()',
-//                    '{{ EXAMINED }} = '
-//                        . '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
-//                        . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null',
-//                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
-//                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
-//                ]),
-//                'expectedMetadata' => (new Metadata())
-//                    ->withClassDependencies(new ClassDependencyCollection([
-//                        new ClassDependency(ElementLocator::class),
-//                    ]))
-//                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-//                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-//                        VariableNames::PHPUNIT_TEST_CASE,
-//                        VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
-//                        VariableNames::PANTHER_CLIENT,
-//                    ]))
-//                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
-//                        'HAS',
-//                        VariableNames::EXPECTED_VALUE,
-//                        'WEBDRIVER_DIMENSION',
-//                        VariableNames::EXAMINED_VALUE,
-//                    ])),
-//            ],
-//            'is comparison, browser object examined value, attribute identifier expected value' => [
-//                'assertion' => new ComparisonAssertion(
-//                    '$browser.size is ".selector".attribute_name',
-//                    $browserProperty,
-//                    AssertionComparison::IS,
-//                    $attributeValue
-//                ),
-//                'expectedContent' => CodeBlock::fromContent([
-//                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
-//                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
-//                    '{{ EXPECTED }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
-//                    '{{ EXPECTED }} = {{ EXPECTED }}->getAttribute(\'attribute_name\') ?? null',
-//                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-//                    '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()',
-//                    '{{ EXAMINED }} = '
-//                        . '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
-//                        . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null',
-//                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
-//                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
-//                ]),
-//                'expectedMetadata' => (new Metadata())
-//                    ->withClassDependencies(new ClassDependencyCollection([
-//                        new ClassDependency(ElementLocator::class),
-//                    ]))
-//                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-//                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-//                        VariableNames::PHPUNIT_TEST_CASE,
-//                        VariableNames::PANTHER_CLIENT,
-//                    ]))
-//                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
-//                        'HAS',
-//                        VariableNames::EXPECTED_VALUE,
-//                        'WEBDRIVER_DIMENSION',
-//                        VariableNames::EXAMINED_VALUE,
-//                    ])),
-//            ],
+            'is comparison, browser object examined value, element identifier expected value' => [
+                'assertion' => $assertionParser->parse('$browser.size is $".selector"'),
+                'expectedContent' => CodeBlock::fromContent([
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ EXPECTED }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
+                    '{{ EXPECTED }} = {{ INSPECTOR }}->getValue({{ EXPECTED }}) ?? null',
+                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
+                    '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()',
+                    '{{ EXAMINED }} = '
+                        . '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
+                        . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null',
+                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
+                ]),
+                'expectedMetadata' => (new Metadata())
+                    ->withClassDependencies(new ClassDependencyCollection([
+                        new ClassDependency(ElementLocator::class),
+                    ]))
+                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
+                        VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
+                        VariableNames::PANTHER_CLIENT,
+                    ]))
+                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        'HAS',
+                        VariableNames::EXPECTED_VALUE,
+                        'WEBDRIVER_DIMENSION',
+                        VariableNames::EXAMINED_VALUE,
+                    ])),
+            ],
+            'is comparison, browser object examined value, attribute identifier expected value' => [
+                'assertion' => $assertionParser->parse('$browser.size is $".selector".attribute_name'),
+                'expectedContent' => CodeBlock::fromContent([
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ EXPECTED }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
+                    '{{ EXPECTED }} = {{ EXPECTED }}->getAttribute(\'attribute_name\') ?? null',
+                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
+                    '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()',
+                    '{{ EXAMINED }} = '
+                        . '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
+                        . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null',
+                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
+                ]),
+                'expectedMetadata' => (new Metadata())
+                    ->withClassDependencies(new ClassDependencyCollection([
+                        new ClassDependency(ElementLocator::class),
+                    ]))
+                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
+                        VariableNames::PANTHER_CLIENT,
+                    ]))
+                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        'HAS',
+                        VariableNames::EXPECTED_VALUE,
+                        'WEBDRIVER_DIMENSION',
+                        VariableNames::EXAMINED_VALUE,
+                    ])),
+            ],
             'is comparison, browser object examined value, environment expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $env.KEY'),
                 'expectedContent' => CodeBlock::fromContent([
