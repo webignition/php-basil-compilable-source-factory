@@ -13,8 +13,9 @@ use webignition\BasilCompilationSource\Block\DocBlock;
 use webignition\BasilCompilationSource\Line\Comment;
 use webignition\BasilCompilationSource\MethodDefinition\MethodDefinition;
 use webignition\BasilCompilationSource\MethodDefinition\MethodDefinitionInterface;
+use webignition\BasilDataStructure\Step;
+use webignition\BasilModel\DataSet\DataSetCollection;
 use webignition\BasilModel\DataSet\DataSetCollectionInterface;
-use webignition\BasilModel\Step\StepInterface;
 
 class StepMethodFactory
 {
@@ -43,17 +44,20 @@ class StepMethodFactory
 
     /**
      * @param string $stepName
-     * @param StepInterface $step
+     * @param Step $step
      *
      * @return StepMethods
      *
      * @throws UnknownObjectPropertyException
      * @throws UnsupportedModelException
      */
-    public function createStepMethods(string $stepName, StepInterface $step): StepMethods
+    public function createStepMethods(string $stepName, Step $step): StepMethods
     {
-        $dataSetCollection = $step->getDataSetCollection();
+//        $dataSetCollection = $step->getDataSetCollection();
+        // @todo: fix in #237
+        $dataSetCollection = new DataSetCollection();
         $parameterNames = $dataSetCollection->getParameterNames();
+
 
         $stepMethodName = $this->stepMethodNameFactory->createTestMethodName($stepName);
 

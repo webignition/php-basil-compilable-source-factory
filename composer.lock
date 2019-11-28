@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e06b797a4e731f8f2025e56873daee37",
+    "content-hash": "51c9e6b19d03e0e9e0751aee0a37676e",
     "packages": [
         {
             "name": "facebook/webdriver",
@@ -796,6 +796,48 @@
             ],
             "homepage": "https://github.com/webignition/basil-code-generator",
             "time": "2019-11-16T13:13:46+00:00"
+        },
+        {
+            "name": "webignition/basil-data-structures",
+            "version": "0.14",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/webignition/basil-data-structures.git",
+                "reference": "58ba12010b959763daf58a3ed0ae29a322db4fe9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/webignition/basil-data-structures/zipball/58ba12010b959763daf58a3ed0ae29a322db4fe9",
+                "reference": "58ba12010b959763daf58a3ed0ae29a322db4fe9",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^0.11.5",
+                "phpunit/phpunit": "~8.0",
+                "squizlabs/php_codesniffer": "3.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "webignition\\BasilDataStructure\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jon Cram",
+                    "email": "webignition@gmail.com"
+                }
+            ],
+            "description": "Data structures for basil language",
+            "homepage": "https://github.com/webignition/basil-data-structures",
+            "time": "2019-11-28T18:43:59+00:00"
         },
         {
             "name": "webignition/php-basil-compilation-source",
@@ -4269,48 +4311,6 @@
                 "resolver"
             ],
             "time": "2019-11-22T18:07:29+00:00"
-        },
-        {
-            "name": "webignition/basil-data-structures",
-            "version": "0.13",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/webignition/basil-data-structures.git",
-                "reference": "1a3f4a237ca7c52b632ebb381185b5e18417d3d9"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/webignition/basil-data-structures/zipball/1a3f4a237ca7c52b632ebb381185b5e18417d3d9",
-                "reference": "1a3f4a237ca7c52b632ebb381185b5e18417d3d9",
-                "shasum": ""
-            },
-            "require": {
-                "php": ">=7.2"
-            },
-            "require-dev": {
-                "phpstan/phpstan": "^0.11.5",
-                "phpunit/phpunit": "~8.0",
-                "squizlabs/php_codesniffer": "3.*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "webignition\\BasilDataStructure\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jon Cram",
-                    "email": "webignition@gmail.com"
-                }
-            ],
-            "description": "Data structures for basil language",
-            "homepage": "https://github.com/webignition/basil-data-structures",
-            "time": "2019-11-22T12:50:58+00:00"
         },
         {
             "name": "webignition/basil-parser",

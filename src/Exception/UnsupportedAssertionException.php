@@ -8,15 +8,18 @@ use webignition\BasilDataStructure\AssertionInterface;
 
 class UnsupportedAssertionException extends \Exception
 {
-    private const CODE_NONE = 0;
-    private const CODE_UNKNOWN = 1;
+    public const CODE_NONE = 0;
+    public const CODE_UNKNOWN = 1;
+    public const CODE_UNSUPPORTED_IDENTIFIER = 2;
+    public const CODE_UNSUPPORTED_VALUE = 3;
+    public const CODE_UNSUPPORTED_COMPARISON = 4;
 
     private $assertion;
 
     private $codes = [
-        UnsupportedIdentifierException::class => 2,
-        UnsupportedValueException::class => 3,
-        UnsupportedComparisonException::class => 4,
+        UnsupportedIdentifierException::class => self::CODE_UNSUPPORTED_IDENTIFIER,
+        UnsupportedValueException::class => self::CODE_UNSUPPORTED_VALUE,
+        UnsupportedComparisonException::class => self::CODE_UNSUPPORTED_COMPARISON,
     ];
 
     public function __construct(AssertionInterface $assertion, \Throwable $previous = null)
