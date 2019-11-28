@@ -8,7 +8,6 @@ use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\WebDriverElementMutatorCallFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedActionException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
 use webignition\BasilCompilableSourceFactory\IdentifierTypeFinder;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifier;
@@ -64,7 +63,6 @@ class SetActionHandler
      * @return CodeBlockInterface
      *
      * @throws UnsupportedIdentifierException
-     * @throws UnsupportedActionException
      * @throws UnsupportedValueException
      */
     public function handle(InputAction $action): CodeBlockInterface
@@ -75,19 +73,19 @@ class SetActionHandler
             !IdentifierTypeFinder::isDomIdentifier($identifier) &&
             !IdentifierTypeFinder::isDescendantDomIdentifier($identifier)
         ) {
-            throw new UnsupportedActionException($action);
+            throw new UnsupportedIdentifierException($identifier);
         }
 
         $value = $action->getValue();
 
         if (null === $value) {
-            throw new UnsupportedActionException($action);
+            throw new UnsupportedValueException($value);
         }
 
         $domIdentifier = $this->domIdentifierFactory->create($identifier);
 
         if (null !== $domIdentifier->getAttributeName()) {
-            throw new UnsupportedActionException($action);
+            throw new UnsupportedIdentifierException($identifier);
         }
 
         $variableExports = new VariablePlaceholderCollection();

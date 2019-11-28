@@ -6,7 +6,6 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedActionException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilDataStructure\Action\ActionInterface;
@@ -52,42 +51,34 @@ class ActionHandler
      *
      * @return CodeBlockInterface
      *
-     * @throws UnsupportedIdentifierException
      * @throws UnsupportedActionException
-     * @throws UnsupportedModelException
-     * @throws UnsupportedValueException
      */
     public function handle(ActionInterface $action): CodeBlockInterface
     {
-        if ($this->isBrowserOperationAction($action)) {
-            return $this->browserOperationActionHandler->handle($action);
+        try {
+            if (in_array($action->getType(), ['back', 'forward', 'reload'])) {
+                return $this->browserOperationActionHandler->handle($action);
+            }
+
+            if ($action instanceof InteractionAction && in_array($action->getType(), ['click', 'submit'])) {
+                return $this->interactionActionHandler->handle($action);
+            }
+
+            if ($action instanceof InputAction) {
+                return $this->setActionHandler->handle($action);
+            }
+
+            if ($action instanceof WaitAction) {
+                return $this->waitActionHandler->handle($action);
+            }
+
+            if ($action instanceof InteractionAction && in_array($action->getType(), ['wait-for'])) {
+                return $this->waitForActionHandler->handle($action);
+            }
+        } catch (UnsupportedIdentifierException | UnsupportedValueException $previous) {
+            throw new UnsupportedActionException($action, $previous);
         }
 
-        if ($action instanceof InteractionAction && in_array($action->getType(), ['click', 'submit'])) {
-            return $this->interactionActionHandler->handle($action);
-        }
-
-        if ($action instanceof InputAction) {
-            return $this->setActionHandler->handle($action);
-        }
-
-        if ($action instanceof WaitAction) {
-            return $this->waitActionHandler->handle($action);
-        }
-
-        if ($action instanceof InteractionAction && in_array($action->getType(), ['wait-for'])) {
-            return $this->waitForActionHandler->handle($action);
-        }
-
-        throw new UnsupportedModelException($action);
-    }
-
-    private function isBrowserOperationAction(ActionInterface $action): bool
-    {
-        return in_array($action->getType(), [
-            'back',
-            'forward',
-            'reload',
-        ]);
+        throw new UnsupportedActionException($action);
     }
 }

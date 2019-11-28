@@ -8,11 +8,30 @@ use webignition\BasilDataStructure\AssertionInterface;
 
 class UnsupportedAssertionException extends \Exception
 {
+    private const CODE_NONE = 0;
+    private const CODE_UNKNOWN = 1;
+
     private $assertion;
 
-    public function __construct(AssertionInterface $assertion)
+    private $codes = [
+        UnsupportedIdentifierException::class => 2,
+        UnsupportedValueException::class => 3,
+        UnsupportedComparisonException::class => 4,
+    ];
+
+    public function __construct(AssertionInterface $assertion, \Throwable $previous = null)
     {
-        parent::__construct('Unsupported assertion "' . $assertion->getSource() . '"');
+        $code = self::CODE_NONE;
+
+        if ($previous instanceof \Throwable) {
+            $code = $this->codes[get_class($previous)] ?? self::CODE_UNKNOWN;
+        }
+
+        parent::__construct(
+            'Unsupported assertion "' . $assertion->getSource() . '"',
+            $code,
+            $previous
+        );
 
         $this->assertion = $assertion;
     }

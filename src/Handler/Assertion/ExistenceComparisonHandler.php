@@ -6,8 +6,8 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedComparisonException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedAssertionException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
 use webignition\BasilCompilableSourceFactory\IdentifierTypeFinder;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
@@ -68,7 +68,7 @@ class ExistenceComparisonHandler extends AbstractAssertionHandler
      *
      * @throws UnsupportedIdentifierException
      * @throws UnsupportedValueException
-     * @throws UnsupportedAssertionException
+     * @throws UnsupportedComparisonException
      */
     public function handle(AssertionInterface $assertion): CodeBlockInterface
     {
@@ -76,8 +76,12 @@ class ExistenceComparisonHandler extends AbstractAssertionHandler
         $identifier = $assertion->getIdentifier();
         $comparison = $assertion->getComparison();
 
-        if (null === $identifier || null === $comparison) {
-            throw new UnsupportedAssertionException($assertion);
+        if (null === $identifier) {
+            throw new UnsupportedIdentifierException(null);
+        }
+
+        if (null === $comparison) {
+            throw new UnsupportedComparisonException(null);
         }
 
         if ($this->valueTypeIdentifier->isScalarValue($identifier)) {
@@ -140,7 +144,7 @@ class ExistenceComparisonHandler extends AbstractAssertionHandler
             return $this->createAssertionCall($comparison, $existence, $valuePlaceholder);
         }
 
-        throw new UnsupportedAssertionException($assertion);
+        throw new UnsupportedIdentifierException($identifier);
     }
 
     private function createAssertionCall(

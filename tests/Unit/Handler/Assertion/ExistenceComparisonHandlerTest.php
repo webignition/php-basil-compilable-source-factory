@@ -4,9 +4,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Assertion;
 
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedAssertionException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedComparisonException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\ExistenceComparisonHandler;
+use webignition\BasilDataStructure\Assertion;
 use webignition\BasilDataStructure\AssertionInterface;
 use webignition\BasilParser\AssertionParser;
 
@@ -28,25 +30,33 @@ class ExistenceComparisonHandlerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider handleWrongValueTypeDataProvider
+     * @dataProvider handleThrowsExceptionDataProvider
      */
-    public function testHandleWrongValueType(AssertionInterface $assertion)
+    public function testHandleThrowsException(AssertionInterface $assertion, \Exception $expectedException)
     {
-        $this->expectExceptionObject(new UnsupportedAssertionException($assertion));
+        $handler = ExistenceComparisonHandler::createHandler();
 
-        $this->handler->handle($assertion);
+        $this->expectExceptionObject($expectedException);
+
+        $handler->handle($assertion);
     }
 
-    public function handleWrongValueTypeDataProvider(): array
+    public function handleThrowsExceptionDataProvider(): array
     {
         $assertionParser = AssertionParser::create();
 
         return [
-            'element reference' => [
-                'model' => $assertionParser->parse('$elements.element_name exists'),
+            'identifier is null' => [
+                'assertion' => new Assertion('exists', null, 'exists'),
+                'expectedException' => new UnsupportedIdentifierException(null),
             ],
-            'page element reference' => [
-                'model' => $assertionParser->parse('$page_import_name.elements.element_name exists'),
+            'comparison is null' => [
+                'assertion' => new Assertion('exists', '$".selector"', null),
+                'expectedException' => new UnsupportedComparisonException(null),
+            ],
+            'identifier is not supported' => [
+                'assertion' => $assertionParser->parse('$elements.element_name exists'),
+                'expectedException' => new UnsupportedIdentifierException('$elements.element_name'),
             ],
         ];
     }

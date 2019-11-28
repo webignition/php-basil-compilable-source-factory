@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedComparisonException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedAssertionException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilDataStructure\AssertionInterface;
-use webignition\BasilModel\Assertion\AssertionComparison;
 
 class AssertionHandler
 {
@@ -37,18 +37,24 @@ class AssertionHandler
      *
      * @return CodeBlockInterface
      *
-     * @throws UnsupportedIdentifierException
      * @throws UnsupportedAssertionException
-     * @throws UnsupportedValueException
      */
     public function handle(AssertionInterface $assertion): CodeBlockInterface
     {
-        if ($this->isComparisonAssertion($assertion)) {
-            return $this->comparisonAssertionHandler->handle($assertion);
-        }
+        try {
+            if ($this->isComparisonAssertion($assertion)) {
+                return $this->comparisonAssertionHandler->handle($assertion);
+            }
 
-        if ($this->isExistenceAssertion($assertion)) {
-            return $this->existenceComparisonHandler->handle($assertion);
+            if ($this->isExistenceAssertion($assertion)) {
+                return $this->existenceComparisonHandler->handle($assertion);
+            }
+        } catch (
+            UnsupportedComparisonException |
+            UnsupportedIdentifierException |
+            UnsupportedValueException $previous
+        ) {
+            throw new UnsupportedAssertionException($assertion, $previous);
         }
 
         throw new UnsupportedAssertionException($assertion);
@@ -57,16 +63,16 @@ class AssertionHandler
     private function isComparisonAssertion(AssertionInterface $assertion): bool
     {
         return in_array($assertion->getComparison(), [
-            AssertionComparison::INCLUDES,
-            AssertionComparison::EXCLUDES,
-            AssertionComparison::IS,
-            AssertionComparison::IS_NOT,
-            AssertionComparison::MATCHES,
+            'includes',
+            'excludes',
+            'is',
+            'is-not',
+            'matches',
         ]);
     }
 
     private function isExistenceAssertion(AssertionInterface $assertion): bool
     {
-        return in_array($assertion->getComparison(), [AssertionComparison::EXISTS, AssertionComparison::NOT_EXISTS]);
+        return in_array($assertion->getComparison(), ['exists', 'not-exists']);
     }
 }

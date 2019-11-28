@@ -8,11 +8,29 @@ use webignition\BasilDataStructure\Action\ActionInterface;
 
 class UnsupportedActionException extends \Exception
 {
+    private const CODE_NONE = 0;
+    private const CODE_UNKNOWN = 1;
+
     private $action;
 
-    public function __construct(ActionInterface $action)
+    private $codes = [
+        UnsupportedIdentifierException::class => 2,
+        UnsupportedValueException::class => 3,
+    ];
+
+    public function __construct(ActionInterface $action, \Throwable $previous = null)
     {
-        parent::__construct('Unsupported action "' . $action->getSource() . '"');
+        $code = self::CODE_NONE;
+
+        if ($previous instanceof \Throwable) {
+            $code = $this->codes[get_class($previous)] ?? self::CODE_UNKNOWN;
+        }
+
+        parent::__construct(
+            'Unsupported action "' . $action->getSource() . '"',
+            $code,
+            $previous
+        );
 
         $this->action = $action;
     }

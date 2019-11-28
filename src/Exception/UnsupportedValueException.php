@@ -8,14 +8,14 @@ class UnsupportedValueException extends \Exception
 {
     private $value;
 
-    public function __construct(string $value)
+    public function __construct(?string $value)
     {
         parent::__construct('Unsupported value "' . $value . '"');
 
         $this->value = $value;
     }
 
-    public function getValue(): string
+    public function getValue(): ?string
     {
         return $this->value;
     }
