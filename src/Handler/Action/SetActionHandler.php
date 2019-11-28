@@ -112,10 +112,17 @@ class SetActionHandler
             $valueAccessor = $this->scalarValueHandler->handle('Fix in #211');
         }
 
+//        $valueAssignment = $this->variableAssignmentFactory->createForValueAccessor(
+//            $valueAccessor,
+//            $valuePlaceholder,
+//            $this->accessorDefaultValueFactory->create($value)
+//        );
+
+        // @todo: fix in #211
         $valueAssignment = $this->variableAssignmentFactory->createForValueAccessor(
             $valueAccessor,
             $valuePlaceholder,
-            $this->accessorDefaultValueFactory->create($value)
+            $this->accessorDefaultValueFactory->create('Fix in #211')
         );
 
         $mutationCall = $this->webDriverElementMutatorCallFactory->createSetValueCall(

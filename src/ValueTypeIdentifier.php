@@ -30,4 +30,13 @@ class ValueTypeIdentifier
     {
         return preg_match('/^\$page\..+/', $value) > 0;
     }
+
+    public function isScalarValue(string $value): bool
+    {
+        return $this->isBrowserProperty($value) ||
+            $this->isDataParameter($value) ||
+            $this->isEnvironmentValue($value) ||
+            $this->isLiteralValue($value) ||
+            $this->isPageProperty($value);
+    }
 }

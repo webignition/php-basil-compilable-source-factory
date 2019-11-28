@@ -88,10 +88,17 @@ class WaitActionHandler
             $durationAccessor = $this->scalarValueHandler->handle('Fix in #211');
         }
 
+//        $durationAssignment = $this->variableAssignmentFactory->createForValueAccessor(
+//            $durationAccessor,
+//            $durationPlaceholder,
+//            $this->accessorDefaultValueFactory->create($duration) ?? 0
+//        );
+
+        // @todo: fix in #211
         $durationAssignment = $this->variableAssignmentFactory->createForValueAccessor(
             $durationAccessor,
             $durationPlaceholder,
-            $this->accessorDefaultValueFactory->create($duration) ?? 0
+            $this->accessorDefaultValueFactory->create('Fix in #211') ?? 0
         );
 
         return new CodeBlock([
