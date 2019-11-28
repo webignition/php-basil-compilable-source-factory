@@ -23,6 +23,7 @@ class IdentifierTypeFinderTest extends \PHPUnit\Framework\TestCase
      * @dataProvider xPathExpressionDataProvider
      * @dataProvider attributeSelectorDataProvider
      * @dataProvider unknownTypeDataProvider
+     * @dataProvider descendantDomIdentifierDataProvider
      */
     public function testIsNotCssSelector(string $identifier)
     {
@@ -41,6 +42,7 @@ class IdentifierTypeFinderTest extends \PHPUnit\Framework\TestCase
      * @dataProvider cssSelectorDataProvider
      * @dataProvider attributeSelectorDataProvider
      * @dataProvider unknownTypeDataProvider
+     * @dataProvider descendantDomIdentifierDataProvider
      */
     public function testIsNotXpathExpression(string $identifier)
     {
@@ -59,6 +61,7 @@ class IdentifierTypeFinderTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider attributeSelectorDataProvider
      * @dataProvider unknownTypeDataProvider
+     * @dataProvider descendantDomIdentifierDataProvider
      */
     public function testIsNotElementIdentifier(string $identifier)
     {
@@ -77,6 +80,7 @@ class IdentifierTypeFinderTest extends \PHPUnit\Framework\TestCase
      * @dataProvider cssSelectorDataProvider
      * @dataProvider xPathExpressionDataProvider
      * @dataProvider unknownTypeDataProvider
+     * @dataProvider descendantDomIdentifierDataProvider
      */
     public function testIsNotAttributeIdentifier(string $identifier)
     {
@@ -95,11 +99,21 @@ class IdentifierTypeFinderTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider unknownTypeDataProvider
+     * @dataProvider descendantDomIdentifierDataProvider
      */
     public function testIsNotDomIdentifier(string $identifier)
     {
         $this->assertFalse(IdentifierTypeFinder::isDomIdentifier($identifier));
     }
+
+    /**
+     * @dataProvider descendantDomIdentifierDataProvider
+     */
+    public function testIsDescendantDomIdentifierTest(string $identifier)
+    {
+        $this->assertTrue(IdentifierTypeFinder::isDescendantDomIdentifier($identifier));
+    }
+
 
     public function cssSelectorDataProvider(): array
     {
@@ -239,6 +253,36 @@ class IdentifierTypeFinderTest extends \PHPUnit\Framework\TestCase
             ],
             'attribute reference' => [
                 'identifierString' =>  '$elements.element_name.attribute_name',
+            ],
+        ];
+    }
+
+    public function descendantDomIdentifierDataProvider(): array
+    {
+        return [
+            [
+                'identifierString' =>  '{{ $".parent" }} $".selector"',
+            ],
+            [
+                'identifierString' =>  '{{ $".parent" }} $"/body"',
+            ],
+            [
+                'identifierString' =>  '{{ $".parent" }} $".selector".attribute_name',
+            ],
+            [
+                'identifierString' =>  '{{ $".parent" }} $"/body".attribute_name',
+            ],
+            [
+                'identifierString' =>  '{{ $"/parent" }} $".selector"',
+            ],
+            [
+                'identifierString' =>  '{{ $"/parent" }} $"/body"',
+            ],
+            [
+                'identifierString' =>  '{{ $"/parent" }} $".selector".attribute_name',
+            ],
+            [
+                'identifierString' =>  '{{ $"/parent" }} $"/body".attribute_name',
             ],
         ];
     }
