@@ -8,14 +8,16 @@ use webignition\BasilDataStructure\Action\ActionInterface;
 
 class UnsupportedActionException extends \Exception
 {
-    private const CODE_NONE = 0;
-    private const CODE_UNKNOWN = 1;
+    public const CODE_NONE = 0;
+    public const CODE_UNKNOWN = 1;
+    public const CODE_UNSUPPORTED_IDENTIFIER = 2;
+    public const CODE_UNSUPPORTED_VALUE = 3;
 
     private $action;
 
     private $codes = [
-        UnsupportedIdentifierException::class => 2,
-        UnsupportedValueException::class => 3,
+        UnsupportedIdentifierException::class => self::CODE_UNSUPPORTED_IDENTIFIER,
+        UnsupportedValueException::class => self::CODE_UNSUPPORTED_VALUE,
     ];
 
     public function __construct(ActionInterface $action, \Throwable $previous = null)
