@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\ModelFactory\DomIdentifier;
 
-use webignition\BasilCompilableSourceFactory\Exception\UnknownIdentifierException;
 use webignition\BasilCompilableSourceFactory\Model\DomIdentifier;
-use webignition\BasilCompilableSourceFactory\ModelFactory\DomIdentifier\DomIdentifierFactory;
+use webignition\BasilCompilableSourceFactory\ModelFactory\DomIdentifier\IdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Identifier\AttributeIdentifierDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Identifier\CssSelectorIdentifierDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Identifier\DescendantIdentifierDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Identifier\UnknownIdentifierDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Identifier\XpathExpressionIdentifierDataProviderTrait;
 
-class DomIdentifierFactoryTest extends \PHPUnit\Framework\TestCase
+class IdentifierHandlerTest extends \PHPUnit\Framework\TestCase
 {
     use AttributeIdentifierDataProviderTrait;
     use CssSelectorIdentifierDataProviderTrait;
@@ -22,46 +21,46 @@ class DomIdentifierFactoryTest extends \PHPUnit\Framework\TestCase
     use UnknownIdentifierDataProviderTrait;
 
     /**
-     * @var DomIdentifierFactory
+     * @var IdentifierHandler
      */
-    private $factory;
+    private $handler;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->factory = DomIdentifierFactory::createFactory();
+        $this->handler = IdentifierHandler::createHandler();
     }
 
     /**
      * @dataProvider attributeIdentifierDataProvider
      * @dataProvider cssSelectorIdentifierDataProvider
      * @dataProvider xpathExpressionIdentifierDataProvider
-     * @dataProvider descendantIdentifierDataProvider
      */
     public function testCreateSuccess(string $identifierString, DomIdentifier $expectedIdentifier)
     {
-        $identifier = $this->factory->create($identifierString);
+        $identifier = $this->handler->create($identifierString);
 
         $this->assertInstanceOf(DomIdentifier::class, $identifier);
         $this->assertEquals($expectedIdentifier, $identifier);
     }
 
     /**
+     * @dataProvider descendantIdentifierDataProvider
      * @dataProvider unknownIdentifierStringDataProvider
+     * @dataProvider unhandledIdentifierStringDataProvider
      */
     public function testCreateWithUnknownIdentifierString(string $identifierString)
     {
-        $this->expectExceptionObject(new UnknownIdentifierException($identifierString));
-
-        $this->factory->create($identifierString);
+        $this->assertNull($this->handler->create($identifierString));
     }
 
-    public function testCreateUnknownIdentifier()
+    public function unhandledIdentifierStringDataProvider(): array
     {
-        $identifierString = 'foo';
-        $this->expectExceptionObject(new UnknownIdentifierException($identifierString));
-
-        $this->factory->create($identifierString);
+        return [
+            'descendant identifier' => [
+                'identifierString' => '{{ $".parent" }} $".child"',
+            ],
+        ];
     }
 }
