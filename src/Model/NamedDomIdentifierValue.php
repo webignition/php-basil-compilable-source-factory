@@ -5,24 +5,21 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Model;
 
 use webignition\BasilCompilationSource\VariablePlaceholder;
-use webignition\BasilModel\Identifier\DomIdentifierInterface;
-use webignition\BasilModel\Value\DomIdentifierValueInterface;
-use webignition\BasilModel\Value\ValueInterface;
 
-class NamedDomIdentifierValue implements ValueInterface, NamedDomIdentifierInterface
+class NamedDomIdentifierValue implements NamedDomIdentifierInterface
 {
-    private $domIdentifierValue;
+    private $identifier;
     private $placeholder;
 
-    public function __construct(DomIdentifierValueInterface $domIdentifierValue, VariablePlaceholder $placeholder)
+    public function __construct(DomIdentifier $identifier, VariablePlaceholder $placeholder)
     {
-        $this->domIdentifierValue = $domIdentifierValue;
+        $this->identifier = $identifier;
         $this->placeholder = $placeholder;
     }
 
-    public function getIdentifier(): DomIdentifierInterface
+    public function getIdentifier(): DomIdentifier
     {
-        return $this->domIdentifierValue->getIdentifier();
+        return $this->identifier;
     }
 
     public function getPlaceholder(): VariablePlaceholder
@@ -38,20 +35,5 @@ class NamedDomIdentifierValue implements ValueInterface, NamedDomIdentifierInter
     public function asCollection(): bool
     {
         return null === $this->getIdentifier()->getAttributeName();
-    }
-
-    public function isEmpty(): bool
-    {
-        return $this->domIdentifierValue->isEmpty();
-    }
-
-    public function isActionable(): bool
-    {
-        return $this->domIdentifierValue->isActionable();
-    }
-
-    public function __toString(): string
-    {
-        return $this->getIdentifier()->__toString();
     }
 }

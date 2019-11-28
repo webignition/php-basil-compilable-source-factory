@@ -9,6 +9,7 @@ use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFacto
 use webignition\BasilCompilableSourceFactory\CallFactory\WebDriverElementMutatorCallFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
+use webignition\BasilCompilableSourceFactory\Model\DomIdentifier;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifier;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
@@ -77,16 +78,29 @@ class SetActionHandler
         $collectionPlaceholder = $variableExports->create('COLLECTION');
         $valuePlaceholder = $variableExports->create('VALUE');
 
-        $collectionAssignment = $this->namedDomIdentifierHandler->handle(new NamedDomIdentifier(
-            $identifier,
-            $collectionPlaceholder
-        ));
+//        $collectionAssignment = $this->namedDomIdentifierHandler->handle(new NamedDomIdentifier(
+//            $identifier,
+//            $collectionPlaceholder
+//        ));
+
+        // @todo: fix in #211
+        $collectionAssignment = $this->namedDomIdentifierHandler->handle(
+            new NamedDomIdentifier(new DomIdentifier(''), $collectionPlaceholder)
+        );
 
         $value = $action->getValue();
 
         if ($value instanceof DomIdentifierValueInterface) {
+//            $valueAccessor = $this->namedDomIdentifierHandler->handle(
+//                new NamedDomIdentifierValue($value, $valuePlaceholder)
+//            );
+
+            // @todo: fix in #211
             $valueAccessor = $this->namedDomIdentifierHandler->handle(
-                new NamedDomIdentifierValue($value, $valuePlaceholder)
+                new NamedDomIdentifierValue(
+                    new DomIdentifier(''),
+                    $valuePlaceholder
+                )
             );
 
             $valueAccessor->mutateLastStatement(function (string $content) use ($valuePlaceholder) {

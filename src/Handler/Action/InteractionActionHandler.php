@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
+use webignition\BasilCompilableSourceFactory\Model\DomIdentifier;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomElementIdentifier;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
@@ -54,10 +55,15 @@ class InteractionActionHandler
         $variableExports = new VariablePlaceholderCollection();
         $elementPlaceholder = $variableExports->create('ELEMENT');
 
-        $accessor = $this->namedDomIdentifierHandler->handle(new NamedDomElementIdentifier(
-            $identifier,
-            $elementPlaceholder
-        ));
+//        $accessor = $this->namedDomIdentifierHandler->handle(new NamedDomElementIdentifier(
+//            $identifier,
+//            $elementPlaceholder
+//        ));
+
+        // @todo: fix in #211
+        $accessor = $this->namedDomIdentifierHandler->handle(
+            new NamedDomElementIdentifier(new DomIdentifier(''), $elementPlaceholder)
+        );
 
         return new CodeBlock([
             $accessor,

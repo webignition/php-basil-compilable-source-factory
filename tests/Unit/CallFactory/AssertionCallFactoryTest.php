@@ -16,6 +16,9 @@ use webignition\BasilCompilationSource\Metadata\MetadataInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
+/**
+ * @group poc208
+ */
 class AssertionCallFactoryTest extends AbstractTestCase
 {
     /**

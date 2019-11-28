@@ -11,6 +11,7 @@ use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyExce
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
+use webignition\BasilCompilableSourceFactory\Model\DomIdentifier;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
@@ -77,8 +78,16 @@ class ComparisonAssertionHandler
         $expectedValue = $assertion->getExpectedValue();
 
         if ($examinedValue instanceof DomIdentifierValueInterface) {
+//            $examinedValueAccessor = $this->namedDomIdentifierHandler->handle(
+//                new NamedDomIdentifierValue($examinedValue, $examinedValuePlaceholder)
+//            );
+
+            // @todo: fix in #209
             $examinedValueAccessor = $this->namedDomIdentifierHandler->handle(
-                new NamedDomIdentifierValue($examinedValue, $examinedValuePlaceholder)
+                new NamedDomIdentifierValue(
+                    new DomIdentifier(''),
+                    $examinedValuePlaceholder
+                )
             );
 
             $examinedValueAccessor->mutateLastStatement(function (string $content) use ($examinedValuePlaceholder) {
@@ -91,8 +100,16 @@ class ComparisonAssertionHandler
         }
 
         if ($expectedValue instanceof DomIdentifierValueInterface) {
+//            $expectedValueAccessor = $this->namedDomIdentifierHandler->handle(
+//                new NamedDomIdentifierValue($expectedValue, $expectedValuePlaceholder)
+//            );
+
+            // @todo: fix in #209
             $expectedValueAccessor = $this->namedDomIdentifierHandler->handle(
-                new NamedDomIdentifierValue($expectedValue, $expectedValuePlaceholder)
+                new NamedDomIdentifierValue(
+                    new DomIdentifier(''),
+                    $expectedValuePlaceholder
+                )
             );
 
             $expectedValueAccessor->mutateLastStatement(function (string $content) use ($expectedValuePlaceholder) {
