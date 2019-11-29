@@ -24,9 +24,6 @@ use webignition\BasilDataStructure\Step;
 use webignition\BasilParser\StepParser;
 use webignition\DomElementLocator\ElementLocator;
 
-/**
- * @group poc208
- */
 class StepMethodFactoryTest extends AbstractTestCase
 {
     /**

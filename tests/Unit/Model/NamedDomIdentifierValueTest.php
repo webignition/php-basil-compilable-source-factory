@@ -8,9 +8,6 @@ use webignition\BasilCompilableSourceFactory\Model\DomIdentifier;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 
-/**
- * @group poc208
- */
 class NamedDomIdentifierValueTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreate()

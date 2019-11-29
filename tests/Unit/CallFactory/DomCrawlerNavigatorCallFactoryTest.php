@@ -17,9 +17,6 @@ use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\DomElementLocator\ElementLocator;
 
-/**
- * @group poc208
- */
 class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
 {
     /**

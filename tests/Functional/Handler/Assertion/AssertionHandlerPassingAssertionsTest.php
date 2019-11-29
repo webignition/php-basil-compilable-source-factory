@@ -18,9 +18,6 @@ use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilDataStructure\AssertionInterface;
 
-/**
- * @group poc208
- */
 class AssertionHandlerPassingAssertionsTest extends AbstractBrowserTestCase
 {
     use EqualityAssertionFunctionalDataProviderTrait;

@@ -15,9 +15,6 @@ use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilDataStructure\Step;
 use webignition\BasilParser\StepParser;
 
-/**
- * @group poc208
- */
 class StepHandlerTest extends AbstractBrowserTestCase
 {
     /**

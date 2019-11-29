@@ -17,9 +17,6 @@ use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\DomElementLocator\ElementLocator;
 use webignition\DomElementLocator\ElementLocatorInterface;
 
-/**
- * @group poc208
- */
 class ElementLocatorCallFactoryTest extends AbstractTestCase
 {
     /**
