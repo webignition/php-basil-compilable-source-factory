@@ -9,6 +9,9 @@ use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Line\StatementInterface;
 use webignition\BasilDataStructure\DataSetCollection;
 
+/**
+ * @group poc208
+ */
 class ArrayStatementFactoryTest extends \PHPUnit\Framework\TestCase
 {
     /**

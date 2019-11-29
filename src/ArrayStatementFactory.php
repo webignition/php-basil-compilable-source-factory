@@ -34,7 +34,9 @@ class ArrayStatementFactory
 
         /* @var DataSet $dataSet */
         foreach ($dataSetCollection as $dataSet) {
-            $dataSetsAsArrays[(string) $dataSet->getName()] = $dataSet->getData();
+            if ($dataSet instanceof DataSet) {
+                $dataSetsAsArrays[(string) $dataSet->getName()] = $dataSet->getData();
+            }
         }
 
         $arrayAsString = $this->convertArrayToString($dataSetsAsArrays);
