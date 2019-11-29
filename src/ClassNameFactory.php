@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory;
 
-use webignition\BasilModel\Test\TestInterface;
+use webignition\BasilDataStructure\Test\Test;
 
 class ClassNameFactory
 {
-    public function create(TestInterface $test): string
+    public function create(Test $test): string
     {
-        $testName = $test->getName();
+        $testName = $test->getPath();
         $className = sprintf('Generated%sTest', ucfirst(md5($testName)));
 
         return $className;

@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Assertion;
 
-use webignition\BasilAssertionGenerator\AssertionGenerator;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedComparisonException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\ExistenceComparisonHandler;
-use webignition\BasilModel\Assertion\ExaminationAssertion;
-use webignition\BasilModel\Assertion\ExaminationAssertionInterface;
+use webignition\BasilDataStructure\Assertion;
+use webignition\BasilDataStructure\AssertionInterface;
+use webignition\BasilParser\AssertionParser;
 
 class ExistenceComparisonHandlerTest extends AbstractTestCase
 {
@@ -26,32 +27,33 @@ class ExistenceComparisonHandlerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider handleWrongValueTypeDataProvider
+     * @dataProvider handleThrowsExceptionDataProvider
      */
-    public function testHandleWrongValueType(ExaminationAssertionInterface $assertion, string $expectedExceptionMessage)
+    public function testHandleThrowsException(AssertionInterface $assertion, \Exception $expectedException)
     {
-        $this->expectException(UnsupportedModelException::class);
-        $this->expectExceptionMessage($expectedExceptionMessage);
+        $handler = ExistenceComparisonHandler::createHandler();
 
-        $this->handler->handle($assertion);
+        $this->expectExceptionObject($expectedException);
+
+        $handler->handle($assertion);
     }
 
-    public function handleWrongValueTypeDataProvider(): array
+    public function handleThrowsExceptionDataProvider(): array
     {
-        $assertionGenerator = AssertionGenerator::createGenerator();
+        $assertionParser = AssertionParser::create();
 
         return [
-            'page element reference' => [
-                'model' => $assertionGenerator->generate(
-                    'page_import_name.elements.element_name exists'
-                ),
-                'expectedExceptionMessage' => 'Unsupported model "' . ExaminationAssertion::class . '"',
+            'identifier is null' => [
+                'assertion' => new Assertion('exists', null, 'exists'),
+                'expectedException' => new UnsupportedIdentifierException(null),
             ],
-            'non-scalar object value' => [
-                'model' => $assertionGenerator->generate(
-                    '$data.key exists'
-                ),
-                'expectedExceptionMessage' => 'Unsupported model "' . ExaminationAssertion::class . '"',
+            'comparison is null' => [
+                'assertion' => new Assertion('exists', '$".selector"', null),
+                'expectedException' => new UnsupportedComparisonException(null),
+            ],
+            'identifier is not supported' => [
+                'assertion' => $assertionParser->parse('$elements.element_name exists'),
+                'expectedException' => new UnsupportedIdentifierException('$elements.element_name'),
             ],
         ];
     }

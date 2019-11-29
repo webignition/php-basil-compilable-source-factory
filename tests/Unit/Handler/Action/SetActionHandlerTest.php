@@ -4,32 +4,44 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Action;
 
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\Handler\Action\SetActionHandler;
-use webignition\BasilModel\Action\InputAction;
-use webignition\BasilModel\Identifier\DomIdentifier;
-use webignition\BasilModel\Value\PageElementReference;
+use webignition\BasilDataStructure\Action\InputAction;
+use webignition\BasilParser\ActionParser;
 
 class SetActionHandlerTest extends AbstractTestCase
 {
-    public function testCreatesSourceForUnsupportedValue()
+    /**
+     * @dataProvider handleThrowsExceptionDataProvider
+     */
+    public function testHandleThrowsException(InputAction $action, \Exception $expectedException)
     {
         $handler = SetActionHandler::createHandler();
 
-        $action = new InputAction(
-            'set ".selector" to "foo"',
-            new DomIdentifier('.selector'),
-            new PageElementReference(
-                'page_import_name.elements.element_name',
-                'page_import_name',
-                'element_name'
-            ),
-            '".selector" to "foo"'
-        );
-
-        $this->expectException(UnsupportedModelException::class);
+        $this->expectExceptionObject($expectedException);
 
         $handler->handle($action);
+    }
+
+    public function handleThrowsExceptionDataProvider(): array
+    {
+        $actionParser = ActionParser::create();
+
+        return [
+            'identifier is not dom identifier' => [
+                'action' => $actionParser->parse('set $elements.element_name to "value"'),
+                'expectedException' => new UnsupportedIdentifierException('$elements.element_name'),
+            ],
+            'identifier is attribute reference' => [
+                'action' => $actionParser->parse('set $".selector".attribute_name to "value"'),
+                'expectedException' => new UnsupportedIdentifierException('$".selector".attribute_name'),
+            ],
+            'value is null' => [
+                'action' => $actionParser->parse('set $".selector"'),
+                'expectedException' => new UnsupportedValueException(null),
+            ],
+        ];
     }
 }

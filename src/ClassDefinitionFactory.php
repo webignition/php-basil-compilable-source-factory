@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory;
 
-use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\ClassDefinition\ClassDefinition;
 use webignition\BasilCompilationSource\ClassDefinition\ClassDefinitionInterface;
@@ -15,7 +14,7 @@ use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\MethodDefinition\MethodDefinition;
 use webignition\BasilCompilationSource\MethodDefinition\MethodDefinitionInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\BasilModel\Test\TestInterface;
+use webignition\BasilDataStructure\Test\Test;
 
 class ClassDefinitionFactory
 {
@@ -37,14 +36,13 @@ class ClassDefinitionFactory
     }
 
     /**
-     * @param TestInterface $test
+     * @param Test $test
      *
      * @return ClassDefinitionInterface
      *
-     * @throws UnsupportedModelException
-     * @throws UnknownObjectPropertyException
+     * @throws UnsupportedStepException
      */
-    public function createClassDefinition(TestInterface $test): ClassDefinitionInterface
+    public function createClassDefinition(Test $test): ClassDefinitionInterface
     {
         $methodDefinitions = [
             $this->createSetupBeforeClassMethod($test),
@@ -64,7 +62,7 @@ class ClassDefinitionFactory
         return new ClassDefinition($this->classNameFactory->create($test), $methodDefinitions);
     }
 
-    private function createSetupBeforeClassMethod(TestInterface $test): MethodDefinitionInterface
+    private function createSetupBeforeClassMethod(Test $test): MethodDefinitionInterface
     {
         $parentCallStatement = new Statement('parent::setUpBeforeClass()');
         $clientRequestStatement = $this->createClientRequestStatement($test);
@@ -80,7 +78,7 @@ class ClassDefinitionFactory
         return $setupBeforeClassMethod;
     }
 
-    private function createClientRequestStatement(TestInterface $test): StatementInterface
+    private function createClientRequestStatement(Test $test): StatementInterface
     {
         $variableDependencies = new VariablePlaceholderCollection();
         $pantherClientPlaceholder = $variableDependencies->create(VariableNames::PANTHER_CLIENT);

@@ -4,29 +4,35 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Action;
 
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
 use webignition\BasilCompilableSourceFactory\Handler\Action\WaitActionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
-use webignition\BasilModel\Action\WaitAction;
-use webignition\BasilModel\Value\PageElementReference;
+use webignition\BasilDataStructure\Action\WaitAction;
+use webignition\BasilParser\ActionParser;
 
 class WaitActionHandlerTest extends AbstractTestCase
 {
-    public function testHandleForUnsupportedValue()
+    /**
+     * @dataProvider handleThrowsExceptionDataProvider
+     */
+    public function testHandleThrowsException(WaitAction $action, \Exception $expectedException)
     {
         $handler = WaitActionHandler::createHandler();
 
-        $action = new WaitAction(
-            'wait 30',
-            new PageElementReference(
-                'page_import_name.elements.element_name',
-                'page_import_name',
-                'element_name'
-            )
-        );
-
-        $this->expectException(UnsupportedModelException::class);
+        $this->expectExceptionObject($expectedException);
 
         $handler->handle($action);
+    }
+
+    public function handleThrowsExceptionDataProvider(): array
+    {
+        $actionParser = ActionParser::create();
+
+        return [
+            'value is null' => [
+                'action' => $actionParser->parse('wait'),
+                'expectedException' => new UnsupportedValueException('')
+            ],
+        ];
     }
 }

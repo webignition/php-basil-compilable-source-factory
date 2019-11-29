@@ -7,32 +7,29 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
-use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
+use webignition\BasilCompilableSourceFactory\IdentifierTypeFinder;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
+use webignition\BasilCompilableSourceFactory\ModelFactory\DomIdentifier\DomIdentifierFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
-use webignition\BasilModel\Assertion\AssertionComparison;
-use webignition\BasilModel\Assertion\ComparisonAssertionInterface;
-use webignition\BasilModel\Value\DomIdentifierValueInterface;
+use webignition\BasilDataStructure\AssertionInterface;
 
-class ComparisonAssertionHandler
+class ComparisonAssertionHandler extends AbstractAssertionHandler
 {
     private const COMPARISON_TO_ASSERTION_TEMPLATE_MAP = [
-        AssertionComparison::INCLUDES => AssertionCallFactory::ASSERT_STRING_CONTAINS_STRING_TEMPLATE,
-        AssertionComparison::EXCLUDES => AssertionCallFactory::ASSERT_STRING_NOT_CONTAINS_STRING_TEMPLATE,
-        AssertionComparison::IS => AssertionCallFactory::ASSERT_EQUALS_TEMPLATE,
-        AssertionComparison::IS_NOT => AssertionCallFactory::ASSERT_NOT_EQUALS_TEMPLATE,
-        AssertionComparison::MATCHES => AssertionCallFactory::ASSERT_MATCHES_TEMPLATE,
+        'includes' => AssertionCallFactory::ASSERT_STRING_CONTAINS_STRING_TEMPLATE,
+        'excludes' => AssertionCallFactory::ASSERT_STRING_NOT_CONTAINS_STRING_TEMPLATE,
+        'is' => AssertionCallFactory::ASSERT_EQUALS_TEMPLATE,
+        'is-not' => AssertionCallFactory::ASSERT_NOT_EQUALS_TEMPLATE,
+        'matches' => AssertionCallFactory::ASSERT_MATCHES_TEMPLATE,
     ];
 
-    protected $assertionCallFactory;
     private $variableAssignmentFactory;
-    private $scalarValueHandler;
-    private $namedDomIdentifierHandler;
     private $accessorDefaultValueFactory;
 
     public function __construct(
@@ -40,12 +37,17 @@ class ComparisonAssertionHandler
         VariableAssignmentFactory $variableAssignmentFactory,
         ScalarValueHandler $scalarValueHandler,
         NamedDomIdentifierHandler $namedDomIdentifierHandler,
-        AccessorDefaultValueFactory $accessorDefaultValueFactory
+        AccessorDefaultValueFactory $accessorDefaultValueFactory,
+        DomIdentifierFactory $domIdentifierFactory
     ) {
-        $this->assertionCallFactory = $assertionCallFactory;
+        parent::__construct(
+            $assertionCallFactory,
+            $scalarValueHandler,
+            $namedDomIdentifierHandler,
+            $domIdentifierFactory
+        );
+
         $this->variableAssignmentFactory = $variableAssignmentFactory;
-        $this->scalarValueHandler = $scalarValueHandler;
-        $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
         $this->accessorDefaultValueFactory = $accessorDefaultValueFactory;
     }
 
@@ -54,31 +56,41 @@ class ComparisonAssertionHandler
         return new ComparisonAssertionHandler(
             AssertionCallFactory::createFactory(),
             VariableAssignmentFactory::createFactory(),
-            new ScalarValueHandler(),
+            ScalarValueHandler::createHandler(),
             NamedDomIdentifierHandler::createHandler(),
-            AccessorDefaultValueFactory::createFactory()
+            AccessorDefaultValueFactory::createFactory(),
+            DomIdentifierFactory::createFactory()
         );
     }
 
     /**
-     * @param ComparisonAssertionInterface $assertion
+     * @param AssertionInterface $assertion
      *
      * @return CodeBlockInterface
      *
-     * @throws UnsupportedModelException
-     * @throws UnknownObjectPropertyException
+     * @throws UnsupportedIdentifierException
+     * @throws UnsupportedValueException
      */
-    public function handle(ComparisonAssertionInterface $assertion): CodeBlockInterface
+    public function handle(AssertionInterface $assertion): CodeBlockInterface
     {
         $examinedValuePlaceholder = new VariablePlaceholder(VariableNames::EXAMINED_VALUE);
         $expectedValuePlaceholder = new VariablePlaceholder(VariableNames::EXPECTED_VALUE);
 
-        $examinedValue = $assertion->getExaminedValue();
-        $expectedValue = $assertion->getExpectedValue();
+        $examinedValue = $assertion->getIdentifier();
+        $expectedValue = $assertion->getValue();
 
-        if ($examinedValue instanceof DomIdentifierValueInterface) {
+        if (null === $examinedValue || null === $expectedValue) {
+            throw new UnsupportedValueException(null);
+        }
+
+        if (
+            IdentifierTypeFinder::isDomIdentifier($examinedValue) ||
+            IdentifierTypeFinder::isDescendantDomIdentifier($examinedValue)
+        ) {
+            $examinedValueDomIdentifier = $this->domIdentifierFactory->create($examinedValue);
+
             $examinedValueAccessor = $this->namedDomIdentifierHandler->handle(
-                new NamedDomIdentifierValue($examinedValue, $examinedValuePlaceholder)
+                new NamedDomIdentifierValue($examinedValueDomIdentifier, $examinedValuePlaceholder)
             );
 
             $examinedValueAccessor->mutateLastStatement(function (string $content) use ($examinedValuePlaceholder) {
@@ -88,9 +100,17 @@ class ComparisonAssertionHandler
             $examinedValueAccessor = $this->scalarValueHandler->handle($examinedValue);
         }
 
-        if ($expectedValue instanceof DomIdentifierValueInterface) {
+        if (
+            IdentifierTypeFinder::isDomIdentifier($expectedValue) ||
+            IdentifierTypeFinder::isDescendantDomIdentifier($expectedValue)
+        ) {
+            $expectedValueDomIdentifier = $this->domIdentifierFactory->create($expectedValue);
+
             $expectedValueAccessor = $this->namedDomIdentifierHandler->handle(
-                new NamedDomIdentifierValue($expectedValue, $expectedValuePlaceholder)
+                new NamedDomIdentifierValue(
+                    $expectedValueDomIdentifier,
+                    $expectedValuePlaceholder
+                )
             );
 
             $expectedValueAccessor->mutateLastStatement(function (string $content) use ($expectedValuePlaceholder) {

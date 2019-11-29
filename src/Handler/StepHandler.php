@@ -4,16 +4,17 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler;
 
-use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedActionException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedAssertionException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Comment;
 use webignition\BasilCompilationSource\Line\EmptyLine;
-use webignition\BasilModel\StatementInterface;
-use webignition\BasilModel\Step\StepInterface;
+use webignition\BasilDataStructure\StatementInterface;
+use webignition\BasilDataStructure\Step;
 
 class StepHandler
 {
@@ -35,23 +36,26 @@ class StepHandler
     }
 
     /**
-     * @param StepInterface $step
+     * @param Step $step
      *
      * @return CodeBlockInterface
      *
-     * @throws UnsupportedModelException
-     * @throws UnknownObjectPropertyException
+     * @throws UnsupportedStepException
      */
-    public function handle(StepInterface $step): CodeBlockInterface
+    public function handle(Step $step): CodeBlockInterface
     {
         $block = new CodeBlock([]);
 
-        foreach ($step->getActions() as $action) {
-            $this->addSourceToBlock($block, $action, $this->actionHandler->handle($action));
-        }
+        try {
+            foreach ($step->getActions() as $action) {
+                $this->addSourceToBlock($block, $action, $this->actionHandler->handle($action));
+            }
 
-        foreach ($step->getAssertions() as $assertion) {
-            $this->addSourceToBlock($block, $assertion, $this->assertionHandler->handle($assertion));
+            foreach ($step->getAssertions() as $assertion) {
+                $this->addSourceToBlock($block, $assertion, $this->assertionHandler->handle($assertion));
+            }
+        } catch (UnsupportedActionException | UnsupportedAssertionException $previous) {
+            throw new UnsupportedStepException($step, $previous);
         }
 
         return $block;

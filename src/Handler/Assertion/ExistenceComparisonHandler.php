@@ -6,70 +6,85 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
-use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedComparisonException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
+use webignition\BasilCompilableSourceFactory\IdentifierTypeFinder;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
+use webignition\BasilCompilableSourceFactory\ModelFactory\DomIdentifier\DomIdentifierFactory;
+use webignition\BasilCompilableSourceFactory\ValueTypeIdentifier;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\BasilModel\Assertion\AssertionComparison;
-use webignition\BasilModel\Assertion\ExaminationAssertionInterface;
-use webignition\BasilModel\Value\DomIdentifierValueInterface;
-use webignition\BasilModel\Value\ObjectValueInterface;
-use webignition\BasilModel\Value\ObjectValueType;
-use webignition\BasilModel\Value\ValueInterface;
+use webignition\BasilDataStructure\AssertionInterface;
 
-class ExistenceComparisonHandler
+class ExistenceComparisonHandler extends AbstractAssertionHandler
 {
-    private $assertionCallFactory;
-    private $scalarValueHandler;
     private $domCrawlerNavigatorCallFactory;
-    private $namedDomIdentifierHandler;
+    private $valueTypeIdentifier;
 
     public function __construct(
         AssertionCallFactory $assertionCallFactory,
         ScalarValueHandler $scalarValueHandler,
         DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory,
-        NamedDomIdentifierHandler $namedDomIdentifierHandler
+        NamedDomIdentifierHandler $namedDomIdentifierHandler,
+        ValueTypeIdentifier $valueTypeIdentifier,
+        DomIdentifierFactory $domIdentifierFactory
     ) {
-        $this->assertionCallFactory = $assertionCallFactory;
-        $this->scalarValueHandler = $scalarValueHandler;
+        parent::__construct(
+            $assertionCallFactory,
+            $scalarValueHandler,
+            $namedDomIdentifierHandler,
+            $domIdentifierFactory
+        );
+
         $this->domCrawlerNavigatorCallFactory = $domCrawlerNavigatorCallFactory;
         $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
+        $this->valueTypeIdentifier = $valueTypeIdentifier;
     }
 
     public static function createHandler(): ExistenceComparisonHandler
     {
         return new ExistenceComparisonHandler(
             AssertionCallFactory::createFactory(),
-            new ScalarValueHandler(),
+            ScalarValueHandler::createHandler(),
             DomCrawlerNavigatorCallFactory::createFactory(),
-            NamedDomIdentifierHandler::createHandler()
+            NamedDomIdentifierHandler::createHandler(),
+            new ValueTypeIdentifier(),
+            DomIdentifierFactory::createFactory()
         );
     }
 
     /**
-     * @param ExaminationAssertionInterface $assertion
+     * @param AssertionInterface $assertion
      *
      * @return CodeBlockInterface
      *
-     * @throws UnsupportedModelException
-     * @throws UnknownObjectPropertyException
+     * @throws UnsupportedIdentifierException
+     * @throws UnsupportedValueException
+     * @throws UnsupportedComparisonException
      */
-    public function handle(ExaminationAssertionInterface $assertion): CodeBlockInterface
+    public function handle(AssertionInterface $assertion): CodeBlockInterface
     {
-        $value = $assertion->getExaminedValue();
         $valuePlaceholder = new VariablePlaceholder(VariableNames::EXAMINED_VALUE);
+        $identifier = $assertion->getIdentifier();
+        $comparison = $assertion->getComparison();
 
-        $existence = null;
+        if (null === $identifier) {
+            throw new UnsupportedIdentifierException(null);
+        }
 
-        if ($this->isScalarValue($value)) {
-            $accessor = $this->scalarValueHandler->handle($value);
+        if (null === $comparison) {
+            throw new UnsupportedComparisonException(null);
+        }
+
+        if ($this->valueTypeIdentifier->isScalarValue($identifier)) {
+            $accessor = $this->scalarValueHandler->handle($identifier);
 
             $accessor->mutateLastStatement(function (string $content) {
                 return $content . ' ?? null';
@@ -90,14 +105,17 @@ class ExistenceComparisonHandler
                 new Statement(sprintf('%s = %s !== null', $valuePlaceholder, $valuePlaceholder)),
             ]);
 
-            return $this->createAssertionCall($assertion->getComparison(), $existence, $valuePlaceholder);
+            return $this->createAssertionCall($comparison, $existence, $valuePlaceholder);
         }
 
-        if ($value instanceof DomIdentifierValueInterface) {
-            $identifier = $value->getIdentifier();
+        if (
+            IdentifierTypeFinder::isDomIdentifier($identifier) ||
+            IdentifierTypeFinder::isDescendantDomIdentifier($identifier)
+        ) {
+            $domIdentifier = $this->domIdentifierFactory->create($identifier);
 
-            if (null === $identifier->getAttributeName()) {
-                $accessor = $this->domCrawlerNavigatorCallFactory->createHasCall($identifier);
+            if (null === $domIdentifier->getAttributeName()) {
+                $accessor = $this->domCrawlerNavigatorCallFactory->createHasCall($domIdentifier);
 
                 $assignment = new CodeBlock([
                     $accessor,
@@ -110,15 +128,11 @@ class ExistenceComparisonHandler
                     $valuePlaceholder,
                 ]));
 
-                return $this->createAssertionCall(
-                    $assertion->getComparison(),
-                    new CodeBlock([$assignment]),
-                    $valuePlaceholder
-                );
+                return $this->createAssertionCall($comparison, new CodeBlock([$assignment]), $valuePlaceholder);
             }
 
             $accessor = $this->namedDomIdentifierHandler->handle(
-                new NamedDomIdentifierValue($value, $valuePlaceholder)
+                new NamedDomIdentifierValue($domIdentifier, $valuePlaceholder)
             );
 
             $existence = new CodeBlock([
@@ -126,10 +140,10 @@ class ExistenceComparisonHandler
                 new Statement(sprintf('%s = %s !== null', $valuePlaceholder, $valuePlaceholder)),
             ]);
 
-            return $this->createAssertionCall($assertion->getComparison(), $existence, $valuePlaceholder);
+            return $this->createAssertionCall($comparison, $existence, $valuePlaceholder);
         }
 
-        throw new UnsupportedModelException($assertion);
+        throw new UnsupportedIdentifierException($identifier);
     }
 
     private function createAssertionCall(
@@ -137,7 +151,7 @@ class ExistenceComparisonHandler
         CodeBlockInterface $block,
         VariablePlaceholder $valuePlaceholder
     ): CodeBlockInterface {
-        $assertionTemplate = AssertionComparison::EXISTS === $comparison
+        $assertionTemplate = 'exists' === $comparison
             ? AssertionCallFactory::ASSERT_TRUE_TEMPLATE
             : AssertionCallFactory::ASSERT_FALSE_TEMPLATE;
 
@@ -146,28 +160,5 @@ class ExistenceComparisonHandler
             $valuePlaceholder,
             $assertionTemplate
         );
-    }
-
-    private function isScalarValue(ValueInterface $value): bool
-    {
-        if (!$value instanceof ObjectValueInterface) {
-            return false;
-        }
-
-        $valueType = $value->getType();
-
-        $types = [
-            ObjectValueType::BROWSER_PROPERTY,
-            ObjectValueType::ENVIRONMENT_PARAMETER,
-            ObjectValueType::PAGE_PROPERTY,
-        ];
-
-        foreach ($types as $type) {
-            if ($type === $valueType) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
-use webignition\BasilActionGenerator\ActionGenerator;
-use webignition\BasilAssertionGenerator\AssertionGenerator;
 use webignition\BasilCompilableSourceFactory\ArrayStatementFactory;
 use webignition\BasilCompilableSourceFactory\Handler\StepHandler;
 use webignition\BasilCompilableSourceFactory\StepMethodFactory;
@@ -22,10 +20,8 @@ use webignition\BasilCompilationSource\Metadata\MetadataInterface;
 use webignition\BasilCompilationSource\MethodDefinition\MethodDefinition;
 use webignition\BasilCompilationSource\MethodDefinition\MethodDefinitionInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\BasilModel\DataSet\DataSet;
-use webignition\BasilModel\DataSet\DataSetCollection;
-use webignition\BasilModel\Step\Step;
-use webignition\BasilModel\Step\StepInterface;
+use webignition\BasilDataStructure\Step;
+use webignition\BasilParser\StepParser;
 use webignition\DomElementLocator\ElementLocator;
 
 class StepMethodFactoryTest extends AbstractTestCase
@@ -36,7 +32,7 @@ class StepMethodFactoryTest extends AbstractTestCase
     public function testCreateStepMethods(
         StepMethodNameFactory $stepMethodNameFactory,
         string $stepName,
-        StepInterface $step,
+        Step $step,
         MethodDefinitionInterface $expectedTestMethod,
         MetadataInterface $expectedTestMethodMetadata,
         ?MethodDefinitionInterface $expectedDataProviderMethod
@@ -67,8 +63,7 @@ class StepMethodFactoryTest extends AbstractTestCase
 
     public function createStepMethodsDataProvider(): array
     {
-        $actionGenerator = ActionGenerator::createGenerator();
-        $assertionGenerator = AssertionGenerator::createGenerator();
+        $stepParser = StepParser::create();
         $stepMethodNameFactoryFactory = new StepMethodNameFactoryFactory();
 
         return [
@@ -82,7 +77,7 @@ class StepMethodFactoryTest extends AbstractTestCase
                     []
                 ),
                 'stepName' => 'Step Name',
-                'step' => new Step([], []),
+                'step' => $stepParser->parse([]),
                 'expectedTestMethod' => new MethodDefinition('testMethodName', CodeBlock::fromContent([
                     '// Step Name',
                 ])),
@@ -99,17 +94,17 @@ class StepMethodFactoryTest extends AbstractTestCase
                     []
                 ),
                 'stepName' => 'Step Name',
-                'step' => new Step(
-                    [
-                        $actionGenerator->generate('click ".selector"'),
+                'step' => $stepParser->parse([
+                    'actions' => [
+                        'click $".selector"',
                     ],
-                    [
-                        $assertionGenerator->generate('$page.title is "value"'),
-                    ]
-                ),
+                    'assertions' => [
+                        '$page.title is "value"',
+                    ],
+                ]),
                 'expectedTestMethod' => new MethodDefinition('testMethodName', CodeBlock::fromContent([
                     '// Step Name',
-                    '// click ".selector"',
+                    '// click $".selector"',
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
@@ -154,28 +149,26 @@ class StepMethodFactoryTest extends AbstractTestCase
                     ]
                 ),
                 'stepName' => 'Step Name',
-                'step' => (new Step(
-                    [
-                        $actionGenerator->generate('set ".selector" to $data.field_value'),
+                'step' => $stepParser->parse([
+                    'actions' => [
+                        'set $".selector" to $data.field_value',
                     ],
-                    [
-                        $assertionGenerator->generate('".selector" is $data.expected_value'),
-                    ]
-                ))->withDataSetCollection(new DataSetCollection([
-                    new DataSet(
-                        '0',
-                        [
+                    'assertions' => [
+                        '$".selector" is $data.expected_value',
+                    ],
+                    'data' => [
+                        0 => [
                             'field_value' => 'value1',
                             'expected_value' => 'value1',
-                        ]
-                    ),
-                ])),
+                        ],
+                    ],
+                ]),
                 'expectedTestMethod' => $this->createMethodDefinitionWithDocblock(
                     new MethodDefinition(
                         'testMethodName',
                         CodeBlock::fromContent([
                             '// Step Name',
-                            '// set ".selector" to $data.field_value',
+                            '// set $".selector" to $data.field_value',
                             '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
                             '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                             '{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
@@ -183,7 +176,7 @@ class StepMethodFactoryTest extends AbstractTestCase
                             '{{ VALUE }} = (string) {{ VALUE }}',
                             '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
                             '',
-                            '// ".selector" is $data.expected_value',
+                            '// $".selector" is $data.expected_value',
                             '{{ EXPECTED }} = $expected_value ?? null',
                             '{{ EXPECTED }} = (string) {{ EXPECTED }}',
                             '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',

@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
+use webignition\BasilCompilableSourceFactory\IdentifierTypeFinder;
+use webignition\BasilCompilableSourceFactory\ModelFactory\DomIdentifier\DomIdentifierFactory;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlock;
@@ -12,36 +14,48 @@ use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\BasilModel\Action\InteractionActionInterface;
-use webignition\BasilModel\Identifier\DomIdentifierInterface;
+use webignition\BasilDataStructure\Action\InteractionAction;
 
 class WaitForActionHandler
 {
     private $singleQuotedStringEscaper;
+    private $domIdentifierFactory;
 
-    public function __construct(SingleQuotedStringEscaper $singleQuotedStringEscaper)
-    {
+    public function __construct(
+        SingleQuotedStringEscaper $singleQuotedStringEscaper,
+        DomIdentifierFactory $domIdentifierFactory
+    ) {
         $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
+        $this->domIdentifierFactory = $domIdentifierFactory;
     }
 
     public static function createHandler(): WaitForActionHandler
     {
-        return new WaitForActionHandler(SingleQuotedStringEscaper::create());
+        return new WaitForActionHandler(
+            SingleQuotedStringEscaper::create(),
+            DomIdentifierFactory::createFactory()
+        );
     }
 
     /**
-     * @param InteractionActionInterface $action
+     * @param InteractionAction $action
      *
      * @return CodeBlockInterface
      *
-     * @throws UnsupportedModelException
+     * @throws UnsupportedIdentifierException
      */
-    public function handle(InteractionActionInterface $action): CodeBlockInterface
+    public function handle(InteractionAction $action): CodeBlockInterface
     {
         $identifier = $action->getIdentifier();
 
-        if (!$identifier instanceof DomIdentifierInterface) {
-            throw new UnsupportedModelException($action);
+        if (!IdentifierTypeFinder::isDomIdentifier($identifier)) {
+            throw new UnsupportedIdentifierException($identifier);
+        }
+
+        $domIdentifier = $this->domIdentifierFactory->create($identifier);
+
+        if (null !== $domIdentifier->getAttributeName()) {
+            throw new UnsupportedIdentifierException($identifier);
         }
 
         $variableDependencies = new VariablePlaceholderCollection();
@@ -56,7 +70,7 @@ class WaitForActionHandler
                     '%s = %s->waitFor(\'%s\')',
                     $pantherCrawlerPlaceholder,
                     $pantherClientPlaceholder,
-                    $this->singleQuotedStringEscaper->escape($identifier->getLocator())
+                    $this->singleQuotedStringEscaper->escape($domIdentifier->getLocator())
                 ),
                 $metadata
             )

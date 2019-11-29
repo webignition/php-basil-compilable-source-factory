@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 
+use webignition\BasilCompilableSourceFactory\Model\DomIdentifier;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomElementIdentifier;
 use webignition\BasilCompilationSource\VariablePlaceholder;
-use webignition\BasilModel\Identifier\DomIdentifier;
 
 class NamedDomElementIdentifierTest extends \PHPUnit\Framework\TestCase
 {

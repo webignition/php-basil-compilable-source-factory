@@ -9,9 +9,6 @@ use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\BasilModel\Value\LiteralValue;
-use webignition\BasilModel\Value\ObjectValue;
-use webignition\BasilModel\Value\ObjectValueType;
 
 trait CreateFromValueDataProviderTrait
 {
@@ -19,25 +16,21 @@ trait CreateFromValueDataProviderTrait
     {
         return [
             'literal string value: string' => [
-                'value' => new LiteralValue('value'),
+                'value' => '"value"',
                 'expectedContent' => new CodeBlock([
                     new Statement('"value"'),
                 ]),
                 'expectedMetadata' => new Metadata(),
             ],
             'literal string value: integer' => [
-                'value' => new LiteralValue('100'),
+                'value' => '"100"',
                 'expectedContent' => new CodeBlock([
                     new Statement('"100"'),
                 ]),
                 'expectedMetadata' => new Metadata(),
             ],
             'environment parameter value' => [
-                'value' => new ObjectValue(
-                    ObjectValueType::ENVIRONMENT_PARAMETER,
-                    '$env.KEY',
-                    'KEY'
-                ),
+                'value' => '$env.KEY',
                 'expectedContent' => new CodeBlock([
                     new Statement('{{ ENV }}[\'KEY\']'),
                 ]),
@@ -47,7 +40,7 @@ trait CreateFromValueDataProviderTrait
                     ])),
             ],
             'browser property, size' => [
-                'value' => new ObjectValue(ObjectValueType::BROWSER_PROPERTY, '$browser.size', 'size'),
+                'value' => '$browser.size',
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()',
                     '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
@@ -61,7 +54,7 @@ trait CreateFromValueDataProviderTrait
                     ])),
             ],
             'page property, url' => [
-                'value' => new ObjectValue(ObjectValueType::PAGE_PROPERTY, '$page.url', 'url'),
+                'value' => '$page.url',
                 'expectedContent' => new CodeBlock([
                     new Statement('{{ CLIENT }}->getCurrentURL()'),
                 ]),
@@ -71,7 +64,7 @@ trait CreateFromValueDataProviderTrait
                     ])),
             ],
             'page property, title' => [
-                'value' => new ObjectValue(ObjectValueType::PAGE_PROPERTY, '$page.title', 'title'),
+                'value' => '$page.title',
                 'expectedContent' => new CodeBlock([
                     new Statement('{{ CLIENT }}->getTitle()'),
                 ]),
@@ -81,11 +74,7 @@ trait CreateFromValueDataProviderTrait
                     ])),
             ],
             'data parameter' => [
-                'value' => new ObjectValue(
-                    ObjectValueType::DATA_PARAMETER,
-                    '$data.key',
-                    'key'
-                ),
+                'value' => '$data.key',
                 'expectedContent' => new CodeBlock([
                     new Statement('$key'),
                 ]),

@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
-use webignition\BasilActionGenerator\ActionGenerator;
-use webignition\BasilAssertionGenerator\AssertionGenerator;
 use webignition\BasilCompilableSourceFactory\ArrayStatementFactory;
 use webignition\BasilCompilableSourceFactory\ClassDefinitionFactory;
 use webignition\BasilCompilableSourceFactory\ClassNameFactory;
@@ -22,12 +20,8 @@ use webignition\BasilCompilationSource\Metadata\MetadataInterface;
 use webignition\BasilCompilationSource\MethodDefinition\MethodDefinition;
 use webignition\BasilCompilationSource\MethodDefinition\MethodDefinitionInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\BasilModel\DataSet\DataSet;
-use webignition\BasilModel\DataSet\DataSetCollection;
-use webignition\BasilModel\Step\Step;
-use webignition\BasilModel\Test\Configuration;
-use webignition\BasilModel\Test\Test;
-use webignition\BasilModel\Test\TestInterface;
+use webignition\BasilDataStructure\Test\Test;
+use webignition\BasilParser\Test\TestParser;
 use webignition\DomElementLocator\ElementLocator;
 
 class ClassDefinitionFactoryTest extends AbstractTestCase
@@ -38,7 +32,7 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
     public function testCreateClassDefinition(
         ClassDefinitionFactory $factory,
         string $expectedClassName,
-        TestInterface $test,
+        Test $test,
         int $expectedMethodCount,
         MethodDefinitionInterface $expectedSetUpBeforeClassMethod,
         MetadataInterface $expectedMetadata
@@ -69,8 +63,7 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
 
     public function createClassDefinitionDataProvider(): array
     {
-        $actionGenerator = ActionGenerator::createGenerator();
-        $assertionGenerator = AssertionGenerator::createGenerator();
+        $testParser = TestParser::create();
 
         $stepMethodNameFactoryFactory = new StepMethodNameFactoryFactory();
 
@@ -83,11 +76,12 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
                     )
                 ),
                 'expectedClassName' => 'GeneratedClassName',
-                'test' => new Test(
-                    'test name',
-                    new Configuration('chrome', 'http://example.com'),
-                    []
-                ),
+                'test' => $testParser->parse('.', 'test.yml', [
+                    'config' => [
+                        'browser' => 'chrome',
+                        'url' => 'http://example.com',
+                    ],
+                ]),
                 'expectedMethodCount' => 1,
                 'expectedSetUpBeforeClassMethod' => $this->createExpectedSetUpBeforeClassMethodDefinition(
                     'http://example.com'
@@ -112,20 +106,20 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
                     )
                 ),
                 'expectedClassName' => 'GeneratedClassName',
-                'test' => new Test(
-                    'test name',
-                    new Configuration('chrome', 'http://example.com'),
-                    [
-                        'step one' => new Step(
-                            [
-                                $actionGenerator->generate('click ".selector"'),
-                            ],
-                            [
-                                $assertionGenerator->generate('$page.title is "value"'),
-                            ]
-                        ),
-                    ]
-                ),
+                'test' => $testParser->parse('.', 'test.yml', [
+                    'config' => [
+                        'browser' => 'chrome',
+                        'url' => 'http://example.com',
+                    ],
+                    'step one' => [
+                        'actions' => [
+                            'click $".selector"',
+                        ],
+                        'assertions' => [
+                            '$page.title is "value"',
+                        ],
+                    ],
+                ]),
                 'expectedMethodCount' => 2,
                 'expectedSetUpBeforeClassMethod' => $this->createExpectedSetUpBeforeClassMethodDefinition(
                     'http://example.com'
@@ -165,28 +159,26 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
                     )
                 ),
                 'expectedClassName' => 'GeneratedClassName',
-                'test' => new Test(
-                    'test name',
-                    new Configuration('chrome', 'http://example.com'),
-                    [
-                        'step one' => (new Step(
-                            [
-                                $actionGenerator->generate('set ".selector" to $data.field_value'),
+                'test' => $testParser->parse('.', 'test.yml', [
+                    'config' => [
+                        'browser' => 'chrome',
+                        'url' => 'http://example.com',
+                    ],
+                    'step one' => [
+                        'actions' => [
+                            'set $".selector" to $data.field_value',
+                        ],
+                        'assertions' => [
+                            '$".selector" is $data.expected_value',
+                        ],
+                        'data' => [
+                            '0' => [
+                                'field_value' => 'value1',
+                                'expected_value' => 'value1',
                             ],
-                            [
-                                $assertionGenerator->generate('".selector" is $data.expected_value'),
-                            ]
-                        ))->withDataSetCollection(new DataSetCollection([
-                            new DataSet(
-                                '0',
-                                [
-                                    'field_value' => 'value1',
-                                    'expected_value' => 'value1',
-                                ]
-                            ),
-                        ])),
-                    ]
-                ),
+                        ],
+                    ],
+                ]),
                 'expectedMethodCount' => 3,
                 'expectedSetUpBeforeClassMethod' => $this->createExpectedSetUpBeforeClassMethodDefinition(
                     'http://example.com'
@@ -238,7 +230,7 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
         $classNameFactory
             ->shouldReceive('create')
             ->withArgs(function ($test) {
-                $this->assertInstanceOf(TestInterface::class, $test);
+                $this->assertInstanceOf(Test::class, $test);
 
                 return true;
             })

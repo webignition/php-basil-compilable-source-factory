@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler;
 
-use webignition\BasilActionGenerator\ActionGenerator;
-use webignition\BasilAssertionGenerator\AssertionGenerator;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedActionException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedAssertionException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
 use webignition\BasilCompilableSourceFactory\Handler\StepHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
@@ -16,17 +19,19 @@ use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\Metadata\MetadataInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\BasilModel\Step\Step;
-use webignition\BasilModel\Step\StepInterface;
+use webignition\BasilDataStructure\Step;
+use webignition\BasilParser\ActionParser;
+use webignition\BasilParser\AssertionParser;
+use webignition\BasilParser\StepParser;
 use webignition\DomElementLocator\ElementLocator;
 
 class StepHandlerTest extends AbstractTestCase
 {
     /**
-     * @dataProvider handleDataProvider
+     * @dataProvider handleSuccessDataProvider
      */
-    public function testHandle(
-        StepInterface $step,
+    public function testHandleSuccess(
+        Step $step,
         CodeBlockInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
@@ -38,26 +43,24 @@ class StepHandlerTest extends AbstractTestCase
         $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
     }
 
-    public function handleDataProvider(): array
+    public function handleSuccessDataProvider(): array
     {
-        $actionGenerator = ActionGenerator::createGenerator();
-        $assertionGenerator = AssertionGenerator::createGenerator();
+        $stepParser = StepParser::create();
 
         return [
             'empty step' => [
-                'step' => new Step([], []),
+                'step' => $stepParser->parse([]),
                 'expectedContent' => new CodeBlock(),
                 'expectedMetadata' => new Metadata(),
             ],
             'one action' => [
-                'step' => new Step(
-                    [
-                        $actionGenerator->generate('click ".selector"'),
+                'step' => $stepParser->parse([
+                    'actions' => [
+                        'click $".selector"',
                     ],
-                    []
-                ),
+                ]),
                 'expectedContent' => CodeBlock::fromContent([
-                    '//click ".selector"',
+                    '// click $".selector"',
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
@@ -78,21 +81,20 @@ class StepHandlerTest extends AbstractTestCase
                     ])),
             ],
             'two action' => [
-                'step' => new Step(
-                    [
-                        $actionGenerator->generate('click ".selector"'),
-                        $actionGenerator->generate('wait 1'),
+                'step' => $stepParser->parse([
+                    'actions' => [
+                        'click $".selector"',
+                        'wait 1',
                     ],
-                    []
-                ),
+                ]),
                 'expectedContent' => CodeBlock::fromContent([
-                    '//click ".selector"',
+                    '// click $".selector"',
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
                     '{{ ELEMENT }}->click()',
                     '',
-                    '//wait 1',
+                    '// wait 1',
                     '{{ DURATION }} = "1" ?? 0',
                     '{{ DURATION }} = (int) {{ DURATION }}',
                     'usleep({{ DURATION }} * 1000)',
@@ -113,14 +115,13 @@ class StepHandlerTest extends AbstractTestCase
                     ])),
             ],
             'one assertion' => [
-                'step' => new Step(
-                    [],
-                    [
-                        $assertionGenerator->generate('$page.title is "value"'),
-                    ]
-                ),
+                'step' => $stepParser->parse([
+                    'assertions' => [
+                        '$page.title is "value"',
+                    ],
+                ]),
                 'expectedContent' => CodeBlock::fromContent([
-                    '//$page.title is "value"',
+                    '// $page.title is "value"',
                     '{{ EXPECTED }} = "value" ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
                     '{{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null',
@@ -139,22 +140,21 @@ class StepHandlerTest extends AbstractTestCase
                     ])),
             ],
             'two assertions' => [
-                'step' => new Step(
-                    [],
-                    [
-                        $assertionGenerator->generate('$page.title is "value"'),
-                        $assertionGenerator->generate('$page.url is "http://example.com"'),
-                    ]
-                ),
+                'step' => $stepParser->parse([
+                    'assertions' => [
+                        '$page.title is "value"',
+                        '$page.url is "http://example.com"',
+                    ],
+                ]),
                 'expectedContent' => CodeBlock::fromContent([
-                    '//$page.title is "value"',
+                    '// $page.title is "value"',
                     '{{ EXPECTED }} = "value" ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
                     '{{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null',
                     '{{ EXAMINED }} = (string) {{ EXAMINED }}',
                     '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
                     '',
-                    '//$page.url is "http://example.com"',
+                    '// $page.url is "http://example.com"',
                     '{{ EXPECTED }} = "http://example.com" ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
                     '{{ EXAMINED }} = {{ CLIENT }}->getCurrentURL() ?? null',
@@ -173,22 +173,22 @@ class StepHandlerTest extends AbstractTestCase
                     ])),
             ],
             'one action, one assertion' => [
-                'step' => new Step(
-                    [
-                        $actionGenerator->generate('click ".selector"'),
+                'step' => $stepParser->parse([
+                    'actions' => [
+                        'click $".selector"',
                     ],
-                    [
-                        $assertionGenerator->generate('$page.title is "value"'),
-                    ]
-                ),
+                    'assertions' => [
+                        '$page.title is "value"',
+                    ],
+                ]),
                 'expectedContent' => CodeBlock::fromContent([
-                    '//click ".selector"',
+                    '// click $".selector"',
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
                     '{{ ELEMENT }}->click()',
                     '',
-                    '//$page.title is "value"',
+                    '// $page.title is "value"',
                     '{{ EXPECTED }} = "value" ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
                     '{{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null',
@@ -211,6 +211,63 @@ class StepHandlerTest extends AbstractTestCase
                         VariableNames::EXPECTED_VALUE,
                         'HAS',
                     ])),
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider handleThrowsExceptionDataProvider
+     */
+    public function testHandleThrowsException(Step $step, UnsupportedStepException $expectedException)
+    {
+        $handler = StepHandler::createHandler();
+        $this->expectExceptionObject($expectedException);
+
+        $handler->handle($step);
+    }
+
+    public function handleThrowsExceptionDataProvider(): array
+    {
+        $actionParser = ActionParser::create();
+        $assertionParser = AssertionParser::create();
+        $stepParser = StepParser::create();
+
+        return [
+            'interaction action, identifier not dom identifier' => [
+                'step' => $stepParser->parse([
+                    'actions' => [
+                        'click $elements.element_name',
+                    ],
+                ]),
+                'expectedException' => new UnsupportedStepException(
+                    $stepParser->parse([
+                        'actions' => [
+                            'click $elements.element_name',
+                        ],
+                    ]),
+                    new UnsupportedActionException(
+                        $actionParser->parse('click $elements.element_name'),
+                        new UnsupportedIdentifierException('$elements.element_name')
+                    )
+                ),
+            ],
+            'comparison assertion, examined value is not supported' => [
+                'step' => $stepParser->parse([
+                    'assertions' => [
+                        '$elements.examined is "value"',
+                    ],
+                ]),
+                'expectedException' => new UnsupportedStepException(
+                    $stepParser->parse([
+                        'assertions' => [
+                            '$elements.examined is "value"',
+                        ],
+                    ]),
+                    new UnsupportedAssertionException(
+                        $assertionParser->parse('$elements.examined is "value"'),
+                        new UnsupportedValueException('$elements.examined')
+                    )
+                ),
             ],
         ];
     }

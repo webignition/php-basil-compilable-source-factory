@@ -7,14 +7,13 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 use webignition\BasilCodeGenerator\CodeBlockGenerator;
 use webignition\BasilCodeGenerator\LineGenerator;
 use webignition\BasilCompilableSourceFactory\CallFactory\ElementLocatorCallFactory;
+use webignition\BasilCompilableSourceFactory\Model\DomIdentifier;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestCodeGenerator;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Metadata\Metadata;
-use webignition\BasilModel\Identifier\DomIdentifier;
-use webignition\BasilModel\Identifier\DomIdentifierInterface;
 use webignition\DomElementLocator\ElementLocator;
 use webignition\DomElementLocator\ElementLocatorInterface;
 
@@ -54,7 +53,7 @@ class ElementLocatorCallFactoryTest extends AbstractTestCase
      * @dataProvider createConstructorCallDataProvider
      */
     public function testCreateConstructorCall(
-        DomIdentifierInterface $elementIdentifier,
+        DomIdentifier $elementIdentifier,
         ElementLocatorInterface $expectedElementLocator
     ) {
         $block = $this->factory->createConstructorCall($elementIdentifier);
