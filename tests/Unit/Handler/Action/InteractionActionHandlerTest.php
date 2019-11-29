@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Action;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
 use webignition\BasilCompilableSourceFactory\Handler\Action\InteractionActionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
-use webignition\BasilDataStructure\Action\InteractionAction;
+use webignition\BasilModels\Action\InteractionActionInterface;
 use webignition\BasilParser\ActionParser;
 
 class InteractionActionHandlerTest extends AbstractTestCase
@@ -16,7 +16,7 @@ class InteractionActionHandlerTest extends AbstractTestCase
      * @dataProvider handleThrowsExceptionDataProvider
      */
     public function testHandleThrowsException(
-        InteractionAction $action,
+        InteractionActionInterface $action,
         UnsupportedIdentifierException $expectedException
     ) {
         $handler = InteractionActionHandler::createHandler();

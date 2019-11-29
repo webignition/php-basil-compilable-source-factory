@@ -20,7 +20,7 @@ use webignition\BasilCompilationSource\Metadata\MetadataInterface;
 use webignition\BasilCompilationSource\MethodDefinition\MethodDefinition;
 use webignition\BasilCompilationSource\MethodDefinition\MethodDefinitionInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\BasilDataStructure\Step;
+use webignition\BasilModels\Step\StepInterface;
 use webignition\BasilParser\StepParser;
 use webignition\DomElementLocator\ElementLocator;
 
@@ -32,7 +32,7 @@ class StepMethodFactoryTest extends AbstractTestCase
     public function testCreateStepMethods(
         StepMethodNameFactory $stepMethodNameFactory,
         string $stepName,
-        Step $step,
+        StepInterface $step,
         MethodDefinitionInterface $expectedTestMethod,
         MetadataInterface $expectedTestMethodMetadata,
         ?MethodDefinitionInterface $expectedDataProviderMethod

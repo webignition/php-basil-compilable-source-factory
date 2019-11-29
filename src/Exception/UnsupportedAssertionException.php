@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Exception;
 
-use webignition\BasilDataStructure\AssertionInterface;
+use webignition\BasilModels\Assertion\AssertionInterface;
 
 class UnsupportedAssertionException extends \Exception
 {

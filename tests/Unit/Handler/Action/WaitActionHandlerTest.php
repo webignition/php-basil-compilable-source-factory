@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Action;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
 use webignition\BasilCompilableSourceFactory\Handler\Action\WaitActionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
-use webignition\BasilDataStructure\Action\WaitAction;
+use webignition\BasilModels\Action\WaitActionInterface;
 use webignition\BasilParser\ActionParser;
 
 class WaitActionHandlerTest extends AbstractTestCase
@@ -15,7 +15,7 @@ class WaitActionHandlerTest extends AbstractTestCase
     /**
      * @dataProvider handleThrowsExceptionDataProvider
      */
-    public function testHandleThrowsException(WaitAction $action, \Exception $expectedException)
+    public function testHandleThrowsException(WaitActionInterface $action, \Exception $expectedException)
     {
         $handler = WaitActionHandler::createHandler();
 

@@ -21,7 +21,7 @@ use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\BasilDataStructure\AssertionInterface;
+use webignition\BasilModels\Assertion\AssertionInterface;
 
 class ExistenceComparisonHandler extends AbstractAssertionHandler
 {

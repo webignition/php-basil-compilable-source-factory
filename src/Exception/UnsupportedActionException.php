@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Exception;
 
-use webignition\BasilDataStructure\Action\ActionInterface;
+use webignition\BasilModels\Action\ActionInterface;
 
 class UnsupportedActionException extends \Exception
 {

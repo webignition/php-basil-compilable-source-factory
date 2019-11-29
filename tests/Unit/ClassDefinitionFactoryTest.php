@@ -20,7 +20,7 @@ use webignition\BasilCompilationSource\Metadata\MetadataInterface;
 use webignition\BasilCompilationSource\MethodDefinition\MethodDefinition;
 use webignition\BasilCompilationSource\MethodDefinition\MethodDefinitionInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\BasilDataStructure\Test\Test;
+use webignition\BasilModels\Test\TestInterface;
 use webignition\BasilParser\Test\TestParser;
 use webignition\DomElementLocator\ElementLocator;
 
@@ -32,7 +32,7 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
     public function testCreateClassDefinition(
         ClassDefinitionFactory $factory,
         string $expectedClassName,
-        Test $test,
+        TestInterface $test,
         int $expectedMethodCount,
         MethodDefinitionInterface $expectedSetUpBeforeClassMethod,
         MetadataInterface $expectedMetadata
@@ -230,7 +230,7 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
         $classNameFactory
             ->shouldReceive('create')
             ->withArgs(function ($test) {
-                $this->assertInstanceOf(Test::class, $test);
+                $this->assertInstanceOf(TestInterface::class, $test);
 
                 return true;
             })

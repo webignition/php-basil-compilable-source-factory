@@ -8,7 +8,7 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierExce
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\Handler\Action\SetActionHandler;
-use webignition\BasilDataStructure\Action\InputAction;
+use webignition\BasilModels\Action\InputActionInterface;
 use webignition\BasilParser\ActionParser;
 
 class SetActionHandlerTest extends AbstractTestCase
@@ -16,7 +16,7 @@ class SetActionHandlerTest extends AbstractTestCase
     /**
      * @dataProvider handleThrowsExceptionDataProvider
      */
-    public function testHandleThrowsException(InputAction $action, \Exception $expectedException)
+    public function testHandleThrowsException(InputActionInterface $action, \Exception $expectedException)
     {
         $handler = SetActionHandler::createHandler();
 

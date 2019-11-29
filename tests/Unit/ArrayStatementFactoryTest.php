@@ -7,7 +7,8 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 use webignition\BasilCompilableSourceFactory\ArrayStatementFactory;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Line\StatementInterface;
-use webignition\BasilDataStructure\DataSetCollection;
+use webignition\BasilModels\DataSet\DataSetCollection;
+use webignition\BasilModels\DataSet\DataSetCollectionInterface;
 
 class ArrayStatementFactoryTest extends \PHPUnit\Framework\TestCase
 {
@@ -26,7 +27,7 @@ class ArrayStatementFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider createDataProvider
      */
-    public function testCreate(DataSetCollection $dataSetCollection, StatementInterface $expectedStatement)
+    public function testCreate(DataSetCollectionInterface $dataSetCollection, StatementInterface $expectedStatement)
     {
         $arrayStatement = $this->arrayStatementFactory->create($dataSetCollection);
 

@@ -9,7 +9,8 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierExce
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedAssertionException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
-use webignition\BasilDataStructure\AssertionInterface;
+use webignition\BasilModels\Assertion\AssertionInterface;
+use webignition\BasilModels\Assertion\ComparisonAssertionInterface;
 
 class AssertionHandler
 {
@@ -42,7 +43,7 @@ class AssertionHandler
     public function handle(AssertionInterface $assertion): CodeBlockInterface
     {
         try {
-            if ($this->isComparisonAssertion($assertion)) {
+            if ($this->isComparisonAssertion($assertion) && $assertion instanceof ComparisonAssertionInterface) {
                 return $this->comparisonAssertionHandler->handle($assertion);
             }
 

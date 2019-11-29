@@ -17,7 +17,7 @@ use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
-use webignition\BasilDataStructure\Action\ActionInterface;
+use webignition\BasilModels\Action\ActionInterface;
 use webignition\BasilParser\ActionParser;
 
 class ActionHandlerTest extends AbstractBrowserTestCase

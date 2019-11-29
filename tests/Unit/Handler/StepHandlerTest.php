@@ -19,7 +19,7 @@ use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\Metadata\MetadataInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\BasilDataStructure\Step;
+use webignition\BasilModels\Step\StepInterface;
 use webignition\BasilParser\ActionParser;
 use webignition\BasilParser\AssertionParser;
 use webignition\BasilParser\StepParser;
@@ -31,7 +31,7 @@ class StepHandlerTest extends AbstractTestCase
      * @dataProvider handleSuccessDataProvider
      */
     public function testHandleSuccess(
-        Step $step,
+        StepInterface $step,
         CodeBlockInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {

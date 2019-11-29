@@ -8,10 +8,10 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierExce
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedActionException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
-use webignition\BasilDataStructure\Action\ActionInterface;
-use webignition\BasilDataStructure\Action\InputAction;
-use webignition\BasilDataStructure\Action\InteractionAction;
-use webignition\BasilDataStructure\Action\WaitAction;
+use webignition\BasilModels\Action\ActionInterface;
+use webignition\BasilModels\Action\InputActionInterface;
+use webignition\BasilModels\Action\InteractionActionInterface;
+use webignition\BasilModels\Action\WaitActionInterface;
 
 class ActionHandler
 {
@@ -60,19 +60,19 @@ class ActionHandler
                 return $this->browserOperationActionHandler->handle($action);
             }
 
-            if ($action instanceof InteractionAction && in_array($action->getType(), ['click', 'submit'])) {
+            if ($action instanceof InteractionActionInterface && in_array($action->getType(), ['click', 'submit'])) {
                 return $this->interactionActionHandler->handle($action);
             }
 
-            if ($action instanceof InputAction) {
+            if ($action instanceof InputActionInterface) {
                 return $this->setActionHandler->handle($action);
             }
 
-            if ($action instanceof WaitAction) {
+            if ($action instanceof WaitActionInterface) {
                 return $this->waitActionHandler->handle($action);
             }
 
-            if ($action instanceof InteractionAction && in_array($action->getType(), ['wait-for'])) {
+            if ($action instanceof InteractionActionInterface && in_array($action->getType(), ['wait-for'])) {
                 return $this->waitForActionHandler->handle($action);
             }
         } catch (UnsupportedIdentifierException | UnsupportedValueException $previous) {

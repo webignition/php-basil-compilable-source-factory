@@ -19,7 +19,7 @@ use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Metadata\MetadataInterface;
-use webignition\BasilDataStructure\Action\ActionInterface;
+use webignition\BasilModels\Action\ActionInterface;
 use webignition\BasilParser\ActionParser;
 
 class ActionHandlerTest extends AbstractTestCase
