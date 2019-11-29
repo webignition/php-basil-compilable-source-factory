@@ -5,8 +5,6 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional;
 
 use webignition\BasePantherTestCase\Options;
-use webignition\BasilActionGenerator\ActionGenerator;
-use webignition\BasilAssertionGenerator\AssertionGenerator;
 use webignition\BasilCodeGenerator\ClassGenerator;
 use webignition\BasilCompilableSourceFactory\ClassDefinitionFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
@@ -17,13 +15,12 @@ use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\MethodDefinition\MethodDefinitionInterface;
-use webignition\BasilModel\DataSet\DataSet;
-use webignition\BasilModel\DataSet\DataSetCollection;
-use webignition\BasilModel\Step\Step;
-use webignition\BasilModel\Test\Configuration;
-use webignition\BasilModel\Test\Test;
-use webignition\BasilModel\Test\TestInterface;
+use webignition\BasilDataStructure\Test\Test;
+use webignition\BasilParser\Test\TestParser;
 
+/**
+ * @group poc208
+ */
 class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
 {
     /**
@@ -47,7 +44,7 @@ class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
     /**
      * @dataProvider createSourceDataProvider
      */
-    public function testCreateSource(TestInterface $test, array $additionalVariableIdentifiers = [])
+    public function testCreateSource(Test $test, array $additionalVariableIdentifiers = [])
     {
         $classDefinition = $this->factory->createClassDefinition($test);
 
@@ -82,93 +79,65 @@ class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
 
     public function createSourceDataProvider(): array
     {
-        $actionGenerator = ActionGenerator::createGenerator();
-        $assertionGenerator = AssertionGenerator::createGenerator();
+        $testParser = TestParser::create();
 
         return [
             'single step with single action and single assertion' => [
-                'test' => new Test(
-                    'test name',
-                    new Configuration('chrome', Options::getBaseUri() . '/index.html'),
-                    [
-                        'verify correct page is open' => new Step(
-                            [],
-                            [
-                                $assertionGenerator->generate(
-                                    '$page.url is "' . Options::getBaseUri() . '/index.html"'
-                                ),
-                                $assertionGenerator->generate(
-                                    '$page.title is "Test fixture web server default document"'
-                                ),
-                            ]
-                        ),
-                    ]
-                ),
+                'test' => $testParser->parse('.', 'test.yml', [
+                    'config' => [
+                        'browser' => 'chrome',
+                        'url' => Options::getBaseUri() . '/index.html',
+                    ],
+                    'verify correct page is open' => [
+                        'assertions' => [
+                            '$page.url is "' . Options::getBaseUri() . '/index.html"',
+                            '$page.title is "Test fixture web server default document"',
+                        ],
+                    ],
+                ]),
                 'additionalVariableIdentifiers' => [
                     VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                 ],
             ],
             'multi-step' => [
-                'test' => new Test(
-                    'test name',
-                    new Configuration('chrome', Options::getBaseUri() . '/index.html'),
-                    [
-                        'verify starting page is open' => new Step(
-                            [],
-                            [
-                                $assertionGenerator->generate(
-                                    '$page.url is "' . Options::getBaseUri() . '/index.html"'
-                                ),
-                                $assertionGenerator->generate(
-                                    '$page.title is "Test fixture web server default document"'
-                                ),
-                            ]
-                        ),
-                        'navigate to form' => new Step(
-                            [
-                                $actionGenerator->generate('click "#link-to-form"'),
-                            ],
-                            [
-                                $assertionGenerator->generate(
-                                    '$page.url is "' . Options::getBaseUri() . '/form.html"'
-                                ),
-                                $assertionGenerator->generate(
-                                    '$page.title is "Form"'
-                                ),
-                            ]
-                        ),
-                        'verify select menu starting values' => new Step(
-                            [],
-                            [
-                                $assertionGenerator->generate(
-                                    '".select-none-selected" is "none-selected-1"'
-                                ),
-                                $assertionGenerator->generate(
-                                    '".select-has-selected" is "has-selected-2"'
-                                ),
-                            ]
-                        ),
-                        'modify select menu starting values' => new Step(
-                            [
-                                $actionGenerator->generate(
-                                    'set ".select-none-selected" to "none-selected-3"'
-                                ),
-                                $actionGenerator->generate(
-                                    'set ".select-has-selected" to "has-selected-1"'
-                                ),
-                            ],
-                            [
-                                $assertionGenerator->generate(
-                                    '".select-none-selected" is "none-selected-3"'
-                                ),
-                                $assertionGenerator->generate(
-                                    '".select-has-selected" is "has-selected-1"'
-                                ),
-                            ]
-                        ),
-                    ]
-                ),
+                'test' => $testParser->parse('.', 'test.yml', [
+                    'config' => [
+                        'browser' => 'chrome',
+                        'url' => Options::getBaseUri() . '/index.html',
+                    ],
+                    'verify starting page is open' => [
+                        'assertions' => [
+                            '$page.url is "' . Options::getBaseUri() . '/index.html"',
+                            '$page.title is "Test fixture web server default document"',
+                        ],
+                    ],
+                    'navigate to form' => [
+                        'actions' => [
+                            'click $"#link-to-form"',
+                        ],
+                        'assertions' => [
+                            '$page.url is "' . Options::getBaseUri() . '/form.html"',
+                            '$page.title is "Form"',
+                        ],
+                    ],
+                    'verify select menu initial values' => [
+                        'assertions' => [
+                            '$".select-none-selected" is "none-selected-1"',
+                            '$".select-has-selected" is "has-selected-2"',
+                        ],
+                    ],
+                    'modify select menu values' => [
+                        'actions' => [
+                            'set $".select-none-selected" to "none-selected-3"',
+                            'set $".select-has-selected" to "has-selected-1"',
+                        ],
+                        'assertions' => [
+                            '$".select-none-selected" is "none-selected-3"',
+                            '$".select-has-selected" is "has-selected-1"',
+                        ],
+                    ],
+                ]),
                 'additionalVariableIdentifiers' => [
                     VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
@@ -179,56 +148,38 @@ class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
                 ],
             ],
             'with data set collection' => [
-                'test' => new Test(
-                    'test name',
-                    new Configuration('chrome', Options::getBaseUri() . '/form.html'),
-                    [
-                        'verify form field values' => (new Step(
-                            [],
-                            [
-                                $assertionGenerator->generate(
-                                    '"input[name=input-without-value]" is ""'
-                                ),
-                                $assertionGenerator->generate(
-                                    '"input[name=input-with-value]" is "test"'
-                                ),
-                            ]
-                        )),
-                        'modify form field values' => (new Step(
-                            [
-                                $actionGenerator->generate(
-                                    'set "input[name=input-without-value]" to $data.field_value'
-                                ),
-                                $actionGenerator->generate(
-                                    'set "input[name=input-with-value]" to $data.field_value'
-                                ),
+                'test' => $testParser->parse('.', 'test.yml', [
+                    'config' => [
+                        'browser' => 'chrome',
+                        'url' => Options::getBaseUri() . '/form.html',
+                    ],
+                    'verify form field values' => [
+                        'assertions' => [
+                            '$"input[name=input-without-value]" is ""',
+                            '$"input[name=input-with-value]" is "test"',
+                        ],
+                    ],
+                    'modify form field values' => [
+                        'actions' => [
+                            'set $"input[name=input-without-value]" to $data.field_value',
+                            'set $"input[name=input-with-value]" to $data.field_value',
+                        ],
+                        'assertions' => [
+                            '$"input[name=input-without-value]" is $data.expected_value',
+                            '$"input[name=input-with-value]" is $data.expected_value',
+                        ],
+                        'data' => [
+                            '0' => [
+                                'field_value' => 'value0',
+                                'expected_value' => 'value0',
                             ],
-                            [
-                                $assertionGenerator->generate(
-                                    '"input[name=input-without-value]" is $data.expected_value'
-                                ),
-                                $assertionGenerator->generate(
-                                    '"input[name=input-with-value]" is $data.expected_value'
-                                ),
-                            ]
-                        ))->withDataSetCollection(new DataSetCollection([
-                            new DataSet(
-                                '0',
-                                [
-                                    'field_value' => 'value0',
-                                    'expected_value' => 'value0',
-                                ]
-                            ),
-                            new DataSet(
-                                '1',
-                                [
-                                    'field_value' => 'value1',
-                                    'expected_value' => 'value1',
-                                ]
-                            ),
-                        ])),
-                    ]
-                ),
+                            '1' => [
+                                'field_value' => 'value1',
+                                'expected_value' => 'value1',
+                            ],
+                        ],
+                    ],
+                ]),
                 'additionalVariableIdentifiers' => [
                     'COLLECTION' => ResolvedVariableNames::COLLECTION_VARIABLE_NAME,
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
