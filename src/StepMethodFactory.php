@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory;
 
-use webignition\BasilCompilableSourceFactory\Exception\UnknownObjectPropertyException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedModelException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\Handler\StepHandler;
 use webignition\BasilCompilableSourceFactory\Model\StepMethods;
 use webignition\BasilCompilationSource\Block\CodeBlock;
@@ -13,9 +12,8 @@ use webignition\BasilCompilationSource\Block\DocBlock;
 use webignition\BasilCompilationSource\Line\Comment;
 use webignition\BasilCompilationSource\MethodDefinition\MethodDefinition;
 use webignition\BasilCompilationSource\MethodDefinition\MethodDefinitionInterface;
+use webignition\BasilDataStructure\DataSetCollection;
 use webignition\BasilDataStructure\Step;
-use webignition\BasilModel\DataSet\DataSetCollection;
-use webignition\BasilModel\DataSet\DataSetCollectionInterface;
 
 class StepMethodFactory
 {
@@ -48,14 +46,11 @@ class StepMethodFactory
      *
      * @return StepMethods
      *
-     * @throws UnknownObjectPropertyException
-     * @throws UnsupportedModelException
+     * @throws UnsupportedStepException
      */
     public function createStepMethods(string $stepName, Step $step): StepMethods
     {
-//        $dataSetCollection = $step->getDataSetCollection();
-        // @todo: fix in #237
-        $dataSetCollection = new DataSetCollection();
+        $dataSetCollection = $step->getData();
         $parameterNames = $dataSetCollection->getParameterNames();
 
 
@@ -84,7 +79,7 @@ class StepMethodFactory
 
     private function createDataProviderMethod(
         string $stepName,
-        DataSetCollectionInterface $dataSetCollection
+        DataSetCollection $dataSetCollection
     ): MethodDefinitionInterface {
         return new MethodDefinition(
             $this->stepMethodNameFactory->createDataProviderMethodName($stepName),
