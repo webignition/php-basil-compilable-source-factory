@@ -6,8 +6,8 @@ namespace webignition\BasilCompilableSourceFactory;
 
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Line\StatementInterface;
-use webignition\BasilModel\DataSet\DataSetCollectionInterface;
-use webignition\BasilModel\DataSet\DataSetInterface;
+use webignition\BasilDataStructure\DataSet;
+use webignition\BasilDataStructure\DataSetCollection;
 
 class ArrayStatementFactory
 {
@@ -28,13 +28,15 @@ class ArrayStatementFactory
         );
     }
 
-    public function create(DataSetCollectionInterface $dataSetCollection): StatementInterface
+    public function create(DataSetCollection $dataSetCollection): StatementInterface
     {
         $dataSetsAsArrays = [];
 
-        /* @var DataSetInterface $dataSet */
+        /* @var DataSet $dataSet */
         foreach ($dataSetCollection as $dataSet) {
-            $dataSetsAsArrays[(string) $dataSet->getName()] = $dataSet->getData();
+            if ($dataSet instanceof DataSet) {
+                $dataSetsAsArrays[(string) $dataSet->getName()] = $dataSet->getData();
+            }
         }
 
         $arrayAsString = $this->convertArrayToString($dataSetsAsArrays);
