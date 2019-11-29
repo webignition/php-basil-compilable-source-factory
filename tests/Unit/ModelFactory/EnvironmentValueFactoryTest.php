@@ -7,9 +7,6 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\ModelFactory;
 use webignition\BasilCompilableSourceFactory\Model\EnvironmentValue;
 use webignition\BasilCompilableSourceFactory\ModelFactory\EnvironmentValueFactory;
 
-/**
- * @group poc208
- */
 class EnvironmentValueFactoryTest extends \PHPUnit\Framework\TestCase
 {
     /**

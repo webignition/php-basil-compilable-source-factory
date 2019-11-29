@@ -25,9 +25,6 @@ use webignition\BasilParser\AssertionParser;
 use webignition\BasilParser\StepParser;
 use webignition\DomElementLocator\ElementLocator;
 
-/**
- * @group poc208
- */
 class StepHandlerTest extends AbstractTestCase
 {
     /**

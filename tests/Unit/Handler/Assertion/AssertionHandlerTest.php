@@ -22,9 +22,6 @@ use webignition\BasilDataStructure\Assertion;
 use webignition\BasilDataStructure\AssertionInterface;
 use webignition\BasilParser\AssertionParser;
 
-/**
- * @group poc208
- */
 class AssertionHandlerTest extends AbstractTestCase
 {
     use CreateFromExcludesAssertionDataProviderTrait;

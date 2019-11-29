@@ -10,9 +10,6 @@ use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilDataStructure\Action\InteractionAction;
 use webignition\BasilParser\ActionParser;
 
-/**
- * @group poc208
- */
 class InteractionActionHandlerTest extends AbstractTestCase
 {
     /**

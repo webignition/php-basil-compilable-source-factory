@@ -11,9 +11,6 @@ use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 
-/**
- * @group poc208
- */
 class ScalarValueHandlerTest extends AbstractBrowserTestCase
 {
     /**

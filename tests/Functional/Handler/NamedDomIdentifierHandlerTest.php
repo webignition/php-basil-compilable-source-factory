@@ -17,9 +17,6 @@ use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 
-/**
- * @group poc208
- */
 class NamedDomIdentifierHandlerTest extends AbstractBrowserTestCase
 {
     /**

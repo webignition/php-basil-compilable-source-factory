@@ -10,9 +10,6 @@ use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Metadata\MetadataInterface;
 
-/**
- * @group poc208
- */
 class ScalarValueHandlerTest extends AbstractTestCase
 {
     use CreateFromValueDataProviderTrait;

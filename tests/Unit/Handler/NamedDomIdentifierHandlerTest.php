@@ -20,9 +20,6 @@ use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\DomElementLocator\ElementLocator;
 
-/**
- * @group poc208
- */
 class NamedDomIdentifierHandlerTest extends AbstractTestCase
 {
     /**

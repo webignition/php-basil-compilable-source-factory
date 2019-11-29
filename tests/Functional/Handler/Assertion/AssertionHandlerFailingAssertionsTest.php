@@ -12,9 +12,6 @@ use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilDataStructure\AssertionInterface;
 use webignition\BasilParser\AssertionParser;
 
-/**
- * @group poc208
- */
 class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
 {
     /**

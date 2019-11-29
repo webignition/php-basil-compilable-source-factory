@@ -24,9 +24,6 @@ use webignition\BasilDataStructure\Test\Test;
 use webignition\BasilParser\Test\TestParser;
 use webignition\DomElementLocator\ElementLocator;
 
-/**
- * @group poc208
- */
 class ClassDefinitionFactoryTest extends AbstractTestCase
 {
     /**

@@ -18,9 +18,6 @@ use webignition\BasilCompilationSource\MethodDefinition\MethodDefinitionInterfac
 use webignition\BasilDataStructure\Test\Test;
 use webignition\BasilParser\Test\TestParser;
 
-/**
- * @group poc208
- */
 class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
 {
     /**

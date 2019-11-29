@@ -6,9 +6,6 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
 use webignition\BasilCompilableSourceFactory\IdentifierTypeFinder;
 
-/**
- * @group poc208
- */
 class IdentifierTypeFinderTest extends \PHPUnit\Framework\TestCase
 {
     /**

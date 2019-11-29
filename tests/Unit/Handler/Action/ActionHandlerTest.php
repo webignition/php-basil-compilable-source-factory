@@ -22,9 +22,6 @@ use webignition\BasilCompilationSource\Metadata\MetadataInterface;
 use webignition\BasilDataStructure\Action\ActionInterface;
 use webignition\BasilParser\ActionParser;
 
-/**
- * @group poc208
- */
 class ActionHandlerTest extends AbstractTestCase
 {
     use CreateFromBackActionDataProviderTrait;

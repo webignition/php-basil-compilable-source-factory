@@ -14,9 +14,6 @@ use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 
-/**
- * @group poc208
- */
 class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
 {
     /**

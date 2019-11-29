@@ -11,9 +11,6 @@ use webignition\BasilCompilableSourceFactory\Handler\Action\SetActionHandler;
 use webignition\BasilDataStructure\Action\InputAction;
 use webignition\BasilParser\ActionParser;
 
-/**
- * @group poc208
- */
 class SetActionHandlerTest extends AbstractTestCase
 {
     /**
