@@ -22,7 +22,6 @@ use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilDataStructure\AssertionInterface;
-use webignition\BasilModel\Assertion\AssertionComparison;
 
 class ExistenceComparisonHandler extends AbstractAssertionHandler
 {
@@ -152,7 +151,7 @@ class ExistenceComparisonHandler extends AbstractAssertionHandler
         CodeBlockInterface $block,
         VariablePlaceholder $valuePlaceholder
     ): CodeBlockInterface {
-        $assertionTemplate = AssertionComparison::EXISTS === $comparison
+        $assertionTemplate = 'exists' === $comparison
             ? AssertionCallFactory::ASSERT_TRUE_TEMPLATE
             : AssertionCallFactory::ASSERT_FALSE_TEMPLATE;
 

@@ -18,16 +18,15 @@ use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilDataStructure\AssertionInterface;
-use webignition\BasilModel\Assertion\AssertionComparison;
 
 class ComparisonAssertionHandler extends AbstractAssertionHandler
 {
     private const COMPARISON_TO_ASSERTION_TEMPLATE_MAP = [
-        AssertionComparison::INCLUDES => AssertionCallFactory::ASSERT_STRING_CONTAINS_STRING_TEMPLATE,
-        AssertionComparison::EXCLUDES => AssertionCallFactory::ASSERT_STRING_NOT_CONTAINS_STRING_TEMPLATE,
-        AssertionComparison::IS => AssertionCallFactory::ASSERT_EQUALS_TEMPLATE,
-        AssertionComparison::IS_NOT => AssertionCallFactory::ASSERT_NOT_EQUALS_TEMPLATE,
-        AssertionComparison::MATCHES => AssertionCallFactory::ASSERT_MATCHES_TEMPLATE,
+        'includes' => AssertionCallFactory::ASSERT_STRING_CONTAINS_STRING_TEMPLATE,
+        'excludes' => AssertionCallFactory::ASSERT_STRING_NOT_CONTAINS_STRING_TEMPLATE,
+        'is' => AssertionCallFactory::ASSERT_EQUALS_TEMPLATE,
+        'is-not' => AssertionCallFactory::ASSERT_NOT_EQUALS_TEMPLATE,
+        'matches' => AssertionCallFactory::ASSERT_MATCHES_TEMPLATE,
     ];
 
     private $variableAssignmentFactory;
