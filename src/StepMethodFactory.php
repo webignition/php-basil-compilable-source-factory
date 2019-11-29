@@ -12,7 +12,7 @@ use webignition\BasilCompilationSource\Block\DocBlock;
 use webignition\BasilCompilationSource\Line\Comment;
 use webignition\BasilCompilationSource\MethodDefinition\MethodDefinition;
 use webignition\BasilCompilationSource\MethodDefinition\MethodDefinitionInterface;
-use webignition\BasilModels\DataSet\DataSetCollection;
+use webignition\BasilModels\DataSet\DataSetCollectionInterface;
 use webignition\BasilModels\Step\StepInterface;
 
 class StepMethodFactory
@@ -51,8 +51,11 @@ class StepMethodFactory
     public function createStepMethods(string $stepName, StepInterface $step): StepMethods
     {
         $dataSetCollection = $step->getData();
-        $parameterNames = $dataSetCollection->getParameterNames();
+        $parameterNames = [];
 
+        if ($dataSetCollection instanceof DataSetCollectionInterface) {
+            $parameterNames = $dataSetCollection->getParameterNames();
+        }
 
         $stepMethodName = $this->stepMethodNameFactory->createTestMethodName($stepName);
 
@@ -79,7 +82,7 @@ class StepMethodFactory
 
     private function createDataProviderMethod(
         string $stepName,
-        DataSetCollection $dataSetCollection
+        DataSetCollectionInterface $dataSetCollection
     ): MethodDefinitionInterface {
         return new MethodDefinition(
             $this->stepMethodNameFactory->createDataProviderMethodName($stepName),
