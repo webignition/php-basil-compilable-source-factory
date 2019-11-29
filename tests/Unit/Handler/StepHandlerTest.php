@@ -218,7 +218,7 @@ class StepHandlerTest extends AbstractTestCase
     /**
      * @dataProvider handleThrowsExceptionDataProvider
      */
-    public function testHandleThrowsException(Step $step, UnsupportedStepException $expectedException)
+    public function testHandleThrowsException(StepInterface $step, UnsupportedStepException $expectedException)
     {
         $handler = StepHandler::createHandler();
         $this->expectExceptionObject($expectedException);
