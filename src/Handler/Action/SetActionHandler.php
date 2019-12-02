@@ -77,11 +77,6 @@ class SetActionHandler
         }
 
         $value = $action->getValue();
-
-        if (null === $value) {
-            throw new UnsupportedValueException($value);
-        }
-
         $domIdentifier = $this->domIdentifierFactory->create($identifier);
 
         if (null !== $domIdentifier->getAttributeName()) {

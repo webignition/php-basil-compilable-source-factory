@@ -101,14 +101,6 @@ class ActionHandlerTest extends AbstractTestCase
                     new UnsupportedIdentifierException('$".selector".attribute_name')
                 ),
             ],
-// @todo: fix
-//            'set action, value is null' => [
-//                'action' => $actionParser->parse('set $".selector"'),
-//                'expectedException' => new UnsupportedActionException(
-//                    $actionParser->parse('set $".selector"'),
-//                    new UnsupportedValueException(null)
-//                ),
-//            ],
             'set action, value is unsupported' => [
                 'action' => $actionParser->parse('set $".selector" to $elements.element_name'),
                 'expectedException' => new UnsupportedActionException(

@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Action;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\Handler\Action\SetActionHandler;
 use webignition\BasilModels\Action\InputActionInterface;
@@ -38,11 +37,6 @@ class SetActionHandlerTest extends AbstractTestCase
                 'action' => $actionParser->parse('set $".selector".attribute_name to "value"'),
                 'expectedException' => new UnsupportedIdentifierException('$".selector".attribute_name'),
             ],
-// @todo: fix
-//            'value is null' => [
-//                'action' => $actionParser->parse('set $".selector"'),
-//                'expectedException' => new UnsupportedValueException(null),
-//            ],
         ];
     }
 }
