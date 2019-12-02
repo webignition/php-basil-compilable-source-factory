@@ -69,7 +69,7 @@ class StepMethodFactory
         );
 
         $dataProviderMethod = null;
-        if (count($parameterNames) > 0) {
+        if ($dataSetCollection instanceof DataSetCollectionInterface && count($parameterNames) > 0) {
             $dataProviderMethod = $this->createDataProviderMethod($stepName, $dataSetCollection);
 
             $testMethod->setDocBlock(new DocBlock([
