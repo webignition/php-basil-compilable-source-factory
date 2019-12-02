@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Assertion;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\ComparisonAssertionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
-use webignition\BasilModels\Assertion\AssertionInterface;
+use webignition\BasilModels\Assertion\ComparisonAssertionInterface;
 use webignition\BasilParser\AssertionParser;
 
 class ComparisonAssertionHandlerTest extends AbstractTestCase
@@ -27,7 +27,7 @@ class ComparisonAssertionHandlerTest extends AbstractTestCase
     /**
      * @dataProvider handleThrowsExceptionDataProvider
      */
-    public function testHandleThrowsException(AssertionInterface $assertion, \Exception $expectedException)
+    public function testHandleThrowsException(ComparisonAssertionInterface $assertion, \Exception $expectedException)
     {
         $handler = ComparisonAssertionHandler::createHandler();
 
@@ -41,11 +41,6 @@ class ComparisonAssertionHandlerTest extends AbstractTestCase
         $assertionParser = AssertionParser::create();
 
         return [
-// @todo: fix
-//            'expected value is null' => [
-//                'assertion' => $assertionParser->parse('$".selector" is'),
-//                'expectedException' => new UnsupportedValueException(null),
-//            ],
             'examined value is not supported' => [
                 'assertion' => $assertionParser->parse('$elements.examined is "value"'),
                 'expectedException' => new UnsupportedValueException('$elements.examined'),

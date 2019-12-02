@@ -79,10 +79,6 @@ class ComparisonAssertionHandler extends AbstractAssertionHandler
         $examinedValue = $assertion->getIdentifier();
         $expectedValue = $assertion->getValue();
 
-        if (null === $examinedValue || null === $expectedValue) {
-            throw new UnsupportedValueException(null);
-        }
-
         if (
             IdentifierTypeFinder::isDomIdentifier($examinedValue) ||
             IdentifierTypeFinder::isDescendantDomIdentifier($examinedValue)
