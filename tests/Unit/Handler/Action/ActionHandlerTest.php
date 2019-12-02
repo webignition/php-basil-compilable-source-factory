@@ -19,7 +19,7 @@ use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Metadata\MetadataInterface;
-use webignition\BasilDataStructure\Action\ActionInterface;
+use webignition\BasilModels\Action\ActionInterface;
 use webignition\BasilParser\ActionParser;
 
 class ActionHandlerTest extends AbstractTestCase
@@ -99,13 +99,6 @@ class ActionHandlerTest extends AbstractTestCase
                 'expectedException' => new UnsupportedActionException(
                     $actionParser->parse('set $".selector".attribute_name to "value"'),
                     new UnsupportedIdentifierException('$".selector".attribute_name')
-                ),
-            ],
-            'set action, value is null' => [
-                'action' => $actionParser->parse('set $".selector"'),
-                'expectedException' => new UnsupportedActionException(
-                    $actionParser->parse('set $".selector"'),
-                    new UnsupportedValueException(null)
                 ),
             ],
             'set action, value is unsupported' => [

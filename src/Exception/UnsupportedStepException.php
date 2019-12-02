@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Exception;
 
-use webignition\BasilDataStructure\Step;
+use webignition\BasilModels\Step\StepInterface;
 
 class UnsupportedStepException extends \Exception
 {
@@ -19,7 +19,7 @@ class UnsupportedStepException extends \Exception
         UnsupportedAssertionException::class => self::CODE_UNSUPPORTED_ASSERTION,
     ];
 
-    public function __construct(Step $step, \Throwable $previous)
+    public function __construct(StepInterface $step, \Throwable $previous)
     {
         $code = $this->codes[get_class($previous)] ?? self::CODE_UNKNOWN;
 

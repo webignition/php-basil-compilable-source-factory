@@ -18,8 +18,7 @@ use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Metadata\MetadataInterface;
-use webignition\BasilDataStructure\Assertion;
-use webignition\BasilDataStructure\AssertionInterface;
+use webignition\BasilModels\Assertion\AssertionInterface;
 use webignition\BasilParser\AssertionParser;
 
 class AssertionHandlerTest extends AbstractTestCase
@@ -82,13 +81,6 @@ class AssertionHandlerTest extends AbstractTestCase
         $assertionParser = AssertionParser::create();
 
         return [
-            'comparison assertion, expected value is null' => [
-                'assertion' => $assertionParser->parse('$".selector" is'),
-                'expectedException' => new UnsupportedAssertionException(
-                    $assertionParser->parse('$".selector" is'),
-                    new UnsupportedValueException(null)
-                ),
-            ],
             'comparison assertion, examined value is not supported' => [
                 'assertion' => $assertionParser->parse('$elements.examined is "value"'),
                 'expectedException' => new UnsupportedAssertionException(
@@ -101,19 +93,6 @@ class AssertionHandlerTest extends AbstractTestCase
                 'expectedException' => new UnsupportedAssertionException(
                     $assertionParser->parse('$".selector" is $elements.expected'),
                     new UnsupportedValueException('$elements.expected')
-                ),
-            ],
-            'existence comparison, identifier is null' => [
-                'assertion' => new Assertion('exists', null, 'exists'),
-                'expectedException' => new UnsupportedAssertionException(
-                    new Assertion('exists', null, 'exists'),
-                    new UnsupportedIdentifierException(null)
-                ),
-            ],
-            'existence comparison, comparison is null' => [
-                'assertion' => new Assertion('exists', '$".selector"', null),
-                'expectedException' => new UnsupportedAssertionException(
-                    new Assertion('exists', '$".selector"', null)
                 ),
             ],
             'existence comparison, identifier is not supported' => [

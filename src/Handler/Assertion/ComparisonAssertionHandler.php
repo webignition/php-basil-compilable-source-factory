@@ -17,7 +17,7 @@ use webignition\BasilCompilableSourceFactory\ModelFactory\DomIdentifier\DomIdent
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
-use webignition\BasilDataStructure\AssertionInterface;
+use webignition\BasilModels\Assertion\ComparisonAssertionInterface;
 
 class ComparisonAssertionHandler extends AbstractAssertionHandler
 {
@@ -64,24 +64,20 @@ class ComparisonAssertionHandler extends AbstractAssertionHandler
     }
 
     /**
-     * @param AssertionInterface $assertion
+     * @param ComparisonAssertionInterface $assertion
      *
      * @return CodeBlockInterface
      *
      * @throws UnsupportedIdentifierException
      * @throws UnsupportedValueException
      */
-    public function handle(AssertionInterface $assertion): CodeBlockInterface
+    public function handle(ComparisonAssertionInterface $assertion): CodeBlockInterface
     {
         $examinedValuePlaceholder = new VariablePlaceholder(VariableNames::EXAMINED_VALUE);
         $expectedValuePlaceholder = new VariablePlaceholder(VariableNames::EXPECTED_VALUE);
 
         $examinedValue = $assertion->getIdentifier();
         $expectedValue = $assertion->getValue();
-
-        if (null === $examinedValue || null === $expectedValue) {
-            throw new UnsupportedValueException(null);
-        }
 
         if (
             IdentifierTypeFinder::isDomIdentifier($examinedValue) ||

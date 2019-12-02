@@ -6,8 +6,8 @@ namespace webignition\BasilCompilableSourceFactory;
 
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Line\StatementInterface;
-use webignition\BasilDataStructure\DataSet;
-use webignition\BasilDataStructure\DataSetCollection;
+use webignition\BasilModels\DataSet\DataSet;
+use webignition\BasilModels\DataSet\DataSetCollectionInterface;
 
 class ArrayStatementFactory
 {
@@ -28,7 +28,7 @@ class ArrayStatementFactory
         );
     }
 
-    public function create(DataSetCollection $dataSetCollection): StatementInterface
+    public function create(DataSetCollectionInterface $dataSetCollection): StatementInterface
     {
         $dataSetsAsArrays = [];
 

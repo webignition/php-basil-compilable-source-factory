@@ -12,7 +12,7 @@ use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
-use webignition\BasilDataStructure\Step;
+use webignition\BasilModels\Step\StepInterface;
 use webignition\BasilParser\StepParser;
 
 class StepHandlerTest extends AbstractBrowserTestCase
@@ -34,7 +34,7 @@ class StepHandlerTest extends AbstractBrowserTestCase
      */
     public function testHandle(
         string $fixture,
-        Step $step,
+        StepInterface $step,
         ?CodeBlockInterface $teardownStatements = null,
         array $additionalVariableIdentifiers = []
     ) {

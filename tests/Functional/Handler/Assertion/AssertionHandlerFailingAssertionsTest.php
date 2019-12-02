@@ -9,7 +9,7 @@ use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilDataStructure\AssertionInterface;
+use webignition\BasilModels\Assertion\AssertionInterface;
 use webignition\BasilParser\AssertionParser;
 
 class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase

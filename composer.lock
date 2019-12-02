@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "d9566ff5081e501e47694b6b9c1cb4bc",
+    "content-hash": "2f58d51990bbfb965299fb8e972c2919",
     "packages": [
         {
             "name": "facebook/webdriver",
@@ -748,17 +748,17 @@
             "time": "2019-11-16T13:13:46+00:00"
         },
         {
-            "name": "webignition/basil-data-structures",
-            "version": "0.15",
+            "name": "webignition/basil-models",
+            "version": "0.3",
             "source": {
                 "type": "git",
-                "url": "https://github.com/webignition/basil-data-structures.git",
-                "reference": "b5b37550c3182e001c77b12d882b0a312190858a"
+                "url": "https://github.com/webignition/basil-models.git",
+                "reference": "3384631b2878c84d9ceca268fc18341cf5be240e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/basil-data-structures/zipball/b5b37550c3182e001c77b12d882b0a312190858a",
-                "reference": "b5b37550c3182e001c77b12d882b0a312190858a",
+                "url": "https://api.github.com/repos/webignition/basil-models/zipball/3384631b2878c84d9ceca268fc18341cf5be240e",
+                "reference": "3384631b2878c84d9ceca268fc18341cf5be240e",
                 "shasum": ""
             },
             "require": {
@@ -772,7 +772,7 @@
             "type": "library",
             "autoload": {
                 "psr-4": {
-                    "webignition\\BasilDataStructure\\": "src"
+                    "webignition\\BasilModels\\": "src"
                 }
             },
             "notification-url": "https://packagist.org/downloads/",
@@ -785,9 +785,8 @@
                     "email": "webignition@gmail.com"
                 }
             ],
-            "description": "Data structures for basil language",
-            "homepage": "https://github.com/webignition/basil-data-structures",
-            "time": "2019-11-29T10:07:12+00:00"
+            "homepage": "https://github.com/webignition/basil-models",
+            "time": "2019-11-29T17:54:00+00:00"
         },
         {
             "name": "webignition/php-basil-compilation-source",
@@ -3913,22 +3912,22 @@
         },
         {
             "name": "webignition/basil-parser",
-            "version": "0.6",
+            "version": "0.7",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/basil-parser.git",
-                "reference": "2a05fddb7bfb8d108191fdd19771fa7dae6054b0"
+                "reference": "aa945a6d20aba0357b53fc6415d6fccccc07e810"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/basil-parser/zipball/2a05fddb7bfb8d108191fdd19771fa7dae6054b0",
-                "reference": "2a05fddb7bfb8d108191fdd19771fa7dae6054b0",
+                "url": "https://api.github.com/repos/webignition/basil-parser/zipball/aa945a6d20aba0357b53fc6415d6fccccc07e810",
+                "reference": "aa945a6d20aba0357b53fc6415d6fccccc07e810",
                 "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
                 "php": ">=7.2",
-                "webignition/basil-data-structures": ">=0.15,<1",
+                "webignition/basil-models": ">=0.3,<1",
                 "webignition/php-path-resolver": ">=0.1,<1"
             },
             "require-dev": {
@@ -3954,7 +3953,7 @@
             ],
             "description": "Parses raw basil data into basic data structures",
             "homepage": "https://github.com/webignition/basil-parser",
-            "time": "2019-11-29T10:18:22+00:00"
+            "time": "2019-11-29T18:18:06+00:00"
         },
         {
             "name": "webignition/php-path-resolver",

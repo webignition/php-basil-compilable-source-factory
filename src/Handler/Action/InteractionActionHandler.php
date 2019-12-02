@@ -14,7 +14,7 @@ use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\BasilDataStructure\Action\InteractionAction;
+use webignition\BasilModels\Action\InteractionActionInterface;
 
 class InteractionActionHandler
 {
@@ -42,13 +42,13 @@ class InteractionActionHandler
     }
 
     /**
-     * @param InteractionAction $action
+     * @param InteractionActionInterface $action
      *
      * @return CodeBlockInterface
      *
      * @throws UnsupportedIdentifierException
      */
-    public function handle(InteractionAction $action): CodeBlockInterface
+    public function handle(InteractionActionInterface $action): CodeBlockInterface
     {
         $identifier = $action->getIdentifier();
 

@@ -18,7 +18,7 @@ use webignition\BasilCompilableSourceFactory\ModelFactory\DomIdentifier\DomIdent
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\BasilDataStructure\Action\InputAction;
+use webignition\BasilModels\Action\InputActionInterface;
 
 class SetActionHandler
 {
@@ -58,14 +58,14 @@ class SetActionHandler
     }
 
     /**
-     * @param InputAction $action
+     * @param InputActionInterface $action
      *
      * @return CodeBlockInterface
      *
      * @throws UnsupportedIdentifierException
      * @throws UnsupportedValueException
      */
-    public function handle(InputAction $action): CodeBlockInterface
+    public function handle(InputActionInterface $action): CodeBlockInterface
     {
         $identifier = $action->getIdentifier();
 
@@ -77,11 +77,6 @@ class SetActionHandler
         }
 
         $value = $action->getValue();
-
-        if (null === $value) {
-            throw new UnsupportedValueException($value);
-        }
-
         $domIdentifier = $this->domIdentifierFactory->create($identifier);
 
         if (null !== $domIdentifier->getAttributeName()) {

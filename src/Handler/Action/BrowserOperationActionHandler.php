@@ -10,7 +10,7 @@ use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\BasilDataStructure\Action\ActionInterface;
+use webignition\BasilModels\Action\ActionInterface;
 
 class BrowserOperationActionHandler
 {

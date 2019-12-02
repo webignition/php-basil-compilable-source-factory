@@ -13,8 +13,8 @@ use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Comment;
 use webignition\BasilCompilationSource\Line\EmptyLine;
-use webignition\BasilDataStructure\StatementInterface;
-use webignition\BasilDataStructure\Step;
+use webignition\BasilModels\StatementInterface;
+use webignition\BasilModels\Step\StepInterface;
 
 class StepHandler
 {
@@ -36,13 +36,13 @@ class StepHandler
     }
 
     /**
-     * @param Step $step
+     * @param StepInterface $step
      *
      * @return CodeBlockInterface
      *
      * @throws UnsupportedStepException
      */
-    public function handle(Step $step): CodeBlockInterface
+    public function handle(StepInterface $step): CodeBlockInterface
     {
         $block = new CodeBlock([]);
 

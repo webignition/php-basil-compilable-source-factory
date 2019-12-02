@@ -12,8 +12,8 @@ use webignition\BasilCompilationSource\Block\DocBlock;
 use webignition\BasilCompilationSource\Line\Comment;
 use webignition\BasilCompilationSource\MethodDefinition\MethodDefinition;
 use webignition\BasilCompilationSource\MethodDefinition\MethodDefinitionInterface;
-use webignition\BasilDataStructure\DataSetCollection;
-use webignition\BasilDataStructure\Step;
+use webignition\BasilModels\DataSet\DataSetCollectionInterface;
+use webignition\BasilModels\Step\StepInterface;
 
 class StepMethodFactory
 {
@@ -42,17 +42,20 @@ class StepMethodFactory
 
     /**
      * @param string $stepName
-     * @param Step $step
+     * @param StepInterface $step
      *
      * @return StepMethods
      *
      * @throws UnsupportedStepException
      */
-    public function createStepMethods(string $stepName, Step $step): StepMethods
+    public function createStepMethods(string $stepName, StepInterface $step): StepMethods
     {
         $dataSetCollection = $step->getData();
-        $parameterNames = $dataSetCollection->getParameterNames();
+        $parameterNames = [];
 
+        if ($dataSetCollection instanceof DataSetCollectionInterface) {
+            $parameterNames = $dataSetCollection->getParameterNames();
+        }
 
         $stepMethodName = $this->stepMethodNameFactory->createTestMethodName($stepName);
 
@@ -66,7 +69,7 @@ class StepMethodFactory
         );
 
         $dataProviderMethod = null;
-        if (count($parameterNames) > 0) {
+        if ($dataSetCollection instanceof DataSetCollectionInterface && count($parameterNames) > 0) {
             $dataProviderMethod = $this->createDataProviderMethod($stepName, $dataSetCollection);
 
             $testMethod->setDocBlock(new DocBlock([
@@ -79,7 +82,7 @@ class StepMethodFactory
 
     private function createDataProviderMethod(
         string $stepName,
-        DataSetCollection $dataSetCollection
+        DataSetCollectionInterface $dataSetCollection
     ): MethodDefinitionInterface {
         return new MethodDefinition(
             $this->stepMethodNameFactory->createDataProviderMethodName($stepName),

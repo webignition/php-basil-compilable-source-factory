@@ -14,7 +14,7 @@ use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\MethodDefinition\MethodDefinition;
 use webignition\BasilCompilationSource\MethodDefinition\MethodDefinitionInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\BasilDataStructure\Test\Test;
+use webignition\BasilModels\Test\TestInterface;
 
 class ClassDefinitionFactory
 {
@@ -36,13 +36,13 @@ class ClassDefinitionFactory
     }
 
     /**
-     * @param Test $test
+     * @param TestInterface $test
      *
      * @return ClassDefinitionInterface
      *
      * @throws UnsupportedStepException
      */
-    public function createClassDefinition(Test $test): ClassDefinitionInterface
+    public function createClassDefinition(TestInterface $test): ClassDefinitionInterface
     {
         $methodDefinitions = [
             $this->createSetupBeforeClassMethod($test),
@@ -62,7 +62,7 @@ class ClassDefinitionFactory
         return new ClassDefinition($this->classNameFactory->create($test), $methodDefinitions);
     }
 
-    private function createSetupBeforeClassMethod(Test $test): MethodDefinitionInterface
+    private function createSetupBeforeClassMethod(TestInterface $test): MethodDefinitionInterface
     {
         $parentCallStatement = new Statement('parent::setUpBeforeClass()');
         $clientRequestStatement = $this->createClientRequestStatement($test);
@@ -78,7 +78,7 @@ class ClassDefinitionFactory
         return $setupBeforeClassMethod;
     }
 
-    private function createClientRequestStatement(Test $test): StatementInterface
+    private function createClientRequestStatement(TestInterface $test): StatementInterface
     {
         $variableDependencies = new VariablePlaceholderCollection();
         $pantherClientPlaceholder = $variableDependencies->create(VariableNames::PANTHER_CLIENT);

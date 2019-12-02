@@ -15,7 +15,7 @@ use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\MethodDefinition\MethodDefinitionInterface;
-use webignition\BasilDataStructure\Test\Test;
+use webignition\BasilModels\Test\TestInterface;
 use webignition\BasilParser\Test\TestParser;
 
 class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
@@ -41,7 +41,7 @@ class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
     /**
      * @dataProvider createSourceDataProvider
      */
-    public function testCreateSource(Test $test, array $additionalVariableIdentifiers = [])
+    public function testCreateSource(TestInterface $test, array $additionalVariableIdentifiers = [])
     {
         $classDefinition = $this->factory->createClassDefinition($test);
 

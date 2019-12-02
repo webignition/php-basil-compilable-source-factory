@@ -6,7 +6,6 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedComparisonException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
 use webignition\BasilCompilableSourceFactory\IdentifierTypeFinder;
@@ -21,7 +20,7 @@ use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\BasilDataStructure\AssertionInterface;
+use webignition\BasilModels\Assertion\AssertionInterface;
 
 class ExistenceComparisonHandler extends AbstractAssertionHandler
 {
@@ -67,21 +66,12 @@ class ExistenceComparisonHandler extends AbstractAssertionHandler
      *
      * @throws UnsupportedIdentifierException
      * @throws UnsupportedValueException
-     * @throws UnsupportedComparisonException
      */
     public function handle(AssertionInterface $assertion): CodeBlockInterface
     {
         $valuePlaceholder = new VariablePlaceholder(VariableNames::EXAMINED_VALUE);
         $identifier = $assertion->getIdentifier();
         $comparison = $assertion->getComparison();
-
-        if (null === $identifier) {
-            throw new UnsupportedIdentifierException(null);
-        }
-
-        if (null === $comparison) {
-            throw new UnsupportedComparisonException(null);
-        }
 
         if ($this->valueTypeIdentifier->isScalarValue($identifier)) {
             $accessor = $this->scalarValueHandler->handle($identifier);
