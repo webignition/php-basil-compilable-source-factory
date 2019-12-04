@@ -11,12 +11,12 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierExce
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
-use webignition\BasilCompilableSourceFactory\IdentifierTypeFinder;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\ModelFactory\DomIdentifier\DomIdentifierFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
+use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Assertion\ComparisonAssertionInterface;
 
 class ComparisonAssertionHandler extends AbstractAssertionHandler
@@ -38,13 +38,15 @@ class ComparisonAssertionHandler extends AbstractAssertionHandler
         ScalarValueHandler $scalarValueHandler,
         NamedDomIdentifierHandler $namedDomIdentifierHandler,
         AccessorDefaultValueFactory $accessorDefaultValueFactory,
-        DomIdentifierFactory $domIdentifierFactory
+        DomIdentifierFactory $domIdentifierFactory,
+        IdentifierTypeAnalyser $identifierTypeAnalyser
     ) {
         parent::__construct(
             $assertionCallFactory,
             $scalarValueHandler,
             $namedDomIdentifierHandler,
-            $domIdentifierFactory
+            $domIdentifierFactory,
+            $identifierTypeAnalyser
         );
 
         $this->variableAssignmentFactory = $variableAssignmentFactory;
@@ -59,7 +61,8 @@ class ComparisonAssertionHandler extends AbstractAssertionHandler
             ScalarValueHandler::createHandler(),
             NamedDomIdentifierHandler::createHandler(),
             AccessorDefaultValueFactory::createFactory(),
-            DomIdentifierFactory::createFactory()
+            DomIdentifierFactory::createFactory(),
+            new IdentifierTypeAnalyser()
         );
     }
 
@@ -80,8 +83,8 @@ class ComparisonAssertionHandler extends AbstractAssertionHandler
         $expectedValue = $assertion->getValue();
 
         if (
-            IdentifierTypeFinder::isDomIdentifier($examinedValue) ||
-            IdentifierTypeFinder::isDescendantDomIdentifier($examinedValue)
+            $this->identifierTypeAnalyser->isDomIdentifier($examinedValue) ||
+            $this->identifierTypeAnalyser->isDescendantDomIdentifier($examinedValue)
         ) {
             $examinedValueDomIdentifier = $this->domIdentifierFactory->create($examinedValue);
 
@@ -97,8 +100,8 @@ class ComparisonAssertionHandler extends AbstractAssertionHandler
         }
 
         if (
-            IdentifierTypeFinder::isDomIdentifier($expectedValue) ||
-            IdentifierTypeFinder::isDescendantDomIdentifier($expectedValue)
+            $this->identifierTypeAnalyser->isDomIdentifier($expectedValue) ||
+            $this->identifierTypeAnalyser->isDescendantDomIdentifier($expectedValue)
         ) {
             $expectedValueDomIdentifier = $this->domIdentifierFactory->create($expectedValue);
 

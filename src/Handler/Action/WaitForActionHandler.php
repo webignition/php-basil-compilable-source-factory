@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
-use webignition\BasilCompilableSourceFactory\IdentifierTypeFinder;
 use webignition\BasilCompilableSourceFactory\ModelFactory\DomIdentifier\DomIdentifierFactory;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\VariableNames;
@@ -14,26 +13,31 @@ use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
+use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Action\InteractionActionInterface;
 
 class WaitForActionHandler
 {
     private $singleQuotedStringEscaper;
     private $domIdentifierFactory;
+    private $identifierTypeAnalyser;
 
     public function __construct(
         SingleQuotedStringEscaper $singleQuotedStringEscaper,
-        DomIdentifierFactory $domIdentifierFactory
+        DomIdentifierFactory $domIdentifierFactory,
+        IdentifierTypeAnalyser $identifierTypeAnalyser
     ) {
         $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
         $this->domIdentifierFactory = $domIdentifierFactory;
+        $this->identifierTypeAnalyser = $identifierTypeAnalyser;
     }
 
     public static function createHandler(): WaitForActionHandler
     {
         return new WaitForActionHandler(
             SingleQuotedStringEscaper::create(),
-            DomIdentifierFactory::createFactory()
+            DomIdentifierFactory::createFactory(),
+            new IdentifierTypeAnalyser()
         );
     }
 
@@ -48,7 +52,7 @@ class WaitForActionHandler
     {
         $identifier = $action->getIdentifier();
 
-        if (!IdentifierTypeFinder::isDomIdentifier($identifier)) {
+        if (!$this->identifierTypeAnalyser->isDomIdentifier($identifier)) {
             throw new UnsupportedIdentifierException($identifier);
         }
 
