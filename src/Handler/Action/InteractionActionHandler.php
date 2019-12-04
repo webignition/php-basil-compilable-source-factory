@@ -7,13 +7,13 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
-use webignition\BasilCompilableSourceFactory\IdentifierTypeFinder;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomElementIdentifier;
 use webignition\BasilCompilableSourceFactory\ModelFactory\DomIdentifier\DomIdentifierFactory;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
+use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Action\InteractionActionInterface;
 
 class InteractionActionHandler
@@ -21,15 +21,18 @@ class InteractionActionHandler
     private $variableAssignmentFactory;
     private $namedDomIdentifierHandler;
     private $domIdentifierFactory;
+    private $identifierTypeAnalyser;
 
     public function __construct(
         VariableAssignmentFactory $variableAssignmentFactory,
         NamedDomIdentifierHandler $namedDomIdentifierHandler,
-        DomIdentifierFactory $domIdentifierFactory
+        DomIdentifierFactory $domIdentifierFactory,
+        IdentifierTypeAnalyser $identifierTypeAnalyser
     ) {
         $this->variableAssignmentFactory = $variableAssignmentFactory;
         $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
         $this->domIdentifierFactory = $domIdentifierFactory;
+        $this->identifierTypeAnalyser = $identifierTypeAnalyser;
     }
 
     public static function createHandler(): InteractionActionHandler
@@ -37,7 +40,8 @@ class InteractionActionHandler
         return new InteractionActionHandler(
             VariableAssignmentFactory::createFactory(),
             NamedDomIdentifierHandler::createHandler(),
-            DomIdentifierFactory::createFactory()
+            DomIdentifierFactory::createFactory(),
+            new IdentifierTypeAnalyser()
         );
     }
 
@@ -53,8 +57,8 @@ class InteractionActionHandler
         $identifier = $action->getIdentifier();
 
         if (
-            !IdentifierTypeFinder::isDomIdentifier($identifier) &&
-            !IdentifierTypeFinder::isDescendantDomIdentifier($identifier)
+            !$this->identifierTypeAnalyser->isDomIdentifier($identifier) &&
+            !$this->identifierTypeAnalyser->isDescendantDomIdentifier($identifier)
         ) {
             throw new UnsupportedIdentifierException($identifier);
         }

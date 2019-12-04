@@ -9,7 +9,6 @@ use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFacto
 use webignition\BasilCompilableSourceFactory\CallFactory\WebDriverElementMutatorCallFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
-use webignition\BasilCompilableSourceFactory\IdentifierTypeFinder;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifier;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
@@ -18,6 +17,7 @@ use webignition\BasilCompilableSourceFactory\ModelFactory\DomIdentifier\DomIdent
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
+use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Action\InputActionInterface;
 
 class SetActionHandler
@@ -28,6 +28,7 @@ class SetActionHandler
     private $namedDomIdentifierHandler;
     private $accessorDefaultValueFactory;
     private $domIdentifierFactory;
+    private $identifierTypeAnalyser;
 
     public function __construct(
         VariableAssignmentFactory $variableAssignmentFactory,
@@ -35,7 +36,8 @@ class SetActionHandler
         ScalarValueHandler $scalarValueHandler,
         NamedDomIdentifierHandler $namedDomIdentifierHandler,
         AccessorDefaultValueFactory $accessorDefaultValueFactory,
-        DomIdentifierFactory $domIdentifierFactory
+        DomIdentifierFactory $domIdentifierFactory,
+        IdentifierTypeAnalyser $identifierTypeAnalyser
     ) {
         $this->variableAssignmentFactory = $variableAssignmentFactory;
         $this->webDriverElementMutatorCallFactory = $webDriverElementMutatorCallFactory;
@@ -43,6 +45,7 @@ class SetActionHandler
         $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
         $this->accessorDefaultValueFactory = $accessorDefaultValueFactory;
         $this->domIdentifierFactory = $domIdentifierFactory;
+        $this->identifierTypeAnalyser = $identifierTypeAnalyser;
     }
 
     public static function createHandler(): SetActionHandler
@@ -53,7 +56,8 @@ class SetActionHandler
             ScalarValueHandler::createHandler(),
             NamedDomIdentifierHandler::createHandler(),
             AccessorDefaultValueFactory::createFactory(),
-            DomIdentifierFactory::createFactory()
+            DomIdentifierFactory::createFactory(),
+            new IdentifierTypeAnalyser()
         );
     }
 
@@ -70,8 +74,8 @@ class SetActionHandler
         $identifier = $action->getIdentifier();
 
         if (
-            !IdentifierTypeFinder::isDomIdentifier($identifier) &&
-            !IdentifierTypeFinder::isDescendantDomIdentifier($identifier)
+            !$this->identifierTypeAnalyser->isDomIdentifier($identifier) &&
+            !$this->identifierTypeAnalyser->isDescendantDomIdentifier($identifier)
         ) {
             throw new UnsupportedIdentifierException($identifier);
         }
@@ -92,8 +96,8 @@ class SetActionHandler
         );
 
         if (
-            IdentifierTypeFinder::isDomIdentifier($value) ||
-            IdentifierTypeFinder::isDescendantDomIdentifier($value)
+            $this->identifierTypeAnalyser->isDomIdentifier($value) ||
+            $this->identifierTypeAnalyser->isDescendantDomIdentifier($value)
         ) {
             $valueDomIdentifier = $this->domIdentifierFactory->create($value);
 

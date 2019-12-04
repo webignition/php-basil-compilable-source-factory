@@ -4,24 +4,29 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\ModelFactory\DomIdentifier;
 
-use webignition\BasilCompilableSourceFactory\IdentifierTypeFinder;
 use webignition\BasilCompilableSourceFactory\Model\DomIdentifier;
 use webignition\BasilCompilableSourceFactory\ModelFactory\IdentifierStringValueAndPositionExtractor;
 use webignition\BasilCompilableSourceFactory\QuotedStringExtractor;
+use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 
 class IdentifierHandler
 {
     private $quotedStringExtractor;
+    private $identifierTypeAnalyser;
 
-    public function __construct(QuotedStringExtractor $quotedStringExtractor)
-    {
+    public function __construct(
+        QuotedStringExtractor $quotedStringExtractor,
+        IdentifierTypeAnalyser $identifierTypeAnalyser
+    ) {
         $this->quotedStringExtractor = $quotedStringExtractor;
+        $this->identifierTypeAnalyser = $identifierTypeAnalyser;
     }
 
     public static function createHandler(): IdentifierHandler
     {
         return new IdentifierHandler(
-            QuotedStringExtractor::createExtractor()
+            QuotedStringExtractor::createExtractor(),
+            new IdentifierTypeAnalyser()
         );
     }
 
@@ -29,14 +34,14 @@ class IdentifierHandler
     {
         $identifierString = trim($identifierString);
 
-        if (!IdentifierTypeFinder::isDomIdentifier($identifierString)) {
+        if (!$this->identifierTypeAnalyser->isDomIdentifier($identifierString)) {
             return null;
         }
 
         $elementLocatorAndPosition = $identifierString;
         $attributeName = '';
 
-        if (IdentifierTypeFinder::isAttributeIdentifier($identifierString)) {
+        if ($this->identifierTypeAnalyser->isAttributeIdentifier($identifierString)) {
             list($elementLocatorAndPosition, $attributeName) = $this->extractAttributeNameAndElementIdentifier(
                 $identifierString
             );

@@ -8,6 +8,7 @@ use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\ModelFactory\DomIdentifier\DomIdentifierFactory;
+use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 
 abstract class AbstractAssertionHandler
 {
@@ -15,16 +16,19 @@ abstract class AbstractAssertionHandler
     protected $scalarValueHandler;
     protected $namedDomIdentifierHandler;
     protected $domIdentifierFactory;
+    protected $identifierTypeAnalyser;
 
     public function __construct(
         AssertionCallFactory $assertionCallFactory,
         ScalarValueHandler $scalarValueHandler,
         NamedDomIdentifierHandler $namedDomIdentifierHandler,
-        DomIdentifierFactory $domIdentifierFactory
+        DomIdentifierFactory $domIdentifierFactory,
+        IdentifierTypeAnalyser $identifierTypeAnalyser
     ) {
         $this->assertionCallFactory = $assertionCallFactory;
         $this->scalarValueHandler = $scalarValueHandler;
         $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
         $this->domIdentifierFactory = $domIdentifierFactory;
+        $this->identifierTypeAnalyser = $identifierTypeAnalyser;
     }
 }

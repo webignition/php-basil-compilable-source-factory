@@ -8,7 +8,6 @@ use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
-use webignition\BasilCompilableSourceFactory\IdentifierTypeFinder;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
@@ -17,6 +16,7 @@ use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
+use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Action\WaitActionInterface;
 
 class WaitActionHandler
@@ -29,19 +29,22 @@ class WaitActionHandler
     private $namedDomIdentifierHandler;
     private $accessorDefaultValueFactory;
     private $domIdentifierFactory;
+    private $identifierTypeAnalyser;
 
     public function __construct(
         VariableAssignmentFactory $variableAssignmentFactory,
         ScalarValueHandler $scalarValueHandler,
         NamedDomIdentifierHandler $namedDomIdentifierHandler,
         AccessorDefaultValueFactory $accessorDefaultValueFactory,
-        DomIdentifierFactory $domIdentifierFactory
+        DomIdentifierFactory $domIdentifierFactory,
+        IdentifierTypeAnalyser $identifierTypeAnalyser
     ) {
         $this->variableAssignmentFactory = $variableAssignmentFactory;
         $this->scalarValueHandler = $scalarValueHandler;
         $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
         $this->accessorDefaultValueFactory = $accessorDefaultValueFactory;
         $this->domIdentifierFactory = $domIdentifierFactory;
+        $this->identifierTypeAnalyser = $identifierTypeAnalyser;
     }
 
     public static function createHandler(): WaitActionHandler
@@ -51,7 +54,8 @@ class WaitActionHandler
             ScalarValueHandler::createHandler(),
             NamedDomIdentifierHandler::createHandler(),
             AccessorDefaultValueFactory::createFactory(),
-            DomIdentifierFactory::createFactory()
+            DomIdentifierFactory::createFactory(),
+            new IdentifierTypeAnalyser()
         );
     }
 
@@ -75,8 +79,8 @@ class WaitActionHandler
         }
 
         if (
-            IdentifierTypeFinder::isDomIdentifier($duration) ||
-            IdentifierTypeFinder::isDescendantDomIdentifier($duration)
+            $this->identifierTypeAnalyser->isDomIdentifier($duration) ||
+            $this->identifierTypeAnalyser->isDescendantDomIdentifier($duration)
         ) {
             $durationIdentifier = $this->domIdentifierFactory->create($duration);
 

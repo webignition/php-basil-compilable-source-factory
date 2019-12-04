@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2f58d51990bbfb965299fb8e972c2919",
+    "content-hash": "411613be99eccf1b5895f76306616ddb",
     "packages": [
         {
             "name": "facebook/webdriver",
@@ -746,6 +746,47 @@
             ],
             "homepage": "https://github.com/webignition/basil-code-generator",
             "time": "2019-11-16T13:13:46+00:00"
+        },
+        {
+            "name": "webignition/basil-identifier-analyser",
+            "version": "0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/webignition/basil-identifier-analyser.git",
+                "reference": "541c15611e3592577f3deaf06f49023a5331f58c"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/webignition/basil-identifier-analyser/zipball/541c15611e3592577f3deaf06f49023a5331f58c",
+                "reference": "541c15611e3592577f3deaf06f49023a5331f58c",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^0.11.5",
+                "phpunit/phpunit": "~8.0",
+                "squizlabs/php_codesniffer": "3.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "webignition\\BasilIdentifierAnalyser\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jon Cram",
+                    "email": "webignition@gmail.com"
+                }
+            ],
+            "homepage": "https://github.com/webignition/basil-identifier-analyser",
+            "time": "2019-12-04T14:46:54+00:00"
         },
         {
             "name": "webignition/basil-models",

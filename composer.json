@@ -40,7 +40,8 @@
         "webignition/webdriver-element-mutator": ">=0.2,<1",
         "webignition/basil-code-generator": ">=0.6,<1",
         "webignition/php-dom-element-locator": ">=0.1,<1",
-        "webignition/basil-models": ">=0.3,<1"
+        "webignition/basil-models": ">=0.3,<1",
+        "webignition/basil-identifier-analyser": ">=0.1,<1"
     },
     "require-dev": {
         "phpunit/phpunit": "~8.0",
