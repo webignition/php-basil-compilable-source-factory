@@ -290,8 +290,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
                     '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()',
                     '{{ EXAMINED }} = '
-                        . '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
-                        . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null',
+                    . '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
+                    . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null',
                     '{{ EXAMINED }} = (string) {{ EXAMINED }}',
                     '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
                 ]),
@@ -303,6 +303,24 @@ trait CreateFromIsAssertionDataProviderTrait
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
                         VariableNames::EXPECTED_VALUE,
                         'WEBDRIVER_DIMENSION',
+                        VariableNames::EXAMINED_VALUE,
+                    ])),
+            ],
+            'is comparison, literal string examined value, literal string expected value' => [
+                'assertion' => $assertionParser->parse('"examined" is "expected"'),
+                'expectedContent' => CodeBlock::fromContent([
+                    '{{ EXPECTED }} = "expected" ?? null',
+                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
+                    '{{ EXAMINED }} = "examined" ?? null',
+                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
+                ]),
+                'expectedMetadata' => (new Metadata())
+                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        VariableNames::PHPUNIT_TEST_CASE,
+                    ]))
+                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        VariableNames::EXPECTED_VALUE,
                         VariableNames::EXAMINED_VALUE,
                     ])),
             ],
