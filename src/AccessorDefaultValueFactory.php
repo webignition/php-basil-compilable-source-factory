@@ -30,46 +30,34 @@ class AccessorDefaultValueFactory
 
     public function createInteger(string $value): ?int
     {
-        if (EnvironmentValue::is($value)) {
-            $environmentValue = $this->environmentValueFactory->create($value);
-            $valueDefault = $environmentValue->getDefault();
-
-            if (null !== $valueDefault) {
-                return ctype_digit($valueDefault)
-                    ? (int) $valueDefault
-                    : null;
-            }
-        }
-
-        return null;
+        return $this->create($value, function (string $valueDefault) {
+            return ctype_digit($valueDefault)
+                ? (int) $valueDefault
+                : null;
+        });
     }
 
     public function createString(string $value): ?string
     {
-        if (EnvironmentValue::is($value)) {
-            $environmentValue = $this->environmentValueFactory->create($value);
-            $valueDefault = $environmentValue->getDefault();
-
-            if (null !== $valueDefault) {
-                $valueDefault = (string) $valueDefault;
-
-                return "'" . $this->singleQuotedStringEscaper->escape($valueDefault) . "'";
-            }
-        }
-
-        return null;
+        return $this->create($value, function (string $valueDefault) {
+            return "'" . $this->singleQuotedStringEscaper->escape((string) $valueDefault) . "'";
+        });
     }
 
-    public function create(string $value)
+    /**
+     * @param string $value
+     * @param callable $defaultValueHandler
+     *
+     * @return mixed|null
+     */
+    private function create(string $value, callable $defaultValueHandler)
     {
         if (EnvironmentValue::is($value)) {
             $environmentValue = $this->environmentValueFactory->create($value);
             $valueDefault = $environmentValue->getDefault();
 
             if (null !== $valueDefault) {
-                return ctype_digit($valueDefault)
-                    ? (int) $valueDefault
-                    : "'" . $this->singleQuotedStringEscaper->escape($valueDefault) . "'";
+                return $defaultValueHandler($valueDefault);
             }
         }
 
