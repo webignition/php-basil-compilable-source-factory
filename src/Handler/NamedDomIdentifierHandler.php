@@ -48,11 +48,6 @@ class NamedDomIdentifierHandler
         );
     }
 
-    /**
-     * @param NamedDomIdentifierInterface $namedDomIdentifier
-     *
-     * @return CodeBlockInterface
-     */
     public function handle(NamedDomIdentifierInterface $namedDomIdentifier): CodeBlockInterface
     {
         $identifier = $namedDomIdentifier->getIdentifier();
@@ -99,6 +94,60 @@ class NamedDomIdentifierHandler
 
         $block = new CodeBlock([
             $elementExistsAssertion,
+            $elementOrCollectionAssignment,
+        ]);
+
+        if ($namedDomIdentifier->includeValue()) {
+            if ($hasAttribute) {
+                $valueAssignment = new CodeBlock([
+                    new Statement(sprintf(
+                        '%s = %s->getAttribute(\'%s\')',
+                        $elementPlaceholder,
+                        $elementPlaceholder,
+                        $this->singleQuotedStringEscaper->escape((string) $identifier->getAttributeName())
+                    ))
+                ]);
+            } else {
+                $getValueCall = $this->webDriverElementInspectorCallFactory->createGetValueCall($elementPlaceholder);
+                $getValueCall = new CodeBlock([
+                    $getValueCall,
+                ]);
+
+                $valueAssignment = clone $getValueCall;
+                $valueAssignment->mutateLastStatement(function ($content) use ($elementPlaceholder) {
+                    return $elementPlaceholder . ' = ' . $content;
+                });
+            }
+
+            $block->addLinesFromBlock($valueAssignment);
+        }
+
+        return $block;
+    }
+
+    public function handleAccess(NamedDomIdentifierInterface $namedDomIdentifier): CodeBlockInterface
+    {
+        $identifier = $namedDomIdentifier->getIdentifier();
+        $hasAttribute = null !== $identifier->getAttributeName();
+
+        $findCall = $namedDomIdentifier->asCollection()
+            ? $this->domCrawlerNavigatorCallFactory->createFindCall($identifier)
+            : $this->domCrawlerNavigatorCallFactory->createFindOneCall($identifier);
+
+        $elementPlaceholder = $namedDomIdentifier->getPlaceholder();
+        $collectionAssignmentVariableExports = new VariablePlaceholderCollection([
+            $elementPlaceholder,
+        ]);
+
+        $elementOrCollectionAssignment = new CodeBlock([
+            $findCall,
+        ]);
+        $elementOrCollectionAssignment->mutateLastStatement(function ($content) use ($elementPlaceholder) {
+            return $elementPlaceholder . ' = ' . $content;
+        });
+        $elementOrCollectionAssignment->addVariableExportsToLastStatement($collectionAssignmentVariableExports);
+
+        $block = new CodeBlock([
             $elementOrCollectionAssignment,
         ]);
 
