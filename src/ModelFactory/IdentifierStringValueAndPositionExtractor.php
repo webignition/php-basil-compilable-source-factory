@@ -14,7 +14,7 @@ class IdentifierStringValueAndPositionExtractor
     /**
      * @param string $identifierString
      *
-     * @return array<int, int|string>
+     * @return array<int, int|string|null>
      */
     public static function extract(string $identifierString): array
     {
