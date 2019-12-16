@@ -47,7 +47,7 @@ class AssertionCallFactoryTest extends AbstractTestCase
         string $assertionTemplate,
         CodeBlockInterface $expectedContent,
         MetadataInterface $expectedMetadata
-    ) {
+    ): void {
         $source = $this->factory->createValueComparisonAssertionCall(
             $expectedValueAssignment,
             $actualValueAssignment,
@@ -246,7 +246,7 @@ class AssertionCallFactoryTest extends AbstractTestCase
         string $assertionTemplate,
         CodeBlockInterface $expectedContent,
         MetadataInterface $expectedMetadata
-    ) {
+    ): void {
         $source = $this->factory->createValueExistenceAssertionCall(
             $assignment,
             $variablePlaceholder,

@@ -35,7 +35,7 @@ class DescendantIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider descendantIdentifierDataProvider
      */
-    public function testCreateSuccess(string $identifierString, DomIdentifier $expectedIdentifier)
+    public function testCreateSuccess(string $identifierString, DomIdentifier $expectedIdentifier): void
     {
         $identifier = $this->handler->create($identifierString);
 
@@ -49,7 +49,7 @@ class DescendantIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
      * @dataProvider xpathExpressionIdentifierDataProvider
      * @dataProvider unknownIdentifierStringDataProvider
      */
-    public function testCreateWithUnknownIdentifierString(string $identifierString)
+    public function testCreateWithUnknownIdentifierString(string $identifierString): void
     {
         $this->assertNull($this->handler->create($identifierString));
     }

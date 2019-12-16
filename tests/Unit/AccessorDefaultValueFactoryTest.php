@@ -23,7 +23,7 @@ class AccessorDefaultValueFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider createIntegerDataProvider
      */
-    public function testCreateInteger(string $value, ?int $expectedDefaultValue)
+    public function testCreateInteger(string $value, ?int $expectedDefaultValue): void
     {
         $this->assertSame($expectedDefaultValue, $this->accessorDefaultValueFactory->createInteger($value));
     }
@@ -53,7 +53,7 @@ class AccessorDefaultValueFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider createStringDataProvider
      */
-    public function testCreateString(string $value, ?string $expectedDefaultValue)
+    public function testCreateString(string $value, ?string $expectedDefaultValue): void
     {
         $this->assertSame($expectedDefaultValue, $this->accessorDefaultValueFactory->createString($value));
     }

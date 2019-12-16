@@ -14,7 +14,7 @@ use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
 abstract class AbstractTestCase extends \PHPUnit\Framework\TestCase
 {
-    protected function assertMethodEquals(MethodDefinitionInterface $expected, MethodDefinitionInterface $actual)
+    protected function assertMethodEquals(MethodDefinitionInterface $expected, MethodDefinitionInterface $actual): void
     {
         $this->assertSame($expected->getName(), $actual->getName());
         $this->assertEquals($expected->getDocBlock(), $actual->getDocBlock());
@@ -24,12 +24,12 @@ abstract class AbstractTestCase extends \PHPUnit\Framework\TestCase
         $this->assertBlockContentEquals($expected, $actual);
     }
 
-    protected function assertBlockContentEquals(BlockInterface $expected, BlockInterface $actual)
+    protected function assertBlockContentEquals(BlockInterface $expected, BlockInterface $actual): void
     {
         $this->assertBlockLines($expected, $actual);
     }
 
-    private function assertBlockLines(BlockInterface $expected, BlockInterface $actual)
+    private function assertBlockLines(BlockInterface $expected, BlockInterface $actual): void
     {
         $expectedLines = $expected->getLines();
         $actualLines = $actual->getLines();
@@ -52,7 +52,7 @@ abstract class AbstractTestCase extends \PHPUnit\Framework\TestCase
         }
     }
 
-    protected function assertMetadataEquals(MetadataInterface $expected, MetadataInterface $actual)
+    protected function assertMetadataEquals(MetadataInterface $expected, MetadataInterface $actual): void
     {
         $this->assertClassDependencyCollectionEquals(
             $expected->getClassDependencies(),
@@ -75,14 +75,19 @@ abstract class AbstractTestCase extends \PHPUnit\Framework\TestCase
     private function assertClassDependencyCollectionEquals(
         ClassDependencyCollection $expected,
         ClassDependencyCollection $actual
-    ) {
+    ): void {
         $expectedClassNames = $this->getClassDependencyNames($expected);
         $actualClassNames = $this->getClassDependencyNames($actual);
 
         $this->assertSame($expectedClassNames, $actualClassNames);
     }
 
-    private function getClassDependencyNames(ClassDependencyCollection $classDependencyCollection)
+    /**
+     * @param ClassDependencyCollection $classDependencyCollection
+     *
+     * @return array<string>
+     */
+    private function getClassDependencyNames(ClassDependencyCollection $classDependencyCollection): array
     {
         $names = [];
 
@@ -99,7 +104,7 @@ abstract class AbstractTestCase extends \PHPUnit\Framework\TestCase
         VariablePlaceholderCollection $expected,
         VariablePlaceholderCollection $actual,
         string $collectionName
-    ) {
+    ): void {
         $expectedPlaceholderNames = $this->getVariablePlaceholderNames($expected);
         $actualPlaceholderNames = $this->getVariablePlaceholderNames($actual);
 
@@ -108,6 +113,11 @@ abstract class AbstractTestCase extends \PHPUnit\Framework\TestCase
         $this->assertSame($expectedPlaceholderNames, $actualPlaceholderNames, $message);
     }
 
+    /**
+     * @param VariablePlaceholderCollection $variablePlaceholderCollection
+     *
+     * @return array<string>
+     */
     private function getVariablePlaceholderNames(VariablePlaceholderCollection $variablePlaceholderCollection)
     {
         $names = [];
@@ -124,7 +134,7 @@ abstract class AbstractTestCase extends \PHPUnit\Framework\TestCase
     /**
      * @param LineInterface[] $lines
      *
-     * @return string[]
+     * @return array<string>
      */
     private function getSourceLineContent(array $lines): array
     {

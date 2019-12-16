@@ -39,7 +39,7 @@ class DomIdentifierFactoryTest extends \PHPUnit\Framework\TestCase
      * @dataProvider xpathExpressionIdentifierDataProvider
      * @dataProvider descendantIdentifierDataProvider
      */
-    public function testCreateSuccess(string $identifierString, DomIdentifier $expectedIdentifier)
+    public function testCreateSuccess(string $identifierString, DomIdentifier $expectedIdentifier): void
     {
         $identifier = $this->factory->create($identifierString);
 
@@ -50,14 +50,14 @@ class DomIdentifierFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider unknownIdentifierStringDataProvider
      */
-    public function testCreateWithUnknownIdentifierString(string $identifierString)
+    public function testCreateWithUnknownIdentifierString(string $identifierString): void
     {
         $this->expectExceptionObject(new UnsupportedIdentifierException($identifierString));
 
         $this->factory->create($identifierString);
     }
 
-    public function testCreateUnknownIdentifier()
+    public function testCreateUnknownIdentifier(): void
     {
         $identifierString = 'foo';
         $this->expectExceptionObject(new UnsupportedIdentifierException($identifierString));

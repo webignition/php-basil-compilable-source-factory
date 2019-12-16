@@ -12,7 +12,7 @@ class EnvironmentValueFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider createDataProvider
      */
-    public function testCreate(string $value, EnvironmentValue $expectedEnvironmentValue)
+    public function testCreate(string $value, EnvironmentValue $expectedEnvironmentValue): void
     {
         $factory = EnvironmentValueFactory::createFactory();
 

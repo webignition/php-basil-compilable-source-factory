@@ -47,7 +47,7 @@ class ActionHandlerTest extends AbstractTestCase
         ActionInterface $action,
         CodeBlockInterface $expectedContent,
         MetadataInterface $expectedMetadata
-    ) {
+    ): void {
         $handler = ActionHandler::createHandler();
         $source = $handler->handle($action);
 
@@ -61,7 +61,7 @@ class ActionHandlerTest extends AbstractTestCase
     public function testHandleThrowsException(
         ActionInterface $action,
         UnsupportedActionException $expectedException
-    ) {
+    ): void {
         $handler = ActionHandler::createHandler();
         $this->expectExceptionObject($expectedException);
 

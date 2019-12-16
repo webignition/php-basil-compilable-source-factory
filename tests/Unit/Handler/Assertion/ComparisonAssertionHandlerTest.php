@@ -27,8 +27,10 @@ class ComparisonAssertionHandlerTest extends AbstractTestCase
     /**
      * @dataProvider handleThrowsExceptionDataProvider
      */
-    public function testHandleThrowsException(ComparisonAssertionInterface $assertion, \Exception $expectedException)
-    {
+    public function testHandleThrowsException(
+        ComparisonAssertionInterface $assertion,
+        \Exception $expectedException
+    ): void {
         $handler = ComparisonAssertionHandler::createHandler();
 
         $this->expectExceptionObject($expectedException);

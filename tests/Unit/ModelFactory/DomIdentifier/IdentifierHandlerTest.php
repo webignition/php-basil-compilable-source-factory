@@ -37,7 +37,7 @@ class IdentifierHandlerTest extends \PHPUnit\Framework\TestCase
      * @dataProvider cssSelectorIdentifierDataProvider
      * @dataProvider xpathExpressionIdentifierDataProvider
      */
-    public function testCreateSuccess(string $identifierString, DomIdentifier $expectedIdentifier)
+    public function testCreateSuccess(string $identifierString, DomIdentifier $expectedIdentifier): void
     {
         $identifier = $this->handler->create($identifierString);
 
@@ -50,7 +50,7 @@ class IdentifierHandlerTest extends \PHPUnit\Framework\TestCase
      * @dataProvider unknownIdentifierStringDataProvider
      * @dataProvider unhandledIdentifierStringDataProvider
      */
-    public function testCreateWithUnknownIdentifierString(string $identifierString)
+    public function testCreateWithUnknownIdentifierString(string $identifierString): void
     {
         $this->assertNull($this->handler->create($identifierString));
     }

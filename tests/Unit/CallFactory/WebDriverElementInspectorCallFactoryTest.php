@@ -34,7 +34,7 @@ class WebDriverElementInspectorCallFactoryTest extends AbstractTestCase
     public function testCreateGetValueCall(
         VariablePlaceholder $collectionPlaceholder,
         CodeBlockInterface $expectedBlock
-    ) {
+    ): void {
         $statement = $this->factory->createGetValueCall($collectionPlaceholder);
 
         $this->assertEquals($expectedBlock, $statement);

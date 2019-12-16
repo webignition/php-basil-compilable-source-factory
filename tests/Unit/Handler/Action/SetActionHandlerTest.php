@@ -15,7 +15,7 @@ class SetActionHandlerTest extends AbstractTestCase
     /**
      * @dataProvider handleThrowsExceptionDataProvider
      */
-    public function testHandleThrowsException(InputActionInterface $action, \Exception $expectedException)
+    public function testHandleThrowsException(InputActionInterface $action, \Exception $expectedException): void
     {
         $handler = SetActionHandler::createHandler();
 

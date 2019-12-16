@@ -35,7 +35,7 @@ class WebDriverElementMutatorCallFactoryTest extends AbstractTestCase
         VariablePlaceholder $collectionPlaceholder,
         VariablePlaceholder $valuePlaceholder,
         CodeBlockInterface $expectedBlock
-    ) {
+    ): void {
         $statement = $this->factory->createSetValueCall($collectionPlaceholder, $valuePlaceholder);
 
         $this->assertEquals($expectedBlock, $statement);

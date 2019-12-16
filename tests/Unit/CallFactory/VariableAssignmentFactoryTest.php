@@ -39,10 +39,10 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
      */
     public function testCreateForValueAccessor(
         CodeBlockInterface $accessor,
-        $default,
+        ?int $default,
         CodeBlockInterface $expectedContent,
-        $expectedAssignedValue
-    ) {
+        string $expectedAssignedValue
+    ): void {
         $placeholder = new VariablePlaceholder('VALUE');
 
         $expectedMetadata = (new Metadata())

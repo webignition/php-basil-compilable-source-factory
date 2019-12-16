@@ -10,7 +10,7 @@ use webignition\BasilCompilationSource\VariablePlaceholder;
 
 class NamedDomIdentifierValueTest extends \PHPUnit\Framework\TestCase
 {
-    public function testCreate()
+    public function testCreate(): void
     {
         $identifier = new DomIdentifier('.selector');
         $placeholder = new VariablePlaceholder('PLACEHOLDER');
@@ -22,7 +22,7 @@ class NamedDomIdentifierValueTest extends \PHPUnit\Framework\TestCase
         $this->assertTrue($namedDomElementIdentifier->includeValue());
     }
 
-    public function testAsCollection()
+    public function testAsCollection(): void
     {
         $identifier = new DomIdentifier('.selector');
         $placeholder = new VariablePlaceholder('PLACEHOLDER');
