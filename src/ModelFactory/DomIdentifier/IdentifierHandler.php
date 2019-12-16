@@ -51,6 +51,9 @@ class IdentifierHandler
             $elementLocatorAndPosition
         );
 
+        $elementLocatorString = (string) $elementLocatorString;
+        $position = (int) $position;
+
         $elementLocatorString = ltrim($elementLocatorString, '$');
         $elementLocatorString = $this->quotedStringExtractor->getQuotedValue($elementLocatorString);
 
@@ -63,7 +66,12 @@ class IdentifierHandler
         return $identifier;
     }
 
-    private function extractAttributeNameAndElementIdentifier(string $identifier)
+    /**
+     * @param string $identifier
+     *
+     * @return array<int, string>
+     */
+    private function extractAttributeNameAndElementIdentifier(string $identifier): array
     {
         $lastDotPosition = (int) mb_strrpos($identifier, '.');
 

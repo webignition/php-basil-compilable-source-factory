@@ -44,6 +44,12 @@ class ArrayStatementFactory
         return new Statement('return ' . rtrim($arrayAsString, ','));
     }
 
+    /**
+     * @param array<mixed> $array
+     * @param int $indentCount
+     *
+     * @return string
+     */
     private function convertArrayToString(array $array, int $indentCount = self::DEFAULT_INDENT_COUNT): string
     {
         if (empty($array)) {

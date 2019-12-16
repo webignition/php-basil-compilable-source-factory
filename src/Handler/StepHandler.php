@@ -65,7 +65,7 @@ class StepHandler
         CodeBlockInterface $block,
         StatementInterface $statement,
         CodeBlockInterface $source
-    ) {
+    ): void {
         $block->addLine(new Comment($statement->getSource()));
 
         if ($source instanceof CodeBlockInterface) {

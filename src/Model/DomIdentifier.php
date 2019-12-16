@@ -8,6 +8,9 @@ use webignition\DomElementLocator\ElementLocator;
 
 class DomIdentifier extends ElementLocator
 {
+    /**
+     * @var string|null
+     */
     private $attributeName = null;
 
     /**

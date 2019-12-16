@@ -19,7 +19,7 @@ use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Assertion\ComparisonAssertionInterface;
 
-class ComparisonAssertionHandler extends AbstractAssertionHandler
+class ComparisonAssertionHandler
 {
     private const COMPARISON_TO_ASSERTION_TEMPLATE_MAP = [
         'includes' => AssertionCallFactory::ASSERT_STRING_CONTAINS_STRING_TEMPLATE,
@@ -29,6 +29,11 @@ class ComparisonAssertionHandler extends AbstractAssertionHandler
         'matches' => AssertionCallFactory::ASSERT_MATCHES_TEMPLATE,
     ];
 
+    private $assertionCallFactory;
+    private $scalarValueHandler;
+    private $namedDomIdentifierHandler;
+    private $domIdentifierFactory;
+    private $identifierTypeAnalyser;
     private $variableAssignmentFactory;
     private $accessorDefaultValueFactory;
 
@@ -41,14 +46,11 @@ class ComparisonAssertionHandler extends AbstractAssertionHandler
         DomIdentifierFactory $domIdentifierFactory,
         IdentifierTypeAnalyser $identifierTypeAnalyser
     ) {
-        parent::__construct(
-            $assertionCallFactory,
-            $scalarValueHandler,
-            $namedDomIdentifierHandler,
-            $domIdentifierFactory,
-            $identifierTypeAnalyser
-        );
-
+        $this->assertionCallFactory = $assertionCallFactory;
+        $this->scalarValueHandler = $scalarValueHandler;
+        $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
+        $this->domIdentifierFactory = $domIdentifierFactory;
+        $this->identifierTypeAnalyser = $identifierTypeAnalyser;
         $this->variableAssignmentFactory = $variableAssignmentFactory;
         $this->accessorDefaultValueFactory = $accessorDefaultValueFactory;
     }

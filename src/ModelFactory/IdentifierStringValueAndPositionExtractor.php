@@ -11,7 +11,12 @@ class IdentifierStringValueAndPositionExtractor
     private const POSITION_PATTERN = ':(-?[0-9]+|first|last)';
     private const POSITION_REGEX = '/' . self::POSITION_PATTERN . '$/';
 
-    public static function extract(string $identifierString)
+    /**
+     * @param string $identifierString
+     *
+     * @return array<int, int|string>
+     */
+    public static function extract(string $identifierString): array
     {
         $positionMatches = [];
 
