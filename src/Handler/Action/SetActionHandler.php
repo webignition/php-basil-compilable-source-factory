@@ -97,7 +97,7 @@ class SetActionHandler
         $valuePlaceholder = $variableExports->create('VALUE');
 
         $collectionExistence = $this->domIdentifierExistenceHandler->handle($domIdentifier, true);
-        $collectionAccess = $this->namedDomIdentifierHandler->handleAccess(
+        $collectionAccess = $this->namedDomIdentifierHandler->handle(
             new NamedDomIdentifier($domIdentifier, $collectionPlaceholder)
         );
 
@@ -112,7 +112,7 @@ class SetActionHandler
                 null === $valueDomIdentifier->getAttributeName()
             );
 
-            $valueAccess = $this->namedDomIdentifierHandler->handleAccess(
+            $valueAccess = $this->namedDomIdentifierHandler->handle(
                 new NamedDomIdentifierValue($valueDomIdentifier, $valuePlaceholder)
             );
 

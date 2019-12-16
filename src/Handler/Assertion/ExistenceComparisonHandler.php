@@ -133,7 +133,7 @@ class ExistenceComparisonHandler
 
             $elementExistence = $this->domIdentifierExistenceHandler->handle($domIdentifier, false);
 
-            $access = $this->namedDomIdentifierHandler->handleAccess(
+            $access = $this->namedDomIdentifierHandler->handle(
                 new NamedDomIdentifierValue($domIdentifier, $valuePlaceholder)
             );
 

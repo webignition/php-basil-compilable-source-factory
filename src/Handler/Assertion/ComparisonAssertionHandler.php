@@ -101,7 +101,7 @@ class ComparisonAssertionHandler
                 null === $examinedValueDomIdentifier->getAttributeName()
             );
 
-            $examinedValueAccess = $this->namedDomIdentifierHandler->handleAccess(
+            $examinedValueAccess = $this->namedDomIdentifierHandler->handle(
                 new NamedDomIdentifierValue($examinedValueDomIdentifier, $examinedValuePlaceholder)
             );
 
@@ -128,7 +128,7 @@ class ComparisonAssertionHandler
                 null === $expectedValueDomIdentifier->getAttributeName()
             );
 
-            $expectedValueAccess = $this->namedDomIdentifierHandler->handleAccess(
+            $expectedValueAccess = $this->namedDomIdentifierHandler->handle(
                 new NamedDomIdentifierValue(
                     $expectedValueDomIdentifier,
                     $expectedValuePlaceholder

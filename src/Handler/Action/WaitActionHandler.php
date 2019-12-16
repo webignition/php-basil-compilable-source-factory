@@ -94,7 +94,7 @@ class WaitActionHandler
                 null === $durationIdentifier->getAttributeName()
             );
 
-            $durationAccess = $this->namedDomIdentifierHandler->handleAccess(
+            $durationAccess = $this->namedDomIdentifierHandler->handle(
                 new NamedDomIdentifierValue($durationIdentifier, $durationPlaceholder)
             );
 
