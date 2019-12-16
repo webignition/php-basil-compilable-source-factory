@@ -52,7 +52,7 @@ class IdentifierHandler
         );
 
         $elementLocatorString = (string) $elementLocatorString;
-        $position = (int) $position;
+        $position = null === $position ? null : (int) $position;
 
         $elementLocatorString = ltrim($elementLocatorString, '$');
         $elementLocatorString = $this->quotedStringExtractor->getQuotedValue($elementLocatorString);
