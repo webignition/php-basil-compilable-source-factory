@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
 use webignition\BasilCodeGenerator\ClassGenerator;
 use webignition\BasilCodeGenerator\CodeBlockGenerator;
+use webignition\BasilCodeGenerator\UnresolvedPlaceholderException;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
@@ -41,6 +42,14 @@ class TestCodeGenerator
         );
     }
 
+    /**
+     * @param CodeBlockInterface $block
+     * @param array<string, string> $additionalVariableIdentifiers
+     *
+     * @return string
+     *
+     * @throws UnresolvedPlaceholderException
+     */
     public function createPhpUnitTestForBlock(
         CodeBlockInterface $block,
         array $additionalVariableIdentifiers = []
@@ -61,6 +70,17 @@ class TestCodeGenerator
         return $classCode . "\n\n" . $initializerCode;
     }
 
+    /**
+     * @param CodeBlockInterface $block
+     * @param string $fixture
+     * @param CodeBlockInterface|null $additionalSetupStatements
+     * @param CodeBlockInterface|null $teardownStatements
+     * @param array<string, string> $additionalVariableIdentifiers
+     *
+     * @return string
+     *
+     * @throws UnresolvedPlaceholderException
+     */
     public function createBrowserTestForBlock(
         CodeBlockInterface $block,
         string $fixture,
@@ -89,6 +109,14 @@ class TestCodeGenerator
         );
     }
 
+    /**
+     * @param ClassDefinitionInterface $classDefinition
+     * @param array<string, string> $additionalVariableIdentifiers
+     *
+     * @return string
+     *
+     * @throws UnresolvedPlaceholderException
+     */
     public function createBrowserTestForClass(
         ClassDefinitionInterface $classDefinition,
         array $additionalVariableIdentifiers = []
@@ -107,6 +135,11 @@ class TestCodeGenerator
         );
     }
 
+    /**
+     * @param VariablePlaceholderCollection $variableDependencies
+     *
+     * @return array<string, string>
+     */
     private function createVariableIdentifiersForVariableDependencies(
         VariablePlaceholderCollection $variableDependencies
     ): array {

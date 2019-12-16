@@ -14,6 +14,9 @@ class TestRunJob
     public function __construct(string $path)
     {
         $this->path = $path;
+        $this->exitCode = -1;
+        $this->expectedExitCode = 0;
+        $this->output = [];
     }
 
     public function getPath(): string
@@ -21,11 +24,17 @@ class TestRunJob
         return $this->path;
     }
 
+    /**
+     * @param array<string> $output
+     */
     public function setOutput(array $output): void
     {
         $this->output = $output;
     }
 
+    /**
+     * @return array<string>
+     */
     public function getOutput(): array
     {
         return $this->output;

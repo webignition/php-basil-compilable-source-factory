@@ -13,6 +13,12 @@ use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
 class StatementFactory
 {
+    /**
+     * @param string $contentTemplate
+     * @param array<VariablePlaceholder> $variableDependencies
+     *
+     * @return StatementInterface
+     */
     public static function create(string $contentTemplate, array $variableDependencies): StatementInterface
     {
         $content = sprintf($contentTemplate, ...$variableDependencies);
