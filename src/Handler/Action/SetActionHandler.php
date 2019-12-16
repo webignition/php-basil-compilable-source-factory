@@ -115,7 +115,7 @@ class SetActionHandler
         $valueAssignment = $this->variableAssignmentFactory->createForValueAccessor(
             $valueAccessor,
             $valuePlaceholder,
-            $this->accessorDefaultValueFactory->create($value)
+            $this->accessorDefaultValueFactory->createString($value)
         );
 
         $mutationCall = $this->webDriverElementMutatorCallFactory->createSetValueCall(

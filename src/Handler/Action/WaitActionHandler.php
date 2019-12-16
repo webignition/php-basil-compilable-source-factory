@@ -98,7 +98,7 @@ class WaitActionHandler
         $durationAssignment = $this->variableAssignmentFactory->createForValueAccessor(
             $durationAccessor,
             $durationPlaceholder,
-            $this->accessorDefaultValueFactory->create($duration) ?? 0
+            $this->accessorDefaultValueFactory->createInteger($duration) ?? 0
         );
 
         return new CodeBlock([

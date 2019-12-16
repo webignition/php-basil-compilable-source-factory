@@ -122,13 +122,13 @@ class ComparisonAssertionHandler extends AbstractAssertionHandler
         $examinedValueAssignment = $this->variableAssignmentFactory->createForValueAccessor(
             $examinedValueAccessor,
             $examinedValuePlaceholder,
-            $this->accessorDefaultValueFactory->create($examinedValue)
+            $this->accessorDefaultValueFactory->createString($examinedValue)
         );
 
         $expectedValueAssignment = $this->variableAssignmentFactory->createForValueAccessor(
             $expectedValueAccessor,
             $expectedValuePlaceholder,
-            $this->accessorDefaultValueFactory->create($expectedValue)
+            $this->accessorDefaultValueFactory->createString($expectedValue)
         );
 
         return $this->assertionCallFactory->createValueComparisonAssertionCall(
