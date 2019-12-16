@@ -8,6 +8,12 @@ use webignition\BasilCompilableSourceFactory\StepMethodNameFactory;
 
 class StepMethodNameFactoryFactory
 {
+    /**
+     * @param array<string, array<string>> $testMethodNames
+     * @param array<string, array<string>> $dataProviderMethodNames
+     *
+     * @return StepMethodNameFactory
+     */
     public function create(
         array $testMethodNames,
         array $dataProviderMethodNames

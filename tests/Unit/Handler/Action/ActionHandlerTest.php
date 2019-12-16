@@ -58,10 +58,8 @@ class ActionHandlerTest extends AbstractTestCase
     /**
      * @dataProvider handleThrowsExceptionDataProvider
      */
-    public function testHandleThrowsException(
-        ActionInterface $action,
-        UnsupportedActionException $expectedException
-    ) {
+    public function testHandleThrowsException(ActionInterface $action, UnsupportedActionException $expectedException)
+    {
         $handler = ActionHandler::createHandler();
         $this->expectExceptionObject($expectedException);
 

@@ -27,8 +27,10 @@ class ArrayStatementFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider createDataProvider
      */
-    public function testCreate(DataSetCollectionInterface $dataSetCollection, StatementInterface $expectedStatement)
-    {
+    public function testCreate(
+        DataSetCollectionInterface $dataSetCollection,
+        StatementInterface $expectedStatement
+    ) {
         $arrayStatement = $this->arrayStatementFactory->create($dataSetCollection);
 
         $this->assertEquals($expectedStatement, $arrayStatement);

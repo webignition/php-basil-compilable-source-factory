@@ -82,7 +82,12 @@ abstract class AbstractTestCase extends \PHPUnit\Framework\TestCase
         $this->assertSame($expectedClassNames, $actualClassNames);
     }
 
-    private function getClassDependencyNames(ClassDependencyCollection $classDependencyCollection)
+    /**
+     * @param ClassDependencyCollection $classDependencyCollection
+     *
+     * @return array<string>
+     */
+    private function getClassDependencyNames(ClassDependencyCollection $classDependencyCollection): array
     {
         $names = [];
 
@@ -108,6 +113,11 @@ abstract class AbstractTestCase extends \PHPUnit\Framework\TestCase
         $this->assertSame($expectedPlaceholderNames, $actualPlaceholderNames, $message);
     }
 
+    /**
+     * @param VariablePlaceholderCollection $variablePlaceholderCollection
+     *
+     * @return array<string>
+     */
     private function getVariablePlaceholderNames(VariablePlaceholderCollection $variablePlaceholderCollection)
     {
         $names = [];
@@ -124,7 +134,7 @@ abstract class AbstractTestCase extends \PHPUnit\Framework\TestCase
     /**
      * @param LineInterface[] $lines
      *
-     * @return string[]
+     * @return array<string>
      */
     private function getSourceLineContent(array $lines): array
     {

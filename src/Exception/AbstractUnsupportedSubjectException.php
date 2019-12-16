@@ -9,6 +9,10 @@ abstract class AbstractUnsupportedSubjectException extends \Exception
     public const CODE_NONE = 0;
     public const CODE_UNKNOWN = 1;
 
+    /**
+     * @param mixed $subject
+     * @param \Throwable|null $previous
+     */
     public function __construct($subject, \Throwable $previous = null)
     {
         $code = self::CODE_NONE;

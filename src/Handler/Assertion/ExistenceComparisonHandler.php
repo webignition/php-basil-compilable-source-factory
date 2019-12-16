@@ -22,8 +22,13 @@ use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Assertion\AssertionInterface;
 
-class ExistenceComparisonHandler extends AbstractAssertionHandler
+class ExistenceComparisonHandler
 {
+    private $assertionCallFactory;
+    private $scalarValueHandler;
+    private $namedDomIdentifierHandler;
+    private $domIdentifierFactory;
+    private $identifierTypeAnalyser;
     private $domCrawlerNavigatorCallFactory;
     private $valueTypeIdentifier;
 
@@ -36,14 +41,11 @@ class ExistenceComparisonHandler extends AbstractAssertionHandler
         DomIdentifierFactory $domIdentifierFactory,
         IdentifierTypeAnalyser $identifierTypeAnalyser
     ) {
-        parent::__construct(
-            $assertionCallFactory,
-            $scalarValueHandler,
-            $namedDomIdentifierHandler,
-            $domIdentifierFactory,
-            $identifierTypeAnalyser
-        );
-
+        $this->assertionCallFactory = $assertionCallFactory;
+        $this->scalarValueHandler = $scalarValueHandler;
+        $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
+        $this->domIdentifierFactory = $domIdentifierFactory;
+        $this->identifierTypeAnalyser = $identifierTypeAnalyser;
         $this->domCrawlerNavigatorCallFactory = $domCrawlerNavigatorCallFactory;
         $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
         $this->valueTypeIdentifier = $valueTypeIdentifier;

@@ -17,6 +17,13 @@ class VariableAssignmentFactory
         return new VariableAssignmentFactory();
     }
 
+    /**
+     * @param CodeBlockInterface $accessor
+     * @param VariablePlaceholder $placeholder
+     * @param int|string|null $default
+     *
+     * @return CodeBlockInterface
+     */
     public function createForValueAccessor(
         CodeBlockInterface $accessor,
         VariablePlaceholder $placeholder,

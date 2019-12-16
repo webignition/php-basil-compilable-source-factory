@@ -27,7 +27,7 @@ class EnvironmentValueFactory
         );
     }
 
-    public function create(string $value)
+    public function create(string $value): EnvironmentValue
     {
         $prefixLength = strlen(self::PREFIX);
         $propertyAndDefault = mb_substr($value, $prefixLength);
