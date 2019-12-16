@@ -8,6 +8,7 @@ use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
+use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierExistenceHandler;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
@@ -31,6 +32,7 @@ class ExistenceComparisonHandler
     private $identifierTypeAnalyser;
     private $domCrawlerNavigatorCallFactory;
     private $valueTypeIdentifier;
+    private $domIdentifierExistenceHandler;
 
     public function __construct(
         AssertionCallFactory $assertionCallFactory,
@@ -39,7 +41,8 @@ class ExistenceComparisonHandler
         NamedDomIdentifierHandler $namedDomIdentifierHandler,
         ValueTypeIdentifier $valueTypeIdentifier,
         DomIdentifierFactory $domIdentifierFactory,
-        IdentifierTypeAnalyser $identifierTypeAnalyser
+        IdentifierTypeAnalyser $identifierTypeAnalyser,
+        DomIdentifierExistenceHandler $domIdentifierExistenceHandler
     ) {
         $this->assertionCallFactory = $assertionCallFactory;
         $this->scalarValueHandler = $scalarValueHandler;
@@ -49,6 +52,7 @@ class ExistenceComparisonHandler
         $this->domCrawlerNavigatorCallFactory = $domCrawlerNavigatorCallFactory;
         $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
         $this->valueTypeIdentifier = $valueTypeIdentifier;
+        $this->domIdentifierExistenceHandler = $domIdentifierExistenceHandler;
     }
 
     public static function createHandler(): ExistenceComparisonHandler
@@ -60,7 +64,8 @@ class ExistenceComparisonHandler
             NamedDomIdentifierHandler::createHandler(),
             new ValueTypeIdentifier(),
             DomIdentifierFactory::createFactory(),
-            new IdentifierTypeAnalyser()
+            new IdentifierTypeAnalyser(),
+            DomIdentifierExistenceHandler::createHandler()
         );
     }
 
@@ -126,9 +131,16 @@ class ExistenceComparisonHandler
                 return $this->createAssertionCall($comparison, new CodeBlock([$assignment]), $valuePlaceholder);
             }
 
-            $accessor = $this->namedDomIdentifierHandler->handle(
+            $elementExistence = $this->domIdentifierExistenceHandler->handle($domIdentifier, false);
+
+            $access = $this->namedDomIdentifierHandler->handleAccess(
                 new NamedDomIdentifierValue($domIdentifier, $valuePlaceholder)
             );
+
+            $accessor = new CodeBlock([
+                $elementExistence,
+                $access,
+            ]);
 
             $existence = new CodeBlock([
                 $accessor,
