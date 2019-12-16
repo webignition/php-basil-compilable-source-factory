@@ -28,6 +28,38 @@ class AccessorDefaultValueFactory
         );
     }
 
+    public function createInteger(string $value): ?int
+    {
+        if (EnvironmentValue::is($value)) {
+            $environmentValue = $this->environmentValueFactory->create($value);
+            $valueDefault = $environmentValue->getDefault();
+
+            if (null !== $valueDefault) {
+                return ctype_digit($valueDefault)
+                    ? (int) $valueDefault
+                    : null;
+            }
+        }
+
+        return null;
+    }
+
+    public function createString(string $value): ?string
+    {
+        if (EnvironmentValue::is($value)) {
+            $environmentValue = $this->environmentValueFactory->create($value);
+            $valueDefault = $environmentValue->getDefault();
+
+            if (null !== $valueDefault) {
+                $valueDefault = (string) $valueDefault;
+
+                return "'" . $this->singleQuotedStringEscaper->escape($valueDefault) . "'";
+            }
+        }
+
+        return null;
+    }
+
     public function create(string $value)
     {
         if (EnvironmentValue::is($value)) {
