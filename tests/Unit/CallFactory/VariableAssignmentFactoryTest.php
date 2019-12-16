@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 
 use webignition\BasilCodeGenerator\CodeBlockGenerator;
+use webignition\BasilCodeGenerator\UnresolvedPlaceholderException;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilationSource\Block\CodeBlock;
@@ -36,12 +37,19 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
 
     /**
      * @dataProvider createForValueAccessorDataProvider
+     *
+     * @param CodeBlockInterface $accessor
+     * @param int|null $default
+     * @param CodeBlockInterface $expectedContent
+     * @param string|int|null $expectedAssignedValue
+     *
+     * @throws UnresolvedPlaceholderException
      */
     public function testCreateForValueAccessor(
         CodeBlockInterface $accessor,
         ?int $default,
         CodeBlockInterface $expectedContent,
-        string $expectedAssignedValue
+        $expectedAssignedValue
     ) {
         $placeholder = new VariablePlaceholder('VALUE');
 
