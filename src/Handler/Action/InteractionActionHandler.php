@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
+use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierExistenceHandler;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomElementIdentifier;
 use webignition\BasilCompilableSourceFactory\ModelFactory\DomIdentifier\DomIdentifierFactory;
@@ -22,17 +23,20 @@ class InteractionActionHandler
     private $namedDomIdentifierHandler;
     private $domIdentifierFactory;
     private $identifierTypeAnalyser;
+    private $domIdentifierExistenceHandler;
 
     public function __construct(
         VariableAssignmentFactory $variableAssignmentFactory,
         NamedDomIdentifierHandler $namedDomIdentifierHandler,
         DomIdentifierFactory $domIdentifierFactory,
-        IdentifierTypeAnalyser $identifierTypeAnalyser
+        IdentifierTypeAnalyser $identifierTypeAnalyser,
+        DomIdentifierExistenceHandler $domIdentifierExistenceHandler
     ) {
         $this->variableAssignmentFactory = $variableAssignmentFactory;
         $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
         $this->domIdentifierFactory = $domIdentifierFactory;
         $this->identifierTypeAnalyser = $identifierTypeAnalyser;
+        $this->domIdentifierExistenceHandler = $domIdentifierExistenceHandler;
     }
 
     public static function createHandler(): InteractionActionHandler
@@ -41,7 +45,8 @@ class InteractionActionHandler
             VariableAssignmentFactory::createFactory(),
             NamedDomIdentifierHandler::createHandler(),
             DomIdentifierFactory::createFactory(),
-            new IdentifierTypeAnalyser()
+            new IdentifierTypeAnalyser(),
+            DomIdentifierExistenceHandler::createHandler()
         );
     }
 
@@ -72,12 +77,14 @@ class InteractionActionHandler
         $variableExports = new VariablePlaceholderCollection();
         $elementPlaceholder = $variableExports->create('ELEMENT');
 
-        $accessor = $this->namedDomIdentifierHandler->handle(
+        $existence = $this->domIdentifierExistenceHandler->handle($domIdentifier, false);
+        $access = $this->namedDomIdentifierHandler->handleAccess(
             new NamedDomElementIdentifier($domIdentifier, $elementPlaceholder)
         );
 
         return new CodeBlock([
-            $accessor,
+            $existence,
+            $access,
             new Statement(sprintf(
                 '%s->%s()',
                 (string) $elementPlaceholder,
