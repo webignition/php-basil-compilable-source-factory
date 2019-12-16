@@ -23,15 +23,6 @@ class AssertionCallFactory
         '%s->assertStringNotContainsString((string) %s, (string) %s)';
     public const ASSERT_MATCHES_TEMPLATE = '%s->assertRegExp(%s, %s)';
 
-    private $phpUnitTestCasePlaceholder;
-    private $variableDependencies;
-
-    public function __construct()
-    {
-        $this->variableDependencies = new VariablePlaceholderCollection();
-        $this->phpUnitTestCasePlaceholder = $this->variableDependencies->create(VariableNames::PHPUNIT_TEST_CASE);
-    }
-
     public static function createFactory(): AssertionCallFactory
     {
         return new AssertionCallFactory();
@@ -45,13 +36,13 @@ class AssertionCallFactory
         string $assertionTemplate
     ): CodeBlockInterface {
         $variableDependencies = new VariablePlaceholderCollection();
-        $variableDependencies->add($this->phpUnitTestCasePlaceholder);
+        $phpUnitTestCasePlaceholder = $variableDependencies->create(VariableNames::PHPUNIT_TEST_CASE);
 
         $metadata = (new Metadata())->withVariableDependencies($variableDependencies);
 
         $assertionStatementContent = sprintf(
             $assertionTemplate,
-            $this->phpUnitTestCasePlaceholder,
+            $phpUnitTestCasePlaceholder,
             $expectedValuePlaceholder,
             $actualValuePlaceholder
         );
@@ -68,14 +59,17 @@ class AssertionCallFactory
         VariablePlaceholder $variablePlaceholder,
         string $assertionTemplate
     ): CodeBlockInterface {
+        $variableDependencies = new VariablePlaceholderCollection();
+        $phpUnitTestCasePlaceholder = $variableDependencies->create(VariableNames::PHPUNIT_TEST_CASE);
+
         $assertionStatementContent = sprintf(
             $assertionTemplate,
-            (string) $this->phpUnitTestCasePlaceholder,
+            (string) $phpUnitTestCasePlaceholder,
             (string) $variablePlaceholder
         );
 
         $metadata = (new Metadata())
-            ->withVariableDependencies($this->variableDependencies);
+            ->withVariableDependencies($variableDependencies);
 
         return new CodeBlock([
             $assignment,
