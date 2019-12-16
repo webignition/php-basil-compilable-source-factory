@@ -36,7 +36,7 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
         int $expectedMethodCount,
         MethodDefinitionInterface $expectedSetUpBeforeClassMethod,
         MetadataInterface $expectedMetadata
-    ): void {
+    ) {
         $classDefinition = $factory->createClassDefinition($test);
 
         $this->assertMetadataEquals($expectedMetadata, $classDefinition->getMetadata());

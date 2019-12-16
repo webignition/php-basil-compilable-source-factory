@@ -55,7 +55,7 @@ class ElementLocatorCallFactoryTest extends AbstractTestCase
     public function testCreateConstructorCall(
         DomIdentifier $elementIdentifier,
         ElementLocatorInterface $expectedElementLocator
-    ): void {
+    ) {
         $block = $this->factory->createConstructorCall($elementIdentifier);
         $block = new CodeBlock([
             $block,

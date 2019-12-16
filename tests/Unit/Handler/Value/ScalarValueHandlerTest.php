@@ -33,7 +33,7 @@ class ScalarValueHandlerTest extends AbstractTestCase
         string $value,
         CodeBlockInterface $expectedContent,
         MetadataInterface $expectedMetadata
-    ): void {
+    ) {
         $source = $this->handler->handle($value);
 
         $this->assertBlockContentEquals($expectedContent, $source);

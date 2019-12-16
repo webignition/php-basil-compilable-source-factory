@@ -30,7 +30,7 @@ class ArrayStatementFactoryTest extends \PHPUnit\Framework\TestCase
     public function testCreate(
         DataSetCollectionInterface $dataSetCollection,
         StatementInterface $expectedStatement
-    ): void {
+    ) {
         $arrayStatement = $this->arrayStatementFactory->create($dataSetCollection);
 
         $this->assertEquals($expectedStatement, $arrayStatement);

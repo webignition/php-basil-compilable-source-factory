@@ -36,7 +36,7 @@ class StepMethodFactoryTest extends AbstractTestCase
         MethodDefinitionInterface $expectedTestMethod,
         MetadataInterface $expectedTestMethodMetadata,
         ?MethodDefinitionInterface $expectedDataProviderMethod
-    ): void {
+    ) {
         $factory = new StepMethodFactory(
             StepHandler::createHandler(),
             ArrayStatementFactory::createFactory(),

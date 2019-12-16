@@ -23,7 +23,7 @@ class PlaceholderFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider createDataProvider
      */
-    public function testCreate(string $content, string $placeholderContent, string $expectedMutatedContent): void
+    public function testCreate(string $content, string $placeholderContent, string $expectedMutatedContent)
     {
         $mutatedContent = $this->factory->create($content, $placeholderContent);
 

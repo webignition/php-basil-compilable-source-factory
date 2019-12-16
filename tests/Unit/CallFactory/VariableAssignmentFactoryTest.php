@@ -42,7 +42,7 @@ class VariableAssignmentFactoryTest extends AbstractTestCase
         ?int $default,
         CodeBlockInterface $expectedContent,
         string $expectedAssignedValue
-    ): void {
+    ) {
         $placeholder = new VariablePlaceholder('VALUE');
 
         $expectedMetadata = (new Metadata())

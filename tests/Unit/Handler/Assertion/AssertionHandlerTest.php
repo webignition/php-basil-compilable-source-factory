@@ -56,7 +56,7 @@ class AssertionHandlerTest extends AbstractTestCase
         AssertionInterface $assertion,
         CodeBlockInterface $expectedContent,
         MetadataInterface $expectedMetadata
-    ): void {
+    ) {
         $source = $this->handler->handle($assertion);
 
         $this->assertBlockContentEquals($expectedContent, $source);
@@ -69,7 +69,7 @@ class AssertionHandlerTest extends AbstractTestCase
     public function testHandleThrowsException(
         AssertionInterface $assertion,
         UnsupportedAssertionException $expectedException
-    ): void {
+    ) {
         $handler = AssertionHandler::createHandler();
         $this->expectExceptionObject($expectedException);
 

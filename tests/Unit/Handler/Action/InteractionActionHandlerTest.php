@@ -18,7 +18,7 @@ class InteractionActionHandlerTest extends AbstractTestCase
     public function testHandleThrowsException(
         InteractionActionInterface $action,
         UnsupportedIdentifierException $expectedException
-    ): void {
+    ) {
         $handler = InteractionActionHandler::createHandler();
 
         $this->expectExceptionObject($expectedException);

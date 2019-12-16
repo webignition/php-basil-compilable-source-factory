@@ -41,7 +41,7 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
         NamedDomIdentifierInterface $namedDomIdentifier,
         CodeBlockInterface $expectedContent,
         MetadataInterface $expectedMetadata
-    ): void {
+    ) {
         $source = $this->handler->handle($namedDomIdentifier);
 
         $this->assertInstanceOf(CodeBlockInterface::class, $source);

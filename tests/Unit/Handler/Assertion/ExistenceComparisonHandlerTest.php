@@ -27,7 +27,7 @@ class ExistenceComparisonHandlerTest extends AbstractTestCase
     /**
      * @dataProvider handleThrowsExceptionDataProvider
      */
-    public function testHandleThrowsException(AssertionInterface $assertion, \Exception $expectedException): void
+    public function testHandleThrowsException(AssertionInterface $assertion, \Exception $expectedException)
     {
         $handler = ExistenceComparisonHandler::createHandler();
 

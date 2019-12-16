@@ -34,7 +34,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
     /**
      * @dataProvider createFindCallDataProvider
      */
-    public function testCreateFindCall(DomIdentifier $identifier, CodeBlockInterface $expectedBlock): void
+    public function testCreateFindCall(DomIdentifier $identifier, CodeBlockInterface $expectedBlock)
     {
         $statement = $this->factory->createFindCall($identifier);
 
@@ -49,7 +49,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
     /**
      * @dataProvider createFindOneCallDataProvider
      */
-    public function testCreateFindOneCall(DomIdentifier $identifier, CodeBlockInterface $expectedBlock): void
+    public function testCreateFindOneCall(DomIdentifier $identifier, CodeBlockInterface $expectedBlock)
     {
         $statement = $this->factory->createFindOneCall($identifier);
 
@@ -64,7 +64,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
     /**
      * @dataProvider createHasCallDataProvider
      */
-    public function testCreateHasCall(DomIdentifier $identifier, CodeBlockInterface $expectedBlock): void
+    public function testCreateHasCall(DomIdentifier $identifier, CodeBlockInterface $expectedBlock)
     {
         $statement = $this->factory->createHasCall($identifier);
 
@@ -79,7 +79,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
     /**
      * @dataProvider createHasOneCallDataProvider
      */
-    public function testCreateHasOneCall(DomIdentifier $identifier, CodeBlockInterface $expectedBlock): void
+    public function testCreateHasOneCall(DomIdentifier $identifier, CodeBlockInterface $expectedBlock)
     {
         $statement = $this->factory->createHasOneCall($identifier);
 

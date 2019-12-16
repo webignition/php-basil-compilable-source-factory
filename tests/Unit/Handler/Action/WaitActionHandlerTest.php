@@ -15,7 +15,7 @@ class WaitActionHandlerTest extends AbstractTestCase
     /**
      * @dataProvider handleThrowsExceptionDataProvider
      */
-    public function testHandleThrowsException(WaitActionInterface $action, \Exception $expectedException): void
+    public function testHandleThrowsException(WaitActionInterface $action, \Exception $expectedException)
     {
         $handler = WaitActionHandler::createHandler();
 
