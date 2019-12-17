@@ -96,7 +96,7 @@ class SetActionHandler
         $collectionPlaceholder = $variableExports->create('COLLECTION');
         $valuePlaceholder = $variableExports->create('VALUE');
 
-        $collectionExistence = $this->domIdentifierExistenceHandler->createExistenceAssertion($domIdentifier, true);
+        $collectionExistence = $this->domIdentifierExistenceHandler->createForCollection($domIdentifier);
         $collectionAccess = $this->namedDomIdentifierHandler->handle(
             new NamedDomIdentifier($domIdentifier, $collectionPlaceholder)
         );
@@ -107,10 +107,7 @@ class SetActionHandler
         ) {
             $valueDomIdentifier = $this->domIdentifierFactory->create($value);
 
-            $valueExistence = $this->domIdentifierExistenceHandler->createExistenceAssertion(
-                $valueDomIdentifier,
-                null === $valueDomIdentifier->getAttributeName()
-            );
+            $valueExistence = $this->domIdentifierExistenceHandler->createForElementOrCollection($valueDomIdentifier);
 
             $valueAccess = $this->namedDomIdentifierHandler->handle(
                 new NamedDomIdentifierValue($valueDomIdentifier, $valuePlaceholder)
