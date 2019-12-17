@@ -57,6 +57,13 @@ class DomIdentifierExistenceHandler
         );
     }
 
+    public function createExistenceAssertionForElementOrCollection(DomIdentifier $identifier): CodeBlockInterface
+    {
+        return null === $identifier->getAttributeName()
+            ? $this->createExistenceAssertionForCollection($identifier)
+            : $this->createExistenceAssertionForElement($identifier);
+    }
+
     public function createExistenceAssertionForElement(DomIdentifier $identifier): CodeBlockInterface
     {
         $hasCall = $this->domCrawlerNavigatorCallFactory->createHasOneCall($identifier);

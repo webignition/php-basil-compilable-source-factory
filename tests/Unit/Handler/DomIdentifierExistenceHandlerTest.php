@@ -339,4 +339,106 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
             ],
         ];
     }
+
+    /**
+     * @dataProvider createExistenceAssertionForElementOrCollectionDataProvider
+     */
+    public function testCreateExistenceAssertionForElementOrCollection(
+        DomIdentifier $identifier,
+        CodeBlockInterface $expectedContent,
+        MetadataInterface $expectedMetadata
+    ) {
+        $source = $this->handler->createExistenceAssertionForElementOrCollection($identifier);
+
+        $this->assertInstanceOf(CodeBlockInterface::class, $source);
+
+        $this->assertBlockContentEquals($expectedContent, $source);
+        $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
+    }
+
+    public function createExistenceAssertionForElementOrCollectionDataProvider(): array
+    {
+        return [
+            'no attribute, no parent' => [
+                'identifier' => new DomIdentifier('.selector'),
+                'expectedContent' => CodeBlock::fromContent([
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                ]),
+                'expectedMetadata' => (new Metadata())
+                    ->withClassDependencies(new ClassDependencyCollection([
+                        new ClassDependency(ElementLocator::class),
+                    ]))
+                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
+                    ]))
+                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        'HAS',
+                    ])),
+            ],
+            'no attribute, has parent' => [
+                'identifier' => (new DomIdentifier('.selector'))
+                    ->withParentIdentifier(new DomIdentifier('.parent')),
+                'expectedContent' => CodeBlock::fromContent([
+                    '{{ HAS }} = {{ NAVIGATOR }}->has('
+                    . 'new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\')'
+                    . ')',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                ]),
+                'expectedMetadata' => (new Metadata())
+                    ->withClassDependencies(new ClassDependencyCollection([
+                        new ClassDependency(ElementLocator::class),
+                    ]))
+                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
+                    ]))
+                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        'HAS',
+                    ])),
+            ],
+            'has attribute, no parent' => [
+                'identifier' => (new DomIdentifier('.selector'))
+                    ->withAttributeName('attribute_name'),
+                'expectedContent' => CodeBlock::fromContent([
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                ]),
+                'expectedMetadata' => (new Metadata())
+                    ->withClassDependencies(new ClassDependencyCollection([
+                        new ClassDependency(ElementLocator::class),
+                    ]))
+                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
+                    ]))
+                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        'HAS',
+                    ])),
+            ],
+            'has attribute, has parent' => [
+                'identifier' => (new DomIdentifier('.selector'))
+                    ->withAttributeName('attribute_name')
+                    ->withParentIdentifier(new DomIdentifier('.parent')),
+                'expectedContent' => CodeBlock::fromContent([
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne('
+                    . 'new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\')'
+                    . ')',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                ]),
+                'expectedMetadata' => (new Metadata())
+                    ->withClassDependencies(new ClassDependencyCollection([
+                        new ClassDependency(ElementLocator::class),
+                    ]))
+                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
+                    ]))
+                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        'HAS',
+                    ])),
+            ],
+        ];
+    }
 }
