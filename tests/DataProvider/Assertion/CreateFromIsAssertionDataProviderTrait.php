@@ -25,8 +25,6 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ EXPECTED }} = "value" ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '{{ EXAMINED }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
                     '{{ EXAMINED }} = {{ INSPECTOR }}->getValue({{ EXAMINED }}) ?? null',
                     '{{ EXAMINED }} = (string) {{ EXAMINED }}',
@@ -43,7 +41,6 @@ trait CreateFromIsAssertionDataProviderTrait
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
                         VariableNames::EXPECTED_VALUE,
-                        'HAS',
                         VariableNames::EXAMINED_VALUE,
                     ])),
             ],
@@ -52,8 +49,6 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ EXPECTED }} = "value" ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '{{ EXAMINED }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
                     '{{ EXAMINED }} = {{ EXAMINED }}->getAttribute(\'attribute_name\') ?? null',
                     '{{ EXAMINED }} = (string) {{ EXAMINED }}',
@@ -69,7 +64,6 @@ trait CreateFromIsAssertionDataProviderTrait
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
                         VariableNames::EXPECTED_VALUE,
-                        'HAS',
                         VariableNames::EXAMINED_VALUE,
                     ])),
             ],
@@ -175,8 +169,6 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, browser object examined value, element identifier expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $".selector"'),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '{{ EXPECTED }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
                     '{{ EXPECTED }} = {{ INSPECTOR }}->getValue({{ EXPECTED }}) ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
@@ -198,7 +190,6 @@ trait CreateFromIsAssertionDataProviderTrait
                         VariableNames::PANTHER_CLIENT,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
-                        'HAS',
                         VariableNames::EXPECTED_VALUE,
                         'WEBDRIVER_DIMENSION',
                         VariableNames::EXAMINED_VALUE,
@@ -207,8 +198,6 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, browser object examined value, attribute identifier expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $".selector".attribute_name'),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '{{ EXPECTED }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
                     '{{ EXPECTED }} = {{ EXPECTED }}->getAttribute(\'attribute_name\') ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
@@ -229,7 +218,6 @@ trait CreateFromIsAssertionDataProviderTrait
                         VariableNames::PANTHER_CLIENT,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
-                        'HAS',
                         VariableNames::EXPECTED_VALUE,
                         'WEBDRIVER_DIMENSION',
                         VariableNames::EXAMINED_VALUE,

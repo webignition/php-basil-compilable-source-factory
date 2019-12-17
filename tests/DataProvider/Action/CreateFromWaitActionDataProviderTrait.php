@@ -35,8 +35,6 @@ trait CreateFromWaitActionDataProviderTrait
             'wait action, element value' => [
                 'action' => $actionParser->parse('wait $".duration-selector"'),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.duration-selector\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '{{ DURATION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.duration-selector\'))',
                     '{{ DURATION }} = {{ INSPECTOR }}->getValue({{ DURATION }}) ?? 0',
                     '{{ DURATION }} = (int) {{ DURATION }}',
@@ -48,19 +46,15 @@ trait CreateFromWaitActionDataProviderTrait
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
-                        'HAS',
                         'DURATION',
                     ])),
             ],
             'wait action, attribute value' => [
                 'action' => $actionParser->parse('wait $".duration-selector".attribute_name'),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.duration-selector\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '{{ DURATION }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.duration-selector\'))',
                     '{{ DURATION }} = {{ DURATION }}->getAttribute(\'attribute_name\') ?? 0',
                     '{{ DURATION }} = (int) {{ DURATION }}',
@@ -72,10 +66,8 @@ trait CreateFromWaitActionDataProviderTrait
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::PHPUNIT_TEST_CASE,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
-                        'HAS',
                         'DURATION',
                     ])),
             ],

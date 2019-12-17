@@ -23,8 +23,6 @@ trait CreateFromSetActionDataProviderTrait
             'input action, element identifier, literal value' => [
                 'action' => $actionParser->parse('set $".selector" to "value"'),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
                     '{{ VALUE }} = "value" ?? null',
                     '{{ VALUE }} = (string) {{ VALUE }}',
@@ -36,11 +34,9 @@ trait CreateFromSetActionDataProviderTrait
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
-                        'HAS',
                         'COLLECTION',
                         'VALUE',
                     ])),
@@ -48,11 +44,7 @@ trait CreateFromSetActionDataProviderTrait
             'input action, element identifier, element value' => [
                 'action' => $actionParser->parse('set $".selector" to $".source"'),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
-                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.source\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '{{ VALUE }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.source\'))',
                     '{{ VALUE }} = {{ INSPECTOR }}->getValue({{ VALUE }}) ?? null',
                     '{{ VALUE }} = (string) {{ VALUE }}',
@@ -64,12 +56,10 @@ trait CreateFromSetActionDataProviderTrait
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
-                        'HAS',
                         'COLLECTION',
                         'VALUE',
                     ])),
@@ -77,11 +67,7 @@ trait CreateFromSetActionDataProviderTrait
             'input action, element identifier, attribute value' => [
                 'action' => $actionParser->parse('set $".selector" to $".source".attribute_name'),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
-                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.source\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '{{ VALUE }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.source\'))',
                     '{{ VALUE }} = {{ VALUE }}->getAttribute(\'attribute_name\') ?? null',
                     '{{ VALUE }} = (string) {{ VALUE }}',
@@ -93,11 +79,9 @@ trait CreateFromSetActionDataProviderTrait
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
-                        'HAS',
                         'COLLECTION',
                         'VALUE',
                     ])),
@@ -105,8 +89,6 @@ trait CreateFromSetActionDataProviderTrait
             'input action, browser property' => [
                 'action' => $actionParser->parse('set $".selector" to $browser.size'),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
                     '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()',
                     '{{ VALUE }} = '
@@ -121,12 +103,10 @@ trait CreateFromSetActionDataProviderTrait
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::PANTHER_CLIENT,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
-                        'HAS',
                         'COLLECTION',
                         'WEBDRIVER_DIMENSION',
                         'VALUE',
@@ -135,8 +115,6 @@ trait CreateFromSetActionDataProviderTrait
             'input action, page property' => [
                 'action' => $actionParser->parse('set $".selector" to $page.url'),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
                     '{{ VALUE }} = {{ CLIENT }}->getCurrentURL() ?? null',
                     '{{ VALUE }} = (string) {{ VALUE }}',
@@ -148,12 +126,10 @@ trait CreateFromSetActionDataProviderTrait
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::PANTHER_CLIENT,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
-                        'HAS',
                         'COLLECTION',
                         'VALUE',
                     ])),
@@ -161,8 +137,6 @@ trait CreateFromSetActionDataProviderTrait
             'input action, environment value' => [
                 'action' => $actionParser->parse('set $".selector" to $env.KEY'),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
                     '{{ VALUE }} = {{ ENV }}[\'KEY\'] ?? null',
                     '{{ VALUE }} = (string) {{ VALUE }}',
@@ -174,12 +148,10 @@ trait CreateFromSetActionDataProviderTrait
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
-                        'HAS',
                         'COLLECTION',
                         'VALUE',
                     ])),
@@ -187,8 +159,6 @@ trait CreateFromSetActionDataProviderTrait
             'input action, environment value with default' => [
                 'action' => $actionParser->parse('set $".selector" to $env.KEY|"default"'),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
                     '{{ VALUE }} = {{ ENV }}[\'KEY\'] ?? \'default\'',
                     '{{ VALUE }} = (string) {{ VALUE }}',
@@ -200,12 +170,10 @@ trait CreateFromSetActionDataProviderTrait
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
-                        'HAS',
                         'COLLECTION',
                         'VALUE',
                     ])),
@@ -213,8 +181,6 @@ trait CreateFromSetActionDataProviderTrait
             'input action, environment value with default with whitespace' => [
                 'action' => $actionParser->parse('set $".selector" to $env.KEY|"default value"'),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
                     '{{ VALUE }} = {{ ENV }}[\'KEY\'] ?? \'default value\'',
                     '{{ VALUE }} = (string) {{ VALUE }}',
@@ -226,12 +192,10 @@ trait CreateFromSetActionDataProviderTrait
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
-                        'HAS',
                         'COLLECTION',
                         'VALUE',
                     ])),
