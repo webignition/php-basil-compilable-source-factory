@@ -32,11 +32,34 @@ class DomIdentifierExistenceHandler
         );
     }
 
-    public function handle(DomIdentifier $identifier, bool $asCollection): CodeBlockInterface
+    public function createExistenceAssertion(DomIdentifier $identifier, bool $asCollection): CodeBlockInterface
     {
         $hasCall = $asCollection
             ? $this->domCrawlerNavigatorCallFactory->createHasCall($identifier)
             : $this->domCrawlerNavigatorCallFactory->createHasOneCall($identifier);
+
+        $hasAssignmentVariableExports = new VariablePlaceholderCollection();
+        $hasPlaceholder = $hasAssignmentVariableExports->create('HAS');
+
+        $hasAssignment = new CodeBlock([
+            $hasCall,
+        ]);
+
+        $hasAssignment->mutateLastStatement(function ($content) use ($hasPlaceholder) {
+            return $hasPlaceholder . ' = ' . $content;
+        });
+        $hasAssignment->addVariableExportsToLastStatement($hasAssignmentVariableExports);
+
+        return $this->assertionCallFactory->createValueExistenceAssertionCall(
+            $hasAssignment,
+            $hasPlaceholder,
+            AssertionCallFactory::ASSERT_TRUE_TEMPLATE
+        );
+    }
+
+    public function createExistenceAssertionForElement(DomIdentifier $identifier): CodeBlockInterface
+    {
+        $hasCall = $this->domCrawlerNavigatorCallFactory->createHasOneCall($identifier);
 
         $hasAssignmentVariableExports = new VariablePlaceholderCollection();
         $hasPlaceholder = $hasAssignmentVariableExports->create('HAS');

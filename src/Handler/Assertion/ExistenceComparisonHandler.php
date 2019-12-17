@@ -131,7 +131,7 @@ class ExistenceComparisonHandler
                 return $this->createAssertionCall($comparison, new CodeBlock([$assignment]), $valuePlaceholder);
             }
 
-            $elementExistence = $this->domIdentifierExistenceHandler->handle($domIdentifier, false);
+            $elementExistence = $this->domIdentifierExistenceHandler->createExistenceAssertion($domIdentifier, false);
 
             $access = $this->namedDomIdentifierHandler->handle(
                 new NamedDomIdentifierValue($domIdentifier, $valuePlaceholder)

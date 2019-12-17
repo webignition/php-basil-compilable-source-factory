@@ -32,15 +32,15 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider handleDataProvider
+     * @dataProvider createExistenceAssertionDataProvider
      */
-    public function testHandle(
+    public function testCreateExistenceAssertion(
         DomIdentifier $identifier,
         bool $asCollection,
         CodeBlockInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
-        $source = $this->handler->handle($identifier, $asCollection);
+        $source = $this->handler->createExistenceAssertion($identifier, $asCollection);
 
         $this->assertInstanceOf(CodeBlockInterface::class, $source);
 
@@ -48,7 +48,7 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
         $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
     }
 
-    public function handleDataProvider(): array
+    public function createExistenceAssertionDataProvider(): array
     {
         return [
             'element, no parent' => [
@@ -201,6 +201,67 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}'
                     . '->hasOne(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                ]),
+                'expectedMetadata' => (new Metadata())
+                    ->withClassDependencies(new ClassDependencyCollection([
+                        new ClassDependency(ElementLocator::class),
+                    ]))
+                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
+                    ]))
+                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        'HAS',
+                    ])),
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider createExistenceAssertionForElementDataProvider
+     */
+    public function testCreateExistenceAssertionForElement(
+        DomIdentifier $identifier,
+        CodeBlockInterface $expectedContent,
+        MetadataInterface $expectedMetadata
+    ) {
+        $source = $this->handler->createExistenceAssertionForElement($identifier);
+
+        $this->assertInstanceOf(CodeBlockInterface::class, $source);
+
+        $this->assertBlockContentEquals($expectedContent, $source);
+        $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
+    }
+
+    public function createExistenceAssertionForElementDataProvider(): array
+    {
+        return [
+            'no parent' => [
+                'identifier' => new DomIdentifier('.selector'),
+                'expectedContent' => CodeBlock::fromContent([
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                ]),
+                'expectedMetadata' => (new Metadata())
+                    ->withClassDependencies(new ClassDependencyCollection([
+                        new ClassDependency(ElementLocator::class),
+                    ]))
+                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
+                    ]))
+                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        'HAS',
+                    ])),
+            ],
+            'has parent' => [
+                'identifier' => (new DomIdentifier('.selector'))
+                    ->withParentIdentifier(new DomIdentifier('.parent')),
+                'expectedContent' => CodeBlock::fromContent([
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne('
+                    . 'new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\')'
+                    . ')',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
