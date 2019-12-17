@@ -219,14 +219,14 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider createExistenceAssertionForElementDataProvider
+     * @dataProvider createForElementDataProvider
      */
-    public function testCreateExistenceAssertionForElement(
+    public function testCreateForElement(
         DomIdentifier $identifier,
         CodeBlockInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
-        $source = $this->handler->createExistenceAssertionForElement($identifier);
+        $source = $this->handler->createForElement($identifier);
 
         $this->assertInstanceOf(CodeBlockInterface::class, $source);
 
@@ -234,7 +234,7 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
         $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
     }
 
-    public function createExistenceAssertionForElementDataProvider(): array
+    public function createForElementDataProvider(): array
     {
         return [
             'no parent' => [
@@ -280,14 +280,14 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider createExistenceAssertionForCollectionDataProvider
+     * @dataProvider createForCollectionDataProvider
      */
-    public function testCreateExistenceAssertionForCollection(
+    public function testCreateForCollection(
         DomIdentifier $identifier,
         CodeBlockInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
-        $source = $this->handler->createExistenceAssertionForCollection($identifier);
+        $source = $this->handler->createForCollection($identifier);
 
         $this->assertInstanceOf(CodeBlockInterface::class, $source);
 
@@ -295,7 +295,7 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
         $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
     }
 
-    public function createExistenceAssertionForCollectionDataProvider(): array
+    public function createForCollectionDataProvider(): array
     {
         return [
             'no parent' => [
@@ -341,14 +341,14 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider createExistenceAssertionForElementOrCollectionDataProvider
+     * @dataProvider createForElementOrCollectionDataProvider
      */
-    public function testCreateExistenceAssertionForElementOrCollection(
+    public function testCreateForElementOrCollection(
         DomIdentifier $identifier,
         CodeBlockInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
-        $source = $this->handler->createExistenceAssertionForElementOrCollection($identifier);
+        $source = $this->handler->createForElementOrCollection($identifier);
 
         $this->assertInstanceOf(CodeBlockInterface::class, $source);
 
@@ -356,7 +356,7 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
         $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
     }
 
-    public function createExistenceAssertionForElementOrCollectionDataProvider(): array
+    public function createForElementOrCollectionDataProvider(): array
     {
         return [
             'no attribute, no parent' => [

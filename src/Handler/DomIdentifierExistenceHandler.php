@@ -57,14 +57,14 @@ class DomIdentifierExistenceHandler
         );
     }
 
-    public function createExistenceAssertionForElementOrCollection(DomIdentifier $identifier): CodeBlockInterface
+    public function createForElementOrCollection(DomIdentifier $identifier): CodeBlockInterface
     {
         return null === $identifier->getAttributeName()
-            ? $this->createExistenceAssertionForCollection($identifier)
-            : $this->createExistenceAssertionForElement($identifier);
+            ? $this->createForCollection($identifier)
+            : $this->createForElement($identifier);
     }
 
-    public function createExistenceAssertionForElement(DomIdentifier $identifier): CodeBlockInterface
+    public function createForElement(DomIdentifier $identifier): CodeBlockInterface
     {
         $hasCall = $this->domCrawlerNavigatorCallFactory->createHasOneCall($identifier);
 
@@ -87,7 +87,7 @@ class DomIdentifierExistenceHandler
         );
     }
 
-    public function createExistenceAssertionForCollection(DomIdentifier $identifier): CodeBlockInterface
+    public function createForCollection(DomIdentifier $identifier): CodeBlockInterface
     {
         $hasCall = $this->domCrawlerNavigatorCallFactory->createHasCall($identifier);
 

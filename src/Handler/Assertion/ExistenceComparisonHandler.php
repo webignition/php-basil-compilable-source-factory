@@ -132,7 +132,7 @@ class ExistenceComparisonHandler
             }
 
             $elementExistence =
-                $this->domIdentifierExistenceHandler->createExistenceAssertionForElement($domIdentifier);
+                $this->domIdentifierExistenceHandler->createForElement($domIdentifier);
 
             $access = $this->namedDomIdentifierHandler->handle(
                 new NamedDomIdentifierValue($domIdentifier, $valuePlaceholder)
