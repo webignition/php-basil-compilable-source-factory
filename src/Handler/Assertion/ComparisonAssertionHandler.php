@@ -90,10 +90,7 @@ class ComparisonAssertionHandler
         $examinedValue = $assertion->getIdentifier();
         $expectedValue = $assertion->getValue();
 
-        if (
-            $this->identifierTypeAnalyser->isDomIdentifier($examinedValue) ||
-            $this->identifierTypeAnalyser->isDescendantDomIdentifier($examinedValue)
-        ) {
+        if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($examinedValue)) {
             $examinedValueDomIdentifier = $this->domIdentifierFactory->create($examinedValue);
 
             $examinedValueExistence = $this->domIdentifierExistenceHandler->createForElementOrCollection(
@@ -116,10 +113,7 @@ class ComparisonAssertionHandler
             $examinedValueAccessor = $this->scalarValueHandler->handle($examinedValue);
         }
 
-        if (
-            $this->identifierTypeAnalyser->isDomIdentifier($expectedValue) ||
-            $this->identifierTypeAnalyser->isDescendantDomIdentifier($expectedValue)
-        ) {
+        if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($expectedValue)) {
             $expectedValueDomIdentifier = $this->domIdentifierFactory->create($expectedValue);
 
             $expectedValueExistence = $this->domIdentifierExistenceHandler->createForElementOrCollection(

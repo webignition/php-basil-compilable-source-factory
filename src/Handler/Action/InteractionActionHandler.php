@@ -61,10 +61,7 @@ class InteractionActionHandler
     {
         $identifier = $action->getIdentifier();
 
-        if (
-            !$this->identifierTypeAnalyser->isDomIdentifier($identifier) &&
-            !$this->identifierTypeAnalyser->isDescendantDomIdentifier($identifier)
-        ) {
+        if (!$this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
             throw new UnsupportedIdentifierException($identifier);
         }
 

@@ -83,10 +83,7 @@ class WaitActionHandler
             $duration = '"' . $duration . '"';
         }
 
-        if (
-            $this->identifierTypeAnalyser->isDomIdentifier($duration) ||
-            $this->identifierTypeAnalyser->isDescendantDomIdentifier($duration)
-        ) {
+        if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($duration)) {
             $durationIdentifier = $this->domIdentifierFactory->create($duration);
 
             $durationExistence = $this->domIdentifierExistenceHandler->createForElementOrCollection(
