@@ -41,31 +41,20 @@ class DomIdentifierExistenceHandler
 
     public function createForElement(DomIdentifier $identifier): CodeBlockInterface
     {
-        $hasCall = $this->domCrawlerNavigatorCallFactory->createHasOneCall($identifier);
-
-        $hasAssignmentVariableExports = new VariablePlaceholderCollection();
-        $hasPlaceholder = $hasAssignmentVariableExports->create('HAS');
-
-        $hasAssignment = new CodeBlock([
-            $hasCall,
-        ]);
-
-        $hasAssignment->mutateLastStatement(function ($content) use ($hasPlaceholder) {
-            return $hasPlaceholder . ' = ' . $content;
-        });
-        $hasAssignment->addVariableExportsToLastStatement($hasAssignmentVariableExports);
-
-        return $this->assertionCallFactory->createValueExistenceAssertionCall(
-            $hasAssignment,
-            $hasPlaceholder,
-            AssertionCallFactory::ASSERT_TRUE_TEMPLATE
+        return $this->create(
+            $this->domCrawlerNavigatorCallFactory->createHasOneCall($identifier)
         );
     }
 
     public function createForCollection(DomIdentifier $identifier): CodeBlockInterface
     {
-        $hasCall = $this->domCrawlerNavigatorCallFactory->createHasCall($identifier);
+        return $this->create(
+            $this->domCrawlerNavigatorCallFactory->createHasCall($identifier)
+        );
+    }
 
+    private function create(CodeBlockInterface $hasCall): CodeBlockInterface
+    {
         $hasAssignmentVariableExports = new VariablePlaceholderCollection();
         $hasPlaceholder = $hasAssignmentVariableExports->create('HAS');
 
