@@ -9,11 +9,13 @@ use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
+use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierExistenceHandler;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\ModelFactory\DomIdentifier\DomIdentifierFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
@@ -36,6 +38,7 @@ class ComparisonAssertionHandler
     private $identifierTypeAnalyser;
     private $variableAssignmentFactory;
     private $accessorDefaultValueFactory;
+    private $domIdentifierExistenceHandler;
 
     public function __construct(
         AssertionCallFactory $assertionCallFactory,
@@ -44,7 +47,8 @@ class ComparisonAssertionHandler
         NamedDomIdentifierHandler $namedDomIdentifierHandler,
         AccessorDefaultValueFactory $accessorDefaultValueFactory,
         DomIdentifierFactory $domIdentifierFactory,
-        IdentifierTypeAnalyser $identifierTypeAnalyser
+        IdentifierTypeAnalyser $identifierTypeAnalyser,
+        DomIdentifierExistenceHandler $domIdentifierExistenceHandler
     ) {
         $this->assertionCallFactory = $assertionCallFactory;
         $this->scalarValueHandler = $scalarValueHandler;
@@ -53,6 +57,7 @@ class ComparisonAssertionHandler
         $this->identifierTypeAnalyser = $identifierTypeAnalyser;
         $this->variableAssignmentFactory = $variableAssignmentFactory;
         $this->accessorDefaultValueFactory = $accessorDefaultValueFactory;
+        $this->domIdentifierExistenceHandler = $domIdentifierExistenceHandler;
     }
 
     public static function createHandler(): ComparisonAssertionHandler
@@ -64,7 +69,8 @@ class ComparisonAssertionHandler
             NamedDomIdentifierHandler::createHandler(),
             AccessorDefaultValueFactory::createFactory(),
             DomIdentifierFactory::createFactory(),
-            new IdentifierTypeAnalyser()
+            new IdentifierTypeAnalyser(),
+            DomIdentifierExistenceHandler::createHandler()
         );
     }
 
@@ -90,9 +96,19 @@ class ComparisonAssertionHandler
         ) {
             $examinedValueDomIdentifier = $this->domIdentifierFactory->create($examinedValue);
 
-            $examinedValueAccessor = $this->namedDomIdentifierHandler->handle(
+            $examinedValueExistence = $this->domIdentifierExistenceHandler->handle(
+                $examinedValueDomIdentifier,
+                null === $examinedValueDomIdentifier->getAttributeName()
+            );
+
+            $examinedValueAccess = $this->namedDomIdentifierHandler->handle(
                 new NamedDomIdentifierValue($examinedValueDomIdentifier, $examinedValuePlaceholder)
             );
+
+            $examinedValueAccessor = new CodeBlock([
+                $examinedValueExistence,
+                $examinedValueAccess,
+            ]);
 
             $examinedValueAccessor->mutateLastStatement(function (string $content) use ($examinedValuePlaceholder) {
                 return str_replace((string) $examinedValuePlaceholder . ' = ', '', $content);
@@ -107,12 +123,22 @@ class ComparisonAssertionHandler
         ) {
             $expectedValueDomIdentifier = $this->domIdentifierFactory->create($expectedValue);
 
-            $expectedValueAccessor = $this->namedDomIdentifierHandler->handle(
+            $expectedValueExistence = $this->domIdentifierExistenceHandler->handle(
+                $expectedValueDomIdentifier,
+                null === $expectedValueDomIdentifier->getAttributeName()
+            );
+
+            $expectedValueAccess = $this->namedDomIdentifierHandler->handle(
                 new NamedDomIdentifierValue(
                     $expectedValueDomIdentifier,
                     $expectedValuePlaceholder
                 )
             );
+
+            $expectedValueAccessor = new CodeBlock([
+                $expectedValueExistence,
+                $expectedValueAccess,
+            ]);
 
             $expectedValueAccessor->mutateLastStatement(function (string $content) use ($expectedValuePlaceholder) {
                 return str_replace((string) $expectedValuePlaceholder . ' = ', '', $content);

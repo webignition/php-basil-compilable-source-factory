@@ -4,12 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler;
 
+use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierExistenceHandler;
 use webignition\BasilCompilableSourceFactory\Model\DomIdentifier;
-use webignition\BasilCompilableSourceFactory\Model\NamedDomElementIdentifier;
-use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifier;
-use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierInterface;
-use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
-use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlock;
@@ -18,14 +14,13 @@ use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\Metadata\MetadataInterface;
-use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\DomElementLocator\ElementLocator;
 
-class NamedDomIdentifierHandlerTest extends AbstractTestCase
+class DomIdentifierExistenceHandlerTest extends AbstractTestCase
 {
     /**
-     * @var NamedDomIdentifierHandler
+     * @var DomIdentifierExistenceHandler
      */
     private $handler;
 
@@ -33,18 +28,19 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
     {
         parent::setUp();
 
-        $this->handler = NamedDomIdentifierHandler::createHandler();
+        $this->handler = DomIdentifierExistenceHandler::createHandler();
     }
 
     /**
      * @dataProvider handleDataProvider
      */
     public function testHandle(
-        NamedDomIdentifierInterface $namedDomIdentifier,
+        DomIdentifier $identifier,
+        bool $asCollection,
         CodeBlockInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
-        $source = $this->handler->handle($namedDomIdentifier);
+        $source = $this->handler->handle($identifier, $asCollection);
 
         $this->assertInstanceOf(CodeBlockInterface::class, $source);
 
@@ -56,12 +52,11 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
     {
         return [
             'element, no parent' => [
-                'value' => new NamedDomElementIdentifier(
-                    new DomIdentifier('.selector'),
-                    new VariablePlaceholder('E')
-                ),
+                'identifier' => new DomIdentifier('.selector'),
+                'asCollection' => false,
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ E }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -69,21 +64,21 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
-                        'E',
+                        'HAS',
                     ])),
             ],
             'element, has parent' => [
-                'value' => new NamedDomElementIdentifier(
-                    (new DomIdentifier('.selector'))
-                        ->withParentIdentifier(new DomIdentifier('.parent')),
-                    new VariablePlaceholder('E')
-                ),
+                'identifier' => (new DomIdentifier('.selector'))
+                    ->withParentIdentifier(new DomIdentifier('.parent')),
+                'asCollection' => false,
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ E }} = {{ NAVIGATOR }}->findOne('
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne('
                     . 'new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\')'
                     . ')',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -91,18 +86,18 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
-                        'E',
+                        'HAS',
                     ])),
             ],
             'identifier, no parent' => [
-                'value' => new NamedDomIdentifier(
-                    new DomIdentifier('.selector'),
-                    new VariablePlaceholder('E')
-                ),
+                'identifier' => new DomIdentifier('.selector'),
+                'asCollection' => true,
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ E }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -110,21 +105,21 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
-                        'E',
+                        'HAS',
                     ])),
             ],
             'identifier, has parent' => [
-                'value' => new NamedDomIdentifier(
-                    (new DomIdentifier('.selector'))
-                        ->withParentIdentifier(new DomIdentifier('.parent')),
-                    new VariablePlaceholder('E')
-                ),
+                'identifier' => (new DomIdentifier('.selector'))
+                    ->withParentIdentifier(new DomIdentifier('.parent')),
+                'asCollection' => true,
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ E }} = {{ NAVIGATOR }}->find('
+                    '{{ HAS }} = {{ NAVIGATOR }}->has('
                     . 'new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\')'
                     . ')',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -132,19 +127,18 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
-                        'E',
+                        'HAS',
                     ])),
             ],
             'element value, no parent' => [
-                'value' => new NamedDomIdentifierValue(
-                    new DomIdentifier('.selector'),
-                    new VariablePlaceholder('E')
-                ),
+                'identifier' => new DomIdentifier('.selector'),
+                'asCollection' => true,
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ E }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
-                    '{{ E }} = {{ INSPECTOR }}->getValue({{ E }})',
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -152,22 +146,20 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
-                        'E',
+                        'HAS',
                     ])),
             ],
             'element value, has parent' => [
-                'value' => new NamedDomIdentifierValue(
-                    (new DomIdentifier('.selector'))
-                        ->withParentIdentifier(new DomIdentifier('.parent')),
-                    new VariablePlaceholder('E')
-                ),
+                'identifier' => (new DomIdentifier('.selector'))
+                    ->withParentIdentifier(new DomIdentifier('.parent')),
+                'asCollection' => true,
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ E }} = '
-                    . '{{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))',
-                    '{{ E }} = {{ INSPECTOR }}->getValue({{ E }})',
+                    '{{ HAS }} = '
+                    . '{{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -175,21 +167,19 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
-                        'E',
+                        'HAS',
                     ])),
             ],
             'attribute value, no parent' => [
-                'value' => new NamedDomIdentifierValue(
-                    (new DomIdentifier('.selector'))
-                        ->withAttributeName('attribute_name'),
-                    new VariablePlaceholder('E')
-                ),
+                'identifier' => (new DomIdentifier('.selector'))
+                    ->withAttributeName('attribute_name'),
+                'asCollection' => false,
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ E }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
-                    '{{ E }} = {{ E }}->getAttribute(\'attribute_name\')',
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -197,22 +187,21 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
-                        'E',
+                        'HAS',
                     ])),
             ],
             'attribute value, has parent' => [
-                'value' => new NamedDomIdentifierValue(
-                    (new DomIdentifier('.selector'))
-                        ->withAttributeName('attribute_name')
-                        ->withParentIdentifier(new DomIdentifier('.parent')),
-                    new VariablePlaceholder('E')
-                ),
+                'identifier' => (new DomIdentifier('.selector'))
+                    ->withAttributeName('attribute_name')
+                    ->withParentIdentifier(new DomIdentifier('.parent')),
+                'asCollection' => false,
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ E }} = {{ NAVIGATOR }}'
-                    . '->findOne(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))',
-                    '{{ E }} = {{ E }}->getAttribute(\'attribute_name\')',
+                    '{{ HAS }} = {{ NAVIGATOR }}'
+                    . '->hasOne(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -220,9 +209,10 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
-                        'E',
+                        'HAS',
                     ])),
             ],
         ];

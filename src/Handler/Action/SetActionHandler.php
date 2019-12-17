@@ -9,6 +9,7 @@ use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFacto
 use webignition\BasilCompilableSourceFactory\CallFactory\WebDriverElementMutatorCallFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
+use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierExistenceHandler;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifier;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
@@ -29,6 +30,7 @@ class SetActionHandler
     private $accessorDefaultValueFactory;
     private $domIdentifierFactory;
     private $identifierTypeAnalyser;
+    private $domIdentifierExistenceHandler;
 
     public function __construct(
         VariableAssignmentFactory $variableAssignmentFactory,
@@ -37,7 +39,8 @@ class SetActionHandler
         NamedDomIdentifierHandler $namedDomIdentifierHandler,
         AccessorDefaultValueFactory $accessorDefaultValueFactory,
         DomIdentifierFactory $domIdentifierFactory,
-        IdentifierTypeAnalyser $identifierTypeAnalyser
+        IdentifierTypeAnalyser $identifierTypeAnalyser,
+        DomIdentifierExistenceHandler $domIdentifierExistenceHandler
     ) {
         $this->variableAssignmentFactory = $variableAssignmentFactory;
         $this->webDriverElementMutatorCallFactory = $webDriverElementMutatorCallFactory;
@@ -46,6 +49,7 @@ class SetActionHandler
         $this->accessorDefaultValueFactory = $accessorDefaultValueFactory;
         $this->domIdentifierFactory = $domIdentifierFactory;
         $this->identifierTypeAnalyser = $identifierTypeAnalyser;
+        $this->domIdentifierExistenceHandler = $domIdentifierExistenceHandler;
     }
 
     public static function createHandler(): SetActionHandler
@@ -57,7 +61,8 @@ class SetActionHandler
             NamedDomIdentifierHandler::createHandler(),
             AccessorDefaultValueFactory::createFactory(),
             DomIdentifierFactory::createFactory(),
-            new IdentifierTypeAnalyser()
+            new IdentifierTypeAnalyser(),
+            DomIdentifierExistenceHandler::createHandler()
         );
     }
 
@@ -91,7 +96,8 @@ class SetActionHandler
         $collectionPlaceholder = $variableExports->create('COLLECTION');
         $valuePlaceholder = $variableExports->create('VALUE');
 
-        $collectionAssignment = $this->namedDomIdentifierHandler->handle(
+        $collectionExistence = $this->domIdentifierExistenceHandler->handle($domIdentifier, true);
+        $collectionAccess = $this->namedDomIdentifierHandler->handle(
             new NamedDomIdentifier($domIdentifier, $collectionPlaceholder)
         );
 
@@ -101,9 +107,19 @@ class SetActionHandler
         ) {
             $valueDomIdentifier = $this->domIdentifierFactory->create($value);
 
-            $valueAccessor = $this->namedDomIdentifierHandler->handle(
+            $valueExistence = $this->domIdentifierExistenceHandler->handle(
+                $valueDomIdentifier,
+                null === $valueDomIdentifier->getAttributeName()
+            );
+
+            $valueAccess = $this->namedDomIdentifierHandler->handle(
                 new NamedDomIdentifierValue($valueDomIdentifier, $valuePlaceholder)
             );
+
+            $valueAccessor = new CodeBlock([
+                $valueExistence,
+                $valueAccess,
+            ]);
 
             $valueAccessor->mutateLastStatement(function (string $content) use ($valuePlaceholder) {
                 return str_replace((string) $valuePlaceholder . ' = ', '', $content);
@@ -124,7 +140,8 @@ class SetActionHandler
         );
 
         return new CodeBlock([
-            $collectionAssignment,
+            $collectionExistence,
+            $collectionAccess,
             $valueAssignment,
             $mutationCall
         ]);

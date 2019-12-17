@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler;
 
-use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
-use webignition\BasilCompilableSourceFactory\CallFactory\ElementLocatorCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\WebDriverElementInspectorCallFactory;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierInterface;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
@@ -18,21 +16,15 @@ use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 class NamedDomIdentifierHandler
 {
     private $domCrawlerNavigatorCallFactory;
-    private $elementLocatorCallFactory;
-    private $assertionCallFactory;
     private $webDriverElementInspectorCallFactory;
     private $singleQuotedStringEscaper;
 
     public function __construct(
         DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory,
-        ElementLocatorCallFactory $elementLocatorCallFactory,
-        AssertionCallFactory $assertionCallFactory,
         WebDriverElementInspectorCallFactory $webDriverElementInspectorCallFactory,
         SingleQuotedStringEscaper $singleQuotedStringEscaper
     ) {
         $this->domCrawlerNavigatorCallFactory = $domCrawlerNavigatorCallFactory;
-        $this->elementLocatorCallFactory = $elementLocatorCallFactory;
-        $this->assertionCallFactory = $assertionCallFactory;
         $this->webDriverElementInspectorCallFactory = $webDriverElementInspectorCallFactory;
         $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
     }
@@ -41,42 +33,19 @@ class NamedDomIdentifierHandler
     {
         return new NamedDomIdentifierHandler(
             DomCrawlerNavigatorCallFactory::createFactory(),
-            ElementLocatorCallFactory::createFactory(),
-            AssertionCallFactory::createFactory(),
             WebDriverElementInspectorCallFactory::createFactory(),
             SingleQuotedStringEscaper::create()
         );
     }
 
-    /**
-     * @param NamedDomIdentifierInterface $namedDomIdentifier
-     *
-     * @return CodeBlockInterface
-     */
     public function handle(NamedDomIdentifierInterface $namedDomIdentifier): CodeBlockInterface
     {
         $identifier = $namedDomIdentifier->getIdentifier();
         $hasAttribute = null !== $identifier->getAttributeName();
 
-        if ($namedDomIdentifier->asCollection()) {
-            $hasCall = $this->domCrawlerNavigatorCallFactory->createHasCall($identifier);
-            $findCall = $this->domCrawlerNavigatorCallFactory->createFindCall($identifier);
-        } else {
-            $hasCall = $this->domCrawlerNavigatorCallFactory->createHasOneCall($identifier);
-            $findCall = $this->domCrawlerNavigatorCallFactory->createFindOneCall($identifier);
-        }
-
-        $hasAssignmentVariableExports = new VariablePlaceholderCollection();
-        $hasPlaceholder = $hasAssignmentVariableExports->create('HAS');
-
-        $hasAssignment = new CodeBlock([
-            $hasCall,
-        ]);
-
-        $hasAssignment->mutateLastStatement(function ($content) use ($hasPlaceholder) {
-            return $hasPlaceholder . ' = ' . $content;
-        });
-        $hasAssignment->addVariableExportsToLastStatement($hasAssignmentVariableExports);
+        $findCall = $namedDomIdentifier->asCollection()
+            ? $this->domCrawlerNavigatorCallFactory->createFindCall($identifier)
+            : $this->domCrawlerNavigatorCallFactory->createFindOneCall($identifier);
 
         $elementPlaceholder = $namedDomIdentifier->getPlaceholder();
         $collectionAssignmentVariableExports = new VariablePlaceholderCollection([
@@ -91,14 +60,7 @@ class NamedDomIdentifierHandler
         });
         $elementOrCollectionAssignment->addVariableExportsToLastStatement($collectionAssignmentVariableExports);
 
-        $elementExistsAssertion = $this->assertionCallFactory->createValueExistenceAssertionCall(
-            $hasAssignment,
-            $hasPlaceholder,
-            AssertionCallFactory::ASSERT_TRUE_TEMPLATE
-        );
-
         $block = new CodeBlock([
-            $elementExistsAssertion,
             $elementOrCollectionAssignment,
         ]);
 

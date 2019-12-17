@@ -32,9 +32,9 @@ class NamedDomIdentifierHandlerTest extends AbstractBrowserTestCase
     }
 
     /**
-     * @dataProvider createSourceDataProvider
+     * @dataProvider handleDataProvider
      */
-    public function testCreateSource(
+    public function testHandle(
         string $fixture,
         NamedDomIdentifierInterface $namedDomIdentifier,
         CodeBlockInterface $teardownStatements
@@ -65,7 +65,7 @@ class NamedDomIdentifierHandlerTest extends AbstractBrowserTestCase
         }
     }
 
-    public function createSourceDataProvider(): array
+    public function handleDataProvider(): array
     {
         return [
             'element value, no parent' => [
