@@ -79,4 +79,27 @@ class DomIdentifierExistenceHandler
             AssertionCallFactory::ASSERT_TRUE_TEMPLATE
         );
     }
+
+    public function createExistenceAssertionForCollection(DomIdentifier $identifier): CodeBlockInterface
+    {
+        $hasCall = $this->domCrawlerNavigatorCallFactory->createHasCall($identifier);
+
+        $hasAssignmentVariableExports = new VariablePlaceholderCollection();
+        $hasPlaceholder = $hasAssignmentVariableExports->create('HAS');
+
+        $hasAssignment = new CodeBlock([
+            $hasCall,
+        ]);
+
+        $hasAssignment->mutateLastStatement(function ($content) use ($hasPlaceholder) {
+            return $hasPlaceholder . ' = ' . $content;
+        });
+        $hasAssignment->addVariableExportsToLastStatement($hasAssignmentVariableExports);
+
+        return $this->assertionCallFactory->createValueExistenceAssertionCall(
+            $hasAssignment,
+            $hasPlaceholder,
+            AssertionCallFactory::ASSERT_TRUE_TEMPLATE
+        );
+    }
 }
