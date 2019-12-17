@@ -135,4 +135,81 @@ class StepHandlerTest extends AbstractBrowserTestCase
             ],
         ];
     }
+
+    /**
+     * @dataProvider handleForFailingActionsDataProvider
+     */
+    public function testHandleForFailingActions(
+        string $fixture,
+        StepInterface $step,
+        string $expectedExpectationFailedExceptionMessage,
+        ?CodeBlockInterface $additionalSetupStatements = null,
+        ?CodeBlockInterface $teardownStatements = null,
+        array $additionalVariableIdentifiers = []
+    ) {
+        $source = $this->handler->handle($step);
+
+        $classCode = $this->testCodeGenerator->createBrowserTestForBlock(
+            $source,
+            $fixture,
+            $additionalSetupStatements,
+            $teardownStatements,
+            $additionalVariableIdentifiers
+        );
+
+        $testRunJob = $this->testRunner->createTestRunJob($classCode, 1);
+
+        if ($testRunJob instanceof TestRunJob) {
+            $this->testRunner->run($testRunJob);
+
+            $this->assertSame(
+                $testRunJob->getExpectedExitCode(),
+                $testRunJob->getExitCode(),
+                $testRunJob->getOutputAsString()
+            );
+
+            $this->assertStringContainsString(
+                $expectedExpectationFailedExceptionMessage,
+                $testRunJob->getOutputAsString()
+            );
+        }
+    }
+
+    public function handleForFailingActionsDataProvider(): array
+    {
+        $stepParser = StepParser::create();
+
+        return [
+            'wait action, element identifier examined value, element does not exist' => [
+                'fixture' => '/action-wait.html',
+                'step' => $stepParser->parse([
+                    'actions' => [
+                        'wait $".non-existent"',
+                    ],
+                ]),
+                'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
+                'additionalSetupStatements' => null,
+                'teardownStatements' => null,
+                'variableIdentifiers' => [
+                    'DURATION' => '$duration',
+                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
+                ],
+            ],
+            'wait, attribute identifier examined value, element does not exist' => [
+                'fixture' => '/action-wait.html',
+                'step' => $stepParser->parse([
+                    'actions' => [
+                        'wait $".non-existent".attribute_name',
+                    ],
+                ]),
+                'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
+                'additionalSetupStatements' => null,
+                'teardownStatements' => null,
+                'variableIdentifiers' => [
+                    'DURATION' => '$duration',
+                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
+                ],
+            ],
+        ];
+    }
 }

@@ -14,11 +14,9 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\WaitActio
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\WaitForActionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
-use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilModels\Action\ActionInterface;
-use webignition\BasilParser\ActionParser;
 
 class ActionHandlerTest extends AbstractBrowserTestCase
 {
@@ -81,74 +79,5 @@ class ActionHandlerTest extends AbstractBrowserTestCase
                 $testRunJob->getOutputAsString()
             );
         }
-    }
-
-    /**
-     * @dataProvider handleForFailingActionsDataProvider
-     */
-    public function testHandleForFailingActions(
-        string $fixture,
-        ActionInterface $action,
-        string $expectedExpectationFailedExceptionMessage,
-        ?CodeBlockInterface $additionalSetupStatements = null,
-        ?CodeBlockInterface $teardownStatements = null,
-        array $additionalVariableIdentifiers = []
-    ) {
-        $source = $this->handler->handle($action);
-
-        $classCode = $this->testCodeGenerator->createBrowserTestForBlock(
-            $source,
-            $fixture,
-            $additionalSetupStatements,
-            $teardownStatements,
-            $additionalVariableIdentifiers
-        );
-
-        $testRunJob = $this->testRunner->createTestRunJob($classCode, 1);
-
-        if ($testRunJob instanceof TestRunJob) {
-            $this->testRunner->run($testRunJob);
-
-            $this->assertSame(
-                $testRunJob->getExpectedExitCode(),
-                $testRunJob->getExitCode(),
-                $testRunJob->getOutputAsString()
-            );
-
-            $this->assertStringContainsString(
-                $expectedExpectationFailedExceptionMessage,
-                $testRunJob->getOutputAsString()
-            );
-        }
-    }
-
-    public function handleForFailingActionsDataProvider(): array
-    {
-        $actionParser = ActionParser::create();
-
-        return [
-            'wait action, element identifier examined value, element does not exist' => [
-                'fixture' => '/action-wait.html',
-                'action' => $actionParser->parse('wait $".non-existent"'),
-                'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
-                'additionalSetupStatements' => null,
-                'teardownStatements' => null,
-                'variableIdentifiers' => [
-                    'DURATION' => '$duration',
-                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
-                ],
-            ],
-            'wait, attribute identifier examined value, element does not exist' => [
-                'fixture' => '/action-wait.html',
-                'action' => $actionParser->parse('wait $".non-existent".attribute_name'),
-                'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
-                'additionalSetupStatements' => null,
-                'teardownStatements' => null,
-                'variableIdentifiers' => [
-                    'DURATION' => '$duration',
-                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
-                ],
-            ],
-        ];
     }
 }
