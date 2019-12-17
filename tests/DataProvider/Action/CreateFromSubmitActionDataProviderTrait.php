@@ -23,8 +23,6 @@ trait CreateFromSubmitActionDataProviderTrait
             'interaction action (submit), element identifier' => [
                 'action' => $actionParser->parse('submit $".selector"'),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
                     '{{ ELEMENT }}->submit()',
                 ]),
@@ -34,10 +32,8 @@ trait CreateFromSubmitActionDataProviderTrait
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::PHPUNIT_TEST_CASE,
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
-                        'HAS',
                         'ELEMENT',
                     ])),
             ],
