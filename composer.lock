@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "6be723cf19959aab842362d8f3294880",
+    "content-hash": "f30716005f950cbda82c85258b795566",
     "packages": [
         {
             "name": "facebook/webdriver",
@@ -749,23 +749,23 @@
         },
         {
             "name": "webignition/basil-identifier-analyser",
-            "version": "0.1",
+            "version": "0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/basil-identifier-analyser.git",
-                "reference": "541c15611e3592577f3deaf06f49023a5331f58c"
+                "reference": "c7e941bfd68caf26745642113463c473bbfeafa6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/basil-identifier-analyser/zipball/541c15611e3592577f3deaf06f49023a5331f58c",
-                "reference": "541c15611e3592577f3deaf06f49023a5331f58c",
+                "url": "https://api.github.com/repos/webignition/basil-identifier-analyser/zipball/c7e941bfd68caf26745642113463c473bbfeafa6",
+                "reference": "c7e941bfd68caf26745642113463c473bbfeafa6",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2"
             },
             "require-dev": {
-                "phpstan/phpstan": "^0.11.5",
+                "phpstan/phpstan": "^0.12",
                 "phpunit/phpunit": "~8.0",
                 "squizlabs/php_codesniffer": "3.*"
             },
@@ -786,7 +786,7 @@
                 }
             ],
             "homepage": "https://github.com/webignition/basil-identifier-analyser",
-            "time": "2019-12-04T14:46:54+00:00"
+            "time": "2019-12-17T10:28:56+00:00"
         },
         {
             "name": "webignition/basil-models",

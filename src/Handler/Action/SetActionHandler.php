@@ -78,10 +78,7 @@ class SetActionHandler
     {
         $identifier = $action->getIdentifier();
 
-        if (
-            !$this->identifierTypeAnalyser->isDomIdentifier($identifier) &&
-            !$this->identifierTypeAnalyser->isDescendantDomIdentifier($identifier)
-        ) {
+        if (!$this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
             throw new UnsupportedIdentifierException($identifier);
         }
 
@@ -101,10 +98,7 @@ class SetActionHandler
             new NamedDomIdentifier($domIdentifier, $collectionPlaceholder)
         );
 
-        if (
-            $this->identifierTypeAnalyser->isDomIdentifier($value) ||
-            $this->identifierTypeAnalyser->isDescendantDomIdentifier($value)
-        ) {
+        if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($value)) {
             $valueDomIdentifier = $this->domIdentifierFactory->create($value);
 
             $valueExistence = $this->domIdentifierExistenceHandler->createForElementOrCollection($valueDomIdentifier);

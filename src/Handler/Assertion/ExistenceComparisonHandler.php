@@ -108,10 +108,7 @@ class ExistenceComparisonHandler
             return $this->createAssertionCall($comparison, $existence, $valuePlaceholder);
         }
 
-        if (
-            $this->identifierTypeAnalyser->isDomIdentifier($identifier) ||
-            $this->identifierTypeAnalyser->isDescendantDomIdentifier($identifier)
-        ) {
+        if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
             $domIdentifier = $this->domIdentifierFactory->create($identifier);
 
             if (null === $domIdentifier->getAttributeName()) {
