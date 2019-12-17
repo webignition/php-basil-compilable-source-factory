@@ -96,9 +96,8 @@ class ComparisonAssertionHandler
         ) {
             $examinedValueDomIdentifier = $this->domIdentifierFactory->create($examinedValue);
 
-            $examinedValueExistence = $this->domIdentifierExistenceHandler->handle(
-                $examinedValueDomIdentifier,
-                null === $examinedValueDomIdentifier->getAttributeName()
+            $examinedValueExistence = $this->domIdentifierExistenceHandler->createForElementOrCollection(
+                $examinedValueDomIdentifier
             );
 
             $examinedValueAccess = $this->namedDomIdentifierHandler->handle(
@@ -123,9 +122,8 @@ class ComparisonAssertionHandler
         ) {
             $expectedValueDomIdentifier = $this->domIdentifierFactory->create($expectedValue);
 
-            $expectedValueExistence = $this->domIdentifierExistenceHandler->handle(
-                $expectedValueDomIdentifier,
-                null === $expectedValueDomIdentifier->getAttributeName()
+            $expectedValueExistence = $this->domIdentifierExistenceHandler->createForElementOrCollection(
+                $expectedValueDomIdentifier
             );
 
             $expectedValueAccess = $this->namedDomIdentifierHandler->handle(

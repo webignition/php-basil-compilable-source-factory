@@ -32,15 +32,14 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider handleDataProvider
+     * @dataProvider createForElementDataProvider
      */
-    public function testHandle(
+    public function testCreateForElement(
         DomIdentifier $identifier,
-        bool $asCollection,
         CodeBlockInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
-        $source = $this->handler->handle($identifier, $asCollection);
+        $source = $this->handler->createForElement($identifier);
 
         $this->assertInstanceOf(CodeBlockInterface::class, $source);
 
@@ -48,12 +47,11 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
         $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
     }
 
-    public function handleDataProvider(): array
+    public function createForElementDataProvider(): array
     {
         return [
-            'element, no parent' => [
+            'no parent' => [
                 'identifier' => new DomIdentifier('.selector'),
-                'asCollection' => false,
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
@@ -70,10 +68,9 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
                         'HAS',
                     ])),
             ],
-            'element, has parent' => [
+            'has parent' => [
                 'identifier' => (new DomIdentifier('.selector'))
                     ->withParentIdentifier(new DomIdentifier('.parent')),
-                'asCollection' => false,
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne('
                     . 'new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\')'
@@ -92,9 +89,30 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
                         'HAS',
                     ])),
             ],
-            'identifier, no parent' => [
+        ];
+    }
+
+    /**
+     * @dataProvider createForCollectionDataProvider
+     */
+    public function testCreateForCollection(
+        DomIdentifier $identifier,
+        CodeBlockInterface $expectedContent,
+        MetadataInterface $expectedMetadata
+    ) {
+        $source = $this->handler->createForCollection($identifier);
+
+        $this->assertInstanceOf(CodeBlockInterface::class, $source);
+
+        $this->assertBlockContentEquals($expectedContent, $source);
+        $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
+    }
+
+    public function createForCollectionDataProvider(): array
+    {
+        return [
+            'no parent' => [
                 'identifier' => new DomIdentifier('.selector'),
-                'asCollection' => true,
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
@@ -111,10 +129,9 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
                         'HAS',
                     ])),
             ],
-            'identifier, has parent' => [
+            'has parent' => [
                 'identifier' => (new DomIdentifier('.selector'))
                     ->withParentIdentifier(new DomIdentifier('.parent')),
-                'asCollection' => true,
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->has('
                     . 'new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\')'
@@ -133,9 +150,30 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
                         'HAS',
                     ])),
             ],
-            'element value, no parent' => [
+        ];
+    }
+
+    /**
+     * @dataProvider createForElementOrCollectionDataProvider
+     */
+    public function testCreateForElementOrCollection(
+        DomIdentifier $identifier,
+        CodeBlockInterface $expectedContent,
+        MetadataInterface $expectedMetadata
+    ) {
+        $source = $this->handler->createForElementOrCollection($identifier);
+
+        $this->assertInstanceOf(CodeBlockInterface::class, $source);
+
+        $this->assertBlockContentEquals($expectedContent, $source);
+        $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
+    }
+
+    public function createForElementOrCollectionDataProvider(): array
+    {
+        return [
+            'no attribute, no parent' => [
                 'identifier' => new DomIdentifier('.selector'),
-                'asCollection' => true,
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
@@ -152,13 +190,13 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
                         'HAS',
                     ])),
             ],
-            'element value, has parent' => [
+            'no attribute, has parent' => [
                 'identifier' => (new DomIdentifier('.selector'))
                     ->withParentIdentifier(new DomIdentifier('.parent')),
-                'asCollection' => true,
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ HAS }} = '
-                    . '{{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))',
+                    '{{ HAS }} = {{ NAVIGATOR }}->has('
+                    . 'new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\')'
+                    . ')',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
@@ -173,10 +211,9 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
                         'HAS',
                     ])),
             ],
-            'attribute value, no parent' => [
+            'has attribute, no parent' => [
                 'identifier' => (new DomIdentifier('.selector'))
                     ->withAttributeName('attribute_name'),
-                'asCollection' => false,
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
@@ -193,14 +230,14 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
                         'HAS',
                     ])),
             ],
-            'attribute value, has parent' => [
+            'has attribute, has parent' => [
                 'identifier' => (new DomIdentifier('.selector'))
                     ->withAttributeName('attribute_name')
                     ->withParentIdentifier(new DomIdentifier('.parent')),
-                'asCollection' => false,
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ HAS }} = {{ NAVIGATOR }}'
-                    . '->hasOne(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))',
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne('
+                    . 'new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\')'
+                    . ')',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                 ]),
                 'expectedMetadata' => (new Metadata())

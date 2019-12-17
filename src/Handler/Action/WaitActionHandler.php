@@ -89,9 +89,8 @@ class WaitActionHandler
         ) {
             $durationIdentifier = $this->domIdentifierFactory->create($duration);
 
-            $durationExistence = $this->domIdentifierExistenceHandler->handle(
-                $durationIdentifier,
-                null === $durationIdentifier->getAttributeName()
+            $durationExistence = $this->domIdentifierExistenceHandler->createForElementOrCollection(
+                $durationIdentifier
             );
 
             $durationAccess = $this->namedDomIdentifierHandler->handle(

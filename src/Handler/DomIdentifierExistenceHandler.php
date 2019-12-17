@@ -32,12 +32,29 @@ class DomIdentifierExistenceHandler
         );
     }
 
-    public function handle(DomIdentifier $identifier, bool $asCollection): CodeBlockInterface
+    public function createForElementOrCollection(DomIdentifier $identifier): CodeBlockInterface
     {
-        $hasCall = $asCollection
-            ? $this->domCrawlerNavigatorCallFactory->createHasCall($identifier)
-            : $this->domCrawlerNavigatorCallFactory->createHasOneCall($identifier);
+        return null === $identifier->getAttributeName()
+            ? $this->createForCollection($identifier)
+            : $this->createForElement($identifier);
+    }
 
+    public function createForElement(DomIdentifier $identifier): CodeBlockInterface
+    {
+        return $this->create(
+            $this->domCrawlerNavigatorCallFactory->createHasOneCall($identifier)
+        );
+    }
+
+    public function createForCollection(DomIdentifier $identifier): CodeBlockInterface
+    {
+        return $this->create(
+            $this->domCrawlerNavigatorCallFactory->createHasCall($identifier)
+        );
+    }
+
+    private function create(CodeBlockInterface $hasCall): CodeBlockInterface
+    {
         $hasAssignmentVariableExports = new VariablePlaceholderCollection();
         $hasPlaceholder = $hasAssignmentVariableExports->create('HAS');
 
