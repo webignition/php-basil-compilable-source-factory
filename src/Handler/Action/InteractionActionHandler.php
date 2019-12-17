@@ -77,7 +77,7 @@ class InteractionActionHandler
         $variableExports = new VariablePlaceholderCollection();
         $elementPlaceholder = $variableExports->create('ELEMENT');
 
-        $existence = $this->domIdentifierExistenceHandler->createExistenceAssertion($domIdentifier, false);
+        $existence = $this->domIdentifierExistenceHandler->createExistenceAssertionForElement($domIdentifier);
         $access = $this->namedDomIdentifierHandler->handle(
             new NamedDomElementIdentifier($domIdentifier, $elementPlaceholder)
         );
