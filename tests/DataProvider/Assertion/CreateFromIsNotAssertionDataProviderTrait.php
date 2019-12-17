@@ -25,8 +25,6 @@ trait CreateFromIsNotAssertionDataProviderTrait
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ EXPECTED }} = "value" ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '{{ EXAMINED }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
                     '{{ EXAMINED }} = {{ INSPECTOR }}->getValue({{ EXAMINED }}) ?? null',
                     '{{ EXAMINED }} = (string) {{ EXAMINED }}',
@@ -43,7 +41,6 @@ trait CreateFromIsNotAssertionDataProviderTrait
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
                         VariableNames::EXPECTED_VALUE,
-                        'HAS',
                         VariableNames::EXAMINED_VALUE,
                     ])),
             ],
@@ -52,8 +49,6 @@ trait CreateFromIsNotAssertionDataProviderTrait
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ EXPECTED }} = "value" ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '{{ EXAMINED }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
                     '{{ EXAMINED }} = {{ EXAMINED }}->getAttribute(\'attribute_name\') ?? null',
                     '{{ EXAMINED }} = (string) {{ EXAMINED }}',
@@ -69,7 +64,6 @@ trait CreateFromIsNotAssertionDataProviderTrait
                     ]))
                     ->withVariableExports(VariablePlaceholderCollection::createCollection([
                         VariableNames::EXPECTED_VALUE,
-                        'HAS',
                         VariableNames::EXAMINED_VALUE,
                     ])),
             ],
