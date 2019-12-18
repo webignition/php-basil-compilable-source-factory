@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional;
 
-use webignition\BasePantherTestCase\Options;
 use webignition\BasilCodeGenerator\ClassGenerator;
 use webignition\BasilCompilableSourceFactory\ClassDefinitionFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
@@ -17,6 +16,7 @@ use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\MethodDefinition\MethodDefinitionInterface;
 use webignition\BasilModels\Test\TestInterface;
 use webignition\BasilParser\Test\TestParser;
+use webignition\SymfonyPantherWebServerRunner\Options;
 
 class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
 {
