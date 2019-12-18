@@ -38,8 +38,8 @@
         "webignition/basil-identifier-analyser": ">=0.2,<1",
         "webignition/basil-models": ">=0.21,<1",
         "webignition/php-basil-compilation-source": ">=0.64,<1",
-        "webignition/php-dom-element-locator": ">=0.1,<1",
-        "webignition/symfony-panther-dom-crawler-navigator": ">=0.13,<1",
+        "webignition/php-dom-element-locator": ">=0.2,<1",
+        "webignition/symfony-panther-dom-crawler-navigator": ">=0.14,<1",
         "webignition/webdriver-element-inspector": ">=0.6,<1",
         "webignition/webdriver-element-mutator": ">=0.2,<1"
     },
@@ -50,7 +50,7 @@
         "phpstan/phpstan-mockery": "^0.12",
         "phpunit/phpunit": "~8.0",
         "squizlabs/php_codesniffer": "3.*",
-        "webignition/base-panther-test-case": "^0.2.0",
+        "webignition/base-panther-test-case": ">=0.3,<1",
         "webignition/basil-parser": ">=0.8,<1"
     }
 }
