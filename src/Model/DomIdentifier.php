@@ -43,4 +43,19 @@ class DomIdentifier extends ElementLocator
 
         return $new;
     }
+
+    public function __toString(): string
+    {
+        $string = '$' . parent::__toString();
+
+        if (null !== $this->parentIdentifier) {
+            $string = '{{ ' . (string) $this->parentIdentifier . ' }} ' . $string;
+        }
+
+        if (null !== $this->attributeName) {
+            $string .= '.' . $this->attributeName;
+        }
+
+        return $string;
+    }
 }
