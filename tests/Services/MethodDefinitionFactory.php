@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
-use webignition\BasePantherTestCase\Options;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractGeneratedTestCase;
 use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Block\CodeBlock;
@@ -16,6 +15,7 @@ use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\MethodDefinition\MethodDefinition;
 use webignition\BasilCompilationSource\MethodDefinition\MethodDefinitionInterface;
+use webignition\SymfonyPantherWebServerRunner\Options;
 
 class MethodDefinitionFactory
 {

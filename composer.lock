@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8f6d1810fe42073f35e7295a0e182166",
+    "content-hash": "98ec3791ba58ec3020b486c50761fe73",
     "packages": [
         {
             "name": "facebook/webdriver",
@@ -65,6 +65,142 @@
                 "webdriver"
             ],
             "time": "2019-06-13T08:02:18+00:00"
+        },
+        {
+            "name": "nikic/php-parser",
+            "version": "v4.3.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/nikic/PHP-Parser.git",
+                "reference": "9a9981c347c5c49d6dfe5cf826bb882b824080dc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/9a9981c347c5c49d6dfe5cf826bb882b824080dc",
+                "reference": "9a9981c347c5c49d6dfe5cf826bb882b824080dc",
+                "shasum": ""
+            },
+            "require": {
+                "ext-tokenizer": "*",
+                "php": ">=7.0"
+            },
+            "require-dev": {
+                "ircmaxell/php-yacc": "0.0.5",
+                "phpunit/phpunit": "^6.5 || ^7.0 || ^8.0"
+            },
+            "bin": [
+                "bin/php-parse"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "4.3-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "PhpParser\\": "lib/PhpParser"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "BSD-3-Clause"
+            ],
+            "authors": [
+                {
+                    "name": "Nikita Popov"
+                }
+            ],
+            "description": "A PHP parser written in PHP",
+            "keywords": [
+                "parser",
+                "php"
+            ],
+            "time": "2019-11-08T13:50:10+00:00"
+        },
+        {
+            "name": "phpstan/extension-installer",
+            "version": "1.0.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpstan/extension-installer.git",
+                "reference": "295656793c53b5eb73a38486032ad1bd650264bc"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpstan/extension-installer/zipball/295656793c53b5eb73a38486032ad1bd650264bc",
+                "reference": "295656793c53b5eb73a38486032ad1bd650264bc",
+                "shasum": ""
+            },
+            "require": {
+                "composer-plugin-api": "^1.1",
+                "php": "^7.1",
+                "phpstan/phpstan": ">=0.11.6"
+            },
+            "require-dev": {
+                "composer/composer": "^1.8",
+                "consistence/coding-standard": "^3.8",
+                "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
+                "jakub-onderka/php-parallel-lint": "^1.0",
+                "phing/phing": "^2.16",
+                "phpstan/phpstan-strict-rules": "^0.11",
+                "slevomat/coding-standard": "^5.0.4"
+            },
+            "type": "composer-plugin",
+            "extra": {
+                "class": "PHPStan\\ExtensionInstaller\\Plugin"
+            },
+            "autoload": {
+                "psr-4": {
+                    "PHPStan\\ExtensionInstaller\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "Composer plugin for automatic installation of PHPStan extensions",
+            "time": "2019-10-18T17:09:48+00:00"
+        },
+        {
+            "name": "phpstan/phpstan",
+            "version": "0.12.3",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/phpstan/phpstan.git",
+                "reference": "c15a6ea55da71d8133399306f560cfe4d30301b7"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/c15a6ea55da71d8133399306f560cfe4d30301b7",
+                "reference": "c15a6ea55da71d8133399306f560cfe4d30301b7",
+                "shasum": ""
+            },
+            "require": {
+                "nikic/php-parser": "^4.3.0",
+                "php": "^7.1"
+            },
+            "bin": [
+                "phpstan",
+                "phpstan.phar"
+            ],
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "0.12-dev"
+                }
+            },
+            "autoload": {
+                "files": [
+                    "bootstrap.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "PHPStan - PHP Static Analysis Tool",
+            "time": "2019-12-14T13:41:17+00:00"
         },
         {
             "name": "psr/log",
@@ -790,23 +926,23 @@
         },
         {
             "name": "webignition/basil-models",
-            "version": "0.21",
+            "version": "0.23",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/basil-models.git",
-                "reference": "dc2a5e460d6f7540ef4035c5c3dd7a2764b112fa"
+                "reference": "53af23c1918aa9bb1d1ef09a9dcad76eaf13d531"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/basil-models/zipball/dc2a5e460d6f7540ef4035c5c3dd7a2764b112fa",
-                "reference": "dc2a5e460d6f7540ef4035c5c3dd7a2764b112fa",
+                "url": "https://api.github.com/repos/webignition/basil-models/zipball/53af23c1918aa9bb1d1ef09a9dcad76eaf13d531",
+                "reference": "53af23c1918aa9bb1d1ef09a9dcad76eaf13d531",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2"
             },
             "require-dev": {
-                "phpstan/phpstan": "^0.11.5",
+                "phpstan/phpstan": "^0.12",
                 "phpunit/phpunit": "~8.0",
                 "squizlabs/php_codesniffer": "3.*"
             },
@@ -827,7 +963,7 @@
                 }
             ],
             "homepage": "https://github.com/webignition/basil-models",
-            "time": "2019-12-16T14:46:01+00:00"
+            "time": "2019-12-18T12:14:15+00:00"
         },
         {
             "name": "webignition/php-basil-compilation-source",
@@ -873,23 +1009,23 @@
         },
         {
             "name": "webignition/php-dom-element-locator",
-            "version": "0.1",
+            "version": "0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/php-dom-element-locator.git",
-                "reference": "78873e1f6d77b83672bd14f3e5e0dce07c63b828"
+                "reference": "5f86d51d0a40fc7e8817d229adfbd33106010a63"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/php-dom-element-locator/zipball/78873e1f6d77b83672bd14f3e5e0dce07c63b828",
-                "reference": "78873e1f6d77b83672bd14f3e5e0dce07c63b828",
+                "url": "https://api.github.com/repos/webignition/php-dom-element-locator/zipball/5f86d51d0a40fc7e8817d229adfbd33106010a63",
+                "reference": "5f86d51d0a40fc7e8817d229adfbd33106010a63",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2"
             },
             "require-dev": {
-                "phpstan/phpstan": "^0.11.16",
+                "phpstan/phpstan": "^0.12",
                 "phpunit/phpunit": "~8.0",
                 "squizlabs/php_codesniffer": "3.*"
             },
@@ -911,33 +1047,34 @@
             ],
             "description": "Model for identifying the location of an element within a DOM",
             "homepage": "https://github.com/webignition/php-dom-element-locator",
-            "time": "2019-09-25T16:49:40+00:00"
+            "time": "2019-12-18T15:59:38+00:00"
         },
         {
             "name": "webignition/symfony-panther-dom-crawler-navigator",
-            "version": "0.13",
+            "version": "0.14",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/symfony-panther-dom-crawler-navigator.git",
-                "reference": "5784f4eb170bfba01848cddc155c574a18616e81"
+                "reference": "3adef48d5ed4d3c1335d995c3b41577d3878c133"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/symfony-panther-dom-crawler-navigator/zipball/5784f4eb170bfba01848cddc155c574a18616e81",
-                "reference": "5784f4eb170bfba01848cddc155c574a18616e81",
+                "url": "https://api.github.com/repos/webignition/symfony-panther-dom-crawler-navigator/zipball/3adef48d5ed4d3c1335d995c3b41577d3878c133",
+                "reference": "3adef48d5ed4d3c1335d995c3b41577d3878c133",
                 "shasum": ""
             },
             "require": {
                 "facebook/webdriver": "^1.7.1",
                 "php": ">=7.2",
+                "phpstan/extension-installer": "^1.0",
                 "symfony/panther": "^0.6",
-                "webignition/php-dom-element-locator": "^0.1.0",
+                "webignition/php-dom-element-locator": ">=0.1,<1",
                 "webignition/web-driver-element-collection": ">=0.5,<1"
             },
             "require-dev": {
                 "mockery/mockery": "^1.2",
-                "phpstan/phpstan": "^0.11.15",
-                "phpstan/phpstan-mockery": "^0.11.3",
+                "phpstan/phpstan": "^0.12",
+                "phpstan/phpstan-mockery": "^0.12",
                 "phpunit/phpunit": "~8.0",
                 "squizlabs/php_codesniffer": "3.*",
                 "webignition/base-panther-test-case": "^0.1.0"
@@ -960,7 +1097,7 @@
             ],
             "description": "Navigate around a symfony panther dom crawler using convenience methods",
             "homepage": "https://github.com/webignition/symfony-panther-dom-crawler-navigatorr",
-            "time": "2019-10-31T17:07:06+00:00"
+            "time": "2019-12-18T16:33:50+00:00"
         },
         {
             "name": "webignition/web-driver-element-collection",
@@ -1956,58 +2093,6 @@
             "time": "2019-03-22T01:00:30+00:00"
         },
         {
-            "name": "nikic/php-parser",
-            "version": "v4.3.0",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/nikic/PHP-Parser.git",
-                "reference": "9a9981c347c5c49d6dfe5cf826bb882b824080dc"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/nikic/PHP-Parser/zipball/9a9981c347c5c49d6dfe5cf826bb882b824080dc",
-                "reference": "9a9981c347c5c49d6dfe5cf826bb882b824080dc",
-                "shasum": ""
-            },
-            "require": {
-                "ext-tokenizer": "*",
-                "php": ">=7.0"
-            },
-            "require-dev": {
-                "ircmaxell/php-yacc": "0.0.5",
-                "phpunit/phpunit": "^6.5 || ^7.0 || ^8.0"
-            },
-            "bin": [
-                "bin/php-parse"
-            ],
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "4.3-dev"
-                }
-            },
-            "autoload": {
-                "psr-4": {
-                    "PhpParser\\": "lib/PhpParser"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "BSD-3-Clause"
-            ],
-            "authors": [
-                {
-                    "name": "Nikita Popov"
-                }
-            ],
-            "description": "A PHP parser written in PHP",
-            "keywords": [
-                "parser",
-                "php"
-            ],
-            "time": "2019-11-08T13:50:10+00:00"
-        },
-        {
             "name": "ocramius/package-versions",
             "version": "1.4.0",
             "source": {
@@ -2373,50 +2458,6 @@
             "time": "2019-10-03T11:07:50+00:00"
         },
         {
-            "name": "phpstan/extension-installer",
-            "version": "1.0.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phpstan/extension-installer.git",
-                "reference": "295656793c53b5eb73a38486032ad1bd650264bc"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/extension-installer/zipball/295656793c53b5eb73a38486032ad1bd650264bc",
-                "reference": "295656793c53b5eb73a38486032ad1bd650264bc",
-                "shasum": ""
-            },
-            "require": {
-                "composer-plugin-api": "^1.1",
-                "php": "^7.1",
-                "phpstan/phpstan": ">=0.11.6"
-            },
-            "require-dev": {
-                "composer/composer": "^1.8",
-                "consistence/coding-standard": "^3.8",
-                "dealerdirect/phpcodesniffer-composer-installer": "^0.4.4",
-                "jakub-onderka/php-parallel-lint": "^1.0",
-                "phing/phing": "^2.16",
-                "phpstan/phpstan-strict-rules": "^0.11",
-                "slevomat/coding-standard": "^5.0.4"
-            },
-            "type": "composer-plugin",
-            "extra": {
-                "class": "PHPStan\\ExtensionInstaller\\Plugin"
-            },
-            "autoload": {
-                "psr-4": {
-                    "PHPStan\\ExtensionInstaller\\": "src/"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "Composer plugin for automatic installation of PHPStan extensions",
-            "time": "2019-10-18T17:09:48+00:00"
-        },
-        {
             "name": "phpstan/phpdoc-parser",
             "version": "0.4.2",
             "source": {
@@ -2463,46 +2504,6 @@
             ],
             "description": "PHPDoc parser with support for nullable, intersection and generic types",
             "time": "2019-12-13T12:03:22+00:00"
-        },
-        {
-            "name": "phpstan/phpstan",
-            "version": "0.12.3",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/phpstan/phpstan.git",
-                "reference": "c15a6ea55da71d8133399306f560cfe4d30301b7"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/phpstan/phpstan/zipball/c15a6ea55da71d8133399306f560cfe4d30301b7",
-                "reference": "c15a6ea55da71d8133399306f560cfe4d30301b7",
-                "shasum": ""
-            },
-            "require": {
-                "nikic/php-parser": "^4.3.0",
-                "php": "^7.1"
-            },
-            "bin": [
-                "phpstan",
-                "phpstan.phar"
-            ],
-            "type": "library",
-            "extra": {
-                "branch-alias": {
-                    "dev-master": "0.12-dev"
-                }
-            },
-            "autoload": {
-                "files": [
-                    "bootstrap.php"
-                ]
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "description": "PHPStan - PHP Static Analysis Tool",
-            "time": "2019-12-14T13:41:17+00:00"
         },
         {
             "name": "phpstan/phpstan-mockery",
@@ -3833,30 +3834,30 @@
         },
         {
             "name": "webignition/base-basil-test-case",
-            "version": "0.1",
+            "version": "0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/base-basil-test-case.git",
-                "reference": "765590941f76cecb32460602970a5d32282bd497"
+                "reference": "ee73dc3d0694098c84aa8ff78bc4e2593e3e0d30"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/base-basil-test-case/zipball/765590941f76cecb32460602970a5d32282bd497",
-                "reference": "765590941f76cecb32460602970a5d32282bd497",
+                "url": "https://api.github.com/repos/webignition/base-basil-test-case/zipball/ee73dc3d0694098c84aa8ff78bc4e2593e3e0d30",
+                "reference": "ee73dc3d0694098c84aa8ff78bc4e2593e3e0d30",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2",
                 "phpunit/phpunit": "~8.0",
                 "symfony/panther": "^0.6",
-                "webignition/symfony-panther-dom-crawler-navigator": "^0.13.0",
-                "webignition/webdriver-element-inspector": "^0.6.0",
-                "webignition/webdriver-element-mutator": "^0.2.0"
+                "webignition/symfony-panther-dom-crawler-navigator": ">=0.14,<1",
+                "webignition/webdriver-element-inspector": ">=0.6,<1",
+                "webignition/webdriver-element-mutator": ">=0.2,<1"
             },
             "require-dev": {
-                "phpstan/phpstan": "^0.11.15",
+                "phpstan/phpstan": "^0.12",
                 "squizlabs/php_codesniffer": "3.*",
-                "webignition/base-panther-test-case": "^0.1.0"
+                "webignition/symfony-panther-webserver-runner": ">=0.1,<1"
             },
             "type": "library",
             "autoload": {
@@ -3875,31 +3876,32 @@
                 }
             ],
             "homepage": "https://github.com/webignition/base-basil-test-case",
-            "time": "2019-11-01T10:19:36+00:00"
+            "time": "2019-12-18T17:57:31+00:00"
         },
         {
             "name": "webignition/base-panther-test-case",
-            "version": "0.2",
+            "version": "0.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/base-panther-test-case.git",
-                "reference": "3b6c884b909249ae25624d765e50e0e82910bb30"
+                "reference": "26a4ed09478c7a7ef7f338619d7413d4c84ae878"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/base-panther-test-case/zipball/3b6c884b909249ae25624d765e50e0e82910bb30",
-                "reference": "3b6c884b909249ae25624d765e50e0e82910bb30",
+                "url": "https://api.github.com/repos/webignition/base-panther-test-case/zipball/26a4ed09478c7a7ef7f338619d7413d4c84ae878",
+                "reference": "26a4ed09478c7a7ef7f338619d7413d4c84ae878",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2",
                 "phpunit/phpunit": "~8.0",
                 "symfony/panther": "^0.6",
-                "webignition/base-basil-test-case": "^0.1.0"
+                "webignition/base-basil-test-case": ">=0.1,<1"
             },
             "require-dev": {
                 "phpstan/phpstan": "^0.11.15",
-                "squizlabs/php_codesniffer": "3.*"
+                "squizlabs/php_codesniffer": "3.*",
+                "webignition/symfony-panther-webserver-runner": ">=0.1,<1"
             },
             "type": "library",
             "autoload": {
@@ -3918,26 +3920,26 @@
                 }
             ],
             "homepage": "https://github.com/webignition/base-panther-test-case",
-            "time": "2019-11-01T10:53:35+00:00"
+            "time": "2019-12-18T17:36:02+00:00"
         },
         {
             "name": "webignition/basil-parser",
-            "version": "0.8",
+            "version": "0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/basil-parser.git",
-                "reference": "33c61366ea0217e927f3bb33efa2b1b0377a2a3c"
+                "reference": "db0920a8d212ee0b0f4d667fe4f0046dafe08274"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/basil-parser/zipball/33c61366ea0217e927f3bb33efa2b1b0377a2a3c",
-                "reference": "33c61366ea0217e927f3bb33efa2b1b0377a2a3c",
+                "url": "https://api.github.com/repos/webignition/basil-parser/zipball/db0920a8d212ee0b0f4d667fe4f0046dafe08274",
+                "reference": "db0920a8d212ee0b0f4d667fe4f0046dafe08274",
                 "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
                 "php": ">=7.2",
-                "webignition/basil-models": ">=0.3,<1",
+                "webignition/basil-models": ">=0.19,<1",
                 "webignition/php-path-resolver": ">=0.1,<1"
             },
             "require-dev": {
@@ -3963,7 +3965,7 @@
             ],
             "description": "Parses raw basil data into basic data structures",
             "homepage": "https://github.com/webignition/basil-parser",
-            "time": "2019-12-05T11:12:35+00:00"
+            "time": "2019-12-06T11:51:08+00:00"
         },
         {
             "name": "webignition/php-path-resolver",
@@ -4011,6 +4013,48 @@
                 "resolver"
             ],
             "time": "2019-11-22T15:49:36+00:00"
+        },
+        {
+            "name": "webignition/symfony-panther-webserver-runner",
+            "version": "0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/webignition/symfony-panther-webserver-runner.git",
+                "reference": "2f2c204b41251ee97c71d2ded4312b8c10ed9f59"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/webignition/symfony-panther-webserver-runner/zipball/2f2c204b41251ee97c71d2ded4312b8c10ed9f59",
+                "reference": "2f2c204b41251ee97c71d2ded4312b8c10ed9f59",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2",
+                "symfony/panther": "^0.6"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^0.12",
+                "phpunit/phpunit": "^8.5",
+                "squizlabs/php_codesniffer": "3.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "webignition\\SymfonyPantherWebServerRunner\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jon Cram",
+                    "email": "webignition@gmail.com"
+                }
+            ],
+            "homepage": "https://github.com/webignition/symfony-panther-webserver-runner",
+            "time": "2019-12-18T17:29:16+00:00"
         },
         {
             "name": "webmozart/assert",
