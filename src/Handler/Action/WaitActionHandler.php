@@ -8,14 +8,14 @@ use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
-use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
-use webignition\BasilCompilableSourceFactory\ModelFactory\DomIdentifier\DomIdentifierFactory;
+use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
+use webignition\BasilDomIdentifier\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Action\WaitActionInterface;
 
@@ -79,7 +79,10 @@ class WaitActionHandler
         }
 
         if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($duration)) {
-            $durationIdentifier = $this->domIdentifierFactory->create($duration);
+            $durationIdentifier = $this->domIdentifierFactory->createFromIdentifierString($duration);
+            if (null === $durationIdentifier) {
+                throw new UnsupportedIdentifierException($duration);
+            }
 
             $durationAccessor = $this->namedDomIdentifierHandler->handle(
                 new NamedDomIdentifierValue($durationIdentifier, $durationPlaceholder)
