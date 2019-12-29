@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\ModelFactory;
 
 use webignition\BasilCompilableSourceFactory\Model\EnvironmentValue;
-use webignition\BasilCompilableSourceFactory\QuotedStringExtractor;
+use webignition\QuotedStringValueExtractor\QuotedStringValueExtractor;
 
 class EnvironmentValueFactory
 {
@@ -13,17 +13,17 @@ class EnvironmentValueFactory
     private const WITH_DEFAULT_PATTERN = '/^[^|]+\|/';
     private const DEFAULT_DELIMITER = '|';
 
-    private $quotedStringExtractor;
+    private $quotedStringValueExtractor;
 
-    public function __construct(QuotedStringExtractor $quotedValueExtractor)
+    public function __construct(QuotedStringValueExtractor $quotedStringValueExtractor)
     {
-        $this->quotedStringExtractor = $quotedValueExtractor;
+        $this->quotedStringValueExtractor = $quotedStringValueExtractor;
     }
 
     public static function createFactory(): EnvironmentValueFactory
     {
         return new EnvironmentValueFactory(
-            new QuotedStringExtractor()
+            QuotedStringValueExtractor::createExtractor()
         );
     }
 
@@ -42,7 +42,7 @@ class EnvironmentValueFactory
             $defaultPart = $propertyNameDefaultParts[1];
 
             if ('' !== $defaultPart) {
-                $default = $this->quotedStringExtractor->getQuotedValue($defaultPart);
+                $default = $this->quotedStringValueExtractor->getValue($defaultPart);
             }
         }
 
