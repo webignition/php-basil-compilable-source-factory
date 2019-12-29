@@ -14,7 +14,7 @@ use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Comment;
 use webignition\BasilCompilationSource\Line\EmptyLine;
-use webignition\BasilDomIdentifier\Factory as DomIdentifierFactory;
+use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Action\ActionInterface;
 use webignition\BasilModels\Action\InputActionInterface;

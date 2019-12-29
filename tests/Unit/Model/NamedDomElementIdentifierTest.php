@@ -6,7 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 
 use webignition\BasilCompilableSourceFactory\Model\NamedDomElementIdentifier;
 use webignition\BasilCompilationSource\VariablePlaceholder;
-use webignition\BasilDomIdentifier\Model\DomIdentifier;
+use webignition\BasilDomIdentifier\DomIdentifier;
 
 class NamedDomElementIdentifierTest extends \PHPUnit\Framework\TestCase
 {

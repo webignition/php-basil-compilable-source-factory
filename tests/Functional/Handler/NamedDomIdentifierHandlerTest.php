@@ -15,7 +15,7 @@ use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholder;
-use webignition\BasilDomIdentifier\Model\DomIdentifier;
+use webignition\BasilDomIdentifier\DomIdentifier;
 
 class NamedDomIdentifierHandlerTest extends AbstractBrowserTestCase
 {
