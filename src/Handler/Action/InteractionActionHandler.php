@@ -7,11 +7,11 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomElementIdentifier;
-use webignition\BasilCompilableSourceFactory\ModelFactory\DomIdentifier\DomIdentifierFactory;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
+use webignition\BasilDomIdentifier\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Action\InteractionActionInterface;
 
@@ -55,7 +55,10 @@ class InteractionActionHandler
             throw new UnsupportedIdentifierException($identifier);
         }
 
-        $domIdentifier = $this->domIdentifierFactory->create($identifier);
+        $domIdentifier = $this->domIdentifierFactory->createFromIdentifierString($identifier);
+        if (null === $domIdentifier) {
+            throw new UnsupportedIdentifierException($identifier);
+        }
 
         if (null !== $domIdentifier->getAttributeName()) {
             throw new UnsupportedIdentifierException($identifier);
