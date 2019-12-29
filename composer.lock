@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "47fd8bf58cf85477197681d883cd91fb",
+    "content-hash": "fd12d9804377a1ff6109f715b09f8393",
     "packages": [
         {
             "name": "facebook/webdriver",
