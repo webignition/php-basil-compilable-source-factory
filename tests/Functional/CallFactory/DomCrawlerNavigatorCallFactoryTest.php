@@ -6,13 +6,13 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Functional\CallFactory;
 
 use Facebook\WebDriver\WebDriverElement;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
-use webignition\BasilCompilableSourceFactory\Model\DomIdentifier;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
+use webignition\BasilDomIdentifier\Model\DomIdentifier;
 
 class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
 {

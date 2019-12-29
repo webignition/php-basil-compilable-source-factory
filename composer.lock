@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "98ec3791ba58ec3020b486c50761fe73",
+    "content-hash": "47fd8bf58cf85477197681d883cd91fb",
     "packages": [
         {
             "name": "facebook/webdriver",
@@ -884,6 +884,50 @@
             "time": "2019-11-16T13:13:46+00:00"
         },
         {
+            "name": "webignition/basil-dom-identifier",
+            "version": "0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/webignition/basil-dom-identifier.git",
+                "reference": "f229463a02f2d4633af7823b0f4ae3baa862f6d9"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/webignition/basil-dom-identifier/zipball/f229463a02f2d4633af7823b0f4ae3baa862f6d9",
+                "reference": "f229463a02f2d4633af7823b0f4ae3baa862f6d9",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2",
+                "webignition/basil-identifier-analyser": ">=0.2,<1",
+                "webignition/php-dom-element-locator": ">=0.2,<1",
+                "webignition/quoted-string-value-extractor": ">=0.1.0,<1"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^0.12",
+                "phpunit/phpunit": "~8.0",
+                "squizlabs/php_codesniffer": "3.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "webignition\\BasilDomIdentifier\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jon Cram",
+                    "email": "webignition@gmail.com"
+                }
+            ],
+            "homepage": "https://github.com/webignition/basil-dom-identifier",
+            "time": "2019-12-29T16:38:59+00:00"
+        },
+        {
             "name": "webignition/basil-identifier-analyser",
             "version": "0.2",
             "source": {
@@ -1048,6 +1092,47 @@
             "description": "Model for identifying the location of an element within a DOM",
             "homepage": "https://github.com/webignition/php-dom-element-locator",
             "time": "2019-12-18T15:59:38+00:00"
+        },
+        {
+            "name": "webignition/quoted-string-value-extractor",
+            "version": "0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/webignition/quoted-string-value-extractor.git",
+                "reference": "b5283c7818a9e73cf14f48714d3754c88b8f5bcb"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/webignition/quoted-string-value-extractor/zipball/b5283c7818a9e73cf14f48714d3754c88b8f5bcb",
+                "reference": "b5283c7818a9e73cf14f48714d3754c88b8f5bcb",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.2"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^0.12",
+                "phpunit/phpunit": "~8.0",
+                "squizlabs/php_codesniffer": "3.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "webignition\\QuotedStringValueExtractor\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jon Cram",
+                    "email": "webignition@gmail.com"
+                }
+            ],
+            "homepage": "https://github.com/webignition/quoted-string-value-extractor",
+            "time": "2019-12-29T12:17:17+00:00"
         },
         {
             "name": "webignition/symfony-panther-dom-crawler-navigator",

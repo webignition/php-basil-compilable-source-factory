@@ -12,10 +12,10 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
-use webignition\BasilCompilableSourceFactory\ModelFactory\DomIdentifier\DomIdentifierFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
+use webignition\BasilDomIdentifier\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Assertion\ComparisonAssertionInterface;
 
@@ -32,10 +32,10 @@ class ComparisonAssertionHandler
     private $assertionCallFactory;
     private $scalarValueHandler;
     private $namedDomIdentifierHandler;
-    private $domIdentifierFactory;
     private $identifierTypeAnalyser;
     private $variableAssignmentFactory;
     private $accessorDefaultValueFactory;
+    private $domIdentifierFactory;
 
     public function __construct(
         AssertionCallFactory $assertionCallFactory,
@@ -43,16 +43,16 @@ class ComparisonAssertionHandler
         ScalarValueHandler $scalarValueHandler,
         NamedDomIdentifierHandler $namedDomIdentifierHandler,
         AccessorDefaultValueFactory $accessorDefaultValueFactory,
-        DomIdentifierFactory $domIdentifierFactory,
-        IdentifierTypeAnalyser $identifierTypeAnalyser
+        IdentifierTypeAnalyser $identifierTypeAnalyser,
+        DomIdentifierFactory $domIdentifierFactory
     ) {
         $this->assertionCallFactory = $assertionCallFactory;
         $this->scalarValueHandler = $scalarValueHandler;
         $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
-        $this->domIdentifierFactory = $domIdentifierFactory;
         $this->identifierTypeAnalyser = $identifierTypeAnalyser;
         $this->variableAssignmentFactory = $variableAssignmentFactory;
         $this->accessorDefaultValueFactory = $accessorDefaultValueFactory;
+        $this->domIdentifierFactory = $domIdentifierFactory;
     }
 
     public static function createHandler(): ComparisonAssertionHandler
@@ -63,8 +63,8 @@ class ComparisonAssertionHandler
             ScalarValueHandler::createHandler(),
             NamedDomIdentifierHandler::createHandler(),
             AccessorDefaultValueFactory::createFactory(),
-            DomIdentifierFactory::createFactory(),
-            new IdentifierTypeAnalyser()
+            new IdentifierTypeAnalyser(),
+            DomIdentifierFactory::createFactory()
         );
     }
 
@@ -85,7 +85,10 @@ class ComparisonAssertionHandler
         $expectedValue = $assertion->getValue();
 
         if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($examinedValue)) {
-            $examinedValueDomIdentifier = $this->domIdentifierFactory->create($examinedValue);
+            $examinedValueDomIdentifier = $this->domIdentifierFactory->createFromIdentifierString($examinedValue);
+            if (null === $examinedValueDomIdentifier) {
+                throw new UnsupportedIdentifierException($examinedValue);
+            }
 
             $examinedValueAccessor = $this->namedDomIdentifierHandler->handle(
                 new NamedDomIdentifierValue($examinedValueDomIdentifier, $examinedValuePlaceholder)
@@ -99,7 +102,10 @@ class ComparisonAssertionHandler
         }
 
         if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($expectedValue)) {
-            $expectedValueDomIdentifier = $this->domIdentifierFactory->create($expectedValue);
+            $expectedValueDomIdentifier = $this->domIdentifierFactory->createFromIdentifierString($expectedValue);
+            if (null === $expectedValueDomIdentifier) {
+                throw new UnsupportedIdentifierException($expectedValue);
+            }
 
             $expectedValueAccessor = $this->namedDomIdentifierHandler->handle(
                 new NamedDomIdentifierValue(

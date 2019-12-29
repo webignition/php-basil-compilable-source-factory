@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Model;
 
 use webignition\BasilCompilationSource\VariablePlaceholder;
+use webignition\BasilDomIdentifier\Model\DomIdentifier;
 
 abstract class AbstractNamedDomIdentifier implements NamedDomIdentifierInterface
 {

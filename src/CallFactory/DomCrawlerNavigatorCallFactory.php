@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
-use webignition\BasilCompilableSourceFactory\Model\DomIdentifier;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
+use webignition\BasilDomIdentifier\Model\DomIdentifier;
 
 class DomCrawlerNavigatorCallFactory
 {

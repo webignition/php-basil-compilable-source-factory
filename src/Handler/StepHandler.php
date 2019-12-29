@@ -10,11 +10,11 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierExce
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
-use webignition\BasilCompilableSourceFactory\ModelFactory\DomIdentifier\DomIdentifierFactory;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Comment;
 use webignition\BasilCompilationSource\Line\EmptyLine;
+use webignition\BasilDomIdentifier\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Action\ActionInterface;
 use webignition\BasilModels\Action\InputActionInterface;
@@ -120,7 +120,12 @@ class StepHandler
         StatementInterface $action
     ): CodeBlockInterface {
         $elementExistsAssertion = new DerivedElementExistsAssertion($action, $identifier);
-        $domIdentifier = $this->domIdentifierFactory->create($identifier);
+
+        $domIdentifier = $this->domIdentifierFactory->createFromIdentifierString($identifier);
+        if (null === $domIdentifier) {
+            throw new UnsupportedIdentifierException($identifier);
+        }
+
         $elementExistsBlock = $this->domIdentifierExistenceHandler->createForElement($domIdentifier);
 
         return $this->createStatementBlock($elementExistsAssertion, $elementExistsBlock);
@@ -139,7 +144,12 @@ class StepHandler
         StatementInterface $action
     ): CodeBlockInterface {
         $elementExistsAssertion = new DerivedElementExistsAssertion($action, $identifier);
-        $domIdentifier = $this->domIdentifierFactory->create($identifier);
+
+        $domIdentifier = $this->domIdentifierFactory->createFromIdentifierString($identifier);
+        if (null === $domIdentifier) {
+            throw new UnsupportedIdentifierException($identifier);
+        }
+
         $elementExistsBlock = $this->domIdentifierExistenceHandler->createForCollection($domIdentifier);
 
         return $this->createStatementBlock($elementExistsAssertion, $elementExistsBlock);

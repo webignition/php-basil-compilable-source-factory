@@ -28,7 +28,7 @@ trait WaitActionFunctionalDataProviderTrait
             ],
             'wait action, element value' => [
                 'fixture' => $fixture,
-                'action' => $actionParser->parse('wait $"[id="element-value"]"'),
+                'action' => $actionParser->parse('wait $"[id=\"element-value\"]"'),
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [
@@ -39,7 +39,7 @@ trait WaitActionFunctionalDataProviderTrait
             ],
             'wait action, attribute value, attribute exists' => [
                 'fixture' => $fixture,
-                'action' => $actionParser->parse('wait $"[id="attribute-value"]".data-duration'),
+                'action' => $actionParser->parse('wait $"[id=\"attribute-value\"]".data-duration'),
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [
@@ -50,7 +50,7 @@ trait WaitActionFunctionalDataProviderTrait
             ],
             'wait action, attribute value, attribute does not exist' => [
                 'fixture' => $fixture,
-                'action' => $actionParser->parse('wait $"[id="attribute-value"]".data-non-existent'),
+                'action' => $actionParser->parse('wait $"[id=\"attribute-value\"]".data-non-existent'),
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [
