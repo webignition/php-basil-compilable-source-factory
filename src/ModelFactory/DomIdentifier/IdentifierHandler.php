@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\ModelFactory\DomIdentifier;
 
-use webignition\BasilCompilableSourceFactory\Model\DomIdentifier;
 use webignition\BasilCompilableSourceFactory\ModelFactory\IdentifierStringValueAndPositionExtractor;
 use webignition\BasilCompilableSourceFactory\QuotedStringExtractor;
+use webignition\BasilDomIdentifier\Model\DomIdentifier;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 
 class IdentifierHandler

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\ModelFactory\DomIdentifier;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
-use webignition\BasilCompilableSourceFactory\Model\DomIdentifier;
+use webignition\BasilDomIdentifier\Model\DomIdentifier;
 
 class DomIdentifierFactory
 {

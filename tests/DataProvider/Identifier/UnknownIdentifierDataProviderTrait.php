@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Identifier;
 
-use webignition\BasilCompilableSourceFactory\Model\DomIdentifier;
-
 trait UnknownIdentifierDataProviderTrait
 {
     public function unknownIdentifierStringDataProvider(): array

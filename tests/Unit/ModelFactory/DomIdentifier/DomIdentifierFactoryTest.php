@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\ModelFactory\DomIdentifier;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
-use webignition\BasilCompilableSourceFactory\Model\DomIdentifier;
 use webignition\BasilCompilableSourceFactory\ModelFactory\DomIdentifier\DomIdentifierFactory;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Identifier\AttributeIdentifierDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Identifier\CssSelectorIdentifierDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Identifier\DescendantIdentifierDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Identifier\UnknownIdentifierDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Identifier\XpathExpressionIdentifierDataProviderTrait;
+use webignition\BasilDomIdentifier\Model\DomIdentifier;
 
 class DomIdentifierFactoryTest extends \PHPUnit\Framework\TestCase
 {
