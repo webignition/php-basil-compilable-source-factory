@@ -9,14 +9,14 @@ use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFacto
 use webignition\BasilCompilableSourceFactory\CallFactory\WebDriverElementMutatorCallFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
-use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifier;
-use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
-use webignition\BasilCompilableSourceFactory\ModelFactory\DomIdentifier\DomIdentifierFactory;
+use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifier;
+use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
+use webignition\BasilDomIdentifier\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Action\InputActionInterface;
 
@@ -78,7 +78,10 @@ class SetActionHandler
         }
 
         $value = $action->getValue();
-        $domIdentifier = $this->domIdentifierFactory->create($identifier);
+        $domIdentifier = $this->domIdentifierFactory->createFromIdentifierString($identifier);
+        if (null === $domIdentifier) {
+            throw new UnsupportedIdentifierException($identifier);
+        }
 
         if (null !== $domIdentifier->getAttributeName()) {
             throw new UnsupportedIdentifierException($identifier);
@@ -93,7 +96,10 @@ class SetActionHandler
         );
 
         if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($value)) {
-            $valueDomIdentifier = $this->domIdentifierFactory->create($value);
+            $valueDomIdentifier = $this->domIdentifierFactory->createFromIdentifierString($value);
+            if (null ===  $valueDomIdentifier) {
+                throw new UnsupportedIdentifierException($value);
+            }
 
             $valueAccessor = $this->namedDomIdentifierHandler->handle(
                 new NamedDomIdentifierValue($valueDomIdentifier, $valuePlaceholder)
