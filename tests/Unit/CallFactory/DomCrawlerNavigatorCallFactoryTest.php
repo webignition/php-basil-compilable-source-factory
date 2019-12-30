@@ -14,7 +14,8 @@ use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\BasilDomIdentifier\DomIdentifier;
+use webignition\DomElementIdentifier\DomIdentifier;
+use webignition\DomElementIdentifier\DomIdentifierInterface;
 use webignition\DomElementLocator\ElementLocator;
 
 class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
@@ -34,7 +35,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
     /**
      * @dataProvider createFindCallDataProvider
      */
-    public function testCreateFindCall(DomIdentifier $identifier, CodeBlockInterface $expectedBlock)
+    public function testCreateFindCall(DomIdentifierInterface $identifier, CodeBlockInterface $expectedBlock)
     {
         $statement = $this->factory->createFindCall($identifier);
 
@@ -49,7 +50,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
     /**
      * @dataProvider createFindOneCallDataProvider
      */
-    public function testCreateFindOneCall(DomIdentifier $identifier, CodeBlockInterface $expectedBlock)
+    public function testCreateFindOneCall(DomIdentifierInterface $identifier, CodeBlockInterface $expectedBlock)
     {
         $statement = $this->factory->createFindOneCall($identifier);
 
@@ -64,7 +65,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
     /**
      * @dataProvider createHasCallDataProvider
      */
-    public function testCreateHasCall(DomIdentifier $identifier, CodeBlockInterface $expectedBlock)
+    public function testCreateHasCall(DomIdentifierInterface $identifier, CodeBlockInterface $expectedBlock)
     {
         $statement = $this->factory->createHasCall($identifier);
 
@@ -79,7 +80,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
     /**
      * @dataProvider createHasOneCallDataProvider
      */
-    public function testCreateHasOneCall(DomIdentifier $identifier, CodeBlockInterface $expectedBlock)
+    public function testCreateHasOneCall(DomIdentifierInterface $identifier, CodeBlockInterface $expectedBlock)
     {
         $statement = $this->factory->createHasOneCall($identifier);
 
