@@ -14,8 +14,8 @@ use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\DomElementIdentifier\DomIdentifier;
-use webignition\DomElementIdentifier\DomIdentifierInterface;
+use webignition\DomElementIdentifier\ElementIdentifier;
+use webignition\DomElementIdentifier\ElementIdentifierInterface;
 use webignition\DomElementLocator\ElementLocator;
 
 class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
@@ -35,7 +35,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
     /**
      * @dataProvider createFindCallDataProvider
      */
-    public function testCreateFindCall(DomIdentifierInterface $identifier, CodeBlockInterface $expectedBlock)
+    public function testCreateFindCall(ElementIdentifierInterface $identifier, CodeBlockInterface $expectedBlock)
     {
         $statement = $this->factory->createFindCall($identifier);
 
@@ -50,7 +50,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
     /**
      * @dataProvider createFindOneCallDataProvider
      */
-    public function testCreateFindOneCall(DomIdentifierInterface $identifier, CodeBlockInterface $expectedBlock)
+    public function testCreateFindOneCall(ElementIdentifierInterface $identifier, CodeBlockInterface $expectedBlock)
     {
         $statement = $this->factory->createFindOneCall($identifier);
 
@@ -65,7 +65,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
     /**
      * @dataProvider createHasCallDataProvider
      */
-    public function testCreateHasCall(DomIdentifierInterface $identifier, CodeBlockInterface $expectedBlock)
+    public function testCreateHasCall(ElementIdentifierInterface $identifier, CodeBlockInterface $expectedBlock)
     {
         $statement = $this->factory->createHasCall($identifier);
 
@@ -80,7 +80,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
     /**
      * @dataProvider createHasOneCallDataProvider
      */
-    public function testCreateHasOneCall(DomIdentifierInterface $identifier, CodeBlockInterface $expectedBlock)
+    public function testCreateHasOneCall(ElementIdentifierInterface $identifier, CodeBlockInterface $expectedBlock)
     {
         $statement = $this->factory->createHasOneCall($identifier);
 
@@ -113,7 +113,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
     {
         return [
             'no parent, no ordinal position' => [
-                'identifier' => new DomIdentifier('.selector'),
+                'identifier' => new ElementIdentifier('.selector'),
                 'expectedBlock' => new CodeBlock([
                     new Statement(
                         '{{ NAVIGATOR }}->{{ METHOD }}(new ElementLocator(\'.selector\'))',
@@ -128,7 +128,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
                 ]),
             ],
             'no parent, has ordinal position' => [
-                'identifier' => new DomIdentifier('.selector', 3),
+                'identifier' => new ElementIdentifier('.selector', 3),
                 'expectedBlock' => new CodeBlock([
                     new Statement(
                         '{{ NAVIGATOR }}->{{ METHOD }}(new ElementLocator(\'.selector\', 3))',
@@ -143,8 +143,8 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
                 ]),
             ],
             'has parent, no ordinal position' => [
-                'identifier' => (new DomIdentifier('.selector'))
-                    ->withParentIdentifier(new DomIdentifier('.parent')),
+                'identifier' => (new ElementIdentifier('.selector'))
+                    ->withParentIdentifier(new ElementIdentifier('.parent')),
                 'expectedBlock' => new CodeBlock([
                     new Statement(
                         '{{ NAVIGATOR }}->'
@@ -160,8 +160,8 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
                 ]),
             ],
             'has parent, has ordinal position' => [
-                'identifier' => (new DomIdentifier('.selector', 2))
-                    ->withParentIdentifier(new DomIdentifier('.parent')),
+                'identifier' => (new ElementIdentifier('.selector', 2))
+                    ->withParentIdentifier(new ElementIdentifier('.parent')),
                 'expectedBlock' => new CodeBlock([
                     new Statement(
                         '{{ NAVIGATOR }}'
@@ -177,8 +177,8 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
                 ]),
             ],
             'has parent, has ordinal positions' => [
-                'identifier' => (new DomIdentifier('.selector', 3))
-                    ->withParentIdentifier(new DomIdentifier('.parent', 4)),
+                'identifier' => (new ElementIdentifier('.selector', 3))
+                    ->withParentIdentifier(new ElementIdentifier('.parent', 4)),
                 'expectedBlock' => new CodeBlock([
                     new Statement(
                         '{{ NAVIGATOR }}'

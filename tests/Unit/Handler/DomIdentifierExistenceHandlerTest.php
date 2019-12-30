@@ -14,8 +14,9 @@ use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\Metadata\MetadataInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\DomElementIdentifier\DomIdentifier;
-use webignition\DomElementIdentifier\DomIdentifierInterface;
+use webignition\DomElementIdentifier\AttributeIdentifier;
+use webignition\DomElementIdentifier\ElementIdentifier;
+use webignition\DomElementIdentifier\ElementIdentifierInterface;
 use webignition\DomElementLocator\ElementLocator;
 
 class DomIdentifierExistenceHandlerTest extends AbstractTestCase
@@ -36,7 +37,7 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
      * @dataProvider createForElementDataProvider
      */
     public function testCreateForElement(
-        DomIdentifierInterface $identifier,
+        ElementIdentifierInterface $identifier,
         CodeBlockInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
@@ -52,7 +53,7 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
     {
         return [
             'no parent' => [
-                'identifier' => new DomIdentifier('.selector'),
+                'identifier' => new ElementIdentifier('.selector'),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
@@ -70,8 +71,8 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
                     ])),
             ],
             'has parent' => [
-                'identifier' => (new DomIdentifier('.selector'))
-                    ->withParentIdentifier(new DomIdentifier('.parent')),
+                'identifier' => (new ElementIdentifier('.selector'))
+                    ->withParentIdentifier(new ElementIdentifier('.parent')),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne('
                     . 'new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\')'
@@ -97,7 +98,7 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
      * @dataProvider createForCollectionDataProvider
      */
     public function testCreateForCollection(
-        DomIdentifierInterface $identifier,
+        ElementIdentifierInterface $identifier,
         CodeBlockInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
@@ -113,7 +114,7 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
     {
         return [
             'no parent' => [
-                'identifier' => new DomIdentifier('.selector'),
+                'identifier' => new ElementIdentifier('.selector'),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
@@ -131,8 +132,8 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
                     ])),
             ],
             'has parent' => [
-                'identifier' => (new DomIdentifier('.selector'))
-                    ->withParentIdentifier(new DomIdentifier('.parent')),
+                'identifier' => (new ElementIdentifier('.selector'))
+                    ->withParentIdentifier(new ElementIdentifier('.parent')),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->has('
                     . 'new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\')'
@@ -158,7 +159,7 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
      * @dataProvider createForElementOrCollectionDataProvider
      */
     public function testCreateForElementOrCollection(
-        DomIdentifierInterface $identifier,
+        ElementIdentifierInterface $identifier,
         CodeBlockInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
@@ -174,7 +175,7 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
     {
         return [
             'no attribute, no parent' => [
-                'identifier' => new DomIdentifier('.selector'),
+                'identifier' => new ElementIdentifier('.selector'),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
@@ -192,8 +193,8 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
                     ])),
             ],
             'no attribute, has parent' => [
-                'identifier' => (new DomIdentifier('.selector'))
-                    ->withParentIdentifier(new DomIdentifier('.parent')),
+                'identifier' => (new ElementIdentifier('.selector'))
+                    ->withParentIdentifier(new ElementIdentifier('.parent')),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->has('
                     . 'new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\')'
@@ -213,8 +214,7 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
                     ])),
             ],
             'has attribute, no parent' => [
-                'identifier' => (new DomIdentifier('.selector'))
-                    ->withAttributeName('attribute_name'),
+                'identifier' => new AttributeIdentifier('.selector', 'attribute_name'),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
@@ -232,9 +232,8 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
                     ])),
             ],
             'has attribute, has parent' => [
-                'identifier' => (new DomIdentifier('.selector'))
-                    ->withAttributeName('attribute_name')
-                    ->withParentIdentifier(new DomIdentifier('.parent')),
+                'identifier' => (new AttributeIdentifier('.selector', 'attribute_name'))
+                    ->withParentIdentifier(new ElementIdentifier('.parent')),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne('
                     . 'new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\')'

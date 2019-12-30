@@ -12,7 +12,7 @@ use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
-use webignition\DomElementIdentifier\DomIdentifierInterface;
+use webignition\DomElementIdentifier\ElementIdentifierInterface;
 use webignition\DomElementLocator\ElementLocator;
 
 class ElementLocatorCallFactory
@@ -38,7 +38,7 @@ class ElementLocatorCallFactory
         );
     }
 
-    public function createConstructorCall(DomIdentifierInterface $elementIdentifier): CodeBlockInterface
+    public function createConstructorCall(ElementIdentifierInterface $elementIdentifier): CodeBlockInterface
     {
         $elementLocator = $elementIdentifier->getLocator();
 

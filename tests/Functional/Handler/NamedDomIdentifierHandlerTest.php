@@ -15,7 +15,8 @@ use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholder;
-use webignition\DomElementIdentifier\DomIdentifier;
+use webignition\DomElementIdentifier\AttributeIdentifier;
+use webignition\DomElementIdentifier\ElementIdentifier;
 
 class NamedDomIdentifierHandlerTest extends AbstractBrowserTestCase
 {
@@ -71,7 +72,7 @@ class NamedDomIdentifierHandlerTest extends AbstractBrowserTestCase
             'element value, no parent' => [
                 'fixture' => '/form.html',
                 'model' => new NamedDomIdentifierValue(
-                    new DomIdentifier('input', 1),
+                    new ElementIdentifier('input', 1),
                     new VariablePlaceholder('ELEMENT')
                 ),
                 'teardownStatements' => new CodeBlock([
@@ -81,8 +82,8 @@ class NamedDomIdentifierHandlerTest extends AbstractBrowserTestCase
             'element value, has parent' => [
                 'fixture' => '/form.html',
                 'model' => new NamedDomIdentifierValue(
-                    (new DomIdentifier('input', 1))
-                        ->withParentIdentifier(new DomIdentifier('form[action="/action2"]')),
+                    (new ElementIdentifier('input', 1))
+                        ->withParentIdentifier(new ElementIdentifier('form[action="/action2"]')),
                     new VariablePlaceholder('ELEMENT')
                 ),
                 'teardownStatements' => new CodeBlock([
@@ -92,8 +93,7 @@ class NamedDomIdentifierHandlerTest extends AbstractBrowserTestCase
             'attribute value, no parent' => [
                 'fixture' => '/form.html',
                 'model' => new NamedDomIdentifierValue(
-                    (new DomIdentifier('input', 1))
-                        ->withAttributeName('name'),
+                    new AttributeIdentifier('input', 'name', 1),
                     new VariablePlaceholder('ELEMENT')
                 ),
                 'teardownStatements' => new CodeBlock([
@@ -103,9 +103,8 @@ class NamedDomIdentifierHandlerTest extends AbstractBrowserTestCase
             'attribute value, has parent' => [
                 'fixture' => '/form.html',
                 'model' => new NamedDomIdentifierValue(
-                    (new DomIdentifier('input', 1))
-                        ->withAttributeName('name')
-                        ->withParentIdentifier(new DomIdentifier('form[action="/action2"]')),
+                    (new AttributeIdentifier('input', 'name', 1))
+                        ->withParentIdentifier(new ElementIdentifier('form[action="/action2"]')),
                     new VariablePlaceholder('ELEMENT')
                 ),
                 'teardownStatements' => new CodeBlock([
@@ -115,7 +114,7 @@ class NamedDomIdentifierHandlerTest extends AbstractBrowserTestCase
             'element identifier, no parent' => [
                 'fixture' => '/form.html',
                 'model' => new NamedDomIdentifier(
-                    new DomIdentifier('input', 1),
+                    new ElementIdentifier('input', 1),
                     new VariablePlaceholder('ELEMENT')
                 ),
                 'teardownStatements' => new CodeBlock([
@@ -127,8 +126,8 @@ class NamedDomIdentifierHandlerTest extends AbstractBrowserTestCase
             'element identifier, has parent' => [
                 'fixture' => '/form.html',
                 'model' => new NamedDomIdentifier(
-                    (new DomIdentifier('input', 1))
-                        ->withParentIdentifier(new DomIdentifier('form[action="/action2"]')),
+                    (new ElementIdentifier('input', 1))
+                        ->withParentIdentifier(new ElementIdentifier('form[action="/action2"]')),
                     new VariablePlaceholder('ELEMENT')
                 ),
                 'teardownStatements' => new CodeBlock([

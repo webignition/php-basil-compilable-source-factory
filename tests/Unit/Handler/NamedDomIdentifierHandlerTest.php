@@ -19,7 +19,8 @@ use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\Metadata\MetadataInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\DomElementIdentifier\DomIdentifier;
+use webignition\DomElementIdentifier\AttributeIdentifier;
+use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\DomElementLocator\ElementLocator;
 
 class NamedDomIdentifierHandlerTest extends AbstractTestCase
@@ -57,7 +58,7 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
         return [
             'element, no parent' => [
                 'value' => new NamedDomElementIdentifier(
-                    new DomIdentifier('.selector'),
+                    new ElementIdentifier('.selector'),
                     new VariablePlaceholder('E')
                 ),
                 'expectedContent' => CodeBlock::fromContent([
@@ -76,8 +77,8 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
             ],
             'element, has parent' => [
                 'value' => new NamedDomElementIdentifier(
-                    (new DomIdentifier('.selector'))
-                        ->withParentIdentifier(new DomIdentifier('.parent')),
+                    (new ElementIdentifier('.selector'))
+                        ->withParentIdentifier(new ElementIdentifier('.parent')),
                     new VariablePlaceholder('E')
                 ),
                 'expectedContent' => CodeBlock::fromContent([
@@ -98,7 +99,7 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
             ],
             'identifier, no parent' => [
                 'value' => new NamedDomIdentifier(
-                    new DomIdentifier('.selector'),
+                    new ElementIdentifier('.selector'),
                     new VariablePlaceholder('E')
                 ),
                 'expectedContent' => CodeBlock::fromContent([
@@ -117,8 +118,8 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
             ],
             'identifier, has parent' => [
                 'value' => new NamedDomIdentifier(
-                    (new DomIdentifier('.selector'))
-                        ->withParentIdentifier(new DomIdentifier('.parent')),
+                    (new ElementIdentifier('.selector'))
+                        ->withParentIdentifier(new ElementIdentifier('.parent')),
                     new VariablePlaceholder('E')
                 ),
                 'expectedContent' => CodeBlock::fromContent([
@@ -139,7 +140,7 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
             ],
             'element value, no parent' => [
                 'value' => new NamedDomIdentifierValue(
-                    new DomIdentifier('.selector'),
+                    new ElementIdentifier('.selector'),
                     new VariablePlaceholder('E')
                 ),
                 'expectedContent' => CodeBlock::fromContent([
@@ -160,8 +161,8 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
             ],
             'element value, has parent' => [
                 'value' => new NamedDomIdentifierValue(
-                    (new DomIdentifier('.selector'))
-                        ->withParentIdentifier(new DomIdentifier('.parent')),
+                    (new ElementIdentifier('.selector'))
+                        ->withParentIdentifier(new ElementIdentifier('.parent')),
                     new VariablePlaceholder('E')
                 ),
                 'expectedContent' => CodeBlock::fromContent([
@@ -183,8 +184,7 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
             ],
             'attribute value, no parent' => [
                 'value' => new NamedDomIdentifierValue(
-                    (new DomIdentifier('.selector'))
-                        ->withAttributeName('attribute_name'),
+                    new AttributeIdentifier('.selector', 'attribute_name'),
                     new VariablePlaceholder('E')
                 ),
                 'expectedContent' => CodeBlock::fromContent([
@@ -204,9 +204,8 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
             ],
             'attribute value, has parent' => [
                 'value' => new NamedDomIdentifierValue(
-                    (new DomIdentifier('.selector'))
-                        ->withAttributeName('attribute_name')
-                        ->withParentIdentifier(new DomIdentifier('.parent')),
+                    (new AttributeIdentifier('.selector', 'attribute_name'))
+                        ->withParentIdentifier(new ElementIdentifier('.parent')),
                     new VariablePlaceholder('E')
                 ),
                 'expectedContent' => CodeBlock::fromContent([

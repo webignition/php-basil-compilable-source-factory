@@ -19,6 +19,7 @@ use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Action\InputActionInterface;
+use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
 class SetActionHandler
 {
@@ -83,7 +84,7 @@ class SetActionHandler
             throw new UnsupportedIdentifierException($identifier);
         }
 
-        if (null !== $domIdentifier->getAttributeName()) {
+        if ($domIdentifier instanceof AttributeIdentifierInterface) {
             throw new UnsupportedIdentifierException($identifier);
         }
 
@@ -97,6 +98,7 @@ class SetActionHandler
 
         if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($value)) {
             $valueDomIdentifier = $this->domIdentifierFactory->createFromIdentifierString($value);
+
             if (null ===  $valueDomIdentifier) {
                 throw new UnsupportedIdentifierException($value);
             }

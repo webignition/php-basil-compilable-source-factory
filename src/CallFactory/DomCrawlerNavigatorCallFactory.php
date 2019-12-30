@@ -10,7 +10,7 @@ use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\DomElementIdentifier\DomIdentifierInterface;
+use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
 class DomCrawlerNavigatorCallFactory
 {
@@ -28,27 +28,27 @@ class DomCrawlerNavigatorCallFactory
         );
     }
 
-    public function createFindCall(DomIdentifierInterface $identifier): CodeBlockInterface
+    public function createFindCall(ElementIdentifierInterface $identifier): CodeBlockInterface
     {
         return $this->createElementCall($identifier, 'find');
     }
 
-    public function createFindOneCall(DomIdentifierInterface $identifier): CodeBlockInterface
+    public function createFindOneCall(ElementIdentifierInterface $identifier): CodeBlockInterface
     {
         return $this->createElementCall($identifier, 'findOne');
     }
 
-    public function createHasCall(DomIdentifierInterface $identifier): CodeBlockInterface
+    public function createHasCall(ElementIdentifierInterface $identifier): CodeBlockInterface
     {
         return $this->createElementCall($identifier, 'has');
     }
 
-    public function createHasOneCall(DomIdentifierInterface $identifier): CodeBlockInterface
+    public function createHasOneCall(ElementIdentifierInterface $identifier): CodeBlockInterface
     {
         return $this->createElementCall($identifier, 'hasOne');
     }
 
-    private function createElementCall(DomIdentifierInterface $identifier, string $methodName): CodeBlockInterface
+    private function createElementCall(ElementIdentifierInterface $identifier, string $methodName): CodeBlockInterface
     {
         $arguments = $this->createElementCallArguments($identifier);
 
@@ -71,12 +71,12 @@ class DomCrawlerNavigatorCallFactory
         ]);
     }
 
-    private function createElementCallArguments(DomIdentifierInterface $elementIdentifier): CodeBlockInterface
+    private function createElementCallArguments(ElementIdentifierInterface $elementIdentifier): CodeBlockInterface
     {
         $elementConstructorBlock = $this->elementLocatorCallFactory->createConstructorCall($elementIdentifier);
 
         $parentIdentifier = $elementIdentifier->getParentIdentifier();
-        if ($parentIdentifier instanceof DomIdentifierInterface) {
+        if ($parentIdentifier instanceof ElementIdentifierInterface) {
             $parentConstructorBlock = $this->elementLocatorCallFactory->createConstructorCall($parentIdentifier);
 
             $metadata = new Metadata();

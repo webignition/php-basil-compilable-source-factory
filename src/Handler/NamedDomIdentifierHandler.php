@@ -12,6 +12,7 @@ use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
+use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
 class NamedDomIdentifierHandler
 {
@@ -41,7 +42,6 @@ class NamedDomIdentifierHandler
     public function handle(NamedDomIdentifierInterface $namedDomIdentifier): CodeBlockInterface
     {
         $identifier = $namedDomIdentifier->getIdentifier();
-        $hasAttribute = null !== $identifier->getAttributeName();
 
         $findCall = $namedDomIdentifier->asCollection()
             ? $this->domCrawlerNavigatorCallFactory->createFindCall($identifier)
@@ -65,7 +65,7 @@ class NamedDomIdentifierHandler
         ]);
 
         if ($namedDomIdentifier->includeValue()) {
-            if ($hasAttribute) {
+            if ($identifier instanceof AttributeIdentifierInterface) {
                 $valueAssignment = new CodeBlock([
                     new Statement(sprintf(
                         '%s = %s->getAttribute(\'%s\')',
