@@ -22,6 +22,7 @@ use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Assertion\AssertionInterface;
+use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
 class ExistenceComparisonHandler
 {
@@ -114,7 +115,7 @@ class ExistenceComparisonHandler
                 throw new UnsupportedIdentifierException($identifier);
             }
 
-            if (null === $domIdentifier->getAttributeName()) {
+            if (!$domIdentifier instanceof AttributeIdentifierInterface) {
                 $accessor = $this->domCrawlerNavigatorCallFactory->createHasCall($domIdentifier);
 
                 $assignment = new CodeBlock([

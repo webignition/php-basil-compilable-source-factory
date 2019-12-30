@@ -14,6 +14,7 @@ use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Action\InteractionActionInterface;
+use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
 class InteractionActionHandler
 {
@@ -60,7 +61,7 @@ class InteractionActionHandler
             throw new UnsupportedIdentifierException($identifier);
         }
 
-        if (null !== $domIdentifier->getAttributeName()) {
+        if ($domIdentifier instanceof AttributeIdentifierInterface) {
             throw new UnsupportedIdentifierException($identifier);
         }
 

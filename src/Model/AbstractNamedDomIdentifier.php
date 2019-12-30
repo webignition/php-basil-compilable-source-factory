@@ -5,20 +5,21 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Model;
 
 use webignition\BasilCompilationSource\VariablePlaceholder;
-use webignition\DomElementIdentifier\DomIdentifierInterface;
+use webignition\DomElementIdentifier\AttributeIdentifierInterface;
+use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
 abstract class AbstractNamedDomIdentifier implements NamedDomIdentifierInterface
 {
     private $identifier;
     private $placeholder;
 
-    public function __construct(DomIdentifierInterface $identifier, VariablePlaceholder $placeholder)
+    public function __construct(ElementIdentifierInterface $identifier, VariablePlaceholder $placeholder)
     {
         $this->identifier = $identifier;
         $this->placeholder = $placeholder;
     }
 
-    public function getIdentifier(): DomIdentifierInterface
+    public function getIdentifier(): ElementIdentifierInterface
     {
         return $this->identifier;
     }
@@ -30,6 +31,6 @@ abstract class AbstractNamedDomIdentifier implements NamedDomIdentifierInterface
 
     public function includeValue(): bool
     {
-        return null !== $this->identifier->getAttributeName();
+        return $this->identifier instanceof AttributeIdentifierInterface;
     }
 }

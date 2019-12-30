@@ -6,13 +6,14 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifier;
 use webignition\BasilCompilationSource\VariablePlaceholder;
-use webignition\DomElementIdentifier\DomIdentifier;
+use webignition\DomElementIdentifier\AttributeIdentifier;
+use webignition\DomElementIdentifier\ElementIdentifier;
 
 class NamedDomIdentifierTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreate()
     {
-        $identifier = new DomIdentifier('.selector');
+        $identifier = new ElementIdentifier('.selector');
         $placeholder = new VariablePlaceholder('PLACEHOLDER');
 
         $namedDomElementIdentifier = new NamedDomIdentifier($identifier, $placeholder);
@@ -25,11 +26,13 @@ class NamedDomIdentifierTest extends \PHPUnit\Framework\TestCase
     public function testIncludeValue()
     {
         $placeholder = new VariablePlaceholder('PLACEHOLDER');
-        $identifier = new DomIdentifier('.selector');
 
-        $elementIdentifier = new NamedDomIdentifier($identifier, $placeholder);
+        $elementIdentifier = new NamedDomIdentifier(
+            new ElementIdentifier('.selector'),
+            $placeholder
+        );
         $attributeIdentifier = new NamedDomIdentifier(
-            $identifier->withAttributeName('attribute_name'),
+            new AttributeIdentifier('.selector', 'attribute_name'),
             $placeholder
         );
 

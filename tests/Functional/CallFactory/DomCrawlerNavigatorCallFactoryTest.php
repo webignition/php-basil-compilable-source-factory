@@ -12,8 +12,8 @@ use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
-use webignition\DomElementIdentifier\DomIdentifier;
-use webignition\DomElementIdentifier\DomIdentifierInterface;
+use webignition\DomElementIdentifier\ElementIdentifier;
+use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
 class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
 {
@@ -34,7 +34,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
      */
     public function testCreateFindCall(
         string $fixture,
-        DomIdentifierInterface $identifier,
+        ElementIdentifierInterface $identifier,
         CodeBlockInterface $teardownStatements
     ) {
         $source = $this->factory->createFindCall($identifier);
@@ -69,7 +69,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
         return [
             'no parent, has ordinal position' => [
                 'fixture' => '/form.html',
-                'identifier' => new DomIdentifier('input', 1),
+                'identifier' => new ElementIdentifier('input', 1),
                 'teardownStatements' => new CodeBlock([
                     StatementFactory::createAssertCount('1', '$collection'),
                     new Statement('$element = $collection->get(0)'),
@@ -79,8 +79,8 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
             ],
             'has parent' => [
                 'fixture' => '/form.html',
-                'identifier' => (new DomIdentifier('input'))
-                    ->withParentIdentifier(new DomIdentifier('form[action="/action2"]')),
+                'identifier' => (new ElementIdentifier('input'))
+                    ->withParentIdentifier(new ElementIdentifier('form[action="/action2"]')),
                 'teardownStatements' => new CodeBlock([
                     StatementFactory::createAssertCount('1', '$collection'),
                     new Statement('$element = $collection->get(0)'),
