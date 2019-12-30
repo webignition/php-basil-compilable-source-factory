@@ -39,13 +39,17 @@ class SingleQuotedStringEscaperTest extends \PHPUnit\Framework\TestCase
                 'string' => "'value'",
                 'expectedEscapedString' => "\'value\'",
             ],
-            'contains in single quotes' => [
+            'contains single quotes' => [
                 'string' => "va'lu'e",
                 'expectedEscapedString' => "va\'lu\'e",
             ],
             'escaped single quotes' => [
                 'string' => "\'value\'",
                 'expectedEscapedString' => "\\\\\'value\\\\\'",
+            ],
+            'contains single quotes for json_encoded data' => [
+                'string' => '"va\\\'l\\\'ue"',
+                'expectedEscapedString' => '"va\\\\\\\'l\\\\\\\'ue"',
             ],
         ];
     }
