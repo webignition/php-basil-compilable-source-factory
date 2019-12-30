@@ -42,7 +42,6 @@ class NamedDomIdentifierHandler
     public function handle(NamedDomIdentifierInterface $namedDomIdentifier): CodeBlockInterface
     {
         $identifier = $namedDomIdentifier->getIdentifier();
-        $hasAttribute = $identifier instanceof AttributeIdentifierInterface;
 
         $findCall = $namedDomIdentifier->asCollection()
             ? $this->domCrawlerNavigatorCallFactory->createFindCall($identifier)
@@ -66,7 +65,7 @@ class NamedDomIdentifierHandler
         ]);
 
         if ($namedDomIdentifier->includeValue()) {
-            if ($hasAttribute) {
+            if ($identifier instanceof AttributeIdentifierInterface) {
                 $valueAssignment = new CodeBlock([
                     new Statement(sprintf(
                         '%s = %s->getAttribute(\'%s\')',
