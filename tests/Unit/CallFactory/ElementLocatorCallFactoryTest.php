@@ -13,7 +13,8 @@ use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Metadata\Metadata;
-use webignition\BasilDomIdentifier\DomIdentifier;
+use webignition\DomElementIdentifier\DomIdentifier;
+use webignition\DomElementIdentifier\DomIdentifierInterface;
 use webignition\DomElementLocator\ElementLocator;
 use webignition\DomElementLocator\ElementLocatorInterface;
 
@@ -53,7 +54,7 @@ class ElementLocatorCallFactoryTest extends AbstractTestCase
      * @dataProvider createConstructorCallDataProvider
      */
     public function testCreateConstructorCall(
-        DomIdentifier $elementIdentifier,
+        DomIdentifierInterface $elementIdentifier,
         ElementLocatorInterface $expectedElementLocator
     ) {
         $block = $this->factory->createConstructorCall($elementIdentifier);

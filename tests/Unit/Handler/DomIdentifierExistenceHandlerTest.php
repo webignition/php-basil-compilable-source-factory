@@ -14,7 +14,8 @@ use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\Metadata\MetadataInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\BasilDomIdentifier\DomIdentifier;
+use webignition\DomElementIdentifier\DomIdentifier;
+use webignition\DomElementIdentifier\DomIdentifierInterface;
 use webignition\DomElementLocator\ElementLocator;
 
 class DomIdentifierExistenceHandlerTest extends AbstractTestCase
@@ -35,7 +36,7 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
      * @dataProvider createForElementDataProvider
      */
     public function testCreateForElement(
-        DomIdentifier $identifier,
+        DomIdentifierInterface $identifier,
         CodeBlockInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
@@ -96,7 +97,7 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
      * @dataProvider createForCollectionDataProvider
      */
     public function testCreateForCollection(
-        DomIdentifier $identifier,
+        DomIdentifierInterface $identifier,
         CodeBlockInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
@@ -157,7 +158,7 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
      * @dataProvider createForElementOrCollectionDataProvider
      */
     public function testCreateForElementOrCollection(
-        DomIdentifier $identifier,
+        DomIdentifierInterface $identifier,
         CodeBlockInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {

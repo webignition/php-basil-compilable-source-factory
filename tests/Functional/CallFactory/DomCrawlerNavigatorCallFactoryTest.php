@@ -12,7 +12,8 @@ use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
-use webignition\BasilDomIdentifier\DomIdentifier;
+use webignition\DomElementIdentifier\DomIdentifier;
+use webignition\DomElementIdentifier\DomIdentifierInterface;
 
 class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
 {
@@ -33,7 +34,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
      */
     public function testCreateFindCall(
         string $fixture,
-        DomIdentifier $identifier,
+        DomIdentifierInterface $identifier,
         CodeBlockInterface $teardownStatements
     ) {
         $source = $this->factory->createFindCall($identifier);
