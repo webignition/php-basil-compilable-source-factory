@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "941e04d38154d58702d54b83b91ee762",
+    "content-hash": "1216c79ba3367f8cadbe4f15c00b6d56",
     "packages": [
         {
             "name": "facebook/webdriver",
@@ -1054,19 +1054,20 @@
         },
         {
             "name": "webignition/php-dom-element-identifier",
-            "version": "0.6",
+            "version": "0.9",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/php-dom-element-identifier.git",
-                "reference": "d5917717c0674c3c2e6a00fabafd73abeea4250e"
+                "reference": "b45aa3d234487a8235546584a03f1d588c2dc8f9"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/php-dom-element-identifier/zipball/d5917717c0674c3c2e6a00fabafd73abeea4250e",
-                "reference": "d5917717c0674c3c2e6a00fabafd73abeea4250e",
+                "url": "https://api.github.com/repos/webignition/php-dom-element-identifier/zipball/b45aa3d234487a8235546584a03f1d588c2dc8f9",
+                "reference": "b45aa3d234487a8235546584a03f1d588c2dc8f9",
                 "shasum": ""
             },
             "require": {
+                "ext-json": "*",
                 "php": ">=7.2",
                 "webignition/php-dom-element-locator": ">=0.2,<1"
             },
@@ -1092,7 +1093,7 @@
                 }
             ],
             "homepage": "https://github.com/webignition/php-dom-element-identifier",
-            "time": "2019-12-30T11:28:14+00:00"
+            "time": "2019-12-30T18:20:19+00:00"
         },
         {
             "name": "webignition/php-dom-element-locator",
@@ -1179,16 +1180,16 @@
         },
         {
             "name": "webignition/symfony-panther-dom-crawler-navigator",
-            "version": "0.14",
+            "version": "0.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/symfony-panther-dom-crawler-navigator.git",
-                "reference": "3adef48d5ed4d3c1335d995c3b41577d3878c133"
+                "reference": "7e2b2411e5c2e2c56eaf9d959daeee2f8372eb73"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/symfony-panther-dom-crawler-navigator/zipball/3adef48d5ed4d3c1335d995c3b41577d3878c133",
-                "reference": "3adef48d5ed4d3c1335d995c3b41577d3878c133",
+                "url": "https://api.github.com/repos/webignition/symfony-panther-dom-crawler-navigator/zipball/7e2b2411e5c2e2c56eaf9d959daeee2f8372eb73",
+                "reference": "7e2b2411e5c2e2c56eaf9d959daeee2f8372eb73",
                 "shasum": ""
             },
             "require": {
@@ -1196,6 +1197,7 @@
                 "php": ">=7.2",
                 "phpstan/extension-installer": "^1.0",
                 "symfony/panther": "^0.6",
+                "webignition/php-dom-element-identifier": ">=0.7,<1",
                 "webignition/php-dom-element-locator": ">=0.1,<1",
                 "webignition/web-driver-element-collection": ">=0.5,<1"
             },
@@ -1225,7 +1227,7 @@
             ],
             "description": "Navigate around a symfony panther dom crawler using convenience methods",
             "homepage": "https://github.com/webignition/symfony-panther-dom-crawler-navigatorr",
-            "time": "2019-12-18T16:33:50+00:00"
+            "time": "2019-12-30T15:53:01+00:00"
         },
         {
             "name": "webignition/web-driver-element-collection",
