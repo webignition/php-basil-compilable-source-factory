@@ -11,7 +11,7 @@ use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilParser\ActionParser;
-use webignition\DomElementLocator\ElementLocator;
+use webignition\DomElementIdentifier\ElementIdentifier;
 
 trait CreateFromSetActionDataProviderTrait
 {
@@ -23,14 +23,16 @@ trait CreateFromSetActionDataProviderTrait
             'input action, element identifier, literal value' => [
                 'action' => $actionParser->parse('set $".selector" to "value"'),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
+                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    ')',
                     '{{ VALUE }} = "value" ?? null',
                     '{{ VALUE }} = (string) {{ VALUE }}',
                     '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -44,15 +46,17 @@ trait CreateFromSetActionDataProviderTrait
             'input action, element identifier, element value' => [
                 'action' => $actionParser->parse('set $".selector" to $".source"'),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
-                    '{{ VALUE }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.source\'))',
+                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    ')',
+                    '{{ VALUE }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{"locator":".source"}\'))',
                     '{{ VALUE }} = {{ INSPECTOR }}->getValue({{ VALUE }}) ?? null',
                     '{{ VALUE }} = (string) {{ VALUE }}',
                     '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -67,15 +71,19 @@ trait CreateFromSetActionDataProviderTrait
             'input action, element identifier, attribute value' => [
                 'action' => $actionParser->parse('set $".selector" to $".source".attribute_name'),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
-                    '{{ VALUE }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.source\'))',
+                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    ')',
+                    '{{ VALUE }} = {{ NAVIGATOR }}->findOne(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".source","attribute":"attribute_name"}\')' .
+                    ')',
                     '{{ VALUE }} = {{ VALUE }}->getAttribute(\'attribute_name\') ?? null',
                     '{{ VALUE }} = (string) {{ VALUE }}',
                     '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -89,7 +97,9 @@ trait CreateFromSetActionDataProviderTrait
             'input action, browser property' => [
                 'action' => $actionParser->parse('set $".selector" to $browser.size'),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
+                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    ')',
                     '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()',
                     '{{ VALUE }} = '
                         . '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
@@ -99,7 +109,7 @@ trait CreateFromSetActionDataProviderTrait
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -115,14 +125,16 @@ trait CreateFromSetActionDataProviderTrait
             'input action, page property' => [
                 'action' => $actionParser->parse('set $".selector" to $page.url'),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
+                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    ')',
                     '{{ VALUE }} = {{ CLIENT }}->getCurrentURL() ?? null',
                     '{{ VALUE }} = (string) {{ VALUE }}',
                     '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -137,14 +149,16 @@ trait CreateFromSetActionDataProviderTrait
             'input action, environment value' => [
                 'action' => $actionParser->parse('set $".selector" to $env.KEY'),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
+                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    ')',
                     '{{ VALUE }} = {{ ENV }}[\'KEY\'] ?? null',
                     '{{ VALUE }} = (string) {{ VALUE }}',
                     '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -159,14 +173,16 @@ trait CreateFromSetActionDataProviderTrait
             'input action, environment value with default' => [
                 'action' => $actionParser->parse('set $".selector" to $env.KEY|"default"'),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
+                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    ')',
                     '{{ VALUE }} = {{ ENV }}[\'KEY\'] ?? \'default\'',
                     '{{ VALUE }} = (string) {{ VALUE }}',
                     '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -181,14 +197,16 @@ trait CreateFromSetActionDataProviderTrait
             'input action, environment value with default with whitespace' => [
                 'action' => $actionParser->parse('set $".selector" to $env.KEY|"default value"'),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
+                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    ')',
                     '{{ VALUE }} = {{ ENV }}[\'KEY\'] ?? \'default value\'',
                     '{{ VALUE }} = (string) {{ VALUE }}',
                     '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,

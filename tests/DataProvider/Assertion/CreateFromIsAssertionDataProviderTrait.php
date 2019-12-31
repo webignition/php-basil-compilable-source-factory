@@ -11,7 +11,7 @@ use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilParser\AssertionParser;
-use webignition\DomElementLocator\ElementLocator;
+use webignition\DomElementIdentifier\ElementIdentifier;
 
 trait CreateFromIsAssertionDataProviderTrait
 {
@@ -25,14 +25,14 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ EXPECTED }} = "value" ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-                    '{{ EXAMINED }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
+                    '{{ EXAMINED }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
                     '{{ EXAMINED }} = {{ INSPECTOR }}->getValue({{ EXAMINED }}) ?? null',
                     '{{ EXAMINED }} = (string) {{ EXAMINED }}',
                     '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -49,14 +49,16 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ EXPECTED }} = "value" ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-                    '{{ EXAMINED }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
+                    '{{ EXAMINED }} = {{ NAVIGATOR }}->findOne(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector","attribute":"attribute_name"}\')' .
+                    ')',
                     '{{ EXAMINED }} = {{ EXAMINED }}->getAttribute(\'attribute_name\') ?? null',
                     '{{ EXAMINED }} = (string) {{ EXAMINED }}',
                     '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -169,7 +171,7 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, browser object examined value, element identifier expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $".selector"'),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ EXPECTED }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
+                    '{{ EXPECTED }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
                     '{{ EXPECTED }} = {{ INSPECTOR }}->getValue({{ EXPECTED }}) ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
                     '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()',
@@ -181,7 +183,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -198,7 +200,9 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, browser object examined value, attribute identifier expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $".selector".attribute_name'),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ EXPECTED }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
+                    '{{ EXPECTED }} = {{ NAVIGATOR }}->findOne(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector","attribute":"attribute_name"}\')' .
+                    ')',
                     '{{ EXPECTED }} = {{ EXPECTED }}->getAttribute(\'attribute_name\') ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
                     '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()',
@@ -210,7 +214,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,

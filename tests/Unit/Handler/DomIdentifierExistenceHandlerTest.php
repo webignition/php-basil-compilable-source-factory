@@ -17,7 +17,6 @@ use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\DomElementIdentifier\AttributeIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifierInterface;
-use webignition\DomElementLocator\ElementLocator;
 
 class DomIdentifierExistenceHandlerTest extends AbstractTestCase
 {
@@ -55,12 +54,12 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
             'no parent' => [
                 'identifier' => new ElementIdentifier('.selector'),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -74,14 +73,14 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
                 'identifier' => (new ElementIdentifier('.selector'))
                     ->withParentIdentifier(new ElementIdentifier('.parent')),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne('
-                    . 'new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\')'
-                    . ')',
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector","parent":{"locator":".parent"}}\')' .
+                    ')',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -116,12 +115,12 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
             'no parent' => [
                 'identifier' => new ElementIdentifier('.selector'),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -135,14 +134,14 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
                 'identifier' => (new ElementIdentifier('.selector'))
                     ->withParentIdentifier(new ElementIdentifier('.parent')),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ HAS }} = {{ NAVIGATOR }}->has('
-                    . 'new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\')'
-                    . ')',
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector","parent":{"locator":".parent"}}\')' .
+                    ')',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -177,12 +176,12 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
             'no attribute, no parent' => [
                 'identifier' => new ElementIdentifier('.selector'),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -196,14 +195,14 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
                 'identifier' => (new ElementIdentifier('.selector'))
                     ->withParentIdentifier(new ElementIdentifier('.parent')),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ HAS }} = {{ NAVIGATOR }}->has('
-                    . 'new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\')'
-                    . ')',
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector","parent":{"locator":".parent"}}\')' .
+                    ')',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -216,12 +215,14 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
             'has attribute, no parent' => [
                 'identifier' => new AttributeIdentifier('.selector', 'attribute_name'),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector","attribute":"attribute_name"}\')' .
+                    ')',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -235,14 +236,16 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
                 'identifier' => (new AttributeIdentifier('.selector', 'attribute_name'))
                     ->withParentIdentifier(new ElementIdentifier('.parent')),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne('
-                    . 'new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\')'
-                    . ')',
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(' .
+                    'ElementIdentifier::fromJson(' .
+                    '\'{"locator":".selector","parent":{"locator":".parent"},"attribute":"attribute_name"}\'' .
+                    ')' .
+                    ')',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,

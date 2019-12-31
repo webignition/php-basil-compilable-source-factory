@@ -11,7 +11,7 @@ use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilParser\ActionParser;
-use webignition\DomElementLocator\ElementLocator;
+use webignition\DomElementIdentifier\ElementIdentifier;
 
 trait CreateFromWaitActionDataProviderTrait
 {
@@ -35,14 +35,16 @@ trait CreateFromWaitActionDataProviderTrait
             'wait action, element value' => [
                 'action' => $actionParser->parse('wait $".duration-selector"'),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ DURATION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.duration-selector\'))',
+                    '{{ DURATION }} = {{ NAVIGATOR }}->find(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".duration-selector"}\')' .
+                    ')',
                     '{{ DURATION }} = {{ INSPECTOR }}->getValue({{ DURATION }}) ?? 0',
                     '{{ DURATION }} = (int) {{ DURATION }}',
                     'usleep({{ DURATION }} * 1000)',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -55,14 +57,16 @@ trait CreateFromWaitActionDataProviderTrait
             'wait action, attribute value' => [
                 'action' => $actionParser->parse('wait $".duration-selector".attribute_name'),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ DURATION }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.duration-selector\'))',
+                    '{{ DURATION }} = {{ NAVIGATOR }}->findOne(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".duration-selector","attribute":"attribute_name"}\')' .
+                    ')',
                     '{{ DURATION }} = {{ DURATION }}->getAttribute(\'attribute_name\') ?? 0',
                     '{{ DURATION }} = (int) {{ DURATION }}',
                     'usleep({{ DURATION }} * 1000)',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,

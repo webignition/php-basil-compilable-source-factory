@@ -22,7 +22,7 @@ use webignition\BasilCompilationSource\MethodDefinition\MethodDefinitionInterfac
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModels\Test\TestInterface;
 use webignition\BasilParser\Test\TestParser;
-use webignition\DomElementLocator\ElementLocator;
+use webignition\DomElementIdentifier\ElementIdentifier;
 
 class ClassDefinitionFactoryTest extends AbstractTestCase
 {
@@ -126,7 +126,7 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
                 ),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -185,7 +185,7 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
                 ),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,

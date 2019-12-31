@@ -6,7 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 
 use webignition\BasilCodeGenerator\CodeBlockGenerator;
 use webignition\BasilCodeGenerator\LineGenerator;
-use webignition\BasilCompilableSourceFactory\CallFactory\ElementLocatorCallFactory;
+use webignition\BasilCompilableSourceFactory\CallFactory\ElementIdentifierCallFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestCodeGenerator;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
@@ -15,13 +15,11 @@ use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifierInterface;
-use webignition\DomElementLocator\ElementLocator;
-use webignition\DomElementLocator\ElementLocatorInterface;
 
-class ElementLocatorCallFactoryTest extends AbstractTestCase
+class ElementIdentifierCallFactoryTest extends AbstractTestCase
 {
     /**
-     * @var ElementLocatorCallFactory
+     * @var ElementIdentifierCallFactory
      */
     private $factory;
 
@@ -44,7 +42,7 @@ class ElementLocatorCallFactoryTest extends AbstractTestCase
     {
         parent::setUp();
 
-        $this->factory = ElementLocatorCallFactory::createFactory();
+        $this->factory = ElementIdentifierCallFactory::createFactory();
         $this->testCodeGenerator = TestCodeGenerator::create();
         $this->codeBlockGenerator = CodeBlockGenerator::create();
         $this->lineGenerator = LineGenerator::create();
@@ -53,10 +51,8 @@ class ElementLocatorCallFactoryTest extends AbstractTestCase
     /**
      * @dataProvider createConstructorCallDataProvider
      */
-    public function testCreateConstructorCall(
-        ElementIdentifierInterface $elementIdentifier,
-        ElementLocatorInterface $expectedElementLocator
-    ) {
+    public function testCreateConstructorCall(ElementIdentifierInterface $elementIdentifier)
+    {
         $block = $this->factory->createConstructorCall($elementIdentifier);
         $block = new CodeBlock([
             $block,
@@ -68,7 +64,7 @@ class ElementLocatorCallFactoryTest extends AbstractTestCase
 
         $expectedMetadata = (new Metadata())
             ->withClassDependencies(new ClassDependencyCollection([
-                new ClassDependency(ElementLocator::class)
+                new ClassDependency(ElementIdentifier::class)
             ]));
 
         $this->assertMetadataEquals($expectedMetadata, $block->getMetadata());
@@ -77,39 +73,37 @@ class ElementLocatorCallFactoryTest extends AbstractTestCase
             $block,
         ]), []);
 
-        $elementLocator = eval($code);
+        $evaluatedCodeOutput = eval($code);
 
-        $this->assertEquals($expectedElementLocator, $elementLocator);
+        $this->assertEquals($elementIdentifier, $evaluatedCodeOutput);
     }
 
     public function createConstructorCallDataProvider(): array
     {
-        $elementLocator = '.selector';
-
         return [
             'css selector, no quotes in selector, position default' => [
-                'elementIdentifier' => new ElementIdentifier($elementLocator),
-                'expectedElementLocator' => new ElementLocator('.selector'),
+                'elementIdentifier' => new ElementIdentifier('.selector'),
             ],
             'css selector, no quotes in selector, position 1' => [
-                'elementIdentifier' => new ElementIdentifier($elementLocator, 1),
-                'expectedElementLocator' => new ElementLocator('.selector', 1),
+                'elementIdentifier' => new ElementIdentifier('.selector', 1),
             ],
             'css selector, no quotes in selector, position 2' => [
-                'elementIdentifier' => new ElementIdentifier($elementLocator, 2),
-                'expectedElementLocator' => new ElementLocator('.selector', 2),
+                'elementIdentifier' => new ElementIdentifier('.selector', 2),
             ],
             'css selector, double quotes in selector, position default' => [
                 'elementIdentifier' => new ElementIdentifier('input[name="email"]'),
-                'expectedElementLocator' => new ElementLocator('input[name="email"]'),
             ],
             'css selector, single quotes in selector, position default' => [
                 'elementIdentifier' => new ElementIdentifier("input[name='email']"),
-                'expectedElementLocator' => new ElementLocator("input[name='email']"),
             ],
             'css selector, escaped single quotes in selector, position default' => [
                 'elementIdentifier' => new ElementIdentifier("input[value='\'quoted\'']"),
-                'expectedElementLocator' => new ElementLocator("input[value='\'quoted\'']"),
+            ],
+            'css selector, escaped single quotes within selector' => [
+                'elementIdentifier' => new ElementIdentifier("input[value='va\'l\'ue']"),
+            ],
+            'css selector, escaped double quotes in selector, position default' => [
+                'elementIdentifier' => new ElementIdentifier("input[value=\"'quoted'\"]"),
             ],
         ];
     }

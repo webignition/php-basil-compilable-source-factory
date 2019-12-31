@@ -21,7 +21,6 @@ use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\DomElementIdentifier\AttributeIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifier;
-use webignition\DomElementLocator\ElementLocator;
 
 class NamedDomIdentifierHandlerTest extends AbstractTestCase
 {
@@ -62,11 +61,11 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                     new VariablePlaceholder('E')
                 ),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ E }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
+                    '{{ E }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -82,13 +81,13 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                     new VariablePlaceholder('E')
                 ),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ E }} = {{ NAVIGATOR }}->findOne('
-                    . 'new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\')'
-                    . ')',
+                    '{{ E }} = {{ NAVIGATOR }}->findOne(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector","parent":{"locator":".parent"}}\')' .
+                    ')',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -103,11 +102,11 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                     new VariablePlaceholder('E')
                 ),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ E }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
+                    '{{ E }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -123,13 +122,13 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                     new VariablePlaceholder('E')
                 ),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ E }} = {{ NAVIGATOR }}->find('
-                    . 'new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\')'
-                    . ')',
+                    '{{ E }} = {{ NAVIGATOR }}->find(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector","parent":{"locator":".parent"}}\')' .
+                    ')',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -144,12 +143,12 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                     new VariablePlaceholder('E')
                 ),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ E }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
+                    '{{ E }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
                     '{{ E }} = {{ INSPECTOR }}->getValue({{ E }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -166,13 +165,14 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                     new VariablePlaceholder('E')
                 ),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ E }} = '
-                    . '{{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))',
+                    '{{ E }} = {{ NAVIGATOR }}->find(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector","parent":{"locator":".parent"}}\')' .
+                    ')',
                     '{{ E }} = {{ INSPECTOR }}->getValue({{ E }})',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -188,12 +188,14 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                     new VariablePlaceholder('E')
                 ),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ E }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
+                    '{{ E }} = {{ NAVIGATOR }}->findOne(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector","attribute":"attribute_name"}\')' .
+                    ')',
                     '{{ E }} = {{ E }}->getAttribute(\'attribute_name\')',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -209,13 +211,16 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                     new VariablePlaceholder('E')
                 ),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ E }} = {{ NAVIGATOR }}'
-                    . '->findOne(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))',
+                    '{{ E }} = {{ NAVIGATOR }}->findOne(' .
+                    'ElementIdentifier::fromJson(' .
+                    '\'{"locator":".selector","parent":{"locator":".parent"},"attribute":"attribute_name"}\'' .
+                    ')' .
+                    ')',
                     '{{ E }} = {{ E }}->getAttribute(\'attribute_name\')',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,

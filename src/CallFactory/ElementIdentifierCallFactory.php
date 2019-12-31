@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
-use webignition\BasilCompilableSourceFactory\PlaceholderFactory;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Block\CodeBlock;
@@ -12,46 +11,36 @@ use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
+use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifierInterface;
-use webignition\DomElementLocator\ElementLocator;
 
-class ElementLocatorCallFactory
+class ElementIdentifierCallFactory
 {
-    private const TEMPLATE = 'new ElementLocator(%s)';
+    private const TEMPLATE = 'ElementIdentifier::fromJson(%s)';
 
-    private $placeholderFactory;
     private $singleQuotedStringEscaper;
 
-    public function __construct(
-        PlaceholderFactory $placeholderFactory,
-        SingleQuotedStringEscaper $singleQuotedStringEscaper
-    ) {
-        $this->placeholderFactory = $placeholderFactory;
+    public function __construct(SingleQuotedStringEscaper $singleQuotedStringEscaper)
+    {
         $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
     }
 
-    public static function createFactory(): ElementLocatorCallFactory
+    public static function createFactory(): ElementIdentifierCallFactory
     {
-        return new ElementLocatorCallFactory(
-            PlaceholderFactory::createFactory(),
+        return new ElementIdentifierCallFactory(
             SingleQuotedStringEscaper::create()
         );
     }
 
     public function createConstructorCall(ElementIdentifierInterface $elementIdentifier): CodeBlockInterface
     {
-        $elementLocator = $elementIdentifier->getLocator();
+        $serializedSourceIdentifier = (string) json_encode($elementIdentifier);
 
-        $arguments = '\'' . $this->singleQuotedStringEscaper->escape($elementLocator) . '\'';
-
-        $position = $elementIdentifier->getOrdinalPosition();
-        if (null !== $position) {
-            $arguments .= ', ' . $position;
-        }
+        $arguments = '\'' . $this->singleQuotedStringEscaper->escape($serializedSourceIdentifier) . '\'';
 
         $metadata = new Metadata();
         $metadata->addClassDependencies(new ClassDependencyCollection([
-            new ClassDependency(ElementLocator::class),
+            new ClassDependency(ElementIdentifier::class),
         ]));
 
         return new CodeBlock([
