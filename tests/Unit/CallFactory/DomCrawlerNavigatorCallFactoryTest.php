@@ -16,7 +16,6 @@ use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifierInterface;
-use webignition\DomElementLocator\ElementLocator;
 
 class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
 {
@@ -116,10 +115,10 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
                 'identifier' => new ElementIdentifier('.selector'),
                 'expectedBlock' => new CodeBlock([
                     new Statement(
-                        '{{ NAVIGATOR }}->{{ METHOD }}(new ElementLocator(\'.selector\'))',
+                        '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
                         (new Metadata())
                             ->withClassDependencies(new ClassDependencyCollection([
-                                new ClassDependency(ElementLocator::class),
+                                new ClassDependency(ElementIdentifier::class),
                             ]))
                             ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                                 VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -131,10 +130,12 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
                 'identifier' => new ElementIdentifier('.selector', 3),
                 'expectedBlock' => new CodeBlock([
                     new Statement(
-                        '{{ NAVIGATOR }}->{{ METHOD }}(new ElementLocator(\'.selector\', 3))',
+                        '{{ NAVIGATOR }}->{{ METHOD }}(' .
+                        'ElementIdentifier::fromJson(\'{"locator":".selector","position":3}\')' .
+                        ')',
                         (new Metadata())
                             ->withClassDependencies(new ClassDependencyCollection([
-                                new ClassDependency(ElementLocator::class),
+                                new ClassDependency(ElementIdentifier::class),
                             ]))
                             ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                                 VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -147,11 +148,12 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
                     ->withParentIdentifier(new ElementIdentifier('.parent')),
                 'expectedBlock' => new CodeBlock([
                     new Statement(
-                        '{{ NAVIGATOR }}->'
-                        . '{{ METHOD }}(new ElementLocator(\'.selector\'), new ElementLocator(\'.parent\'))',
+                        '{{ NAVIGATOR }}->{{ METHOD }}(' .
+                        'ElementIdentifier::fromJson(\'{"locator":".selector","parent":{"locator":".parent"}}\')' .
+                        ')',
                         (new Metadata())
                             ->withClassDependencies(new ClassDependencyCollection([
-                                new ClassDependency(ElementLocator::class),
+                                new ClassDependency(ElementIdentifier::class),
                             ]))
                             ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                                 VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -164,11 +166,12 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
                     ->withParentIdentifier(new ElementIdentifier('.parent')),
                 'expectedBlock' => new CodeBlock([
                     new Statement(
-                        '{{ NAVIGATOR }}'
-                        . '->{{ METHOD }}(new ElementLocator(\'.selector\', 2), new ElementLocator(\'.parent\'))',
+                        '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(' .
+                        '\'{"locator":".selector","parent":{"locator":".parent"},"position":2}\'' .
+                        '))',
                         (new Metadata())
                             ->withClassDependencies(new ClassDependencyCollection([
-                                new ClassDependency(ElementLocator::class),
+                                new ClassDependency(ElementIdentifier::class),
                             ]))
                             ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                                 VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -181,11 +184,12 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
                     ->withParentIdentifier(new ElementIdentifier('.parent', 4)),
                 'expectedBlock' => new CodeBlock([
                     new Statement(
-                        '{{ NAVIGATOR }}'
-                        . '->{{ METHOD }}(new ElementLocator(\'.selector\', 3), new ElementLocator(\'.parent\', 4))',
+                        '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(' .
+                        '\'{"locator":".selector","parent":{"locator":".parent","position":4},"position":3}\'' .
+                        '))',
                         (new Metadata())
                             ->withClassDependencies(new ClassDependencyCollection([
-                                new ClassDependency(ElementLocator::class),
+                                new ClassDependency(ElementIdentifier::class),
                             ]))
                             ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                                 VariableNames::DOM_CRAWLER_NAVIGATOR,

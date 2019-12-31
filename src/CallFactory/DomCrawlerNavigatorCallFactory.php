@@ -14,17 +14,17 @@ use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
 class DomCrawlerNavigatorCallFactory
 {
-    private $elementLocatorCallFactory;
+    private $elementIdentifierCallFactory;
 
-    public function __construct(ElementLocatorCallFactory $elementLocatorCallFactory)
+    public function __construct(ElementIdentifierCallFactory $elementIdentifierCallFactory)
     {
-        $this->elementLocatorCallFactory = $elementLocatorCallFactory;
+        $this->elementIdentifierCallFactory = $elementIdentifierCallFactory;
     }
 
     public static function createFactory(): DomCrawlerNavigatorCallFactory
     {
         return new DomCrawlerNavigatorCallFactory(
-            ElementLocatorCallFactory::createFactory()
+            ElementIdentifierCallFactory::createFactory()
         );
     }
 
@@ -50,7 +50,7 @@ class DomCrawlerNavigatorCallFactory
 
     private function createElementCall(ElementIdentifierInterface $identifier, string $methodName): CodeBlockInterface
     {
-        $arguments = $this->createElementCallArguments($identifier);
+        $arguments = $this->elementIdentifierCallFactory->createConstructorCall($identifier);
 
         $variableDependencies = new VariablePlaceholderCollection();
         $domCrawlerNavigatorPlaceholder = $variableDependencies->create(VariableNames::DOM_CRAWLER_NAVIGATOR);
@@ -69,34 +69,5 @@ class DomCrawlerNavigatorCallFactory
         return new CodeBlock([
             new Statement($statementContent, $metadata),
         ]);
-    }
-
-    private function createElementCallArguments(ElementIdentifierInterface $elementIdentifier): CodeBlockInterface
-    {
-        $elementConstructorBlock = $this->elementLocatorCallFactory->createConstructorCall($elementIdentifier);
-
-        $parentIdentifier = $elementIdentifier->getParentIdentifier();
-        if ($parentIdentifier instanceof ElementIdentifierInterface) {
-            $parentConstructorBlock = $this->elementLocatorCallFactory->createConstructorCall($parentIdentifier);
-
-            $metadata = new Metadata();
-            $metadata->add($elementConstructorBlock->getMetadata());
-            $metadata->add($parentConstructorBlock->getMetadata());
-
-            $elementConstructorStatement = $elementConstructorBlock->getLines()[0];
-            $parentConstructorStatement = $parentConstructorBlock->getLines()[0];
-
-            $statementContent = sprintf(
-                '%s, %s',
-                (string) $elementConstructorStatement,
-                (string) $parentConstructorStatement
-            );
-
-            return new CodeBlock([
-                new Statement($statementContent, $metadata),
-            ]);
-        }
-
-        return $elementConstructorBlock;
     }
 }
