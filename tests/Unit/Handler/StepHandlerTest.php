@@ -23,7 +23,7 @@ use webignition\BasilModels\Step\StepInterface;
 use webignition\BasilParser\ActionParser;
 use webignition\BasilParser\AssertionParser;
 use webignition\BasilParser\StepParser;
-use webignition\DomElementLocator\ElementLocator;
+use webignition\DomElementIdentifier\ElementIdentifier;
 
 class StepHandlerTest extends AbstractTestCase
 {
@@ -61,17 +61,19 @@ class StepHandlerTest extends AbstractTestCase
                 ]),
                 'expectedContent' => CodeBlock::fromContent([
                     '// $".selector" exists <- click $".selector"',
-                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '',
                     '// click $".selector"',
-                    '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
+                    '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    ')',
                     '{{ ELEMENT }}->click()',
                     '',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -90,16 +92,18 @@ class StepHandlerTest extends AbstractTestCase
                 ]),
                 'expectedContent' => CodeBlock::fromContent([
                     '// $".selector" exists <- set $".selector" to $".value"',
-                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '',
                     '// $".value" exists <- set $".selector" to $".value"',
-                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.value\'))',
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".value"}\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '',
                     '// set $".selector" to $".value"',
-                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
-                    '{{ VALUE }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.value\'))',
+                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    ')',
+                    '{{ VALUE }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{"locator":".value"}\'))',
                     '{{ VALUE }} = {{ INSPECTOR }}->getValue({{ VALUE }}) ?? null',
                     '{{ VALUE }} = (string) {{ VALUE }}',
                     '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
@@ -107,7 +111,7 @@ class StepHandlerTest extends AbstractTestCase
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -131,11 +135,13 @@ class StepHandlerTest extends AbstractTestCase
                 ]),
                 'expectedContent' => CodeBlock::fromContent([
                     '// $".selector" exists <- click $".selector"',
-                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '',
                     '// click $".selector"',
-                    '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
+                    '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    ')',
                     '{{ ELEMENT }}->click()',
                     '',
                     '// wait 1',
@@ -144,11 +150,11 @@ class StepHandlerTest extends AbstractTestCase
                     'usleep({{ DURATION }} * 1000)',
                     '',
                     '// $".duration" exists <- wait $".duration"',
-                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.duration\'))',
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".duration"}\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '',
                     '// wait $".duration"',
-                    '{{ DURATION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.duration\'))',
+                    '{{ DURATION }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{"locator":".duration"}\'))',
                     '{{ DURATION }} = {{ INSPECTOR }}->getValue({{ DURATION }}) ?? 0',
                     '{{ DURATION }} = (int) {{ DURATION }}',
                     'usleep({{ DURATION }} * 1000)',
@@ -156,7 +162,7 @@ class StepHandlerTest extends AbstractTestCase
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -202,13 +208,13 @@ class StepHandlerTest extends AbstractTestCase
                 ]),
                 'expectedContent' => CodeBlock::fromContent([
                     '// $".selector" exists',
-                    '{{ EXAMINED }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
+                    '{{ EXAMINED }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
                     '{{ PHPUNIT }}->assertTrue({{ EXAMINED }})',
                     '',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -226,13 +232,13 @@ class StepHandlerTest extends AbstractTestCase
                 ]),
                 'expectedContent' => CodeBlock::fromContent([
                     '// $".selector" exists <- $".selector" is "value"',
-                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '',
                     '// $".selector" is "value"',
                     '{{ EXPECTED }} = "value" ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-                    '{{ EXAMINED }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
+                    '{{ EXAMINED }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
                     '{{ EXAMINED }} = {{ INSPECTOR }}->getValue({{ EXAMINED }}) ?? null',
                     '{{ EXAMINED }} = (string) {{ EXAMINED }}',
                     '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
@@ -240,7 +246,7 @@ class StepHandlerTest extends AbstractTestCase
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -261,18 +267,18 @@ class StepHandlerTest extends AbstractTestCase
                 ]),
                 'expectedContent' => CodeBlock::fromContent([
                     '// $".selector" exists <- $".selector" is $".value"',
-                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '',
                     '// $".value" exists <- $".selector" is $".value"',
-                    '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.value\'))',
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".value"}\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '',
                     '// $".selector" is $".value"',
-                    '{{ EXPECTED }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.value\'))',
+                    '{{ EXPECTED }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{"locator":".value"}\'))',
                     '{{ EXPECTED }} = {{ INSPECTOR }}->getValue({{ EXPECTED }}) ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-                    '{{ EXAMINED }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
+                    '{{ EXAMINED }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
                     '{{ EXAMINED }} = {{ INSPECTOR }}->getValue({{ EXAMINED }}) ?? null',
                     '{{ EXAMINED }} = (string) {{ EXAMINED }}',
                     '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
@@ -280,7 +286,7 @@ class StepHandlerTest extends AbstractTestCase
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -337,11 +343,13 @@ class StepHandlerTest extends AbstractTestCase
                 ]),
                 'expectedContent' => CodeBlock::fromContent([
                     '// $".selector" exists <- click $".selector"',
-                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '',
                     '// click $".selector"',
-                    '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
+                    '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    ')',
                     '{{ ELEMENT }}->click()',
                     '',
                     '// $page.title is "value"',
@@ -354,7 +362,7 @@ class StepHandlerTest extends AbstractTestCase
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,

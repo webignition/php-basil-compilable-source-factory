@@ -22,7 +22,7 @@ use webignition\BasilCompilationSource\MethodDefinition\MethodDefinitionInterfac
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModels\Step\StepInterface;
 use webignition\BasilParser\StepParser;
-use webignition\DomElementLocator\ElementLocator;
+use webignition\DomElementIdentifier\ElementIdentifier;
 
 class StepMethodFactoryTest extends AbstractTestCase
 {
@@ -105,11 +105,13 @@ class StepMethodFactoryTest extends AbstractTestCase
                 'expectedTestMethod' => new MethodDefinition('testMethodName', CodeBlock::fromContent([
                     '// Step Name',
                     '// $".selector" exists <- click $".selector"',
-                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(new ElementLocator(\'.selector\'))',
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '',
                     '// click $".selector"',
-                    '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(new ElementLocator(\'.selector\'))',
+                    '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    ')',
                     '{{ ELEMENT }}->click()',
                     '',
                     '// $page.title is "value"',
@@ -122,7 +124,7 @@ class StepMethodFactoryTest extends AbstractTestCase
                 ])),
                 'expectedTestMethodMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -171,23 +173,31 @@ class StepMethodFactoryTest extends AbstractTestCase
                         CodeBlock::fromContent([
                             '// Step Name',
                             '//$".selector" exists <- set $".selector" to $data.field_value',
-                            '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
+                            '{{ HAS }} = {{ NAVIGATOR }}->has(' .
+                            'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                            ')',
                             '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                             '',
                             '// set $".selector" to $data.field_value',
-                            '{{ COLLECTION }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
+                            '{{ COLLECTION }} = {{ NAVIGATOR }}->find(' .
+                            'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                            ')',
                             '{{ VALUE }} = $field_value ?? null',
                             '{{ VALUE }} = (string) {{ VALUE }}',
                             '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
                             '',
                             '// $".selector" exists <- $".selector" is $data.expected_value',
-                            '{{ HAS }} = {{ NAVIGATOR }}->has(new ElementLocator(\'.selector\'))',
+                            '{{ HAS }} = {{ NAVIGATOR }}->has(' .
+                            'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                            ')',
                             '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                             '',
                             '// $".selector" is $data.expected_value',
                             '{{ EXPECTED }} = $expected_value ?? null',
                             '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-                            '{{ EXAMINED }} = {{ NAVIGATOR }}->find(new ElementLocator(\'.selector\'))',
+                            '{{ EXAMINED }} = {{ NAVIGATOR }}->find(' .
+                            'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                            ')',
                             '{{ EXAMINED }} = {{ INSPECTOR }}->getValue({{ EXAMINED }}) ?? null',
                             '{{ EXAMINED }} = (string) {{ EXAMINED }}',
                             '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
@@ -204,7 +214,7 @@ class StepMethodFactoryTest extends AbstractTestCase
                 ),
                 'expectedTestMethodMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementLocator::class),
+                        new ClassDependency(ElementIdentifier::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
