@@ -218,6 +218,29 @@ trait CreateFromSetActionDataProviderTrait
                         'VALUE',
                     ])),
             ],
+            'input action, parent > child element identifier, literal value' => [
+                'action' => $actionParser->parse('set $"{{ $".parent" }} .child" to "value"'),
+                'expectedContent' => CodeBlock::fromContent([
+                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".child","parent":{"locator":".parent"}}\')' .
+                    ')',
+                    '{{ VALUE }} = "value" ?? null',
+                    '{{ VALUE }} = (string) {{ VALUE }}',
+                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
+                ]),
+                'expectedMetadata' => (new Metadata())
+                    ->withClassDependencies(new ClassDependencyCollection([
+                        new ClassDependency(ElementIdentifier::class),
+                    ]))
+                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
+                    ]))
+                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        'COLLECTION',
+                        'VALUE',
+                    ])),
+            ],
         ];
     }
 }

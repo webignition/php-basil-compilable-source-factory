@@ -39,6 +39,25 @@ trait CreateFromClickActionDataProviderTrait
                         'ELEMENT',
                     ])),
             ],
+            'interaction action (click), parent > child identifier' => [
+                'action' => $actionParser->parse('click $"{{ $".parent" }} .child"'),
+                'expectedContent' => CodeBlock::fromContent([
+                    '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".child","parent":{"locator":".parent"}}\')' .
+                    ')',
+                    '{{ ELEMENT }}->click()',
+                ]),
+                'expectedMetadata' => (new Metadata())
+                    ->withClassDependencies(new ClassDependencyCollection([
+                        new ClassDependency(ElementIdentifier::class),
+                    ]))
+                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                    ]))
+                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        'ELEMENT',
+                    ])),
+            ],
         ];
     }
 }

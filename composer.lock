@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9deae3421ab3e82dcd9ad3c32431a5a0",
+    "content-hash": "1b63cfaaa2590018a1d6d913c062d872",
     "packages": [
         {
             "name": "facebook/webdriver",
@@ -885,16 +885,16 @@
         },
         {
             "name": "webignition/basil-dom-identifier-factory",
-            "version": "0.5",
+            "version": "0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/basil-dom-identifier-factory.git",
-                "reference": "de81317aa36d10acc60d049b7c912a778033f53f"
+                "reference": "171dbe2b61b3e8bc232cceed33022855d8584dc6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/basil-dom-identifier-factory/zipball/de81317aa36d10acc60d049b7c912a778033f53f",
-                "reference": "de81317aa36d10acc60d049b7c912a778033f53f",
+                "url": "https://api.github.com/repos/webignition/basil-dom-identifier-factory/zipball/171dbe2b61b3e8bc232cceed33022855d8584dc6",
+                "reference": "171dbe2b61b3e8bc232cceed33022855d8584dc6",
                 "shasum": ""
             },
             "require": {
@@ -926,7 +926,7 @@
                 }
             ],
             "homepage": "https://github.com/webignition/basil-dom-identifier-factory",
-            "time": "2019-12-30T12:03:35+00:00"
+            "time": "2019-12-31T17:48:08+00:00"
         },
         {
             "name": "webignition/basil-identifier-analyser",
@@ -4054,22 +4054,23 @@
         },
         {
             "name": "webignition/basil-parser",
-            "version": "0.13",
+            "version": "0.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/basil-parser.git",
-                "reference": "7fb93c20f6796b8abb3e01345e36efdb94a14a14"
+                "reference": "bbc6d334ba7ea12fd5c964312118dc5ef66233f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/basil-parser/zipball/7fb93c20f6796b8abb3e01345e36efdb94a14a14",
-                "reference": "7fb93c20f6796b8abb3e01345e36efdb94a14a14",
+                "url": "https://api.github.com/repos/webignition/basil-parser/zipball/bbc6d334ba7ea12fd5c964312118dc5ef66233f4",
+                "reference": "bbc6d334ba7ea12fd5c964312118dc5ef66233f4",
                 "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
                 "php": ">=7.2",
-                "webignition/basil-models": ">=0.19,<1",
+                "webignition/basil-dom-identifier-factory": ">=0.6,<1",
+                "webignition/basil-models": ">=0.24,<1",
                 "webignition/php-path-resolver": ">=0.1,<1"
             },
             "require-dev": {
@@ -4095,7 +4096,7 @@
             ],
             "description": "Parses raw basil data into basic data structures",
             "homepage": "https://github.com/webignition/basil-parser",
-            "time": "2019-12-19T18:17:12+00:00"
+            "time": "2020-01-07T10:59:23+00:00"
         },
         {
             "name": "webignition/php-path-resolver",
