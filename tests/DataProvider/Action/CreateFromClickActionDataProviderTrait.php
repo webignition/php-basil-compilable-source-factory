@@ -58,6 +58,25 @@ trait CreateFromClickActionDataProviderTrait
                         'ELEMENT',
                     ])),
             ],
+            'interaction action (click), single-character CSS selector element identifier' => [
+                'action' => $actionParser->parse('click $"a"'),
+                'expectedContent' => CodeBlock::fromContent([
+                    '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(' .
+                    'ElementIdentifier::fromJson(\'{"locator":"a"}\')' .
+                    ')',
+                    '{{ ELEMENT }}->click()',
+                ]),
+                'expectedMetadata' => (new Metadata())
+                    ->withClassDependencies(new ClassDependencyCollection([
+                        new ClassDependency(ElementIdentifier::class),
+                    ]))
+                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                    ]))
+                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        'ELEMENT',
+                    ])),
+            ],
         ];
     }
 }
