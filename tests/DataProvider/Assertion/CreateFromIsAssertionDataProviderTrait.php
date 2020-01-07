@@ -44,6 +44,32 @@ trait CreateFromIsAssertionDataProviderTrait
                         VariableNames::EXAMINED_VALUE,
                     ])),
             ],
+            'is comparison, descendant identifier examined value, literal string expected value' => [
+                'assertion' => $assertionParser->parse('$"{{ $".parent" }} .child" is "value"'),
+                'expectedContent' => CodeBlock::fromContent([
+                    '{{ EXPECTED }} = "value" ?? null',
+                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
+                    '{{ EXAMINED }} = {{ NAVIGATOR }}->find(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".child","parent":{"locator":".parent"}}\')' .
+                    ')',
+                    '{{ EXAMINED }} = {{ INSPECTOR }}->getValue({{ EXAMINED }}) ?? null',
+                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
+                ]),
+                'expectedMetadata' => (new Metadata())
+                    ->withClassDependencies(new ClassDependencyCollection([
+                        new ClassDependency(ElementIdentifier::class),
+                    ]))
+                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
+                        VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
+                    ]))
+                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        VariableNames::EXPECTED_VALUE,
+                        VariableNames::EXAMINED_VALUE,
+                    ])),
+            ],
             'is comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name is "value"'),
                 'expectedContent' => CodeBlock::fromContent([
@@ -169,6 +195,37 @@ trait CreateFromIsAssertionDataProviderTrait
                     ])),
             ],
             'is comparison, browser object examined value, element identifier expected value' => [
+                'assertion' => $assertionParser->parse('$browser.size is $"{{ $".parent" }} .child"'),
+                'expectedContent' => CodeBlock::fromContent([
+                    '{{ EXPECTED }} = {{ NAVIGATOR }}->find(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".child","parent":{"locator":".parent"}}\')' .
+                    ')',
+                    '{{ EXPECTED }} = {{ INSPECTOR }}->getValue({{ EXPECTED }}) ?? null',
+                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
+                    '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()',
+                    '{{ EXAMINED }} = '
+                    . '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
+                    . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null',
+                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
+                ]),
+                'expectedMetadata' => (new Metadata())
+                    ->withClassDependencies(new ClassDependencyCollection([
+                        new ClassDependency(ElementIdentifier::class),
+                    ]))
+                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
+                        VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
+                        VariableNames::PANTHER_CLIENT,
+                    ]))
+                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        VariableNames::EXPECTED_VALUE,
+                        'WEBDRIVER_DIMENSION',
+                        VariableNames::EXAMINED_VALUE,
+                    ])),
+            ],
+            'is comparison, browser object examined value, descendant identifier expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $".selector"'),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ EXPECTED }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
