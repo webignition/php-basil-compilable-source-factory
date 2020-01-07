@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "9deae3421ab3e82dcd9ad3c32431a5a0",
+    "content-hash": "c93b8db357012099f882766d7b85a58f",
     "packages": [
         {
             "name": "facebook/webdriver",
@@ -885,16 +885,16 @@
         },
         {
             "name": "webignition/basil-dom-identifier-factory",
-            "version": "0.5",
+            "version": "0.6",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/basil-dom-identifier-factory.git",
-                "reference": "de81317aa36d10acc60d049b7c912a778033f53f"
+                "reference": "171dbe2b61b3e8bc232cceed33022855d8584dc6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/basil-dom-identifier-factory/zipball/de81317aa36d10acc60d049b7c912a778033f53f",
-                "reference": "de81317aa36d10acc60d049b7c912a778033f53f",
+                "url": "https://api.github.com/repos/webignition/basil-dom-identifier-factory/zipball/171dbe2b61b3e8bc232cceed33022855d8584dc6",
+                "reference": "171dbe2b61b3e8bc232cceed33022855d8584dc6",
                 "shasum": ""
             },
             "require": {
@@ -926,7 +926,7 @@
                 }
             ],
             "homepage": "https://github.com/webignition/basil-dom-identifier-factory",
-            "time": "2019-12-30T12:03:35+00:00"
+            "time": "2019-12-31T17:48:08+00:00"
         },
         {
             "name": "webignition/basil-identifier-analyser",
