@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "c93b8db357012099f882766d7b85a58f",
+    "content-hash": "1b63cfaaa2590018a1d6d913c062d872",
     "packages": [
         {
             "name": "facebook/webdriver",
@@ -4054,22 +4054,23 @@
         },
         {
             "name": "webignition/basil-parser",
-            "version": "0.13",
+            "version": "0.15",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/basil-parser.git",
-                "reference": "7fb93c20f6796b8abb3e01345e36efdb94a14a14"
+                "reference": "bbc6d334ba7ea12fd5c964312118dc5ef66233f4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/basil-parser/zipball/7fb93c20f6796b8abb3e01345e36efdb94a14a14",
-                "reference": "7fb93c20f6796b8abb3e01345e36efdb94a14a14",
+                "url": "https://api.github.com/repos/webignition/basil-parser/zipball/bbc6d334ba7ea12fd5c964312118dc5ef66233f4",
+                "reference": "bbc6d334ba7ea12fd5c964312118dc5ef66233f4",
                 "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
                 "php": ">=7.2",
-                "webignition/basil-models": ">=0.19,<1",
+                "webignition/basil-dom-identifier-factory": ">=0.6,<1",
+                "webignition/basil-models": ">=0.24,<1",
                 "webignition/php-path-resolver": ">=0.1,<1"
             },
             "require-dev": {
@@ -4095,7 +4096,7 @@
             ],
             "description": "Parses raw basil data into basic data structures",
             "homepage": "https://github.com/webignition/basil-parser",
-            "time": "2019-12-19T18:17:12+00:00"
+            "time": "2020-01-07T10:59:23+00:00"
         },
         {
             "name": "webignition/php-path-resolver",
