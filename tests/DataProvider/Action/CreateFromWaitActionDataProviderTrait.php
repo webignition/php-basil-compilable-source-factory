@@ -54,6 +54,50 @@ trait CreateFromWaitActionDataProviderTrait
                         'DURATION',
                     ])),
             ],
+            'wait action, descendant element value' => [
+                'action' => $actionParser->parse('wait $"{{ $".parent" }} .child"'),
+                'expectedContent' => CodeBlock::fromContent([
+                    '{{ DURATION }} = {{ NAVIGATOR }}->find(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".child","parent":{"locator":".parent"}}\')' .
+                    ')',
+                    '{{ DURATION }} = {{ INSPECTOR }}->getValue({{ DURATION }}) ?? 0',
+                    '{{ DURATION }} = (int) {{ DURATION }}',
+                    'usleep({{ DURATION }} * 1000)',
+                ]),
+                'expectedMetadata' => (new Metadata())
+                    ->withClassDependencies(new ClassDependencyCollection([
+                        new ClassDependency(ElementIdentifier::class),
+                    ]))
+                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
+                    ]))
+                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        'DURATION',
+                    ])),
+            ],
+            'wait action, single-character CSS selector element value' => [
+                'action' => $actionParser->parse('wait $"a"'),
+                'expectedContent' => CodeBlock::fromContent([
+                    '{{ DURATION }} = {{ NAVIGATOR }}->find(' .
+                    'ElementIdentifier::fromJson(\'{"locator":"a"}\')' .
+                    ')',
+                    '{{ DURATION }} = {{ INSPECTOR }}->getValue({{ DURATION }}) ?? 0',
+                    '{{ DURATION }} = (int) {{ DURATION }}',
+                    'usleep({{ DURATION }} * 1000)',
+                ]),
+                'expectedMetadata' => (new Metadata())
+                    ->withClassDependencies(new ClassDependencyCollection([
+                        new ClassDependency(ElementIdentifier::class),
+                    ]))
+                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
+                    ]))
+                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        'DURATION',
+                    ])),
+            ],
             'wait action, attribute value' => [
                 'action' => $actionParser->parse('wait $".duration-selector".attribute_name'),
                 'expectedContent' => CodeBlock::fromContent([
