@@ -38,7 +38,7 @@ class WaitForActionHandler
         return new WaitForActionHandler(
             SingleQuotedStringEscaper::create(),
             DomIdentifierFactory::createFactory(),
-            new IdentifierTypeAnalyser()
+            IdentifierTypeAnalyser::create()
         );
     }
 

@@ -58,7 +58,7 @@ class SetActionHandler
             NamedDomIdentifierHandler::createHandler(),
             AccessorDefaultValueFactory::createFactory(),
             DomIdentifierFactory::createFactory(),
-            new IdentifierTypeAnalyser()
+            IdentifierTypeAnalyser::create()
         );
     }
 
