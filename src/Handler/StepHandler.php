@@ -56,7 +56,7 @@ class StepHandler
             AssertionHandler::createHandler(),
             DomIdentifierExistenceHandler::createHandler(),
             DomIdentifierFactory::createFactory(),
-            new IdentifierTypeAnalyser()
+            IdentifierTypeAnalyser::create()
         );
     }
 

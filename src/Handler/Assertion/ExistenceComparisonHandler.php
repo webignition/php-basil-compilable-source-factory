@@ -64,7 +64,7 @@ class ExistenceComparisonHandler
             DomCrawlerNavigatorCallFactory::createFactory(),
             NamedDomIdentifierHandler::createHandler(),
             new ValueTypeIdentifier(),
-            new IdentifierTypeAnalyser(),
+            IdentifierTypeAnalyser::create(),
             DomIdentifierExistenceHandler::createHandler(),
             DomIdentifierFactory::createFactory()
         );

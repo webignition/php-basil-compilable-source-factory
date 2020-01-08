@@ -63,7 +63,7 @@ class ComparisonAssertionHandler
             ScalarValueHandler::createHandler(),
             NamedDomIdentifierHandler::createHandler(),
             AccessorDefaultValueFactory::createFactory(),
-            new IdentifierTypeAnalyser(),
+            IdentifierTypeAnalyser::create(),
             DomIdentifierFactory::createFactory()
         );
     }

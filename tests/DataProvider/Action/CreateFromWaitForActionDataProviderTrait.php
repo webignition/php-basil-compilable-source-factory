@@ -28,6 +28,17 @@ trait CreateFromWaitForActionDataProviderTrait
                         VariableNames::PANTHER_CLIENT,
                     ])),
             ],
+            'interaction action (wait-for), single-character CSS selector element value' => [
+                'action' => $actionParser->parse('wait-for $"a"'),
+                'expectedContent' => CodeBlock::fromContent([
+                    '{{ CRAWLER }} = {{ CLIENT }}->waitFor(\'a\')',
+                ]),
+                'expectedMetadata' => (new Metadata())
+                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        VariableNames::PANTHER_CRAWLER,
+                        VariableNames::PANTHER_CLIENT,
+                    ])),
+            ],
         ];
     }
 }
