@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Value;
 
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Model\EnvironmentValue;
 use webignition\BasilCompilableSourceFactory\ModelFactory\EnvironmentValueFactory;
 use webignition\BasilCompilableSourceFactory\ValueTypeIdentifier;
@@ -41,7 +41,7 @@ class ScalarValueHandler
      *
      * @return CodeBlockInterface
      *
-     * @throws UnsupportedValueException
+     * @throws UnsupportedContentException
      */
     public function handle(string $value): CodeBlockInterface
     {
@@ -71,7 +71,7 @@ class ScalarValueHandler
             ]);
         }
 
-        throw new UnsupportedValueException($value);
+        throw new UnsupportedContentException(UnsupportedContentException::TYPE_VALUE, $value);
     }
 
     private function handleBrowserProperty(): CodeBlockInterface
@@ -127,7 +127,7 @@ class ScalarValueHandler
      *
      * @return CodeBlockInterface
      *
-     * @throws UnsupportedValueException
+     * @throws UnsupportedContentException
      */
     private function handlePageProperty(string $value): CodeBlockInterface
     {
@@ -152,6 +152,6 @@ class ScalarValueHandler
             ]);
         }
 
-        throw new UnsupportedValueException($value);
+        throw new UnsupportedContentException(UnsupportedContentException::TYPE_VALUE, $value);
     }
 }
