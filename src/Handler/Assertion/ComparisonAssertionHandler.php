@@ -73,7 +73,6 @@ class ComparisonAssertionHandler
      *
      * @return CodeBlockInterface
      *
-     * @throws UnsupportedValueException
      * @throws UnsupportedContentException
      */
     public function handle(ComparisonAssertionInterface $assertion): CodeBlockInterface

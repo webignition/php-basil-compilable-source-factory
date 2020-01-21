@@ -7,7 +7,6 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierExistenceHandler;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
@@ -76,7 +75,6 @@ class ExistenceComparisonHandler
      * @return CodeBlockInterface
      *
      * @throws UnsupportedContentException
-     * @throws UnsupportedValueException
      */
     public function handle(AssertionInterface $assertion): CodeBlockInterface
     {

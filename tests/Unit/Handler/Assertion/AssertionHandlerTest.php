@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Assertion;
 
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedAssertionException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromExcludesAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromExistsAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromIncludesAssertionDataProviderTrait;
@@ -68,7 +67,7 @@ class AssertionHandlerTest extends AbstractTestCase
      */
     public function testHandleThrowsException(
         AssertionInterface $assertion,
-        UnsupportedAssertionException $expectedException
+        UnsupportedStatementException $expectedException
     ) {
         $handler = AssertionHandler::createHandler();
         $this->expectExceptionObject($expectedException);
@@ -83,26 +82,18 @@ class AssertionHandlerTest extends AbstractTestCase
         return [
             'comparison assertion, examined value is not supported' => [
                 'assertion' => $assertionParser->parse('$elements.examined is "value"'),
-                'expectedException' => new UnsupportedAssertionException(
+                'expectedException' => new UnsupportedStatementException(
                     $assertionParser->parse('$elements.examined is "value"'),
-                    new UnsupportedValueException('$elements.examined')
-                ),
-            ],
-            'comparison assertion, expected value is not supported' => [
-                'assertion' => $assertionParser->parse('$".selector" is $elements.expected'),
-                'expectedException' => new UnsupportedAssertionException(
-                    $assertionParser->parse('$".selector" is $elements.expected'),
-                    new UnsupportedValueException('$elements.expected')
-                ),
-            ],
-            'existence comparison, identifier is not supported' => [
-                'assertion' => $assertionParser->parse('$elements.element_name exists'),
-                'expectedException' => new UnsupportedAssertionException(
-                    $assertionParser->parse('$elements.element_name exists'),
                     new UnsupportedContentException(
-                        UnsupportedContentException::TYPE_IDENTIFIER,
-                        '$elements.element_name'
+                        UnsupportedContentException::TYPE_VALUE,
+                        '$elements.examined'
                     )
+                ),
+            ],
+            'unsupported comparison' => [
+                'assertion' => $assertionParser->parse('$".selector" foo "value"'),
+                'expectedException' => new UnsupportedStatementException(
+                    $assertionParser->parse('$".selector" foo "value"')
                 ),
             ],
         ];

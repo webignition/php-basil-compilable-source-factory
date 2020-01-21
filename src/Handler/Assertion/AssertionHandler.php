@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedAssertionException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilModels\Assertion\AssertionInterface;
 use webignition\BasilModels\Assertion\ComparisonAssertionInterface;
@@ -37,7 +36,7 @@ class AssertionHandler
      *
      * @return CodeBlockInterface
      *
-     * @throws UnsupportedAssertionException
+     * @throws UnsupportedStatementException
      */
     public function handle(AssertionInterface $assertion): CodeBlockInterface
     {
@@ -49,14 +48,11 @@ class AssertionHandler
             if ($this->isExistenceAssertion($assertion)) {
                 return $this->existenceComparisonHandler->handle($assertion);
             }
-        } catch (
-            UnsupportedContentException |
-            UnsupportedValueException $previous
-        ) {
-            throw new UnsupportedAssertionException($assertion, $previous);
+        } catch (UnsupportedContentException $previous) {
+            throw new UnsupportedStatementException($assertion, $previous);
         }
 
-        throw new UnsupportedAssertionException($assertion);
+        throw new UnsupportedStatementException($assertion);
     }
 
     private function isComparisonAssertion(AssertionInterface $assertion): bool
