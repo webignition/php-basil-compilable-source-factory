@@ -8,7 +8,6 @@ use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\WebDriverElementMutatorCallFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifier;
@@ -68,7 +67,6 @@ class SetActionHandler
      * @return CodeBlockInterface
      *
      * @throws UnsupportedContentException
-     * @throws UnsupportedValueException
      */
     public function handle(InputActionInterface $action): CodeBlockInterface
     {

@@ -17,6 +17,7 @@ class UnsupportedContentException extends \Exception
         parent::__construct(sprintf('Unsupported content "%s": "%s"', $type, (string) $content));
 
         $this->content = $content;
+        $this->type = $type;
     }
 
     public function getType(): string
