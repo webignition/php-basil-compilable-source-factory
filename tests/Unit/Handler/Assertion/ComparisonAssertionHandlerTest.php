@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\ComparisonAssertionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ObjectReflector;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
@@ -54,11 +53,17 @@ class ComparisonAssertionHandlerTest extends AbstractTestCase
         return [
             'examined value is not supported' => [
                 'assertion' => $assertionParser->parse('$elements.examined is "value"'),
-                'expectedException' => new UnsupportedValueException('$elements.examined'),
+                'expectedException' => new UnsupportedContentException(
+                    UnsupportedContentException::TYPE_VALUE,
+                    '$elements.examined'
+                ),
             ],
             'expected value is not supported' => [
                 'assertion' => $assertionParser->parse('$".selector" is $elements.expected'),
-                'expectedException' => new UnsupportedValueException('$elements.expected'),
+                'expectedException' => new UnsupportedContentException(
+                    UnsupportedContentException::TYPE_VALUE,
+                    '$elements.expected'
+                ),
             ],
             'examined value identifier cannot be extracted' => [
                 'assertion' => $assertionParser->parse('$".examined" is "value"'),

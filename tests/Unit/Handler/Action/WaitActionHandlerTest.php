@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Action;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
 use webignition\BasilCompilableSourceFactory\Handler\Action\WaitActionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ObjectReflector;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
@@ -41,7 +40,7 @@ class WaitActionHandlerTest extends AbstractTestCase
         return [
             'value is null' => [
                 'action' => $actionParser->parse('wait'),
-                'expectedException' => new UnsupportedValueException('')
+                'expectedException' => new UnsupportedContentException(UnsupportedContentException::TYPE_VALUE, '')
             ],
             'value identifier cannot be extracted' => [
                 'action' => $actionParser->parse('wait $".duration"'),
