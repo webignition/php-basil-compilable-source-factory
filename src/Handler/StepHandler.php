@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler;
 
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedAssertionException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
@@ -87,7 +86,7 @@ class StepHandler
                     try {
                         $block->addLinesFromBlock($this->createAssertionDerivedAssertions($assertion));
                     } catch (UnsupportedContentException $unsupportedIdentifierException) {
-                        throw new UnsupportedAssertionException($assertion, $unsupportedIdentifierException);
+                        throw new UnsupportedStatementException($assertion, $unsupportedIdentifierException);
                     }
                 }
 
@@ -95,8 +94,8 @@ class StepHandler
                     $this->createStatementBlock($assertion, $this->assertionHandler->handle($assertion))
                 );
             }
-        } catch (UnsupportedStatementException | UnsupportedAssertionException $previous) {
-            throw new UnsupportedStepException($step, $previous);
+        } catch (UnsupportedStatementException $unsupportedStatementException) {
+            throw new UnsupportedStepException($step, $unsupportedStatementException);
         }
 
         return $block;
