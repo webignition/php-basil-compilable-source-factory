@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedAssertionException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
@@ -50,7 +50,7 @@ class AssertionHandler
                 return $this->existenceComparisonHandler->handle($assertion);
             }
         } catch (
-            UnsupportedIdentifierException |
+            UnsupportedContentException |
             UnsupportedValueException $previous
         ) {
             throw new UnsupportedAssertionException($assertion, $previous);

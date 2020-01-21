@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedAssertionException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromExcludesAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromExistsAssertionDataProviderTrait;
@@ -99,7 +99,10 @@ class AssertionHandlerTest extends AbstractTestCase
                 'assertion' => $assertionParser->parse('$elements.element_name exists'),
                 'expectedException' => new UnsupportedAssertionException(
                     $assertionParser->parse('$elements.element_name exists'),
-                    new UnsupportedIdentifierException('$elements.element_name')
+                    new UnsupportedContentException(
+                        UnsupportedContentException::TYPE_IDENTIFIER,
+                        '$elements.element_name'
+                    )
                 ),
             ],
         ];
