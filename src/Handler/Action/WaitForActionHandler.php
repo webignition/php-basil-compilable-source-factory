@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlock;
@@ -47,23 +47,23 @@ class WaitForActionHandler
      *
      * @return CodeBlockInterface
      *
-     * @throws UnsupportedIdentifierException
+     * @throws UnsupportedContentException
      */
     public function handle(InteractionActionInterface $action): CodeBlockInterface
     {
         $identifier = $action->getIdentifier();
 
         if (!$this->identifierTypeAnalyser->isDomIdentifier($identifier)) {
-            throw new UnsupportedIdentifierException($identifier);
+            throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }
 
         $domIdentifier = $this->domIdentifierFactory->createFromIdentifierString($identifier);
         if (null === $domIdentifier) {
-            throw new UnsupportedIdentifierException($identifier);
+            throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }
 
         if ($domIdentifier instanceof AttributeIdentifierInterface) {
-            throw new UnsupportedIdentifierException($identifier);
+            throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }
 
         $variableDependencies = new VariablePlaceholderCollection();
