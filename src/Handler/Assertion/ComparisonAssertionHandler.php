@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
@@ -73,8 +73,8 @@ class ComparisonAssertionHandler
      *
      * @return CodeBlockInterface
      *
-     * @throws UnsupportedIdentifierException
      * @throws UnsupportedValueException
+     * @throws UnsupportedContentException
      */
     public function handle(ComparisonAssertionInterface $assertion): CodeBlockInterface
     {
@@ -87,7 +87,7 @@ class ComparisonAssertionHandler
         if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($examinedValue)) {
             $examinedValueDomIdentifier = $this->domIdentifierFactory->createFromIdentifierString($examinedValue);
             if (null === $examinedValueDomIdentifier) {
-                throw new UnsupportedIdentifierException($examinedValue);
+                throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $examinedValue);
             }
 
             $examinedValueAccessor = $this->namedDomIdentifierHandler->handle(
@@ -104,7 +104,7 @@ class ComparisonAssertionHandler
         if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($expectedValue)) {
             $expectedValueDomIdentifier = $this->domIdentifierFactory->createFromIdentifierString($expectedValue);
             if (null === $expectedValueDomIdentifier) {
-                throw new UnsupportedIdentifierException($expectedValue);
+                throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $expectedValue);
             }
 
             $expectedValueAccessor = $this->namedDomIdentifierHandler->handle(
