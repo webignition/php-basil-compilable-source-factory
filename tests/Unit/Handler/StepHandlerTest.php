@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler;
 
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedActionException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedAssertionException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
 use webignition\BasilCompilableSourceFactory\Handler\StepHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
@@ -409,9 +407,12 @@ class StepHandlerTest extends AbstractTestCase
                             'click $elements.element_name',
                         ],
                     ]),
-                    new UnsupportedActionException(
+                    new UnsupportedStatementException(
                         $actionParser->parse('click $elements.element_name'),
-                        new UnsupportedIdentifierException('$elements.element_name')
+                        new UnsupportedContentException(
+                            UnsupportedContentException::TYPE_IDENTIFIER,
+                            '$elements.element_name'
+                        )
                     )
                 ),
             ],
@@ -427,9 +428,12 @@ class StepHandlerTest extends AbstractTestCase
                             '$elements.examined is "value"',
                         ],
                     ]),
-                    new UnsupportedAssertionException(
+                    new UnsupportedStatementException(
                         $assertionParser->parse('$elements.examined is "value"'),
-                        new UnsupportedValueException('$elements.examined')
+                        new UnsupportedContentException(
+                            UnsupportedContentException::TYPE_IDENTIFIER,
+                            '$elements.examined'
+                        )
                     )
                 ),
             ],

@@ -7,8 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\WebDriverElementMutatorCallFactory;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifier;
@@ -67,25 +66,24 @@ class SetActionHandler
      *
      * @return CodeBlockInterface
      *
-     * @throws UnsupportedIdentifierException
-     * @throws UnsupportedValueException
+     * @throws UnsupportedContentException
      */
     public function handle(InputActionInterface $action): CodeBlockInterface
     {
         $identifier = $action->getIdentifier();
 
         if (!$this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
-            throw new UnsupportedIdentifierException($identifier);
+            throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }
 
         $value = $action->getValue();
         $domIdentifier = $this->domIdentifierFactory->createFromIdentifierString($identifier);
         if (null === $domIdentifier) {
-            throw new UnsupportedIdentifierException($identifier);
+            throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }
 
         if ($domIdentifier instanceof AttributeIdentifierInterface) {
-            throw new UnsupportedIdentifierException($identifier);
+            throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }
 
         $variableExports = new VariablePlaceholderCollection();
@@ -100,7 +98,7 @@ class SetActionHandler
             $valueDomIdentifier = $this->domIdentifierFactory->createFromIdentifierString($value);
 
             if (null ===  $valueDomIdentifier) {
-                throw new UnsupportedIdentifierException($value);
+                throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $value);
             }
 
             $valueAccessor = $this->namedDomIdentifierHandler->handle(

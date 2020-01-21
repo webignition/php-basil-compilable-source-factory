@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Action;
 
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedActionException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\CreateFromBackActionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\CreateFromClickActionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\CreateFromForwardActionDataProviderTrait;
@@ -58,7 +57,7 @@ class ActionHandlerTest extends AbstractTestCase
     /**
      * @dataProvider handleThrowsExceptionDataProvider
      */
-    public function testHandleThrowsException(ActionInterface $action, UnsupportedActionException $expectedException)
+    public function testHandleThrowsException(ActionInterface $action, UnsupportedStatementException $expectedException)
     {
         $handler = ActionHandler::createHandler();
         $this->expectExceptionObject($expectedException);
@@ -73,65 +72,18 @@ class ActionHandlerTest extends AbstractTestCase
         return [
             'interaction action, identifier not dom identifier' => [
                 'action' => $actionParser->parse('click $elements.element_name'),
-                'expectedException' => new UnsupportedActionException(
+                'expectedException' => new UnsupportedStatementException(
                     $actionParser->parse('click $elements.element_name'),
-                    new UnsupportedIdentifierException('$elements.element_name')
+                    new UnsupportedContentException(
+                        UnsupportedContentException::TYPE_IDENTIFIER,
+                        '$elements.element_name'
+                    )
                 ),
             ],
-            'interaction action, attribute identifier' => [
-                'action' => $actionParser->parse('submit $".selector".attribute_name'),
-                'expectedException' => new UnsupportedActionException(
-                    $actionParser->parse('submit $".selector".attribute_name'),
-                    new UnsupportedIdentifierException('$".selector".attribute_name')
-                ),
-            ],
-            'set action, identifier is not dom identifier' => [
-                'action' => $actionParser->parse('set $elements.element_name to "value"'),
-                'expectedException' => new UnsupportedActionException(
-                    $actionParser->parse('set $elements.element_name to "value"'),
-                    new UnsupportedIdentifierException('$elements.element_name')
-                ),
-            ],
-            'set action, identifier is attribute reference' => [
-                'action' => $actionParser->parse('set $".selector".attribute_name to "value"'),
-                'expectedException' => new UnsupportedActionException(
-                    $actionParser->parse('set $".selector".attribute_name to "value"'),
-                    new UnsupportedIdentifierException('$".selector".attribute_name')
-                ),
-            ],
-            'set action, value is unsupported' => [
-                'action' => $actionParser->parse('set $".selector" to $elements.element_name'),
-                'expectedException' => new UnsupportedActionException(
-                    $actionParser->parse('set $".selector" to $elements.element_name'),
-                    new UnsupportedValueException('$elements.element_name')
-                ),
-            ],
-            'wait action, value is empty' => [
-                'action' => $actionParser->parse('wait'),
-                'expectedException' => new UnsupportedActionException(
-                    $actionParser->parse('wait'),
-                    new UnsupportedValueException('')
-                ),
-            ],
-            'wait action, value is unsupported' => [
-                'action' => $actionParser->parse('wait $elements.element_name'),
-                'expectedException' => new UnsupportedActionException(
-                    $actionParser->parse('wait $elements.element_name'),
-                    new UnsupportedValueException('$elements.element_name')
-                ),
-            ],
-            'wait-for action, identifier is not dom identifier' => [
-                'action' => $actionParser->parse('wait-for $elements.element_name'),
-                'expectedException' => new UnsupportedActionException(
-                    $actionParser->parse('wait-for $elements.element_name'),
-                    new UnsupportedIdentifierException('$elements.element_name')
-                ),
-            ],
-            'wait-for action, identifier is attribute reference' => [
-                'action' => $actionParser->parse('wait-for $".selector".attribute_name'),
-                'expectedException' => new UnsupportedActionException(
-                    $actionParser->parse('wait-for $".selector".attribute_name'),
-                    new UnsupportedIdentifierException('$".selector".attribute_name')
+            'unsupported action type' => [
+                'action' => $actionParser->parse('foo $".selector"'),
+                'expectedException' => new UnsupportedStatementException(
+                    $actionParser->parse('foo $".selector"')
                 ),
             ],
         ];

@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedActionException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilModels\Action\ActionInterface;
 use webignition\BasilModels\Action\InputActionInterface;
@@ -51,7 +50,7 @@ class ActionHandler
      *
      * @return CodeBlockInterface
      *
-     * @throws UnsupportedActionException
+     * @throws UnsupportedStatementException
      */
     public function handle(ActionInterface $action): CodeBlockInterface
     {
@@ -75,10 +74,10 @@ class ActionHandler
             if ($action instanceof InteractionActionInterface && in_array($action->getType(), ['wait-for'])) {
                 return $this->waitForActionHandler->handle($action);
             }
-        } catch (UnsupportedIdentifierException | UnsupportedValueException $previous) {
-            throw new UnsupportedActionException($action, $previous);
+        } catch (UnsupportedContentException $unsupportedContentException) {
+            throw new UnsupportedStatementException($action, $unsupportedContentException);
         }
 
-        throw new UnsupportedActionException($action);
+        throw new UnsupportedStatementException($action);
     }
 }

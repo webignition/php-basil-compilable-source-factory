@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Action;
 
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\Action\InteractionActionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilModels\Action\InteractionActionInterface;
@@ -17,7 +17,7 @@ class InteractionActionHandlerTest extends AbstractTestCase
      */
     public function testHandleThrowsException(
         InteractionActionInterface $action,
-        UnsupportedIdentifierException $expectedException
+        \Exception $expectedException
     ) {
         $handler = InteractionActionHandler::createHandler();
 
@@ -33,11 +33,17 @@ class InteractionActionHandlerTest extends AbstractTestCase
         return [
             'identifier is not dom identifier' => [
                 'action' => $actionParser->parse('click $elements.element_name'),
-                'expectedException' => new UnsupportedIdentifierException('$elements.element_name'),
+                'expectedException' => new UnsupportedContentException(
+                    UnsupportedContentException::TYPE_IDENTIFIER,
+                    '$elements.element_name'
+                ),
             ],
             'attribute identifier' => [
                 'action' => $actionParser->parse('submit $".selector".attribute_name'),
-                'expectedException' => new UnsupportedIdentifierException('$".selector".attribute_name'),
+                'expectedException' => new UnsupportedContentException(
+                    UnsupportedContentException::TYPE_IDENTIFIER,
+                    '$".selector".attribute_name'
+                ),
             ],
         ];
     }

@@ -4,43 +4,36 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Exception;
 
+use webignition\BasilModels\Action\ActionInterface;
 use webignition\BasilModels\Step\StepInterface;
 
-class UnsupportedStepException extends AbstractUnsupportedSubjectException
+class UnsupportedStepException extends \Exception
 {
-    public const CODE_UNSUPPORTED_ACTION = 2;
-    public const CODE_UNSUPPORTED_ASSERTION = 3;
+    public const CODE_UNSUPPORTED_ACTION = 1;
+    public const CODE_UNSUPPORTED_ASSERTION = 2;
 
     private $step;
+    private $unsupportedStatementException;
 
-    public function __construct(StepInterface $step, \Throwable $previous)
+    public function __construct(StepInterface $step, UnsupportedStatementException $unsupportedStatementException)
     {
-        parent::__construct($step, $previous);
+        $code = $unsupportedStatementException->getStatement() instanceof ActionInterface
+            ? self::CODE_UNSUPPORTED_ACTION
+            : self::CODE_UNSUPPORTED_ASSERTION;
+
+        parent::__construct('Unsupported step', $code, $unsupportedStatementException);
 
         $this->step = $step;
+        $this->unsupportedStatementException = $unsupportedStatementException;
     }
 
-    public function getStep(): object
+    public function getStep(): StepInterface
     {
         return $this->step;
     }
 
-    /**
-     * @inheritDoc
-     */
-    protected function createMessage($subject): string
+    public function getUnsupportedStatementException(): UnsupportedStatementException
     {
-        return 'Unsupported step';
-    }
-
-    /**
-     * @inheritDoc
-     */
-    protected function getCodes(): array
-    {
-        return [
-            UnsupportedActionException::class => self::CODE_UNSUPPORTED_ACTION,
-            UnsupportedAssertionException::class => self::CODE_UNSUPPORTED_ASSERTION,
-        ];
+        return $this->unsupportedStatementException;
     }
 }

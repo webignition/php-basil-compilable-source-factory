@@ -6,8 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
@@ -64,8 +63,7 @@ class WaitActionHandler
      *
      * @return CodeBlockInterface
      *
-     * @throws UnsupportedIdentifierException
-     * @throws UnsupportedValueException
+     * @throws UnsupportedContentException
      */
     public function handle(WaitActionInterface $waitAction): CodeBlockInterface
     {
@@ -81,7 +79,7 @@ class WaitActionHandler
         if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($duration)) {
             $durationIdentifier = $this->domIdentifierFactory->createFromIdentifierString($duration);
             if (null === $durationIdentifier) {
-                throw new UnsupportedIdentifierException($duration);
+                throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $duration);
             }
 
             $durationAccessor = $this->namedDomIdentifierHandler->handle(

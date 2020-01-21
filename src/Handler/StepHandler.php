@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler;
 
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedActionException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedAssertionException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
@@ -75,8 +74,8 @@ class StepHandler
             foreach ($step->getActions() as $action) {
                 try {
                     $block->addLinesFromBlock($this->createActionDerivedAssertions($action));
-                } catch (UnsupportedIdentifierException $unsupportedIdentifierException) {
-                    throw new UnsupportedActionException($action, $unsupportedIdentifierException);
+                } catch (UnsupportedContentException $unsupportedIdentifierException) {
+                    throw new UnsupportedStatementException($action, $unsupportedIdentifierException);
                 }
 
                 $block->addLinesFromBlock($this->createStatementBlock($action, $this->actionHandler->handle($action)));
@@ -86,8 +85,8 @@ class StepHandler
                 if (!$this->isExistenceAssertion($assertion)) {
                     try {
                         $block->addLinesFromBlock($this->createAssertionDerivedAssertions($assertion));
-                    } catch (UnsupportedIdentifierException $unsupportedIdentifierException) {
-                        throw new UnsupportedAssertionException($assertion, $unsupportedIdentifierException);
+                    } catch (UnsupportedContentException $unsupportedIdentifierException) {
+                        throw new UnsupportedStatementException($assertion, $unsupportedIdentifierException);
                     }
                 }
 
@@ -95,8 +94,8 @@ class StepHandler
                     $this->createStatementBlock($assertion, $this->assertionHandler->handle($assertion))
                 );
             }
-        } catch (UnsupportedActionException | UnsupportedAssertionException $previous) {
-            throw new UnsupportedStepException($step, $previous);
+        } catch (UnsupportedStatementException $unsupportedStatementException) {
+            throw new UnsupportedStepException($step, $unsupportedStatementException);
         }
 
         return $block;
@@ -111,7 +110,7 @@ class StepHandler
      * @param string $identifier
      * @param StatementInterface $action
      *
-     * @throws UnsupportedIdentifierException
+     * @throws UnsupportedContentException
      *
      * @return CodeBlockInterface
      */
@@ -123,7 +122,7 @@ class StepHandler
 
         $domIdentifier = $this->domIdentifierFactory->createFromIdentifierString($identifier);
         if (null === $domIdentifier) {
-            throw new UnsupportedIdentifierException($identifier);
+            throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }
 
         $elementExistsBlock = $this->domIdentifierExistenceHandler->createForElement($domIdentifier);
@@ -135,7 +134,7 @@ class StepHandler
      * @param string $identifier
      * @param StatementInterface $action
      *
-     * @throws UnsupportedIdentifierException
+     * @throws UnsupportedContentException
      *
      * @return CodeBlockInterface
      */
@@ -147,7 +146,7 @@ class StepHandler
 
         $domIdentifier = $this->domIdentifierFactory->createFromIdentifierString($identifier);
         if (null === $domIdentifier) {
-            throw new UnsupportedIdentifierException($identifier);
+            throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }
 
         $elementExistsBlock = $this->domIdentifierExistenceHandler->createForCollection($domIdentifier);
@@ -185,7 +184,7 @@ class StepHandler
      *
      * @return CodeBlockInterface
      *
-     * @throws UnsupportedIdentifierException
+     * @throws UnsupportedContentException
      */
     private function createActionDerivedAssertions(ActionInterface $action): CodeBlockInterface
     {
@@ -229,7 +228,7 @@ class StepHandler
      *
      * @return CodeBlockInterface
      *
-     * @throws UnsupportedIdentifierException
+     * @throws UnsupportedContentException
      */
     private function createAssertionDerivedAssertions(AssertionInterface $assertion): CodeBlockInterface
     {

@@ -6,8 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedIdentifierException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierExistenceHandler;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
@@ -75,8 +74,7 @@ class ExistenceComparisonHandler
      *
      * @return CodeBlockInterface
      *
-     * @throws UnsupportedIdentifierException
-     * @throws UnsupportedValueException
+     * @throws UnsupportedContentException
      */
     public function handle(AssertionInterface $assertion): CodeBlockInterface
     {
@@ -112,7 +110,7 @@ class ExistenceComparisonHandler
         if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
             $domIdentifier = $this->domIdentifierFactory->createFromIdentifierString($identifier);
             if (null === $domIdentifier) {
-                throw new UnsupportedIdentifierException($identifier);
+                throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
             }
 
             if (!$domIdentifier instanceof AttributeIdentifierInterface) {
@@ -152,7 +150,7 @@ class ExistenceComparisonHandler
             return $this->createAssertionCall($comparison, $existence, $valuePlaceholder);
         }
 
-        throw new UnsupportedIdentifierException($identifier);
+        throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
     }
 
     private function createAssertionCall(

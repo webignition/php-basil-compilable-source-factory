@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\Value;
 
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedValueException;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
