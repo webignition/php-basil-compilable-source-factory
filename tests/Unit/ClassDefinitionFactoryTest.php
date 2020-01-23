@@ -8,6 +8,7 @@ use webignition\BasilCompilableSourceFactory\ArrayStatementFactory;
 use webignition\BasilCompilableSourceFactory\ClassDefinitionFactory;
 use webignition\BasilCompilableSourceFactory\ClassNameFactory;
 use webignition\BasilCompilableSourceFactory\Handler\StepHandler;
+use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\StepMethodFactory;
 use webignition\BasilCompilableSourceFactory\StepMethodNameFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StepMethodNameFactoryFactory;
@@ -244,7 +245,8 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
         return new StepMethodFactory(
             StepHandler::createHandler(),
             ArrayStatementFactory::createFactory(),
-            $stepMethodNameFactory
+            $stepMethodNameFactory,
+            SingleQuotedStringEscaper::create()
         );
     }
 }

@@ -8,10 +8,16 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\Handler\StepHandler;
 use webignition\BasilCompilableSourceFactory\Model\StepMethods;
 use webignition\BasilCompilationSource\Block\CodeBlock;
+use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Block\DocBlock;
 use webignition\BasilCompilationSource\Line\Comment;
+use webignition\BasilCompilationSource\Line\EmptyLine;
+use webignition\BasilCompilationSource\Line\Statement;
+use webignition\BasilCompilationSource\Line\StatementInterface;
+use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\MethodDefinition\MethodDefinition;
 use webignition\BasilCompilationSource\MethodDefinition\MethodDefinitionInterface;
+use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModels\DataSet\DataSetCollectionInterface;
 use webignition\BasilModels\Step\StepInterface;
 
@@ -20,15 +26,18 @@ class StepMethodFactory
     private $stepHandler;
     private $arrayStatementFactory;
     private $stepMethodNameFactory;
+    private $singleQuotedStringEscaper;
 
     public function __construct(
         StepHandler $stepHandler,
         ArrayStatementFactory $arrayStatementFactory,
-        StepMethodNameFactory $stepMethodNameFactory
+        StepMethodNameFactory $stepMethodNameFactory,
+        SingleQuotedStringEscaper $singleQuotedStringEscaper
     ) {
         $this->stepHandler = $stepHandler;
         $this->arrayStatementFactory = $arrayStatementFactory;
         $this->stepMethodNameFactory = $stepMethodNameFactory;
+        $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
     }
 
     public static function createFactory(): StepMethodFactory
@@ -36,7 +45,8 @@ class StepMethodFactory
         return new StepMethodFactory(
             StepHandler::createHandler(),
             ArrayStatementFactory::createFactory(),
-            new StepMethodNameFactory()
+            new StepMethodNameFactory(),
+            SingleQuotedStringEscaper::create()
         );
     }
 
@@ -62,7 +72,7 @@ class StepMethodFactory
         $testMethod = new MethodDefinition(
             $stepMethodName,
             new CodeBlock([
-                new Comment($stepName),
+                $this->createTestMethodHeader($stepName),
                 $this->stepHandler->handle($step),
             ]),
             $parameterNames
@@ -78,6 +88,31 @@ class StepMethodFactory
         }
 
         return new StepMethods($testMethod, $dataProviderMethod);
+    }
+
+    private function createTestMethodHeader(string $stepName): CodeBlockInterface
+    {
+        return new CodeBlock([
+            new Comment($stepName),
+            $this->createTestMethodSetNameStatement($stepName),
+            new EmptyLine(),
+        ]);
+    }
+
+    private function createTestMethodSetNameStatement(string $stepName): StatementInterface
+    {
+        $variableDependencies = new VariablePlaceholderCollection();
+        $phpUnitPlaceholder = $variableDependencies->create(VariableNames::PHPUNIT_TEST_CASE);
+
+        return new Statement(
+            sprintf(
+                '%s->setName(\'%s\')',
+                $phpUnitPlaceholder,
+                $this->singleQuotedStringEscaper->escape($stepName)
+            ),
+            (new Metadata())
+                ->withVariableDependencies($variableDependencies)
+        );
     }
 
     private function createDataProviderMethod(
