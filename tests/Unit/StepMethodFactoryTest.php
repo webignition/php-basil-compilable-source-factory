@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
 use webignition\BasilCompilableSourceFactory\ArrayStatementFactory;
 use webignition\BasilCompilableSourceFactory\Handler\StepHandler;
+use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\StepMethodFactory;
 use webignition\BasilCompilableSourceFactory\StepMethodNameFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StepMethodNameFactoryFactory;
@@ -40,7 +41,8 @@ class StepMethodFactoryTest extends AbstractTestCase
         $factory = new StepMethodFactory(
             StepHandler::createHandler(),
             ArrayStatementFactory::createFactory(),
-            $stepMethodNameFactory
+            $stepMethodNameFactory,
+            SingleQuotedStringEscaper::create()
         );
 
         $stepMethods = $factory->createStepMethods($stepName, $step);
@@ -80,8 +82,35 @@ class StepMethodFactoryTest extends AbstractTestCase
                 'step' => $stepParser->parse([]),
                 'expectedTestMethod' => new MethodDefinition('testMethodName', CodeBlock::fromContent([
                     '// Step Name',
+                    '{{ PHPUNIT }}->setName(\'Step Name\')',
+                    '',
                 ])),
-                'expectedTestMethodMetadata' => new Metadata(),
+                'expectedTestMethodMetadata' => (new Metadata())
+                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        VariableNames::PHPUNIT_TEST_CASE,
+                    ])),
+                'expectedDataProviderMethod' => null
+            ],
+            'empty test, step name contains single quotes' => [
+                'stepMethodNameFactory' => $stepMethodNameFactoryFactory->create(
+                    [
+                        "step name 'contains' single quotes" => [
+                            'testMethodName',
+                        ],
+                    ],
+                    []
+                ),
+                'stepName' => 'step name \'contains\' single quotes',
+                'step' => $stepParser->parse([]),
+                'expectedTestMethod' => new MethodDefinition('testMethodName', CodeBlock::fromContent([
+                    '// step name \'contains\' single quotes',
+                    '{{ PHPUNIT }}->setName(\'step name \\\'contains\\\' single quotes\')',
+                    '',
+                ])),
+                'expectedTestMethodMetadata' => (new Metadata())
+                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        VariableNames::PHPUNIT_TEST_CASE,
+                    ])),
                 'expectedDataProviderMethod' => null
             ],
             'single step with single action and single assertion' => [
@@ -104,6 +133,8 @@ class StepMethodFactoryTest extends AbstractTestCase
                 ]),
                 'expectedTestMethod' => new MethodDefinition('testMethodName', CodeBlock::fromContent([
                     '// Step Name',
+                    '{{ PHPUNIT }}->setName(\'Step Name\')',
+                    '',
                     '// $".selector" exists <- click $".selector"',
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
@@ -172,6 +203,8 @@ class StepMethodFactoryTest extends AbstractTestCase
                         'testMethodName',
                         CodeBlock::fromContent([
                             '// Step Name',
+                            '{{ PHPUNIT }}->setName(\'Step Name\')',
+                            '',
                             '//$".selector" exists <- set $".selector" to $data.field_value',
                             '{{ HAS }} = {{ NAVIGATOR }}->has(' .
                             'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
