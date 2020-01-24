@@ -77,12 +77,12 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
                     )
                 ),
                 'expectedClassName' => 'GeneratedClassName',
-                'test' => $testParser->parse('.', 'test.yml', [
+                'test' => $testParser->parse([
                     'config' => [
                         'browser' => 'chrome',
                         'url' => 'http://example.com',
                     ],
-                ]),
+                ])->withPath('test.yml'),
                 'expectedMethodCount' => 1,
                 'expectedSetUpBeforeClassMethod' => $this->createExpectedSetUpBeforeClassMethodDefinition(
                     'http://example.com'
@@ -107,7 +107,7 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
                     )
                 ),
                 'expectedClassName' => 'GeneratedClassName',
-                'test' => $testParser->parse('.', 'test.yml', [
+                'test' => $testParser->parse([
                     'config' => [
                         'browser' => 'chrome',
                         'url' => 'http://example.com',
@@ -120,7 +120,7 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
                             '$page.title is "value"',
                         ],
                     ],
-                ]),
+                ])->withPath('test.yml'),
                 'expectedMethodCount' => 2,
                 'expectedSetUpBeforeClassMethod' => $this->createExpectedSetUpBeforeClassMethodDefinition(
                     'http://example.com'
@@ -160,7 +160,7 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
                     )
                 ),
                 'expectedClassName' => 'GeneratedClassName',
-                'test' => $testParser->parse('.', 'test.yml', [
+                'test' => $testParser->parse([
                     'config' => [
                         'browser' => 'chrome',
                         'url' => 'http://example.com',
@@ -179,7 +179,7 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
                             ],
                         ],
                     ],
-                ]),
+                ])->withPath('test.yml'),
                 'expectedMethodCount' => 3,
                 'expectedSetUpBeforeClassMethod' => $this->createExpectedSetUpBeforeClassMethodDefinition(
                     'http://example.com'
