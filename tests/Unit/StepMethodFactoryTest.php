@@ -81,8 +81,7 @@ class StepMethodFactoryTest extends AbstractTestCase
                 'stepName' => 'Step Name',
                 'step' => $stepParser->parse([]),
                 'expectedTestMethod' => new MethodDefinition('testMethodName', CodeBlock::fromContent([
-                    '// Step Name',
-                    '{{ PHPUNIT }}->setName(\'Step Name\')',
+                    '{{ PHPUNIT }}->setBasilStepName(\'Step Name\')',
                     '',
                 ])),
                 'expectedTestMethodMetadata' => (new Metadata())
@@ -103,8 +102,7 @@ class StepMethodFactoryTest extends AbstractTestCase
                 'stepName' => 'step name \'contains\' single quotes',
                 'step' => $stepParser->parse([]),
                 'expectedTestMethod' => new MethodDefinition('testMethodName', CodeBlock::fromContent([
-                    '// step name \'contains\' single quotes',
-                    '{{ PHPUNIT }}->setName(\'step name \\\'contains\\\' single quotes\')',
+                    '{{ PHPUNIT }}->setBasilStepName(\'step name \\\'contains\\\' single quotes\')',
                     '',
                 ])),
                 'expectedTestMethodMetadata' => (new Metadata())
@@ -132,8 +130,7 @@ class StepMethodFactoryTest extends AbstractTestCase
                     ],
                 ]),
                 'expectedTestMethod' => new MethodDefinition('testMethodName', CodeBlock::fromContent([
-                    '// Step Name',
-                    '{{ PHPUNIT }}->setName(\'Step Name\')',
+                    '{{ PHPUNIT }}->setBasilStepName(\'Step Name\')',
                     '',
                     '// $".selector" exists <- click $".selector"',
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
@@ -202,8 +199,7 @@ class StepMethodFactoryTest extends AbstractTestCase
                     new MethodDefinition(
                         'testMethodName',
                         CodeBlock::fromContent([
-                            '// Step Name',
-                            '{{ PHPUNIT }}->setName(\'Step Name\')',
+                            '{{ PHPUNIT }}->setBasilStepName(\'Step Name\')',
                             '',
                             '//$".selector" exists <- set $".selector" to $data.field_value',
                             '{{ HAS }} = {{ NAVIGATOR }}->has(' .

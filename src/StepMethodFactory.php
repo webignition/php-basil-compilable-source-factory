@@ -8,7 +8,6 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\Handler\StepHandler;
 use webignition\BasilCompilableSourceFactory\Model\StepMethods;
 use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Block\DocBlock;
 use webignition\BasilCompilationSource\Line\Comment;
 use webignition\BasilCompilationSource\Line\EmptyLine;
@@ -72,7 +71,8 @@ class StepMethodFactory
         $testMethod = new MethodDefinition(
             $stepMethodName,
             new CodeBlock([
-                $this->createTestMethodHeader($stepName),
+                $this->createTestMethodSetBasilStepNameStatement($stepName),
+                new EmptyLine(),
                 $this->stepHandler->handle($step),
             ]),
             $parameterNames
@@ -90,23 +90,14 @@ class StepMethodFactory
         return new StepMethods($testMethod, $dataProviderMethod);
     }
 
-    private function createTestMethodHeader(string $stepName): CodeBlockInterface
-    {
-        return new CodeBlock([
-            new Comment($stepName),
-            $this->createTestMethodSetNameStatement($stepName),
-            new EmptyLine(),
-        ]);
-    }
-
-    private function createTestMethodSetNameStatement(string $stepName): StatementInterface
+    private function createTestMethodSetBasilStepNameStatement(string $stepName): StatementInterface
     {
         $variableDependencies = new VariablePlaceholderCollection();
         $phpUnitPlaceholder = $variableDependencies->create(VariableNames::PHPUNIT_TEST_CASE);
 
         return new Statement(
             sprintf(
-                '%s->setName(\'%s\')',
+                '%s->setBasilStepName(\'%s\')',
                 $phpUnitPlaceholder,
                 $this->singleQuotedStringEscaper->escape($stepName)
             ),
