@@ -36,6 +36,7 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
         TestInterface $test,
         int $expectedMethodCount,
         MethodDefinitionInterface $expectedSetUpBeforeClassMethod,
+        MethodDefinitionInterface $expectedSetUpMethod,
         MetadataInterface $expectedMetadata
     ) {
         $classDefinition = $factory->createClassDefinition($test);
@@ -47,7 +48,6 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
         $this->assertCount($expectedMethodCount, $methods);
 
         $setUpBeforeClassMethod = $methods['setUpBeforeClass'] ?? null;
-
         $this->assertInstanceOf(MethodDefinitionInterface::class, $setUpBeforeClassMethod);
 
         if ($setUpBeforeClassMethod instanceof MethodDefinitionInterface) {
@@ -58,6 +58,20 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
                         VariableNames::PANTHER_CLIENT,
                     ])),
                 $setUpBeforeClassMethod->getMetadata()
+            );
+        }
+
+        $setUpMethod = $methods['setUp'] ?? null;
+        $this->assertInstanceOf(MethodDefinitionInterface::class, $setUpMethod);
+
+        if ($setUpMethod instanceof MethodDefinitionInterface) {
+            $this->assertMethodEquals($expectedSetUpMethod, $setUpMethod);
+            $this->assertMetadataEquals(
+                (new Metadata())
+                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        VariableNames::PHPUNIT_TEST_CASE,
+                    ])),
+                $setUpMethod->getMetadata()
             );
         }
     }
@@ -77,19 +91,21 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
                     )
                 ),
                 'expectedClassName' => 'GeneratedClassName',
-                'test' => $testParser->parse('.', 'test.yml', [
+                'test' => $testParser->parse([
                     'config' => [
                         'browser' => 'chrome',
                         'url' => 'http://example.com',
                     ],
-                ]),
-                'expectedMethodCount' => 1,
+                ])->withPath('test.yml'),
+                'expectedMethodCount' => 2,
                 'expectedSetUpBeforeClassMethod' => $this->createExpectedSetUpBeforeClassMethodDefinition(
                     'http://example.com'
                 ),
+                'expectedSetUpMethod' => $this->createExpectedSetUpMethodDefinition('test.yml'),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::PANTHER_CLIENT,
+                        VariableNames::PHPUNIT_TEST_CASE
                     ])),
             ],
             'single step with single action and single assertion' => [
@@ -107,7 +123,7 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
                     )
                 ),
                 'expectedClassName' => 'GeneratedClassName',
-                'test' => $testParser->parse('.', 'test.yml', [
+                'test' => $testParser->parse([
                     'config' => [
                         'browser' => 'chrome',
                         'url' => 'http://example.com',
@@ -120,11 +136,12 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
                             '$page.title is "value"',
                         ],
                     ],
-                ]),
-                'expectedMethodCount' => 2,
+                ])->withPath('test.yml'),
+                'expectedMethodCount' => 3,
                 'expectedSetUpBeforeClassMethod' => $this->createExpectedSetUpBeforeClassMethodDefinition(
                     'http://example.com'
                 ),
+                'expectedSetUpMethod' => $this->createExpectedSetUpMethodDefinition('test.yml'),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -160,7 +177,7 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
                     )
                 ),
                 'expectedClassName' => 'GeneratedClassName',
-                'test' => $testParser->parse('.', 'test.yml', [
+                'test' => $testParser->parse([
                     'config' => [
                         'browser' => 'chrome',
                         'url' => 'http://example.com',
@@ -179,11 +196,12 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
                             ],
                         ],
                     ],
-                ]),
-                'expectedMethodCount' => 3,
+                ])->withPath('test.yml'),
+                'expectedMethodCount' => 4,
                 'expectedSetUpBeforeClassMethod' => $this->createExpectedSetUpBeforeClassMethodDefinition(
                     'http://example.com'
                 ),
+                'expectedSetUpMethod' => $this->createExpectedSetUpMethodDefinition('test.yml'),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -217,6 +235,19 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
 
         return $method;
     }
+
+    private function createExpectedSetUpMethodDefinition(string $testPath): MethodDefinitionInterface
+    {
+        $method = new MethodDefinition('setUp', CodeBlock::fromContent([
+            'parent::setUp()',
+            '{{ PHPUNIT }}->setBasilTestPath(\'' . $testPath . '\')',
+        ]));
+        $method->setProtected();
+        $method->setReturnType('void');
+
+        return $method;
+    }
+
 
     private function createClassDefinitionFactory(
         ClassNameFactory $classNameFactory,

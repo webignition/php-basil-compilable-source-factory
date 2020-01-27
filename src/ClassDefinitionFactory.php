@@ -46,6 +46,7 @@ class ClassDefinitionFactory
     {
         $methodDefinitions = [
             $this->createSetupBeforeClassMethod($test),
+            $this->createSetupMethod($test),
         ];
 
         foreach ($test->getSteps() as $stepName => $step) {
@@ -64,18 +65,15 @@ class ClassDefinitionFactory
 
     private function createSetupBeforeClassMethod(TestInterface $test): MethodDefinitionInterface
     {
-        $parentCallStatement = new Statement('parent::setUpBeforeClass()');
-        $clientRequestStatement = $this->createClientRequestStatement($test);
-
-        $setupBeforeClassMethod = new MethodDefinition('setUpBeforeClass', new CodeBlock([
-            $parentCallStatement,
-            $clientRequestStatement,
+        $method = new MethodDefinition('setUpBeforeClass', new CodeBlock([
+            new Statement('parent::setUpBeforeClass()'),
+            $this->createClientRequestStatement($test),
         ]));
 
-        $setupBeforeClassMethod->setStatic();
-        $setupBeforeClassMethod->setReturnType('void');
+        $method->setStatic();
+        $method->setReturnType('void');
 
-        return $setupBeforeClassMethod;
+        return $method;
     }
 
     private function createClientRequestStatement(TestInterface $test): StatementInterface
@@ -83,7 +81,7 @@ class ClassDefinitionFactory
         $variableDependencies = new VariablePlaceholderCollection();
         $pantherClientPlaceholder = $variableDependencies->create(VariableNames::PANTHER_CLIENT);
 
-        $clientRequestStatement = new Statement(
+        return new Statement(
             sprintf(
                 '%s->request(\'GET\', \'%s\')',
                 $pantherClientPlaceholder,
@@ -92,7 +90,34 @@ class ClassDefinitionFactory
             (new Metadata())
                 ->withVariableDependencies($variableDependencies)
         );
+    }
 
-        return $clientRequestStatement;
+    private function createSetupMethod(TestInterface $test): MethodDefinitionInterface
+    {
+        $setupBeforeClassMethod = new MethodDefinition('setUp', new CodeBlock([
+            new Statement('parent::setUp()'),
+            $this->createSetBasilTestPathStatement($test),
+        ]));
+
+        $setupBeforeClassMethod->setProtected();
+        $setupBeforeClassMethod->setReturnType('void');
+
+        return $setupBeforeClassMethod;
+    }
+
+    private function createSetBasilTestPathStatement(TestInterface $test): StatementInterface
+    {
+        $variableDependencies = new VariablePlaceholderCollection();
+        $phpUnitPlaceholder = $variableDependencies->create(VariableNames::PHPUNIT_TEST_CASE);
+
+        return new Statement(
+            sprintf(
+                '%s->setBasilTestPath(\'%s\')',
+                $phpUnitPlaceholder,
+                $test->getPath()
+            ),
+            (new Metadata())
+                ->withVariableDependencies($variableDependencies)
+        );
     }
 }

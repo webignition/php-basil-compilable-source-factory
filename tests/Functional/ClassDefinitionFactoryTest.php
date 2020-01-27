@@ -80,7 +80,7 @@ class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
 
         return [
             'single step with single action and single assertion' => [
-                'test' => $testParser->parse('.', 'test.yml', [
+                'test' => $testParser->parse([
                     'config' => [
                         'browser' => 'chrome',
                         'url' => Options::getBaseUri() . '/index.html',
@@ -91,14 +91,14 @@ class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
                             '$page.title is "Test fixture web server default document"',
                         ],
                     ],
-                ]),
+                ])->withPath('test.yml'),
                 'additionalVariableIdentifiers' => [
                     VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                 ],
             ],
             'multi-step' => [
-                'test' => $testParser->parse('.', 'test.yml', [
+                'test' => $testParser->parse([
                     'config' => [
                         'browser' => 'chrome',
                         'url' => Options::getBaseUri() . '/index.html',
@@ -134,7 +134,7 @@ class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
                             '$".select-has-selected" is "has-selected-1"',
                         ],
                     ],
-                ]),
+                ])->withPath('test.yml'),
                 'additionalVariableIdentifiers' => [
                     VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
@@ -145,7 +145,7 @@ class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
                 ],
             ],
             'with data set collection' => [
-                'test' => $testParser->parse('.', 'test.yml', [
+                'test' => $testParser->parse([
                     'config' => [
                         'browser' => 'chrome',
                         'url' => Options::getBaseUri() . '/form.html',
@@ -176,7 +176,7 @@ class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
                             ],
                         ],
                     ],
-                ]),
+                ])->withPath('test.yml'),
                 'additionalVariableIdentifiers' => [
                     'COLLECTION' => ResolvedVariableNames::COLLECTION_VARIABLE_NAME,
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
