@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1d0a18a256edb68cdb7a28107c5b78ab",
+    "content-hash": "f6164ff6454aa3d207b948c94d7c6404",
     "packages": [
         {
             "name": "facebook/webdriver",
@@ -3964,16 +3964,16 @@
         },
         {
             "name": "webignition/base-basil-test-case",
-            "version": "0.4",
+            "version": "0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/base-basil-test-case.git",
-                "reference": "24878857121199dab51fbeca54b352c0a3c0bb41"
+                "reference": "dbf81298a78a64da68ac4535bd75a31911ce620d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/base-basil-test-case/zipball/24878857121199dab51fbeca54b352c0a3c0bb41",
-                "reference": "24878857121199dab51fbeca54b352c0a3c0bb41",
+                "url": "https://api.github.com/repos/webignition/base-basil-test-case/zipball/dbf81298a78a64da68ac4535bd75a31911ce620d",
+                "reference": "dbf81298a78a64da68ac4535bd75a31911ce620d",
                 "shasum": ""
             },
             "require": {
@@ -4006,27 +4006,27 @@
                 }
             ],
             "homepage": "https://github.com/webignition/base-basil-test-case",
-            "time": "2020-01-24T11:05:17+00:00"
+            "time": "2020-01-27T18:41:51+00:00"
         },
         {
             "name": "webignition/base-panther-test-case",
-            "version": "0.4",
+            "version": "0.5",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/base-panther-test-case.git",
-                "reference": "32486329ace58b145059d583dc687831fa506030"
+                "reference": "376e594ab0fd5f799b8682cfbfafe8a8ea76ed54"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/base-panther-test-case/zipball/32486329ace58b145059d583dc687831fa506030",
-                "reference": "32486329ace58b145059d583dc687831fa506030",
+                "url": "https://api.github.com/repos/webignition/base-panther-test-case/zipball/376e594ab0fd5f799b8682cfbfafe8a8ea76ed54",
+                "reference": "376e594ab0fd5f799b8682cfbfafe8a8ea76ed54",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2",
                 "phpunit/phpunit": "~8.0",
                 "symfony/panther": "^0.6",
-                "webignition/base-basil-test-case": ">=0.4,<1"
+                "webignition/base-basil-test-case": ">=0.5,<1"
             },
             "require-dev": {
                 "phpstan/phpstan": "^0.12",
@@ -4050,7 +4050,7 @@
                 }
             ],
             "homepage": "https://github.com/webignition/base-panther-test-case",
-            "time": "2020-01-24T11:29:28+00:00"
+            "time": "2020-01-27T18:49:31+00:00"
         },
         {
             "name": "webignition/basil-parser",
