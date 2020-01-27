@@ -46,7 +46,6 @@ class ClassDefinitionFactory
     {
         $methodDefinitions = [
             $this->createSetupBeforeClassMethod($test),
-            $this->createSetupMethod($test),
         ];
 
         foreach ($test->getSteps() as $stepName => $step) {
@@ -68,6 +67,7 @@ class ClassDefinitionFactory
         $method = new MethodDefinition('setUpBeforeClass', new CodeBlock([
             new Statement('parent::setUpBeforeClass()'),
             $this->createClientRequestStatement($test),
+            $this->createSetBasilTestPathStatement($test),
         ]));
 
         $method->setStatic();
@@ -92,32 +92,13 @@ class ClassDefinitionFactory
         );
     }
 
-    private function createSetupMethod(TestInterface $test): MethodDefinitionInterface
-    {
-        $setupBeforeClassMethod = new MethodDefinition('setUp', new CodeBlock([
-            new Statement('parent::setUp()'),
-            $this->createSetBasilTestPathStatement($test),
-        ]));
-
-        $setupBeforeClassMethod->setProtected();
-        $setupBeforeClassMethod->setReturnType('void');
-
-        return $setupBeforeClassMethod;
-    }
-
     private function createSetBasilTestPathStatement(TestInterface $test): StatementInterface
     {
-        $variableDependencies = new VariablePlaceholderCollection();
-        $phpUnitPlaceholder = $variableDependencies->create(VariableNames::PHPUNIT_TEST_CASE);
-
         return new Statement(
             sprintf(
-                '%s->setBasilTestPath(\'%s\')',
-                $phpUnitPlaceholder,
+                'self::setBasilTestPath(\'%s\')',
                 $test->getPath()
-            ),
-            (new Metadata())
-                ->withVariableDependencies($variableDependencies)
+            )
         );
     }
 }
