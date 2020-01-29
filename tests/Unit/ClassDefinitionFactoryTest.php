@@ -142,6 +142,7 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
                         'ELEMENT',
                         VariableNames::EXAMINED_VALUE,
                         VariableNames::EXPECTED_VALUE,
+                        VariableNames::STATEMENT,
                     ])),
             ],
             'single step with single action and single assertion with data provider' => [
@@ -206,6 +207,7 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
                         VariableNames::EXPECTED_VALUE,
                         'HAS',
                         'VALUE',
+                        VariableNames::STATEMENT,
                     ])),
             ],
         ];

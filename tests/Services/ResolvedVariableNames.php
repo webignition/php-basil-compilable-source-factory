@@ -14,4 +14,5 @@ class ResolvedVariableNames
     public const ELEMENT_VARIABLE_NAME = '$element';
     public const COLLECTION_VARIABLE_NAME = '$collection';
     public const VALUE_VARIABLE_NAME = '$value';
+    public const STATEMENT_VARIABLE_NAME = '$statement';
 }

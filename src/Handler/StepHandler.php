@@ -21,6 +21,7 @@ use webignition\BasilCompilationSource\Line\EmptyLine;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Line\StatementInterface;
 use webignition\BasilCompilationSource\Metadata\Metadata;
+use webignition\BasilCompilationSource\VariablePlaceholder;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
@@ -179,9 +180,13 @@ class StepHandler
             $statementCommentContent .= ' <- ' . $statement->getSourceStatement()->getSource();
         }
 
-        $currentStatementStatement = $this->createCurrentStatementStatement($statement);
+        $statementPlaceholder = new VariablePlaceholder(VariableNames::STATEMENT);
+
+        $statementAssignment = $this->createStatementAssignment($statement, $statementPlaceholder);
+        $currentStatementStatement = $this->createSetCurrentStatementStatement($statementPlaceholder);
 
         $block->addLine(new Comment($statementCommentContent));
+        $block->addLine($statementAssignment);
         $block->addLine($currentStatementStatement);
 
         if ($source instanceof CodeBlockInterface) {
@@ -195,27 +200,45 @@ class StepHandler
         return $block;
     }
 
-    private function createCurrentStatementStatement(StatementModelInterface $statement): StatementInterface
-    {
-        $variableDependencies = new VariablePlaceholderCollection();
-        $phpUnitPlaceholder = $variableDependencies->create(VariableNames::PHPUNIT_TEST_CASE);
-
-        $classDependencies = new ClassDependencyCollection([
-            new ClassDependency(BasilTestStatement::class)
+    private function createStatementAssignment(
+        StatementModelInterface $statement,
+        VariablePlaceholder $statementPlaceholder
+    ): StatementInterface {
+        $variableExports = new VariablePlaceholderCollection([
+            $statementPlaceholder,
         ]);
 
         $createMethod = $statement instanceof ActionInterface ? 'createAction' : 'createAssertion';
 
         return new Statement(
             sprintf(
-                '%s->currentStatement = Statement::%s(\'%s\')',
-                $phpUnitPlaceholder,
+                '%s = Statement::%s(\'%s\')',
+                $statementPlaceholder,
                 $createMethod,
                 $this->singleQuotedStringEscaper->escape($statement->getSource())
             ),
             (new Metadata())
+                ->withClassDependencies(new ClassDependencyCollection([
+                    new ClassDependency(BasilTestStatement::class),
+                ]))
+                ->withVariableExports($variableExports)
+        );
+    }
+
+    private function createSetCurrentStatementStatement(
+        VariablePlaceholder $statementPlaceholder
+    ): StatementInterface {
+        $variableDependencies = new VariablePlaceholderCollection();
+        $phpUnitPlaceholder = $variableDependencies->create(VariableNames::PHPUNIT_TEST_CASE);
+
+        return new Statement(
+            sprintf(
+                '%s->currentStatement = %s',
+                $phpUnitPlaceholder,
+                $statementPlaceholder
+            ),
+            (new Metadata())
                 ->withVariableDependencies($variableDependencies)
-                ->withClassDependencies($classDependencies)
         );
     }
 
