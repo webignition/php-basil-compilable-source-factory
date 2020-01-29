@@ -195,9 +195,27 @@ class StepHandler
             }
         }
 
+        $block->addLine($this->createAddToCompletedStatementsStatement($statementPlaceholder));
         $block->addLine(new EmptyLine());
 
         return $block;
+    }
+
+    private function createAddToCompletedStatementsStatement(
+        VariablePlaceholder $statementPlaceholder
+    ): StatementInterface {
+        $variableDependencies = new VariablePlaceholderCollection();
+        $phpUnitPlaceholder = $variableDependencies->create(VariableNames::PHPUNIT_TEST_CASE);
+
+        return new Statement(
+            sprintf(
+                '%s->completedStatements[] = %s',
+                $phpUnitPlaceholder,
+                $statementPlaceholder
+            ),
+            (new Metadata())
+                ->withVariableDependencies($variableDependencies)
+        );
     }
 
     private function createStatementAssignment(

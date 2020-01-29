@@ -138,6 +138,7 @@ class StepMethodFactoryTest extends AbstractTestCase
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
                     '',
                     '// click $".selector"',
                     '{{ STATEMENT }} = Statement::createAction(\'click $".selector"\')',
@@ -146,6 +147,7 @@ class StepMethodFactoryTest extends AbstractTestCase
                     'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                     ')',
                     '{{ ELEMENT }}->click()',
+                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
                     '',
                     '// $page.title is "value"',
                     '{{ STATEMENT }} = Statement::createAssertion(\'$page.title is "value"\')',
@@ -155,6 +157,7 @@ class StepMethodFactoryTest extends AbstractTestCase
                     '{{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null',
                     '{{ EXAMINED }} = (string) {{ EXAMINED }}',
                     '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
+                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
                     '',
                 ])),
                 'expectedTestMethodMetadata' => (new Metadata())
@@ -217,6 +220,7 @@ class StepMethodFactoryTest extends AbstractTestCase
                             'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                             ')',
                             '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                            '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
                             '',
                             '// set $".selector" to $data.field_value',
                             '{{ STATEMENT }} = Statement::createAction(\'set $".selector" to $data.field_value\')',
@@ -227,6 +231,7 @@ class StepMethodFactoryTest extends AbstractTestCase
                             '{{ VALUE }} = $field_value ?? null',
                             '{{ VALUE }} = (string) {{ VALUE }}',
                             '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
+                            '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
                             '',
                             '// $".selector" exists <- $".selector" is $data.expected_value',
                             '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\')',
@@ -235,6 +240,7 @@ class StepMethodFactoryTest extends AbstractTestCase
                             'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                             ')',
                             '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                            '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
                             '',
                             '// $".selector" is $data.expected_value',
                             '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" is $data.expected_value\')',
@@ -247,6 +253,7 @@ class StepMethodFactoryTest extends AbstractTestCase
                             '{{ EXAMINED }} = {{ INSPECTOR }}->getValue({{ EXAMINED }}) ?? null',
                             '{{ EXAMINED }} = (string) {{ EXAMINED }}',
                             '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
+                            '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
                             '',
                         ]),
                         [
