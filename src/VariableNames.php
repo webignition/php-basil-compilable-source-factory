@@ -13,6 +13,7 @@ class VariableNames
     public const WEBDRIVER_ELEMENT_INSPECTOR = 'INSPECTOR';
     public const WEBDRIVER_ELEMENT_MUTATOR = 'MUTATOR';
     public const PANTHER_CRAWLER = 'CRAWLER';
+    public const STATEMENT = 'STATEMENT';
 
     public const EXPECTED_VALUE = 'EXPECTED';
     public const EXAMINED_VALUE = 'EXAMINED';

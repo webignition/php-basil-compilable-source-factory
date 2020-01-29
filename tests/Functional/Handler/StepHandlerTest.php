@@ -79,6 +79,7 @@ class StepHandlerTest extends AbstractBrowserTestCase
                 'additionalVariableIdentifiers' => [
                     'ELEMENT' => '$element',
                     'HAS' => '$has',
+                    VariableNames::STATEMENT => ResolvedVariableNames::STATEMENT_VARIABLE_NAME,
                 ],
             ],
             'single is assertion' => [
@@ -93,6 +94,7 @@ class StepHandlerTest extends AbstractBrowserTestCase
                     'HAS' => '$has',
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                     VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
+                    VariableNames::STATEMENT => ResolvedVariableNames::STATEMENT_VARIABLE_NAME,
                 ],
             ],
             'single click action, single assertion' => [
@@ -111,6 +113,7 @@ class StepHandlerTest extends AbstractBrowserTestCase
                     'HAS' => '$has',
                     VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
+                    VariableNames::STATEMENT => ResolvedVariableNames::STATEMENT_VARIABLE_NAME,
                 ],
             ],
             'multiple actions, multiple assertions' => [
@@ -131,6 +134,7 @@ class StepHandlerTest extends AbstractBrowserTestCase
                     'HAS' => '$has',
                     VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
+                    VariableNames::STATEMENT => ResolvedVariableNames::STATEMENT_VARIABLE_NAME,
                 ],
             ],
         ];
@@ -193,6 +197,7 @@ class StepHandlerTest extends AbstractBrowserTestCase
                 'variableIdentifiers' => [
                     'DURATION' => '$duration',
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
+                    VariableNames::STATEMENT => ResolvedVariableNames::STATEMENT_VARIABLE_NAME,
                 ],
             ],
             'wait, attribute identifier examined value, element does not exist' => [
@@ -208,6 +213,7 @@ class StepHandlerTest extends AbstractBrowserTestCase
                 'variableIdentifiers' => [
                     'DURATION' => '$duration',
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
+                    VariableNames::STATEMENT => ResolvedVariableNames::STATEMENT_VARIABLE_NAME,
                 ],
             ],
         ];

@@ -95,6 +95,7 @@ class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
                 'additionalVariableIdentifiers' => [
                     VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
+                    VariableNames::STATEMENT => ResolvedVariableNames::STATEMENT_VARIABLE_NAME,
                 ],
             ],
             'multi-step' => [
@@ -142,6 +143,7 @@ class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
                     'ELEMENT' => ResolvedVariableNames::ELEMENT_VARIABLE_NAME,
                     'COLLECTION' => ResolvedVariableNames::COLLECTION_VARIABLE_NAME,
                     'VALUE' => ResolvedVariableNames::VALUE_VARIABLE_NAME,
+                    VariableNames::STATEMENT => ResolvedVariableNames::STATEMENT_VARIABLE_NAME,
                 ],
             ],
             'with data set collection' => [
@@ -183,6 +185,7 @@ class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
                     'VALUE' => ResolvedVariableNames::VALUE_VARIABLE_NAME,
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                     VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
+                    VariableNames::STATEMENT => ResolvedVariableNames::STATEMENT_VARIABLE_NAME,
                 ],
             ],
         ];
