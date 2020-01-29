@@ -4,15 +4,24 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler;
 
+use webignition\BaseBasilTestCase\Statement as BasilTestStatement;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
+use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
+use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
+use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Line\Comment;
 use webignition\BasilCompilationSource\Line\EmptyLine;
+use webignition\BasilCompilationSource\Line\Statement;
+use webignition\BasilCompilationSource\Line\StatementInterface;
+use webignition\BasilCompilationSource\Metadata\Metadata;
+use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Action\ActionInterface;
@@ -23,7 +32,7 @@ use webignition\BasilModels\Assertion\AssertionInterface;
 use webignition\BasilModels\Assertion\ComparisonAssertionInterface;
 use webignition\BasilModels\Assertion\DerivedAssertionInterface;
 use webignition\BasilModels\Assertion\DerivedElementExistsAssertion;
-use webignition\BasilModels\StatementInterface;
+use webignition\BasilModels\StatementInterface as StatementModelInterface;
 use webignition\BasilModels\Step\StepInterface;
 
 class StepHandler
@@ -33,19 +42,22 @@ class StepHandler
     private $domIdentifierExistenceHandler;
     private $domIdentifierFactory;
     private $identifierTypeAnalyser;
+    private $singleQuotedStringEscaper;
 
     public function __construct(
         ActionHandler $actionHandler,
         AssertionHandler $assertionHandler,
         DomIdentifierExistenceHandler $domIdentifierExistenceHandler,
         DomIdentifierFactory $domIdentifierFactory,
-        IdentifierTypeAnalyser $identifierTypeAnalyser
+        IdentifierTypeAnalyser $identifierTypeAnalyser,
+        SingleQuotedStringEscaper $singleQuotedStringEscaper
     ) {
         $this->actionHandler = $actionHandler;
         $this->assertionHandler = $assertionHandler;
         $this->domIdentifierExistenceHandler = $domIdentifierExistenceHandler;
         $this->domIdentifierFactory = $domIdentifierFactory;
         $this->identifierTypeAnalyser = $identifierTypeAnalyser;
+        $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
     }
 
     public static function createHandler(): StepHandler
@@ -55,7 +67,8 @@ class StepHandler
             AssertionHandler::createHandler(),
             DomIdentifierExistenceHandler::createHandler(),
             DomIdentifierFactory::createFactory(),
-            IdentifierTypeAnalyser::create()
+            IdentifierTypeAnalyser::create(),
+            SingleQuotedStringEscaper::create()
         );
     }
 
@@ -108,7 +121,7 @@ class StepHandler
 
     /**
      * @param string $identifier
-     * @param StatementInterface $action
+     * @param StatementModelInterface $action
      *
      * @throws UnsupportedContentException
      *
@@ -116,7 +129,7 @@ class StepHandler
      */
     private function createDerivedElementExistenceBlock(
         string $identifier,
-        StatementInterface $action
+        StatementModelInterface $action
     ): CodeBlockInterface {
         $elementExistsAssertion = new DerivedElementExistsAssertion($action, $identifier);
 
@@ -132,7 +145,7 @@ class StepHandler
 
     /**
      * @param string $identifier
-     * @param StatementInterface $action
+     * @param StatementModelInterface $action
      *
      * @throws UnsupportedContentException
      *
@@ -140,7 +153,7 @@ class StepHandler
      */
     private function createDerivedCollectionExistenceBlock(
         string $identifier,
-        StatementInterface $action
+        StatementModelInterface $action
     ): CodeBlockInterface {
         $elementExistsAssertion = new DerivedElementExistsAssertion($action, $identifier);
 
@@ -155,7 +168,7 @@ class StepHandler
     }
 
     private function createStatementBlock(
-        StatementInterface $statement,
+        StatementModelInterface $statement,
         CodeBlockInterface $source
     ): CodeBlockInterface {
         $block = new CodeBlock();
@@ -166,7 +179,10 @@ class StepHandler
             $statementCommentContent .= ' <- ' . $statement->getSourceStatement()->getSource();
         }
 
+        $currentStatementStatement = $this->createCurrentStatementStatement($statement);
+
         $block->addLine(new Comment($statementCommentContent));
+        $block->addLine($currentStatementStatement);
 
         if ($source instanceof CodeBlockInterface) {
             foreach ($source->getLines() as $sourceLine) {
@@ -177,6 +193,30 @@ class StepHandler
         $block->addLine(new EmptyLine());
 
         return $block;
+    }
+
+    private function createCurrentStatementStatement(StatementModelInterface $statement): StatementInterface
+    {
+        $variableDependencies = new VariablePlaceholderCollection();
+        $phpUnitPlaceholder = $variableDependencies->create(VariableNames::PHPUNIT_TEST_CASE);
+
+        $classDependencies = new ClassDependencyCollection([
+            new ClassDependency(BasilTestStatement::class)
+        ]);
+
+        $createMethod = $statement instanceof ActionInterface ? 'createAction' : 'createAssertion';
+
+        return new Statement(
+            sprintf(
+                '%s->currentStatement = Statement::%s(\'%s\')',
+                $phpUnitPlaceholder,
+                $createMethod,
+                $this->singleQuotedStringEscaper->escape($statement->getSource())
+            ),
+            (new Metadata())
+                ->withVariableDependencies($variableDependencies)
+                ->withClassDependencies($classDependencies)
+        );
     }
 
     /**
