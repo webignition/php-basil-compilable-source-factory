@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
+use webignition\BaseBasilTestCase\Statement;
 use webignition\BasilCompilableSourceFactory\ArrayStatementFactory;
 use webignition\BasilCompilableSourceFactory\Handler\StepHandler;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
@@ -133,16 +134,19 @@ class StepMethodFactoryTest extends AbstractTestCase
                     '{{ PHPUNIT }}->setBasilStepName(\'Step Name\')',
                     '',
                     '// $".selector" exists <- click $".selector"',
+                    '{{ PHPUNIT }}->currentStatement = Statement::createAssertion(\'$".selector" exists\')',
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '',
                     '// click $".selector"',
+                    '{{ PHPUNIT }}->currentStatement = Statement::createAction(\'click $".selector"\')',
                     '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(' .
                     'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                     ')',
                     '{{ ELEMENT }}->click()',
                     '',
                     '// $page.title is "value"',
+                    '{{ PHPUNIT }}->currentStatement = Statement::createAssertion(\'$page.title is "value"\')',
                     '{{ EXPECTED }} = "value" ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
                     '{{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null',
@@ -153,6 +157,7 @@ class StepMethodFactoryTest extends AbstractTestCase
                 'expectedTestMethodMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
+                        new ClassDependency(Statement::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -202,12 +207,15 @@ class StepMethodFactoryTest extends AbstractTestCase
                             '{{ PHPUNIT }}->setBasilStepName(\'Step Name\')',
                             '',
                             '//$".selector" exists <- set $".selector" to $data.field_value',
+                            '{{ PHPUNIT }}->currentStatement = Statement::createAssertion(\'$".selector" exists\')',
                             '{{ HAS }} = {{ NAVIGATOR }}->has(' .
                             'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                             ')',
                             '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                             '',
                             '// set $".selector" to $data.field_value',
+                            '{{ PHPUNIT }}->currentStatement = ' .
+                            'Statement::createAction(\'set $".selector" to $data.field_value\')',
                             '{{ COLLECTION }} = {{ NAVIGATOR }}->find(' .
                             'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                             ')',
@@ -216,12 +224,15 @@ class StepMethodFactoryTest extends AbstractTestCase
                             '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
                             '',
                             '// $".selector" exists <- $".selector" is $data.expected_value',
+                            '{{ PHPUNIT }}->currentStatement = Statement::createAssertion(\'$".selector" exists\')',
                             '{{ HAS }} = {{ NAVIGATOR }}->has(' .
                             'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                             ')',
                             '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                             '',
                             '// $".selector" is $data.expected_value',
+                            '{{ PHPUNIT }}->currentStatement = ' .
+                            'Statement::createAssertion(\'$".selector" is $data.expected_value\')',
                             '{{ EXPECTED }} = $expected_value ?? null',
                             '{{ EXPECTED }} = (string) {{ EXPECTED }}',
                             '{{ EXAMINED }} = {{ NAVIGATOR }}->find(' .
@@ -244,6 +255,7 @@ class StepMethodFactoryTest extends AbstractTestCase
                 'expectedTestMethodMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
+                        new ClassDependency(Statement::class),
                     ]))
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
