@@ -3964,16 +3964,16 @@
         },
         {
             "name": "webignition/base-basil-test-case",
-            "version": "0.5",
+            "version": "0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/base-basil-test-case.git",
-                "reference": "dbf81298a78a64da68ac4535bd75a31911ce620d"
+                "reference": "349689db5a6a0613375784dfbbfeeb8b933386bb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/base-basil-test-case/zipball/dbf81298a78a64da68ac4535bd75a31911ce620d",
-                "reference": "dbf81298a78a64da68ac4535bd75a31911ce620d",
+                "url": "https://api.github.com/repos/webignition/base-basil-test-case/zipball/349689db5a6a0613375784dfbbfeeb8b933386bb",
+                "reference": "349689db5a6a0613375784dfbbfeeb8b933386bb",
                 "shasum": ""
             },
             "require": {
@@ -4006,7 +4006,7 @@
                 }
             ],
             "homepage": "https://github.com/webignition/base-basil-test-case",
-            "time": "2020-01-27T18:41:51+00:00"
+            "time": "2020-01-29T09:19:37+00:00"
         },
         {
             "name": "webignition/base-panther-test-case",
