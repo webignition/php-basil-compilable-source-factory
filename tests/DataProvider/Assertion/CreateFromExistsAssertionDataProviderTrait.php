@@ -96,6 +96,52 @@ trait CreateFromExistsAssertionDataProviderTrait
                         VariableNames::EXAMINED_VALUE,
                     ])),
             ],
+            'css attribute selector containing dot' => [
+                'assertion' => $assertionParser->parse('$"a[href=foo.html]" exists'),
+                'expectedContent' => CodeBlock::fromContent([
+                    '{{ EXAMINED }} = ' .
+                    '{{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":"a[href=foo.html]"}\'))',
+                    '{{ PHPUNIT }}->assertTrue({{ EXAMINED }})',
+                ]),
+                'expectedMetadata' => (new Metadata())
+                    ->withClassDependencies(new ClassDependencyCollection([
+                        new ClassDependency(ElementIdentifier::class),
+                    ]))
+                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
+                    ]))
+                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        VariableNames::EXAMINED_VALUE,
+                    ])),
+            ],
+            'css attribute selector containing dot with attribute name' => [
+                'assertion' => $assertionParser->parse('$"a[href=foo.html]".attribute_name exists'),
+                'expectedContent' => CodeBlock::fromContent([
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(' .
+                    'ElementIdentifier::fromJson(\'{"locator":"a[href=foo.html]","attribute":"attribute_name"}\')' .
+                    ')',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ EXAMINED }} = {{ NAVIGATOR }}->findOne(' .
+                    'ElementIdentifier::fromJson(\'{"locator":"a[href=foo.html]","attribute":"attribute_name"}\')' .
+                    ')',
+                    '{{ EXAMINED }} = {{ EXAMINED }}->getAttribute(\'attribute_name\')',
+                    '{{ EXAMINED }} = {{ EXAMINED }} !== null',
+                    '{{ PHPUNIT }}->assertTrue({{ EXAMINED }})',
+                ]),
+                'expectedMetadata' => (new Metadata())
+                    ->withClassDependencies(new ClassDependencyCollection([
+                        new ClassDependency(ElementIdentifier::class),
+                    ]))
+                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
+                    ]))
+                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        'HAS',
+                        VariableNames::EXAMINED_VALUE,
+                    ])),
+            ],
         ];
     }
 }
