@@ -156,8 +156,8 @@ trait CreateFromExistsAssertionDataProviderTrait
                     '{{ PHPUNIT }}->assertTrue(' .
                         '{{ EXAMINED }}, ' .
                         '\'{"assertion":{"source":"$\\\"a[href=foo.html]\\\".attribute_name exists",' .
-                        '"identifier":"$\\\"a[href=foo.html]\\\".attribute_name","comparison":"exists"}}\''
-                    .')',
+                        '"identifier":"$\\\"a[href=foo.html]\\\".attribute_name","comparison":"exists"}}\'' .
+                    ')',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
