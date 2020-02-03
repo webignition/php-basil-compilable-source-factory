@@ -9,7 +9,6 @@ use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCall
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
-use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
 class DomIdentifierExistenceHandler
@@ -31,13 +30,6 @@ class DomIdentifierExistenceHandler
             DomCrawlerNavigatorCallFactory::createFactory(),
             AssertionCallFactory::createFactory()
         );
-    }
-
-    public function createForElementOrCollection(ElementIdentifierInterface $identifier): CodeBlockInterface
-    {
-        return $identifier instanceof AttributeIdentifierInterface
-            ? $this->createForElement($identifier)
-            : $this->createForCollection($identifier);
     }
 
     public function createForElement(ElementIdentifierInterface $identifier): CodeBlockInterface
