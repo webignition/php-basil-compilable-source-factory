@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler;
 
 use webignition\BaseBasilTestCase\Statement as BasilTestStatement;
+use webignition\BasilCompilableSourceFactory\AssertionFailureMessageFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
@@ -44,6 +45,7 @@ class StepHandler
     private $domIdentifierFactory;
     private $identifierTypeAnalyser;
     private $singleQuotedStringEscaper;
+    private $assertionFailureMessageFactory;
 
     public function __construct(
         ActionHandler $actionHandler,
@@ -51,7 +53,8 @@ class StepHandler
         DomIdentifierExistenceHandler $domIdentifierExistenceHandler,
         DomIdentifierFactory $domIdentifierFactory,
         IdentifierTypeAnalyser $identifierTypeAnalyser,
-        SingleQuotedStringEscaper $singleQuotedStringEscaper
+        SingleQuotedStringEscaper $singleQuotedStringEscaper,
+        AssertionFailureMessageFactory $assertionFailureMessageFactory
     ) {
         $this->actionHandler = $actionHandler;
         $this->assertionHandler = $assertionHandler;
@@ -59,6 +62,7 @@ class StepHandler
         $this->domIdentifierFactory = $domIdentifierFactory;
         $this->identifierTypeAnalyser = $identifierTypeAnalyser;
         $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
+        $this->assertionFailureMessageFactory = $assertionFailureMessageFactory;
     }
 
     public static function createHandler(): StepHandler
@@ -69,7 +73,8 @@ class StepHandler
             DomIdentifierExistenceHandler::createHandler(),
             DomIdentifierFactory::createFactory(),
             IdentifierTypeAnalyser::create(),
-            SingleQuotedStringEscaper::create()
+            SingleQuotedStringEscaper::create(),
+            AssertionFailureMessageFactory::createFactory()
         );
     }
 
@@ -139,7 +144,10 @@ class StepHandler
             throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }
 
-        $elementExistsBlock = $this->domIdentifierExistenceHandler->createForElement($domIdentifier);
+        $elementExistsBlock = $this->domIdentifierExistenceHandler->createForElement(
+            $domIdentifier,
+            $this->assertionFailureMessageFactory->createForAssertion($elementExistsAssertion)
+        );
 
         return $this->createStatementBlock($elementExistsAssertion, $elementExistsBlock);
     }
@@ -163,7 +171,10 @@ class StepHandler
             throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }
 
-        $elementExistsBlock = $this->domIdentifierExistenceHandler->createForCollection($domIdentifier);
+        $elementExistsBlock = $this->domIdentifierExistenceHandler->createForCollection(
+            $domIdentifier,
+            $this->assertionFailureMessageFactory->createForAssertion($elementExistsAssertion)
+        );
 
         return $this->createStatementBlock($elementExistsAssertion, $elementExistsBlock);
     }

@@ -63,7 +63,11 @@ class StepHandlerTest extends AbstractTestCase
                     '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\')',
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ PHPUNIT }}->assertTrue(' .
+                        '{{ HAS }}, ' .
+                        '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
+                        '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
+                    ')',
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
                     '',
                     '// click $".selector"',
@@ -102,14 +106,22 @@ class StepHandlerTest extends AbstractTestCase
                     '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\')',
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
                     '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ PHPUNIT }}->assertTrue(' .
+                        '{{ HAS }}, ' .
+                        '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
+                        '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
+                    ')',
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
                     '',
                     '// $".value" exists <- set $".selector" to $".value"',
                     '{{ STATEMENT }} = Statement::createAssertion(\'$".value" exists\')',
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
                     '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".value"}\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ PHPUNIT }}->assertTrue(' .
+                        '{{ HAS }}, ' .
+                        '\'{"assertion":{"source":"$\\\".value\\\" exists",' .
+                        '"identifier":"$\\\".value\\\"","comparison":"exists"}}\'' .
+                    ')',
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
                     '',
                     '// set $".selector" to $".value"',
@@ -156,7 +168,11 @@ class StepHandlerTest extends AbstractTestCase
                     '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\')',
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ PHPUNIT }}->assertTrue(' .
+                        '{{ HAS }}, ' .
+                        '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
+                        '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
+                    ')',
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
                     '',
                     '// click $".selector"',
@@ -180,7 +196,11 @@ class StepHandlerTest extends AbstractTestCase
                     '{{ STATEMENT }} = Statement::createAssertion(\'$".duration" exists\')',
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
                     '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".duration"}\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ PHPUNIT }}->assertTrue(' .
+                        '{{ HAS }}, ' .
+                        '\'{"assertion":{"source":"$\\\".duration\\\" exists",' .
+                        '"identifier":"$\\\".duration\\\"","comparison":"exists"}}\'' .
+                    ')',
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
                     '',
                     '// wait $".duration"',
@@ -253,7 +273,11 @@ class StepHandlerTest extends AbstractTestCase
                     '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\')',
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
                     '{{ EXAMINED }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ EXAMINED }})',
+                    '{{ PHPUNIT }}->assertTrue(' .
+                        '{{ EXAMINED }}, ' .
+                        '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
+                        '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
+                    ')',
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
                     '',
                 ]),
@@ -282,7 +306,11 @@ class StepHandlerTest extends AbstractTestCase
                     '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\')',
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
                     '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ PHPUNIT }}->assertTrue(' .
+                        '{{ HAS }}, ' .
+                        '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
+                        '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
+                    ')',
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
                     '',
                     '// $".selector" is "value"',
@@ -325,14 +353,22 @@ class StepHandlerTest extends AbstractTestCase
                     '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\')',
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
                     '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ PHPUNIT }}->assertTrue(' .
+                        '{{ HAS }}, ' .
+                        '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
+                        '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
+                    ')',
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
                     '',
                     '// $".value" exists <- $".selector" is $".value"',
                     '{{ STATEMENT }} = Statement::createAssertion(\'$".value" exists\')',
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
                     '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".value"}\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ PHPUNIT }}->assertTrue(' .
+                        '{{ HAS }}, ' .
+                        '\'{"assertion":{"source":"$\\\".value\\\" exists",' .
+                        '"identifier":"$\\\".value\\\"","comparison":"exists"}}\'' .
+                    ')',
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
                     '',
                     '// $".selector" is $".value"',
@@ -422,7 +458,11 @@ class StepHandlerTest extends AbstractTestCase
                     '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\')',
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ PHPUNIT }}->assertTrue(' .
+                        '{{ HAS }}, ' .
+                        '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
+                        '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
+                    ')',
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
                     '',
                     '// click $".selector"',
