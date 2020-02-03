@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "f6164ff6454aa3d207b948c94d7c6404",
+    "content-hash": "87d1bff4799722d08d8ca1bcec58780b",
     "packages": [
         {
             "name": "facebook/webdriver",
@@ -841,16 +841,16 @@
         },
         {
             "name": "webignition/basil-code-generator",
-            "version": "0.9",
+            "version": "0.10",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/basil-code-generator.git",
-                "reference": "de82f4c7076fd6bb4b55613f490905db76f40ff7"
+                "reference": "2890429b9297ca0f3ee3661ef8dc5eb923e1fb5d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/basil-code-generator/zipball/de82f4c7076fd6bb4b55613f490905db76f40ff7",
-                "reference": "de82f4c7076fd6bb4b55613f490905db76f40ff7",
+                "url": "https://api.github.com/repos/webignition/basil-code-generator/zipball/2890429b9297ca0f3ee3661ef8dc5eb923e1fb5d",
+                "reference": "2890429b9297ca0f3ee3661ef8dc5eb923e1fb5d",
                 "shasum": ""
             },
             "require": {
@@ -881,26 +881,26 @@
                 }
             ],
             "homepage": "https://github.com/webignition/basil-code-generator",
-            "time": "2020-01-17T12:15:56+00:00"
+            "time": "2020-01-29T19:37:48+00:00"
         },
         {
             "name": "webignition/basil-dom-identifier-factory",
-            "version": "0.7",
+            "version": "0.8",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/basil-dom-identifier-factory.git",
-                "reference": "e25041c25415940021702d8b8d233326df88129f"
+                "reference": "b3fb40306833104ddb32d8f279a6123168541e42"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/basil-dom-identifier-factory/zipball/e25041c25415940021702d8b8d233326df88129f",
-                "reference": "e25041c25415940021702d8b8d233326df88129f",
+                "url": "https://api.github.com/repos/webignition/basil-dom-identifier-factory/zipball/b3fb40306833104ddb32d8f279a6123168541e42",
+                "reference": "b3fb40306833104ddb32d8f279a6123168541e42",
                 "shasum": ""
             },
             "require": {
                 "ext-mbstring": "*",
                 "php": ">=7.2",
-                "webignition/php-dom-element-identifier": ">=0.6,<1",
+                "webignition/php-dom-element-identifier": ">=0.10,<1",
                 "webignition/quoted-string-value-extractor": ">=0.1,<1"
             },
             "require-dev": {
@@ -925,7 +925,7 @@
                 }
             ],
             "homepage": "https://github.com/webignition/basil-dom-identifier-factory",
-            "time": "2020-01-07T19:31:36+00:00"
+            "time": "2020-01-31T08:34:34+00:00"
         },
         {
             "name": "webignition/basil-identifier-analyser",
@@ -971,16 +971,16 @@
         },
         {
             "name": "webignition/basil-models",
-            "version": "0.26",
+            "version": "0.27",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/basil-models.git",
-                "reference": "ef355bfa889a9d5f7fd68d3432fbdbd843502714"
+                "reference": "e1f4cd85a46a0974d26a130cd183e0bd787b991d"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/basil-models/zipball/ef355bfa889a9d5f7fd68d3432fbdbd843502714",
-                "reference": "ef355bfa889a9d5f7fd68d3432fbdbd843502714",
+                "url": "https://api.github.com/repos/webignition/basil-models/zipball/e1f4cd85a46a0974d26a130cd183e0bd787b991d",
+                "reference": "e1f4cd85a46a0974d26a130cd183e0bd787b991d",
                 "shasum": ""
             },
             "require": {
@@ -1008,7 +1008,7 @@
                 }
             ],
             "homepage": "https://github.com/webignition/basil-models",
-            "time": "2020-01-15T13:04:48+00:00"
+            "time": "2020-01-30T11:23:10+00:00"
         },
         {
             "name": "webignition/php-basil-compilation-source",
