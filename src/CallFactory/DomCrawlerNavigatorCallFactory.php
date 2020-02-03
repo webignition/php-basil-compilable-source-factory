@@ -10,6 +10,7 @@ use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
+use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
 class DomCrawlerNavigatorCallFactory
@@ -50,7 +51,8 @@ class DomCrawlerNavigatorCallFactory
 
     private function createElementCall(ElementIdentifierInterface $identifier, string $methodName): CodeBlockInterface
     {
-        $arguments = $this->elementIdentifierCallFactory->createConstructorCall($identifier);
+        $elementOnlyIdentifier = ElementIdentifier::fromAttributeIdentifier($identifier);
+        $arguments = $this->elementIdentifierCallFactory->createConstructorCall($elementOnlyIdentifier);
 
         $variableDependencies = new VariablePlaceholderCollection();
         $domCrawlerNavigatorPlaceholder = $variableDependencies->create(VariableNames::DOM_CRAWLER_NAVIGATOR);

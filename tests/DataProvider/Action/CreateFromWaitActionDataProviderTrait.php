@@ -102,7 +102,7 @@ trait CreateFromWaitActionDataProviderTrait
                 'action' => $actionParser->parse('wait $".duration-selector".attribute_name'),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ DURATION }} = {{ NAVIGATOR }}->findOne(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".duration-selector","attribute":"attribute_name"}\')' .
+                    'ElementIdentifier::fromJson(\'{"locator":".duration-selector"}\')' .
                     ')',
                     '{{ DURATION }} = {{ DURATION }}->getAttribute(\'attribute_name\') ?? 0',
                     '{{ DURATION }} = (int) {{ DURATION }}',

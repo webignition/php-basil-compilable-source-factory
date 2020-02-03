@@ -76,7 +76,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '{{ EXPECTED }} = "value" ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
                     '{{ EXAMINED }} = {{ NAVIGATOR }}->findOne(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector","attribute":"attribute_name"}\')' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                     ')',
                     '{{ EXAMINED }} = {{ EXAMINED }}->getAttribute(\'attribute_name\') ?? null',
                     '{{ EXAMINED }} = (string) {{ EXAMINED }}',
@@ -258,7 +258,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'assertion' => $assertionParser->parse('$browser.size is $".selector".attribute_name'),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ EXPECTED }} = {{ NAVIGATOR }}->findOne(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector","attribute":"attribute_name"}\')' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                     ')',
                     '{{ EXPECTED }} = {{ EXPECTED }}->getAttribute(\'attribute_name\') ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',

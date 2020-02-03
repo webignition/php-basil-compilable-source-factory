@@ -42,11 +42,11 @@ trait CreateFromNotExistsAssertionDataProviderTrait
                 'assertion' => $assertionParser->parse('$".selector".attribute_name not-exists'),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector","attribute":"attribute_name"}\')' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                     ')',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '{{ EXAMINED }} = {{ NAVIGATOR }}->findOne(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector","attribute":"attribute_name"}\')' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                     ')',
                     '{{ EXAMINED }} = {{ EXAMINED }}->getAttribute(\'attribute_name\')',
                     '{{ EXAMINED }} = {{ EXAMINED }} !== null',
