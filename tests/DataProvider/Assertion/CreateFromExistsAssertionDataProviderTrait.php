@@ -57,12 +57,10 @@ trait CreateFromExistsAssertionDataProviderTrait
             'exists comparison, attribute identifier examined value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name exists'),
                 'expectedContent' => CodeBlock::fromContent([
-                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector","attribute":"attribute_name"}\')' .
-                    ')',
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '{{ EXAMINED }} = {{ NAVIGATOR }}->findOne(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector","attribute":"attribute_name"}\')' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                     ')',
                     '{{ EXAMINED }} = {{ EXAMINED }}->getAttribute(\'attribute_name\')',
                     '{{ EXAMINED }} = {{ EXAMINED }} !== null',
@@ -96,7 +94,7 @@ trait CreateFromExistsAssertionDataProviderTrait
                         VariableNames::EXAMINED_VALUE,
                     ])),
             ],
-            'css attribute selector containing dot' => [
+            'exists comparison, css attribute selector containing dot' => [
                 'assertion' => $assertionParser->parse('$"a[href=foo.html]" exists'),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ EXAMINED }} = ' .
@@ -115,15 +113,15 @@ trait CreateFromExistsAssertionDataProviderTrait
                         VariableNames::EXAMINED_VALUE,
                     ])),
             ],
-            'css attribute selector containing dot with attribute name' => [
+            'exists comparison, css attribute selector containing dot with attribute name' => [
                 'assertion' => $assertionParser->parse('$"a[href=foo.html]".attribute_name exists'),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(' .
-                    'ElementIdentifier::fromJson(\'{"locator":"a[href=foo.html]","attribute":"attribute_name"}\')' .
+                    'ElementIdentifier::fromJson(\'{"locator":"a[href=foo.html]"}\')' .
                     ')',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                     '{{ EXAMINED }} = {{ NAVIGATOR }}->findOne(' .
-                    'ElementIdentifier::fromJson(\'{"locator":"a[href=foo.html]","attribute":"attribute_name"}\')' .
+                    'ElementIdentifier::fromJson(\'{"locator":"a[href=foo.html]"}\')' .
                     ')',
                     '{{ EXAMINED }} = {{ EXAMINED }}->getAttribute(\'attribute_name\')',
                     '{{ EXAMINED }} = {{ EXAMINED }} !== null',

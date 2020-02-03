@@ -50,7 +50,7 @@ trait CreateFromIncludesAssertionDataProviderTrait
                     '{{ EXPECTED }} = "value" ?? null',
                     '{{ EXPECTED }} = (string) {{ EXPECTED }}',
                     '{{ EXAMINED }} = {{ NAVIGATOR }}->findOne(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector","attribute":"attribute_name"}\')' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                     ')',
                     '{{ EXAMINED }} = {{ EXAMINED }}->getAttribute(\'attribute_name\') ?? null',
                     '{{ EXAMINED }} = (string) {{ EXAMINED }}',

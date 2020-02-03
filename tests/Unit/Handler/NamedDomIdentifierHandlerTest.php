@@ -189,7 +189,7 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                 ),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ E }} = {{ NAVIGATOR }}->findOne(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector","attribute":"attribute_name"}\')' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                     ')',
                     '{{ E }} = {{ E }}->getAttribute(\'attribute_name\')',
                 ]),
@@ -213,7 +213,7 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ E }} = {{ NAVIGATOR }}->findOne(' .
                     'ElementIdentifier::fromJson(' .
-                    '\'{"locator":".selector","parent":{"locator":".parent"},"attribute":"attribute_name"}\'' .
+                    '\'{"locator":".selector","parent":{"locator":".parent"}}\'' .
                     ')' .
                     ')',
                     '{{ E }} = {{ E }}->getAttribute(\'attribute_name\')',

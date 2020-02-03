@@ -216,7 +216,7 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
                 'identifier' => new AttributeIdentifier('.selector', 'attribute_name'),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector","attribute":"attribute_name"}\')' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                     ')',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',
                 ]),
@@ -238,7 +238,7 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(' .
                     'ElementIdentifier::fromJson(' .
-                    '\'{"locator":".selector","parent":{"locator":".parent"},"attribute":"attribute_name"}\'' .
+                    '\'{"locator":".selector","parent":{"locator":".parent"}}\'' .
                     ')' .
                     ')',
                     '{{ PHPUNIT }}->assertTrue({{ HAS }})',

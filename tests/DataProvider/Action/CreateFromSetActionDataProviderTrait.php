@@ -74,9 +74,7 @@ trait CreateFromSetActionDataProviderTrait
                     '{{ COLLECTION }} = {{ NAVIGATOR }}->find(' .
                     'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                     ')',
-                    '{{ VALUE }} = {{ NAVIGATOR }}->findOne(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".source","attribute":"attribute_name"}\')' .
-                    ')',
+                    '{{ VALUE }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{"locator":".source"}\'))',
                     '{{ VALUE }} = {{ VALUE }}->getAttribute(\'attribute_name\') ?? null',
                     '{{ VALUE }} = (string) {{ VALUE }}',
                     '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',

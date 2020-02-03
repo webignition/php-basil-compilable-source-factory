@@ -14,6 +14,7 @@ use webignition\BasilCompilationSource\Line\ClassDependency;
 use webignition\BasilCompilationSource\Line\Statement;
 use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
+use webignition\DomElementIdentifier\AttributeIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
@@ -143,6 +144,38 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
                     )
                 ]),
             ],
+            'no parent, has attribute' => [
+                'identifier' => new AttributeIdentifier('.selector', 'attribute_name'),
+                'expectedBlock' => new CodeBlock([
+                    new Statement(
+                        '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
+                        (new Metadata())
+                            ->withClassDependencies(new ClassDependencyCollection([
+                                new ClassDependency(ElementIdentifier::class),
+                            ]))
+                            ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                                VariableNames::DOM_CRAWLER_NAVIGATOR,
+                            ]))
+                    )
+                ]),
+            ],
+            'no parent, has ordinal position has attribute' => [
+                'identifier' => new AttributeIdentifier('.selector', 'attribute_name', 3),
+                'expectedBlock' => new CodeBlock([
+                    new Statement(
+                        '{{ NAVIGATOR }}->{{ METHOD }}(' .
+                        'ElementIdentifier::fromJson(\'{"locator":".selector","position":3}\')' .
+                        ')',
+                        (new Metadata())
+                            ->withClassDependencies(new ClassDependencyCollection([
+                                new ClassDependency(ElementIdentifier::class),
+                            ]))
+                            ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                                VariableNames::DOM_CRAWLER_NAVIGATOR,
+                            ]))
+                    )
+                ]),
+            ],
             'has parent, no ordinal position' => [
                 'identifier' => (new ElementIdentifier('.selector'))
                     ->withParentIdentifier(new ElementIdentifier('.parent')),
@@ -179,6 +212,43 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
                     )
                 ]),
             ],
+            'has parent, has attribute' => [
+                'identifier' => (new AttributeIdentifier('.selector', 'attribute_name'))
+                    ->withParentIdentifier(new ElementIdentifier('.parent')),
+                'expectedBlock' => new CodeBlock([
+                    new Statement(
+                        '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(' .
+                        '\'{"locator":".selector","parent":{"locator":".parent"}}\'' .
+                        '))',
+                        (new Metadata())
+                            ->withClassDependencies(new ClassDependencyCollection([
+                                new ClassDependency(ElementIdentifier::class),
+                            ]))
+                            ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                                VariableNames::DOM_CRAWLER_NAVIGATOR,
+                            ]))
+                    )
+                ]),
+            ],
+            'has parent, has ordinal position, has attribute' => [
+                'identifier' => (new AttributeIdentifier('.selector', 'attribute_name', 5))
+                    ->withParentIdentifier(new ElementIdentifier('.parent')),
+                'expectedBlock' => new CodeBlock([
+                    new Statement(
+                        '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(' .
+                        '\'{"locator":".selector",' .
+                        '"parent":{"locator":".parent"},"position":5}\'' .
+                        '))',
+                        (new Metadata())
+                            ->withClassDependencies(new ClassDependencyCollection([
+                                new ClassDependency(ElementIdentifier::class),
+                            ]))
+                            ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                                VariableNames::DOM_CRAWLER_NAVIGATOR,
+                            ]))
+                    )
+                ]),
+            ],
             'has parent, has ordinal positions' => [
                 'identifier' => (new ElementIdentifier('.selector', 3))
                     ->withParentIdentifier(new ElementIdentifier('.parent', 4)),
@@ -186,6 +256,29 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
                     new Statement(
                         '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(' .
                         '\'{"locator":".selector","parent":{"locator":".parent","position":4},"position":3}\'' .
+                        '))',
+                        (new Metadata())
+                            ->withClassDependencies(new ClassDependencyCollection([
+                                new ClassDependency(ElementIdentifier::class),
+                            ]))
+                            ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                                VariableNames::DOM_CRAWLER_NAVIGATOR,
+                            ]))
+                    )
+                ]),
+            ],
+            'has attribute, has parents with attribute' => [
+                'identifier' => (new AttributeIdentifier('.child', 'child_attr'))
+                    ->withParentIdentifier(
+                        (new AttributeIdentifier('.parent', 'parent_attr'))
+                            ->withParentIdentifier(
+                                new AttributeIdentifier('grandparent', 'gp_attr')
+                            )
+                    ),
+                'expectedBlock' => new CodeBlock([
+                    new Statement(
+                        '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(' .
+                        '\'{"locator":".child","parent":{"locator":".parent","parent":{"locator":"grandparent"}}}\'' .
                         '))',
                         (new Metadata())
                             ->withClassDependencies(new ClassDependencyCollection([
