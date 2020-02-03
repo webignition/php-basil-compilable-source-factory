@@ -24,7 +24,11 @@ trait CreateFromNotExistsAssertionDataProviderTrait
                 'assertion' => $assertionParser->parse('$".selector" not-exists'),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ EXAMINED }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
-                    '{{ PHPUNIT }}->assertFalse({{ EXAMINED }})',
+                    '{{ PHPUNIT }}->assertFalse(' .
+                        '{{ EXAMINED }}, ' .
+                        '\'{"assertion":{"source":"$\\\".selector\\\" not-exists",' .
+                        '"identifier":"$\\\".selector\\\"","comparison":"not-exists"}}\'' .
+                    ')',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -42,15 +46,23 @@ trait CreateFromNotExistsAssertionDataProviderTrait
                 'assertion' => $assertionParser->parse('$".selector".attribute_name not-exists'),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                        'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                     ')',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ PHPUNIT }}->assertTrue(' .
+                        '{{ HAS }}, ' .
+                        '\'{"assertion":{"source":"$\\\".selector\\\".attribute_name not-exists",' .
+                        '"identifier":"$\\\".selector\\\".attribute_name","comparison":"not-exists"}}\'' .
+                    ')',
                     '{{ EXAMINED }} = {{ NAVIGATOR }}->findOne(' .
                     'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                     ')',
                     '{{ EXAMINED }} = {{ EXAMINED }}->getAttribute(\'attribute_name\')',
                     '{{ EXAMINED }} = {{ EXAMINED }} !== null',
-                    '{{ PHPUNIT }}->assertFalse({{ EXAMINED }})',
+                    '{{ PHPUNIT }}->assertFalse(' .
+                        '{{ EXAMINED }}, ' .
+                        '\'{"assertion":{"source":"$\\\".selector\\\".attribute_name not-exists",' .
+                        '"identifier":"$\\\".selector\\\".attribute_name","comparison":"not-exists"}}\'' .
+                    ')',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([

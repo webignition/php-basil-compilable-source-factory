@@ -80,7 +80,6 @@ class ExistenceComparisonHandler
     {
         $valuePlaceholder = new VariablePlaceholder(VariableNames::EXAMINED_VALUE);
         $identifier = $assertion->getIdentifier();
-        $comparison = $assertion->getComparison();
 
         if ($this->valueTypeIdentifier->isScalarValue($identifier)) {
             $accessor = $this->scalarValueHandler->handle($identifier);
@@ -104,7 +103,7 @@ class ExistenceComparisonHandler
                 new Statement(sprintf('%s = %s !== null', $valuePlaceholder, $valuePlaceholder)),
             ]);
 
-            return $this->createAssertionCall($comparison, $existence, $valuePlaceholder);
+            return $this->createAssertionCall($assertion, $existence, $valuePlaceholder);
         }
 
         if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
@@ -127,11 +126,13 @@ class ExistenceComparisonHandler
                     $valuePlaceholder,
                 ]));
 
-                return $this->createAssertionCall($comparison, new CodeBlock([$assignment]), $valuePlaceholder);
+                return $this->createAssertionCall($assertion, new CodeBlock([$assignment]), $valuePlaceholder);
             }
 
-            $elementExistence =
-                $this->domIdentifierExistenceHandler->createForElement($domIdentifier);
+            $elementExistence = $this->domIdentifierExistenceHandler->createForElement(
+                $domIdentifier,
+                $this->createAssertionFailureMessage($assertion)
+            );
 
             $access = $this->namedDomIdentifierHandler->handle(
                 new NamedDomIdentifierValue($domIdentifier, $valuePlaceholder)
@@ -147,17 +148,26 @@ class ExistenceComparisonHandler
                 new Statement(sprintf('%s = %s !== null', $valuePlaceholder, $valuePlaceholder)),
             ]);
 
-            return $this->createAssertionCall($comparison, $existence, $valuePlaceholder);
+            return $this->createAssertionCall($assertion, $existence, $valuePlaceholder);
         }
 
         throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
     }
 
+    private function createAssertionFailureMessage(AssertionInterface $assertion): string
+    {
+        return (string) json_encode([
+            'assertion' => $assertion,
+        ]);
+    }
+
     private function createAssertionCall(
-        string $comparison,
+        AssertionInterface $assertion,
         CodeBlockInterface $block,
         VariablePlaceholder $valuePlaceholder
     ): CodeBlockInterface {
+        $comparison = $assertion->getComparison();
+
         $assertionTemplate = 'exists' === $comparison
             ? AssertionCallFactory::ASSERT_TRUE_TEMPLATE
             : AssertionCallFactory::ASSERT_FALSE_TEMPLATE;
@@ -165,7 +175,8 @@ class ExistenceComparisonHandler
         return $this->assertionCallFactory->createValueExistenceAssertionCall(
             $block,
             $valuePlaceholder,
-            $assertionTemplate
+            $assertionTemplate,
+            $this->createAssertionFailureMessage($assertion)
         );
     }
 }
