@@ -32,21 +32,27 @@ class DomIdentifierExistenceHandler
         );
     }
 
-    public function createForElement(ElementIdentifierInterface $identifier): CodeBlockInterface
-    {
+    public function createForElement(
+        ElementIdentifierInterface $identifier,
+        string $assertionFailureMessage
+    ): CodeBlockInterface {
         return $this->create(
-            $this->domCrawlerNavigatorCallFactory->createHasOneCall($identifier)
+            $this->domCrawlerNavigatorCallFactory->createHasOneCall($identifier),
+            $assertionFailureMessage
         );
     }
 
-    public function createForCollection(ElementIdentifierInterface $identifier): CodeBlockInterface
-    {
+    public function createForCollection(
+        ElementIdentifierInterface $identifier,
+        string $assertionFailureMessage
+    ): CodeBlockInterface {
         return $this->create(
-            $this->domCrawlerNavigatorCallFactory->createHasCall($identifier)
+            $this->domCrawlerNavigatorCallFactory->createHasCall($identifier),
+            $assertionFailureMessage
         );
     }
 
-    private function create(CodeBlockInterface $hasCall): CodeBlockInterface
+    private function create(CodeBlockInterface $hasCall, string $assertionFailureMessage): CodeBlockInterface
     {
         $hasAssignmentVariableExports = new VariablePlaceholderCollection();
         $hasPlaceholder = $hasAssignmentVariableExports->create('HAS');
@@ -63,7 +69,8 @@ class DomIdentifierExistenceHandler
         return $this->assertionCallFactory->createValueExistenceAssertionCall(
             $hasAssignment,
             $hasPlaceholder,
-            AssertionCallFactory::ASSERT_TRUE_TEMPLATE
+            AssertionCallFactory::ASSERT_TRUE_TEMPLATE,
+            $assertionFailureMessage
         );
     }
 }

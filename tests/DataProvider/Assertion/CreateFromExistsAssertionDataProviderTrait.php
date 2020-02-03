@@ -25,7 +25,11 @@ trait CreateFromExistsAssertionDataProviderTrait
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ EXAMINED }} = {{ CLIENT }}->getCurrentURL() ?? null',
                     '{{ EXAMINED }} = {{ EXAMINED }} !== null',
-                    '{{ PHPUNIT }}->assertTrue({{ EXAMINED }})',
+                    '{{ PHPUNIT }}->assertTrue(' .
+                        '{{ EXAMINED }}, ' .
+                        '\'{"assertion":{"source":"$page.url exists","identifier":"$page.url",' .
+                        '"comparison":"exists"}}\'' .
+                    ')',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
@@ -40,7 +44,11 @@ trait CreateFromExistsAssertionDataProviderTrait
                 'assertion' => $assertionParser->parse('$".selector" exists'),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ EXAMINED }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ EXAMINED }})',
+                    '{{ PHPUNIT }}->assertTrue(' .
+                        '{{ EXAMINED }}, ' .
+                        '\'{"assertion":{"source":"$\\\".selector\\\" exists","identifier":"$\\\".selector\\\"",' .
+                        '"comparison":"exists"}}\'' .
+                    ')',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -58,13 +66,21 @@ trait CreateFromExistsAssertionDataProviderTrait
                 'assertion' => $assertionParser->parse('$".selector".attribute_name exists'),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ PHPUNIT }}->assertTrue(' .
+                    '{{ HAS }}, ' .
+                        '\'{"assertion":{"source":"$\\\".selector\\\".attribute_name exists",' .
+                        '"identifier":"$\\\".selector\\\".attribute_name","comparison":"exists"}}\'' .
+                    ')',
                     '{{ EXAMINED }} = {{ NAVIGATOR }}->findOne(' .
                     'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                     ')',
                     '{{ EXAMINED }} = {{ EXAMINED }}->getAttribute(\'attribute_name\')',
                     '{{ EXAMINED }} = {{ EXAMINED }} !== null',
-                    '{{ PHPUNIT }}->assertTrue({{ EXAMINED }})',
+                    '{{ PHPUNIT }}->assertTrue(' .
+                    '{{ EXAMINED }}, ' .
+                        '\'{"assertion":{"source":"$\\\".selector\\\".attribute_name exists",' .
+                        '"identifier":"$\\\".selector\\\".attribute_name","comparison":"exists"}}\'' .
+                    ')',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -84,7 +100,11 @@ trait CreateFromExistsAssertionDataProviderTrait
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ EXAMINED }} = $key ?? null',
                     '{{ EXAMINED }} = {{ EXAMINED }} !== null',
-                    '{{ PHPUNIT }}->assertTrue({{ EXAMINED }})',
+                    '{{ PHPUNIT }}->assertTrue(' .
+                        '{{ EXAMINED }}, ' .
+                        '\'{"assertion":{"source":"$data.key exists","identifier":"$data.key",' .
+                        '"comparison":"exists"}}\'' .
+                    ')',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
@@ -99,7 +119,11 @@ trait CreateFromExistsAssertionDataProviderTrait
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ EXAMINED }} = ' .
                     '{{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":"a[href=foo.html]"}\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ EXAMINED }})',
+                    '{{ PHPUNIT }}->assertTrue(' .
+                        '{{ EXAMINED }}, ' .
+                        '\'{"assertion":{"source":"$\\\"a[href=foo.html]\\\" exists",' .
+                        '"identifier":"$\\\"a[href=foo.html]\\\"","comparison":"exists"}}\'' .
+                    ')',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -117,15 +141,23 @@ trait CreateFromExistsAssertionDataProviderTrait
                 'assertion' => $assertionParser->parse('$"a[href=foo.html]".attribute_name exists'),
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(' .
-                    'ElementIdentifier::fromJson(\'{"locator":"a[href=foo.html]"}\')' .
+                        'ElementIdentifier::fromJson(\'{"locator":"a[href=foo.html]"}\')' .
                     ')',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ PHPUNIT }}->assertTrue(' .
+                        '{{ HAS }}, ' .
+                        '\'{"assertion":{"source":"$\\\"a[href=foo.html]\\\".attribute_name exists",' .
+                        '"identifier":"$\\\"a[href=foo.html]\\\".attribute_name","comparison":"exists"}}\'' .
+                    ')',
                     '{{ EXAMINED }} = {{ NAVIGATOR }}->findOne(' .
                     'ElementIdentifier::fromJson(\'{"locator":"a[href=foo.html]"}\')' .
                     ')',
                     '{{ EXAMINED }} = {{ EXAMINED }}->getAttribute(\'attribute_name\')',
                     '{{ EXAMINED }} = {{ EXAMINED }} !== null',
-                    '{{ PHPUNIT }}->assertTrue({{ EXAMINED }})',
+                    '{{ PHPUNIT }}->assertTrue(' .
+                        '{{ EXAMINED }}, ' .
+                        '\'{"assertion":{"source":"$\\\"a[href=foo.html]\\\".attribute_name exists",' .
+                        '"identifier":"$\\\"a[href=foo.html]\\\".attribute_name","comparison":"exists"}}\'' .
+                    ')',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([

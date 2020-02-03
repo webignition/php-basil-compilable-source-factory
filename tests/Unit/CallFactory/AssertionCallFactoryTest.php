@@ -244,13 +244,15 @@ class AssertionCallFactoryTest extends AbstractTestCase
         CodeBlockInterface $assignment,
         VariablePlaceholder $variablePlaceholder,
         string $assertionTemplate,
+        string $failureMessage,
         CodeBlockInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
         $source = $this->factory->createValueExistenceAssertionCall(
             $assignment,
             $variablePlaceholder,
-            $assertionTemplate
+            $assertionTemplate,
+            $failureMessage
         );
 
         $this->assertBlockContentEquals($expectedContent, $source);
@@ -279,9 +281,10 @@ class AssertionCallFactoryTest extends AbstractTestCase
                 ]),
                 'variablePlaceholder' => $examinedValuePlaceholder,
                 'assertionTemplate' => AssertionCallFactory::ASSERT_TRUE_TEMPLATE,
+                'failureMessage' => 'true is not true',
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ EXAMINED }} = "value" !== null',
-                    '{{ PHPUNIT }}->assertTrue({{ EXAMINED }})',
+                    '{{ PHPUNIT }}->assertTrue({{ EXAMINED }}, \'true is not true\')',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(new VariablePlaceholderCollection([
@@ -301,9 +304,10 @@ class AssertionCallFactoryTest extends AbstractTestCase
                 ]),
                 'variablePlaceholder' => $examinedValuePlaceholder,
                 'assertionTemplate' => AssertionCallFactory::ASSERT_FALSE_TEMPLATE,
+                'failureMessage' => 'false is not false',
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ EXAMINED }} = null !== null',
-                    '{{ PHPUNIT }}->assertFalse({{ EXAMINED }})',
+                    '{{ PHPUNIT }}->assertFalse({{ EXAMINED }}, \'false is not false\')',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withVariableDependencies(new VariablePlaceholderCollection([

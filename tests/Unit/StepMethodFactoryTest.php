@@ -137,7 +137,11 @@ class StepMethodFactoryTest extends AbstractTestCase
                     '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\')',
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ PHPUNIT }}->assertTrue(' .
+                        '{{ HAS }}, ' .
+                        '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
+                        '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
+                    ')',
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
                     '',
                     '// click $".selector"',
@@ -219,7 +223,11 @@ class StepMethodFactoryTest extends AbstractTestCase
                             '{{ HAS }} = {{ NAVIGATOR }}->has(' .
                             'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                             ')',
-                            '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                            '{{ PHPUNIT }}->assertTrue(' .
+                                '{{ HAS }}, ' .
+                                '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
+                                '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
+                            ')',
                             '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
                             '',
                             '// set $".selector" to $data.field_value',
@@ -239,7 +247,11 @@ class StepMethodFactoryTest extends AbstractTestCase
                             '{{ HAS }} = {{ NAVIGATOR }}->has(' .
                             'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                             ')',
-                            '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                            '{{ PHPUNIT }}->assertTrue(' .
+                                '{{ HAS }}, ' .
+                                '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
+                                '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
+                            ')',
                             '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
                             '',
                             '// $".selector" is $data.expected_value',

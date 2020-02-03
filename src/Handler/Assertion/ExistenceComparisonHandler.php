@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
+use webignition\BasilCompilableSourceFactory\AssertionFailureMessageFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
@@ -33,6 +34,7 @@ class ExistenceComparisonHandler
     private $valueTypeIdentifier;
     private $domIdentifierExistenceHandler;
     private $domIdentifierFactory;
+    private $assertionFailureMessageFactory;
 
     public function __construct(
         AssertionCallFactory $assertionCallFactory,
@@ -42,7 +44,8 @@ class ExistenceComparisonHandler
         ValueTypeIdentifier $valueTypeIdentifier,
         IdentifierTypeAnalyser $identifierTypeAnalyser,
         DomIdentifierExistenceHandler $domIdentifierExistenceHandler,
-        DomIdentifierFactory $domIdentifierFactory
+        DomIdentifierFactory $domIdentifierFactory,
+        AssertionFailureMessageFactory $assertionFailureMessageFactory
     ) {
         $this->assertionCallFactory = $assertionCallFactory;
         $this->scalarValueHandler = $scalarValueHandler;
@@ -53,6 +56,7 @@ class ExistenceComparisonHandler
         $this->valueTypeIdentifier = $valueTypeIdentifier;
         $this->domIdentifierExistenceHandler = $domIdentifierExistenceHandler;
         $this->domIdentifierFactory = $domIdentifierFactory;
+        $this->assertionFailureMessageFactory = $assertionFailureMessageFactory;
     }
 
     public static function createHandler(): ExistenceComparisonHandler
@@ -65,7 +69,8 @@ class ExistenceComparisonHandler
             new ValueTypeIdentifier(),
             IdentifierTypeAnalyser::create(),
             DomIdentifierExistenceHandler::createHandler(),
-            DomIdentifierFactory::createFactory()
+            DomIdentifierFactory::createFactory(),
+            AssertionFailureMessageFactory::createFactory()
         );
     }
 
@@ -80,7 +85,6 @@ class ExistenceComparisonHandler
     {
         $valuePlaceholder = new VariablePlaceholder(VariableNames::EXAMINED_VALUE);
         $identifier = $assertion->getIdentifier();
-        $comparison = $assertion->getComparison();
 
         if ($this->valueTypeIdentifier->isScalarValue($identifier)) {
             $accessor = $this->scalarValueHandler->handle($identifier);
@@ -104,7 +108,7 @@ class ExistenceComparisonHandler
                 new Statement(sprintf('%s = %s !== null', $valuePlaceholder, $valuePlaceholder)),
             ]);
 
-            return $this->createAssertionCall($comparison, $existence, $valuePlaceholder);
+            return $this->createAssertionCall($assertion, $existence, $valuePlaceholder);
         }
 
         if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
@@ -127,11 +131,13 @@ class ExistenceComparisonHandler
                     $valuePlaceholder,
                 ]));
 
-                return $this->createAssertionCall($comparison, new CodeBlock([$assignment]), $valuePlaceholder);
+                return $this->createAssertionCall($assertion, new CodeBlock([$assignment]), $valuePlaceholder);
             }
 
-            $elementExistence =
-                $this->domIdentifierExistenceHandler->createForElement($domIdentifier);
+            $elementExistence = $this->domIdentifierExistenceHandler->createForElement(
+                $domIdentifier,
+                $this->assertionFailureMessageFactory->createForAssertion($assertion)
+            );
 
             $access = $this->namedDomIdentifierHandler->handle(
                 new NamedDomIdentifierValue($domIdentifier, $valuePlaceholder)
@@ -147,17 +153,19 @@ class ExistenceComparisonHandler
                 new Statement(sprintf('%s = %s !== null', $valuePlaceholder, $valuePlaceholder)),
             ]);
 
-            return $this->createAssertionCall($comparison, $existence, $valuePlaceholder);
+            return $this->createAssertionCall($assertion, $existence, $valuePlaceholder);
         }
 
         throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
     }
 
     private function createAssertionCall(
-        string $comparison,
+        AssertionInterface $assertion,
         CodeBlockInterface $block,
         VariablePlaceholder $valuePlaceholder
     ): CodeBlockInterface {
+        $comparison = $assertion->getComparison();
+
         $assertionTemplate = 'exists' === $comparison
             ? AssertionCallFactory::ASSERT_TRUE_TEMPLATE
             : AssertionCallFactory::ASSERT_FALSE_TEMPLATE;
@@ -165,7 +173,8 @@ class ExistenceComparisonHandler
         return $this->assertionCallFactory->createValueExistenceAssertionCall(
             $block,
             $valuePlaceholder,
-            $assertionTemplate
+            $assertionTemplate,
+            $this->assertionFailureMessageFactory->createForAssertion($assertion)
         );
     }
 }
