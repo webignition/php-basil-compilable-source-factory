@@ -36,10 +36,11 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
      */
     public function testCreateForElement(
         ElementIdentifierInterface $identifier,
+        string $assertionFailureMessage,
         CodeBlockInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
-        $source = $this->handler->createForElement($identifier);
+        $source = $this->handler->createForElement($identifier, $assertionFailureMessage);
 
         $this->assertInstanceOf(CodeBlockInterface::class, $source);
 
@@ -52,9 +53,10 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
         return [
             'no parent' => [
                 'identifier' => new ElementIdentifier('.selector'),
+                'assertionFailureMessage' => 'false is not true',
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }}, \'false is not true\')',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -71,11 +73,12 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
             'has parent' => [
                 'identifier' => (new ElementIdentifier('.selector'))
                     ->withParentIdentifier(new ElementIdentifier('.parent')),
+                'assertionFailureMessage' => 'false is not true',
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(' .
                     'ElementIdentifier::fromJson(\'{"locator":".selector","parent":{"locator":".parent"}}\')' .
                     ')',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }}, \'false is not true\')',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -97,10 +100,11 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
      */
     public function testCreateForCollection(
         ElementIdentifierInterface $identifier,
+        string $assertionFailureMessage,
         CodeBlockInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
-        $source = $this->handler->createForCollection($identifier);
+        $source = $this->handler->createForCollection($identifier, $assertionFailureMessage);
 
         $this->assertInstanceOf(CodeBlockInterface::class, $source);
 
@@ -113,9 +117,10 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
         return [
             'no parent' => [
                 'identifier' => new ElementIdentifier('.selector'),
+                'assertionFailureMessage' => 'false is not true',
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }}, \'false is not true\')',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
@@ -132,11 +137,12 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
             'has parent' => [
                 'identifier' => (new ElementIdentifier('.selector'))
                     ->withParentIdentifier(new ElementIdentifier('.parent')),
+                'assertionFailureMessage' => 'false is not true',
                 'expectedContent' => CodeBlock::fromContent([
                     '{{ HAS }} = {{ NAVIGATOR }}->has(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector","parent":{"locator":".parent"}}\')' .
+                        'ElementIdentifier::fromJson(\'{"locator":".selector","parent":{"locator":".parent"}}\')' .
                     ')',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }})',
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }}, \'false is not true\')',
                 ]),
                 'expectedMetadata' => (new Metadata())
                     ->withClassDependencies(new ClassDependencyCollection([
