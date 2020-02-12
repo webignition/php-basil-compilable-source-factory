@@ -58,6 +58,8 @@ class ActionHandlerTest extends AbstractBrowserTestCase
         ?CodeBlockInterface $teardownStatements = null,
         array $additionalVariableIdentifiers = []
     ) {
+        $this->markTestSkipped();
+
         $source = $this->handler->handle($action);
 
         $classCode = $this->testCodeGenerator->createBrowserTestForBlock(

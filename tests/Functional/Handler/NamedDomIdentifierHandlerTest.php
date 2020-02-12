@@ -40,6 +40,8 @@ class NamedDomIdentifierHandlerTest extends AbstractBrowserTestCase
         NamedDomIdentifierInterface $namedDomIdentifier,
         CodeBlockInterface $teardownStatements
     ) {
+        $this->markTestSkipped();
+
         $source = $this->handler->handle($namedDomIdentifier);
 
         $classCode = $this->testCodeGenerator->createBrowserTestForBlock(

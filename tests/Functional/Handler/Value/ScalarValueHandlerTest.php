@@ -34,6 +34,8 @@ class ScalarValueHandlerTest extends AbstractBrowserTestCase
         CodeBlockInterface $teardownStatements,
         array $additionalVariableIdentifiers = []
     ) {
+        $this->markTestSkipped();
+
         $source = $this->handler->handle($value);
 
         $instrumentedSource = clone $source;
