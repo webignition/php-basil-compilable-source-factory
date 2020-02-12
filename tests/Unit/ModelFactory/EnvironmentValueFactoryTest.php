@@ -14,6 +14,8 @@ class EnvironmentValueFactoryTest extends \PHPUnit\Framework\TestCase
      */
     public function testCreate(string $value, EnvironmentValue $expectedEnvironmentValue)
     {
+        $this->markTestSkipped();
+
         $factory = EnvironmentValueFactory::createFactory();
 
         $environmentValue = $factory->create($value);

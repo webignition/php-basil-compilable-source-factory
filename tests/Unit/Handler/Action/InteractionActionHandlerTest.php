@@ -19,6 +19,8 @@ class InteractionActionHandlerTest extends AbstractTestCase
         InteractionActionInterface $action,
         \Exception $expectedException
     ) {
+        $this->markTestSkipped();
+
         $handler = InteractionActionHandler::createHandler();
 
         $this->expectExceptionObject($expectedException);

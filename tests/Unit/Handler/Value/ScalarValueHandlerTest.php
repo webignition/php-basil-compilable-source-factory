@@ -35,6 +35,8 @@ class ScalarValueHandlerTest extends AbstractTestCase
         CodeBlockInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
+        $this->markTestSkipped();
+
         $source = $this->handler->handle($value);
 
         $this->assertBlockContentEquals($expectedContent, $source);
@@ -46,6 +48,8 @@ class ScalarValueHandlerTest extends AbstractTestCase
      */
     public function testHandleThrowsException(string $value, \Exception $expectedException)
     {
+        $this->markTestSkipped();
+
         $this->expectExceptionObject($expectedException);
 
         $this->handler->handle($value);

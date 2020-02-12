@@ -56,6 +56,8 @@ class AssertionHandlerTest extends AbstractTestCase
         CodeBlockInterface $expectedContent,
         MetadataInterface $expectedMetadata
     ) {
+        $this->markTestSkipped();
+
         $source = $this->handler->handle($assertion);
 
         $this->assertBlockContentEquals($expectedContent, $source);
@@ -69,6 +71,8 @@ class AssertionHandlerTest extends AbstractTestCase
         AssertionInterface $assertion,
         UnsupportedStatementException $expectedException
     ) {
+        $this->markTestSkipped();
+
         $handler = AssertionHandler::createHandler();
         $this->expectExceptionObject($expectedException);
 
