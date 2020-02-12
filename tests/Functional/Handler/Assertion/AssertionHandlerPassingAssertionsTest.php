@@ -56,6 +56,8 @@ class AssertionHandlerPassingAssertionsTest extends AbstractBrowserTestCase
         AssertionInterface $assertion,
         array $additionalVariableIdentifiers = []
     ) {
+        $this->markTestSkipped();
+
         $source = $this->handler->handle($assertion);
 
         $classCode = $this->testCodeGenerator->createBrowserTestForBlock(

@@ -37,6 +37,8 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
         ElementIdentifierInterface $identifier,
         CodeBlockInterface $teardownStatements
     ) {
+        $this->markTestSkipped();
+
         $source = $this->factory->createFindCall($identifier);
 
         $instrumentedSource = clone $source;

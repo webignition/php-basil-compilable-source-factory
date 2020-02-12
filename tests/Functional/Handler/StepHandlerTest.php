@@ -38,6 +38,8 @@ class StepHandlerTest extends AbstractBrowserTestCase
         ?CodeBlockInterface $teardownStatements = null,
         array $additionalVariableIdentifiers = []
     ) {
+        $this->markTestSkipped();
+
         $source = $this->handler->handle($step);
 
         $classCode = $this->testCodeGenerator->createBrowserTestForBlock(
@@ -151,6 +153,8 @@ class StepHandlerTest extends AbstractBrowserTestCase
         ?CodeBlockInterface $teardownStatements = null,
         array $additionalVariableIdentifiers = []
     ) {
+        $this->markTestSkipped();
+
         $source = $this->handler->handle($step);
 
         $classCode = $this->testCodeGenerator->createBrowserTestForBlock(
