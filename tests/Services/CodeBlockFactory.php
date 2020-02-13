@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
-use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\Block\CodeBlockInterface;
-use webignition\BasilCompilationSource\Line\Comment;
-use webignition\BasilCompilationSource\Line\EmptyLine;
+use webignition\BasilCompilableSource\Block\CodeBlock;
+use webignition\BasilCompilableSource\Block\CodeBlockInterface;
+use webignition\BasilCompilableSource\Line\EmptyLine;
+use webignition\BasilCompilableSource\Line\SingleLineComment;
 
 class CodeBlockFactory
 {
@@ -16,10 +16,10 @@ class CodeBlockFactory
         ?CodeBlockInterface $teardownStatements = null
     ): CodeBlock {
         return new CodeBlock([
-            new Comment('Code under test'),
+            new SingleLineComment('Code under test'),
             $source,
             new EmptyLine(),
-            new Comment('Additional teardown statements'),
+            new SingleLineComment('Additional teardown statements'),
             $teardownStatements,
         ]);
     }

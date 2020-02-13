@@ -4,13 +4,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
-use webignition\BasilCompilationSource\Block\BlockInterface;
-use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilationSource\Line\LineInterface;
-use webignition\BasilCompilationSource\Metadata\MetadataInterface;
-use webignition\BasilCompilationSource\MethodDefinition\MethodDefinition;
-use webignition\BasilCompilationSource\MethodDefinition\MethodDefinitionInterface;
-use webignition\BasilCompilationSource\VariablePlaceholderCollection;
+use webignition\BasilCompilableSource\Block\BlockInterface;
+use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
+use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\MethodDefinitionInterface;
+use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 
 abstract class AbstractTestCase extends \PHPUnit\Framework\TestCase
 {
@@ -26,30 +24,7 @@ abstract class AbstractTestCase extends \PHPUnit\Framework\TestCase
 
     protected function assertBlockContentEquals(BlockInterface $expected, BlockInterface $actual)
     {
-        $this->assertBlockLines($expected, $actual);
-    }
-
-    private function assertBlockLines(BlockInterface $expected, BlockInterface $actual)
-    {
-        $expectedLines = $expected->getLines();
-        $actualLines = $actual->getLines();
-
-        $expectedLineContent = [];
-        foreach ($expectedLines as $expectedLine) {
-            $expectedLineContent[] = $expectedLine->getContent();
-        }
-
-        $expectedLineContent = $this->getSourceLineContent($expectedLines);
-        $actualLineContent = $this->getSourceLineContent($actualLines);
-
-        $this->assertSame($expectedLineContent, $actualLineContent);
-
-        foreach ($expectedLines as $lineIndex => $expectedLine) {
-            $actualLine = $actualLines[$lineIndex];
-
-            $this->assertEquals(get_class($expectedLine), get_class($actualLine));
-            $this->assertEquals($expectedLine->getContent(), $actualLine->getContent());
-        }
+        $this->assertSame($expected->render(), $actual->render());
     }
 
     protected function assertMetadataEquals(MetadataInterface $expected, MetadataInterface $actual)
@@ -129,17 +104,5 @@ abstract class AbstractTestCase extends \PHPUnit\Framework\TestCase
         sort($names);
 
         return $names;
-    }
-
-    /**
-     * @param LineInterface[] $lines
-     *
-     * @return array<string>
-     */
-    private function getSourceLineContent(array $lines): array
-    {
-        return array_map(function (LineInterface $line) {
-            return $line->getContent();
-        }, $lines);
     }
 }

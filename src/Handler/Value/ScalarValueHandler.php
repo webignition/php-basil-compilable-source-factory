@@ -4,16 +4,21 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Value;
 
+use webignition\BasilCompilableSource\Block\CodeBlock;
+use webignition\BasilCompilableSource\Line\ClosureExpression;
+use webignition\BasilCompilableSource\Line\CompositeExpression;
+use webignition\BasilCompilableSource\Line\ExpressionInterface;
+use webignition\BasilCompilableSource\Line\LiteralExpression;
+use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
+use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
+use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
+use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Model\EnvironmentValue;
 use webignition\BasilCompilableSourceFactory\ModelFactory\EnvironmentValueFactory;
 use webignition\BasilCompilableSourceFactory\ValueTypeIdentifier;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\Block\CodeBlockInterface;
-use webignition\BasilCompilationSource\Line\Statement;
-use webignition\BasilCompilationSource\Metadata\Metadata;
-use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
 class ScalarValueHandler
 {
@@ -39,11 +44,11 @@ class ScalarValueHandler
     /**
      * @param string $value
      *
-     * @return CodeBlockInterface
+     * @return ExpressionInterface
      *
      * @throws UnsupportedContentException
      */
-    public function handle(string $value): CodeBlockInterface
+    public function handle(string $value): ExpressionInterface
     {
         if ($this->valueTypeIdentifier->isBrowserProperty($value)) {
             return $this->handleBrowserProperty();
@@ -52,9 +57,7 @@ class ScalarValueHandler
         if ($this->valueTypeIdentifier->isDataParameter($value)) {
             $property = (string) preg_replace('/^\$data\./', '', $value);
 
-            return new CodeBlock([
-                new Statement('$' . $property)
-            ]);
+            return new LiteralExpression('$' . $property);
         }
 
         if (EnvironmentValue::is($value)) {
@@ -66,90 +69,80 @@ class ScalarValueHandler
         }
 
         if ($this->valueTypeIdentifier->isLiteralValue($value)) {
-            return new CodeBlock([
-                new Statement((string) $value)
-            ]);
+            return new LiteralExpression((string) $value);
         }
 
         throw new UnsupportedContentException(UnsupportedContentException::TYPE_VALUE, $value);
     }
 
-    private function handleBrowserProperty(): CodeBlockInterface
+    private function handleBrowserProperty(): ExpressionInterface
     {
-        $variableExports = new VariablePlaceholderCollection();
-        $webDriverDimensionPlaceholder = $variableExports->create('WEBDRIVER_DIMENSION');
+        $webDriverDimensionPlaceholder = VariablePlaceholder::createExport('WEBDRIVER_DIMENSION');
 
-        $variableDependencies = new VariablePlaceholderCollection();
-        $pantherClientPlaceholder = $variableDependencies->create(VariableNames::PANTHER_CLIENT);
-
-        $dimensionAssignment = new Statement(
-            sprintf(
-                '%s = %s->getWebDriver()->manage()->window()->getSize()',
+        return new ClosureExpression(new CodeBlock([
+            new AssignmentStatement(
                 $webDriverDimensionPlaceholder,
-                $pantherClientPlaceholder
+                new ObjectMethodInvocation(
+                    VariablePlaceholder::createDependency(VariableNames::PANTHER_CLIENT),
+                    'getWebDriver()->manage()->window()->getSize'
+                )
             ),
-            (new Metadata())
-                ->withVariableDependencies($variableDependencies)
-                ->withVariableExports($variableExports)
-        );
-
-        $getWidthCall = $webDriverDimensionPlaceholder . '->getWidth()';
-        $getHeightCall = $webDriverDimensionPlaceholder . '->getHeight()';
-
-        $dimensionConcatenation = new Statement('(string) ' . $getWidthCall . ' . \'x\' . (string) ' . $getHeightCall);
-
-        return new CodeBlock([$dimensionAssignment, $dimensionConcatenation]);
+            new ReturnStatement(
+                new CompositeExpression([
+                    new ObjectMethodInvocation(
+                        $webDriverDimensionPlaceholder,
+                        'getWidth',
+                        [],
+                        MethodInvocation::ARGUMENT_FORMAT_INLINE,
+                        'string'
+                    ),
+                    new LiteralExpression(' . \'x\' . '),
+                    new ObjectMethodInvocation(
+                        $webDriverDimensionPlaceholder,
+                        'getHeight',
+                        [],
+                        MethodInvocation::ARGUMENT_FORMAT_INLINE,
+                        'string'
+                    ),
+                ])
+            )
+        ]));
     }
 
-    private function handleEnvironmentValue(string $value): CodeBlockInterface
+    private function handleEnvironmentValue(string $value): ExpressionInterface
     {
         $environmentValue = $this->environmentValueFactory->create($value);
         $property = $environmentValue->getProperty();
 
-        $variableDependencies = new VariablePlaceholderCollection();
-        $environmentVariableArrayPlaceholder = $variableDependencies->create(
-            VariableNames::ENVIRONMENT_VARIABLE_ARRAY
-        );
-
-        return new CodeBlock([
-            new Statement(
-                sprintf(
-                    (string) $environmentVariableArrayPlaceholder . '[\'%s\']',
-                    $property
-                ),
-                (new Metadata())->withVariableDependencies($variableDependencies)
-            )
+        return new CompositeExpression([
+            VariablePlaceholder::createDependency('ENV'),
+            new LiteralExpression(sprintf('[\'%s\']', $property)),
         ]);
     }
 
     /**
      * @param string $value
      *
-     * @return CodeBlockInterface
+     * @return ObjectMethodInvocation
      *
      * @throws UnsupportedContentException
      */
-    private function handlePageProperty(string $value): CodeBlockInterface
+    private function handlePageProperty(string $value): ExpressionInterface
     {
         $property = (string) preg_replace('/^\$page\./', '', $value);
 
-        $variableDependencies = new VariablePlaceholderCollection();
-        $pantherClientPlaceholder = $variableDependencies->create(VariableNames::PANTHER_CLIENT);
-
-        $contentMap = [
-            'title' => (string) $pantherClientPlaceholder . '->getTitle()',
-            'url' => (string) $pantherClientPlaceholder . '->getCurrentURL()',
+        $methodNameMap = [
+            'title' => 'getTitle',
+            'url' => 'getCurrentURL',
         ];
 
-        $statementContent = $contentMap[$property] ?? null;
+        $methodName = $methodNameMap[$property] ?? null;
 
-        if (is_string($statementContent)) {
-            $metadata = (new Metadata())
-                ->withVariableDependencies($variableDependencies);
-
-            return new CodeBlock([
-                new Statement($statementContent, $metadata)
-            ]);
+        if (is_string($methodName)) {
+            return new ObjectMethodInvocation(
+                VariablePlaceholder::createDependency(VariableNames::PANTHER_CLIENT),
+                $methodName
+            );
         }
 
         throw new UnsupportedContentException(UnsupportedContentException::TYPE_VALUE, $value);
