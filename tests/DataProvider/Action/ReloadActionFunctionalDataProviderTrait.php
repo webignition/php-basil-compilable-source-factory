@@ -16,31 +16,31 @@ trait ReloadActionFunctionalDataProviderTrait
     {
         $actionParser = ActionParser::create();
 
-        $setupTeardownStatements = new CodeBlock([
-            StatementFactory::create(
-                '%s->assertCount(0, %s->filter("#hello"))',
-                [
-                    PlaceholderFactory::phpUnitTestCase(),
-                    PlaceholderFactory::pantherCrawler(),
-                ]
-            ),
-            new Statement('usleep(100000)'),
-            StatementFactory::create(
-                '%s->assertCount(1, %s->filter("#hello"))',
-                [
-                    PlaceholderFactory::phpUnitTestCase(),
-                    PlaceholderFactory::pantherCrawler(),
-                ]
-            ),
-        ]);
+//        $setupTeardownStatements = new CodeBlock([
+//            StatementFactory::create(
+//                '%s->assertCount(0, %s->filter("#hello"))',
+//                [
+//                    PlaceholderFactory::phpUnitTestCase(),
+//                    PlaceholderFactory::pantherCrawler(),
+//                ]
+//            ),
+//            new Statement('usleep(100000)'),
+//            StatementFactory::create(
+//                '%s->assertCount(1, %s->filter("#hello"))',
+//                [
+//                    PlaceholderFactory::phpUnitTestCase(),
+//                    PlaceholderFactory::pantherCrawler(),
+//                ]
+//            ),
+//        ]);
 
         return [
-            'reload action' => [
-                'fixture' => '/action-wait-for.html',
-                'action' => $actionParser->parse('reload'),
-                'additionalSetupStatements' => $setupTeardownStatements,
-                'teardownStatements' => $setupTeardownStatements,
-            ],
+//            'reload action' => [
+//                'fixture' => '/action-wait-for.html',
+//                'action' => $actionParser->parse('reload'),
+//                'additionalSetupStatements' => $setupTeardownStatements,
+//                'teardownStatements' => $setupTeardownStatements,
+//            ],
         ];
     }
 }

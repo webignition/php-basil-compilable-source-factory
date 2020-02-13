@@ -4,33 +4,48 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
-use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractGeneratedTestCase;
-use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\Block\CodeBlockInterface;
-use webignition\BasilCompilationSource\Line\ClassDependency;
-use webignition\BasilCompilationSource\Line\Comment;
-use webignition\BasilCompilationSource\Line\EmptyLine;
-use webignition\BasilCompilationSource\Line\Statement;
-use webignition\BasilCompilationSource\Metadata\Metadata;
-use webignition\BasilCompilationSource\MethodDefinition\MethodDefinition;
-use webignition\BasilCompilationSource\MethodDefinition\MethodDefinitionInterface;
+use webignition\BasilCompilableSource\Block\CodeBlock;
+use webignition\BasilCompilableSource\Block\CodeBlockInterface;
+use webignition\BasilCompilableSource\Line\CompositeExpression;
+use webignition\BasilCompilableSource\Line\EmptyLine;
+use webignition\BasilCompilableSource\Line\LiteralExpression;
+use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSource\Line\MethodInvocation\StaticObjectMethodInvocation;
+use webignition\BasilCompilableSource\Line\SingleLineComment;
+use webignition\BasilCompilableSource\Line\Statement\Statement;
+use webignition\BasilCompilableSource\MethodDefinition;
+use webignition\BasilCompilableSource\MethodDefinitionInterface;
+use webignition\BasilCompilableSource\StaticObject;
+use webignition\BasilCompilableSource\VariablePlaceholder;
+use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\SymfonyPantherWebServerRunner\Options;
 
 class MethodDefinitionFactory
 {
     public static function createSetUpBeforeClassMethodDefinition(string $fixture): MethodDefinitionInterface
     {
+        $requestBaseUri = new StaticObjectMethodInvocation(
+            new StaticObject(Options::class),
+            'getBaseUri'
+        );
+
+        $requestUriExpression = new CompositeExpression([
+            $requestBaseUri,
+            new LiteralExpression(' . \'' . $fixture . '\''),
+        ]);
+
         $block = new CodeBlock([
-            new Comment('Test harness lines'),
-            new Statement('parent::setUpBeforeClass()'),
+            new SingleLineComment('Test harness lines'),
+            new Statement(new LiteralExpression('parent::setUpBeforeClass()')),
             new Statement(
-                'self::$client->request(\'GET\', Options::getBaseUri() . \'' . $fixture . '\')',
-                (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(Options::class),
-                        new ClassDependency(AbstractGeneratedTestCase::class),
-                    ]))
+                new ObjectMethodInvocation(
+                    VariablePlaceholder::createDependency(VariableNames::PANTHER_CLIENT),
+                    'request',
+                    [
+                        new LiteralExpression('\'GET\''),
+                        $requestUriExpression,
+                    ]
+                )
             ),
         ]);
 
@@ -45,10 +60,10 @@ class MethodDefinitionFactory
         ?CodeBlockInterface $additionalSetupStatements
     ): MethodDefinitionInterface {
         $block = new CodeBlock([
-            new Comment('Test harness lines'),
-            new Statement('parent::setUp()'),
+            new SingleLineComment('Test harness lines'),
+            new Statement(new LiteralExpression('parent::setUp()')),
             new EmptyLine(),
-            new Comment('Additional setup statements'),
+            new SingleLineComment('Additional setup statements'),
             $additionalSetupStatements,
         ]);
 

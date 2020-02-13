@@ -16,23 +16,23 @@ trait ForwardActionFunctionalDataProviderTrait
         $actionParser = ActionParser::create();
 
         return [
-            'forward action' => [
-                'fixture' => '/index.html',
-                'action' => $actionParser->parse('forward'),
-                'additionalSetupStatements' => new CodeBlock([
-                    StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
-                    StatementFactory::createCrawlerActionCallForElement('#link-to-assertions', 'click'),
-                    StatementFactory::createAssertBrowserTitle('Assertions fixture'),
-                    StatementFactory::createClientAction('back')
-                ]),
-                'teardownStatements' => CodeBlock::fromContent([
-                    sprintf(
-                        '%s->assertEquals("Assertions fixture", %s->getTitle())',
-                        PlaceholderFactory::phpUnitTestCase(),
-                        PlaceholderFactory::pantherClient()
-                    ),
-                ]),
-            ],
+//            'forward action' => [
+//                'fixture' => '/index.html',
+//                'action' => $actionParser->parse('forward'),
+//                'additionalSetupStatements' => new CodeBlock([
+//                    StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
+//                    StatementFactory::createCrawlerActionCallForElement('#link-to-assertions', 'click'),
+//                    StatementFactory::createAssertBrowserTitle('Assertions fixture'),
+//                    StatementFactory::createClientAction('back')
+//                ]),
+//                'teardownStatements' => CodeBlock::fromContent([
+//                    sprintf(
+//                        '%s->assertEquals("Assertions fixture", %s->getTitle())',
+//                        PlaceholderFactory::phpUnitTestCase(),
+//                        PlaceholderFactory::pantherClient()
+//                    ),
+//                ]),
+//            ],
         ];
     }
 }

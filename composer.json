@@ -35,7 +35,7 @@
         "php": ">=7.2",
         "ext-json": "*",
         "webignition/basil-code-generator": ">=0.10,<1",
-        "webignition/basil-compilable-source": ">=0.1,<1",
+        "webignition/basil-compilable-source": ">=0.7,<1",
         "webignition/basil-dom-identifier-factory": ">=0.8,<1",
         "webignition/basil-identifier-analyser": ">=0.4,<1",
         "webignition/basil-models": ">=0.29,<1",

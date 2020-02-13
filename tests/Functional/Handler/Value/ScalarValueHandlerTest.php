@@ -4,12 +4,14 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\Value;
 
+use webignition\BasilCompilableSource\Block\CodeBlock;
+use webignition\BasilCompilableSource\Block\CodeBlockInterface;
+use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
+use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
-use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 
 class ScalarValueHandlerTest extends AbstractBrowserTestCase
 {
@@ -34,14 +36,15 @@ class ScalarValueHandlerTest extends AbstractBrowserTestCase
         CodeBlockInterface $teardownStatements,
         array $additionalVariableIdentifiers = []
     ) {
-        $this->markTestSkipped();
-
         $source = $this->handler->handle($value);
 
-        $instrumentedSource = clone $source;
-        $instrumentedSource->mutateLastStatement(function ($content) {
-            return '$value = ' . $content;
-        });
+        $valuePlaceholder = VariablePlaceholder::createExport('VALUE');
+
+        $instrumentedSource = new CodeBlock([
+            new AssignmentStatement($valuePlaceholder, $source),
+        ]);
+
+        $additionalVariableIdentifiers[$valuePlaceholder->getName()] = '$value';
 
         $classCode = $this->testCodeGenerator->createBrowserTestForBlock(
             $instrumentedSource,
@@ -69,7 +72,7 @@ class ScalarValueHandlerTest extends AbstractBrowserTestCase
         return [
             'browser property: size' => [
                 'fixture' => '/empty.html',
-                'model' => '$browser.size',
+                'value' => '$browser.size',
                 'teardownStatements' => new CodeBlock([
                     StatementFactory::createAssertSame('"1200x1100"', '$value'),
                 ]),
@@ -79,14 +82,14 @@ class ScalarValueHandlerTest extends AbstractBrowserTestCase
             ],
             'page property: title' => [
                 'fixture' => '/index.html',
-                'model' => '$page.title',
+                'value' => '$page.title',
                 'teardownStatements' => new CodeBlock([
                     StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
                 ]),
             ],
             'page property: url' => [
                 'fixture' => '/index.html',
-                'model' => '$page.url',
+                'value' => '$page.url',
                 'teardownStatements' => new CodeBlock([
                     StatementFactory::createAssertSame('"http://127.0.0.1:9080/index.html"', '$value'),
                 ]),

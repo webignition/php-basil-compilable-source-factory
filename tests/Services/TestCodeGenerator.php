@@ -7,11 +7,10 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 use webignition\BasilCodeGenerator\ClassGenerator;
 use webignition\BasilCodeGenerator\CodeBlockGenerator;
 use webignition\BasilCodeGenerator\UnresolvedPlaceholderException;
+use webignition\BasilCompilableSource\Block\CodeBlockInterface;
+use webignition\BasilCompilableSource\ClassDefinitionInterface;
+use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\Block\CodeBlockInterface;
-use webignition\BasilCompilationSource\ClassDefinition\ClassDefinitionInterface;
-use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
 class TestCodeGenerator
 {
@@ -78,8 +77,6 @@ class TestCodeGenerator
      * @param array<string, string> $additionalVariableIdentifiers
      *
      * @return string
-     *
-     * @throws UnresolvedPlaceholderException
      */
     public function createBrowserTestForBlock(
         CodeBlockInterface $block,
@@ -89,6 +86,7 @@ class TestCodeGenerator
         array $additionalVariableIdentifiers = []
     ): string {
         $codeSource = CodeBlockFactory::createForSourceBlock($block, $teardownStatements);
+
         $classDefinition = ClassDefinitionFactory::createGeneratedBrowserTestForBlock(
             $fixture,
             $codeSource,
@@ -99,9 +97,8 @@ class TestCodeGenerator
             $classDefinition->getMetadata()->getVariableDependencies()
         );
 
-        return $this->classGenerator->createForClassDefinition(
-            $classDefinition,
-            'AbstractGeneratedTestCase',
+        return VariablePlaceholderResolver::resolve(
+            $classDefinition->render(),
             array_merge(
                 $variableDependencyIdentifiers,
                 $additionalVariableIdentifiers
