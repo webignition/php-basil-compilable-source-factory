@@ -67,8 +67,6 @@ class WaitForActionHandler
             throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }
 
-        // '{{ CRAWLER }} = {{ CLIENT }}->waitFor(\'.selector\')'
-
         return new CodeBlock([
             new AssignmentStatement(
                 VariablePlaceholder::createDependency(VariableNames::PANTHER_CRAWLER),
@@ -81,27 +79,6 @@ class WaitForActionHandler
                         )
                     ]
                 )
-            )
-        ]);
-
-        var_dump('foo');
-        exit();
-
-        $variableDependencies = new VariablePlaceholderCollection();
-        $pantherCrawlerPlaceholder = $variableDependencies->create(VariableNames::PANTHER_CRAWLER);
-        $pantherClientPlaceholder = $variableDependencies->create(VariableNames::PANTHER_CLIENT);
-
-        $metadata = (new Metadata())->withVariableDependencies($variableDependencies);
-
-        return new CodeBlock([
-            new Statement(
-                sprintf(
-                    '%s = %s->waitFor(\'%s\')',
-                    $pantherCrawlerPlaceholder,
-                    $pantherClientPlaceholder,
-                    $this->singleQuotedStringEscaper->escape($domIdentifier->getLocator())
-                ),
-                $metadata
             )
         ]);
     }
