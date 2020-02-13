@@ -4,14 +4,12 @@ parameters:
     - src/Handler/Action/*
     - src/Handler/Assertion/*
     - src/Handler/DomIdentifierExistenceHandler.php
-    - src/Handler/NamedDomIdentifierHandler.php
     - src/Handler/StepHandler.php
     - tests/DataProvider/*
     - tests/Functional/CallFactory/*
     - tests/Functional/ClassDefinitionFactoryTest.php
     - tests/Functional/Handler/Action/*
     - tests/Functional/Handler/Assertion/*
-    - tests/Functional/Handler/NamedDomIdentifierHandlerTest.php
     - tests/Functional/Handler/StepHandlerTest.php
     - tests/Services/*
     - tests/Unit/AbstractTestCase.php
@@ -20,7 +18,6 @@ parameters:
     - tests/Unit/Handler/Action/ActionHandlerTest.php
     - tests/Unit/Handler/Assertion/*
     - tests/Unit/Handler/DomIdentifierExistenceHandlerTest.php
-    - tests/Unit/Handler/NamedDomIdentifierHandlerTest.php
     - tests/Unit/Handler/StepHandlerTest.php
     - tests/Unit/StepMethodFactoryTest.php
 

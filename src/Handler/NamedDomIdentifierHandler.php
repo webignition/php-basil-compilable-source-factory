@@ -4,14 +4,16 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler;
 
+use webignition\BasilCompilableSource\Block\CodeBlock;
+use webignition\BasilCompilableSource\Line\ClosureExpression;
+use webignition\BasilCompilableSource\Line\LiteralExpression;
+use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
+use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\WebDriverElementInspectorCallFactory;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierInterface;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
-use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\Block\CodeBlockInterface;
-use webignition\BasilCompilationSource\Line\Statement;
-use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
 class NamedDomIdentifierHandler
@@ -39,7 +41,7 @@ class NamedDomIdentifierHandler
         );
     }
 
-    public function handle(NamedDomIdentifierInterface $namedDomIdentifier): CodeBlockInterface
+    public function handle(NamedDomIdentifierInterface $namedDomIdentifier): AssignmentStatement
     {
         $identifier = $namedDomIdentifier->getIdentifier();
 
@@ -48,47 +50,44 @@ class NamedDomIdentifierHandler
             : $this->domCrawlerNavigatorCallFactory->createFindOneCall($identifier);
 
         $elementPlaceholder = $namedDomIdentifier->getPlaceholder();
-        $collectionAssignmentVariableExports = new VariablePlaceholderCollection([
-            $elementPlaceholder,
-        ]);
 
-        $elementOrCollectionAssignment = new CodeBlock([
-            $findCall,
-        ]);
-        $elementOrCollectionAssignment->mutateLastStatement(function ($content) use ($elementPlaceholder) {
-            return $elementPlaceholder . ' = ' . $content;
-        });
-        $elementOrCollectionAssignment->addVariableExportsToLastStatement($collectionAssignmentVariableExports);
-
-        $block = new CodeBlock([
-            $elementOrCollectionAssignment,
-        ]);
-
-        if ($namedDomIdentifier->includeValue()) {
-            if ($identifier instanceof AttributeIdentifierInterface) {
-                $valueAssignment = new CodeBlock([
-                    new Statement(sprintf(
-                        '%s = %s->getAttribute(\'%s\')',
-                        $elementPlaceholder,
-                        $elementPlaceholder,
-                        $this->singleQuotedStringEscaper->escape((string) $identifier->getAttributeName())
-                    ))
-                ]);
-            } else {
-                $getValueCall = $this->webDriverElementInspectorCallFactory->createGetValueCall($elementPlaceholder);
-                $getValueCall = new CodeBlock([
-                    $getValueCall,
-                ]);
-
-                $valueAssignment = clone $getValueCall;
-                $valueAssignment->mutateLastStatement(function ($content) use ($elementPlaceholder) {
-                    return $elementPlaceholder . ' = ' . $content;
-                });
-            }
-
-            $block->addLinesFromBlock($valueAssignment);
+        if (false === $namedDomIdentifier->includeValue()) {
+            return new AssignmentStatement(
+                $elementPlaceholder,
+                new ClosureExpression(new CodeBlock([
+                    new ReturnStatement(
+                        $findCall
+                    ),
+                ]))
+            );
         }
 
-        return $block;
+        $closureExpressionStatements = [
+            new AssignmentStatement($elementPlaceholder, $findCall),
+        ];
+
+        if ($identifier instanceof AttributeIdentifierInterface) {
+            $closureExpressionStatements[] = new ReturnStatement(
+                new ObjectMethodInvocation(
+                    $elementPlaceholder,
+                    'getAttribute',
+                    [
+                        new LiteralExpression(sprintf(
+                            '\'%s\'',
+                            $this->singleQuotedStringEscaper->escape((string) $identifier->getAttributeName())
+                        )),
+                    ]
+                )
+            );
+        } else {
+            $closureExpressionStatements[] = new ReturnStatement(
+                $this->webDriverElementInspectorCallFactory->createGetValueCall($elementPlaceholder)
+            );
+        }
+
+        return new AssignmentStatement(
+            $elementPlaceholder,
+            new ClosureExpression(new CodeBlock($closureExpressionStatements))
+        );
     }
 }
