@@ -6,13 +6,13 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 
 use webignition\BasilCodeGenerator\CodeBlockGenerator;
 use webignition\BasilCodeGenerator\LineGenerator;
+use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
+use webignition\BasilCompilableSource\Line\ClassDependency;
+use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
+use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\CallFactory\ElementIdentifierCallFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestCodeGenerator;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
-use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\Line\ClassDependency;
-use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
@@ -53,27 +53,22 @@ class ElementIdentifierCallFactoryTest extends AbstractTestCase
      */
     public function testCreateConstructorCall(ElementIdentifierInterface $elementIdentifier)
     {
-        $this->markTestSkipped();
+        $constructorExpression = $this->factory->createConstructorCall($elementIdentifier);
 
-        $block = $this->factory->createConstructorCall($elementIdentifier);
-        $block = new CodeBlock([
-            $block,
-        ]);
+        $this->assertEquals(
+            new Metadata([
+                Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                    new ClassDependency(ElementIdentifier::class),
+                ])
+            ]),
+            $constructorExpression->getMetadata()
+        );
 
-        $block->mutateLastStatement(function ($content) {
-            return 'return ' . $content;
-        });
+        $constructorAccessStatement = new ReturnStatement($constructorExpression);
 
-        $expectedMetadata = (new Metadata())
-            ->withClassDependencies(new ClassDependencyCollection([
-                new ClassDependency(ElementIdentifier::class)
-            ]));
-
-        $this->assertMetadataEquals($expectedMetadata, $block->getMetadata());
-
-        $code = $this->codeBlockGenerator->createWithUseStatementsFromBlock(new CodeBlock([
-            $block,
-        ]), []);
+        $code = $constructorAccessStatement->getMetadata()->getClassDependencies()->render() .
+            "\n" .
+            $constructorAccessStatement->render();
 
         $evaluatedCodeOutput = eval($code);
 

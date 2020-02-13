@@ -4,20 +4,16 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
+use webignition\BasilCompilableSource\Line\ExpressionInterface;
+use webignition\BasilCompilableSource\Line\LiteralExpression;
+use webignition\BasilCompilableSource\Line\MethodInvocation\StaticObjectMethodInvocation;
+use webignition\BasilCompilableSource\StaticObject;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
-use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\Block\CodeBlockInterface;
-use webignition\BasilCompilationSource\Line\ClassDependency;
-use webignition\BasilCompilationSource\Line\Statement;
-use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
 class ElementIdentifierCallFactory
 {
-    private const TEMPLATE = 'ElementIdentifier::fromJson(%s)';
-
     private $singleQuotedStringEscaper;
 
     public function __construct(SingleQuotedStringEscaper $singleQuotedStringEscaper)
@@ -32,19 +28,18 @@ class ElementIdentifierCallFactory
         );
     }
 
-    public function createConstructorCall(ElementIdentifierInterface $elementIdentifier): CodeBlockInterface
+    public function createConstructorCall(ElementIdentifierInterface $elementIdentifier): ExpressionInterface
     {
         $serializedSourceIdentifier = (string) json_encode($elementIdentifier);
 
-        $arguments = '\'' . $this->singleQuotedStringEscaper->escape($serializedSourceIdentifier) . '\'';
-
-        $metadata = new Metadata();
-        $metadata->addClassDependencies(new ClassDependencyCollection([
-            new ClassDependency(ElementIdentifier::class),
-        ]));
-
-        return new CodeBlock([
-            new Statement(sprintf(self::TEMPLATE, $arguments), $metadata)
-        ]);
+        return new StaticObjectMethodInvocation(
+            new StaticObject(ElementIdentifier::class),
+            'fromJson',
+            [
+                new LiteralExpression(
+                    '\'' . $this->singleQuotedStringEscaper->escape($serializedSourceIdentifier) . '\''
+                )
+            ]
+        );
     }
 }
