@@ -1,6 +1,7 @@
 parameters:
   inferPrivatePropertyTypeFromConstructor: true
   excludes_analyse:
+    - src/CallFactory/DomCrawlerNavigatorCallFactory.php
     - src/Handler/Action/*
     - src/Handler/Assertion/*
     - src/Handler/StepHandler.php
