@@ -4,15 +4,13 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 
+use webignition\BasilCompilableSource\Metadata\Metadata;
+use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\VariablePlaceholder;
+use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 use webignition\BasilCompilableSourceFactory\CallFactory\WebDriverElementInspectorCallFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\Block\CodeBlockInterface;
-use webignition\BasilCompilationSource\Line\Statement;
-use webignition\BasilCompilationSource\Metadata\Metadata;
-use webignition\BasilCompilationSource\VariablePlaceholder;
-use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
 class WebDriverElementInspectorCallFactoryTest extends AbstractTestCase
 {
@@ -33,31 +31,28 @@ class WebDriverElementInspectorCallFactoryTest extends AbstractTestCase
      */
     public function testCreateGetValueCall(
         VariablePlaceholder $collectionPlaceholder,
-        CodeBlockInterface $expectedBlock
+        string $expectedRenderedSource,
+        MetadataInterface $expectedMetadata
     ) {
-        $this->markTestSkipped();
+        $expression = $this->factory->createGetValueCall($collectionPlaceholder);
 
-        $statement = $this->factory->createGetValueCall($collectionPlaceholder);
-
-        $this->assertEquals($expectedBlock, $statement);
+        $this->assertSame($expectedRenderedSource, $expression->render());
+        $this->assertEquals($expectedMetadata, $expression->getMetadata());
     }
 
     public function createGetValueCallDataProvider(): array
     {
         return [
             'default' => [
-                'collectionPlaceholder' => new VariablePlaceholder('COLLECTION'),
-                'expectedBlock' => new CodeBlock([
-                    new Statement(
-                        '{{ INSPECTOR }}->getValue({{ COLLECTION }})',
-                        (new Metadata())
-                            ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                                VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
-                            ]))
-                            ->withVariableExports(VariablePlaceholderCollection::createCollection([
-                                'COLLECTION',
-                            ]))
-                    )
+                'collectionPlaceholder' => VariablePlaceholder::createExport('COLLECTION'),
+                'expectedRenderedSource' => '{{ INSPECTOR }}->getValue({{ COLLECTION }})',
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                        VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
+                        'COLLECTION',
+                    ]),
                 ]),
             ],
         ];
