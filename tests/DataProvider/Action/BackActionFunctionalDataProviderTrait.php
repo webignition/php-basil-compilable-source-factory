@@ -15,18 +15,18 @@ trait BackActionFunctionalDataProviderTrait
         $actionParser = ActionParser::create();
 
         return [
-            'back action' => [
-                'fixture' => '/index.html',
-                'action' => $actionParser->parse('back'),
-                'additionalSetupStatements' => new CodeBlock([
-                    StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
-                    StatementFactory::createCrawlerActionCallForElement('#link-to-assertions', 'click'),
-                    StatementFactory::createAssertBrowserTitle('Assertions fixture'),
-                ]),
-                'teardownStatements' => new CodeBlock([
-                    StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
-                ])
-            ],
+//            'back action' => [
+//                'fixture' => '/index.html',
+//                'action' => $actionParser->parse('back'),
+//                'additionalSetupStatements' => new CodeBlock([
+//                    StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
+//                    StatementFactory::createCrawlerActionCallForElement('#link-to-assertions', 'click'),
+//                    StatementFactory::createAssertBrowserTitle('Assertions fixture'),
+//                ]),
+//                'teardownStatements' => new CodeBlock([
+//                    StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
+//                ])
+//            ],
         ];
     }
 }
