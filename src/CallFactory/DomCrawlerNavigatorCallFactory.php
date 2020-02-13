@@ -4,12 +4,10 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
+use webignition\BasilCompilableSource\Line\ExpressionInterface;
+use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\Block\CodeBlockInterface;
-use webignition\BasilCompilationSource\Line\Statement;
-use webignition\BasilCompilationSource\Metadata\Metadata;
-use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
@@ -29,47 +27,36 @@ class DomCrawlerNavigatorCallFactory
         );
     }
 
-    public function createFindCall(ElementIdentifierInterface $identifier): CodeBlockInterface
+    public function createFindCall(ElementIdentifierInterface $identifier): ExpressionInterface
     {
         return $this->createElementCall($identifier, 'find');
     }
 
-    public function createFindOneCall(ElementIdentifierInterface $identifier): CodeBlockInterface
+    public function createFindOneCall(ElementIdentifierInterface $identifier): ExpressionInterface
     {
         return $this->createElementCall($identifier, 'findOne');
     }
 
-    public function createHasCall(ElementIdentifierInterface $identifier): CodeBlockInterface
+    public function createHasCall(ElementIdentifierInterface $identifier): ExpressionInterface
     {
         return $this->createElementCall($identifier, 'has');
     }
 
-    public function createHasOneCall(ElementIdentifierInterface $identifier): CodeBlockInterface
+    public function createHasOneCall(ElementIdentifierInterface $identifier): ExpressionInterface
     {
         return $this->createElementCall($identifier, 'hasOne');
     }
 
-    private function createElementCall(ElementIdentifierInterface $identifier, string $methodName): CodeBlockInterface
+    private function createElementCall(ElementIdentifierInterface $identifier, string $methodName): ExpressionInterface
     {
         $elementOnlyIdentifier = ElementIdentifier::fromAttributeIdentifier($identifier);
-        $arguments = $this->elementIdentifierCallFactory->createConstructorCall($elementOnlyIdentifier);
 
-        $variableDependencies = new VariablePlaceholderCollection();
-        $domCrawlerNavigatorPlaceholder = $variableDependencies->create(VariableNames::DOM_CRAWLER_NAVIGATOR);
-
-        $metadata = new Metadata();
-        $metadata->add($arguments->getMetadata());
-        $metadata->addVariableDependencies($variableDependencies);
-
-        $argumentsStatement = $arguments->getLines()[0];
-
-        $statementContent = sprintf(
-            (string) $domCrawlerNavigatorPlaceholder . '->' . $methodName . '(%s)',
-            (string) $argumentsStatement
+        return new ObjectMethodInvocation(
+            VariablePlaceholder::createDependency(VariableNames::DOM_CRAWLER_NAVIGATOR),
+            $methodName,
+            [
+                $this->elementIdentifierCallFactory->createConstructorCall($elementOnlyIdentifier),
+            ]
         );
-
-        return new CodeBlock([
-            new Statement($statementContent, $metadata),
-        ]);
     }
 }

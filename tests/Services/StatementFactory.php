@@ -60,16 +60,7 @@ class StatementFactory
 
     public static function createAssertSame(string $expected, string $actual): StatementInterface
     {
-        return new Statement(
-            new ObjectMethodInvocation(
-                VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
-                'assertSame',
-                [
-                    new LiteralExpression($expected),
-                    new LiteralExpression($actual)
-                ]
-            )
-        );
+        return self::createAssertExpectedActual('assertSame', $expected, $actual);
     }
 
 //    public static function createCrawlerActionCallForElement(string $selector, string $action): StatementInterface
@@ -124,23 +115,30 @@ class StatementFactory
 //        );
 //    }
 
-//    public static function createAssertCount(string $expected, string $actual): StatementInterface
-//    {
-//        return self::create(
-//            '%s->assertCount(' . $expected . ', ' . $actual . ')',
-//            [
-//                new VariablePlaceholder(VariableNames::PHPUNIT_TEST_CASE),
-//            ]
-//        );
-//    }
+    public static function createAssertCount(string $expected, string $actual): StatementInterface
+    {
+        return self::createAssertExpectedActual('assertCount', $expected, $actual);
+    }
 
-//    public static function createAssertInstanceOf(string $expected, string $actual): StatementInterface
-//    {
-//        return self::create(
-//            '%s->assertInstanceOf(' . $expected . ', ' . $actual . ')',
-//            [
-//                new VariablePlaceholder(VariableNames::PHPUNIT_TEST_CASE),
-//            ]
-//        );
-//    }
+    public static function createAssertInstanceOf(string $expected, string $actual): StatementInterface
+    {
+        return self::createAssertExpectedActual('assertInstanceOf', $expected, $actual);
+    }
+
+    private static function createAssertExpectedActual(
+        string $methodName,
+        string $expected,
+        string $actual
+    ): StatementInterface {
+        return new Statement(
+            new ObjectMethodInvocation(
+                VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+                $methodName,
+                [
+                    new LiteralExpression($expected),
+                    new LiteralExpression($actual)
+                ]
+            )
+        );
+    }
 }
