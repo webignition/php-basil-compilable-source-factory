@@ -14,7 +14,7 @@ parameters:
     - tests/Unit/AbstractTestCase.php
     - tests/Unit/CallFactory/*
     - tests/Unit/ClassDefinitionFactoryTest.php
-    - tests/Unit/Handler/Action/*
+    - tests/Unit/Handler/Action/ActionHandlerTest.php
     - tests/Unit/Handler/Assertion/*
     - tests/Unit/Handler/DomIdentifierExistenceHandlerTest.php
     - tests/Unit/Handler/NamedDomIdentifierHandlerTest.php
