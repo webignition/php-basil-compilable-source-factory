@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\Action;
 
+use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\BackActionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\ClickActionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\ForwardActionFunctionalDataProviderTrait;
@@ -15,7 +16,6 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\WaitForAc
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
-use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilModels\Action\ActionInterface;
 
 class ActionHandlerTest extends AbstractBrowserTestCase
@@ -42,13 +42,13 @@ class ActionHandlerTest extends AbstractBrowserTestCase
     }
 
     /**
-     * @dataProvider backActionFunctionalDataProvider
-     * @dataProvider clickActionFunctionalDataProvider
-     * @dataProvider forwardActionFunctionalDataProvider
-     * @dataProvider reloadActionFunctionalDataProvider
-     * @dataProvider setActionFunctionalDataProvider
-     * @dataProvider submitActionFunctionalDataProvider
-     * @dataProvider waitActionFunctionalDataProvider
+     * @!dataProvider backActionFunctionalDataProvider
+     * @!dataProvider clickActionFunctionalDataProvider
+     * @!dataProvider forwardActionFunctionalDataProvider
+     * @!dataProvider reloadActionFunctionalDataProvider
+     * @!dataProvider setActionFunctionalDataProvider
+     * @!dataProvider submitActionFunctionalDataProvider
+     * @!dataProvider waitActionFunctionalDataProvider
      * @dataProvider waitForActionFunctionalDataProvider
      */
     public function testHandleForExecutableActions(
@@ -58,8 +58,6 @@ class ActionHandlerTest extends AbstractBrowserTestCase
         ?CodeBlockInterface $teardownStatements = null,
         array $additionalVariableIdentifiers = []
     ) {
-        $this->markTestSkipped();
-
         $source = $this->handler->handle($action);
 
         $classCode = $this->testCodeGenerator->createBrowserTestForBlock(
