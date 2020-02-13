@@ -35,11 +35,11 @@ trait ClickActionFunctionalDataProviderTrait
 //                'action' => $actionParser->parse('click $"#form input[type=\'submit\']"'),
 //                'additionalSetupStatements' => new CodeBlock([
 //                    StatementFactory::createAssertBrowserTitle('Click'),
-//                    StatementFactory::createCrawlerFilterCallForElement('#form input[type="submit"]', '$submitButton'),
+//                  StatementFactory::createCrawlerFilterCallForElement('#form input[type="submit"]', '$submitButton'),
 //                    StatementFactory::createAssertSame('"false"', '$submitButton->getAttribute(\'data-clicked\')'),
 //                ]),
 //                'teardownStatements' => new CodeBlock([
-//                    StatementFactory::createCrawlerFilterCallForElement('#form input[type="submit"]', '$submitButton'),
+//                  StatementFactory::createCrawlerFilterCallForElement('#form input[type="submit"]', '$submitButton'),
 //                    StatementFactory::createAssertSame('"true"', '$submitButton->getAttribute(\'data-clicked\')'),
 //                ]),
 //                'additionalVariableIdentifiers' => [
