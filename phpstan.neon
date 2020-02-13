@@ -3,6 +3,7 @@ parameters:
   excludes_analyse:
     - src/Handler/Action/*
     - src/Handler/Assertion/*
+    - src/Handler/StepHandler.php
     - tests/DataProvider/*
     - tests/Functional/CallFactory/*
     - tests/Functional/ClassDefinitionFactoryTest.php

@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
+use webignition\BasilCompilableSource\Block\CodeBlock;
+use webignition\BasilCompilableSource\Block\CodeBlockInterface;
+use webignition\BasilCompilableSource\Line\LiteralExpression;
+use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
+use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\Block\CodeBlockInterface;
-use webignition\BasilCompilationSource\Line\Statement;
-use webignition\BasilCompilationSource\Metadata\Metadata;
-use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Action\InteractionActionInterface;
@@ -65,6 +66,26 @@ class WaitForActionHandler
         if ($domIdentifier instanceof AttributeIdentifierInterface) {
             throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }
+
+        // '{{ CRAWLER }} = {{ CLIENT }}->waitFor(\'.selector\')'
+
+        return new CodeBlock([
+            new AssignmentStatement(
+                VariablePlaceholder::createDependency(VariableNames::PANTHER_CRAWLER),
+                new ObjectMethodInvocation(
+                    VariablePlaceholder::createDependency(VariableNames::PANTHER_CLIENT),
+                    'waitFor',
+                    [
+                        new LiteralExpression(
+                            '\'' . $this->singleQuotedStringEscaper->escape($domIdentifier->getLocator()) . '\''
+                        )
+                    ]
+                )
+            )
+        ]);
+
+        var_dump('foo');
+        exit();
 
         $variableDependencies = new VariablePlaceholderCollection();
         $pantherCrawlerPlaceholder = $variableDependencies->create(VariableNames::PANTHER_CRAWLER);

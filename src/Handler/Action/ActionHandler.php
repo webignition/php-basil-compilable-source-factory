@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
+use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
-use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilModels\Action\ActionInterface;
 use webignition\BasilModels\Action\InputActionInterface;
 use webignition\BasilModels\Action\InteractionActionInterface;
@@ -55,21 +55,21 @@ class ActionHandler
     public function handle(ActionInterface $action): CodeBlockInterface
     {
         try {
-            if (in_array($action->getType(), ['back', 'forward', 'reload'])) {
-                return $this->browserOperationActionHandler->handle($action);
-            }
-
-            if ($action instanceof InteractionActionInterface && in_array($action->getType(), ['click', 'submit'])) {
-                return $this->interactionActionHandler->handle($action);
-            }
-
-            if ($action instanceof InputActionInterface) {
-                return $this->setActionHandler->handle($action);
-            }
-
-            if ($action instanceof WaitActionInterface) {
-                return $this->waitActionHandler->handle($action);
-            }
+//            if (in_array($action->getType(), ['back', 'forward', 'reload'])) {
+//                return $this->browserOperationActionHandler->handle($action);
+//            }
+//
+//            if ($action instanceof InteractionActionInterface && in_array($action->getType(), ['click', 'submit'])) {
+//                return $this->interactionActionHandler->handle($action);
+//            }
+//
+//            if ($action instanceof InputActionInterface) {
+//                return $this->setActionHandler->handle($action);
+//            }
+//
+//            if ($action instanceof WaitActionInterface) {
+//                return $this->waitActionHandler->handle($action);
+//            }
 
             if ($action instanceof InteractionActionInterface && in_array($action->getType(), ['wait-for'])) {
                 return $this->waitForActionHandler->handle($action);

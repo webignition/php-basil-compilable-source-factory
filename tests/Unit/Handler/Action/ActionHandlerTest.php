@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Action;
 
+use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\CreateFromBackActionDataProviderTrait;
@@ -16,8 +17,6 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\CreateFro
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\CreateFromWaitForActionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
-use webignition\BasilCompilationSource\Block\CodeBlockInterface;
-use webignition\BasilCompilationSource\Metadata\MetadataInterface;
 use webignition\BasilModels\Action\ActionInterface;
 use webignition\BasilParser\ActionParser;
 
@@ -33,27 +32,25 @@ class ActionHandlerTest extends AbstractTestCase
     use CreateFromWaitForActionDataProviderTrait;
 
     /**
-     * @dataProvider createFromBackActionDataProvider
-     * @dataProvider createFromClickActionDataProvider
-     * @dataProvider createFromForwardActionDataProvider
-     * @dataProvider createFromReloadActionDataProvider
-     * @dataProvider createFromSetActionDataProvider
-     * @dataProvider createFromSubmitActionDataProvider
-     * @dataProvider createFromWaitActionDataProvider
+     * @!dataProvider createFromBackActionDataProvider
+     * @!dataProvider createFromClickActionDataProvider
+     * @!dataProvider createFromForwardActionDataProvider
+     * @!dataProvider createFromReloadActionDataProvider
+     * @!dataProvider createFromSetActionDataProvider
+     * @!dataProvider createFromSubmitActionDataProvider
+     * @!dataProvider createFromWaitActionDataProvider
      * @dataProvider createFromWaitForActionDataProvider
      */
     public function testHandleSuccess(
         ActionInterface $action,
-        CodeBlockInterface $expectedContent,
+        string $expectedRenderedSource,
         MetadataInterface $expectedMetadata
     ) {
-        $this->markTestSkipped();
-
         $handler = ActionHandler::createHandler();
         $source = $handler->handle($action);
 
-        $this->assertBlockContentEquals($expectedContent, $source);
-        $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
+        $this->assertSame($expectedRenderedSource, $source->render());
+        $this->assertEquals($expectedMetadata, $source->getMetadata());
     }
 
     /**
