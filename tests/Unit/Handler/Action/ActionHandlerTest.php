@@ -32,10 +32,10 @@ class ActionHandlerTest extends AbstractTestCase
     use CreateFromWaitForActionDataProviderTrait;
 
     /**
-     * @!dataProvider createFromBackActionDataProvider
+     * @dataProvider createFromBackActionDataProvider
      * @!dataProvider createFromClickActionDataProvider
-     * @!dataProvider createFromForwardActionDataProvider
-     * @!dataProvider createFromReloadActionDataProvider
+     * @dataProvider createFromForwardActionDataProvider
+     * @dataProvider createFromReloadActionDataProvider
      * @!dataProvider createFromSetActionDataProvider
      * @!dataProvider createFromSubmitActionDataProvider
      * @!dataProvider createFromWaitActionDataProvider

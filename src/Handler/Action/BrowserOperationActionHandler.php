@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
+use webignition\BasilCompilableSource\Block\CodeBlock;
+use webignition\BasilCompilableSource\Block\CodeBlockInterface;
+use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
+use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\Block\CodeBlockInterface;
-use webignition\BasilCompilationSource\Line\Statement;
-use webignition\BasilCompilationSource\Metadata\Metadata;
-use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModels\Action\ActionInterface;
 
 class BrowserOperationActionHandler
@@ -21,22 +21,14 @@ class BrowserOperationActionHandler
 
     public function handle(ActionInterface $action): CodeBlockInterface
     {
-        $variableDependencies = new VariablePlaceholderCollection();
-        $pantherCrawlerPlaceholder = $variableDependencies->create(VariableNames::PANTHER_CRAWLER);
-        $pantherClientPlaceholder = $variableDependencies->create(VariableNames::PANTHER_CLIENT);
-
-        $metadata = (new Metadata())->withVariableDependencies($variableDependencies);
-
         return new CodeBlock([
-            new Statement(
-                sprintf(
-                    '%s = %s->%s()',
-                    $pantherCrawlerPlaceholder,
-                    $pantherClientPlaceholder,
+            new AssignmentStatement(
+                VariablePlaceholder::createDependency(VariableNames::PANTHER_CRAWLER),
+                new ObjectMethodInvocation(
+                    VariablePlaceholder::createDependency(VariableNames::PANTHER_CLIENT),
                     $action->getType()
-                ),
-                $metadata
-            )
+                )
+            ),
         ]);
     }
 }
