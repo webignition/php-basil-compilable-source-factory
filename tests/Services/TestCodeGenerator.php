@@ -4,11 +4,16 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
+use PHPUnit\Framework\TestCase;
 use webignition\BasilCodeGenerator\ClassGenerator;
-use webignition\BasilCodeGenerator\CodeBlockGenerator;
 use webignition\BasilCodeGenerator\UnresolvedPlaceholderException;
+use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\CodeBlockInterface;
+use webignition\BasilCompilableSource\ClassDefinition;
 use webignition\BasilCompilableSource\ClassDefinitionInterface;
+use webignition\BasilCompilableSource\Line\ClassDependency;
+use webignition\BasilCompilableSource\Line\LiteralExpression;
+use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 
@@ -23,21 +28,16 @@ class TestCodeGenerator
     private const WEBDRIVER_ELEMENT_MUTATOR_VARIABLE_NAME = 'self::$mutator';
 
     private $classGenerator;
-    private $codeBlockGenerator;
 
-    public function __construct(
-        ClassGenerator $classGenerator,
-        CodeBlockGenerator $blockGenerator
-    ) {
+    public function __construct(ClassGenerator $classGenerator)
+    {
         $this->classGenerator = $classGenerator;
-        $this->codeBlockGenerator = $blockGenerator;
     }
 
     public static function create(): TestCodeGenerator
     {
         return new TestCodeGenerator(
-            ClassGenerator::create(),
-            CodeBlockGenerator::create()
+            ClassGenerator::create()
         );
     }
 
@@ -46,8 +46,6 @@ class TestCodeGenerator
      * @param array<string, string> $additionalVariableIdentifiers
      *
      * @return string
-     *
-     * @throws UnresolvedPlaceholderException
      */
     public function createPhpUnitTestForBlock(
         CodeBlockInterface $block,
@@ -56,17 +54,19 @@ class TestCodeGenerator
         $blockSource = CodeBlockFactory::createForSourceBlock($block);
         $classDefinition = ClassDefinitionFactory::createPhpUnitTestForBlock($blockSource);
 
-        $classCode = $this->classGenerator->createForClassDefinition(
-            $classDefinition,
-            '\PHPUnit\Framework\TestCase',
-            $additionalVariableIdentifiers
-        );
+        if ($classDefinition instanceof ClassDefinition) {
+            $classDefinition->setBaseClass(new ClassDependency(TestCase::class));
+        }
 
-        $initializerCode = $this->codeBlockGenerator->createFromBlock(CodeBlock::fromContent([
-            '(new ' . $classDefinition->getName() . '())->testGeneratedCode()'
-        ]));
+        $initializer = new CodeBlock([
+            new Statement(
+                new LiteralExpression('(new ' . $classDefinition->getName() . '())->testGeneratedCode()')
+            )
+        ]);
 
-        return $classCode . "\n\n" . $initializerCode;
+        $classCode = VariablePlaceholderResolver::resolve($classDefinition->render(), $additionalVariableIdentifiers);
+
+        return $classCode . "\n\n" . $initializer->render();
     }
 
     /**

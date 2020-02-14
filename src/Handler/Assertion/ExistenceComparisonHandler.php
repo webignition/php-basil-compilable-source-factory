@@ -167,8 +167,8 @@ class ExistenceComparisonHandler
         $comparison = $assertion->getComparison();
 
         $assertionTemplate = 'exists' === $comparison
-            ? AssertionCallFactory::ASSERT_TRUE_TEMPLATE
-            : AssertionCallFactory::ASSERT_FALSE_TEMPLATE;
+            ? AssertionCallFactory::ASSERT_TRUE_METHOD
+            : AssertionCallFactory::ASSERT_FALSE_METHOD;
 
         return $this->assertionCallFactory->createValueExistenceAssertionCall(
             $block,

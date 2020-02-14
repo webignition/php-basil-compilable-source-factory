@@ -69,7 +69,7 @@ class DomIdentifierExistenceHandler
         return $this->assertionCallFactory->createValueExistenceAssertionCall(
             $hasAssignment,
             $hasPlaceholder,
-            AssertionCallFactory::ASSERT_TRUE_TEMPLATE,
+            AssertionCallFactory::ASSERT_TRUE_METHOD,
             $assertionFailureMessage
         );
     }

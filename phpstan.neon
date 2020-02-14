@@ -6,14 +6,13 @@ parameters:
     - src/Handler/DomIdentifierExistenceHandler.php
     - src/Handler/StepHandler.php
     - tests/DataProvider/*
-    - tests/Functional/CallFactory/*
     - tests/Functional/ClassDefinitionFactoryTest.php
     - tests/Functional/Handler/Action/*
     - tests/Functional/Handler/Assertion/*
     - tests/Functional/Handler/StepHandlerTest.php
     - tests/Services/*
     - tests/Unit/AbstractTestCase.php
-    - tests/Unit/CallFactory/*
+    - tests/Unit/CallFactory/VariableAssignmentFactoryTest.php
     - tests/Unit/ClassDefinitionFactoryTest.php
     - tests/Unit/Handler/Action/ActionHandlerTest.php
     - tests/Unit/Handler/Assertion/*
