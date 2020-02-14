@@ -21,11 +21,11 @@ use webignition\BasilModels\Assertion\ComparisonAssertionInterface;
 class ComparisonAssertionHandler
 {
     private const COMPARISON_TO_ASSERTION_TEMPLATE_MAP = [
-        'includes' => AssertionCallFactory::ASSERT_STRING_CONTAINS_STRING_TEMPLATE,
-        'excludes' => AssertionCallFactory::ASSERT_STRING_NOT_CONTAINS_STRING_TEMPLATE,
-        'is' => AssertionCallFactory::ASSERT_EQUALS_TEMPLATE,
-        'is-not' => AssertionCallFactory::ASSERT_NOT_EQUALS_TEMPLATE,
-        'matches' => AssertionCallFactory::ASSERT_MATCHES_TEMPLATE,
+        'includes' => AssertionCallFactory::ASSERT_STRING_CONTAINS_STRING_METHOD,
+        'excludes' => AssertionCallFactory::ASSERT_STRING_NOT_CONTAINS_STRING_METHOD,
+        'is' => AssertionCallFactory::ASSERT_EQUALS_METHOD,
+        'is-not' => AssertionCallFactory::ASSERT_NOT_EQUALS_METHOD,
+        'matches' => AssertionCallFactory::ASSERT_MATCHES_METHOD,
     ];
 
     private $assertionCallFactory;

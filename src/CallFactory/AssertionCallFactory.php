@@ -4,25 +4,26 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
+use webignition\BasilCompilableSource\Line\LiteralExpression;
+use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\Block\CodeBlockInterface;
-use webignition\BasilCompilationSource\Line\Statement;
-use webignition\BasilCompilationSource\Metadata\Metadata;
-use webignition\BasilCompilationSource\VariablePlaceholder;
-use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
 class AssertionCallFactory
 {
-    public const ASSERT_TRUE_TEMPLATE = '%s->assertTrue(%s, \'%s\')';
-    public const ASSERT_FALSE_TEMPLATE = '%s->assertFalse(%s, \'%s\')';
-    public const ASSERT_EQUALS_TEMPLATE = '%s->assertEquals(%s, %s)';
-    public const ASSERT_NOT_EQUALS_TEMPLATE = '%s->assertNotEquals(%s, %s)';
-    public const ASSERT_STRING_CONTAINS_STRING_TEMPLATE = '%s->assertStringContainsString((string) %s, (string) %s)';
-    public const ASSERT_STRING_NOT_CONTAINS_STRING_TEMPLATE =
-        '%s->assertStringNotContainsString((string) %s, (string) %s)';
-    public const ASSERT_MATCHES_TEMPLATE = '%s->assertRegExp(%s, %s)';
+    public const ASSERT_TRUE_METHOD = 'assertTrue';
+    public const ASSERT_FALSE_METHOD = 'assertFalse';
+    public const ASSERT_EQUALS_METHOD = 'assertEquals';
+    public const ASSERT_NOT_EQUALS_METHOD = 'assertNotEquals';
+    public const ASSERT_STRING_CONTAINS_STRING_METHOD = 'assertStringContainsString';
+    public const ASSERT_STRING_NOT_CONTAINS_STRING_METHOD = 'assertStringNotContainsString';
+    public const ASSERT_MATCHES_METHOD = 'assertRegExp';
+
+    private $methodsWithStringArguments = [
+        self::ASSERT_STRING_CONTAINS_STRING_METHOD,
+        self::ASSERT_STRING_NOT_CONTAINS_STRING_METHOD,
+    ];
 
     private $singleQuotedStringEscaper;
 
@@ -39,53 +40,46 @@ class AssertionCallFactory
     }
 
     public function createValueComparisonAssertionCall(
-        CodeBlockInterface $expectedValueAssignment,
-        CodeBlockInterface $actualValueAssignment,
         VariablePlaceholder $expectedValuePlaceholder,
         VariablePlaceholder $actualValuePlaceholder,
-        string $assertionTemplate
-    ): CodeBlockInterface {
-        $variableDependencies = new VariablePlaceholderCollection();
-        $phpUnitTestCasePlaceholder = $variableDependencies->create(VariableNames::PHPUNIT_TEST_CASE);
+        string $assertionMethod
+    ): ObjectMethodInvocation {
+        if (in_array($assertionMethod, $this->methodsWithStringArguments)) {
+            $expectedValuePlaceholder = VariablePlaceholder::createExport(
+                $expectedValuePlaceholder->getName(),
+                'string'
+            );
 
-        $metadata = (new Metadata())->withVariableDependencies($variableDependencies);
+            $actualValuePlaceholder = VariablePlaceholder::createExport(
+                $actualValuePlaceholder->getName(),
+                'string'
+            );
+        }
 
-        $assertionStatementContent = sprintf(
-            $assertionTemplate,
-            $phpUnitTestCasePlaceholder,
-            $expectedValuePlaceholder,
-            $actualValuePlaceholder
+        return new ObjectMethodInvocation(
+            VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+            $assertionMethod,
+            [
+                $expectedValuePlaceholder,
+                $actualValuePlaceholder,
+            ]
         );
-
-        return new CodeBlock([
-            $expectedValueAssignment,
-            $actualValueAssignment,
-            new Statement($assertionStatementContent, $metadata)
-        ]);
     }
 
     public function createValueExistenceAssertionCall(
-        CodeBlockInterface $assignment,
         VariablePlaceholder $variablePlaceholder,
-        string $assertionTemplate,
+        string $assertionMethod,
         string $failureMessage
-    ): CodeBlockInterface {
-        $variableDependencies = new VariablePlaceholderCollection();
-        $phpUnitTestCasePlaceholder = $variableDependencies->create(VariableNames::PHPUNIT_TEST_CASE);
-
-        $assertionStatementContent = sprintf(
-            $assertionTemplate,
-            (string) $phpUnitTestCasePlaceholder,
-            (string) $variablePlaceholder,
-            $this->singleQuotedStringEscaper->escape($failureMessage)
+    ): ObjectMethodInvocation {
+        return new ObjectMethodInvocation(
+            VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+            $assertionMethod,
+            [
+                $variablePlaceholder,
+                new LiteralExpression(
+                    '\'' . $this->singleQuotedStringEscaper->escape($failureMessage) . '\''
+                )
+            ]
         );
-
-        $metadata = (new Metadata())
-            ->withVariableDependencies($variableDependencies);
-
-        return new CodeBlock([
-            $assignment,
-            new Statement($assertionStatementContent, $metadata),
-        ]);
     }
 }
