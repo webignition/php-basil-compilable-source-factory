@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
+use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
+use webignition\BasilCompilableSource\Line\ClassDependency;
+use webignition\BasilCompilableSource\Metadata\Metadata;
+use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilationSource\Line\ClassDependency;
-use webignition\BasilCompilationSource\Metadata\Metadata;
-use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilParser\ActionParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
 
@@ -22,22 +21,24 @@ trait CreateFromSubmitActionDataProviderTrait
         return [
             'interaction action (submit), element identifier' => [
                 'action' => $actionParser->parse('submit $".selector"'),
-                'expectedContent' => CodeBlock::fromContent([
-                    '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ')',
-                    '{{ ELEMENT }}->submit()',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
+                'expectedRenderedSource' =>
+                    '{{ ELEMENT }} = (function () {' . "\n" .
+                    '    return {{ NAVIGATOR }}->findOne(' .
+                            'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                        ');' . "\n" .
+                    '})();' . "\n" .
+                    '{{ ELEMENT }}->submit();',
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
-                    ]))
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'ELEMENT',
-                    ])),
+                    ]),
+                ]),
             ],
         ];
     }

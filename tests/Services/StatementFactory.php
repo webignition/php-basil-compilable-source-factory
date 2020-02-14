@@ -9,6 +9,7 @@ use webignition\BasilCompilableSource\Line\ClosureExpression;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
+use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\Line\Statement\StatementInterface;
 use webignition\BasilCompilableSource\VariablePlaceholder;
@@ -49,17 +50,37 @@ class StatementFactory
         );
     }
 
-//    public static function createCrawlerFilterCallForElement(
-//        string $selector,
-//        string $variableName = 'variableName'
-//    ): StatementInterface {
-//        return self::create(
-//            $variableName . ' = %s->filter(\'' . $selector . '\')->getElement(0)',
-//            [
-//                new VariablePlaceholder(VariableNames::PANTHER_CRAWLER),
-//            ]
-//        );
-//    }
+    public static function createCrawlerFilterCallForElement(
+        string $selector,
+        VariablePlaceholder $exportedPlaceholder
+    ): StatementInterface {
+        $elementPlaceholder = VariablePlaceholder::createExport('ELEMENT');
+
+        return new AssignmentStatement(
+            $exportedPlaceholder,
+            new ClosureExpression(new CodeBlock([
+                new AssignmentStatement(
+                    $elementPlaceholder,
+                    new ObjectMethodInvocation(
+                        VariablePlaceholder::createDependency(VariableNames::PANTHER_CRAWLER),
+                        'filter',
+                        [
+                            new LiteralExpression('\'' . $selector . '\''),
+                        ]
+                    )
+                ),
+                new ReturnStatement(
+                    new ObjectMethodInvocation(
+                        $elementPlaceholder,
+                        'getElement',
+                        [
+                            new LiteralExpression('0'),
+                        ]
+                    )
+                ),
+            ]))
+        );
+    }
 
     public static function createAssertSame(string $expected, string $actual): StatementInterface
     {

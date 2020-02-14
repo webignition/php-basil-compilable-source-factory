@@ -58,10 +58,10 @@ class ActionHandler
             if (in_array($action->getType(), ['back', 'forward', 'reload'])) {
                 return $this->browserOperationActionHandler->handle($action);
             }
-//
-//            if ($action instanceof InteractionActionInterface && in_array($action->getType(), ['click', 'submit'])) {
-//                return $this->interactionActionHandler->handle($action);
-//            }
+
+            if ($action instanceof InteractionActionInterface && in_array($action->getType(), ['click', 'submit'])) {
+                return $this->interactionActionHandler->handle($action);
+            }
 //
 //            if ($action instanceof InputActionInterface) {
 //                return $this->setActionHandler->handle($action);

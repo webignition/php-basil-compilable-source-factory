@@ -33,11 +33,11 @@ class ActionHandlerTest extends AbstractTestCase
 
     /**
      * @dataProvider createFromBackActionDataProvider
-     * @!dataProvider createFromClickActionDataProvider
+     * @dataProvider createFromClickActionDataProvider
      * @dataProvider createFromForwardActionDataProvider
      * @dataProvider createFromReloadActionDataProvider
      * @!dataProvider createFromSetActionDataProvider
-     * @!dataProvider createFromSubmitActionDataProvider
+     * @dataProvider createFromSubmitActionDataProvider
      * @!dataProvider createFromWaitActionDataProvider
      * @dataProvider createFromWaitForActionDataProvider
      */

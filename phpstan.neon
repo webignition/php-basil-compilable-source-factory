@@ -1,7 +1,6 @@
 parameters:
   inferPrivatePropertyTypeFromConstructor: true
   excludes_analyse:
-    - src/Handler/Action/InteractionActionHandler.php
     - src/Handler/Action/SetActionHandler.php
     - src/Handler/Action/WaitActionHandler.php
     - src/Handler/Assertion/*
@@ -11,7 +10,7 @@ parameters:
     - tests/Functional/ClassDefinitionFactoryTest.php
     - tests/Functional/Handler/Assertion/*
     - tests/Functional/Handler/StepHandlerTest.php
-    - tests/Services/*
+    - tests/Services/TestCodeGenerator.php
     - tests/Unit/AbstractTestCase.php
     - tests/Unit/CallFactory/VariableAssignmentFactoryTest.php
     - tests/Unit/ClassDefinitionFactoryTest.php
