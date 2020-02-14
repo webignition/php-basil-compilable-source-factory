@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
+use webignition\BasilCompilableSource\Block\CodeBlock;
+use webignition\BasilCompilableSource\Block\CodeBlockInterface;
+use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSource\Line\Statement\Statement;
+use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomElementIdentifier;
-use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\Block\CodeBlockInterface;
-use webignition\BasilCompilationSource\Line\Statement;
-use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilModels\Action\InteractionActionInterface;
 use webignition\DomElementIdentifier\AttributeIdentifierInterface;
@@ -56,20 +57,20 @@ class InteractionActionHandler
             throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }
 
-        $variableExports = new VariablePlaceholderCollection();
-        $elementPlaceholder = $variableExports->create('ELEMENT');
+        $elementPlaceholder = VariablePlaceholder::createExport('ELEMENT');
 
         $accessor = $this->namedDomIdentifierHandler->handle(
             new NamedDomElementIdentifier($domIdentifier, $elementPlaceholder)
         );
 
+        $invocation = new Statement(new ObjectMethodInvocation(
+            $elementPlaceholder,
+            $action->getType()
+        ));
+
         return new CodeBlock([
             $accessor,
-            new Statement(sprintf(
-                '%s->%s()',
-                (string) $elementPlaceholder,
-                $action->getType()
-            )),
+            $invocation,
         ]);
     }
 }
