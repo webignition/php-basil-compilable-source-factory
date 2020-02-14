@@ -20,6 +20,9 @@ class AssertionCallFactory
     public const ASSERT_STRING_NOT_CONTAINS_STRING_METHOD = 'assertStringNotContainsString';
     public const ASSERT_MATCHES_METHOD = 'assertRegExp';
 
+    /**
+     * @var string[]
+     */
     private $methodsWithStringArguments = [
         self::ASSERT_STRING_CONTAINS_STRING_METHOD,
         self::ASSERT_STRING_NOT_CONTAINS_STRING_METHOD,
