@@ -4,8 +4,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
+use webignition\BasilCompilableSource\Block\CodeBlock;
+use webignition\BasilCompilableSource\Line\ClosureExpression;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\Line\Statement\StatementInterface;
 use webignition\BasilCompilableSource\VariablePlaceholder;
@@ -63,25 +66,51 @@ class StatementFactory
         return self::createAssertExpectedActual('assertSame', $expected, $actual);
     }
 
-//    public static function createCrawlerActionCallForElement(string $selector, string $action): StatementInterface
-//    {
-//        return self::create(
-//            '%s->filter(\'' . $selector . '\')->getElement(0)->' . $action . '()',
-//            [
-//                PlaceholderFactory::pantherCrawler(),
-//            ]
-//        );
-//    }
+    public static function createCrawlerActionCallForElement(string $selector, string $action): StatementInterface
+    {
+        $elementPlaceholder = VariablePlaceholder::createExport('ELEMENT');
 
-//    public static function createClientAction(string $action): StatementInterface
-//    {
-//        return self::create(
-//            '%s->' . $action . '()',
-//            [
-//                PlaceholderFactory::pantherClient(),
-//            ]
-//        );
-//    }
+        return new Statement(
+            new ClosureExpression(new CodeBlock([
+                new AssignmentStatement(
+                    $elementPlaceholder,
+                    new ObjectMethodInvocation(
+                        VariablePlaceholder::createDependency(VariableNames::PANTHER_CRAWLER),
+                        'filter',
+                        [
+                            new LiteralExpression('\'' . $selector . '\''),
+                        ]
+                    )
+                ),
+                new AssignmentStatement(
+                    $elementPlaceholder,
+                    new ObjectMethodInvocation(
+                        $elementPlaceholder,
+                        'getElement',
+                        [
+                            new LiteralExpression('0'),
+                        ]
+                    )
+                ),
+                new Statement(
+                    new ObjectMethodInvocation(
+                        $elementPlaceholder,
+                        $action
+                    )
+                ),
+            ]))
+        );
+    }
+
+    public static function createClientAction(string $action): StatementInterface
+    {
+        return new Statement(
+            new ObjectMethodInvocation(
+                VariablePlaceholder::createDependency(VariableNames::PANTHER_CLIENT),
+                $action
+            )
+        );
+    }
 
 //    public static function createCrawlerFilterCall(
 //        string $selector,

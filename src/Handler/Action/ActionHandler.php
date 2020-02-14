@@ -55,9 +55,9 @@ class ActionHandler
     public function handle(ActionInterface $action): CodeBlockInterface
     {
         try {
-//            if (in_array($action->getType(), ['back', 'forward', 'reload'])) {
-//                return $this->browserOperationActionHandler->handle($action);
-//            }
+            if (in_array($action->getType(), ['back', 'forward', 'reload'])) {
+                return $this->browserOperationActionHandler->handle($action);
+            }
 //
 //            if ($action instanceof InteractionActionInterface && in_array($action->getType(), ['click', 'submit'])) {
 //                return $this->interactionActionHandler->handle($action);
