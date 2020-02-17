@@ -60,10 +60,17 @@ class InteractionActionHandler
 
         $elementPlaceholder = VariablePlaceholder::createExport('ELEMENT');
 
+//        $accessor = new AssignmentStatement(
+//            $elementPlaceholder,
+//            $this->namedDomIdentifierHandler->handle(
+//                new NamedDomElementIdentifier($domIdentifier, $elementPlaceholder)
+//            )
+//        );
+
         $accessor = new AssignmentStatement(
             $elementPlaceholder,
             $this->namedDomIdentifierHandler->handle(
-                new NamedDomElementIdentifier($domIdentifier, $elementPlaceholder)
+                new NamedDomElementIdentifier($domIdentifier)
             )
         );
 

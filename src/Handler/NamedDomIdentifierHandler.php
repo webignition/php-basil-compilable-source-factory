@@ -14,7 +14,7 @@ use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
 use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\WebDriverElementInspectorCallFactory;
-use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierInterface;
+use webignition\BasilCompilableSourceFactory\Model\DomIdentifierInterface;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
@@ -43,7 +43,7 @@ class NamedDomIdentifierHandler
         );
     }
 
-    public function handle(NamedDomIdentifierInterface $namedDomIdentifier): ExpressionInterface
+    public function handle(DomIdentifierInterface $namedDomIdentifier): ExpressionInterface
     {
         $identifier = $namedDomIdentifier->getIdentifier();
 

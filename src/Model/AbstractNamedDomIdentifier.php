@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Model;
 use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
-abstract class AbstractNamedDomIdentifier implements NamedDomIdentifierInterface
+abstract class AbstractNamedDomIdentifier implements DomIdentifierInterface
 {
     private $identifier;
 

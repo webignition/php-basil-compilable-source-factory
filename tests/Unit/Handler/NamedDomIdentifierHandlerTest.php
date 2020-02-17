@@ -10,9 +10,9 @@ use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
+use webignition\BasilCompilableSourceFactory\Model\DomIdentifierInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomElementIdentifier;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifier;
-use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
@@ -37,7 +37,7 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
      * @dataProvider handleDataProvider
      */
     public function testHandle(
-        NamedDomIdentifierInterface $namedDomIdentifier,
+        DomIdentifierInterface $namedDomIdentifier,
         string $expectedRenderedSource,
         MetadataInterface $expectedMetadata
     ) {

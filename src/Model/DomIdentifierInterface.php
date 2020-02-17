@@ -6,7 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Model;
 
 use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
-interface NamedDomIdentifierInterface
+interface DomIdentifierInterface
 {
     public function getIdentifier(): ElementIdentifierInterface;
     public function includeValue(): bool;

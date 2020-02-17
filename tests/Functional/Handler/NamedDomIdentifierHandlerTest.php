@@ -11,8 +11,8 @@ use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
+use webignition\BasilCompilableSourceFactory\Model\DomIdentifierInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifier;
-use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierInterface;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
@@ -39,7 +39,7 @@ class NamedDomIdentifierHandlerTest extends AbstractBrowserTestCase
      */
     public function testHandle(
         string $fixture,
-        NamedDomIdentifierInterface $namedDomIdentifier,
+        DomIdentifierInterface $namedDomIdentifier,
         CodeBlockInterface $teardownStatements
     ) {
         $source = $this->handler->handle($namedDomIdentifier);
@@ -81,8 +81,7 @@ class NamedDomIdentifierHandlerTest extends AbstractBrowserTestCase
             'element value, no parent' => [
                 'fixture' => '/form.html',
                 'model' => new NamedDomIdentifierValue(
-                    new ElementIdentifier('input', 1),
-                    VariablePlaceholder::createExport('ELEMENT')
+                    new ElementIdentifier('input', 1)
                 ),
                 'teardownStatements' => new CodeBlock([
                     StatementFactory::createAssertSame('""', '$value'),
@@ -92,8 +91,7 @@ class NamedDomIdentifierHandlerTest extends AbstractBrowserTestCase
                 'fixture' => '/form.html',
                 'model' => new NamedDomIdentifierValue(
                     (new ElementIdentifier('input', 1))
-                        ->withParentIdentifier(new ElementIdentifier('form[action="/action2"]')),
-                    VariablePlaceholder::createExport('ELEMENT')
+                        ->withParentIdentifier(new ElementIdentifier('form[action="/action2"]'))
                 ),
                 'teardownStatements' => new CodeBlock([
                     StatementFactory::createAssertSame('"test"', '$value'),
@@ -102,8 +100,7 @@ class NamedDomIdentifierHandlerTest extends AbstractBrowserTestCase
             'attribute value, no parent' => [
                 'fixture' => '/form.html',
                 'model' => new NamedDomIdentifierValue(
-                    new AttributeIdentifier('input', 'name', 1),
-                    VariablePlaceholder::createExport('ELEMENT')
+                    new AttributeIdentifier('input', 'name', 1)
                 ),
                 'teardownStatements' => new CodeBlock([
                     StatementFactory::createAssertSame('"input-without-value"', '$value'),
@@ -113,8 +110,7 @@ class NamedDomIdentifierHandlerTest extends AbstractBrowserTestCase
                 'fixture' => '/form.html',
                 'model' => new NamedDomIdentifierValue(
                     (new AttributeIdentifier('input', 'name', 1))
-                        ->withParentIdentifier(new ElementIdentifier('form[action="/action2"]')),
-                    VariablePlaceholder::createExport('ELEMENT')
+                        ->withParentIdentifier(new ElementIdentifier('form[action="/action2"]'))
                 ),
                 'teardownStatements' => new CodeBlock([
                     StatementFactory::createAssertSame('"input-2"', '$value'),
@@ -123,8 +119,7 @@ class NamedDomIdentifierHandlerTest extends AbstractBrowserTestCase
             'element identifier, no parent' => [
                 'fixture' => '/form.html',
                 'model' => new NamedDomIdentifier(
-                    new ElementIdentifier('input', 1),
-                    VariablePlaceholder::createExport('ELEMENT')
+                    new ElementIdentifier('input', 1)
                 ),
                 'teardownStatements' => new CodeBlock([
                     StatementFactory::createAssertCount('1', '$value'),
@@ -136,8 +131,7 @@ class NamedDomIdentifierHandlerTest extends AbstractBrowserTestCase
                 'fixture' => '/form.html',
                 'model' => new NamedDomIdentifier(
                     (new ElementIdentifier('input', 1))
-                        ->withParentIdentifier(new ElementIdentifier('form[action="/action2"]')),
-                    VariablePlaceholder::createExport('ELEMENT')
+                        ->withParentIdentifier(new ElementIdentifier('form[action="/action2"]'))
                 ),
                 'teardownStatements' => new CodeBlock([
                     StatementFactory::createAssertCount('1', '$value'),
