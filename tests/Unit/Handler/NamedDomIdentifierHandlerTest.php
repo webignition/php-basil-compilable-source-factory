@@ -8,7 +8,6 @@ use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Line\ClassDependency;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomElementIdentifier;
@@ -53,8 +52,7 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
         return [
             'element, no parent' => [
                 'value' => new NamedDomElementIdentifier(
-                    new ElementIdentifier('.selector'),
-                    VariablePlaceholder::createExport('E')
+                    new ElementIdentifier('.selector')
                 ),
                 'expectedRenderedSource' =>
                     '(function () {' . "\n" .
@@ -75,8 +73,7 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
             'element, has parent' => [
                 'value' => new NamedDomElementIdentifier(
                     (new ElementIdentifier('.selector'))
-                        ->withParentIdentifier(new ElementIdentifier('.parent')),
-                    VariablePlaceholder::createExport('E')
+                        ->withParentIdentifier(new ElementIdentifier('.parent'))
                 ),
                 'expectedRenderedSource' =>
                     '(function () {' . "\n" .
@@ -96,8 +93,7 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
             ],
             'identifier, no parent' => [
                 'value' => new NamedDomIdentifier(
-                    new ElementIdentifier('.selector'),
-                    VariablePlaceholder::createExport('E')
+                    new ElementIdentifier('.selector')
                 ),
                 'expectedRenderedSource' =>
                     '(function () {' . "\n" .
@@ -118,8 +114,7 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
             'identifier, has parent' => [
                 'value' => new NamedDomIdentifier(
                     (new ElementIdentifier('.selector'))
-                        ->withParentIdentifier(new ElementIdentifier('.parent')),
-                    VariablePlaceholder::createExport('E')
+                        ->withParentIdentifier(new ElementIdentifier('.parent'))
                 ),
                 'expectedRenderedSource' =>
                     '(function () {' . "\n" .
@@ -139,16 +134,15 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
             ],
             'element value, no parent' => [
                 'value' => new NamedDomIdentifierValue(
-                    new ElementIdentifier('.selector'),
-                    VariablePlaceholder::createExport('E')
+                    new ElementIdentifier('.selector')
                 ),
                 'expectedRenderedSource' =>
                     '(function () {' . "\n" .
-                    '    {{ E }} = {{ NAVIGATOR }}->find(' .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(' .
                             'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                          ');' . "\n" .
                     "\n" .
-                    '    return {{ INSPECTOR }}->getValue({{ E }});' . "\n" .
+                    '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
                     '})()'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -160,23 +154,22 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        'E',
+                        'ELEMENT',
                     ]),
                 ]),
             ],
             'element value, has parent' => [
                 'value' => new NamedDomIdentifierValue(
                     (new ElementIdentifier('.selector'))
-                        ->withParentIdentifier(new ElementIdentifier('.parent')),
-                    VariablePlaceholder::createExport('E')
+                        ->withParentIdentifier(new ElementIdentifier('.parent'))
                 ),
                 'expectedRenderedSource' =>
                     '(function () {' . "\n" .
-                    '    {{ E }} = {{ NAVIGATOR }}->find(' .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(' .
                             'ElementIdentifier::fromJson(\'{"locator":".selector","parent":{"locator":".parent"}}\')' .
                         ');' . "\n" .
                     "\n" .
-                    '    return {{ INSPECTOR }}->getValue({{ E }});' . "\n" .
+                    '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
                     '})()'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -188,22 +181,21 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        'E',
+                        'ELEMENT',
                     ]),
                 ]),
             ],
             'attribute value, no parent' => [
                 'value' => new NamedDomIdentifierValue(
-                    new AttributeIdentifier('.selector', 'attribute_name'),
-                    VariablePlaceholder::createExport('E')
+                    new AttributeIdentifier('.selector', 'attribute_name')
                 ),
                 'expectedRenderedSource' =>
                     '(function () {' . "\n" .
-                    '    {{ E }} = {{ NAVIGATOR }}->findOne(' .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(' .
                             'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                         ');' . "\n" .
                     "\n" .
-                    '    return {{ E }}->getAttribute(\'attribute_name\');' . "\n" .
+                    '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
                     '})()'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -214,23 +206,22 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        'E',
+                        'ELEMENT',
                     ]),
                 ]),
             ],
             'attribute value, has parent' => [
                 'value' => new NamedDomIdentifierValue(
                     (new AttributeIdentifier('.selector', 'attribute_name'))
-                        ->withParentIdentifier(new ElementIdentifier('.parent')),
-                    VariablePlaceholder::createExport('E')
+                        ->withParentIdentifier(new ElementIdentifier('.parent'))
                 ),
                 'expectedRenderedSource' =>
                     '(function () {' . "\n" .
-                    '    {{ E }} = {{ NAVIGATOR }}->findOne(' .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(' .
                             'ElementIdentifier::fromJson(\'{"locator":".selector","parent":{"locator":".parent"}}\')' .
                         ');' . "\n" .
                     "\n" .
-                    '    return {{ E }}->getAttribute(\'attribute_name\');' . "\n" .
+                    '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
                     '})()'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -241,7 +232,7 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        'E',
+                        'ELEMENT',
                     ]),
                 ]),
             ],

@@ -11,6 +11,7 @@ use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
+use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\WebDriverElementInspectorCallFactory;
 use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierInterface;
@@ -58,7 +59,7 @@ class NamedDomIdentifierHandler
             ]));
         }
 
-        $elementPlaceholder = $namedDomIdentifier->getPlaceholder();
+        $elementPlaceholder = VariablePlaceholder::createExport('ELEMENT');
 
         $closureExpressionStatements = [
             new AssignmentStatement($elementPlaceholder, $findCall),
