@@ -52,11 +52,7 @@ class DomIdentifierHandler
             : $this->domCrawlerNavigatorCallFactory->createFindOneCall($identifier);
 
         if (false === $domIdentifier->includeValue()) {
-            return new ClosureExpression(new CodeBlock([
-                new ReturnStatement(
-                    $findCall
-                ),
-            ]));
+            return $findCall;
         }
 
         $elementPlaceholder = VariablePlaceholder::createExport('ELEMENT');
