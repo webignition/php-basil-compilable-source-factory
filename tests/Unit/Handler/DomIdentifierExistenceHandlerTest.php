@@ -4,16 +4,14 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler;
 
+use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
+use webignition\BasilCompilableSource\Line\ClassDependency;
+use webignition\BasilCompilableSource\Metadata\Metadata;
+use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierExistenceHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\Block\CodeBlockInterface;
-use webignition\BasilCompilationSource\Line\ClassDependency;
-use webignition\BasilCompilationSource\Metadata\Metadata;
-use webignition\BasilCompilationSource\Metadata\MetadataInterface;
-use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
@@ -37,17 +35,13 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
     public function testCreateForElement(
         ElementIdentifierInterface $identifier,
         string $assertionFailureMessage,
-        CodeBlockInterface $expectedContent,
+        string $expectedRenderedContent,
         MetadataInterface $expectedMetadata
     ) {
-        $this->markTestSkipped();
-
         $source = $this->handler->createForElement($identifier, $assertionFailureMessage);
 
-        $this->assertInstanceOf(CodeBlockInterface::class, $source);
-
-        $this->assertBlockContentEquals($expectedContent, $source);
-        $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
+        $this->assertEquals($expectedRenderedContent, $source->render());
+        $this->assertEquals($expectedMetadata, $source->getMetadata());
     }
 
     public function createForElementDataProvider(): array
@@ -56,43 +50,45 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
             'no parent' => [
                 'identifier' => new ElementIdentifier('.selector'),
                 'assertionFailureMessage' => 'false is not true',
-                'expectedContent' => CodeBlock::fromContent([
-                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }}, \'false is not true\')',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
+                'expectedRenderedContent' =>
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    ');' . "\n" .
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }}, \'false is not true\');',
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
-                    ]))
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'HAS',
-                    ])),
+                    ]),
+                ]),
             ],
             'has parent' => [
                 'identifier' => (new ElementIdentifier('.selector'))
                     ->withParentIdentifier(new ElementIdentifier('.parent')),
                 'assertionFailureMessage' => 'false is not true',
-                'expectedContent' => CodeBlock::fromContent([
+                'expectedRenderedContent' =>
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(' .
                     'ElementIdentifier::fromJson(\'{"locator":".selector","parent":{"locator":".parent"}}\')' .
-                    ')',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }}, \'false is not true\')',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
+                    ');' . "\n" .
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }}, \'false is not true\');',
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
-                    ]))
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'HAS',
-                    ])),
+                    ]),
+                ]),
             ],
         ];
     }
@@ -103,17 +99,13 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
     public function testCreateForCollection(
         ElementIdentifierInterface $identifier,
         string $assertionFailureMessage,
-        CodeBlockInterface $expectedContent,
+        string $expectedRenderedContent,
         MetadataInterface $expectedMetadata
     ) {
-        $this->markTestSkipped();
-
         $source = $this->handler->createForCollection($identifier, $assertionFailureMessage);
 
-        $this->assertInstanceOf(CodeBlockInterface::class, $source);
-
-        $this->assertBlockContentEquals($expectedContent, $source);
-        $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
+        $this->assertEquals($expectedRenderedContent, $source->render());
+        $this->assertEquals($expectedMetadata, $source->getMetadata());
     }
 
     public function createForCollectionDataProvider(): array
@@ -122,43 +114,45 @@ class DomIdentifierExistenceHandlerTest extends AbstractTestCase
             'no parent' => [
                 'identifier' => new ElementIdentifier('.selector'),
                 'assertionFailureMessage' => 'false is not true',
-                'expectedContent' => CodeBlock::fromContent([
-                    '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }}, \'false is not true\')',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
+                'expectedRenderedContent' =>
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    ');' . "\n" .
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }}, \'false is not true\');',
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
-                    ]))
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'HAS',
-                    ])),
+                    ]),
+                ]),
             ],
             'has parent' => [
                 'identifier' => (new ElementIdentifier('.selector'))
                     ->withParentIdentifier(new ElementIdentifier('.parent')),
                 'assertionFailureMessage' => 'false is not true',
-                'expectedContent' => CodeBlock::fromContent([
+                'expectedRenderedContent' =>
                     '{{ HAS }} = {{ NAVIGATOR }}->has(' .
-                        'ElementIdentifier::fromJson(\'{"locator":".selector","parent":{"locator":".parent"}}\')' .
-                    ')',
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }}, \'false is not true\')',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
+                    'ElementIdentifier::fromJson(\'{"locator":".selector","parent":{"locator":".parent"}}\')' .
+                    ');' . "\n" .
+                    '{{ PHPUNIT }}->assertTrue({{ HAS }}, \'false is not true\');',
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
-                    ]))
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'HAS',
-                    ])),
+                    ]),
+                ]),
             ],
         ];
     }

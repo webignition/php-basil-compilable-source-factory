@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler;
 
+use webignition\BasilCompilableSource\Block\CodeBlock;
+use webignition\BasilCompilableSource\Block\CodeBlockInterface;
+use webignition\BasilCompilableSource\Line\ExpressionInterface;
+use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
+use webignition\BasilCompilableSource\Line\Statement\Statement;
+use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
-use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\Block\CodeBlockInterface;
-use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
 class DomIdentifierExistenceHandler
@@ -52,25 +55,23 @@ class DomIdentifierExistenceHandler
         );
     }
 
-    private function create(CodeBlockInterface $hasCall, string $assertionFailureMessage): CodeBlockInterface
+    private function create(ExpressionInterface $hasCall, string $assertionFailureMessage): CodeBlockInterface
     {
-        $hasAssignmentVariableExports = new VariablePlaceholderCollection();
-        $hasPlaceholder = $hasAssignmentVariableExports->create('HAS');
-
-        $hasAssignment = new CodeBlock([
-            $hasCall,
-        ]);
-
-        $hasAssignment->mutateLastStatement(function ($content) use ($hasPlaceholder) {
-            return $hasPlaceholder . ' = ' . $content;
-        });
-        $hasAssignment->addVariableExportsToLastStatement($hasAssignmentVariableExports);
-
-        return $this->assertionCallFactory->createValueExistenceAssertionCall(
-            $hasAssignment,
+        $hasPlaceholder = VariablePlaceholder::createExport('HAS');
+        $hasAssignment = new AssignmentStatement(
             $hasPlaceholder,
-            AssertionCallFactory::ASSERT_TRUE_METHOD,
-            $assertionFailureMessage
+            $hasCall
         );
+
+        return new CodeBlock([
+            $hasAssignment,
+            new Statement(
+                $this->assertionCallFactory->createValueExistenceAssertionCall(
+                    $hasPlaceholder,
+                    AssertionCallFactory::ASSERT_TRUE_METHOD,
+                    $assertionFailureMessage
+                )
+            )
+        ]);
     }
 }
