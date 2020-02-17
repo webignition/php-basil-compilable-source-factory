@@ -2,7 +2,6 @@ parameters:
   inferPrivatePropertyTypeFromConstructor: true
   excludes_analyse:
     - src/Handler/Assertion/*
-    - src/Handler/DomIdentifierExistenceHandler.php
     - src/Handler/StepHandler.php
     - tests/DataProvider/*
     - tests/Functional/ClassDefinitionFactoryTest.php
@@ -13,7 +12,6 @@ parameters:
     - tests/Unit/CallFactory/VariableAssignmentFactoryTest.php
     - tests/Unit/ClassDefinitionFactoryTest.php
     - tests/Unit/Handler/Assertion/*
-    - tests/Unit/Handler/DomIdentifierExistenceHandlerTest.php
     - tests/Unit/Handler/StepHandlerTest.php
     - tests/Unit/StepMethodFactoryTest.php
 
