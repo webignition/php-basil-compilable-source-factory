@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model;
 
-class NamedDomIdentifier extends AbstractNamedDomIdentifier
+class DomElementIdentifier extends AbstractDomIdentifier
 {
     public function asCollection(): bool
     {
-        return true;
+        return false;
     }
 }

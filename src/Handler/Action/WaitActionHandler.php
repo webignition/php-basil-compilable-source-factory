@@ -7,9 +7,9 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
+use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
-use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
+use webignition\BasilCompilableSourceFactory\Model\DomIdentifierValue;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\Line\Statement;
@@ -25,7 +25,7 @@ class WaitActionHandler
 
     private $variableAssignmentFactory;
     private $scalarValueHandler;
-    private $namedDomIdentifierHandler;
+    private $domIdentifierHandler;
     private $accessorDefaultValueFactory;
     private $domIdentifierFactory;
     private $identifierTypeAnalyser;
@@ -33,14 +33,14 @@ class WaitActionHandler
     public function __construct(
         VariableAssignmentFactory $variableAssignmentFactory,
         ScalarValueHandler $scalarValueHandler,
-        NamedDomIdentifierHandler $namedDomIdentifierHandler,
+        DomIdentifierHandler $domIdentifierHandler,
         AccessorDefaultValueFactory $accessorDefaultValueFactory,
         DomIdentifierFactory $domIdentifierFactory,
         IdentifierTypeAnalyser $identifierTypeAnalyser
     ) {
         $this->variableAssignmentFactory = $variableAssignmentFactory;
         $this->scalarValueHandler = $scalarValueHandler;
-        $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
+        $this->domIdentifierHandler = $domIdentifierHandler;
         $this->accessorDefaultValueFactory = $accessorDefaultValueFactory;
         $this->domIdentifierFactory = $domIdentifierFactory;
         $this->identifierTypeAnalyser = $identifierTypeAnalyser;
@@ -51,7 +51,7 @@ class WaitActionHandler
         return new WaitActionHandler(
             VariableAssignmentFactory::createFactory(),
             ScalarValueHandler::createHandler(),
-            NamedDomIdentifierHandler::createHandler(),
+            DomIdentifierHandler::createHandler(),
             AccessorDefaultValueFactory::createFactory(),
             DomIdentifierFactory::createFactory(),
             IdentifierTypeAnalyser::create()
@@ -82,8 +82,8 @@ class WaitActionHandler
                 throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $duration);
             }
 
-            $durationAccessor = $this->namedDomIdentifierHandler->handle(
-                new NamedDomIdentifierValue($durationIdentifier, $durationPlaceholder)
+            $durationAccessor = $this->domIdentifierHandler->handle(
+                new DomIdentifierValue($durationIdentifier, $durationPlaceholder)
             );
 
             $durationAccessor->mutateLastStatement(function (string $content) use ($durationPlaceholder) {

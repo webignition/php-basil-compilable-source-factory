@@ -9,9 +9,9 @@ use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierExistenceHandler;
-use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
-use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
+use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
+use webignition\BasilCompilableSourceFactory\Model\DomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\ValueTypeIdentifier;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlock;
@@ -28,7 +28,7 @@ class ExistenceComparisonHandler
 {
     private $assertionCallFactory;
     private $scalarValueHandler;
-    private $namedDomIdentifierHandler;
+    private $domIdentifierHandler;
     private $identifierTypeAnalyser;
     private $domCrawlerNavigatorCallFactory;
     private $valueTypeIdentifier;
@@ -40,7 +40,7 @@ class ExistenceComparisonHandler
         AssertionCallFactory $assertionCallFactory,
         ScalarValueHandler $scalarValueHandler,
         DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory,
-        NamedDomIdentifierHandler $namedDomIdentifierHandler,
+        DomIdentifierHandler $domIdentifierHandler,
         ValueTypeIdentifier $valueTypeIdentifier,
         IdentifierTypeAnalyser $identifierTypeAnalyser,
         DomIdentifierExistenceHandler $domIdentifierExistenceHandler,
@@ -49,10 +49,9 @@ class ExistenceComparisonHandler
     ) {
         $this->assertionCallFactory = $assertionCallFactory;
         $this->scalarValueHandler = $scalarValueHandler;
-        $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
         $this->identifierTypeAnalyser = $identifierTypeAnalyser;
         $this->domCrawlerNavigatorCallFactory = $domCrawlerNavigatorCallFactory;
-        $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
+        $this->domIdentifierHandler = $domIdentifierHandler;
         $this->valueTypeIdentifier = $valueTypeIdentifier;
         $this->domIdentifierExistenceHandler = $domIdentifierExistenceHandler;
         $this->domIdentifierFactory = $domIdentifierFactory;
@@ -65,7 +64,7 @@ class ExistenceComparisonHandler
             AssertionCallFactory::createFactory(),
             ScalarValueHandler::createHandler(),
             DomCrawlerNavigatorCallFactory::createFactory(),
-            NamedDomIdentifierHandler::createHandler(),
+            DomIdentifierHandler::createHandler(),
             new ValueTypeIdentifier(),
             IdentifierTypeAnalyser::create(),
             DomIdentifierExistenceHandler::createHandler(),
@@ -139,8 +138,8 @@ class ExistenceComparisonHandler
                 $this->assertionFailureMessageFactory->createForAssertion($assertion)
             );
 
-            $access = $this->namedDomIdentifierHandler->handle(
-                new NamedDomIdentifierValue($domIdentifier, $valuePlaceholder)
+            $access = $this->domIdentifierHandler->handle(
+                new DomIdentifierValue($domIdentifier, $valuePlaceholder)
             );
 
             $accessor = new CodeBlock([

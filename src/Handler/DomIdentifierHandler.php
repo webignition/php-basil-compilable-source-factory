@@ -6,17 +6,19 @@ namespace webignition\BasilCompilableSourceFactory\Handler;
 
 use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Line\ClosureExpression;
+use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
+use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\WebDriverElementInspectorCallFactory;
-use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierInterface;
+use webignition\BasilCompilableSourceFactory\Model\DomIdentifierInterface;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
-class NamedDomIdentifierHandler
+class DomIdentifierHandler
 {
     private $domCrawlerNavigatorCallFactory;
     private $webDriverElementInspectorCallFactory;
@@ -32,35 +34,32 @@ class NamedDomIdentifierHandler
         $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
     }
 
-    public static function createHandler(): NamedDomIdentifierHandler
+    public static function createHandler(): DomIdentifierHandler
     {
-        return new NamedDomIdentifierHandler(
+        return new DomIdentifierHandler(
             DomCrawlerNavigatorCallFactory::createFactory(),
             WebDriverElementInspectorCallFactory::createFactory(),
             SingleQuotedStringEscaper::create()
         );
     }
 
-    public function handle(NamedDomIdentifierInterface $namedDomIdentifier): AssignmentStatement
+    public function handle(DomIdentifierInterface $domIdentifier): ExpressionInterface
     {
-        $identifier = $namedDomIdentifier->getIdentifier();
+        $identifier = $domIdentifier->getIdentifier();
 
-        $findCall = $namedDomIdentifier->asCollection()
+        $findCall = $domIdentifier->asCollection()
             ? $this->domCrawlerNavigatorCallFactory->createFindCall($identifier)
             : $this->domCrawlerNavigatorCallFactory->createFindOneCall($identifier);
 
-        $elementPlaceholder = $namedDomIdentifier->getPlaceholder();
-
-        if (false === $namedDomIdentifier->includeValue()) {
-            return new AssignmentStatement(
-                $elementPlaceholder,
-                new ClosureExpression(new CodeBlock([
-                    new ReturnStatement(
-                        $findCall
-                    ),
-                ]))
-            );
+        if (false === $domIdentifier->includeValue()) {
+            return new ClosureExpression(new CodeBlock([
+                new ReturnStatement(
+                    $findCall
+                ),
+            ]));
         }
+
+        $elementPlaceholder = VariablePlaceholder::createExport('ELEMENT');
 
         $closureExpressionStatements = [
             new AssignmentStatement($elementPlaceholder, $findCall),
@@ -85,9 +84,6 @@ class NamedDomIdentifierHandler
             );
         }
 
-        return new AssignmentStatement(
-            $elementPlaceholder,
-            new ClosureExpression(new CodeBlock($closureExpressionStatements))
-        );
+        return new ClosureExpression(new CodeBlock($closureExpressionStatements));
     }
 }
