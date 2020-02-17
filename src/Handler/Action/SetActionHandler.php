@@ -6,9 +6,9 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
 use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\CodeBlockInterface;
+use webignition\BasilCompilableSource\Line\ComparisonExpression;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSource\Line\NullCoalescingExpression;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\VariablePlaceholder;
@@ -105,9 +105,10 @@ class SetActionHandler
 
         $defaultValue = $this->accessorDefaultValueFactory->createString($value);
         if (null !== $defaultValue) {
-            $valueAccessor = new NullCoalescingExpression(
+            $valueAccessor = new ComparisonExpression(
                 $valueAccessor,
-                new LiteralExpression($this->accessorDefaultValueFactory->createString($value))
+                new LiteralExpression($this->accessorDefaultValueFactory->createString($value)),
+                '??'
             );
         }
 

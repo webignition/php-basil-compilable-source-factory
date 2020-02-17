@@ -6,10 +6,10 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
 use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\CodeBlockInterface;
+use webignition\BasilCompilableSource\Line\ComparisonExpression;
 use webignition\BasilCompilableSource\Line\CompositeExpression;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
-use webignition\BasilCompilableSource\Line\NullCoalescingExpression;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\VariablePlaceholder;
@@ -95,9 +95,10 @@ class WaitActionHandler
 
         $durationAssignment = new AssignmentStatement(
             $durationPlaceholder,
-            new NullCoalescingExpression(
+            new ComparisonExpression(
                 $durationAccessor,
                 new LiteralExpression((string) ($this->accessorDefaultValueFactory->createInteger($duration) ?? 0)),
+                '??',
                 'int'
             )
         );
