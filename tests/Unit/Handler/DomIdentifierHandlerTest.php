@@ -55,11 +55,7 @@ class DomIdentifierHandlerTest extends AbstractTestCase
                     new ElementIdentifier('.selector')
                 ),
                 'expectedRenderedSource' =>
-                    '(function () {' . "\n" .
-                    '    return {{ NAVIGATOR }}->findOne(' .
-                            'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                        ');' . "\n" .
-                    '})()'
+                    '{{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))'
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -76,11 +72,9 @@ class DomIdentifierHandlerTest extends AbstractTestCase
                         ->withParentIdentifier(new ElementIdentifier('.parent'))
                 ),
                 'expectedRenderedSource' =>
-                    '(function () {' . "\n" .
-                    '    return {{ NAVIGATOR }}->findOne(' .
-                            'ElementIdentifier::fromJson(\'{"locator":".selector","parent":{"locator":".parent"}}\')' .
-                    ');' . "\n" .
-                    '})()'
+                    '{{ NAVIGATOR }}->findOne(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector","parent":{"locator":".parent"}}\')' .
+                    ')'
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -96,11 +90,7 @@ class DomIdentifierHandlerTest extends AbstractTestCase
                     new ElementIdentifier('.selector')
                 ),
                 'expectedRenderedSource' =>
-                    '(function () {' . "\n" .
-                    '    return {{ NAVIGATOR }}->find(' .
-                            'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                        ');' . "\n" .
-                    '})()'
+                    '{{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))'
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -117,11 +107,9 @@ class DomIdentifierHandlerTest extends AbstractTestCase
                         ->withParentIdentifier(new ElementIdentifier('.parent'))
                 ),
                 'expectedRenderedSource' =>
-                    '(function () {' . "\n" .
-                    '    return {{ NAVIGATOR }}->find(' .
-                            'ElementIdentifier::fromJson(\'{"locator":".selector","parent":{"locator":".parent"}}\')' .
-                        ');' . "\n" .
-                    '})()'
+                    '{{ NAVIGATOR }}->find(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector","parent":{"locator":".parent"}}\')' .
+                    ')'
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([

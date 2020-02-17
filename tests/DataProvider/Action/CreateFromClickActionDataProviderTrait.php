@@ -34,33 +34,27 @@ trait CreateFromClickActionDataProviderTrait
             'interaction action (click), element identifier' => [
                 'action' => $actionParser->parse('click $".selector"'),
                 'expectedRenderedSource' =>
-                    '{{ ELEMENT }} = (function () {' . "\n" .
-                    '    return {{ NAVIGATOR }}->findOne(' .
-                            'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                         ');' . "\n" .
-                    '})();' . "\n" .
+                    '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    ');' . "\n" .
                     '{{ ELEMENT }}->click();',
                 'expectedMetadata' => $expectedMetadata,
             ],
             'interaction action (click), parent > child identifier' => [
                 'action' => $actionParser->parse('click $"{{ $".parent" }} .child"'),
                 'expectedRenderedSource' =>
-                    '{{ ELEMENT }} = (function () {' . "\n" .
-                    '    return {{ NAVIGATOR }}->findOne(' .
-                            'ElementIdentifier::fromJson(\'{"locator":".child","parent":{"locator":".parent"}}\')' .
-                        ');' . "\n" .
-                    '})();' . "\n" .
+                    '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".child","parent":{"locator":".parent"}}\')' .
+                    ');' . "\n" .
                     '{{ ELEMENT }}->click();',
                 'expectedMetadata' => $expectedMetadata,
             ],
             'interaction action (click), single-character CSS selector element identifier' => [
                 'action' => $actionParser->parse('click $"a"'),
                 'expectedRenderedSource' =>
-                    '{{ ELEMENT }} = (function () {' . "\n" .
-                    '    return {{ NAVIGATOR }}->findOne(' .
-                            'ElementIdentifier::fromJson(\'{"locator":"a"}\')' .
-                        ');' . "\n" .
-                    '})();' . "\n" .
+                    '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(' .
+                    'ElementIdentifier::fromJson(\'{"locator":"a"}\')' .
+                    ');' . "\n" .
                     '{{ ELEMENT }}->click();',
                 'expectedMetadata' => $expectedMetadata,
             ],
