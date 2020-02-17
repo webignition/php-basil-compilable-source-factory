@@ -4,16 +4,21 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
+use webignition\BasilCompilableSource\Block\CodeBlock;
+use webignition\BasilCompilableSource\Block\CodeBlockInterface;
+use webignition\BasilCompilableSource\Line\CompositeExpression;
+use webignition\BasilCompilableSource\Line\LiteralExpression;
+use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
+use webignition\BasilCompilableSource\Line\NullCoalescingExpression;
+use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
+use webignition\BasilCompilableSource\Line\Statement\Statement;
+use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Model\DomIdentifierValue;
-use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\Block\CodeBlockInterface;
-use webignition\BasilCompilationSource\Line\Statement;
-use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Action\WaitActionInterface;
@@ -67,8 +72,7 @@ class WaitActionHandler
      */
     public function handle(WaitActionInterface $waitAction): CodeBlockInterface
     {
-        $variableExports = new VariablePlaceholderCollection();
-        $durationPlaceholder = $variableExports->create(self::DURATION_PLACEHOLDER);
+        $durationPlaceholder = VariablePlaceholder::createExport(self::DURATION_PLACEHOLDER);
 
         $duration = $waitAction->getDuration();
 
@@ -83,29 +87,37 @@ class WaitActionHandler
             }
 
             $durationAccessor = $this->domIdentifierHandler->handle(
-                new DomIdentifierValue($durationIdentifier, $durationPlaceholder)
+                new DomIdentifierValue($durationIdentifier)
             );
-
-            $durationAccessor->mutateLastStatement(function (string $content) use ($durationPlaceholder) {
-                return str_replace((string) $durationPlaceholder . ' = ', '', $content);
-            });
         } else {
             $durationAccessor = $this->scalarValueHandler->handle($duration);
         }
 
-        $durationAssignment = $this->variableAssignmentFactory->createForValueAccessor(
-            $durationAccessor,
+        $durationAssignment = new AssignmentStatement(
             $durationPlaceholder,
-            $this->accessorDefaultValueFactory->createInteger($duration) ?? 0
+            new NullCoalescingExpression(
+                $durationAccessor,
+                new LiteralExpression((string) ($this->accessorDefaultValueFactory->createInteger($duration) ?? 0)),
+                'int'
+            )
+        );
+
+        $sleepInvocation = new Statement(
+            new MethodInvocation(
+                'usleep',
+                [
+                    new CompositeExpression([
+                        $durationPlaceholder,
+                        new LiteralExpression(' * '),
+                        new LiteralExpression((string) self::MICROSECONDS_PER_MILLISECOND)
+                    ]),
+                ]
+            )
         );
 
         return new CodeBlock([
             $durationAssignment,
-            new Statement(sprintf(
-                'usleep(%s * %s)',
-                (string) $durationPlaceholder,
-                self::MICROSECONDS_PER_MILLISECOND
-            )),
+            $sleepInvocation,
         ]);
     }
 }

@@ -66,10 +66,10 @@ class ActionHandler
 //            if ($action instanceof InputActionInterface) {
 //                return $this->setActionHandler->handle($action);
 //            }
-//
-//            if ($action instanceof WaitActionInterface) {
-//                return $this->waitActionHandler->handle($action);
-//            }
+
+            if ($action instanceof WaitActionInterface) {
+                return $this->waitActionHandler->handle($action);
+            }
 
             if ($action instanceof InteractionActionInterface && in_array($action->getType(), ['wait-for'])) {
                 return $this->waitForActionHandler->handle($action);
