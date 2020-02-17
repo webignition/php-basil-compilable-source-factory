@@ -133,37 +133,47 @@ class StatementFactory
         );
     }
 
-//    public static function createCrawlerFilterCall(
-//        string $selector,
-//        string $variableName = 'variableName'
-//    ): StatementInterface {
-//        return self::create(
-//            $variableName . ' = %s->filter(\'' . $selector . '\')',
-//            [
-//                new VariablePlaceholder(VariableNames::PANTHER_CRAWLER),
-//            ]
-//        );
-//    }
+    public static function createCrawlerFilterCall(
+        string $selector,
+        VariablePlaceholder $exportedPlaceholder
+    ): StatementInterface {
+        return new AssignmentStatement(
+            $exportedPlaceholder,
+            new ObjectMethodInvocation(
+                VariablePlaceholder::createDependency(VariableNames::PANTHER_CRAWLER),
+                'filter',
+                [
+                    new LiteralExpression('\'' . $selector . '\'')
+                ]
+            )
+        );
+    }
 
-//    public static function createAssertFalse(string $actual): StatementInterface
-//    {
-//        return self::create(
-//            '%s->assertFalse(' . $actual . ')',
-//            [
-//                new VariablePlaceholder(VariableNames::PHPUNIT_TEST_CASE),
-//            ]
-//        );
-//    }
+    public static function createAssertFalse(string $actual): StatementInterface
+    {
+        return new Statement(
+            new ObjectMethodInvocation(
+                VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+                'assertFalse',
+                [
+                    new LiteralExpression($actual)
+                ]
+            )
+        );
+    }
 
-//    public static function createAssertTrue(string $actual): StatementInterface
-//    {
-//        return self::create(
-//            '%s->assertTrue(' . $actual . ')',
-//            [
-//                new VariablePlaceholder(VariableNames::PHPUNIT_TEST_CASE),
-//            ]
-//        );
-//    }
+    public static function createAssertTrue(string $actual): StatementInterface
+    {
+        return new Statement(
+            new ObjectMethodInvocation(
+                VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+                'assertTrue',
+                [
+                    new LiteralExpression($actual)
+                ]
+            )
+        );
+    }
 
     public static function createAssertCount(string $expected, string $actual): StatementInterface
     {
