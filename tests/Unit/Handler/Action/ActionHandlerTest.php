@@ -38,7 +38,7 @@ class ActionHandlerTest extends AbstractTestCase
      * @dataProvider createFromReloadActionDataProvider
      * @!dataProvider createFromSetActionDataProvider
      * @dataProvider createFromSubmitActionDataProvider
-     * @!dataProvider createFromWaitActionDataProvider
+     * @dataProvider createFromWaitActionDataProvider
      * @dataProvider createFromWaitForActionDataProvider
      */
     public function testHandleSuccess(

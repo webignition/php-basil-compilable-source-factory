@@ -48,7 +48,7 @@ class ActionHandlerTest extends AbstractBrowserTestCase
      * @dataProvider reloadActionFunctionalDataProvider
      * @!dataProvider setActionFunctionalDataProvider
      * @dataProvider submitActionFunctionalDataProvider
-     * @!dataProvider waitActionFunctionalDataProvider
+     * @dataProvider waitActionFunctionalDataProvider
      * @dataProvider waitForActionFunctionalDataProvider
      */
     public function testHandleForExecutableActions(
