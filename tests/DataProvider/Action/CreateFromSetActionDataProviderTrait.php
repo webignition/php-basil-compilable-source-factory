@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
+use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
+use webignition\BasilCompilableSource\Line\ClassDependency;
+use webignition\BasilCompilableSource\Metadata\Metadata;
+use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilationSource\Line\ClassDependency;
-use webignition\BasilCompilationSource\Metadata\Metadata;
-use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilParser\ActionParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
 
@@ -22,222 +21,228 @@ trait CreateFromSetActionDataProviderTrait
         return [
             'input action, element identifier, literal value' => [
                 'action' => $actionParser->parse('set $".selector" to "value"'),
-                'expectedContent' => CodeBlock::fromContent([
+                'expectedRenderedSource' =>
                     '{{ COLLECTION }} = {{ NAVIGATOR }}->find(' .
                     'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ')',
-                    '{{ VALUE }} = "value" ?? null',
-                    '{{ VALUE }} = (string) {{ VALUE }}',
-                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
+                    ');' . "\n" .
+                    '{{ VALUE }} = "value";' . "\n" .
+                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});',
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
-                    ]))
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'COLLECTION',
                         'VALUE',
-                    ])),
+                    ]),
+                ]),
             ],
             'input action, element identifier, element value' => [
                 'action' => $actionParser->parse('set $".selector" to $".source"'),
-                'expectedContent' => CodeBlock::fromContent([
+                'expectedRenderedSource' =>
                     '{{ COLLECTION }} = {{ NAVIGATOR }}->find(' .
                     'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ')',
-                    '{{ VALUE }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{"locator":".source"}\'))',
-                    '{{ VALUE }} = {{ INSPECTOR }}->getValue({{ VALUE }}) ?? null',
-                    '{{ VALUE }} = (string) {{ VALUE }}',
-                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
+                    ');' . "\n" .
+                    '{{ VALUE }} = (function () {' . "\n" .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".source"}\')' .
+                    ');' . "\n" .
+                    "\n" .
+                    '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
+                    '})();' . "\n" .
+                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});',
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
-                    ]))
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'COLLECTION',
                         'VALUE',
-                    ])),
+                        'ELEMENT',
+                    ]),
+                ]),
             ],
             'input action, element identifier, attribute value' => [
                 'action' => $actionParser->parse('set $".selector" to $".source".attribute_name'),
-                'expectedContent' => CodeBlock::fromContent([
+                'expectedRenderedSource' =>
                     '{{ COLLECTION }} = {{ NAVIGATOR }}->find(' .
                     'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ')',
-                    '{{ VALUE }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{"locator":".source"}\'))',
-                    '{{ VALUE }} = {{ VALUE }}->getAttribute(\'attribute_name\') ?? null',
-                    '{{ VALUE }} = (string) {{ VALUE }}',
-                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
+                    ');' . "\n" .
+                    '{{ VALUE }} = (function () {' . "\n" .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".source"}\')' .
+                    ');' . "\n" .
+                    "\n" .
+                    '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
+                    '})();' . "\n" .
+                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});',
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
-                    ]))
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'COLLECTION',
                         'VALUE',
-                    ])),
+                        'ELEMENT',
+                    ]),
+                ]),
             ],
             'input action, browser property' => [
                 'action' => $actionParser->parse('set $".selector" to $browser.size'),
-                'expectedContent' => CodeBlock::fromContent([
+                'expectedRenderedSource' =>
                     '{{ COLLECTION }} = {{ NAVIGATOR }}->find(' .
                     'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ')',
-                    '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()',
-                    '{{ VALUE }} = '
-                        . '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
-                        . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null',
-                    '{{ VALUE }} = (string) {{ VALUE }}',
-                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
+                    ');' . "\n" .
+                    '{{ VALUE }} = (function () {' . "\n" .
+                    '    {{ WEBDRIVER_DIMENSION }} = ' .
+                    '{{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n" .
+                    "\n" .
+                    '    return (string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . ' .
+                    '(string) {{ WEBDRIVER_DIMENSION }}->getHeight();' . "\n" .
+                    '})();' . "\n" .
+                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});',
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
-                    ]))
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::PANTHER_CLIENT,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        VariableNames::PANTHER_CLIENT,
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'COLLECTION',
-                        'WEBDRIVER_DIMENSION',
                         'VALUE',
-                    ])),
+                        'WEBDRIVER_DIMENSION',
+                    ]),
+                ]),
             ],
             'input action, page property' => [
                 'action' => $actionParser->parse('set $".selector" to $page.url'),
-                'expectedContent' => CodeBlock::fromContent([
+                'expectedRenderedSource' =>
                     '{{ COLLECTION }} = {{ NAVIGATOR }}->find(' .
                     'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ')',
-                    '{{ VALUE }} = {{ CLIENT }}->getCurrentURL() ?? null',
-                    '{{ VALUE }} = (string) {{ VALUE }}',
-                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
+                    ');' . "\n" .
+                    '{{ VALUE }} = {{ CLIENT }}->getCurrentURL();' . "\n" .
+                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});',
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
-                    ]))
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::PANTHER_CLIENT,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        VariableNames::PANTHER_CLIENT,
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'COLLECTION',
                         'VALUE',
-                    ])),
+                    ]),
+                ]),
             ],
             'input action, environment value' => [
                 'action' => $actionParser->parse('set $".selector" to $env.KEY'),
-                'expectedContent' => CodeBlock::fromContent([
+                'expectedRenderedSource' =>
                     '{{ COLLECTION }} = {{ NAVIGATOR }}->find(' .
                     'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ')',
-                    '{{ VALUE }} = {{ ENV }}[\'KEY\'] ?? null',
-                    '{{ VALUE }} = (string) {{ VALUE }}',
-                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
+                    ');' . "\n" .
+                    '{{ VALUE }} = {{ ENV }}[\'KEY\'];' . "\n" .
+                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});',
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
-                    ]))
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'COLLECTION',
                         'VALUE',
-                    ])),
+                    ]),
+                ]),
             ],
             'input action, environment value with default' => [
                 'action' => $actionParser->parse('set $".selector" to $env.KEY|"default"'),
-                'expectedContent' => CodeBlock::fromContent([
+                'expectedRenderedSource' =>
                     '{{ COLLECTION }} = {{ NAVIGATOR }}->find(' .
                     'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ')',
-                    '{{ VALUE }} = {{ ENV }}[\'KEY\'] ?? \'default\'',
-                    '{{ VALUE }} = (string) {{ VALUE }}',
-                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
+                    ');' . "\n" .
+                    '{{ VALUE }} = {{ ENV }}[\'KEY\'] ?? \'default\';' . "\n" .
+                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});',
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
-                    ]))
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'COLLECTION',
                         'VALUE',
-                    ])),
+                    ]),
+                ]),
             ],
             'input action, environment value with default with whitespace' => [
                 'action' => $actionParser->parse('set $".selector" to $env.KEY|"default value"'),
-                'expectedContent' => CodeBlock::fromContent([
+                'expectedRenderedSource' =>
                     '{{ COLLECTION }} = {{ NAVIGATOR }}->find(' .
                     'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ')',
-                    '{{ VALUE }} = {{ ENV }}[\'KEY\'] ?? \'default value\'',
-                    '{{ VALUE }} = (string) {{ VALUE }}',
-                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
+                    ');' . "\n" .
+                    '{{ VALUE }} = {{ ENV }}[\'KEY\'] ?? \'default value\';' . "\n" .
+                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});',
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
-                    ]))
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'COLLECTION',
                         'VALUE',
-                    ])),
+                    ]),
+                ]),
             ],
             'input action, parent > child element identifier, literal value' => [
                 'action' => $actionParser->parse('set $"{{ $".parent" }} .child" to "value"'),
-                'expectedContent' => CodeBlock::fromContent([
+                'expectedRenderedSource' =>
                     '{{ COLLECTION }} = {{ NAVIGATOR }}->find(' .
                     'ElementIdentifier::fromJson(\'{"locator":".child","parent":{"locator":".parent"}}\')' .
-                    ')',
-                    '{{ VALUE }} = "value" ?? null',
-                    '{{ VALUE }} = (string) {{ VALUE }}',
-                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
+                    ');' . "\n" .
+                    '{{ VALUE }} = "value";' . "\n" .
+                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});',
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
-                    ]))
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'COLLECTION',
                         'VALUE',
-                    ])),
+                    ]),
+                ]),
             ],
         ];
     }

@@ -4,17 +4,21 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
+use webignition\BasilCompilableSource\Block\CodeBlock;
+use webignition\BasilCompilableSource\Block\CodeBlockInterface;
+use webignition\BasilCompilableSource\Line\LiteralExpression;
+use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSource\Line\NullCoalescingExpression;
+use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
+use webignition\BasilCompilableSource\Line\Statement\Statement;
+use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
-use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
-use webignition\BasilCompilableSourceFactory\CallFactory\WebDriverElementMutatorCallFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Model\DomIdentifier;
 use webignition\BasilCompilableSourceFactory\Model\DomIdentifierValue;
-use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\Block\CodeBlockInterface;
-use webignition\BasilCompilationSource\VariablePlaceholderCollection;
+use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Action\InputActionInterface;
@@ -22,8 +26,6 @@ use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
 class SetActionHandler
 {
-    private $variableAssignmentFactory;
-    private $webDriverElementMutatorCallFactory;
     private $scalarValueHandler;
     private $domIdentifierHandler;
     private $accessorDefaultValueFactory;
@@ -31,16 +33,12 @@ class SetActionHandler
     private $identifierTypeAnalyser;
 
     public function __construct(
-        VariableAssignmentFactory $variableAssignmentFactory,
-        WebDriverElementMutatorCallFactory $webDriverElementMutatorCallFactory,
         ScalarValueHandler $scalarValueHandler,
         DomIdentifierHandler $domIdentifierHandler,
         AccessorDefaultValueFactory $accessorDefaultValueFactory,
         DomIdentifierFactory $domIdentifierFactory,
         IdentifierTypeAnalyser $identifierTypeAnalyser
     ) {
-        $this->variableAssignmentFactory = $variableAssignmentFactory;
-        $this->webDriverElementMutatorCallFactory = $webDriverElementMutatorCallFactory;
         $this->scalarValueHandler = $scalarValueHandler;
         $this->domIdentifierHandler = $domIdentifierHandler;
         $this->accessorDefaultValueFactory = $accessorDefaultValueFactory;
@@ -51,8 +49,6 @@ class SetActionHandler
     public static function createHandler(): SetActionHandler
     {
         return new SetActionHandler(
-            VariableAssignmentFactory::createFactory(),
-            WebDriverElementMutatorCallFactory::createFactory(),
             ScalarValueHandler::createHandler(),
             DomIdentifierHandler::createHandler(),
             AccessorDefaultValueFactory::createFactory(),
@@ -86,41 +82,46 @@ class SetActionHandler
             throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }
 
-        $variableExports = new VariablePlaceholderCollection();
-        $collectionPlaceholder = $variableExports->create('COLLECTION');
-        $valuePlaceholder = $variableExports->create('VALUE');
+        $collectionPlaceholder = VariablePlaceholder::createExport('COLLECTION');
+        $valuePlaceholder = VariablePlaceholder::createExport('VALUE');
 
-        $collectionAccessor = $this->domIdentifierHandler->handle(
-            new DomIdentifier($domIdentifier, $collectionPlaceholder)
+        $collectionAccessor = new AssignmentStatement(
+            $collectionPlaceholder,
+            $this->domIdentifierHandler->handle(
+                new DomIdentifier($domIdentifier)
+            )
         );
 
         if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($value)) {
             $valueDomIdentifier = $this->domIdentifierFactory->createFromIdentifierString($value);
-
             if (null ===  $valueDomIdentifier) {
                 throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $value);
             }
 
-            $valueAccessor = $this->domIdentifierHandler->handle(
-                new DomIdentifierValue($valueDomIdentifier, $valuePlaceholder)
-            );
-
-            $valueAccessor->mutateLastStatement(function (string $content) use ($valuePlaceholder) {
-                return str_replace((string) $valuePlaceholder . ' = ', '', $content);
-            });
+            $valueAccessor = $this->domIdentifierHandler->handle(new DomIdentifierValue($valueDomIdentifier));
         } else {
             $valueAccessor = $this->scalarValueHandler->handle($value);
         }
 
-        $valueAssignment = $this->variableAssignmentFactory->createForValueAccessor(
-            $valueAccessor,
-            $valuePlaceholder,
-            $this->accessorDefaultValueFactory->createString($value)
-        );
+        $defaultValue = $this->accessorDefaultValueFactory->createString($value);
+        if (null !== $defaultValue) {
+            $valueAccessor = new NullCoalescingExpression(
+                $valueAccessor,
+                new LiteralExpression($this->accessorDefaultValueFactory->createString($value))
+            );
+        }
 
-        $mutationCall = $this->webDriverElementMutatorCallFactory->createSetValueCall(
-            $collectionPlaceholder,
-            $valuePlaceholder
+        $valueAssignment = new AssignmentStatement($valuePlaceholder, $valueAccessor);
+
+        $mutationCall = new Statement(
+            new ObjectMethodInvocation(
+                VariablePlaceholder::createDependency(VariableNames::WEBDRIVER_ELEMENT_MUTATOR),
+                'setValue',
+                [
+                    $collectionPlaceholder,
+                    $valuePlaceholder
+                ]
+            )
         );
 
         return new CodeBlock([

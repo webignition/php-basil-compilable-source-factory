@@ -62,10 +62,10 @@ class ActionHandler
             if ($action instanceof InteractionActionInterface && in_array($action->getType(), ['click', 'submit'])) {
                 return $this->interactionActionHandler->handle($action);
             }
-//
-//            if ($action instanceof InputActionInterface) {
-//                return $this->setActionHandler->handle($action);
-//            }
+
+            if ($action instanceof InputActionInterface) {
+                return $this->setActionHandler->handle($action);
+            }
 
             if ($action instanceof WaitActionInterface) {
                 return $this->waitActionHandler->handle($action);

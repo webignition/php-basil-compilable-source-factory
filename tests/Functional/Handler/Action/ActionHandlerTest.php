@@ -46,7 +46,7 @@ class ActionHandlerTest extends AbstractBrowserTestCase
      * @dataProvider clickActionFunctionalDataProvider
      * @dataProvider forwardActionFunctionalDataProvider
      * @dataProvider reloadActionFunctionalDataProvider
-     * @!dataProvider setActionFunctionalDataProvider
+     * @dataProvider setActionFunctionalDataProvider
      * @dataProvider submitActionFunctionalDataProvider
      * @dataProvider waitActionFunctionalDataProvider
      * @dataProvider waitForActionFunctionalDataProvider

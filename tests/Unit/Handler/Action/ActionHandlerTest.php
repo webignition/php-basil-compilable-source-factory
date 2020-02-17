@@ -36,7 +36,7 @@ class ActionHandlerTest extends AbstractTestCase
      * @dataProvider createFromClickActionDataProvider
      * @dataProvider createFromForwardActionDataProvider
      * @dataProvider createFromReloadActionDataProvider
-     * @!dataProvider createFromSetActionDataProvider
+     * @dataProvider createFromSetActionDataProvider
      * @dataProvider createFromSubmitActionDataProvider
      * @dataProvider createFromWaitActionDataProvider
      * @dataProvider createFromWaitForActionDataProvider
@@ -58,8 +58,6 @@ class ActionHandlerTest extends AbstractTestCase
      */
     public function testHandleThrowsException(ActionInterface $action, UnsupportedStatementException $expectedException)
     {
-        $this->markTestSkipped();
-
         $handler = ActionHandler::createHandler();
         $this->expectExceptionObject($expectedException);
 
