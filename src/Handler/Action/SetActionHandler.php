@@ -8,10 +8,10 @@ use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\WebDriverElementMutatorCallFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
+use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
-use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifier;
-use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
+use webignition\BasilCompilableSourceFactory\Model\DomIdentifier;
+use webignition\BasilCompilableSourceFactory\Model\DomIdentifierValue;
 use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\VariablePlaceholderCollection;
@@ -25,7 +25,7 @@ class SetActionHandler
     private $variableAssignmentFactory;
     private $webDriverElementMutatorCallFactory;
     private $scalarValueHandler;
-    private $namedDomIdentifierHandler;
+    private $domIdentifierHandler;
     private $accessorDefaultValueFactory;
     private $domIdentifierFactory;
     private $identifierTypeAnalyser;
@@ -34,7 +34,7 @@ class SetActionHandler
         VariableAssignmentFactory $variableAssignmentFactory,
         WebDriverElementMutatorCallFactory $webDriverElementMutatorCallFactory,
         ScalarValueHandler $scalarValueHandler,
-        NamedDomIdentifierHandler $namedDomIdentifierHandler,
+        DomIdentifierHandler $domIdentifierHandler,
         AccessorDefaultValueFactory $accessorDefaultValueFactory,
         DomIdentifierFactory $domIdentifierFactory,
         IdentifierTypeAnalyser $identifierTypeAnalyser
@@ -42,7 +42,7 @@ class SetActionHandler
         $this->variableAssignmentFactory = $variableAssignmentFactory;
         $this->webDriverElementMutatorCallFactory = $webDriverElementMutatorCallFactory;
         $this->scalarValueHandler = $scalarValueHandler;
-        $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
+        $this->domIdentifierHandler = $domIdentifierHandler;
         $this->accessorDefaultValueFactory = $accessorDefaultValueFactory;
         $this->domIdentifierFactory = $domIdentifierFactory;
         $this->identifierTypeAnalyser = $identifierTypeAnalyser;
@@ -54,7 +54,7 @@ class SetActionHandler
             VariableAssignmentFactory::createFactory(),
             WebDriverElementMutatorCallFactory::createFactory(),
             ScalarValueHandler::createHandler(),
-            NamedDomIdentifierHandler::createHandler(),
+            DomIdentifierHandler::createHandler(),
             AccessorDefaultValueFactory::createFactory(),
             DomIdentifierFactory::createFactory(),
             IdentifierTypeAnalyser::create()
@@ -90,8 +90,8 @@ class SetActionHandler
         $collectionPlaceholder = $variableExports->create('COLLECTION');
         $valuePlaceholder = $variableExports->create('VALUE');
 
-        $collectionAccessor = $this->namedDomIdentifierHandler->handle(
-            new NamedDomIdentifier($domIdentifier, $collectionPlaceholder)
+        $collectionAccessor = $this->domIdentifierHandler->handle(
+            new DomIdentifier($domIdentifier, $collectionPlaceholder)
         );
 
         if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($value)) {
@@ -101,8 +101,8 @@ class SetActionHandler
                 throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $value);
             }
 
-            $valueAccessor = $this->namedDomIdentifierHandler->handle(
-                new NamedDomIdentifierValue($valueDomIdentifier, $valuePlaceholder)
+            $valueAccessor = $this->domIdentifierHandler->handle(
+                new DomIdentifierValue($valueDomIdentifier, $valuePlaceholder)
             );
 
             $valueAccessor->mutateLastStatement(function (string $content) use ($valuePlaceholder) {

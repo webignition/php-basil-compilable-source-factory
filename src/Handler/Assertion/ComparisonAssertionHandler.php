@@ -8,9 +8,9 @@ use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
+use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
-use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
+use webignition\BasilCompilableSourceFactory\Model\DomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilCompilationSource\VariablePlaceholder;
@@ -30,7 +30,7 @@ class ComparisonAssertionHandler
 
     private $assertionCallFactory;
     private $scalarValueHandler;
-    private $namedDomIdentifierHandler;
+    private $domIdentifierHandler;
     private $identifierTypeAnalyser;
     private $variableAssignmentFactory;
     private $accessorDefaultValueFactory;
@@ -40,14 +40,14 @@ class ComparisonAssertionHandler
         AssertionCallFactory $assertionCallFactory,
         VariableAssignmentFactory $variableAssignmentFactory,
         ScalarValueHandler $scalarValueHandler,
-        NamedDomIdentifierHandler $namedDomIdentifierHandler,
+        DomIdentifierHandler $domIdentifierHandler,
         AccessorDefaultValueFactory $accessorDefaultValueFactory,
         IdentifierTypeAnalyser $identifierTypeAnalyser,
         DomIdentifierFactory $domIdentifierFactory
     ) {
         $this->assertionCallFactory = $assertionCallFactory;
         $this->scalarValueHandler = $scalarValueHandler;
-        $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
+        $this->domIdentifierHandler = $domIdentifierHandler;
         $this->identifierTypeAnalyser = $identifierTypeAnalyser;
         $this->variableAssignmentFactory = $variableAssignmentFactory;
         $this->accessorDefaultValueFactory = $accessorDefaultValueFactory;
@@ -60,7 +60,7 @@ class ComparisonAssertionHandler
             AssertionCallFactory::createFactory(),
             VariableAssignmentFactory::createFactory(),
             ScalarValueHandler::createHandler(),
-            NamedDomIdentifierHandler::createHandler(),
+            DomIdentifierHandler::createHandler(),
             AccessorDefaultValueFactory::createFactory(),
             IdentifierTypeAnalyser::create(),
             DomIdentifierFactory::createFactory()
@@ -88,8 +88,12 @@ class ComparisonAssertionHandler
                 throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $examinedValue);
             }
 
-            $examinedValueAccessor = $this->namedDomIdentifierHandler->handle(
-                new NamedDomIdentifierValue($examinedValueDomIdentifier, $examinedValuePlaceholder)
+//            $examinedValueAccessor = $this->domIdentifierHandler->handle(
+//                new DomIdentifierValue($examinedValueDomIdentifier, $examinedValuePlaceholder)
+//            );
+
+            $examinedValueAccessor = $this->domIdentifierHandler->handle(
+                new DomIdentifierValue($examinedValueDomIdentifier)
             );
 
             $examinedValueAccessor->mutateLastStatement(function (string $content) use ($examinedValuePlaceholder) {
@@ -105,10 +109,16 @@ class ComparisonAssertionHandler
                 throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $expectedValue);
             }
 
-            $expectedValueAccessor = $this->namedDomIdentifierHandler->handle(
-                new NamedDomIdentifierValue(
-                    $expectedValueDomIdentifier,
-                    $expectedValuePlaceholder
+//            $expectedValueAccessor = $this->domIdentifierHandler->handle(
+//                new DomIdentifierValue(
+//                    $expectedValueDomIdentifier,
+//                    $expectedValuePlaceholder
+//                )
+//            );
+
+            $expectedValueAccessor = $this->domIdentifierHandler->handle(
+                new DomIdentifierValue(
+                    $expectedValueDomIdentifier
                 )
             );
 

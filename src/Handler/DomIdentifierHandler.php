@@ -18,7 +18,7 @@ use webignition\BasilCompilableSourceFactory\Model\DomIdentifierInterface;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
-class NamedDomIdentifierHandler
+class DomIdentifierHandler
 {
     private $domCrawlerNavigatorCallFactory;
     private $webDriverElementInspectorCallFactory;
@@ -34,24 +34,24 @@ class NamedDomIdentifierHandler
         $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
     }
 
-    public static function createHandler(): NamedDomIdentifierHandler
+    public static function createHandler(): DomIdentifierHandler
     {
-        return new NamedDomIdentifierHandler(
+        return new DomIdentifierHandler(
             DomCrawlerNavigatorCallFactory::createFactory(),
             WebDriverElementInspectorCallFactory::createFactory(),
             SingleQuotedStringEscaper::create()
         );
     }
 
-    public function handle(DomIdentifierInterface $namedDomIdentifier): ExpressionInterface
+    public function handle(DomIdentifierInterface $domIdentifier): ExpressionInterface
     {
-        $identifier = $namedDomIdentifier->getIdentifier();
+        $identifier = $domIdentifier->getIdentifier();
 
-        $findCall = $namedDomIdentifier->asCollection()
+        $findCall = $domIdentifier->asCollection()
             ? $this->domCrawlerNavigatorCallFactory->createFindCall($identifier)
             : $this->domCrawlerNavigatorCallFactory->createFindOneCall($identifier);
 
-        if (false === $namedDomIdentifier->includeValue()) {
+        if (false === $domIdentifier->includeValue()) {
             return new ClosureExpression(new CodeBlock([
                 new ReturnStatement(
                     $findCall

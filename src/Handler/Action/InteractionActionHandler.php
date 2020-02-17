@@ -11,29 +11,29 @@ use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
-use webignition\BasilCompilableSourceFactory\Model\NamedDomElementIdentifier;
+use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
+use webignition\BasilCompilableSourceFactory\Model\DomElementIdentifier;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilModels\Action\InteractionActionInterface;
 use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
 class InteractionActionHandler
 {
-    private $namedDomIdentifierHandler;
+    private $domIdentifierHandler;
     private $domIdentifierFactory;
 
     public function __construct(
-        NamedDomIdentifierHandler $namedDomIdentifierHandler,
+        DomIdentifierHandler $domIdentifierHandler,
         DomIdentifierFactory $domIdentifierFactory
     ) {
-        $this->namedDomIdentifierHandler = $namedDomIdentifierHandler;
+        $this->domIdentifierHandler = $domIdentifierHandler;
         $this->domIdentifierFactory = $domIdentifierFactory;
     }
 
     public static function createHandler(): InteractionActionHandler
     {
         return new InteractionActionHandler(
-            NamedDomIdentifierHandler::createHandler(),
+            DomIdentifierHandler::createHandler(),
             DomIdentifierFactory::createFactory()
         );
     }
@@ -62,15 +62,15 @@ class InteractionActionHandler
 
 //        $accessor = new AssignmentStatement(
 //            $elementPlaceholder,
-//            $this->namedDomIdentifierHandler->handle(
-//                new NamedDomElementIdentifier($domIdentifier, $elementPlaceholder)
+//            $this->domIdentifierHandler->handle(
+//                new DomElementIdentifier($domIdentifier, $elementPlaceholder)
 //            )
 //        );
 
         $accessor = new AssignmentStatement(
             $elementPlaceholder,
-            $this->namedDomIdentifierHandler->handle(
-                new NamedDomElementIdentifier($domIdentifier)
+            $this->domIdentifierHandler->handle(
+                new DomElementIdentifier($domIdentifier)
             )
         );
 

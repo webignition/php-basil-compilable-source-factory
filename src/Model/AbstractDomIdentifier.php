@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Model;
 use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
-class NamedDomIdentifierValue implements DomIdentifierInterface
+abstract class AbstractDomIdentifier implements DomIdentifierInterface
 {
     private $identifier;
 
@@ -23,11 +23,6 @@ class NamedDomIdentifierValue implements DomIdentifierInterface
 
     public function includeValue(): bool
     {
-        return true;
-    }
-
-    public function asCollection(): bool
-    {
-        return !$this->getIdentifier() instanceof AttributeIdentifierInterface;
+        return $this->identifier instanceof AttributeIdentifierInterface;
     }
 }

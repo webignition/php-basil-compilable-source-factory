@@ -4,28 +4,28 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 
-use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifier;
+use webignition\BasilCompilableSourceFactory\Model\DomIdentifier;
 use webignition\DomElementIdentifier\AttributeIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifier;
 
-class NamedDomIdentifierTest extends \PHPUnit\Framework\TestCase
+class DomIdentifierTest extends \PHPUnit\Framework\TestCase
 {
     public function testCreate()
     {
         $identifier = new ElementIdentifier('.selector');
 
-        $namedDomElementIdentifier = new NamedDomIdentifier($identifier);
+        $domIdentifier = new DomIdentifier($identifier);
 
-        $this->assertSame($identifier, $namedDomElementIdentifier->getIdentifier());
-        $this->assertTrue($namedDomElementIdentifier->asCollection());
+        $this->assertSame($identifier, $domIdentifier->getIdentifier());
+        $this->assertTrue($domIdentifier->asCollection());
     }
 
     public function testIncludeValue()
     {
-        $elementIdentifier = new NamedDomIdentifier(
+        $elementIdentifier = new DomIdentifier(
             new ElementIdentifier('.selector')
         );
-        $attributeIdentifier = new NamedDomIdentifier(
+        $attributeIdentifier = new DomIdentifier(
             new AttributeIdentifier('.selector', 'attribute_name')
         );
 

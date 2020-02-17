@@ -9,20 +9,20 @@ use webignition\BasilCompilableSource\Line\ClassDependency;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\VariablePlaceholderCollection;
-use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
+use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
+use webignition\BasilCompilableSourceFactory\Model\DomElementIdentifier;
+use webignition\BasilCompilableSourceFactory\Model\DomIdentifier;
 use webignition\BasilCompilableSourceFactory\Model\DomIdentifierInterface;
-use webignition\BasilCompilableSourceFactory\Model\NamedDomElementIdentifier;
-use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifier;
-use webignition\BasilCompilableSourceFactory\Model\NamedDomIdentifierValue;
+use webignition\BasilCompilableSourceFactory\Model\DomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\DomElementIdentifier\AttributeIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifier;
 
-class NamedDomIdentifierHandlerTest extends AbstractTestCase
+class DomIdentifierHandlerTest extends AbstractTestCase
 {
     /**
-     * @var NamedDomIdentifierHandler
+     * @var DomIdentifierHandler
      */
     private $handler;
 
@@ -30,18 +30,18 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
     {
         parent::setUp();
 
-        $this->handler = NamedDomIdentifierHandler::createHandler();
+        $this->handler = DomIdentifierHandler::createHandler();
     }
 
     /**
      * @dataProvider handleDataProvider
      */
     public function testHandle(
-        DomIdentifierInterface $namedDomIdentifier,
+        DomIdentifierInterface $domIdentifier,
         string $expectedRenderedSource,
         MetadataInterface $expectedMetadata
     ) {
-        $source = $this->handler->handle($namedDomIdentifier);
+        $source = $this->handler->handle($domIdentifier);
 
         $this->assertSame($expectedRenderedSource, $source->render());
         $this->assertEquals($expectedMetadata, $source->getMetadata());
@@ -51,7 +51,7 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
     {
         return [
             'element, no parent' => [
-                'value' => new NamedDomElementIdentifier(
+                'value' => new DomElementIdentifier(
                     new ElementIdentifier('.selector')
                 ),
                 'expectedRenderedSource' =>
@@ -71,7 +71,7 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                 ]),
             ],
             'element, has parent' => [
-                'value' => new NamedDomElementIdentifier(
+                'value' => new DomElementIdentifier(
                     (new ElementIdentifier('.selector'))
                         ->withParentIdentifier(new ElementIdentifier('.parent'))
                 ),
@@ -92,7 +92,7 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                 ]),
             ],
             'identifier, no parent' => [
-                'value' => new NamedDomIdentifier(
+                'value' => new DomIdentifier(
                     new ElementIdentifier('.selector')
                 ),
                 'expectedRenderedSource' =>
@@ -112,7 +112,7 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                 ]),
             ],
             'identifier, has parent' => [
-                'value' => new NamedDomIdentifier(
+                'value' => new DomIdentifier(
                     (new ElementIdentifier('.selector'))
                         ->withParentIdentifier(new ElementIdentifier('.parent'))
                 ),
@@ -133,7 +133,7 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                 ]),
             ],
             'element value, no parent' => [
-                'value' => new NamedDomIdentifierValue(
+                'value' => new DomIdentifierValue(
                     new ElementIdentifier('.selector')
                 ),
                 'expectedRenderedSource' =>
@@ -159,7 +159,7 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                 ]),
             ],
             'element value, has parent' => [
-                'value' => new NamedDomIdentifierValue(
+                'value' => new DomIdentifierValue(
                     (new ElementIdentifier('.selector'))
                         ->withParentIdentifier(new ElementIdentifier('.parent'))
                 ),
@@ -186,7 +186,7 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                 ]),
             ],
             'attribute value, no parent' => [
-                'value' => new NamedDomIdentifierValue(
+                'value' => new DomIdentifierValue(
                     new AttributeIdentifier('.selector', 'attribute_name')
                 ),
                 'expectedRenderedSource' =>
@@ -211,7 +211,7 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                 ]),
             ],
             'attribute value, has parent' => [
-                'value' => new NamedDomIdentifierValue(
+                'value' => new DomIdentifierValue(
                     (new AttributeIdentifier('.selector', 'attribute_name'))
                         ->withParentIdentifier(new ElementIdentifier('.parent'))
                 ),
