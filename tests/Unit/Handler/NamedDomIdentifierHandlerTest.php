@@ -57,11 +57,11 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                     VariablePlaceholder::createExport('E')
                 ),
                 'expectedRenderedSource' =>
-                    '{{ E }} = (function () {' . "\n" .
+                    '(function () {' . "\n" .
                     '    return {{ NAVIGATOR }}->findOne(' .
                             'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                         ');' . "\n" .
-                    '})();'
+                    '})()'
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -69,9 +69,6 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        'E',
                     ]),
                 ]),
             ],
@@ -82,11 +79,11 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                     VariablePlaceholder::createExport('E')
                 ),
                 'expectedRenderedSource' =>
-                    '{{ E }} = (function () {' . "\n" .
+                    '(function () {' . "\n" .
                     '    return {{ NAVIGATOR }}->findOne(' .
                             'ElementIdentifier::fromJson(\'{"locator":".selector","parent":{"locator":".parent"}}\')' .
                     ');' . "\n" .
-                    '})();'
+                    '})()'
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -94,9 +91,6 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        'E',
                     ]),
                 ]),
             ],
@@ -106,11 +100,11 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                     VariablePlaceholder::createExport('E')
                 ),
                 'expectedRenderedSource' =>
-                    '{{ E }} = (function () {' . "\n" .
+                    '(function () {' . "\n" .
                     '    return {{ NAVIGATOR }}->find(' .
                             'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                         ');' . "\n" .
-                    '})();'
+                    '})()'
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -118,9 +112,6 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        'E',
                     ]),
                 ]),
             ],
@@ -131,11 +122,11 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                     VariablePlaceholder::createExport('E')
                 ),
                 'expectedRenderedSource' =>
-                    '{{ E }} = (function () {' . "\n" .
+                    '(function () {' . "\n" .
                     '    return {{ NAVIGATOR }}->find(' .
                             'ElementIdentifier::fromJson(\'{"locator":".selector","parent":{"locator":".parent"}}\')' .
                         ');' . "\n" .
-                    '})();'
+                    '})()'
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -143,9 +134,6 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        'E',
                     ]),
                 ]),
             ],
@@ -155,13 +143,13 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                     VariablePlaceholder::createExport('E')
                 ),
                 'expectedRenderedSource' =>
-                    '{{ E }} = (function () {' . "\n" .
+                    '(function () {' . "\n" .
                     '    {{ E }} = {{ NAVIGATOR }}->find(' .
                             'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                          ');' . "\n" .
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue({{ E }});' . "\n" .
-                    '})();'
+                    '})()'
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -183,13 +171,13 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                     VariablePlaceholder::createExport('E')
                 ),
                 'expectedRenderedSource' =>
-                    '{{ E }} = (function () {' . "\n" .
+                    '(function () {' . "\n" .
                     '    {{ E }} = {{ NAVIGATOR }}->find(' .
                             'ElementIdentifier::fromJson(\'{"locator":".selector","parent":{"locator":".parent"}}\')' .
                         ');' . "\n" .
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue({{ E }});' . "\n" .
-                    '})();'
+                    '})()'
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -210,13 +198,13 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                     VariablePlaceholder::createExport('E')
                 ),
                 'expectedRenderedSource' =>
-                    '{{ E }} = (function () {' . "\n" .
+                    '(function () {' . "\n" .
                     '    {{ E }} = {{ NAVIGATOR }}->findOne(' .
                             'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                         ');' . "\n" .
                     "\n" .
                     '    return {{ E }}->getAttribute(\'attribute_name\');' . "\n" .
-                    '})();'
+                    '})()'
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -237,13 +225,13 @@ class NamedDomIdentifierHandlerTest extends AbstractTestCase
                     VariablePlaceholder::createExport('E')
                 ),
                 'expectedRenderedSource' =>
-                    '{{ E }} = (function () {' . "\n" .
+                    '(function () {' . "\n" .
                     '    {{ E }} = {{ NAVIGATOR }}->findOne(' .
                             'ElementIdentifier::fromJson(\'{"locator":".selector","parent":{"locator":".parent"}}\')' .
                         ');' . "\n" .
                     "\n" .
                     '    return {{ E }}->getAttribute(\'attribute_name\');' . "\n" .
-                    '})();'
+                    '})()'
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([

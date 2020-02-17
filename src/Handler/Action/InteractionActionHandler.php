@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
@@ -59,8 +60,11 @@ class InteractionActionHandler
 
         $elementPlaceholder = VariablePlaceholder::createExport('ELEMENT');
 
-        $accessor = $this->namedDomIdentifierHandler->handle(
-            new NamedDomElementIdentifier($domIdentifier, $elementPlaceholder)
+        $accessor = new AssignmentStatement(
+            $elementPlaceholder,
+            $this->namedDomIdentifierHandler->handle(
+                new NamedDomElementIdentifier($domIdentifier, $elementPlaceholder)
+            )
         );
 
         $invocation = new Statement(new ObjectMethodInvocation(

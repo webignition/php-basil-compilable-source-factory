@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler;
 use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
+use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\Handler\NamedDomIdentifierHandler;
@@ -43,9 +44,14 @@ class NamedDomIdentifierHandlerTest extends AbstractBrowserTestCase
     ) {
         $source = $this->handler->handle($namedDomIdentifier);
 
+        $instrumentedSource = new AssignmentStatement(
+            VariablePlaceholder::createExport('ELEMENT'),
+            $source
+        );
+
         $classCode = $this->testCodeGenerator->createBrowserTestForBlock(
             new CodeBlock([
-                $source,
+                $instrumentedSource,
             ]),
             $fixture,
             null,

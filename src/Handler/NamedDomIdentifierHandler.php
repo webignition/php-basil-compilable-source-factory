@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler;
 
 use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Line\ClosureExpression;
+use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
@@ -41,7 +42,7 @@ class NamedDomIdentifierHandler
         );
     }
 
-    public function handle(NamedDomIdentifierInterface $namedDomIdentifier): AssignmentStatement
+    public function handle(NamedDomIdentifierInterface $namedDomIdentifier): ExpressionInterface
     {
         $identifier = $namedDomIdentifier->getIdentifier();
 
@@ -49,18 +50,15 @@ class NamedDomIdentifierHandler
             ? $this->domCrawlerNavigatorCallFactory->createFindCall($identifier)
             : $this->domCrawlerNavigatorCallFactory->createFindOneCall($identifier);
 
-        $elementPlaceholder = $namedDomIdentifier->getPlaceholder();
-
         if (false === $namedDomIdentifier->includeValue()) {
-            return new AssignmentStatement(
-                $elementPlaceholder,
-                new ClosureExpression(new CodeBlock([
-                    new ReturnStatement(
-                        $findCall
-                    ),
-                ]))
-            );
+            return new ClosureExpression(new CodeBlock([
+                new ReturnStatement(
+                    $findCall
+                ),
+            ]));
         }
+
+        $elementPlaceholder = $namedDomIdentifier->getPlaceholder();
 
         $closureExpressionStatements = [
             new AssignmentStatement($elementPlaceholder, $findCall),
@@ -85,9 +83,6 @@ class NamedDomIdentifierHandler
             );
         }
 
-        return new AssignmentStatement(
-            $elementPlaceholder,
-            new ClosureExpression(new CodeBlock($closureExpressionStatements))
-        );
+        return new ClosureExpression(new CodeBlock($closureExpressionStatements));
     }
 }
