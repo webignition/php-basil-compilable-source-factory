@@ -13,24 +13,21 @@ use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
 use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
-use webignition\BasilCompilableSourceFactory\CallFactory\WebDriverElementInspectorCallFactory;
 use webignition\BasilCompilableSourceFactory\Model\DomIdentifierInterface;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
+use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
 class DomIdentifierHandler
 {
     private $domCrawlerNavigatorCallFactory;
-    private $webDriverElementInspectorCallFactory;
     private $singleQuotedStringEscaper;
 
     public function __construct(
         DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory,
-        WebDriverElementInspectorCallFactory $webDriverElementInspectorCallFactory,
         SingleQuotedStringEscaper $singleQuotedStringEscaper
     ) {
         $this->domCrawlerNavigatorCallFactory = $domCrawlerNavigatorCallFactory;
-        $this->webDriverElementInspectorCallFactory = $webDriverElementInspectorCallFactory;
         $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
     }
 
@@ -38,7 +35,6 @@ class DomIdentifierHandler
     {
         return new DomIdentifierHandler(
             DomCrawlerNavigatorCallFactory::createFactory(),
-            WebDriverElementInspectorCallFactory::createFactory(),
             SingleQuotedStringEscaper::create()
         );
     }
@@ -76,7 +72,13 @@ class DomIdentifierHandler
             );
         } else {
             $closureExpressionStatements[] = new ReturnStatement(
-                $this->webDriverElementInspectorCallFactory->createGetValueCall($elementPlaceholder)
+                new ObjectMethodInvocation(
+                    VariablePlaceholder::createDependency(VariableNames::WEBDRIVER_ELEMENT_INSPECTOR),
+                    'getValue',
+                    [
+                        $elementPlaceholder,
+                    ]
+                )
             );
         }
 
