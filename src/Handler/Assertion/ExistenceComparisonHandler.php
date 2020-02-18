@@ -8,18 +8,19 @@ use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSource\Line\ComparisonExpression;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
+use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\Line\Statement\StatementInterface;
 use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\AssertionFailureMessageFactory;
-use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierExistenceHandler;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Model\DomIdentifierValue;
+use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\ValueTypeIdentifier;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
@@ -29,7 +30,6 @@ use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
 class ExistenceComparisonHandler
 {
-    private $assertionCallFactory;
     private $scalarValueHandler;
     private $domIdentifierHandler;
     private $identifierTypeAnalyser;
@@ -38,9 +38,9 @@ class ExistenceComparisonHandler
     private $domIdentifierExistenceHandler;
     private $domIdentifierFactory;
     private $assertionFailureMessageFactory;
+    private $singleQuotedStringEscaper;
 
     public function __construct(
-        AssertionCallFactory $assertionCallFactory,
         ScalarValueHandler $scalarValueHandler,
         DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory,
         DomIdentifierHandler $domIdentifierHandler,
@@ -48,9 +48,9 @@ class ExistenceComparisonHandler
         IdentifierTypeAnalyser $identifierTypeAnalyser,
         DomIdentifierExistenceHandler $domIdentifierExistenceHandler,
         DomIdentifierFactory $domIdentifierFactory,
-        AssertionFailureMessageFactory $assertionFailureMessageFactory
+        AssertionFailureMessageFactory $assertionFailureMessageFactory,
+        SingleQuotedStringEscaper $singleQuotedStringEscaper
     ) {
-        $this->assertionCallFactory = $assertionCallFactory;
         $this->scalarValueHandler = $scalarValueHandler;
         $this->identifierTypeAnalyser = $identifierTypeAnalyser;
         $this->domCrawlerNavigatorCallFactory = $domCrawlerNavigatorCallFactory;
@@ -59,12 +59,12 @@ class ExistenceComparisonHandler
         $this->domIdentifierExistenceHandler = $domIdentifierExistenceHandler;
         $this->domIdentifierFactory = $domIdentifierFactory;
         $this->assertionFailureMessageFactory = $assertionFailureMessageFactory;
+        $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
     }
 
     public static function createHandler(): ExistenceComparisonHandler
     {
         return new ExistenceComparisonHandler(
-            AssertionCallFactory::createFactory(),
             ScalarValueHandler::createHandler(),
             DomCrawlerNavigatorCallFactory::createFactory(),
             DomIdentifierHandler::createHandler(),
@@ -72,7 +72,8 @@ class ExistenceComparisonHandler
             IdentifierTypeAnalyser::create(),
             DomIdentifierExistenceHandler::createHandler(),
             DomIdentifierFactory::createFactory(),
-            AssertionFailureMessageFactory::createFactory()
+            AssertionFailureMessageFactory::createFactory(),
+            SingleQuotedStringEscaper::create()
         );
     }
 
@@ -155,16 +156,19 @@ class ExistenceComparisonHandler
         VariablePlaceholder $valuePlaceholder
     ): StatementInterface {
         $comparison = $assertion->getComparison();
-
-        $assertionTemplate = 'exists' === $comparison
-            ? AssertionCallFactory::ASSERT_TRUE_METHOD
-            : AssertionCallFactory::ASSERT_FALSE_METHOD;
+        $assertionMethod = 'exists' === $comparison ? 'assertTrue' : 'assertFalse';
+        $failureMessage = $this->assertionFailureMessageFactory->createForAssertion($assertion);
 
         return new Statement(
-            $this->assertionCallFactory->createValueExistenceAssertionCall(
-                $valuePlaceholder,
-                $assertionTemplate,
-                $this->assertionFailureMessageFactory->createForAssertion($assertion)
+            new ObjectMethodInvocation(
+                VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+                $assertionMethod,
+                [
+                    $valuePlaceholder,
+                    new LiteralExpression(
+                        '\'' . $this->singleQuotedStringEscaper->escape($failureMessage) . '\''
+                    )
+                ]
             )
         );
     }

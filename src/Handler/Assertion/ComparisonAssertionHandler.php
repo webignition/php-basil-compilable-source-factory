@@ -15,7 +15,6 @@ use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
-use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
@@ -51,7 +50,6 @@ class ComparisonAssertionHandler
         self::ASSERT_STRING_NOT_CONTAINS_STRING_METHOD,
     ];
 
-    private $assertionCallFactory;
     private $scalarValueHandler;
     private $domIdentifierHandler;
     private $identifierTypeAnalyser;
@@ -59,14 +57,12 @@ class ComparisonAssertionHandler
     private $domIdentifierFactory;
 
     public function __construct(
-        AssertionCallFactory $assertionCallFactory,
         ScalarValueHandler $scalarValueHandler,
         DomIdentifierHandler $domIdentifierHandler,
         AccessorDefaultValueFactory $accessorDefaultValueFactory,
         IdentifierTypeAnalyser $identifierTypeAnalyser,
         DomIdentifierFactory $domIdentifierFactory
     ) {
-        $this->assertionCallFactory = $assertionCallFactory;
         $this->scalarValueHandler = $scalarValueHandler;
         $this->domIdentifierHandler = $domIdentifierHandler;
         $this->identifierTypeAnalyser = $identifierTypeAnalyser;
@@ -77,7 +73,6 @@ class ComparisonAssertionHandler
     public static function createHandler(): ComparisonAssertionHandler
     {
         return new ComparisonAssertionHandler(
-            AssertionCallFactory::createFactory(),
             ScalarValueHandler::createHandler(),
             DomIdentifierHandler::createHandler(),
             AccessorDefaultValueFactory::createFactory(),

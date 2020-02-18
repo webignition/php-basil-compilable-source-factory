@@ -7,31 +7,34 @@ namespace webignition\BasilCompilableSourceFactory\Handler;
 use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSource\Line\ExpressionInterface;
+use webignition\BasilCompilableSource\Line\LiteralExpression;
+use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\VariablePlaceholder;
-use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
+use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
+use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
 class DomIdentifierExistenceHandler
 {
     private $domCrawlerNavigatorCallFactory;
-    private $assertionCallFactory;
+    private $singleQuotedStringEscaper;
 
     public function __construct(
         DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory,
-        AssertionCallFactory $assertionCallFactory
+        SingleQuotedStringEscaper $singleQuotedStringEscaper
     ) {
         $this->domCrawlerNavigatorCallFactory = $domCrawlerNavigatorCallFactory;
-        $this->assertionCallFactory = $assertionCallFactory;
+        $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
     }
 
     public static function createHandler(): DomIdentifierExistenceHandler
     {
         return new DomIdentifierExistenceHandler(
             DomCrawlerNavigatorCallFactory::createFactory(),
-            AssertionCallFactory::createFactory()
+            SingleQuotedStringEscaper::create()
         );
     }
 
@@ -66,10 +69,15 @@ class DomIdentifierExistenceHandler
         return new CodeBlock([
             $hasAssignment,
             new Statement(
-                $this->assertionCallFactory->createValueExistenceAssertionCall(
-                    $hasPlaceholder,
-                    AssertionCallFactory::ASSERT_TRUE_METHOD,
-                    $assertionFailureMessage
+                new ObjectMethodInvocation(
+                    VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+                    'assertTrue',
+                    [
+                        $hasPlaceholder,
+                        new LiteralExpression(
+                            '\'' . $this->singleQuotedStringEscaper->escape($assertionFailureMessage) . '\''
+                        )
+                    ]
                 )
             )
         ]);
