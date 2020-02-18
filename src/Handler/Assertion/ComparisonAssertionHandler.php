@@ -10,6 +10,7 @@ use webignition\BasilCompilableSource\Line\ClosureExpression;
 use webignition\BasilCompilableSource\Line\ComparisonExpression;
 use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
+use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\VariablePlaceholder;
@@ -26,12 +27,28 @@ use webignition\BasilModels\Assertion\ComparisonAssertionInterface;
 
 class ComparisonAssertionHandler
 {
+    public const ASSERT_TRUE_METHOD = 'assertTrue';
+    public const ASSERT_FALSE_METHOD = 'assertFalse';
+    public const ASSERT_EQUALS_METHOD = 'assertEquals';
+    public const ASSERT_NOT_EQUALS_METHOD = 'assertNotEquals';
+    public const ASSERT_STRING_CONTAINS_STRING_METHOD = 'assertStringContainsString';
+    public const ASSERT_STRING_NOT_CONTAINS_STRING_METHOD = 'assertStringNotContainsString';
+    public const ASSERT_MATCHES_METHOD = 'assertRegExp';
+
     private const COMPARISON_TO_ASSERTION_TEMPLATE_MAP = [
-        'includes' => AssertionCallFactory::ASSERT_STRING_CONTAINS_STRING_METHOD,
-        'excludes' => AssertionCallFactory::ASSERT_STRING_NOT_CONTAINS_STRING_METHOD,
-        'is' => AssertionCallFactory::ASSERT_EQUALS_METHOD,
-        'is-not' => AssertionCallFactory::ASSERT_NOT_EQUALS_METHOD,
-        'matches' => AssertionCallFactory::ASSERT_MATCHES_METHOD,
+        'includes' => self::ASSERT_STRING_CONTAINS_STRING_METHOD,
+        'excludes' => self::ASSERT_STRING_NOT_CONTAINS_STRING_METHOD,
+        'is' => self::ASSERT_EQUALS_METHOD,
+        'is-not' => self::ASSERT_NOT_EQUALS_METHOD,
+        'matches' => self::ASSERT_MATCHES_METHOD,
+    ];
+
+    /**
+     * @var string[]
+     */
+    private $methodsWithStringArguments = [
+        self::ASSERT_STRING_CONTAINS_STRING_METHOD,
+        self::ASSERT_STRING_NOT_CONTAINS_STRING_METHOD,
     ];
 
     private $assertionCallFactory;
@@ -87,14 +104,31 @@ class ComparisonAssertionHandler
         $examinedValueAssignment = new AssignmentStatement($examinedValuePlaceholder, $examinedValueAccessor);
         $expectedValueAssignment = new AssignmentStatement($expectedValuePlaceholder, $expectedValueAccessor);
 
+        $assertionMethod = self::COMPARISON_TO_ASSERTION_TEMPLATE_MAP[$assertion->getComparison()];
+
+        if (in_array($assertionMethod, $this->methodsWithStringArguments)) {
+            $expectedValuePlaceholder = VariablePlaceholder::createExport(
+                $expectedValuePlaceholder->getName(),
+                'string'
+            );
+
+            $examinedValuePlaceholder = VariablePlaceholder::createExport(
+                $examinedValuePlaceholder->getName(),
+                'string'
+            );
+        }
+
         return new CodeBlock([
             $expectedValueAssignment,
             $examinedValueAssignment,
             new Statement(
-                $this->assertionCallFactory->createValueComparisonAssertionCall(
-                    $expectedValuePlaceholder,
-                    $examinedValuePlaceholder,
-                    self::COMPARISON_TO_ASSERTION_TEMPLATE_MAP[$assertion->getComparison()]
+                new ObjectMethodInvocation(
+                    VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+                    self::COMPARISON_TO_ASSERTION_TEMPLATE_MAP[$assertion->getComparison()],
+                    [
+                        $expectedValuePlaceholder,
+                        $examinedValuePlaceholder,
+                    ]
                 )
             ),
         ]);
