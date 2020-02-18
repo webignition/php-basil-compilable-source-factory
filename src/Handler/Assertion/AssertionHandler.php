@@ -41,9 +41,9 @@ class AssertionHandler
     public function handle(AssertionInterface $assertion): CodeBlockInterface
     {
         try {
-//            if ($this->isComparisonAssertion($assertion) && $assertion instanceof ComparisonAssertionInterface) {
-//                return $this->comparisonAssertionHandler->handle($assertion);
-//            }
+            if ($this->isComparisonAssertion($assertion) && $assertion instanceof ComparisonAssertionInterface) {
+                return $this->comparisonAssertionHandler->handle($assertion);
+            }
 
             if ($this->isExistenceAssertion($assertion)) {
                 return $this->existenceComparisonHandler->handle($assertion);
