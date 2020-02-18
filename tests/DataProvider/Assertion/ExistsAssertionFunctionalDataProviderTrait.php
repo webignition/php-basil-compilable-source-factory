@@ -29,6 +29,7 @@ trait ExistsAssertionFunctionalDataProviderTrait
                 'variableIdentifiers' => [
                     'HAS' => '$has',
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
+                    'ELEMENT' => '$element',
                 ],
             ],
             'exists comparison, environment examined value' => [

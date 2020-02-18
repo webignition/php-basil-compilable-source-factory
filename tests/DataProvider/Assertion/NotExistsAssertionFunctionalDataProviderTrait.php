@@ -28,6 +28,7 @@ trait NotExistsAssertionFunctionalDataProviderTrait
                 'variableIdentifiers' => [
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
+                    'ELEMENT' => '$element',
                 ],
             ],
             'not-exists comparison, environment examined value' => [
