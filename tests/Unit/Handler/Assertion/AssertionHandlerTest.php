@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Assertion;
 
+use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromExcludesAssertionDataProviderTrait;
@@ -15,8 +16,6 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\Create
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromNotExistsAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
-use webignition\BasilCompilationSource\Block\CodeBlockInterface;
-use webignition\BasilCompilationSource\Metadata\MetadataInterface;
 use webignition\BasilModels\Assertion\AssertionInterface;
 use webignition\BasilParser\AssertionParser;
 
@@ -43,25 +42,23 @@ class AssertionHandlerTest extends AbstractTestCase
     }
 
     /**
-     * @dataProvider createFromExcludesAssertionDataProvider
+     * @!dataProvider createFromExcludesAssertionDataProvider
      * @dataProvider createFromExistsAssertionDataProvider
-     * @dataProvider createFromIncludesAssertionDataProvider
-     * @dataProvider createFromIsAssertionDataProvider
-     * @dataProvider createFromIsNotAssertionDataProvider
-     * @dataProvider createFromMatchesAssertionDataProvider
+     * @!dataProvider createFromIncludesAssertionDataProvider
+     * @!dataProvider createFromIsAssertionDataProvider
+     * @!dataProvider createFromIsNotAssertionDataProvider
+     * @!dataProvider createFromMatchesAssertionDataProvider
      * @dataProvider createFromNotExistsAssertionDataProvider
      */
     public function testHandle(
         AssertionInterface $assertion,
-        CodeBlockInterface $expectedContent,
+        string $expectedRenderedContent,
         MetadataInterface $expectedMetadata
     ) {
-        $this->markTestSkipped();
-
         $source = $this->handler->handle($assertion);
 
-        $this->assertBlockContentEquals($expectedContent, $source);
-        $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
+        $this->assertEquals($expectedRenderedContent, $source->render());
+        $this->assertEquals($expectedMetadata, $source->getMetadata());
     }
 
     /**

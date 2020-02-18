@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
+use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
+use webignition\BasilCompilableSource\Line\ClassDependency;
+use webignition\BasilCompilableSource\Metadata\Metadata;
+use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilationSource\Line\ClassDependency;
-use webignition\BasilCompilationSource\Metadata\Metadata;
-use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilParser\AssertionParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
 
@@ -22,60 +21,67 @@ trait CreateFromNotExistsAssertionDataProviderTrait
         return [
             'not-exists comparison, element identifier examined value' => [
                 'assertion' => $assertionParser->parse('$".selector" not-exists'),
-                'expectedContent' => CodeBlock::fromContent([
-                    '{{ EXAMINED }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
+                'expectedRenderedSource' =>
+                    '{{ EXAMINED }} = ' .
+                    '{{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".selector"}\'));' . "\n" .
                     '{{ PHPUNIT }}->assertFalse(' .
-                        '{{ EXAMINED }}, ' .
-                        '\'{"assertion":{"source":"$\\\".selector\\\" not-exists",' .
-                        '"identifier":"$\\\".selector\\\"","comparison":"not-exists"}}\'' .
-                    ')',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
+                    '{{ EXAMINED }}, ' .
+                    '\'{"assertion":{"source":"$\\\".selector\\\" not-exists",' .
+                    '"identifier":"$\\\".selector\\\"","comparison":"not-exists"}}\'' .
+                    ');'
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
-                    ]))
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         VariableNames::EXAMINED_VALUE,
-                    ])),
+                    ]),
+                ]),
             ],
             'not-exists comparison, attribute identifier examined value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name not-exists'),
-                'expectedContent' => CodeBlock::fromContent([
+                'expectedRenderedSource' =>
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(' .
-                        'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ')',
-                    '{{ PHPUNIT }}->assertTrue(' .
-                        '{{ HAS }}, ' .
-                        '\'{"assertion":{"source":"$\\\".selector\\\".attribute_name not-exists",' .
-                        '"identifier":"$\\\".selector\\\".attribute_name","comparison":"not-exists"}}\'' .
-                    ')',
-                    '{{ EXAMINED }} = {{ NAVIGATOR }}->findOne(' .
                     'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ')',
-                    '{{ EXAMINED }} = {{ EXAMINED }}->getAttribute(\'attribute_name\')',
-                    '{{ EXAMINED }} = {{ EXAMINED }} !== null',
+                    ');' . "\n" .
+                    '{{ PHPUNIT }}->assertTrue(' .
+                    '{{ HAS }}, ' .
+                    '\'{"assertion":{"source":"$\\\".selector\\\".attribute_name not-exists",' .
+                    '"identifier":"$\\\".selector\\\".attribute_name","comparison":"not-exists"}}\'' .
+                    ');' . "\n" .
+                    '{{ EXAMINED }} = (function () {' . "\n" .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    ');' . "\n" .
+                    "\n" .
+                    '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
+                    '})();' . "\n" .
+                    '{{ EXAMINED }} = {{ EXAMINED }} !== null;' . "\n" .
                     '{{ PHPUNIT }}->assertFalse(' .
-                        '{{ EXAMINED }}, ' .
-                        '\'{"assertion":{"source":"$\\\".selector\\\".attribute_name not-exists",' .
-                        '"identifier":"$\\\".selector\\\".attribute_name","comparison":"not-exists"}}\'' .
-                    ')',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
+                    '{{ EXAMINED }}, ' .
+                    '\'{"assertion":{"source":"$\\\".selector\\\".attribute_name not-exists",' .
+                    '"identifier":"$\\\".selector\\\".attribute_name","comparison":"not-exists"}}\'' .
+                    ');'
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
-                    ]))
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
-                        'HAS',
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         VariableNames::EXAMINED_VALUE,
-                    ])),
+                        'HAS',
+                        'ELEMENT',
+                    ]),
+                ]),
             ],
         ];
     }

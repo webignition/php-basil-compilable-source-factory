@@ -43,12 +43,12 @@ class AssertionHandlerPassingAssertionsTest extends AbstractBrowserTestCase
     }
 
     /**
-     * @dataProvider excludesAssertionFunctionalDataProvider
+     * @!dataProvider excludesAssertionFunctionalDataProvider
      * @dataProvider existsAssertionFunctionalDataProvider
-     * @dataProvider includesAssertionFunctionalDataProvider
-     * @dataProvider isAssertionFunctionalDataProvider
-     * @dataProvider isNotAssertionFunctionalDataProvider
-     * @dataProvider matchesAssertionFunctionalDataProvider
+     * @!dataProvider includesAssertionFunctionalDataProvider
+     * @!dataProvider isAssertionFunctionalDataProvider
+     * @!dataProvider isNotAssertionFunctionalDataProvider
+     * @!dataProvider matchesAssertionFunctionalDataProvider
      * @dataProvider notExistsAssertionFunctionalDataProvider
      */
     public function testCreateSource(
@@ -56,8 +56,6 @@ class AssertionHandlerPassingAssertionsTest extends AbstractBrowserTestCase
         AssertionInterface $assertion,
         array $additionalVariableIdentifiers = []
     ) {
-        $this->markTestSkipped();
-
         $source = $this->handler->handle($assertion);
 
         $classCode = $this->testCodeGenerator->createBrowserTestForBlock(
