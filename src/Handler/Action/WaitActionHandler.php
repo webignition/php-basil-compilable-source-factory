@@ -14,7 +14,6 @@ use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
-use webignition\BasilCompilableSourceFactory\CallFactory\VariableAssignmentFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
@@ -28,7 +27,6 @@ class WaitActionHandler
     private const DURATION_PLACEHOLDER = 'DURATION';
     private const MICROSECONDS_PER_MILLISECOND = 1000;
 
-    private $variableAssignmentFactory;
     private $scalarValueHandler;
     private $domIdentifierHandler;
     private $accessorDefaultValueFactory;
@@ -36,14 +34,12 @@ class WaitActionHandler
     private $identifierTypeAnalyser;
 
     public function __construct(
-        VariableAssignmentFactory $variableAssignmentFactory,
         ScalarValueHandler $scalarValueHandler,
         DomIdentifierHandler $domIdentifierHandler,
         AccessorDefaultValueFactory $accessorDefaultValueFactory,
         DomIdentifierFactory $domIdentifierFactory,
         IdentifierTypeAnalyser $identifierTypeAnalyser
     ) {
-        $this->variableAssignmentFactory = $variableAssignmentFactory;
         $this->scalarValueHandler = $scalarValueHandler;
         $this->domIdentifierHandler = $domIdentifierHandler;
         $this->accessorDefaultValueFactory = $accessorDefaultValueFactory;
@@ -54,7 +50,6 @@ class WaitActionHandler
     public static function createHandler(): WaitActionHandler
     {
         return new WaitActionHandler(
-            VariableAssignmentFactory::createFactory(),
             ScalarValueHandler::createHandler(),
             DomIdentifierHandler::createHandler(),
             AccessorDefaultValueFactory::createFactory(),
