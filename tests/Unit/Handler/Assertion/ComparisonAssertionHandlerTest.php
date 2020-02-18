@@ -35,8 +35,6 @@ class ComparisonAssertionHandlerTest extends AbstractTestCase
         \Exception $expectedException,
         ?callable $initializer = null
     ) {
-        $this->markTestSkipped();
-
         $handler = ComparisonAssertionHandler::createHandler();
 
         if (null !== $initializer) {

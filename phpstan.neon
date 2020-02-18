@@ -1,7 +1,6 @@
 parameters:
   inferPrivatePropertyTypeFromConstructor: true
   excludes_analyse:
-    - src/Handler/Assertion/ComparisonAssertionHandler.php
     - src/Handler/StepHandler.php
     - tests/Functional/ClassDefinitionFactoryTest.php
     - tests/Functional/Handler/StepHandlerTest.php

@@ -29,7 +29,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
     /**
      * @dataProvider createSourceForFailingAssertionsDataProvider
      */
-    public function testCreateSourceForFailingAssertions(
+    public function testHandleForFailingAssertions(
         string $fixture,
         AssertionInterface $assertion,
         string $expectedExpectationFailedExceptionMessage,

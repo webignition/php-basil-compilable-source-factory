@@ -42,12 +42,12 @@ class AssertionHandlerTest extends AbstractTestCase
     }
 
     /**
-     * @!dataProvider createFromExcludesAssertionDataProvider
+     * @dataProvider createFromExcludesAssertionDataProvider
      * @dataProvider createFromExistsAssertionDataProvider
-     * @!dataProvider createFromIncludesAssertionDataProvider
-     * @!dataProvider createFromIsAssertionDataProvider
-     * @!dataProvider createFromIsNotAssertionDataProvider
-     * @!dataProvider createFromMatchesAssertionDataProvider
+     * @dataProvider createFromIncludesAssertionDataProvider
+     * @dataProvider createFromIsAssertionDataProvider
+     * @dataProvider createFromIsNotAssertionDataProvider
+     * @dataProvider createFromMatchesAssertionDataProvider
      * @dataProvider createFromNotExistsAssertionDataProvider
      */
     public function testHandle(
@@ -68,8 +68,6 @@ class AssertionHandlerTest extends AbstractTestCase
         AssertionInterface $assertion,
         UnsupportedStatementException $expectedException
     ) {
-        $this->markTestSkipped();
-
         $handler = AssertionHandler::createHandler();
         $this->expectExceptionObject($expectedException);
 
