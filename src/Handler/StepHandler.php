@@ -5,6 +5,17 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler;
 
 use webignition\BaseBasilTestCase\Statement as BasilTestStatement;
+use webignition\BasilCompilableSource\Block\CodeBlock;
+use webignition\BasilCompilableSource\Block\CodeBlockInterface;
+use webignition\BasilCompilableSource\Line\EmptyLine;
+use webignition\BasilCompilableSource\Line\LiteralExpression;
+use webignition\BasilCompilableSource\Line\MethodInvocation\StaticObjectMethodInvocation;
+use webignition\BasilCompilableSource\Line\ObjectPropertyAccessExpression;
+use webignition\BasilCompilableSource\Line\SingleLineComment;
+use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
+use webignition\BasilCompilableSource\Line\Statement\StatementInterface;
+use webignition\BasilCompilableSource\StaticObject;
+use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\AssertionFailureMessageFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
@@ -13,17 +24,6 @@ use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\Block\CodeBlockInterface;
-use webignition\BasilCompilationSource\Line\ClassDependency;
-use webignition\BasilCompilationSource\Line\Comment;
-use webignition\BasilCompilationSource\Line\EmptyLine;
-use webignition\BasilCompilationSource\Line\Statement;
-use webignition\BasilCompilationSource\Line\StatementInterface;
-use webignition\BasilCompilationSource\Metadata\Metadata;
-use webignition\BasilCompilationSource\VariablePlaceholder;
-use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Action\ActionInterface;
@@ -92,26 +92,29 @@ class StepHandler
         try {
             foreach ($step->getActions() as $action) {
                 try {
-                    $block->addLinesFromBlock($this->createActionDerivedAssertions($action));
+                    $derivedActionAssertions = $this->createDerivedAssertionsForAction($action);
+                    $block->addLines($derivedActionAssertions->getLines());
                 } catch (UnsupportedContentException $unsupportedIdentifierException) {
                     throw new UnsupportedStatementException($action, $unsupportedIdentifierException);
                 }
 
-                $block->addLinesFromBlock($this->createStatementBlock($action, $this->actionHandler->handle($action)));
+                $statementBlock = $this->createStatementBlock($action, $this->actionHandler->handle($action));
+                $block->addLines($statementBlock->getLines());
             }
 
             foreach ($step->getAssertions() as $assertion) {
                 if (!$this->isExistenceAssertion($assertion)) {
                     try {
-                        $block->addLinesFromBlock($this->createAssertionDerivedAssertions($assertion));
+                        $block->addLines(
+                            $this->createDerivedAssertionsForAssertion($assertion)->getLines()
+                        );
                     } catch (UnsupportedContentException $unsupportedIdentifierException) {
                         throw new UnsupportedStatementException($assertion, $unsupportedIdentifierException);
                     }
                 }
 
-                $block->addLinesFromBlock(
-                    $this->createStatementBlock($assertion, $this->assertionHandler->handle($assertion))
-                );
+                $statementBlock = $this->createStatementBlock($assertion, $this->assertionHandler->handle($assertion));
+                $block->addLines($statementBlock->getLines());
             }
         } catch (UnsupportedStatementException $unsupportedStatementException) {
             throw new UnsupportedStepException($step, $unsupportedStatementException);
@@ -191,12 +194,31 @@ class StepHandler
             $statementCommentContent .= ' <- ' . $statement->getSourceStatement()->getSource();
         }
 
-        $statementPlaceholder = new VariablePlaceholder(VariableNames::STATEMENT);
+        $statementPlaceholder = VariablePlaceholder::createExport(VariableNames::STATEMENT);
 
-        $statementAssignment = $this->createStatementAssignment($statement, $statementPlaceholder);
-        $currentStatementStatement = $this->createSetCurrentStatementStatement($statementPlaceholder);
+        $statementAssignment = new AssignmentStatement(
+            $statementPlaceholder,
+            new StaticObjectMethodInvocation(
+                new StaticObject(BasilTestStatement::class),
+                $statement instanceof ActionInterface ? 'createAction' : 'createAssertion',
+                [
+                    new LiteralExpression(sprintf(
+                        '\'%s\'',
+                        $this->singleQuotedStringEscaper->escape($statement->getSource())
+                    ))
+                ]
+            )
+        );
 
-        $block->addLine(new Comment($statementCommentContent));
+        $currentStatementStatement = new AssignmentStatement(
+            new ObjectPropertyAccessExpression(
+                VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+                'currentStatement'
+            ),
+            $statementPlaceholder
+        );
+
+        $block->addLine(new SingleLineComment($statementCommentContent));
         $block->addLine($statementAssignment);
         $block->addLine($currentStatementStatement);
 
@@ -215,59 +237,12 @@ class StepHandler
     private function createAddToCompletedStatementsStatement(
         VariablePlaceholder $statementPlaceholder
     ): StatementInterface {
-        $variableDependencies = new VariablePlaceholderCollection();
-        $phpUnitPlaceholder = $variableDependencies->create(VariableNames::PHPUNIT_TEST_CASE);
-
-        return new Statement(
-            sprintf(
-                '%s->completedStatements[] = %s',
-                $phpUnitPlaceholder,
-                $statementPlaceholder
+        return new AssignmentStatement(
+            new ObjectPropertyAccessExpression(
+                VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+                'completedStatements[]'
             ),
-            (new Metadata())
-                ->withVariableDependencies($variableDependencies)
-        );
-    }
-
-    private function createStatementAssignment(
-        StatementModelInterface $statement,
-        VariablePlaceholder $statementPlaceholder
-    ): StatementInterface {
-        $variableExports = new VariablePlaceholderCollection([
-            $statementPlaceholder,
-        ]);
-
-        $createMethod = $statement instanceof ActionInterface ? 'createAction' : 'createAssertion';
-
-        return new Statement(
-            sprintf(
-                '%s = Statement::%s(\'%s\')',
-                $statementPlaceholder,
-                $createMethod,
-                $this->singleQuotedStringEscaper->escape($statement->getSource())
-            ),
-            (new Metadata())
-                ->withClassDependencies(new ClassDependencyCollection([
-                    new ClassDependency(BasilTestStatement::class),
-                ]))
-                ->withVariableExports($variableExports)
-        );
-    }
-
-    private function createSetCurrentStatementStatement(
-        VariablePlaceholder $statementPlaceholder
-    ): StatementInterface {
-        $variableDependencies = new VariablePlaceholderCollection();
-        $phpUnitPlaceholder = $variableDependencies->create(VariableNames::PHPUNIT_TEST_CASE);
-
-        return new Statement(
-            sprintf(
-                '%s->currentStatement = %s',
-                $phpUnitPlaceholder,
-                $statementPlaceholder
-            ),
-            (new Metadata())
-                ->withVariableDependencies($variableDependencies)
+            $statementPlaceholder
         );
     }
 
@@ -278,26 +253,32 @@ class StepHandler
      *
      * @throws UnsupportedContentException
      */
-    private function createActionDerivedAssertions(ActionInterface $action): CodeBlockInterface
+    private function createDerivedAssertionsForAction(ActionInterface $action): CodeBlockInterface
     {
         $block = new CodeBlock();
 
         if ($action instanceof InteractionActionInterface && !$action instanceof InputActionInterface) {
-            $block->addLinesFromBlock(
-                $this->createDerivedElementExistenceBlock($action->getIdentifier(), $action)
+            $derivedElementExistenceBlock = $this->createDerivedElementExistenceBlock(
+                $action->getIdentifier(),
+                $action
             );
+
+            $block->addLines($derivedElementExistenceBlock->getLines());
         }
 
         if ($action instanceof InputActionInterface) {
-            $block->addLinesFromBlock(
-                $this->createDerivedCollectionExistenceBlock($action->getIdentifier(), $action)
+            $derivedCollectionExistenceBlock = $this->createDerivedCollectionExistenceBlock(
+                $action->getIdentifier(),
+                $action
             );
+
+            $block->addLines($derivedCollectionExistenceBlock->getLines());
 
             $value = $action->getValue();
 
             if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($value)) {
-                $block->addLinesFromBlock(
-                    $this->createDerivedCollectionExistenceBlock($value, $action)
+                $block->addLines(
+                    $this->createDerivedCollectionExistenceBlock($value, $action)->getLines()
                 );
             }
         }
@@ -306,8 +287,8 @@ class StepHandler
             $duration = $action->getDuration();
 
             if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($duration)) {
-                $block->addLinesFromBlock(
-                    $this->createDerivedCollectionExistenceBlock($duration, $action)
+                $block->addLines(
+                    $this->createDerivedCollectionExistenceBlock($duration, $action)->getLines()
                 );
             }
         }
@@ -322,15 +303,15 @@ class StepHandler
      *
      * @throws UnsupportedContentException
      */
-    private function createAssertionDerivedAssertions(AssertionInterface $assertion): CodeBlockInterface
+    private function createDerivedAssertionsForAssertion(AssertionInterface $assertion): CodeBlockInterface
     {
         $block = new CodeBlock();
 
         $identifier = $assertion->getIdentifier();
 
         if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
-            $block->addLinesFromBlock(
-                $this->createDerivedCollectionExistenceBlock($identifier, $assertion)
+            $block->addLines(
+                $this->createDerivedCollectionExistenceBlock($identifier, $assertion)->getLines()
             );
         }
 
@@ -338,8 +319,8 @@ class StepHandler
             $value = $assertion->getValue();
 
             if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($value)) {
-                $block->addLinesFromBlock(
-                    $this->createDerivedCollectionExistenceBlock($value, $assertion)
+                $block->addLines(
+                    $this->createDerivedCollectionExistenceBlock($value, $assertion)->getLines()
                 );
             }
         }

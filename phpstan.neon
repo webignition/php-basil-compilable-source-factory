@@ -1,14 +1,11 @@
 parameters:
   inferPrivatePropertyTypeFromConstructor: true
   excludes_analyse:
-    - src/Handler/StepHandler.php
     - tests/Functional/ClassDefinitionFactoryTest.php
-    - tests/Functional/Handler/StepHandlerTest.php
     - tests/Services/TestCodeGenerator.php
     - tests/Unit/AbstractTestCase.php
     - tests/Unit/CallFactory/VariableAssignmentFactoryTest.php
     - tests/Unit/ClassDefinitionFactoryTest.php
-    - tests/Unit/Handler/StepHandlerTest.php
     - tests/Unit/StepMethodFactoryTest.php
 
   ignoreErrors:
