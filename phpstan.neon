@@ -6,7 +6,6 @@ parameters:
     - tests/Unit/AbstractTestCase.php
     - tests/Unit/CallFactory/VariableAssignmentFactoryTest.php
     - tests/Unit/ClassDefinitionFactoryTest.php
-    - tests/Unit/StepMethodFactoryTest.php
 
   ignoreErrors:
     # Return type of 'array' of test data providers

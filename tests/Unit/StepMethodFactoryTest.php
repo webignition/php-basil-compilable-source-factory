@@ -5,6 +5,12 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
 use webignition\BaseBasilTestCase\Statement;
+use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
+use webignition\BasilCompilableSource\Line\ClassDependency;
+use webignition\BasilCompilableSource\Metadata\Metadata;
+use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\MethodDefinitionInterface;
+use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 use webignition\BasilCompilableSourceFactory\ArrayExpressionFactory;
 use webignition\BasilCompilableSourceFactory\Handler\StepHandler;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
@@ -12,16 +18,6 @@ use webignition\BasilCompilableSourceFactory\StepMethodFactory;
 use webignition\BasilCompilableSourceFactory\StepMethodNameFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StepMethodNameFactoryFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\Block\DocBlock;
-use webignition\BasilCompilationSource\Line\ClassDependency;
-use webignition\BasilCompilationSource\Line\Comment;
-use webignition\BasilCompilationSource\Metadata\Metadata;
-use webignition\BasilCompilationSource\Metadata\MetadataInterface;
-use webignition\BasilCompilationSource\MethodDefinition\MethodDefinition;
-use webignition\BasilCompilationSource\MethodDefinition\MethodDefinitionInterface;
-use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModels\Step\StepInterface;
 use webignition\BasilParser\StepParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
@@ -35,12 +31,10 @@ class StepMethodFactoryTest extends AbstractTestCase
         StepMethodNameFactory $stepMethodNameFactory,
         string $stepName,
         StepInterface $step,
-        MethodDefinitionInterface $expectedTestMethod,
+        string $expectedRenderedTestMethod,
         MetadataInterface $expectedTestMethodMetadata,
-        ?MethodDefinitionInterface $expectedDataProviderMethod
+        ?string $expectedRenderedDataProviderMethod
     ) {
-        $this->markTestSkipped();
-
         $factory = new StepMethodFactory(
             StepHandler::createHandler(),
             ArrayExpressionFactory::createFactory(),
@@ -51,16 +45,24 @@ class StepMethodFactoryTest extends AbstractTestCase
         $stepMethods = $factory->createStepMethods($stepName, $step);
 
         $testMethod = $stepMethods->getTestMethod();
-        $this->assertMethodEquals($expectedTestMethod, $testMethod);
-        $this->assertMetadataEquals($expectedTestMethodMetadata, $testMethod->getMetadata());
 
+        $this->assertSame($expectedRenderedTestMethod, $testMethod->render());
+
+        $this->assertNull($testMethod->getReturnType());
+        $this->assertFalse($testMethod->isStatic());
+        $this->assertSame('public', $testMethod->getVisibility());
+
+        $this->assertEquals($expectedTestMethodMetadata, $testMethod->getMetadata());
+
+
+//        $this->assertMethodEquals($expectedTestMethod, $testMethod);
+//        $this->assertMetadataEquals($expectedTestMethodMetadata, $testMethod->getMetadata());
+//        $this->assertMetadataEquals($expectedTestMethodMetadata, $testMethod->getMetadata());
+//
         $dataProviderMethod = $stepMethods->getDataProviderMethod();
 
-        if (
-            $dataProviderMethod instanceof MethodDefinitionInterface &&
-            $expectedDataProviderMethod instanceof MethodDefinitionInterface
-        ) {
-            $this->assertMethodEquals($expectedDataProviderMethod, $dataProviderMethod);
+        if ($dataProviderMethod instanceof MethodDefinitionInterface) {
+            $this->assertSame($expectedRenderedDataProviderMethod, $dataProviderMethod->render());
         } else {
             $this->assertNull($dataProviderMethod);
         }
@@ -83,15 +85,18 @@ class StepMethodFactoryTest extends AbstractTestCase
                 ),
                 'stepName' => 'Step Name',
                 'step' => $stepParser->parse([]),
-                'expectedTestMethod' => new MethodDefinition('testMethodName', CodeBlock::fromContent([
-                    '{{ PHPUNIT }}->setBasilStepName(\'Step Name\')',
-                    '',
-                ])),
-                'expectedTestMethodMetadata' => (new Metadata())
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                'expectedRenderedTestMethod' =>
+                    'public function testMethodName()' . "\n"  .
+                    '{' . "\n" .
+                    '    {{ PHPUNIT }}->setBasilStepName(\'Step Name\');' . "\n" .
+                    '}'
+                ,
+                'expectedTestMethodMetadata' => new Metadata([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ])),
-                'expectedDataProviderMethod' => null
+                    ]),
+                ]),
+                'expectedRenderedDataProviderMethod' => null
             ],
             'empty test, step name contains single quotes' => [
                 'stepMethodNameFactory' => $stepMethodNameFactoryFactory->create(
@@ -104,15 +109,18 @@ class StepMethodFactoryTest extends AbstractTestCase
                 ),
                 'stepName' => 'step name \'contains\' single quotes',
                 'step' => $stepParser->parse([]),
-                'expectedTestMethod' => new MethodDefinition('testMethodName', CodeBlock::fromContent([
-                    '{{ PHPUNIT }}->setBasilStepName(\'step name \\\'contains\\\' single quotes\')',
-                    '',
-                ])),
-                'expectedTestMethodMetadata' => (new Metadata())
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                'expectedRenderedTestMethod' =>
+                    'public function testMethodName()' . "\n"  .
+                    '{' . "\n" .
+                    '    {{ PHPUNIT }}->setBasilStepName(\'step name \\\'contains\\\' single quotes\');' . "\n" .
+                    '}'
+                ,
+                'expectedTestMethodMetadata' => new Metadata([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ])),
-                'expectedDataProviderMethod' => null
+                    ]),
+                ]),
+                'expectedRenderedDataProviderMethod' => null
             ],
             'single step with single action and single assertion' => [
                 'stepMethodNameFactory' => $stepMethodNameFactoryFactory->create(
@@ -126,64 +134,67 @@ class StepMethodFactoryTest extends AbstractTestCase
                 'stepName' => 'Step Name',
                 'step' => $stepParser->parse([
                     'actions' => [
-                        'click $".selector"',
+                        'click $".sel"',
                     ],
                     'assertions' => [
                         '$page.title is "value"',
                     ],
                 ]),
-                'expectedTestMethod' => new MethodDefinition('testMethodName', CodeBlock::fromContent([
-                    '{{ PHPUNIT }}->setBasilStepName(\'Step Name\')',
-                    '',
-                    '// $".selector" exists <- click $".selector"',
-                    '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\')',
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
-                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
-                    '{{ PHPUNIT }}->assertTrue(' .
-                        '{{ HAS }}, ' .
-                        '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
-                        '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
-                    ')',
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
-                    '',
-                    '// click $".selector"',
-                    '{{ STATEMENT }} = Statement::createAction(\'click $".selector"\')',
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
-                    '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ')',
-                    '{{ ELEMENT }}->click()',
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
-                    '',
-                    '// $page.title is "value"',
-                    '{{ STATEMENT }} = Statement::createAssertion(\'$page.title is "value"\')',
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
-                    '{{ EXPECTED }} = "value" ?? null',
-                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-                    '{{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null',
-                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
-                    '',
-                ])),
-                'expectedTestMethodMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
+                'expectedRenderedTestMethod' =>
+                    'public function testMethodName()' . "\n"  .
+                    '{' . "\n" .
+                    '    {{ PHPUNIT }}->setBasilStepName(\'Step Name\');' . "\n" .
+                    "\n" .
+                    '    // $".sel" exists <- click $".sel"' . "\n" .
+                    '    {{ STATEMENT }} = Statement::createAssertion(\'$".sel" exists\');' . "\n" .
+                    '    {{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '    {{ HAS }} = {{ NAVIGATOR }}->hasOne(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".sel"}\')' .
+                    ');' . "\n" .
+                    '    {{ PHPUNIT }}->assertTrue(' .
+                    '{{ HAS }}, ' .
+                    '\'{"assertion":{"source":"$\\\".sel\\\" exists",' .
+                    '"identifier":"$\\\".sel\\\"","comparison":"exists"}}\'' .
+                    ');' . "\n" .
+                    '    {{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
+                    "\n" .
+                    '    // click $".sel"' . "\n" .
+                    '    {{ STATEMENT }} = Statement::createAction(\'click $".sel"\');' . "\n" .
+                    '    {{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".sel"}\')' .
+                    ');' . "\n" .
+                    '    {{ ELEMENT }}->click();' . "\n" .
+                    '    {{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
+                    "\n" .
+                    '    // $page.title is "value"' . "\n" .
+                    '    {{ STATEMENT }} = Statement::createAssertion(\'$page.title is "value"\');' . "\n" .
+                    '    {{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '    {{ EXPECTED }} = "value" ?? null;' . "\n" .
+                    '    {{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null;' . "\n" .
+                    '    {{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});' . "\n" .
+                    '    {{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
+                    '}'
+                ,
+                'expectedTestMethodMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(Statement::class),
-                    ]))
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        new ClassDependency(ElementIdentifier::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::PANTHER_CLIENT,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'HAS',
                         'ELEMENT',
                         VariableNames::EXAMINED_VALUE,
                         VariableNames::EXPECTED_VALUE,
                         VariableNames::STATEMENT,
-                    ])),
-                'expectedDataProviderMethod' => null,
+                    ]),
+                ]),
+                'expectedRenderedDataProviderMethod' => null
             ],
             'single step with single action and single assertion with data provider' => [
                 'stepMethodNameFactory' => $stepMethodNameFactoryFactory->create(
@@ -213,112 +224,100 @@ class StepMethodFactoryTest extends AbstractTestCase
                         ],
                     ],
                 ]),
-                'expectedTestMethod' => $this->createMethodDefinitionWithDocblock(
-                    new MethodDefinition(
-                        'testMethodName',
-                        CodeBlock::fromContent([
-                            '{{ PHPUNIT }}->setBasilStepName(\'Step Name\')',
-                            '',
-                            '//$".selector" exists <- set $".selector" to $data.field_value',
-                            '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\')',
-                            '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
-                            '{{ HAS }} = {{ NAVIGATOR }}->has(' .
-                            'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                            ')',
-                            '{{ PHPUNIT }}->assertTrue(' .
-                                '{{ HAS }}, ' .
-                                '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
-                                '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
-                            ')',
-                            '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
-                            '',
-                            '// set $".selector" to $data.field_value',
-                            '{{ STATEMENT }} = Statement::createAction(\'set $".selector" to $data.field_value\')',
-                            '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
-                            '{{ COLLECTION }} = {{ NAVIGATOR }}->find(' .
-                            'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                            ')',
-                            '{{ VALUE }} = $field_value ?? null',
-                            '{{ VALUE }} = (string) {{ VALUE }}',
-                            '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
-                            '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
-                            '',
-                            '// $".selector" exists <- $".selector" is $data.expected_value',
-                            '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\')',
-                            '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
-                            '{{ HAS }} = {{ NAVIGATOR }}->has(' .
-                            'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                            ')',
-                            '{{ PHPUNIT }}->assertTrue(' .
-                                '{{ HAS }}, ' .
-                                '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
-                                '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
-                            ')',
-                            '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
-                            '',
-                            '// $".selector" is $data.expected_value',
-                            '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" is $data.expected_value\')',
-                            '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
-                            '{{ EXPECTED }} = $expected_value ?? null',
-                            '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-                            '{{ EXAMINED }} = {{ NAVIGATOR }}->find(' .
-                            'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                            ')',
-                            '{{ EXAMINED }} = {{ INSPECTOR }}->getValue({{ EXAMINED }}) ?? null',
-                            '{{ EXAMINED }} = (string) {{ EXAMINED }}',
-                            '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
-                            '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
-                            '',
-                        ]),
-                        [
-                            'expected_value',
-                            'field_value',
-                        ]
-                    ),
-                    new DocBlock([
-                        new Comment('@dataProvider dataProviderMethodName'),
-                    ])
-                ),
-                'expectedTestMethodMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
+                'expectedRenderedTestMethod' =>
+                    '/**' . "\n" .
+                    ' * @dataProvider dataProviderMethodName' . "\n" .
+                    ' */' . "\n" .
+                    'public function testMethodName($expected_value, $field_value)' . "\n"  .
+                    '{' . "\n" .
+                    '    {{ PHPUNIT }}->setBasilStepName(\'Step Name\');' . "\n" .
+                    "\n" .
+                    '    // $".selector" exists <- set $".selector" to $data.field_value' . "\n" .
+                    '    {{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\');' . "\n" .
+                    '    {{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '    {{ HAS }} = {{ NAVIGATOR }}->has(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    ');' . "\n" .
+                    '    {{ PHPUNIT }}->assertTrue(' .
+                    '{{ HAS }}, ' .
+                    '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
+                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
+                    ');' . "\n" .
+                    '    {{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
+                    "\n" .
+                    '    // set $".selector" to $data.field_value' . "\n" .
+                    '    {{ STATEMENT }} = Statement::createAction(\'set $".selector" to $data.field_value\');' . "\n" .
+                    '    {{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '    {{ COLLECTION }} = {{ NAVIGATOR }}->find(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    ');' . "\n" .
+                    '    {{ VALUE }} = $field_value;' . "\n" .
+                    '    {{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});' . "\n" .
+                    '    {{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
+                    "\n" .
+                    '    // $".selector" exists <- $".selector" is $data.expected_value' . "\n" .
+                    '    {{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\');' . "\n" .
+                    '    {{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '    {{ HAS }} = {{ NAVIGATOR }}->has(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    ');' . "\n" .
+                    '    {{ PHPUNIT }}->assertTrue(' .
+                    '{{ HAS }}, ' .
+                    '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
+                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
+                    ');' . "\n" .
+                    '    {{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
+                    "\n" .
+                    '    // $".selector" is $data.expected_value' . "\n" .
+                    '    {{ STATEMENT }} = Statement::createAssertion(' .
+                    '\'$".selector" is $data.expected_value\'' .
+                    ');' . "\n" .
+                    '    {{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '    {{ EXPECTED }} = $expected_value ?? null;' . "\n" .
+                    '    {{ EXAMINED }} = (function () {' . "\n" .
+                    '        {{ ELEMENT }} = {{ NAVIGATOR }}->find(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    ');' . "\n" .
+                    "\n" .
+                    '        return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
+                    '    })();' . "\n" .
+                    '    {{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});' . "\n" .
+                    '    {{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
+                    '}'
+                ,
+                'expectedTestMethodMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(Statement::class),
-                    ]))
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        new ClassDependency(ElementIdentifier::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
-                        VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
-                        'COLLECTION',
+                        VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
+                        'HAS',
+                        'ELEMENT',
                         VariableNames::EXAMINED_VALUE,
                         VariableNames::EXPECTED_VALUE,
-                        'HAS',
-                        'VALUE',
                         VariableNames::STATEMENT,
-                    ])),
-                'expectedDataProviderMethod' => new MethodDefinition(
-                    'dataProviderMethodName',
-                    CodeBlock::fromContent([
-                        "return [
-    '0' => [
-        'expected_value' => 'value1',
-        'field_value' => 'value1',
-    ],
-]",
-                    ])
-                ),
+                        'COLLECTION',
+                        'VALUE',
+                    ]),
+                ]),
+                'expectedRenderedDataProviderMethod' =>
+                    'public function dataProviderMethodName()' . "\n" .
+                    '{' . "\n" .
+                    '    return [' . "\n" .
+                    '        \'0\' => [' . "\n" .
+                    '            \'expected_value\' => \'value1\',' . "\n" .
+                    '            \'field_value\' => \'value1\',' . "\n" .
+                    '        ],' . "\n" .
+                    '    ];' . "\n" .
+                    '}'
+                ,
             ],
         ];
-    }
-
-    private function createMethodDefinitionWithDocblock(
-        MethodDefinitionInterface $methodDefinition,
-        DocBlock $docBlock
-    ): MethodDefinitionInterface {
-        $methodDefinition->setDocBlock($docBlock);
-
-        return $methodDefinition;
     }
 }
