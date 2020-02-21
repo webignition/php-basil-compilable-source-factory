@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory;
 
+use webignition\BasilCompilableSource\Block\CodeBlock;
+use webignition\BasilCompilableSource\Block\DocBlock;
+use webignition\BasilCompilableSource\Line\EmptyLine;
+use webignition\BasilCompilableSource\Line\LiteralExpression;
+use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSource\Line\SingleLineComment;
+use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
+use webignition\BasilCompilableSource\Line\Statement\Statement;
+use webignition\BasilCompilableSource\MethodDefinition;
+use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\Handler\StepHandler;
 use webignition\BasilCompilableSourceFactory\Model\StepMethods;
-use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\Block\DocBlock;
-use webignition\BasilCompilationSource\Line\Comment;
-use webignition\BasilCompilationSource\Line\EmptyLine;
-use webignition\BasilCompilationSource\Line\Statement;
-use webignition\BasilCompilationSource\Line\StatementInterface;
-use webignition\BasilCompilationSource\Metadata\Metadata;
-use webignition\BasilCompilationSource\MethodDefinition\MethodDefinition;
-use webignition\BasilCompilationSource\MethodDefinition\MethodDefinitionInterface;
-use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModels\DataSet\DataSetCollectionInterface;
 use webignition\BasilModels\Step\StepInterface;
 
@@ -71,7 +71,15 @@ class StepMethodFactory
         $testMethod = new MethodDefinition(
             $stepMethodName,
             new CodeBlock([
-                $this->createTestMethodSetBasilStepNameStatement($stepName),
+                new Statement(
+                    new ObjectMethodInvocation(
+                        VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+                        'setBasilStepName',
+                        [
+                            new LiteralExpression('\'' . $this->singleQuotedStringEscaper->escape($stepName) . '\''),
+                        ]
+                    )
+                ),
                 new EmptyLine(),
                 $this->stepHandler->handle($step),
             ]),
@@ -80,41 +88,18 @@ class StepMethodFactory
 
         $dataProviderMethod = null;
         if ($dataSetCollection instanceof DataSetCollectionInterface && count($parameterNames) > 0) {
-            $dataProviderMethod = $this->createDataProviderMethod($stepName, $dataSetCollection);
+            $dataProviderMethod = new MethodDefinition(
+                $this->stepMethodNameFactory->createDataProviderMethodName($stepName),
+                new CodeBlock([
+                    new ReturnStatement($this->arrayExpressionFactory->create($dataSetCollection)),
+                ])
+            );
 
             $testMethod->setDocBlock(new DocBlock([
-                new Comment('@dataProvider ' . $dataProviderMethod->getName()),
+                new SingleLineComment('@dataProvider ' . $dataProviderMethod->getName()),
             ]));
         }
 
         return new StepMethods($testMethod, $dataProviderMethod);
-    }
-
-    private function createTestMethodSetBasilStepNameStatement(string $stepName): StatementInterface
-    {
-        $variableDependencies = new VariablePlaceholderCollection();
-        $phpUnitPlaceholder = $variableDependencies->create(VariableNames::PHPUNIT_TEST_CASE);
-
-        return new Statement(
-            sprintf(
-                '%s->setBasilStepName(\'%s\')',
-                $phpUnitPlaceholder,
-                $this->singleQuotedStringEscaper->escape($stepName)
-            ),
-            (new Metadata())
-                ->withVariableDependencies($variableDependencies)
-        );
-    }
-
-    private function createDataProviderMethod(
-        string $stepName,
-        DataSetCollectionInterface $dataSetCollection
-    ): MethodDefinitionInterface {
-        return new MethodDefinition(
-            $this->stepMethodNameFactory->createDataProviderMethodName($stepName),
-            new CodeBlock([
-                $this->arrayExpressionFactory->create($dataSetCollection),
-            ])
-        );
     }
 }
