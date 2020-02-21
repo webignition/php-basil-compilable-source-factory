@@ -23,18 +23,18 @@ use webignition\BasilModels\Step\StepInterface;
 class StepMethodFactory
 {
     private $stepHandler;
-    private $arrayStatementFactory;
+    private $arrayExpressionFactory;
     private $stepMethodNameFactory;
     private $singleQuotedStringEscaper;
 
     public function __construct(
         StepHandler $stepHandler,
-        ArrayStatementFactory $arrayStatementFactory,
+        ArrayExpressionFactory $arrayExpressionFactory,
         StepMethodNameFactory $stepMethodNameFactory,
         SingleQuotedStringEscaper $singleQuotedStringEscaper
     ) {
         $this->stepHandler = $stepHandler;
-        $this->arrayStatementFactory = $arrayStatementFactory;
+        $this->arrayExpressionFactory = $arrayExpressionFactory;
         $this->stepMethodNameFactory = $stepMethodNameFactory;
         $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
     }
@@ -43,7 +43,7 @@ class StepMethodFactory
     {
         return new StepMethodFactory(
             StepHandler::createHandler(),
-            ArrayStatementFactory::createFactory(),
+            ArrayExpressionFactory::createFactory(),
             new StepMethodNameFactory(),
             SingleQuotedStringEscaper::create()
         );
@@ -113,7 +113,7 @@ class StepMethodFactory
         return new MethodDefinition(
             $this->stepMethodNameFactory->createDataProviderMethodName($stepName),
             new CodeBlock([
-                $this->arrayStatementFactory->create($dataSetCollection),
+                $this->arrayExpressionFactory->create($dataSetCollection),
             ])
         );
     }
