@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
 use webignition\BaseBasilTestCase\Statement;
-use webignition\BasilCompilableSourceFactory\ArrayStatementFactory;
+use webignition\BasilCompilableSourceFactory\ArrayExpressionFactory;
 use webignition\BasilCompilableSourceFactory\Handler\StepHandler;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\StepMethodFactory;
@@ -43,7 +43,7 @@ class StepMethodFactoryTest extends AbstractTestCase
 
         $factory = new StepMethodFactory(
             StepHandler::createHandler(),
-            ArrayStatementFactory::createFactory(),
+            ArrayExpressionFactory::createFactory(),
             $stepMethodNameFactory,
             SingleQuotedStringEscaper::create()
         );
