@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional;
 
-use webignition\BasilCodeGenerator\ClassGenerator;
 use webignition\BasilCompilableSourceFactory\ClassDefinitionFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
@@ -16,11 +15,6 @@ use webignition\SymfonyPantherWebServerRunner\Options;
 class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
 {
     /**
-     * @var ClassGenerator
-     */
-    private $classGenerator;
-
-    /**
      * @var ClassDefinitionFactory
      */
     private $factory;
@@ -29,7 +23,6 @@ class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
     {
         parent::setUp();
 
-        $this->classGenerator = ClassGenerator::create();
         $this->factory = ClassDefinitionFactory::createFactory();
     }
 
