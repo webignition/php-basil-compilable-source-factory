@@ -6,7 +6,6 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
 use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
-use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\VariablePlaceholderCollection;
@@ -81,7 +80,12 @@ class AssertionMethodInvocationFactoryTest extends \PHPUnit\Framework\TestCase
                     new LiteralExpression('\'string\''),
                 ],
                 'failureMessage' => '',
-                'expectedRenderedInvocation' => '{{ PHPUNIT }}->assertEquals(100, \'string\')',
+                'expectedRenderedInvocation' =>
+                    '{{ PHPUNIT }}->assertEquals(' . "\n" .
+                    '    100,' . "\n" .
+                    '    \'string\'' . "\n" .
+                    ')'
+                ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -96,7 +100,12 @@ class AssertionMethodInvocationFactoryTest extends \PHPUnit\Framework\TestCase
                 ],
                 'failureMessage' => 'failure message content',
                 'expectedRenderedInvocation' =>
-                    '{{ PHPUNIT }}->assertNotEquals(100, \'string\', \'failure message content\')',
+                    '{{ PHPUNIT }}->assertNotEquals(' . "\n" .
+                    '    100,' . "\n" .
+                    '    \'string\',' . "\n" .
+                    '    \'failure message content\'' . "\n" .
+                    ')'
+                ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -111,7 +120,12 @@ class AssertionMethodInvocationFactoryTest extends \PHPUnit\Framework\TestCase
                 ],
                 'failureMessage' => 'failure \'message\' content',
                 'expectedRenderedInvocation' =>
-                    '{{ PHPUNIT }}->assertNotEquals(100, \'string\', \'failure \\\'message\\\' content\')',
+                    '{{ PHPUNIT }}->assertNotEquals(' . "\n" .
+                    '    100,' . "\n" .
+                    '    \'string\',' . "\n" .
+                    '    \'failure \\\'message\\\' content\'' . "\n" .
+                    ')'
+                ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,

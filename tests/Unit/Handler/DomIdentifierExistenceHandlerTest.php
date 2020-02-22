@@ -53,7 +53,10 @@ class DomIdentifierExistenceHandlerTest extends \PHPUnit\Framework\TestCase
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(' .
                     'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                     ');' . "\n" .
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }}, \'false is not true\');',
+                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
+                    '    {{ HAS }},' . "\n" .
+                    '    \'false is not true\'' . "\n" .
+                    ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -75,7 +78,10 @@ class DomIdentifierExistenceHandlerTest extends \PHPUnit\Framework\TestCase
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(' .
                     'ElementIdentifier::fromJson(\'{"locator":".selector","parent":{"locator":".parent"}}\')' .
                     ');' . "\n" .
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }}, \'false is not true\');',
+                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
+                    '    {{ HAS }},' . "\n" .
+                    '    \'false is not true\'' . "\n" .
+                    ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -117,7 +123,10 @@ class DomIdentifierExistenceHandlerTest extends \PHPUnit\Framework\TestCase
                     '{{ HAS }} = {{ NAVIGATOR }}->has(' .
                     'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                     ');' . "\n" .
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }}, \'false is not true\');',
+                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
+                    '    {{ HAS }},' . "\n" .
+                    '    \'false is not true\'' . "\n" .
+                    ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -139,7 +148,10 @@ class DomIdentifierExistenceHandlerTest extends \PHPUnit\Framework\TestCase
                     '{{ HAS }} = {{ NAVIGATOR }}->has(' .
                     'ElementIdentifier::fromJson(\'{"locator":".selector","parent":{"locator":".parent"}}\')' .
                     ');' . "\n" .
-                    '{{ PHPUNIT }}->assertTrue({{ HAS }}, \'false is not true\');',
+                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
+                    '    {{ HAS }},' . "\n" .
+                    '    \'false is not true\'' . "\n" .
+                    ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),

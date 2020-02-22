@@ -18,6 +18,11 @@ trait CreateFromIsNotAssertionDataProviderTrait
     {
         $assertionParser = AssertionParser::create();
 
+        $expectedAssertionCall = '{{ PHPUNIT }}->assertNotEquals(' . "\n" .
+            '    {{ EXPECTED }},' . "\n" .
+            '    {{ EXAMINED }}' . "\n" .
+            ');';
+
         return [
             'is-not comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" is-not "value"'),
@@ -30,7 +35,7 @@ trait CreateFromIsNotAssertionDataProviderTrait
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
                     '})();' . "\n" .
-                    '{{ PHPUNIT }}->assertNotEquals({{ EXPECTED }}, {{ EXAMINED }});'
+                    $expectedAssertionCall
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -59,7 +64,7 @@ trait CreateFromIsNotAssertionDataProviderTrait
                     "\n" .
                     '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
                     '})();' . "\n" .
-                    '{{ PHPUNIT }}->assertNotEquals({{ EXPECTED }}, {{ EXAMINED }});'
+                    $expectedAssertionCall
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([

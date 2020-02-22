@@ -18,6 +18,11 @@ trait CreateFromExcludesAssertionDataProviderTrait
     {
         $assertionParser = AssertionParser::create();
 
+        $expectedAssertionCall = '{{ PHPUNIT }}->assertStringNotContainsString(' . "\n" .
+            '    (string) {{ EXPECTED }},' . "\n" .
+            '    (string) {{ EXAMINED }}' . "\n" .
+            ');';
+
         return [
             'excludes comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" excludes "value"'),
@@ -30,7 +35,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
                     '})();' . "\n" .
-                    '{{ PHPUNIT }}->assertStringNotContainsString((string) {{ EXPECTED }}, (string) {{ EXAMINED }});'
+                    $expectedAssertionCall
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -59,7 +64,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
                     "\n" .
                     '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
                     '})();' . "\n" .
-                    '{{ PHPUNIT }}->assertStringNotContainsString((string) {{ EXPECTED }}, (string) {{ EXAMINED }});'
+                    $expectedAssertionCall
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([

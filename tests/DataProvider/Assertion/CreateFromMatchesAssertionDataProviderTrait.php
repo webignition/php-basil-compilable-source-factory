@@ -18,6 +18,11 @@ trait CreateFromMatchesAssertionDataProviderTrait
     {
         $assertionParser = AssertionParser::create();
 
+        $expectedAssertionCall = '{{ PHPUNIT }}->assertRegExp(' . "\n" .
+            '    {{ EXPECTED }},' . "\n" .
+            '    {{ EXAMINED }}' . "\n" .
+            ');';
+
         return [
             'matches comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" matches "/^value/"'),
@@ -30,7 +35,7 @@ trait CreateFromMatchesAssertionDataProviderTrait
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
                     '})();' . "\n" .
-                    '{{ PHPUNIT }}->assertRegExp({{ EXPECTED }}, {{ EXAMINED }});'
+                    $expectedAssertionCall
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -59,7 +64,7 @@ trait CreateFromMatchesAssertionDataProviderTrait
                     "\n" .
                     '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
                     '})();' . "\n" .
-                    '{{ PHPUNIT }}->assertRegExp({{ EXPECTED }}, {{ EXAMINED }});'
+                    $expectedAssertionCall
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
