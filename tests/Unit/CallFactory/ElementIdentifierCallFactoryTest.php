@@ -4,19 +4,16 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 
-use webignition\BasilCodeGenerator\CodeBlockGenerator;
-use webignition\BasilCodeGenerator\LineGenerator;
+use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
+use webignition\BasilCompilableSource\Line\ClassDependency;
+use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
+use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\CallFactory\ElementIdentifierCallFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestCodeGenerator;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
-use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\Line\ClassDependency;
-use webignition\BasilCompilationSource\Metadata\Metadata;
 use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
-class ElementIdentifierCallFactoryTest extends AbstractTestCase
+class ElementIdentifierCallFactoryTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ElementIdentifierCallFactory
@@ -28,24 +25,12 @@ class ElementIdentifierCallFactoryTest extends AbstractTestCase
      */
     private $testCodeGenerator;
 
-    /**
-     * @var CodeBlockGenerator
-     */
-    private $codeBlockGenerator;
-
-    /**
-     * @var LineGenerator
-     */
-    private $lineGenerator;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->factory = ElementIdentifierCallFactory::createFactory();
         $this->testCodeGenerator = TestCodeGenerator::create();
-        $this->codeBlockGenerator = CodeBlockGenerator::create();
-        $this->lineGenerator = LineGenerator::create();
     }
 
     /**
@@ -53,25 +38,22 @@ class ElementIdentifierCallFactoryTest extends AbstractTestCase
      */
     public function testCreateConstructorCall(ElementIdentifierInterface $elementIdentifier)
     {
-        $block = $this->factory->createConstructorCall($elementIdentifier);
-        $block = new CodeBlock([
-            $block,
-        ]);
+        $constructorExpression = $this->factory->createConstructorCall($elementIdentifier);
 
-        $block->mutateLastStatement(function ($content) {
-            return 'return ' . $content;
-        });
+        $this->assertEquals(
+            new Metadata([
+                Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                    new ClassDependency(ElementIdentifier::class),
+                ])
+            ]),
+            $constructorExpression->getMetadata()
+        );
 
-        $expectedMetadata = (new Metadata())
-            ->withClassDependencies(new ClassDependencyCollection([
-                new ClassDependency(ElementIdentifier::class)
-            ]));
+        $constructorAccessStatement = new ReturnStatement($constructorExpression);
 
-        $this->assertMetadataEquals($expectedMetadata, $block->getMetadata());
-
-        $code = $this->codeBlockGenerator->createWithUseStatementsFromBlock(new CodeBlock([
-            $block,
-        ]), []);
+        $code = $constructorAccessStatement->getMetadata()->getClassDependencies()->render() .
+            "\n" .
+            $constructorAccessStatement->render();
 
         $evaluatedCodeOutput = eval($code);
 

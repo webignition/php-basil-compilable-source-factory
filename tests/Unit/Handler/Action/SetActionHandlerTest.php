@@ -6,14 +6,13 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Action;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ObjectReflector;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\Handler\Action\SetActionHandler;
 use webignition\BasilDomIdentifierFactory\Factory;
 use webignition\BasilModels\Action\InputActionInterface;
 use webignition\BasilParser\ActionParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
 
-class SetActionHandlerTest extends AbstractTestCase
+class SetActionHandlerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider handleThrowsExceptionDataProvider

@@ -5,7 +5,13 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
 use webignition\BaseBasilTestCase\Statement;
-use webignition\BasilCompilableSourceFactory\ArrayStatementFactory;
+use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
+use webignition\BasilCompilableSource\Line\ClassDependency;
+use webignition\BasilCompilableSource\Metadata\Metadata;
+use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\MethodDefinitionInterface;
+use webignition\BasilCompilableSource\VariablePlaceholderCollection;
+use webignition\BasilCompilableSourceFactory\ArrayExpressionFactory;
 use webignition\BasilCompilableSourceFactory\ClassDefinitionFactory;
 use webignition\BasilCompilableSourceFactory\ClassNameFactory;
 use webignition\BasilCompilableSourceFactory\Handler\StepHandler;
@@ -14,19 +20,11 @@ use webignition\BasilCompilableSourceFactory\StepMethodFactory;
 use webignition\BasilCompilableSourceFactory\StepMethodNameFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StepMethodNameFactoryFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\Line\ClassDependency;
-use webignition\BasilCompilationSource\Metadata\Metadata;
-use webignition\BasilCompilationSource\Metadata\MetadataInterface;
-use webignition\BasilCompilationSource\MethodDefinition\MethodDefinition;
-use webignition\BasilCompilationSource\MethodDefinition\MethodDefinitionInterface;
-use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModels\Test\TestInterface;
 use webignition\BasilParser\Test\TestParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
 
-class ClassDefinitionFactoryTest extends AbstractTestCase
+class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider createClassDefinitionDataProvider
@@ -36,12 +34,12 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
         string $expectedClassName,
         TestInterface $test,
         int $expectedMethodCount,
-        MethodDefinitionInterface $expectedSetUpBeforeClassMethod,
+        string $expectedRenderedSetUpBeforeClassMethod,
         MetadataInterface $expectedMetadata
     ) {
         $classDefinition = $factory->createClassDefinition($test);
 
-        $this->assertMetadataEquals($expectedMetadata, $classDefinition->getMetadata());
+        $this->assertEquals($expectedMetadata, $classDefinition->getMetadata());
         $this->assertSame($expectedClassName, $classDefinition->getName());
 
         $methods = $classDefinition->getMethods();
@@ -51,14 +49,7 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
         $this->assertInstanceOf(MethodDefinitionInterface::class, $setUpBeforeClassMethod);
 
         if ($setUpBeforeClassMethod instanceof MethodDefinitionInterface) {
-            $this->assertMethodEquals($expectedSetUpBeforeClassMethod, $setUpBeforeClassMethod);
-            $this->assertMetadataEquals(
-                (new Metadata())
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::PANTHER_CLIENT,
-                    ])),
-                $setUpBeforeClassMethod->getMetadata()
-            );
+            $this->assertSame($expectedRenderedSetUpBeforeClassMethod, $setUpBeforeClassMethod->render());
         }
     }
 
@@ -84,14 +75,19 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
                     ],
                 ])->withPath('test.yml'),
                 'expectedMethodCount' => 1,
-                'expectedSetUpBeforeClassMethod' => $this->createExpectedSetUpBeforeClassMethodDefinition(
-                    'http://example.com',
-                    'test.yml'
-                ),
-                'expectedMetadata' => (new Metadata())
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                'expectedRenderedSetUpBeforeClassMethod' =>
+                    'public static function setUpBeforeClass(): void' . "\n" .
+                    '{' . "\n" .
+                    '    parent::setUpBeforeClass();' . "\n" .
+                    '    {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
+                    '    self::setBasilTestPath(\'test.yml\');' . "\n" .
+                    '}'
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PANTHER_CLIENT,
-                    ])),
+                    ]),
+                ]),
             ],
             'single step with single action and single assertion' => [
                 'classDefinitionFactory' => $this->createClassDefinitionFactory(
@@ -123,27 +119,32 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
                     ],
                 ])->withPath('test.yml'),
                 'expectedMethodCount' => 2,
-                'expectedSetUpBeforeClassMethod' => $this->createExpectedSetUpBeforeClassMethodDefinition(
-                    'http://example.com',
-                    'test.yml'
-                ),
-                'expectedMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
+                'expectedRenderedSetUpBeforeClassMethod' =>
+                    'public static function setUpBeforeClass(): void' . "\n" .
+                    '{' . "\n" .
+                    '    parent::setUpBeforeClass();' . "\n" .
+                    '    {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
+                    '    self::setBasilTestPath(\'test.yml\');' . "\n" .
+                    '}'
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(Statement::class),
-                    ]))
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        new ClassDependency(ElementIdentifier::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::PANTHER_CLIENT,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'HAS',
                         'ELEMENT',
                         VariableNames::EXAMINED_VALUE,
                         VariableNames::EXPECTED_VALUE,
                         VariableNames::STATEMENT,
-                    ])),
+                    ]),
+                ]),
             ],
             'single step with single action and single assertion with data provider' => [
                 'classDefinitionFactory' => $this->createClassDefinitionFactory(
@@ -185,47 +186,38 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
                     ],
                 ])->withPath('test.yml'),
                 'expectedMethodCount' => 3,
-                'expectedSetUpBeforeClassMethod' => $this->createExpectedSetUpBeforeClassMethodDefinition(
-                    'http://example.com',
-                    'test.yml'
-                ),
-                'expectedMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
+                'expectedRenderedSetUpBeforeClassMethod' =>
+                    'public static function setUpBeforeClass(): void' . "\n" .
+                    '{' . "\n" .
+                    '    parent::setUpBeforeClass();' . "\n" .
+                    '    {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
+                    '    self::setBasilTestPath(\'test.yml\');' . "\n" .
+                    '}'
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(Statement::class),
-                    ]))
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        new ClassDependency(ElementIdentifier::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::PANTHER_CLIENT,
-                        VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
-                        'COLLECTION',
+                        VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
+                        'HAS',
+                        'ELEMENT',
                         VariableNames::EXAMINED_VALUE,
                         VariableNames::EXPECTED_VALUE,
-                        'HAS',
-                        'VALUE',
                         VariableNames::STATEMENT,
-                    ])),
+                        'COLLECTION',
+                        'VALUE',
+                    ]),
+                ]),
             ],
         ];
-    }
-
-    private function createExpectedSetUpBeforeClassMethodDefinition(
-        string $requestUrl,
-        string $testPath
-    ): MethodDefinitionInterface {
-        $method = new MethodDefinition('setUpBeforeClass', CodeBlock::fromContent([
-            'parent::setUpBeforeClass()',
-            '{{ CLIENT }}->request(\'GET\', \'' . $requestUrl . '\')',
-            'self::setBasilTestPath(\'' . $testPath . '\')',
-        ]));
-        $method->setReturnType('void');
-        $method->setStatic();
-
-        return $method;
     }
 
     private function createClassDefinitionFactory(
@@ -254,7 +246,7 @@ class ClassDefinitionFactoryTest extends AbstractTestCase
     {
         return new StepMethodFactory(
             StepHandler::createHandler(),
-            ArrayStatementFactory::createFactory(),
+            ArrayExpressionFactory::createFactory(),
             $stepMethodNameFactory,
             SingleQuotedStringEscaper::create()
         );

@@ -7,13 +7,12 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Assertion;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\ComparisonAssertionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ObjectReflector;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilDomIdentifierFactory\Factory;
 use webignition\BasilModels\Assertion\ComparisonAssertionInterface;
 use webignition\BasilParser\AssertionParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
 
-class ComparisonAssertionHandlerTest extends AbstractTestCase
+class ComparisonAssertionHandlerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ComparisonAssertionHandler

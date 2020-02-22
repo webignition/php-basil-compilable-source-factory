@@ -4,9 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
-use webignition\BasilCompilableSourceFactory\Tests\Services\PlaceholderFactory;
+use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
-use webignition\BasilCompilationSource\Block\CodeBlock;
 use webignition\BasilParser\ActionParser;
 
 trait ForwardActionFunctionalDataProviderTrait
@@ -25,13 +24,12 @@ trait ForwardActionFunctionalDataProviderTrait
                     StatementFactory::createAssertBrowserTitle('Assertions fixture'),
                     StatementFactory::createClientAction('back')
                 ]),
-                'teardownStatements' => CodeBlock::fromContent([
-                    sprintf(
-                        '%s->assertEquals("Assertions fixture", %s->getTitle())',
-                        PlaceholderFactory::phpUnitTestCase(),
-                        PlaceholderFactory::pantherClient()
-                    ),
+                'teardownStatements' => new CodeBlock([
+                    StatementFactory::createAssertBrowserTitle('Assertions fixture'),
                 ]),
+                'additionalVariableIdentifiers' => [
+                    'ELEMENT' => '$element',
+                ],
             ],
         ];
     }

@@ -51,7 +51,7 @@ class AssertionHandlerPassingAssertionsTest extends AbstractBrowserTestCase
      * @dataProvider matchesAssertionFunctionalDataProvider
      * @dataProvider notExistsAssertionFunctionalDataProvider
      */
-    public function testCreateSource(
+    public function testHandle(
         string $fixture,
         AssertionInterface $assertion,
         array $additionalVariableIdentifiers = []

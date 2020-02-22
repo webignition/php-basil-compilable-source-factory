@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
-use webignition\BasilCodeGenerator\ClassGenerator;
-use webignition\BasilCodeGenerator\CodeBlockGenerator;
-use webignition\BasilCodeGenerator\UnresolvedPlaceholderException;
+use webignition\BasilCompilableSource\Block\CodeBlockInterface;
+use webignition\BasilCompilableSource\ClassDefinition;
+use webignition\BasilCompilableSource\ClassDefinitionInterface;
+use webignition\BasilCompilableSource\Line\ClassDependency;
+use webignition\BasilCompilableSource\VariablePlaceholder;
+use webignition\BasilCompilableSource\VariablePlaceholderCollection;
+use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractGeneratedTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\Block\CodeBlockInterface;
-use webignition\BasilCompilationSource\ClassDefinition\ClassDefinitionInterface;
-use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 
 class TestCodeGenerator
 {
@@ -23,51 +23,10 @@ class TestCodeGenerator
     private const WEBDRIVER_ELEMENT_INSPECTOR_VARIABLE_NAME = 'self::$inspector';
     private const WEBDRIVER_ELEMENT_MUTATOR_VARIABLE_NAME = 'self::$mutator';
 
-    private $classGenerator;
-    private $codeBlockGenerator;
-
-    public function __construct(
-        ClassGenerator $classGenerator,
-        CodeBlockGenerator $blockGenerator
-    ) {
-        $this->classGenerator = $classGenerator;
-        $this->codeBlockGenerator = $blockGenerator;
-    }
 
     public static function create(): TestCodeGenerator
     {
-        return new TestCodeGenerator(
-            ClassGenerator::create(),
-            CodeBlockGenerator::create()
-        );
-    }
-
-    /**
-     * @param CodeBlockInterface $block
-     * @param array<string, string> $additionalVariableIdentifiers
-     *
-     * @return string
-     *
-     * @throws UnresolvedPlaceholderException
-     */
-    public function createPhpUnitTestForBlock(
-        CodeBlockInterface $block,
-        array $additionalVariableIdentifiers = []
-    ): string {
-        $blockSource = CodeBlockFactory::createForSourceBlock($block);
-        $classDefinition = ClassDefinitionFactory::createPhpUnitTestForBlock($blockSource);
-
-        $classCode = $this->classGenerator->createForClassDefinition(
-            $classDefinition,
-            '\PHPUnit\Framework\TestCase',
-            $additionalVariableIdentifiers
-        );
-
-        $initializerCode = $this->codeBlockGenerator->createFromBlock(CodeBlock::fromContent([
-            '(new ' . $classDefinition->getName() . '())->testGeneratedCode()'
-        ]));
-
-        return $classCode . "\n\n" . $initializerCode;
+        return new TestCodeGenerator();
     }
 
     /**
@@ -78,8 +37,6 @@ class TestCodeGenerator
      * @param array<string, string> $additionalVariableIdentifiers
      *
      * @return string
-     *
-     * @throws UnresolvedPlaceholderException
      */
     public function createBrowserTestForBlock(
         CodeBlockInterface $block,
@@ -89,6 +46,7 @@ class TestCodeGenerator
         array $additionalVariableIdentifiers = []
     ): string {
         $codeSource = CodeBlockFactory::createForSourceBlock($block, $teardownStatements);
+
         $classDefinition = ClassDefinitionFactory::createGeneratedBrowserTestForBlock(
             $fixture,
             $codeSource,
@@ -99,9 +57,8 @@ class TestCodeGenerator
             $classDefinition->getMetadata()->getVariableDependencies()
         );
 
-        return $this->classGenerator->createForClassDefinition(
-            $classDefinition,
-            'AbstractGeneratedTestCase',
+        return VariablePlaceholderResolver::resolve(
+            $classDefinition->render(),
             array_merge(
                 $variableDependencyIdentifiers,
                 $additionalVariableIdentifiers
@@ -114,8 +71,6 @@ class TestCodeGenerator
      * @param array<string, string> $additionalVariableIdentifiers
      *
      * @return string
-     *
-     * @throws UnresolvedPlaceholderException
      */
     public function createBrowserTestForClass(
         ClassDefinitionInterface $classDefinition,
@@ -125,9 +80,14 @@ class TestCodeGenerator
             $classDefinition->getMetadata()->getVariableDependencies()
         );
 
-        return $this->classGenerator->createForClassDefinition(
-            $classDefinition,
-            'AbstractGeneratedTestCase',
+        if ($classDefinition instanceof ClassDefinition) {
+            $classDefinition->setBaseClass(
+                new ClassDependency(AbstractGeneratedTestCase::class)
+            );
+        }
+
+        return VariablePlaceholderResolver::resolve(
+            $classDefinition->render(),
             array_merge(
                 $variableDependencyIdentifiers,
                 $additionalVariableIdentifiers
@@ -156,6 +116,7 @@ class TestCodeGenerator
         $variableIdentifiers = [];
 
         foreach ($variableDependencies as $variableDependency) {
+            /* @var VariablePlaceholder $variableDependency */
             $name = $variableDependency->getName();
             $externalVariable = $externalVariables[$name] ?? null;
 

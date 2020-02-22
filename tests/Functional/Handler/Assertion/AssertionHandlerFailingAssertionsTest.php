@@ -29,7 +29,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
     /**
      * @dataProvider createSourceForFailingAssertionsDataProvider
      */
-    public function testCreateSourceForFailingAssertions(
+    public function testHandleForFailingAssertions(
         string $fixture,
         AssertionInterface $assertion,
         string $expectedExpectationFailedExceptionMessage,
@@ -83,6 +83,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
                 'additionalVariableIdentifiers' => [
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
+                    'ELEMENT' => '$element',
                 ],
             ],
             'exists comparison, attribute identifier examined value, attribute does not exist' => [
@@ -92,6 +93,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
                 'additionalVariableIdentifiers' => [
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
+                    'ELEMENT' => '$element',
                 ],
             ],
             'exists comparison, environment examined value, environment variable does not exist' => [

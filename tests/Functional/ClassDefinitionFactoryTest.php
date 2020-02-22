@@ -4,27 +4,16 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional;
 
-use webignition\BasilCodeGenerator\ClassGenerator;
 use webignition\BasilCompilableSourceFactory\ClassDefinitionFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilationSource\Line\ClassDependency;
-use webignition\BasilCompilationSource\Line\Statement;
-use webignition\BasilCompilationSource\Metadata\Metadata;
-use webignition\BasilCompilationSource\MethodDefinition\MethodDefinitionInterface;
 use webignition\BasilModels\Test\TestInterface;
 use webignition\BasilParser\Test\TestParser;
 use webignition\SymfonyPantherWebServerRunner\Options;
 
 class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
 {
-    /**
-     * @var ClassGenerator
-     */
-    private $classGenerator;
-
     /**
      * @var ClassDefinitionFactory
      */
@@ -34,7 +23,6 @@ class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
     {
         parent::setUp();
 
-        $this->classGenerator = ClassGenerator::create();
         $this->factory = ClassDefinitionFactory::createFactory();
     }
 
@@ -44,17 +32,6 @@ class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
     public function testCreateSource(TestInterface $test, array $additionalVariableIdentifiers = [])
     {
         $classDefinition = $this->factory->createClassDefinition($test);
-
-        $setupBeforeClassMethod = $classDefinition->getMethod('setUpBeforeClass');
-        if ($setupBeforeClassMethod instanceof MethodDefinitionInterface) {
-            $setupBeforeClassMethod->addLine(new Statement(
-                '// Test harness addition for generating base test use statement',
-                (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(AbstractGeneratedTestCase::class),
-                    ]))
-            ));
-        }
 
         $classCode = $this->testCodeGenerator->createBrowserTestForClass(
             $classDefinition,
@@ -186,6 +163,7 @@ class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                     VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
                     VariableNames::STATEMENT => ResolvedVariableNames::STATEMENT_VARIABLE_NAME,
+                    'ELEMENT' => '$element',
                 ],
             ],
         ];

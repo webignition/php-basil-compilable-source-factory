@@ -4,21 +4,18 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 
+use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
+use webignition\BasilCompilableSource\Line\ClassDependency;
+use webignition\BasilCompilableSource\Metadata\Metadata;
+use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\Block\CodeBlockInterface;
-use webignition\BasilCompilationSource\Line\ClassDependency;
-use webignition\BasilCompilationSource\Line\Statement;
-use webignition\BasilCompilationSource\Metadata\Metadata;
-use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\DomElementIdentifier\AttributeIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
-class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
+class DomCrawlerNavigatorCallFactoryTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var DomCrawlerNavigatorCallFactory
@@ -35,11 +32,15 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
     /**
      * @dataProvider createFindCallDataProvider
      */
-    public function testCreateFindCall(ElementIdentifierInterface $identifier, CodeBlockInterface $expectedBlock)
-    {
-        $statement = $this->factory->createFindCall($identifier);
+    public function testCreateFindCall(
+        ElementIdentifierInterface $identifier,
+        string $expectedRenderedExpression,
+        MetadataInterface $expectedMetadata
+    ) {
+        $expression = $this->factory->createFindCall($identifier);
 
-        $this->assertEquals($expectedBlock, $statement);
+        $this->assertSame($expectedRenderedExpression, $expression->render());
+        $this->assertEquals($expectedMetadata, $expression->getMetadata());
     }
 
     public function createFindCallDataProvider(): array
@@ -50,11 +51,15 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
     /**
      * @dataProvider createFindOneCallDataProvider
      */
-    public function testCreateFindOneCall(ElementIdentifierInterface $identifier, CodeBlockInterface $expectedBlock)
-    {
-        $statement = $this->factory->createFindOneCall($identifier);
+    public function testCreateFindOneCall(
+        ElementIdentifierInterface $identifier,
+        string $expectedRenderedExpression,
+        MetadataInterface $expectedMetadata
+    ) {
+        $expression = $this->factory->createFindOneCall($identifier);
 
-        $this->assertEquals($expectedBlock, $statement);
+        $this->assertSame($expectedRenderedExpression, $expression->render());
+        $this->assertEquals($expectedMetadata, $expression->getMetadata());
     }
 
     public function createFindOneCallDataProvider(): array
@@ -65,11 +70,15 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
     /**
      * @dataProvider createHasCallDataProvider
      */
-    public function testCreateHasCall(ElementIdentifierInterface $identifier, CodeBlockInterface $expectedBlock)
-    {
-        $statement = $this->factory->createHasCall($identifier);
+    public function testCreateHasCall(
+        ElementIdentifierInterface $identifier,
+        string $expectedRenderedExpression,
+        MetadataInterface $expectedMetadata
+    ) {
+        $expression = $this->factory->createHasCall($identifier);
 
-        $this->assertEquals($expectedBlock, $statement);
+        $this->assertSame($expectedRenderedExpression, $expression->render());
+        $this->assertEquals($expectedMetadata, $expression->getMetadata());
     }
 
     public function createHasCallDataProvider(): array
@@ -80,11 +89,15 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
     /**
      * @dataProvider createHasOneCallDataProvider
      */
-    public function testCreateHasOneCall(ElementIdentifierInterface $identifier, CodeBlockInterface $expectedBlock)
-    {
-        $statement = $this->factory->createHasOneCall($identifier);
+    public function testCreateHasOneCall(
+        ElementIdentifierInterface $identifier,
+        string $expectedRenderedExpression,
+        MetadataInterface $expectedMetadata
+    ) {
+        $expression = $this->factory->createHasOneCall($identifier);
 
-        $this->assertEquals($expectedBlock, $statement);
+        $this->assertSame($expectedRenderedExpression, $expression->render());
+        $this->assertEquals($expectedMetadata, $expression->getMetadata());
     }
 
     public function createHasOneCallDataProvider(): array
@@ -97,13 +110,13 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
         $testCases = $this->elementCallDataProvider();
 
         foreach ($testCases as $testCaseIndex => $testCase) {
-            $block = new CodeBlock([
-                $testCase['expectedBlock'],
-            ]);
+            $testCase['expectedRenderedSource'] = str_replace(
+                '{{ METHOD }}',
+                $method,
+                $testCase['expectedRenderedSource']
+            );
 
-            $block->mutateLastStatement(function (string $content) use ($method) {
-                return str_replace('{{ METHOD }}', $method, $content);
-            });
+            $testCases[$testCaseIndex] = $testCase;
         }
 
         return $testCases;
@@ -114,157 +127,139 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
         return [
             'no parent, no ordinal position' => [
                 'identifier' => new ElementIdentifier('.selector'),
-                'expectedBlock' => new CodeBlock([
-                    new Statement(
-                        '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
-                        (new Metadata())
-                            ->withClassDependencies(new ClassDependencyCollection([
-                                new ClassDependency(ElementIdentifier::class),
-                            ]))
-                            ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                                VariableNames::DOM_CRAWLER_NAVIGATOR,
-                            ]))
-                    )
+                'expectedRenderedSource' =>
+                    '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(ElementIdentifier::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                    ]),
                 ]),
             ],
             'no parent, has ordinal position' => [
                 'identifier' => new ElementIdentifier('.selector', 3),
-                'expectedBlock' => new CodeBlock([
-                    new Statement(
-                        '{{ NAVIGATOR }}->{{ METHOD }}(' .
-                        'ElementIdentifier::fromJson(\'{"locator":".selector","position":3}\')' .
-                        ')',
-                        (new Metadata())
-                            ->withClassDependencies(new ClassDependencyCollection([
-                                new ClassDependency(ElementIdentifier::class),
-                            ]))
-                            ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                                VariableNames::DOM_CRAWLER_NAVIGATOR,
-                            ]))
-                    )
+                'expectedRenderedSource' =>
+                    '{{ NAVIGATOR }}->{{ METHOD }}(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector","position":3}\')' .
+                    ')',
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(ElementIdentifier::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                    ]),
                 ]),
             ],
             'no parent, has attribute' => [
                 'identifier' => new AttributeIdentifier('.selector', 'attribute_name'),
-                'expectedBlock' => new CodeBlock([
-                    new Statement(
-                        '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
-                        (new Metadata())
-                            ->withClassDependencies(new ClassDependencyCollection([
-                                new ClassDependency(ElementIdentifier::class),
-                            ]))
-                            ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                                VariableNames::DOM_CRAWLER_NAVIGATOR,
-                            ]))
-                    )
+                'expectedRenderedSource' =>
+                    '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(ElementIdentifier::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                    ]),
                 ]),
             ],
             'no parent, has ordinal position has attribute' => [
                 'identifier' => new AttributeIdentifier('.selector', 'attribute_name', 3),
-                'expectedBlock' => new CodeBlock([
-                    new Statement(
-                        '{{ NAVIGATOR }}->{{ METHOD }}(' .
-                        'ElementIdentifier::fromJson(\'{"locator":".selector","position":3}\')' .
-                        ')',
-                        (new Metadata())
-                            ->withClassDependencies(new ClassDependencyCollection([
-                                new ClassDependency(ElementIdentifier::class),
-                            ]))
-                            ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                                VariableNames::DOM_CRAWLER_NAVIGATOR,
-                            ]))
-                    )
+                'expectedRenderedSource' =>
+                    '{{ NAVIGATOR }}->{{ METHOD }}(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector","position":3}\')' .
+                    ')',
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(ElementIdentifier::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                    ]),
                 ]),
             ],
             'has parent, no ordinal position' => [
                 'identifier' => (new ElementIdentifier('.selector'))
                     ->withParentIdentifier(new ElementIdentifier('.parent')),
-                'expectedBlock' => new CodeBlock([
-                    new Statement(
-                        '{{ NAVIGATOR }}->{{ METHOD }}(' .
-                        'ElementIdentifier::fromJson(\'{"locator":".selector","parent":{"locator":".parent"}}\')' .
-                        ')',
-                        (new Metadata())
-                            ->withClassDependencies(new ClassDependencyCollection([
-                                new ClassDependency(ElementIdentifier::class),
-                            ]))
-                            ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                                VariableNames::DOM_CRAWLER_NAVIGATOR,
-                            ]))
-                    )
+                'expectedRenderedSource' =>
+                    '{{ NAVIGATOR }}->{{ METHOD }}(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector","parent":{"locator":".parent"}}\')' .
+                    ')',
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(ElementIdentifier::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                    ]),
                 ]),
             ],
             'has parent, has ordinal position' => [
                 'identifier' => (new ElementIdentifier('.selector', 2))
                     ->withParentIdentifier(new ElementIdentifier('.parent')),
-                'expectedBlock' => new CodeBlock([
-                    new Statement(
-                        '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(' .
-                        '\'{"locator":".selector","parent":{"locator":".parent"},"position":2}\'' .
-                        '))',
-                        (new Metadata())
-                            ->withClassDependencies(new ClassDependencyCollection([
-                                new ClassDependency(ElementIdentifier::class),
-                            ]))
-                            ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                                VariableNames::DOM_CRAWLER_NAVIGATOR,
-                            ]))
-                    )
+                'expectedRenderedSource' =>
+                    '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(' .
+                    '\'{"locator":".selector","parent":{"locator":".parent"},"position":2}\'' .
+                    '))',
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(ElementIdentifier::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                    ]),
                 ]),
             ],
             'has parent, has attribute' => [
                 'identifier' => (new AttributeIdentifier('.selector', 'attribute_name'))
                     ->withParentIdentifier(new ElementIdentifier('.parent')),
-                'expectedBlock' => new CodeBlock([
-                    new Statement(
-                        '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(' .
-                        '\'{"locator":".selector","parent":{"locator":".parent"}}\'' .
-                        '))',
-                        (new Metadata())
-                            ->withClassDependencies(new ClassDependencyCollection([
-                                new ClassDependency(ElementIdentifier::class),
-                            ]))
-                            ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                                VariableNames::DOM_CRAWLER_NAVIGATOR,
-                            ]))
-                    )
+                'expectedRenderedSource' =>
+                    '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(' .
+                    '\'{"locator":".selector","parent":{"locator":".parent"}}\'' .
+                    '))',
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(ElementIdentifier::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                    ]),
                 ]),
             ],
             'has parent, has ordinal position, has attribute' => [
                 'identifier' => (new AttributeIdentifier('.selector', 'attribute_name', 5))
                     ->withParentIdentifier(new ElementIdentifier('.parent')),
-                'expectedBlock' => new CodeBlock([
-                    new Statement(
-                        '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(' .
-                        '\'{"locator":".selector",' .
-                        '"parent":{"locator":".parent"},"position":5}\'' .
-                        '))',
-                        (new Metadata())
-                            ->withClassDependencies(new ClassDependencyCollection([
-                                new ClassDependency(ElementIdentifier::class),
-                            ]))
-                            ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                                VariableNames::DOM_CRAWLER_NAVIGATOR,
-                            ]))
-                    )
+                'expectedRenderedSource' =>
+                    '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(' .
+                    '\'{"locator":".selector",' .
+                    '"parent":{"locator":".parent"},"position":5}\'' .
+                    '))',
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(ElementIdentifier::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                    ]),
                 ]),
             ],
             'has parent, has ordinal positions' => [
                 'identifier' => (new ElementIdentifier('.selector', 3))
                     ->withParentIdentifier(new ElementIdentifier('.parent', 4)),
-                'expectedBlock' => new CodeBlock([
-                    new Statement(
-                        '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(' .
-                        '\'{"locator":".selector","parent":{"locator":".parent","position":4},"position":3}\'' .
-                        '))',
-                        (new Metadata())
-                            ->withClassDependencies(new ClassDependencyCollection([
-                                new ClassDependency(ElementIdentifier::class),
-                            ]))
-                            ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                                VariableNames::DOM_CRAWLER_NAVIGATOR,
-                            ]))
-                    )
+                'expectedRenderedSource' =>
+                    '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(' .
+                    '\'{"locator":".selector","parent":{"locator":".parent","position":4},"position":3}\'' .
+                    '))',
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(ElementIdentifier::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                    ]),
                 ]),
             ],
             'has attribute, has parents with attribute' => [
@@ -275,19 +270,17 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractTestCase
                                 new AttributeIdentifier('grandparent', 'gp_attr')
                             )
                     ),
-                'expectedBlock' => new CodeBlock([
-                    new Statement(
-                        '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(' .
-                        '\'{"locator":".child","parent":{"locator":".parent","parent":{"locator":"grandparent"}}}\'' .
-                        '))',
-                        (new Metadata())
-                            ->withClassDependencies(new ClassDependencyCollection([
-                                new ClassDependency(ElementIdentifier::class),
-                            ]))
-                            ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                                VariableNames::DOM_CRAWLER_NAVIGATOR,
-                            ]))
-                    )
+                'expectedRenderedSource' =>
+                    '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(' .
+                    '\'{"locator":".child","parent":{"locator":".parent","parent":{"locator":"grandparent"}}}\'' .
+                    '))',
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(ElementIdentifier::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                    ]),
                 ]),
             ],
         ];

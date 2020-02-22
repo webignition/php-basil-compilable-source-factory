@@ -19,6 +19,7 @@ trait EqualityAssertionFunctionalDataProviderTrait
                     'HAS' => '$has',
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                     VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
+                    'ELEMENT' => '$element',
                 ],
             ],
             'attribute identifier examined value, scalar expected value' => [
@@ -28,6 +29,7 @@ trait EqualityAssertionFunctionalDataProviderTrait
                     'HAS' => '$has',
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                     VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
+                    'ELEMENT' => '$element',
                 ],
             ],
             'environment examined value, scalar expected value' => [
@@ -63,6 +65,7 @@ trait EqualityAssertionFunctionalDataProviderTrait
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                     VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
+                    'ELEMENT' => '$element',
                 ],
             ],
             'element identifier examined value, attribute identifier expected value' => [
@@ -72,6 +75,7 @@ trait EqualityAssertionFunctionalDataProviderTrait
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                     VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
+                    'ELEMENT' => '$element',
                 ],
             ],
             'attribute identifier examined value, environment expected value' => [
@@ -82,6 +86,7 @@ trait EqualityAssertionFunctionalDataProviderTrait
                     VariableNames::ENVIRONMENT_VARIABLE_ARRAY => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                     VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
+                    'ELEMENT' => '$element',
                 ],
             ],
             'attribute identifier examined value, browser object expected value' => [
@@ -92,6 +97,7 @@ trait EqualityAssertionFunctionalDataProviderTrait
                     'WEBDRIVER_DIMENSION' => ResolvedVariableNames::WEBDRIVER_DIMENSION_VARIABLE_NAME,
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                     VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
+                    'ELEMENT' => '$element',
                 ],
             ],
             'attribute identifier examined value, page object expected value' => [
@@ -101,6 +107,7 @@ trait EqualityAssertionFunctionalDataProviderTrait
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                     VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
+                    'ELEMENT' => '$element',
                 ],
             ],
             'select element identifier examined value, scalar expected value (1)' => [
@@ -110,6 +117,7 @@ trait EqualityAssertionFunctionalDataProviderTrait
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                     VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
+                    'ELEMENT' => '$element',
                 ],
             ],
             'select element identifier examined value, scalar expected value (2)' => [
@@ -119,6 +127,7 @@ trait EqualityAssertionFunctionalDataProviderTrait
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                     VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
+                    'ELEMENT' => '$element',
                 ],
             ],
             'option collection element identifier examined value, scalar expected value (1)' => [
@@ -128,6 +137,7 @@ trait EqualityAssertionFunctionalDataProviderTrait
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                     VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
+                    'ELEMENT' => '$element',
                 ],
             ],
             'option collection element identifier examined value, scalar expected value (2)' => [
@@ -137,6 +147,7 @@ trait EqualityAssertionFunctionalDataProviderTrait
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                     VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
+                    'ELEMENT' => '$element',
                 ],
             ],
             'radio group element identifier examined value, scalar expected value (1)' => [
@@ -146,6 +157,7 @@ trait EqualityAssertionFunctionalDataProviderTrait
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                     VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
+                    'ELEMENT' => '$element',
                 ],
             ],
             'radio group element identifier examined value, scalar expected value (2)' => [
@@ -155,6 +167,7 @@ trait EqualityAssertionFunctionalDataProviderTrait
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                     VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
+                    'ELEMENT' => '$element',
                 ],
             ],
         ];

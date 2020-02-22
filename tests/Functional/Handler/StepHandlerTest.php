@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler;
 
+use webignition\BasilCompilableSource\Block\CodeBlock;
+use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSourceFactory\Handler\StepHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilModels\Step\StepInterface;
 use webignition\BasilParser\StepParser;
 
@@ -91,6 +91,7 @@ class StepHandlerTest extends AbstractBrowserTestCase
                 ]),
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [
+                    'ELEMENT' => '$element',
                     'HAS' => '$has',
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                     VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
@@ -198,6 +199,7 @@ class StepHandlerTest extends AbstractBrowserTestCase
                     'DURATION' => '$duration',
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     VariableNames::STATEMENT => ResolvedVariableNames::STATEMENT_VARIABLE_NAME,
+                    'ELEMENT' => '$element',
                 ],
             ],
             'wait, attribute identifier examined value, element does not exist' => [
@@ -214,6 +216,7 @@ class StepHandlerTest extends AbstractBrowserTestCase
                     'DURATION' => '$duration',
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     VariableNames::STATEMENT => ResolvedVariableNames::STATEMENT_VARIABLE_NAME,
+                    'ELEMENT' => '$element',
                 ],
             ],
         ];

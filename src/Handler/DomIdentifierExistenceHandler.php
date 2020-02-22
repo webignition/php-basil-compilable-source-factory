@@ -4,31 +4,37 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler;
 
-use webignition\BasilCompilableSourceFactory\CallFactory\AssertionCallFactory;
+use webignition\BasilCompilableSource\Block\CodeBlock;
+use webignition\BasilCompilableSource\Block\CodeBlockInterface;
+use webignition\BasilCompilableSource\Line\ExpressionInterface;
+use webignition\BasilCompilableSource\Line\LiteralExpression;
+use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
+use webignition\BasilCompilableSource\Line\Statement\Statement;
+use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
-use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\Block\CodeBlockInterface;
-use webignition\BasilCompilationSource\VariablePlaceholderCollection;
+use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
+use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
 class DomIdentifierExistenceHandler
 {
     private $domCrawlerNavigatorCallFactory;
-    private $assertionCallFactory;
+    private $singleQuotedStringEscaper;
 
     public function __construct(
         DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory,
-        AssertionCallFactory $assertionCallFactory
+        SingleQuotedStringEscaper $singleQuotedStringEscaper
     ) {
         $this->domCrawlerNavigatorCallFactory = $domCrawlerNavigatorCallFactory;
-        $this->assertionCallFactory = $assertionCallFactory;
+        $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
     }
 
     public static function createHandler(): DomIdentifierExistenceHandler
     {
         return new DomIdentifierExistenceHandler(
             DomCrawlerNavigatorCallFactory::createFactory(),
-            AssertionCallFactory::createFactory()
+            SingleQuotedStringEscaper::create()
         );
     }
 
@@ -52,25 +58,28 @@ class DomIdentifierExistenceHandler
         );
     }
 
-    private function create(CodeBlockInterface $hasCall, string $assertionFailureMessage): CodeBlockInterface
+    private function create(ExpressionInterface $hasCall, string $assertionFailureMessage): CodeBlockInterface
     {
-        $hasAssignmentVariableExports = new VariablePlaceholderCollection();
-        $hasPlaceholder = $hasAssignmentVariableExports->create('HAS');
-
-        $hasAssignment = new CodeBlock([
-            $hasCall,
-        ]);
-
-        $hasAssignment->mutateLastStatement(function ($content) use ($hasPlaceholder) {
-            return $hasPlaceholder . ' = ' . $content;
-        });
-        $hasAssignment->addVariableExportsToLastStatement($hasAssignmentVariableExports);
-
-        return $this->assertionCallFactory->createValueExistenceAssertionCall(
-            $hasAssignment,
+        $hasPlaceholder = VariablePlaceholder::createExport('HAS');
+        $hasAssignment = new AssignmentStatement(
             $hasPlaceholder,
-            AssertionCallFactory::ASSERT_TRUE_TEMPLATE,
-            $assertionFailureMessage
+            $hasCall
         );
+
+        return new CodeBlock([
+            $hasAssignment,
+            new Statement(
+                new ObjectMethodInvocation(
+                    VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+                    'assertTrue',
+                    [
+                        $hasPlaceholder,
+                        new LiteralExpression(
+                            '\'' . $this->singleQuotedStringEscaper->escape($assertionFailureMessage) . '\''
+                        )
+                    ]
+                )
+            )
+        ]);
     }
 }

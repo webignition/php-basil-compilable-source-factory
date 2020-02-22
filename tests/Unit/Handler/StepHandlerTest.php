@@ -5,41 +5,38 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler;
 
 use webignition\BaseBasilTestCase\Statement;
+use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
+use webignition\BasilCompilableSource\Line\ClassDependency;
+use webignition\BasilCompilableSource\Metadata\Metadata;
+use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\Handler\StepHandler;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\Block\CodeBlockInterface;
-use webignition\BasilCompilationSource\Line\ClassDependency;
-use webignition\BasilCompilationSource\Metadata\Metadata;
-use webignition\BasilCompilationSource\Metadata\MetadataInterface;
-use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModels\Step\StepInterface;
 use webignition\BasilParser\ActionParser;
 use webignition\BasilParser\AssertionParser;
 use webignition\BasilParser\StepParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
 
-class StepHandlerTest extends AbstractTestCase
+class StepHandlerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider handleSuccessDataProvider
      */
     public function testHandleSuccess(
         StepInterface $step,
-        CodeBlockInterface $expectedContent,
+        string $expectedRenderedContent,
         MetadataInterface $expectedMetadata
     ) {
         $handler = StepHandler::createHandler();
 
         $source = $handler->handle($step);
 
-        $this->assertBlockContentEquals($expectedContent, $source);
-        $this->assertMetadataEquals($expectedMetadata, $source->getMetadata());
+        $this->assertEquals($expectedRenderedContent, $source->render());
+        $this->assertEquals($expectedMetadata, $source->getMetadata());
     }
 
     public function handleSuccessDataProvider(): array
@@ -49,7 +46,7 @@ class StepHandlerTest extends AbstractTestCase
         return [
             'empty step' => [
                 'step' => $stepParser->parse([]),
-                'expectedContent' => new CodeBlock(),
+                'expectedRenderedSource' => '',
                 'expectedMetadata' => new Metadata(),
             ],
             'click action' => [
@@ -58,42 +55,44 @@ class StepHandlerTest extends AbstractTestCase
                         'click $".selector"',
                     ],
                 ]),
-                'expectedContent' => CodeBlock::fromContent([
-                    '// $".selector" exists <- click $".selector"',
-                    '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\')',
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
-                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
+                'expectedRenderedSource' =>
+                    '// $".selector" exists <- click $".selector"' . "\n" .
+                    '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\');' . "\n" .
+                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    ');' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' .
-                        '{{ HAS }}, ' .
-                        '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
-                        '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
-                    ')',
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
-                    '',
-                    '// click $".selector"',
-                    '{{ STATEMENT }} = Statement::createAction(\'click $".selector"\')',
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
+                    '{{ HAS }}, ' .
+                    '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
+                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
+                    ');' . "\n" .
+                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
+                    "\n" .
+                    '// click $".selector"' . "\n" .
+                    '{{ STATEMENT }} = Statement::createAction(\'click $".selector"\');' . "\n" .
+                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
                     '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(' .
                     'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ')',
-                    '{{ ELEMENT }}->click()',
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
-                    '',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
+                    ');' . "\n" .
+                    '{{ ELEMENT }}->click();' . "\n" .
+                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n"
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(Statement::class),
-                    ]))
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        new ClassDependency(ElementIdentifier::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'HAS',
                         'ELEMENT',
                         VariableNames::STATEMENT,
-                    ])),
+                    ]),
+                ]),
             ],
             'set action with elemental value' => [
                 'step' => $stepParser->parse([
@@ -101,59 +100,66 @@ class StepHandlerTest extends AbstractTestCase
                         'set $".selector" to $".value"',
                     ],
                 ]),
-                'expectedContent' => CodeBlock::fromContent([
-                    '// $".selector" exists <- set $".selector" to $".value"',
-                    '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\')',
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
-                    '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
+                'expectedRenderedSource' =>
+                    '// $".selector" exists <- set $".selector" to $".value"' . "\n" .
+                    '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\');' . "\n" .
+                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    ');' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' .
-                        '{{ HAS }}, ' .
-                        '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
-                        '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
-                    ')',
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
-                    '',
-                    '// $".value" exists <- set $".selector" to $".value"',
-                    '{{ STATEMENT }} = Statement::createAssertion(\'$".value" exists\')',
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
-                    '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".value"}\'))',
+                    '{{ HAS }}, ' .
+                    '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
+                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
+                    ');' . "\n" .
+                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
+                    "\n" .
+                    '// $".value" exists <- set $".selector" to $".value"' . "\n" .
+                    '{{ STATEMENT }} = Statement::createAssertion(\'$".value" exists\');' . "\n" .
+                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".value"}\'));' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' .
-                        '{{ HAS }}, ' .
-                        '\'{"assertion":{"source":"$\\\".value\\\" exists",' .
-                        '"identifier":"$\\\".value\\\"","comparison":"exists"}}\'' .
-                    ')',
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
-                    '',
-                    '// set $".selector" to $".value"',
-                    '{{ STATEMENT }} = Statement::createAction(\'set $".selector" to $".value"\')',
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
+                    '{{ HAS }}, ' .
+                    '\'{"assertion":{"source":"$\\\".value\\\" exists",' .
+                    '"identifier":"$\\\".value\\\"","comparison":"exists"}}\'' .
+                    ');' . "\n" .
+                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
+                    "\n" .
+                    '// set $".selector" to $".value"' . "\n" .
+                    '{{ STATEMENT }} = Statement::createAction(\'set $".selector" to $".value"\');' . "\n" .
+                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
                     '{{ COLLECTION }} = {{ NAVIGATOR }}->find(' .
                     'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ')',
-                    '{{ VALUE }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{"locator":".value"}\'))',
-                    '{{ VALUE }} = {{ INSPECTOR }}->getValue({{ VALUE }}) ?? null',
-                    '{{ VALUE }} = (string) {{ VALUE }}',
-                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }})',
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
-                    '',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
+                    ');' . "\n" .
+                    '{{ VALUE }} = (function () {' . "\n" .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".value"}\')' .
+                    ');' . "\n" .
+                    "\n" .
+                    '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
+                    '})();' . "\n" .
+                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});' . "\n" .
+                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n"
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(Statement::class),
-                    ]))
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        new ClassDependency(ElementIdentifier::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'COLLECTION',
                         'HAS',
                         'VALUE',
                         VariableNames::STATEMENT,
-                    ])),
+                        'ELEMENT',
+                    ]),
+                ]),
             ],
             'click action, wait action with literal value, wait action with element value' => [
                 'step' => $stepParser->parse([
@@ -163,72 +169,79 @@ class StepHandlerTest extends AbstractTestCase
                         'wait $".duration"',
                     ],
                 ]),
-                'expectedContent' => CodeBlock::fromContent([
-                    '// $".selector" exists <- click $".selector"',
-                    '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\')',
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
-                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
+                'expectedRenderedSource' =>
+                    '// $".selector" exists <- click $".selector"' . "\n" .
+                    '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\');' . "\n" .
+                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    ');' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' .
-                        '{{ HAS }}, ' .
-                        '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
-                        '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
-                    ')',
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
-                    '',
-                    '// click $".selector"',
-                    '{{ STATEMENT }} = Statement::createAction(\'click $".selector"\')',
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
+                    '{{ HAS }}, ' .
+                    '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
+                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
+                    ');' . "\n" .
+                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
+                    "\n" .
+                    '// click $".selector"' . "\n" .
+                    '{{ STATEMENT }} = Statement::createAction(\'click $".selector"\');' . "\n" .
+                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
                     '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(' .
                     'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ')',
-                    '{{ ELEMENT }}->click()',
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
-                    '',
-                    '// wait 1',
-                    '{{ STATEMENT }} = Statement::createAction(\'wait 1\')',
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
-                    '{{ DURATION }} = "1" ?? 0',
-                    '{{ DURATION }} = (int) {{ DURATION }}',
-                    'usleep({{ DURATION }} * 1000)',
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
-                    '',
-                    '// $".duration" exists <- wait $".duration"',
-                    '{{ STATEMENT }} = Statement::createAssertion(\'$".duration" exists\')',
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
-                    '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".duration"}\'))',
+                    ');' . "\n" .
+                    '{{ ELEMENT }}->click();' . "\n" .
+                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
+                    "\n" .
+                    '// wait 1' . "\n" .
+                    '{{ STATEMENT }} = Statement::createAction(\'wait 1\');' . "\n" .
+                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '{{ DURATION }} = (int) ("1" ?? 0);' . "\n" .
+                    'usleep({{ DURATION }} * 1000);' . "\n" .
+                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
+                    "\n" .
+                    '// $".duration" exists <- wait $".duration"' . "\n" .
+                    '{{ STATEMENT }} = Statement::createAssertion(\'$".duration" exists\');' . "\n" .
+                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".duration"}\')' .
+                    ');' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' .
-                        '{{ HAS }}, ' .
-                        '\'{"assertion":{"source":"$\\\".duration\\\" exists",' .
-                        '"identifier":"$\\\".duration\\\"","comparison":"exists"}}\'' .
-                    ')',
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
-                    '',
-                    '// wait $".duration"',
-                    '{{ STATEMENT }} = Statement::createAction(\'wait $".duration"\')',
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
-                    '{{ DURATION }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{"locator":".duration"}\'))',
-                    '{{ DURATION }} = {{ INSPECTOR }}->getValue({{ DURATION }}) ?? 0',
-                    '{{ DURATION }} = (int) {{ DURATION }}',
-                    'usleep({{ DURATION }} * 1000)',
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
-                    '',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
+                    '{{ HAS }}, ' .
+                    '\'{"assertion":{"source":"$\\\".duration\\\" exists",' .
+                    '"identifier":"$\\\".duration\\\"","comparison":"exists"}}\'' .
+                    ');' . "\n" .
+                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
+                    "\n" .
+                    '// wait $".duration"' . "\n" .
+                    '{{ STATEMENT }} = Statement::createAction(\'wait $".duration"\');' . "\n" .
+                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '{{ DURATION }} = (int) ((function () {' . "\n" .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".duration"}\')' .
+                    ');' . "\n" .
+                    "\n" .
+                    '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
+                    '})() ?? 0);' . "\n" .
+                    'usleep({{ DURATION }} * 1000);' . "\n" .
+                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n"
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(Statement::class),
-                    ]))
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        new ClassDependency(ElementIdentifier::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'DURATION',
                         'HAS',
                         'ELEMENT',
                         VariableNames::STATEMENT,
-                    ])),
+                    ]),
+                ]),
             ],
             'non-elemental assertion' => [
                 'step' => $stepParser->parse([
@@ -236,31 +249,29 @@ class StepHandlerTest extends AbstractTestCase
                         '$page.title is "value"',
                     ],
                 ]),
-                'expectedContent' => CodeBlock::fromContent([
-                    '// $page.title is "value"',
-                    '{{ STATEMENT }} = Statement::createAssertion(\'$page.title is "value"\')',
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
-                    '{{ EXPECTED }} = "value" ?? null',
-                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-                    '{{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null',
-                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
-                    '',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
+                'expectedRenderedSource' =>
+                    '// $page.title is "value"' . "\n" .
+                    '{{ STATEMENT }} = Statement::createAssertion(\'$page.title is "value"\');' . "\n" .
+                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '{{ EXPECTED }} = "value" ?? null;' . "\n" .
+                    '{{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null;' . "\n" .
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});' . "\n" .
+                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n"
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(Statement::class),
-                    ]))
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PANTHER_CLIENT,
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         VariableNames::EXAMINED_VALUE,
                         VariableNames::EXPECTED_VALUE,
                         VariableNames::STATEMENT,
-                    ])),
+                    ]),
+                ]),
             ],
             'exists assertion' => [
                 'step' => $stepParser->parse([
@@ -268,32 +279,34 @@ class StepHandlerTest extends AbstractTestCase
                         '$".selector" exists',
                     ],
                 ]),
-                'expectedContent' => CodeBlock::fromContent([
-                    '// $".selector" exists',
-                    '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\')',
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
-                    '{{ EXAMINED }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
+                'expectedRenderedSource' =>
+                    '// $".selector" exists' . "\n" .
+                    '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\');' . "\n" .
+                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '{{ EXAMINED }} = {{ NAVIGATOR }}->has(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    ');' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' .
-                        '{{ EXAMINED }}, ' .
-                        '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
-                        '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
-                    ')',
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
-                    '',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
+                    '{{ EXAMINED }}, ' .
+                    '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
+                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
+                    ');' . "\n" .
+                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n"
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(Statement::class),
-                    ]))
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        new ClassDependency(ElementIdentifier::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         VariableNames::EXAMINED_VALUE,
                         VariableNames::STATEMENT,
-                    ])),
+                    ]),
+                ]),
             ],
             'comparison assertion, elemental selector, scalar value' => [
                 'step' => $stepParser->parse([
@@ -301,46 +314,52 @@ class StepHandlerTest extends AbstractTestCase
                         '$".selector" is "value"',
                     ],
                 ]),
-                'expectedContent' => CodeBlock::fromContent([
-                    '// $".selector" exists <- $".selector" is "value"',
-                    '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\')',
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
-                    '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
+                'expectedRenderedSource' =>
+                    '// $".selector" exists <- $".selector" is "value"' . "\n" .
+                    '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\');' . "\n" .
+                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    ');' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' .
-                        '{{ HAS }}, ' .
-                        '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
-                        '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
-                    ')',
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
-                    '',
-                    '// $".selector" is "value"',
-                    '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" is "value"\')',
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
-                    '{{ EXPECTED }} = "value" ?? null',
-                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-                    '{{ EXAMINED }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
-                    '{{ EXAMINED }} = {{ INSPECTOR }}->getValue({{ EXAMINED }}) ?? null',
-                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
-                    '',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
+                    '{{ HAS }}, ' .
+                    '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
+                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
+                    ');' . "\n" .
+                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
+                    "\n" .
+                    '// $".selector" is "value"' . "\n" .
+                    '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" is "value"\');' . "\n" .
+                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '{{ EXPECTED }} = "value" ?? null;' . "\n" .
+                    '{{ EXAMINED }} = (function () {' . "\n" .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    ');' . "\n" .
+                    "\n" .
+                    '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
+                    '})();' . "\n" .
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});' . "\n" .
+                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n"
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(Statement::class),
-                    ]))
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        new ClassDependency(ElementIdentifier::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'HAS',
                         VariableNames::EXAMINED_VALUE,
                         VariableNames::EXPECTED_VALUE,
                         VariableNames::STATEMENT,
-                    ])),
+                        'ELEMENT',
+                    ]),
+                ]),
             ],
             'comparison assertion, elemental selector, elemental value' => [
                 'step' => $stepParser->parse([
@@ -348,58 +367,69 @@ class StepHandlerTest extends AbstractTestCase
                         '$".selector" is $".value"',
                     ],
                 ]),
-                'expectedContent' => CodeBlock::fromContent([
-                    '// $".selector" exists <- $".selector" is $".value"',
-                    '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\')',
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
-                    '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
+                'expectedRenderedSource' =>
+                    '// $".selector" exists <- $".selector" is $".value"' . "\n" .
+                    '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\');' . "\n" .
+                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    ');' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' .
-                        '{{ HAS }}, ' .
-                        '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
-                        '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
-                    ')',
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
-                    '',
-                    '// $".value" exists <- $".selector" is $".value"',
-                    '{{ STATEMENT }} = Statement::createAssertion(\'$".value" exists\')',
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
-                    '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".value"}\'))',
+                    '{{ HAS }}, ' .
+                    '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
+                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
+                    ');' . "\n" .
+                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
+                    "\n" .
+                    '// $".value" exists <- $".selector" is $".value"' . "\n" .
+                    '{{ STATEMENT }} = Statement::createAssertion(\'$".value" exists\');' . "\n" .
+                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".value"}\'));' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' .
-                        '{{ HAS }}, ' .
-                        '\'{"assertion":{"source":"$\\\".value\\\" exists",' .
-                        '"identifier":"$\\\".value\\\"","comparison":"exists"}}\'' .
-                    ')',
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
-                    '',
-                    '// $".selector" is $".value"',
-                    '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" is $".value"\')',
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
-                    '{{ EXPECTED }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{"locator":".value"}\'))',
-                    '{{ EXPECTED }} = {{ INSPECTOR }}->getValue({{ EXPECTED }}) ?? null',
-                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-                    '{{ EXAMINED }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
-                    '{{ EXAMINED }} = {{ INSPECTOR }}->getValue({{ EXAMINED }}) ?? null',
-                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
-                    '',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
+                    '{{ HAS }}, ' .
+                    '\'{"assertion":{"source":"$\\\".value\\\" exists",' .
+                    '"identifier":"$\\\".value\\\"","comparison":"exists"}}\'' .
+                    ');' . "\n" .
+                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
+                    "\n" .
+                    '// $".selector" is $".value"' . "\n" .
+                    '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" is $".value"\');' . "\n" .
+                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '{{ EXPECTED }} = (function () {' . "\n" .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".value"}\')' .
+                    ');' . "\n" .
+                    "\n" .
+                    '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
+                    '})();' . "\n" .
+                    '{{ EXAMINED }} = (function () {' . "\n" .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    ');' . "\n" .
+                    "\n" .
+                    '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
+                    '})();' . "\n" .
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});' . "\n" .
+                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n"
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(Statement::class),
-                    ]))
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        new ClassDependency(ElementIdentifier::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'HAS',
                         VariableNames::EXAMINED_VALUE,
                         VariableNames::EXPECTED_VALUE,
                         VariableNames::STATEMENT,
-                    ])),
+                        'ELEMENT',
+                    ]),
+                ]),
             ],
             'two assertions, no elemental identifiers' => [
                 'step' => $stepParser->parse([
@@ -408,41 +438,37 @@ class StepHandlerTest extends AbstractTestCase
                         '$page.url is "http://example.com"',
                     ],
                 ]),
-                'expectedContent' => CodeBlock::fromContent([
-                    '// $page.title is "value"',
-                    '{{ STATEMENT }} = Statement::createAssertion(\'$page.title is "value"\')',
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
-                    '{{ EXPECTED }} = "value" ?? null',
-                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-                    '{{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null',
-                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
-                    '',
-                    '// $page.url is "http://example.com"',
-                    '{{ STATEMENT }} = Statement::createAssertion(\'$page.url is "http://example.com"\')',
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
-                    '{{ EXPECTED }} = "http://example.com" ?? null',
-                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-                    '{{ EXAMINED }} = {{ CLIENT }}->getCurrentURL() ?? null',
-                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
-                    '',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
+                'expectedRenderedSource' =>
+                    '// $page.title is "value"' . "\n" .
+                    '{{ STATEMENT }} = Statement::createAssertion(\'$page.title is "value"\');' . "\n" .
+                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '{{ EXPECTED }} = "value" ?? null;' . "\n" .
+                    '{{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null;' . "\n" .
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});' . "\n" .
+                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
+                    "\n" .
+                    '// $page.url is "http://example.com"' . "\n" .
+                    '{{ STATEMENT }} = Statement::createAssertion(\'$page.url is "http://example.com"\');' . "\n" .
+                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '{{ EXPECTED }} = "http://example.com" ?? null;' . "\n" .
+                    '{{ EXAMINED }} = {{ CLIENT }}->getCurrentURL() ?? null;' . "\n" .
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});' . "\n" .
+                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n"
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(Statement::class),
-                    ]))
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PANTHER_CLIENT,
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         VariableNames::EXAMINED_VALUE,
                         VariableNames::EXPECTED_VALUE,
                         VariableNames::STATEMENT,
-                    ])),
+                    ]),
+                ]),
             ],
             'click action, non-elemental assertion' => [
                 'step' => $stepParser->parse([
@@ -453,55 +479,55 @@ class StepHandlerTest extends AbstractTestCase
                         '$page.title is "value"',
                     ],
                 ]),
-                'expectedContent' => CodeBlock::fromContent([
-                    '// $".selector" exists <- click $".selector"',
-                    '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\')',
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
-                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
+                'expectedRenderedSource' =>
+                    '// $".selector" exists <- click $".selector"' . "\n" .
+                    '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\');' . "\n" .
+                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    ');' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' .
-                        '{{ HAS }}, ' .
-                        '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
-                        '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
-                    ')',
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
-                    '',
-                    '// click $".selector"',
-                    '{{ STATEMENT }} = Statement::createAction(\'click $".selector"\')',
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
+                    '{{ HAS }}, ' .
+                    '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
+                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
+                    ');' . "\n" .
+                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
+                    "\n" .
+                    '// click $".selector"' . "\n" .
+                    '{{ STATEMENT }} = Statement::createAction(\'click $".selector"\');' . "\n" .
+                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
                     '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(' .
                     'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ')',
-                    '{{ ELEMENT }}->click()',
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
-                    '',
-                    '// $page.title is "value"',
-                    '{{ STATEMENT }} = Statement::createAssertion(\'$page.title is "value"\')',
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }}',
-                    '{{ EXPECTED }} = "value" ?? null',
-                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-                    '{{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null',
-                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }}',
-                    '',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
+                    ');' . "\n" .
+                    '{{ ELEMENT }}->click();' . "\n" .
+                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
+                    "\n" .
+                    '// $page.title is "value"' . "\n" .
+                    '{{ STATEMENT }} = Statement::createAssertion(\'$page.title is "value"\');' . "\n" .
+                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '{{ EXPECTED }} = "value" ?? null;' . "\n" .
+                    '{{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null;' . "\n" .
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});' . "\n" .
+                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n"
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(Statement::class),
-                    ]))
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                        new ClassDependency(ElementIdentifier::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::PANTHER_CLIENT,
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'ELEMENT',
                         VariableNames::EXAMINED_VALUE,
                         VariableNames::EXPECTED_VALUE,
                         'HAS',
                         VariableNames::STATEMENT,
-                    ])),
+                    ]),
+                ]),
             ],
         ];
     }

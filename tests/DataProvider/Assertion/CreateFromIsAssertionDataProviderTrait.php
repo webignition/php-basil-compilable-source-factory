@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
+use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
+use webignition\BasilCompilableSource\Line\ClassDependency;
+use webignition\BasilCompilableSource\Metadata\Metadata;
+use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilationSource\Line\ClassDependency;
-use webignition\BasilCompilationSource\Metadata\Metadata;
-use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilParser\AssertionParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
 
@@ -22,356 +21,390 @@ trait CreateFromIsAssertionDataProviderTrait
         return [
             'is comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" is "value"'),
-                'expectedContent' => CodeBlock::fromContent([
-                    '{{ EXPECTED }} = "value" ?? null',
-                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-                    '{{ EXAMINED }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
-                    '{{ EXAMINED }} = {{ INSPECTOR }}->getValue({{ EXAMINED }}) ?? null',
-                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
+                'expectedRenderedSource' =>
+                    '{{ EXPECTED }} = "value" ?? null;' . "\n" .
+                    '{{ EXAMINED }} = (function () {' . "\n" .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    ');' . "\n" .
+                    "\n" .
+                    '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
+                    '})();' . "\n" .
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});'
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
-                    ]))
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         VariableNames::EXPECTED_VALUE,
                         VariableNames::EXAMINED_VALUE,
-                    ])),
+                        'ELEMENT',
+                    ]),
+                ]),
             ],
             'is comparison, descendant identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$"{{ $".parent" }} .child" is "value"'),
-                'expectedContent' => CodeBlock::fromContent([
-                    '{{ EXPECTED }} = "value" ?? null',
-                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-                    '{{ EXAMINED }} = {{ NAVIGATOR }}->find(' .
+                'expectedRenderedSource' =>
+                    '{{ EXPECTED }} = "value" ?? null;' . "\n" .
+                    '{{ EXAMINED }} = (function () {' . "\n" .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(' .
                     'ElementIdentifier::fromJson(\'{"locator":".child","parent":{"locator":".parent"}}\')' .
-                    ')',
-                    '{{ EXAMINED }} = {{ INSPECTOR }}->getValue({{ EXAMINED }}) ?? null',
-                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
+                    ');' . "\n" .
+                    "\n" .
+                    '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
+                    '})();' . "\n" .
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});'
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
-                    ]))
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         VariableNames::EXPECTED_VALUE,
                         VariableNames::EXAMINED_VALUE,
-                    ])),
+                        'ELEMENT',
+                    ]),
+                ]),
             ],
             'is comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name is "value"'),
-                'expectedContent' => CodeBlock::fromContent([
-                    '{{ EXPECTED }} = "value" ?? null',
-                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-                    '{{ EXAMINED }} = {{ NAVIGATOR }}->findOne(' .
+                'expectedRenderedSource' =>
+                    '{{ EXPECTED }} = "value" ?? null;' . "\n" .
+                    '{{ EXAMINED }} = (function () {' . "\n" .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(' .
                     'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ')',
-                    '{{ EXAMINED }} = {{ EXAMINED }}->getAttribute(\'attribute_name\') ?? null',
-                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
+                    ');' . "\n" .
+                    "\n" .
+                    '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
+                    '})();' . "\n" .
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});'
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
-                    ]))
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         VariableNames::EXPECTED_VALUE,
                         VariableNames::EXAMINED_VALUE,
-                    ])),
+                        'ELEMENT',
+                    ]),
+                ]),
             ],
             'is comparison, browser object examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is "value"'),
-                'expectedContent' => CodeBlock::fromContent([
-                    '{{ EXPECTED }} = "value" ?? null',
-                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-                    '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()',
-                    '{{ EXAMINED }} = '
-                        . '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
-                        . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null',
-                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                'expectedRenderedSource' =>
+                    '{{ EXPECTED }} = "value" ?? null;' . "\n" .
+                    '{{ EXAMINED }} = (function () {' . "\n" .
+                    '    {{ WEBDRIVER_DIMENSION }} = ' .
+                    '{{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n" .
+                    "\n" .
+                    '    return (string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . ' .
+                    '(string) {{ WEBDRIVER_DIMENSION }}->getHeight();' . "\n" .
+                    '})();' . "\n" .
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});'
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PANTHER_CLIENT,
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         VariableNames::EXPECTED_VALUE,
-                        'WEBDRIVER_DIMENSION',
                         VariableNames::EXAMINED_VALUE,
-                    ])),
+                        'WEBDRIVER_DIMENSION',
+                    ]),
+                ]),
             ],
             'is comparison, environment examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$env.KEY is "value"'),
-                'expectedContent' => CodeBlock::fromContent([
-                    '{{ EXPECTED }} = "value" ?? null',
-                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-                    '{{ EXAMINED }} = {{ ENV }}[\'KEY\'] ?? null',
-                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
+                'expectedRenderedSource' =>
+                    '{{ EXPECTED }} = "value" ?? null;' . "\n" .
+                    '{{ EXAMINED }} = {{ ENV }}[\'KEY\'] ?? null;' . "\n" .
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});'
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         VariableNames::EXPECTED_VALUE,
                         VariableNames::EXAMINED_VALUE,
-                    ])),
+                    ]),
+                ]),
             ],
             'is comparison, environment examined value with default, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$env.KEY|"default value" is "value"'),
-                'expectedContent' => CodeBlock::fromContent([
-                    '{{ EXPECTED }} = "value" ?? null',
-                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-                    '{{ EXAMINED }} = {{ ENV }}[\'KEY\'] ?? \'default value\'',
-                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
+                'expectedRenderedSource' =>
+                    '{{ EXPECTED }} = "value" ?? null;' . "\n" .
+                    '{{ EXAMINED }} = {{ ENV }}[\'KEY\'] ?? \'default value\';' . "\n" .
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});'
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         VariableNames::EXPECTED_VALUE,
                         VariableNames::EXAMINED_VALUE,
-                    ])),
+                    ]),
+                ]),
             ],
             'is comparison, environment examined value with default, environment examined value with default' => [
                 'assertion' => $assertionParser->parse('$env.KEY1|"default value 1" is $env.KEY2|"default value 2"'),
-                'expectedContent' => CodeBlock::fromContent([
-                    '{{ EXPECTED }} = {{ ENV }}[\'KEY2\'] ?? \'default value 2\'',
-                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-                    '{{ EXAMINED }} = {{ ENV }}[\'KEY1\'] ?? \'default value 1\'',
-                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
+                'expectedRenderedSource' =>
+                    '{{ EXPECTED }} = {{ ENV }}[\'KEY2\'] ?? \'default value 2\';' . "\n" .
+                    '{{ EXAMINED }} = {{ ENV }}[\'KEY1\'] ?? \'default value 1\';' . "\n" .
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});'
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         VariableNames::EXPECTED_VALUE,
                         VariableNames::EXAMINED_VALUE,
-                    ])),
+                    ]),
+                ]),
             ],
             'is comparison, page object examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$page.title is "value"'),
-                'expectedContent' => CodeBlock::fromContent([
-                    '{{ EXPECTED }} = "value" ?? null',
-                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-                    '{{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null',
-                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::PANTHER_CLIENT,
+                'expectedRenderedSource' =>
+                    '{{ EXPECTED }} = "value" ?? null;' . "\n" .
+                    '{{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null;' . "\n" .
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});'
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        VariableNames::PANTHER_CLIENT,
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         VariableNames::EXPECTED_VALUE,
                         VariableNames::EXAMINED_VALUE,
-                    ])),
-            ],
-            'is comparison, browser object examined value, element identifier expected value' => [
-                'assertion' => $assertionParser->parse('$browser.size is $"{{ $".parent" }} .child"'),
-                'expectedContent' => CodeBlock::fromContent([
-                    '{{ EXPECTED }} = {{ NAVIGATOR }}->find(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".child","parent":{"locator":".parent"}}\')' .
-                    ')',
-                    '{{ EXPECTED }} = {{ INSPECTOR }}->getValue({{ EXPECTED }}) ?? null',
-                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-                    '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()',
-                    '{{ EXAMINED }} = '
-                    . '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
-                    . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null',
-                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
+                    ]),
                 ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
-                    ]))
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::PHPUNIT_TEST_CASE,
-                        VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
-                        VariableNames::PANTHER_CLIENT,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
-                        VariableNames::EXPECTED_VALUE,
-                        'WEBDRIVER_DIMENSION',
-                        VariableNames::EXAMINED_VALUE,
-                    ])),
             ],
             'is comparison, browser object examined value, descendant identifier expected value' => [
-                'assertion' => $assertionParser->parse('$browser.size is $".selector"'),
-                'expectedContent' => CodeBlock::fromContent([
-                    '{{ EXPECTED }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
-                    '{{ EXPECTED }} = {{ INSPECTOR }}->getValue({{ EXPECTED }}) ?? null',
-                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-                    '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()',
-                    '{{ EXAMINED }} = '
-                        . '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
-                        . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null',
-                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
+                'assertion' => $assertionParser->parse('$browser.size is $"{{ $".parent" }} .child"'),
+                'expectedRenderedSource' =>
+                    '{{ EXPECTED }} = (function () {' . "\n" .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".child","parent":{"locator":".parent"}}\')' .
+                    ');' . "\n" .
+                    "\n" .
+                    '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
+                    '})();' . "\n" .
+                    '{{ EXAMINED }} = (function () {' . "\n" .
+                    '    {{ WEBDRIVER_DIMENSION }} = ' .
+                    '{{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n" .
+                    "\n" .
+                    '    return (string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . ' .
+                    '(string) {{ WEBDRIVER_DIMENSION }}->getHeight();' . "\n" .
+                    '})();' . "\n" .
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});'
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
-                    ]))
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
-                        VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
                         VariableNames::PANTHER_CLIENT,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         VariableNames::EXPECTED_VALUE,
-                        'WEBDRIVER_DIMENSION',
                         VariableNames::EXAMINED_VALUE,
-                    ])),
+                        'ELEMENT',
+                        'WEBDRIVER_DIMENSION',
+                    ]),
+                ]),
+            ],
+            'is comparison, browser object examined value, element identifier expected value' => [
+                'assertion' => $assertionParser->parse('$browser.size is $".selector"'),
+                'expectedRenderedSource' =>
+                    '{{ EXPECTED }} = (function () {' . "\n" .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    ');' . "\n" .
+                    "\n" .
+                    '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
+                    '})();' . "\n" .
+                    '{{ EXAMINED }} = (function () {' . "\n" .
+                    '    {{ WEBDRIVER_DIMENSION }} = ' .
+                    '{{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n" .
+                    "\n" .
+                    '    return (string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . ' .
+                    '(string) {{ WEBDRIVER_DIMENSION }}->getHeight();' . "\n" .
+                    '})();' . "\n" .
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});'
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(ElementIdentifier::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                        VariableNames::PHPUNIT_TEST_CASE,
+                        VariableNames::PANTHER_CLIENT,
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
+                        VariableNames::EXPECTED_VALUE,
+                        VariableNames::EXAMINED_VALUE,
+                        'ELEMENT',
+                        'WEBDRIVER_DIMENSION',
+                    ]),
+                ]),
             ],
             'is comparison, browser object examined value, attribute identifier expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $".selector".attribute_name'),
-                'expectedContent' => CodeBlock::fromContent([
-                    '{{ EXPECTED }} = {{ NAVIGATOR }}->findOne(' .
+                'expectedRenderedSource' =>
+                    '{{ EXPECTED }} = (function () {' . "\n" .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(' .
                     'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ')',
-                    '{{ EXPECTED }} = {{ EXPECTED }}->getAttribute(\'attribute_name\') ?? null',
-                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-                    '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()',
-                    '{{ EXAMINED }} = '
-                        . '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
-                        . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null',
-                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withClassDependencies(new ClassDependencyCollection([
+                    ');' . "\n" .
+                    "\n" .
+                    '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
+                    '})();' . "\n" .
+                    '{{ EXAMINED }} = (function () {' . "\n" .
+                    '    {{ WEBDRIVER_DIMENSION }} = ' .
+                    '{{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n" .
+                    "\n" .
+                    '    return (string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . ' .
+                    '(string) {{ WEBDRIVER_DIMENSION }}->getHeight();' . "\n" .
+                    '})();' . "\n" .
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});'
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
-                    ]))
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::PANTHER_CLIENT,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         VariableNames::EXPECTED_VALUE,
-                        'WEBDRIVER_DIMENSION',
                         VariableNames::EXAMINED_VALUE,
-                    ])),
+                        'ELEMENT',
+                        'WEBDRIVER_DIMENSION',
+                    ]),
+                ]),
             ],
             'is comparison, browser object examined value, environment expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $env.KEY'),
-                'expectedContent' => CodeBlock::fromContent([
-                    '{{ EXPECTED }} = {{ ENV }}[\'KEY\'] ?? null',
-                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-                    '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()',
-                    '{{ EXAMINED }} = '
-                    . '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
-                    . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null',
-                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
-                        VariableNames::PANTHER_CLIENT,
+                'expectedRenderedSource' =>
+                    '{{ EXPECTED }} = {{ ENV }}[\'KEY\'] ?? null;' . "\n" .
+                    '{{ EXAMINED }} = (function () {' . "\n" .
+                    '    {{ WEBDRIVER_DIMENSION }} = ' .
+                    '{{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n" .
+                    "\n" .
+                    '    return (string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . ' .
+                    '(string) {{ WEBDRIVER_DIMENSION }}->getHeight();' . "\n" .
+                    '})();' . "\n" .
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});'
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        VariableNames::PANTHER_CLIENT,
+                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         VariableNames::EXPECTED_VALUE,
-                        'WEBDRIVER_DIMENSION',
                         VariableNames::EXAMINED_VALUE,
-                    ])),
+                        'WEBDRIVER_DIMENSION',
+                    ]),
+                ]),
             ],
             'is comparison, browser object examined value, environment expected value with default' => [
                 'assertion' => $assertionParser->parse('$browser.size is $env.KEY|"default value"'),
-                'expectedContent' => CodeBlock::fromContent([
-                    '{{ EXPECTED }} = {{ ENV }}[\'KEY\'] ?? \'default value\'',
-                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-                    '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()',
-                    '{{ EXAMINED }} = '
-                        . '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
-                        . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null',
-                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
-                        VariableNames::PANTHER_CLIENT,
+                'expectedRenderedSource' =>
+                    '{{ EXPECTED }} = {{ ENV }}[\'KEY\'] ?? \'default value\';' . "\n" .
+                    '{{ EXAMINED }} = (function () {' . "\n" .
+                    '    {{ WEBDRIVER_DIMENSION }} = ' .
+                    '{{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n" .
+                    "\n" .
+                    '    return (string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . ' .
+                    '(string) {{ WEBDRIVER_DIMENSION }}->getHeight();' . "\n" .
+                    '})();' . "\n" .
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});'
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        VariableNames::PANTHER_CLIENT,
+                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         VariableNames::EXPECTED_VALUE,
-                        'WEBDRIVER_DIMENSION',
                         VariableNames::EXAMINED_VALUE,
-                    ])),
+                        'WEBDRIVER_DIMENSION',
+                    ]),
+                ]),
             ],
             'is comparison, browser object examined value, page object expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $page.url'),
-                'expectedContent' => CodeBlock::fromContent([
-                    '{{ EXPECTED }} = {{ CLIENT }}->getCurrentURL() ?? null',
-                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-                    '{{ WEBDRIVER_DIMENSION }} = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize()',
-                    '{{ EXAMINED }} = '
-                    . '(string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . '
-                    . '(string) {{ WEBDRIVER_DIMENSION }}->getHeight() ?? null',
-                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
-                        VariableNames::PANTHER_CLIENT,
+                'expectedRenderedSource' =>
+                    '{{ EXPECTED }} = {{ CLIENT }}->getCurrentURL() ?? null;' . "\n" .
+                    '{{ EXAMINED }} = (function () {' . "\n" .
+                    '    {{ WEBDRIVER_DIMENSION }} = ' .
+                    '{{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n" .
+                    "\n" .
+                    '    return (string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . ' .
+                    '(string) {{ WEBDRIVER_DIMENSION }}->getHeight();' . "\n" .
+                    '})();' . "\n" .
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});'
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                        VariableNames::PANTHER_CLIENT,
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         VariableNames::EXPECTED_VALUE,
-                        'WEBDRIVER_DIMENSION',
                         VariableNames::EXAMINED_VALUE,
-                    ])),
+                        'WEBDRIVER_DIMENSION',
+                    ]),
+                ]),
             ],
             'is comparison, literal string examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('"examined" is "expected"'),
-                'expectedContent' => CodeBlock::fromContent([
-                    '{{ EXPECTED }} = "expected" ?? null',
-                    '{{ EXPECTED }} = (string) {{ EXPECTED }}',
-                    '{{ EXAMINED }} = "examined" ?? null',
-                    '{{ EXAMINED }} = (string) {{ EXAMINED }}',
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }})',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                'expectedRenderedSource' =>
+                    '{{ EXPECTED }} = "expected" ?? null;' . "\n" .
+                    '{{ EXAMINED }} = "examined" ?? null;' . "\n" .
+                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});'
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]))
-                    ->withVariableExports(VariablePlaceholderCollection::createCollection([
+                    ]),
+                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         VariableNames::EXPECTED_VALUE,
                         VariableNames::EXAMINED_VALUE,
-                    ])),
+                    ]),
+                ]),
             ],
         ];
     }

@@ -4,16 +4,15 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
-use webignition\BasilCompilableSourceFactory\ArrayStatementFactory;
-use webignition\BasilCompilationSource\Line\Statement;
-use webignition\BasilCompilationSource\Line\StatementInterface;
+use webignition\BasilCompilableSource\Line\ArrayExpression;
+use webignition\BasilCompilableSourceFactory\ArrayExpressionFactory;
 use webignition\BasilModels\DataSet\DataSetCollection;
 use webignition\BasilModels\DataSet\DataSetCollectionInterface;
 
-class ArrayStatementFactoryTest extends \PHPUnit\Framework\TestCase
+class ArrayExpressionFactoryTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ArrayStatementFactory
+     * @var ArrayExpressionFactory
      */
     private $arrayStatementFactory;
 
@@ -21,7 +20,7 @@ class ArrayStatementFactoryTest extends \PHPUnit\Framework\TestCase
     {
         parent::setUp();
 
-        $this->arrayStatementFactory = ArrayStatementFactory::createFactory();
+        $this->arrayStatementFactory = ArrayExpressionFactory::createFactory();
     }
 
     /**
@@ -29,11 +28,11 @@ class ArrayStatementFactoryTest extends \PHPUnit\Framework\TestCase
      */
     public function testCreate(
         DataSetCollectionInterface $dataSetCollection,
-        StatementInterface $expectedStatement
+        ArrayExpression $expectedExpression
     ) {
         $arrayStatement = $this->arrayStatementFactory->create($dataSetCollection);
 
-        $this->assertEquals($expectedStatement, $arrayStatement);
+        $this->assertEquals($expectedExpression, $arrayStatement);
     }
 
     public function createDataProvider(): array
@@ -41,21 +40,19 @@ class ArrayStatementFactoryTest extends \PHPUnit\Framework\TestCase
         return [
             'empty' => [
                 'dataSetCollection' => new DataSetCollection([]),
-                'expectedStatement' => new Statement('return []'),
+                'expectedExpression' => new ArrayExpression([]),
             ],
             'single data set with single key:value numerical name' => [
                 'dataSetCollection' => new DataSetCollection([
                     0 => [
                         'key1' => 'value1',
-                    ]
+                    ],
                 ]),
-                'expectedStatement' => new Statement(
-                    "return [
-    '0' => [
-        'key1' => 'value1',
-    ],
-]"
-                ),
+                'expectedExpression' => new ArrayExpression([
+                    0 => [
+                        'key1' => 'value1',
+                    ],
+                ]),
             ],
             'single data set with single key:value string name' => [
                 'dataSetCollection' => new DataSetCollection([
@@ -63,13 +60,11 @@ class ArrayStatementFactoryTest extends \PHPUnit\Framework\TestCase
                         'key1' => 'value1',
                     ],
                 ]),
-                'expectedStatement' => new Statement(
-                    "return [
-    'data-set-one' => [
-        'key1' => 'value1',
-    ],
-]"
-                ),
+                'expectedExpression' => new ArrayExpression([
+                    'data-set-one' => [
+                        'key1' => 'value1',
+                    ],
+                ]),
             ],
             'single data set with single key:value string name containing single quotes' => [
                 'dataSetCollection' => new DataSetCollection([
@@ -77,13 +72,11 @@ class ArrayStatementFactoryTest extends \PHPUnit\Framework\TestCase
                         "'key1'" => "'value1'",
                     ],
                 ]),
-                'expectedStatement' => new Statement(
-                    "return [
-    '\'data-set-one\'' => [
-        '\'key1\'' => '\'value1\'',
-    ],
-]"
-                ),
+                'expectedExpression' => new ArrayExpression([
+                    "'data-set-one'" => [
+                        "'key1'" => "'value1'",
+                    ],
+                ]),
             ],
             'single data set with multiple key:value numerical name' => [
                 'dataSetCollection' => new DataSetCollection([
@@ -92,14 +85,12 @@ class ArrayStatementFactoryTest extends \PHPUnit\Framework\TestCase
                         'key2' => 'value2',
                     ],
                 ]),
-                'expectedStatement' => new Statement(
-                    "return [
-    '0' => [
-        'key1' => 'value1',
-        'key2' => 'value2',
-    ],
-]"
-                ),
+                'expectedExpression' => new ArrayExpression([
+                    '0' => [
+                        'key1' => 'value1',
+                        'key2' => 'value2',
+                    ],
+                ]),
             ],
             'multiple data sets with multiple key:value numerical name' => [
                 'dataSetCollection' => new DataSetCollection([
@@ -112,36 +103,16 @@ class ArrayStatementFactoryTest extends \PHPUnit\Framework\TestCase
                         'key2' => 'value4',
                     ],
                 ]),
-                'expectedStatement' => new Statement(
-                    "return [
-    '0' => [
-        'key1' => 'value1',
-        'key2' => 'value2',
-    ],
-    '1' => [
-        'key1' => 'value3',
-        'key2' => 'value4',
-    ],
-]"
-                ),
-            ],
-            'array keys are ordered alphabetically' => [
-                'dataSetCollection' => new DataSetCollection([
+                'expectedExpression' => new ArrayExpression([
                     '0' => [
-                        'zebra' => 'zebra value',
-                        'apple' => 'apple value',
-                        'bee' => 'bee value',
+                        'key1' => 'value1',
+                        'key2' => 'value2',
+                    ],
+                    '1' => [
+                        'key1' => 'value3',
+                        'key2' => 'value4',
                     ],
                 ]),
-                'expectedStatement' => new Statement(
-                    "return [
-    '0' => [
-        'apple' => 'apple value',
-        'bee' => 'bee value',
-        'zebra' => 'zebra value',
-    ],
-]"
-                ),
             ],
         ];
     }

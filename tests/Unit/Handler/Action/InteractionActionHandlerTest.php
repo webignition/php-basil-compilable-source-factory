@@ -6,11 +6,10 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Action;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\Action\InteractionActionHandler;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilModels\Action\InteractionActionInterface;
 use webignition\BasilParser\ActionParser;
 
-class InteractionActionHandlerTest extends AbstractTestCase
+class InteractionActionHandlerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider handleThrowsExceptionDataProvider

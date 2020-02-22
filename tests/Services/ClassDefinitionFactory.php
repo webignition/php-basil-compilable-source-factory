@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
-use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\Block\CodeBlockInterface;
-use webignition\BasilCompilationSource\ClassDefinition\ClassDefinition;
-use webignition\BasilCompilationSource\ClassDefinition\ClassDefinitionInterface;
-use webignition\BasilCompilationSource\MethodDefinition\MethodDefinition;
+use webignition\BasilCompilableSource\Block\CodeBlockInterface;
+use webignition\BasilCompilableSource\ClassDefinition;
+use webignition\BasilCompilableSource\ClassDefinitionInterface;
+use webignition\BasilCompilableSource\Line\ClassDependency;
+use webignition\BasilCompilableSource\MethodDefinition;
+use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractGeneratedTestCase;
 
 class ClassDefinitionFactory
 {
@@ -22,22 +23,17 @@ class ClassDefinitionFactory
 
         $className = 'Generated' . md5((string) rand()) . 'Test';
 
-        return new ClassDefinition($className, [
-            MethodDefinitionFactory::createSetUpBeforeClassMethodDefinition($fixture),
-            MethodDefinitionFactory::createSetUpMethodDefinition($additionalSetupStatements),
-            $methodDefinition
-        ]);
-    }
+        $classDefinition = new ClassDefinition(
+            $className,
+            [
+                MethodDefinitionFactory::createSetUpBeforeClassMethodDefinition($fixture),
+                MethodDefinitionFactory::createSetUpMethodDefinition($additionalSetupStatements),
+                $methodDefinition
+            ]
+        );
 
-    public static function createPhpUnitTestForBlock(CodeBlock $block): ClassDefinitionInterface
-    {
-        $methodName = 'testGeneratedCode';
-        $methodDefinition = new MethodDefinition($methodName, $block);
+        $classDefinition->setBaseClass(new ClassDependency(AbstractGeneratedTestCase::class));
 
-        $className = 'Generated' . md5((string) rand()) . 'Test';
-
-        return new ClassDefinition($className, [
-            $methodDefinition,
-        ]);
+        return $classDefinition;
     }
 }

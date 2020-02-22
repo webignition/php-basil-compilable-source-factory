@@ -22,6 +22,7 @@ trait MatchesAssertionFunctionalDataProviderTrait
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                     VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
+                    'ELEMENT' => '$element',
                 ],
             ],
             'matches comparison, attribute identifier examined value, scalar expected value' => [
@@ -31,6 +32,7 @@ trait MatchesAssertionFunctionalDataProviderTrait
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                     VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
+                    'ELEMENT' => '$element',
                 ],
             ],
             'matches comparison, environment examined value, scalar expected value' => [
@@ -66,6 +68,7 @@ trait MatchesAssertionFunctionalDataProviderTrait
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                     VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
+                    'ELEMENT' => '$element',
                 ],
             ],
             'matches comparison, element identifier examined value, attribute identifier expected value' => [
@@ -75,6 +78,7 @@ trait MatchesAssertionFunctionalDataProviderTrait
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                     VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
+                    'ELEMENT' => '$element',
                 ],
             ],
             'matches comparison, attribute identifier examined value, environment expected value' => [
@@ -85,6 +89,7 @@ trait MatchesAssertionFunctionalDataProviderTrait
                     VariableNames::ENVIRONMENT_VARIABLE_ARRAY => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
                     VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                     VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
+                    'ELEMENT' => '$element',
                 ],
             ],
         ];

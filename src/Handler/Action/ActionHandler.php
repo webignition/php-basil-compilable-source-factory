@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
+use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
-use webignition\BasilCompilationSource\Block\CodeBlockInterface;
 use webignition\BasilModels\Action\ActionInterface;
 use webignition\BasilModels\Action\InputActionInterface;
 use webignition\BasilModels\Action\InteractionActionInterface;

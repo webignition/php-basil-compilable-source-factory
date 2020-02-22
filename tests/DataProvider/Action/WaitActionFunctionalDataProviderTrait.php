@@ -34,6 +34,7 @@ trait WaitActionFunctionalDataProviderTrait
                 'additionalVariableIdentifiers' => [
                     'DURATION' => '$duration',
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
+                    'ELEMENT' => '$element',
                 ],
                 'expectedDuration' => 20,
             ],
@@ -45,6 +46,7 @@ trait WaitActionFunctionalDataProviderTrait
                 'additionalVariableIdentifiers' => [
                     'DURATION' => '$duration',
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
+                    'ELEMENT' => '$element',
                 ],
                 'expectedDuration' => 30,
             ],
@@ -56,6 +58,7 @@ trait WaitActionFunctionalDataProviderTrait
                 'additionalVariableIdentifiers' => [
                     'DURATION' => '$duration',
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
+                    'ELEMENT' => '$element',
                 ],
                 'expectedDuration' => 0,
             ],

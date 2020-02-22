@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
+use webignition\BasilCompilableSource\Metadata\Metadata;
+use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\Metadata\Metadata;
-use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilParser\ActionParser;
 
 trait CreateFromReloadActionDataProviderTrait
@@ -19,14 +18,13 @@ trait CreateFromReloadActionDataProviderTrait
         return [
             'no-arguments action (reload)' => [
                 'action' => $actionParser->parse('reload'),
-                'expectedContent' => CodeBlock::fromContent([
-                    '{{ CRAWLER }} = {{ CLIENT }}->reload()',
-                ]),
-                'expectedMetadata' => (new Metadata())
-                    ->withVariableDependencies(VariablePlaceholderCollection::createCollection([
+                'expectedRenderedSource' => '{{ CRAWLER }} = {{ CLIENT }}->reload();',
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PANTHER_CRAWLER,
                         VariableNames::PANTHER_CLIENT,
-                    ])),
+                    ]),
+                ]),
             ],
         ];
     }
