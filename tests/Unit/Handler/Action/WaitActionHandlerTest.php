@@ -7,12 +7,11 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Action;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\Action\WaitActionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ObjectReflector;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilDomIdentifierFactory\Factory;
 use webignition\BasilModels\Action\WaitActionInterface;
 use webignition\BasilParser\ActionParser;
 
-class WaitActionHandlerTest extends AbstractTestCase
+class WaitActionHandlerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider handleThrowsExceptionDataProvider

@@ -12,11 +12,10 @@ use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\CallFactory\ElementIdentifierCallFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestCodeGenerator;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
-class ElementIdentifierCallFactoryTest extends AbstractTestCase
+class ElementIdentifierCallFactoryTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ElementIdentifierCallFactory

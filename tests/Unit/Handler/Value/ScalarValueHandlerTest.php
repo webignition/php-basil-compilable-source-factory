@@ -8,11 +8,10 @@ use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 
-class ScalarValueHandlerTest extends AbstractTestCase
+class ScalarValueHandlerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ScalarValueHandler

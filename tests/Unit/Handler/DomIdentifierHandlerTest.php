@@ -14,12 +14,11 @@ use webignition\BasilCompilableSourceFactory\Model\DomElementIdentifier;
 use webignition\BasilCompilableSourceFactory\Model\DomIdentifier;
 use webignition\BasilCompilableSourceFactory\Model\DomIdentifierInterface;
 use webignition\BasilCompilableSourceFactory\Model\DomIdentifierValue;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\DomElementIdentifier\AttributeIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifier;
 
-class DomIdentifierHandlerTest extends AbstractTestCase
+class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var DomIdentifierHandler

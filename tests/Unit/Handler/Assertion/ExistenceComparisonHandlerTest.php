@@ -6,13 +6,12 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ObjectReflector;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\ExistenceComparisonHandler;
 use webignition\BasilDomIdentifierFactory\Factory;
 use webignition\BasilModels\Assertion\AssertionInterface;
 use webignition\BasilParser\AssertionParser;
 
-class ExistenceComparisonHandlerTest extends AbstractTestCase
+class ExistenceComparisonHandlerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var ExistenceComparisonHandler
