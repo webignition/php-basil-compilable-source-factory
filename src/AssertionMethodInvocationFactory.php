@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory;
 
+use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\VariablePlaceholder;
@@ -24,6 +25,13 @@ class AssertionMethodInvocationFactory
         );
     }
 
+    /**
+     * @param string $assertionMethod
+     * @param array<ExpressionInterface> $arguments
+     * @param string $failureMessage
+     *
+     * @return ObjectMethodInvocation
+     */
     public function create(
         string $assertionMethod,
         array $arguments = [],
