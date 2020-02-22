@@ -26,7 +26,7 @@ class AssertionMethodInvocationFactory
 
     public function create(
         string $assertionMethod,
-        array $arguments,
+        array $arguments = [],
         string $failureMessage = ''
     ): ObjectMethodInvocation {
         if ('' !== $failureMessage) {
