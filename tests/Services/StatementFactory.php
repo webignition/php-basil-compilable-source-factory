@@ -17,22 +17,6 @@ use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class StatementFactory
 {
-//    /**
-//     * @param string $contentTemplate
-//     * @param array<VariablePlaceholder> $variableDependencies
-//     *
-//     * @return StatementInterface
-//     */
-//    public static function create(string $contentTemplate, array $variableDependencies): StatementInterface
-//    {
-//        $content = sprintf($contentTemplate, ...$variableDependencies);
-//
-//        $metadata = (new Metadata())
-//            ->withVariableDependencies(new VariablePlaceholderCollection($variableDependencies));
-//
-//        return new Statement($content, $metadata);
-//    }
-
     public static function createAssertBrowserTitle(string $expectedTitle): StatementInterface
     {
         return new Statement(
