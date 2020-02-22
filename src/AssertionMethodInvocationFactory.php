@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory;
 
 use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
+use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\VariablePlaceholder;
 
@@ -46,7 +47,8 @@ class AssertionMethodInvocationFactory
         return new ObjectMethodInvocation(
             VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
             $assertionMethod,
-            $arguments
+            $arguments,
+            MethodInvocation::ARGUMENT_FORMAT_STACKED
         );
     }
 }

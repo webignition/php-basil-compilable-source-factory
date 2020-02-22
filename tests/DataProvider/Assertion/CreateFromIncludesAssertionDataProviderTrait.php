@@ -18,6 +18,11 @@ trait CreateFromIncludesAssertionDataProviderTrait
     {
         $assertionParser = AssertionParser::create();
 
+        $expectedAssertionCall = '{{ PHPUNIT }}->assertStringContainsString(' . "\n" .
+            '    (string) {{ EXPECTED }},' . "\n" .
+            '    (string) {{ EXAMINED }}' . "\n" .
+            ');';
+
         return [
             'includes comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" includes "value"'),
@@ -30,7 +35,7 @@ trait CreateFromIncludesAssertionDataProviderTrait
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
                     '})();' . "\n" .
-                    '{{ PHPUNIT }}->assertStringContainsString((string) {{ EXPECTED }}, (string) {{ EXAMINED }});'
+                    $expectedAssertionCall
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -59,7 +64,7 @@ trait CreateFromIncludesAssertionDataProviderTrait
                     "\n" .
                     '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
                     '})();' . "\n" .
-                    '{{ PHPUNIT }}->assertStringContainsString((string) {{ EXPECTED }}, (string) {{ EXAMINED }});'
+                    $expectedAssertionCall
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([

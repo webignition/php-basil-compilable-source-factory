@@ -24,9 +24,10 @@ trait CreateFromExistsAssertionDataProviderTrait
                 'expectedRenderedSource' =>
                     '{{ EXAMINED }} = {{ CLIENT }}->getCurrentURL() ?? null;' . "\n" .
                     '{{ EXAMINED }} = {{ EXAMINED }} !== null;' . "\n" .
-                    '{{ PHPUNIT }}->assertTrue(' .
-                    '{{ EXAMINED }}, ' .
-                    '\'{"assertion":{"source":"$page.url exists","identifier":"$page.url","comparison":"exists"}}\'' .
+                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
+                    '    {{ EXAMINED }},' . "\n" .
+                    '    \'{"assertion":{"source":"$page.url exists",' .
+                    '"identifier":"$page.url","comparison":"exists"}}\'' . "\n" .
                     ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
@@ -43,10 +44,10 @@ trait CreateFromExistsAssertionDataProviderTrait
                 'expectedRenderedSource' =>
                     '{{ EXAMINED }} = ' .
                     '{{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".selector"}\'));' . "\n" .
-                    '{{ PHPUNIT }}->assertTrue(' .
-                    '{{ EXAMINED }}, ' .
-                    '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
-                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
+                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
+                    '    {{ EXAMINED }},' . "\n" .
+                    '    \'{"assertion":{"source":"$\\\".selector\\\" exists",' .
+                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -68,10 +69,10 @@ trait CreateFromExistsAssertionDataProviderTrait
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(' .
                     'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                     ');' . "\n" .
-                    '{{ PHPUNIT }}->assertTrue(' .
-                    '{{ HAS }}, ' .
-                    '\'{"assertion":{"source":"$\\\".selector\\\".attribute_name exists",' .
-                    '"identifier":"$\\\".selector\\\".attribute_name","comparison":"exists"}}\'' .
+                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
+                    '    {{ HAS }},' . "\n" .
+                    '    \'{"assertion":{"source":"$\\\".selector\\\".attribute_name exists",' .
+                    '"identifier":"$\\\".selector\\\".attribute_name","comparison":"exists"}}\'' .  "\n" .
                     ');' . "\n" .
                     '{{ EXAMINED }} = (function () {' . "\n" .
                     '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(' .
@@ -81,10 +82,10 @@ trait CreateFromExistsAssertionDataProviderTrait
                     '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
                     '})();' . "\n" .
                     '{{ EXAMINED }} = {{ EXAMINED }} !== null;' . "\n" .
-                    '{{ PHPUNIT }}->assertTrue(' .
-                    '{{ EXAMINED }}, ' .
-                    '\'{"assertion":{"source":"$\\\".selector\\\".attribute_name exists",' .
-                    '"identifier":"$\\\".selector\\\".attribute_name","comparison":"exists"}}\'' .
+                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
+                    '    {{ EXAMINED }},' . "\n" .
+                    '    \'{"assertion":{"source":"$\\\".selector\\\".attribute_name exists",' .
+                    '"identifier":"$\\\".selector\\\".attribute_name","comparison":"exists"}}\'' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -107,9 +108,10 @@ trait CreateFromExistsAssertionDataProviderTrait
                 'expectedRenderedSource' =>
                     '{{ EXAMINED }} = $key ?? null;' . "\n" .
                     '{{ EXAMINED }} = {{ EXAMINED }} !== null;' . "\n" .
-                    '{{ PHPUNIT }}->assertTrue(' .
-                    '{{ EXAMINED }}, ' .
-                    '\'{"assertion":{"source":"$data.key exists","identifier":"$data.key","comparison":"exists"}}\'' .
+                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
+                    '    {{ EXAMINED }},' . "\n" .
+                    '    \'{"assertion":{"source":"$data.key exists",' .
+                    '"identifier":"$data.key","comparison":"exists"}}\'' .  "\n" .
                     ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
@@ -125,10 +127,10 @@ trait CreateFromExistsAssertionDataProviderTrait
                 'expectedRenderedSource' =>
                     '{{ EXAMINED }} = ' .
                     '{{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":"a[href=foo.html]"}\'));' . "\n" .
-                    '{{ PHPUNIT }}->assertTrue(' .
-                    '{{ EXAMINED }}, ' .
-                    '\'{"assertion":{"source":"$\\\"a[href=foo.html]\\\" exists",' .
-                    '"identifier":"$\\\"a[href=foo.html]\\\"","comparison":"exists"}}\'' .
+                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
+                    '    {{ EXAMINED }},' . "\n" .
+                    '    \'{"assertion":{"source":"$\\\"a[href=foo.html]\\\" exists",' .
+                    '"identifier":"$\\\"a[href=foo.html]\\\"","comparison":"exists"}}\'' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -150,10 +152,10 @@ trait CreateFromExistsAssertionDataProviderTrait
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(' .
                     'ElementIdentifier::fromJson(\'{"locator":"a[href=foo.html]"}\')' .
                     ');' . "\n" .
-                    '{{ PHPUNIT }}->assertTrue(' .
-                    '{{ HAS }}, ' .
-                    '\'{"assertion":{"source":"$\\\"a[href=foo.html]\\\".attribute_name exists",' .
-                    '"identifier":"$\\\"a[href=foo.html]\\\".attribute_name","comparison":"exists"}}\'' .
+                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
+                    '    {{ HAS }},' . "\n" .
+                    '    \'{"assertion":{"source":"$\\\"a[href=foo.html]\\\".attribute_name exists",' .
+                    '"identifier":"$\\\"a[href=foo.html]\\\".attribute_name","comparison":"exists"}}\'' . "\n" .
                     ');' . "\n" .
                     '{{ EXAMINED }} = (function () {' . "\n" .
                     '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(' .
@@ -163,10 +165,10 @@ trait CreateFromExistsAssertionDataProviderTrait
                     '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
                     '})();' . "\n" .
                     '{{ EXAMINED }} = {{ EXAMINED }} !== null;' . "\n" .
-                    '{{ PHPUNIT }}->assertTrue(' .
-                    '{{ EXAMINED }}, ' .
-                    '\'{"assertion":{"source":"$\\\"a[href=foo.html]\\\".attribute_name exists",' .
-                    '"identifier":"$\\\"a[href=foo.html]\\\".attribute_name","comparison":"exists"}}\'' .
+                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
+                    '    {{ EXAMINED }},' . "\n" .
+                    '    \'{"assertion":{"source":"$\\\"a[href=foo.html]\\\".attribute_name exists",' .
+                    '"identifier":"$\\\"a[href=foo.html]\\\".attribute_name","comparison":"exists"}}\'' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([

@@ -54,11 +54,6 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals($expectedTestMethodMetadata, $testMethod->getMetadata());
 
-
-//        $this->assertMethodEquals($expectedTestMethod, $testMethod);
-//        $this->assertMetadataEquals($expectedTestMethodMetadata, $testMethod->getMetadata());
-//        $this->assertMetadataEquals($expectedTestMethodMetadata, $testMethod->getMetadata());
-//
         $dataProviderMethod = $stepMethods->getDataProviderMethod();
 
         if ($dataProviderMethod instanceof MethodDefinitionInterface) {
@@ -151,11 +146,11 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                     '    {{ HAS }} = {{ NAVIGATOR }}->hasOne(' .
                     'ElementIdentifier::fromJson(\'{"locator":".sel"}\')' .
                     ');' . "\n" .
-                    '    {{ PHPUNIT }}->assertTrue(' .
-                    '{{ HAS }}, ' .
-                    '\'{"assertion":{"source":"$\\\".sel\\\" exists",' .
-                    '"identifier":"$\\\".sel\\\"","comparison":"exists"}}\'' .
-                    ');' . "\n" .
+                    '    {{ PHPUNIT }}->assertTrue(' . "\n" .
+                    '        {{ HAS }},' . "\n" .
+                    '        \'{"assertion":{"source":"$\\\".sel\\\" exists",' .
+                    '"identifier":"$\\\".sel\\\"","comparison":"exists"}}\'' . "\n" .
+                    '    );' . "\n" .
                     '    {{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
                     '    // click $".sel"' . "\n" .
@@ -172,7 +167,10 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                     '    {{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
                     '    {{ EXPECTED }} = "value" ?? null;' . "\n" .
                     '    {{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null;' . "\n" .
-                    '    {{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});' . "\n" .
+                    '    {{ PHPUNIT }}->assertEquals(' . "\n" .
+                    '        {{ EXPECTED }},' . "\n" .
+                    '        {{ EXAMINED }}' . "\n" .
+                    '    );' . "\n" .
                     '    {{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     '}'
                 ,
@@ -238,11 +236,11 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                     '    {{ HAS }} = {{ NAVIGATOR }}->has(' .
                     'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                     ');' . "\n" .
-                    '    {{ PHPUNIT }}->assertTrue(' .
-                    '{{ HAS }}, ' .
-                    '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
-                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
-                    ');' . "\n" .
+                    '    {{ PHPUNIT }}->assertTrue(' . "\n" .
+                    '        {{ HAS }},' . "\n" .
+                    '        \'{"assertion":{"source":"$\\\".selector\\\" exists",' .
+                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' . "\n" .
+                    '    );' . "\n" .
                     '    {{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
                     '    // set $".selector" to $data.field_value' . "\n" .
@@ -261,11 +259,11 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                     '    {{ HAS }} = {{ NAVIGATOR }}->has(' .
                     'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                     ');' . "\n" .
-                    '    {{ PHPUNIT }}->assertTrue(' .
-                    '{{ HAS }}, ' .
-                    '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
-                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
-                    ');' . "\n" .
+                    '    {{ PHPUNIT }}->assertTrue(' . "\n" .
+                    '        {{ HAS }},' . "\n" .
+                    '        \'{"assertion":{"source":"$\\\".selector\\\" exists",' .
+                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' . "\n" .
+                    '    );' . "\n" .
                     '    {{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
                     '    // $".selector" is $data.expected_value' . "\n" .
@@ -281,7 +279,10 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                     "\n" .
                     '        return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
                     '    })();' . "\n" .
-                    '    {{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});' . "\n" .
+                    '    {{ PHPUNIT }}->assertEquals(' . "\n" .
+                    '        {{ EXPECTED }},' . "\n" .
+                    '        {{ EXAMINED }}' . "\n" .
+                    '    );' . "\n" .
                     '    {{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     '}'
                 ,

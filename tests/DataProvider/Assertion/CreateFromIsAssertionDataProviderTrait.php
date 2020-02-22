@@ -18,6 +18,11 @@ trait CreateFromIsAssertionDataProviderTrait
     {
         $assertionParser = AssertionParser::create();
 
+        $expectedAssertionCall = '{{ PHPUNIT }}->assertEquals(' . "\n" .
+            '    {{ EXPECTED }},' . "\n" .
+            '    {{ EXAMINED }}' . "\n" .
+            ');';
+
         return [
             'is comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" is "value"'),
@@ -30,7 +35,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
                     '})();' . "\n" .
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});'
+                    $expectedAssertionCall
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -59,7 +64,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
                     '})();' . "\n" .
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});'
+                    $expectedAssertionCall
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -88,7 +93,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     "\n" .
                     '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
                     '})();' . "\n" .
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});'
+                    $expectedAssertionCall
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -116,7 +121,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '    return (string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . ' .
                     '(string) {{ WEBDRIVER_DIMENSION }}->getHeight();' . "\n" .
                     '})();' . "\n" .
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});'
+                    $expectedAssertionCall
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
@@ -135,7 +140,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedRenderedSource' =>
                     '{{ EXPECTED }} = "value" ?? null;' . "\n" .
                     '{{ EXAMINED }} = {{ ENV }}[\'KEY\'] ?? null;' . "\n" .
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});'
+                    $expectedAssertionCall
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
@@ -153,7 +158,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedRenderedSource' =>
                     '{{ EXPECTED }} = "value" ?? null;' . "\n" .
                     '{{ EXAMINED }} = {{ ENV }}[\'KEY\'] ?? \'default value\';' . "\n" .
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});'
+                    $expectedAssertionCall
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
@@ -171,7 +176,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedRenderedSource' =>
                     '{{ EXPECTED }} = {{ ENV }}[\'KEY2\'] ?? \'default value 2\';' . "\n" .
                     '{{ EXAMINED }} = {{ ENV }}[\'KEY1\'] ?? \'default value 1\';' . "\n" .
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});'
+                    $expectedAssertionCall
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
@@ -189,7 +194,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedRenderedSource' =>
                     '{{ EXPECTED }} = "value" ?? null;' . "\n" .
                     '{{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null;' . "\n" .
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});'
+                    $expectedAssertionCall
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
@@ -219,7 +224,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '    return (string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . ' .
                     '(string) {{ WEBDRIVER_DIMENSION }}->getHeight();' . "\n" .
                     '})();' . "\n" .
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});'
+                    $expectedAssertionCall
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -256,7 +261,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '    return (string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . ' .
                     '(string) {{ WEBDRIVER_DIMENSION }}->getHeight();' . "\n" .
                     '})();' . "\n" .
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});'
+                    $expectedAssertionCall
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -293,7 +298,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '    return (string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . ' .
                     '(string) {{ WEBDRIVER_DIMENSION }}->getHeight();' . "\n" .
                     '})();' . "\n" .
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});'
+                    $expectedAssertionCall
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -323,7 +328,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '    return (string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . ' .
                     '(string) {{ WEBDRIVER_DIMENSION }}->getHeight();' . "\n" .
                     '})();' . "\n" .
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});'
+                    $expectedAssertionCall
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
@@ -349,7 +354,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '    return (string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . ' .
                     '(string) {{ WEBDRIVER_DIMENSION }}->getHeight();' . "\n" .
                     '})();' . "\n" .
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});'
+                    $expectedAssertionCall
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
@@ -375,7 +380,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '    return (string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . ' .
                     '(string) {{ WEBDRIVER_DIMENSION }}->getHeight();' . "\n" .
                     '})();' . "\n" .
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});'
+                    $expectedAssertionCall
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
@@ -394,7 +399,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedRenderedSource' =>
                     '{{ EXPECTED }} = "expected" ?? null;' . "\n" .
                     '{{ EXAMINED }} = "examined" ?? null;' . "\n" .
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});'
+                    $expectedAssertionCall
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([

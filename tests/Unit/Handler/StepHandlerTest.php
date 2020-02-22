@@ -62,10 +62,10 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(' .
                     'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                     ');' . "\n" .
-                    '{{ PHPUNIT }}->assertTrue(' .
-                    '{{ HAS }}, ' .
-                    '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
-                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
+                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
+                    '    {{ HAS }},' . "\n" .
+                    '    \'{"assertion":{"source":"$\\\".selector\\\" exists",' .
+                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' . "\n" .
                     ');' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
@@ -107,10 +107,10 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '{{ HAS }} = {{ NAVIGATOR }}->has(' .
                     'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                     ');' . "\n" .
-                    '{{ PHPUNIT }}->assertTrue(' .
-                    '{{ HAS }}, ' .
-                    '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
-                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
+                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
+                    '    {{ HAS }},' . "\n" .
+                    '    \'{"assertion":{"source":"$\\\".selector\\\" exists",' .
+                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' . "\n" .
                     ');' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
@@ -118,10 +118,10 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '{{ STATEMENT }} = Statement::createAssertion(\'$".value" exists\');' . "\n" .
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
                     '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".value"}\'));' . "\n" .
-                    '{{ PHPUNIT }}->assertTrue(' .
-                    '{{ HAS }}, ' .
-                    '\'{"assertion":{"source":"$\\\".value\\\" exists",' .
-                    '"identifier":"$\\\".value\\\"","comparison":"exists"}}\'' .
+                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
+                    '    {{ HAS }},' . "\n" .
+                    '    \'{"assertion":{"source":"$\\\".value\\\" exists",' .
+                    '"identifier":"$\\\".value\\\"","comparison":"exists"}}\'' . "\n" .
                     ');' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
@@ -176,10 +176,10 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(' .
                     'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                     ');' . "\n" .
-                    '{{ PHPUNIT }}->assertTrue(' .
-                    '{{ HAS }}, ' .
-                    '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
-                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
+                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
+                    '    {{ HAS }},' . "\n" .
+                    '    \'{"assertion":{"source":"$\\\".selector\\\" exists",' .
+                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' . "\n" .
                     ');' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
@@ -205,10 +205,10 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '{{ HAS }} = {{ NAVIGATOR }}->has(' .
                     'ElementIdentifier::fromJson(\'{"locator":".duration"}\')' .
                     ');' . "\n" .
-                    '{{ PHPUNIT }}->assertTrue(' .
-                    '{{ HAS }}, ' .
-                    '\'{"assertion":{"source":"$\\\".duration\\\" exists",' .
-                    '"identifier":"$\\\".duration\\\"","comparison":"exists"}}\'' .
+                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
+                    '    {{ HAS }},' . "\n" .
+                    '    \'{"assertion":{"source":"$\\\".duration\\\" exists",' .
+                    '"identifier":"$\\\".duration\\\"","comparison":"exists"}}\'' . "\n" .
                     ');' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
@@ -255,7 +255,10 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
                     '{{ EXPECTED }} = "value" ?? null;' . "\n" .
                     '{{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null;' . "\n" .
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});' . "\n" .
+                    '{{ PHPUNIT }}->assertEquals(' . "\n" .
+                    '    {{ EXPECTED }},' . "\n" .
+                    '    {{ EXAMINED }}' . "\n" .
+                    ');' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n"
                 ,
                 'expectedMetadata' => new Metadata([
@@ -286,10 +289,10 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '{{ EXAMINED }} = {{ NAVIGATOR }}->has(' .
                     'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                     ');' . "\n" .
-                    '{{ PHPUNIT }}->assertTrue(' .
-                    '{{ EXAMINED }}, ' .
-                    '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
-                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
+                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
+                    '    {{ EXAMINED }},' . "\n" .
+                    '    \'{"assertion":{"source":"$\\\".selector\\\" exists",' .
+                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' . "\n" .
                     ');' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n"
                 ,
@@ -321,10 +324,10 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '{{ HAS }} = {{ NAVIGATOR }}->has(' .
                     'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                     ');' . "\n" .
-                    '{{ PHPUNIT }}->assertTrue(' .
-                    '{{ HAS }}, ' .
-                    '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
-                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
+                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
+                    '    {{ HAS }},' . "\n" .
+                    '    \'{"assertion":{"source":"$\\\".selector\\\" exists",' .
+                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' . "\n" .
                     ');' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
@@ -339,7 +342,10 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
                     '})();' . "\n" .
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});' . "\n" .
+                    '{{ PHPUNIT }}->assertEquals(' . "\n" .
+                    '    {{ EXPECTED }},' . "\n" .
+                    '    {{ EXAMINED }}' . "\n" .
+                    ');' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n"
                 ,
                 'expectedMetadata' => new Metadata([
@@ -374,10 +380,10 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '{{ HAS }} = {{ NAVIGATOR }}->has(' .
                     'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                     ');' . "\n" .
-                    '{{ PHPUNIT }}->assertTrue(' .
-                    '{{ HAS }}, ' .
-                    '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
-                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
+                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
+                    '    {{ HAS }},' . "\n" .
+                    '    \'{"assertion":{"source":"$\\\".selector\\\" exists",' .
+                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' . "\n" .
                     ');' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
@@ -385,10 +391,10 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '{{ STATEMENT }} = Statement::createAssertion(\'$".value" exists\');' . "\n" .
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
                     '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".value"}\'));' . "\n" .
-                    '{{ PHPUNIT }}->assertTrue(' .
-                    '{{ HAS }}, ' .
-                    '\'{"assertion":{"source":"$\\\".value\\\" exists",' .
-                    '"identifier":"$\\\".value\\\"","comparison":"exists"}}\'' .
+                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
+                    '    {{ HAS }},' . "\n" .
+                    '    \'{"assertion":{"source":"$\\\".value\\\" exists",' .
+                    '"identifier":"$\\\".value\\\"","comparison":"exists"}}\'' . "\n" .
                     ');' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
@@ -409,7 +415,10 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
                     '})();' . "\n" .
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});' . "\n" .
+                    '{{ PHPUNIT }}->assertEquals(' . "\n" .
+                    '    {{ EXPECTED }},' . "\n" .
+                    '    {{ EXAMINED }}' . "\n" .
+                    ');' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n"
                 ,
                 'expectedMetadata' => new Metadata([
@@ -444,7 +453,10 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
                     '{{ EXPECTED }} = "value" ?? null;' . "\n" .
                     '{{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null;' . "\n" .
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});' . "\n" .
+                    '{{ PHPUNIT }}->assertEquals(' . "\n" .
+                    '    {{ EXPECTED }},' . "\n" .
+                    '    {{ EXAMINED }}' . "\n" .
+                    ');' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
                     '// $page.url is "http://example.com"' . "\n" .
@@ -452,7 +464,10 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
                     '{{ EXPECTED }} = "http://example.com" ?? null;' . "\n" .
                     '{{ EXAMINED }} = {{ CLIENT }}->getCurrentURL() ?? null;' . "\n" .
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});' . "\n" .
+                    '{{ PHPUNIT }}->assertEquals(' . "\n" .
+                    '    {{ EXPECTED }},' . "\n" .
+                    '    {{ EXAMINED }}' . "\n" .
+                    ');' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n"
                 ,
                 'expectedMetadata' => new Metadata([
@@ -486,10 +501,10 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '{{ HAS }} = {{ NAVIGATOR }}->hasOne(' .
                     'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                     ');' . "\n" .
-                    '{{ PHPUNIT }}->assertTrue(' .
-                    '{{ HAS }}, ' .
-                    '\'{"assertion":{"source":"$\\\".selector\\\" exists",' .
-                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' .
+                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
+                    '    {{ HAS }},' . "\n" .
+                    '    \'{"assertion":{"source":"$\\\".selector\\\" exists",' .
+                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' . "\n" .
                     ');' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
@@ -507,7 +522,10 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
                     '{{ EXPECTED }} = "value" ?? null;' . "\n" .
                     '{{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null;' . "\n" .
-                    '{{ PHPUNIT }}->assertEquals({{ EXPECTED }}, {{ EXAMINED }});' . "\n" .
+                    '{{ PHPUNIT }}->assertEquals(' . "\n" .
+                    '    {{ EXPECTED }},' . "\n" .
+                    '    {{ EXAMINED }}' . "\n" .
+                    ');' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n"
                 ,
                 'expectedMetadata' => new Metadata([
