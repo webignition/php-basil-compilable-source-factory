@@ -22,7 +22,7 @@ use webignition\BasilModels\Step\StepInterface;
 use webignition\BasilParser\StepParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
 
-class StepMethodFactoryTest extends AbstractTestCase
+class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider createStepMethodsDataProvider

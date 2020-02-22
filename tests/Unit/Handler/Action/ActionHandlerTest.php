@@ -16,11 +16,10 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\CreateFro
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\CreateFromWaitActionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\CreateFromWaitForActionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilModels\Action\ActionInterface;
 use webignition\BasilParser\ActionParser;
 
-class ActionHandlerTest extends AbstractTestCase
+class ActionHandlerTest extends \PHPUnit\Framework\TestCase
 {
     use CreateFromBackActionDataProviderTrait;
     use CreateFromClickActionDataProviderTrait;

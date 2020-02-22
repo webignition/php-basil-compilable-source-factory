@@ -24,7 +24,7 @@ use webignition\BasilModels\Test\TestInterface;
 use webignition\BasilParser\Test\TestParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
 
-class ClassDefinitionFactoryTest extends AbstractTestCase
+class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider createClassDefinitionDataProvider

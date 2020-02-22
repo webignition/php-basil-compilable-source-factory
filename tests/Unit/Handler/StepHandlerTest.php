@@ -14,7 +14,6 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentExcepti
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\Handler\StepHandler;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Step\StepInterface;
 use webignition\BasilParser\ActionParser;
@@ -22,7 +21,7 @@ use webignition\BasilParser\AssertionParser;
 use webignition\BasilParser\StepParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
 
-class StepHandlerTest extends AbstractTestCase
+class StepHandlerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @dataProvider handleSuccessDataProvider

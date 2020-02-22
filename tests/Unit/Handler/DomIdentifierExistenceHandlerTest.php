@@ -10,12 +10,11 @@ use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierExistenceHandler;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
-class DomIdentifierExistenceHandlerTest extends AbstractTestCase
+class DomIdentifierExistenceHandlerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @var DomIdentifierExistenceHandler
