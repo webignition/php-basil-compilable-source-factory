@@ -94,8 +94,8 @@ class StepHandler
                 try {
                     $derivedActionAssertions = $this->createDerivedAssertionsForAction($action);
                     $block->addLines($derivedActionAssertions->getLines());
-                } catch (UnsupportedContentException $unsupportedIdentifierException) {
-                    throw new UnsupportedStatementException($action, $unsupportedIdentifierException);
+                } catch (UnsupportedContentException $unsupportedContentException) {
+                    throw new UnsupportedStatementException($action, $unsupportedContentException);
                 }
 
                 $statementBlock = $this->createStatementBlock($action, $this->actionHandler->handle($action));
@@ -108,8 +108,8 @@ class StepHandler
                         $block->addLines(
                             $this->createDerivedAssertionsForAssertion($assertion)->getLines()
                         );
-                    } catch (UnsupportedContentException $unsupportedIdentifierException) {
-                        throw new UnsupportedStatementException($assertion, $unsupportedIdentifierException);
+                    } catch (UnsupportedContentException $unsupportedContentException) {
+                        throw new UnsupportedStatementException($assertion, $unsupportedContentException);
                     }
                 }
 
