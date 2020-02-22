@@ -1,8 +1,5 @@
 parameters:
   inferPrivatePropertyTypeFromConstructor: true
-  excludes_analyse:
-    - tests/Services/TestCodeGenerator.php
-    - tests/Unit/AbstractTestCase.php
 
   ignoreErrors:
     # Return type of 'array' of test data providers
@@ -14,10 +11,6 @@ parameters:
     -
       message: '#::test.+\(\) has no return typehint specified#'
       path: 'tests'
-
-#    -
-#      message: '#::assert.+\(\) has no return typehint specified#'
-#      path: 'tests'
 
     # Test method with argument type-hinted as 'array'
     -
