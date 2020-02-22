@@ -1,11 +1,8 @@
 parameters:
   inferPrivatePropertyTypeFromConstructor: true
   excludes_analyse:
-    - tests/Functional/ClassDefinitionFactoryTest.php
     - tests/Services/TestCodeGenerator.php
     - tests/Unit/AbstractTestCase.php
-    - tests/Unit/CallFactory/VariableAssignmentFactoryTest.php
-    - tests/Unit/ClassDefinitionFactoryTest.php
 
   ignoreErrors:
     # Return type of 'array' of test data providers

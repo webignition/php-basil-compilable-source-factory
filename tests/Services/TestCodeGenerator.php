@@ -15,6 +15,7 @@ use webignition\BasilCompilableSource\Line\ClassDependency;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\VariablePlaceholderCollection;
+use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractGeneratedTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class TestCodeGenerator
@@ -122,14 +123,30 @@ class TestCodeGenerator
             $classDefinition->getMetadata()->getVariableDependencies()
         );
 
-        return $this->classGenerator->createForClassDefinition(
-            $classDefinition,
-            'AbstractGeneratedTestCase',
+        if ($classDefinition instanceof ClassDefinition) {
+            $classDefinition->setBaseClass(
+                new ClassDependency(AbstractGeneratedTestCase::class)
+            );
+        }
+
+        return VariablePlaceholderResolver::resolve(
+            $classDefinition->render(),
             array_merge(
                 $variableDependencyIdentifiers,
                 $additionalVariableIdentifiers
             )
         );
+
+//        return $classDefinition->render();
+//
+//        return $this->classGenerator->createForClassDefinition(
+//            $classDefinition,
+//            'AbstractGeneratedTestCase',
+//            array_merge(
+//                $variableDependencyIdentifiers,
+//                $additionalVariableIdentifiers
+//            )
+//        );
     }
 
     /**
