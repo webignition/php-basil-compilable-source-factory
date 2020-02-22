@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "45cbc78ff71f08c5d71b403e434d35de",
+    "content-hash": "2fb3c0ba3ae7ff073a9bb121c0f305d7",
     "packages": [
         {
             "name": "facebook/webdriver",
@@ -840,50 +840,6 @@
             "time": "2019-09-26T21:17:10+00:00"
         },
         {
-            "name": "webignition/basil-code-generator",
-            "version": "0.10",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/webignition/basil-code-generator.git",
-                "reference": "2890429b9297ca0f3ee3661ef8dc5eb923e1fb5d"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/webignition/basil-code-generator/zipball/2890429b9297ca0f3ee3661ef8dc5eb923e1fb5d",
-                "reference": "2890429b9297ca0f3ee3661ef8dc5eb923e1fb5d",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "php": ">=7.2",
-                "webignition/php-basil-compilation-source": ">=0.63,<1"
-            },
-            "require-dev": {
-                "phpstan/phpstan": "^0.12",
-                "phpunit/phpunit": "~8.0",
-                "squizlabs/php_codesniffer": "3.*",
-                "webignition/base-panther-test-case": "^0.1.0"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "webignition\\BasilCodeGenerator\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jon Cram",
-                    "email": "webignition@gmail.com"
-                }
-            ],
-            "homepage": "https://github.com/webignition/basil-code-generator",
-            "time": "2020-01-29T19:37:48+00:00"
-        },
-        {
             "name": "webignition/basil-compilable-source",
             "version": "0.14",
             "source": {
@@ -1051,48 +1007,6 @@
             ],
             "homepage": "https://github.com/webignition/basil-models",
             "time": "2020-02-03T14:28:57+00:00"
-        },
-        {
-            "name": "webignition/php-basil-compilation-source",
-            "version": "0.64",
-            "source": {
-                "type": "git",
-                "url": "https://github.com/webignition/php-basil-compilation-source.git",
-                "reference": "e9f4e4dd6b89cf9e8d555b51f9d90f62b8c0b4a4"
-            },
-            "dist": {
-                "type": "zip",
-                "url": "https://api.github.com/repos/webignition/php-basil-compilation-source/zipball/e9f4e4dd6b89cf9e8d555b51f9d90f62b8c0b4a4",
-                "reference": "e9f4e4dd6b89cf9e8d555b51f9d90f62b8c0b4a4",
-                "shasum": ""
-            },
-            "require": {
-                "ext-json": "*",
-                "php": ">=7.2"
-            },
-            "require-dev": {
-                "phpstan/phpstan": "^0.11.5",
-                "phpunit/phpunit": "~8.0",
-                "squizlabs/php_codesniffer": "3.*"
-            },
-            "type": "library",
-            "autoload": {
-                "psr-4": {
-                    "webignition\\BasilCompilationSource\\": "src"
-                }
-            },
-            "notification-url": "https://packagist.org/downloads/",
-            "license": [
-                "MIT"
-            ],
-            "authors": [
-                {
-                    "name": "Jon Cram",
-                    "email": "webignition@gmail.com"
-                }
-            ],
-            "homepage": "https://github.com/webignition/php-basil-compilation-source",
-            "time": "2019-11-10T18:37:36+00:00"
         },
         {
             "name": "webignition/php-dom-element-identifier",

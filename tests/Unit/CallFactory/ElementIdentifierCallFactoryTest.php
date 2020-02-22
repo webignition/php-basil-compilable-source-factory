@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 
-use webignition\BasilCodeGenerator\CodeBlockGenerator;
-use webignition\BasilCodeGenerator\LineGenerator;
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Line\ClassDependency;
 use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
@@ -27,24 +25,12 @@ class ElementIdentifierCallFactoryTest extends \PHPUnit\Framework\TestCase
      */
     private $testCodeGenerator;
 
-    /**
-     * @var CodeBlockGenerator
-     */
-    private $codeBlockGenerator;
-
-    /**
-     * @var LineGenerator
-     */
-    private $lineGenerator;
-
     protected function setUp(): void
     {
         parent::setUp();
 
         $this->factory = ElementIdentifierCallFactory::createFactory();
         $this->testCodeGenerator = TestCodeGenerator::create();
-        $this->codeBlockGenerator = CodeBlockGenerator::create();
-        $this->lineGenerator = LineGenerator::create();
     }
 
     /**
