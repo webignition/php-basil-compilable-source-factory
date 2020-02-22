@@ -8,19 +8,18 @@ use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSource\Line\ComparisonExpression;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
-use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\Line\Statement\StatementInterface;
 use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\AssertionFailureMessageFactory;
+use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierExistenceHandler;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Model\DomIdentifierValue;
-use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\ValueTypeIdentifier;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
@@ -38,7 +37,7 @@ class ExistenceComparisonHandler
     private $domIdentifierExistenceHandler;
     private $domIdentifierFactory;
     private $assertionFailureMessageFactory;
-    private $singleQuotedStringEscaper;
+    private $assertionMethodInvocationFactory;
 
     public function __construct(
         ScalarValueHandler $scalarValueHandler,
@@ -49,7 +48,7 @@ class ExistenceComparisonHandler
         DomIdentifierExistenceHandler $domIdentifierExistenceHandler,
         DomIdentifierFactory $domIdentifierFactory,
         AssertionFailureMessageFactory $assertionFailureMessageFactory,
-        SingleQuotedStringEscaper $singleQuotedStringEscaper
+        AssertionMethodInvocationFactory $assertionMethodInvocationFactory
     ) {
         $this->scalarValueHandler = $scalarValueHandler;
         $this->identifierTypeAnalyser = $identifierTypeAnalyser;
@@ -59,7 +58,7 @@ class ExistenceComparisonHandler
         $this->domIdentifierExistenceHandler = $domIdentifierExistenceHandler;
         $this->domIdentifierFactory = $domIdentifierFactory;
         $this->assertionFailureMessageFactory = $assertionFailureMessageFactory;
-        $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
+        $this->assertionMethodInvocationFactory = $assertionMethodInvocationFactory;
     }
 
     public static function createHandler(): ExistenceComparisonHandler
@@ -73,7 +72,7 @@ class ExistenceComparisonHandler
             DomIdentifierExistenceHandler::createHandler(),
             DomIdentifierFactory::createFactory(),
             AssertionFailureMessageFactory::createFactory(),
-            SingleQuotedStringEscaper::create()
+            AssertionMethodInvocationFactory::createFactory()
         );
     }
 
@@ -155,20 +154,13 @@ class ExistenceComparisonHandler
         AssertionInterface $assertion,
         VariablePlaceholder $valuePlaceholder
     ): StatementInterface {
-        $comparison = $assertion->getComparison();
-        $assertionMethod = 'exists' === $comparison ? 'assertTrue' : 'assertFalse';
-        $failureMessage = $this->assertionFailureMessageFactory->createForAssertion($assertion);
-
         return new Statement(
-            new ObjectMethodInvocation(
-                VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
-                $assertionMethod,
+            $this->assertionMethodInvocationFactory->create(
+                'exists' === $assertion->getComparison() ? 'assertTrue' : 'assertFalse',
                 [
-                    $valuePlaceholder,
-                    new LiteralExpression(
-                        '\'' . $this->singleQuotedStringEscaper->escape($failureMessage) . '\''
-                    )
-                ]
+                    $valuePlaceholder
+                ],
+                $this->assertionFailureMessageFactory->createForAssertion($assertion)
             )
         );
     }

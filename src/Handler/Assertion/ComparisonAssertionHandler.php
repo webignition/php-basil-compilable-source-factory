@@ -10,11 +10,11 @@ use webignition\BasilCompilableSource\Line\ClosureExpression;
 use webignition\BasilCompilableSource\Line\ComparisonExpression;
 use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
-use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
+use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
@@ -26,8 +26,6 @@ use webignition\BasilModels\Assertion\ComparisonAssertionInterface;
 
 class ComparisonAssertionHandler
 {
-    public const ASSERT_TRUE_METHOD = 'assertTrue';
-    public const ASSERT_FALSE_METHOD = 'assertFalse';
     public const ASSERT_EQUALS_METHOD = 'assertEquals';
     public const ASSERT_NOT_EQUALS_METHOD = 'assertNotEquals';
     public const ASSERT_STRING_CONTAINS_STRING_METHOD = 'assertStringContainsString';
@@ -55,19 +53,22 @@ class ComparisonAssertionHandler
     private $identifierTypeAnalyser;
     private $accessorDefaultValueFactory;
     private $domIdentifierFactory;
+    private $assertionMethodInvocationFactory;
 
     public function __construct(
         ScalarValueHandler $scalarValueHandler,
         DomIdentifierHandler $domIdentifierHandler,
         AccessorDefaultValueFactory $accessorDefaultValueFactory,
         IdentifierTypeAnalyser $identifierTypeAnalyser,
-        DomIdentifierFactory $domIdentifierFactory
+        DomIdentifierFactory $domIdentifierFactory,
+        AssertionMethodInvocationFactory $assertionMethodInvocationFactory
     ) {
         $this->scalarValueHandler = $scalarValueHandler;
         $this->domIdentifierHandler = $domIdentifierHandler;
         $this->identifierTypeAnalyser = $identifierTypeAnalyser;
         $this->accessorDefaultValueFactory = $accessorDefaultValueFactory;
         $this->domIdentifierFactory = $domIdentifierFactory;
+        $this->assertionMethodInvocationFactory = $assertionMethodInvocationFactory;
     }
 
     public static function createHandler(): ComparisonAssertionHandler
@@ -77,7 +78,8 @@ class ComparisonAssertionHandler
             DomIdentifierHandler::createHandler(),
             AccessorDefaultValueFactory::createFactory(),
             IdentifierTypeAnalyser::create(),
-            DomIdentifierFactory::createFactory()
+            DomIdentifierFactory::createFactory(),
+            AssertionMethodInvocationFactory::createFactory()
         );
     }
 
@@ -117,8 +119,7 @@ class ComparisonAssertionHandler
             $expectedValueAssignment,
             $examinedValueAssignment,
             new Statement(
-                new ObjectMethodInvocation(
-                    VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+                $this->assertionMethodInvocationFactory->create(
                     self::COMPARISON_TO_ASSERTION_TEMPLATE_MAP[$assertion->getComparison()],
                     [
                         $expectedValuePlaceholder,
