@@ -4,16 +4,18 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory;
 
+use webignition\BasilCompilableSource\Block\CodeBlock;
+use webignition\BasilCompilableSource\ClassDefinition;
+use webignition\BasilCompilableSource\ClassDefinitionInterface;
+use webignition\BasilCompilableSource\Line\LiteralExpression;
+use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSource\Line\MethodInvocation\StaticObjectMethodInvocation;
+use webignition\BasilCompilableSource\Line\Statement\Statement;
+use webignition\BasilCompilableSource\MethodDefinition;
+use webignition\BasilCompilableSource\MethodDefinitionInterface;
+use webignition\BasilCompilableSource\StaticObject;
+use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
-use webignition\BasilCompilationSource\Block\CodeBlock;
-use webignition\BasilCompilationSource\ClassDefinition\ClassDefinition;
-use webignition\BasilCompilationSource\ClassDefinition\ClassDefinitionInterface;
-use webignition\BasilCompilationSource\Line\Statement;
-use webignition\BasilCompilationSource\Line\StatementInterface;
-use webignition\BasilCompilationSource\Metadata\Metadata;
-use webignition\BasilCompilationSource\MethodDefinition\MethodDefinition;
-use webignition\BasilCompilationSource\MethodDefinition\MethodDefinitionInterface;
-use webignition\BasilCompilationSource\VariablePlaceholderCollection;
 use webignition\BasilModels\Test\TestInterface;
 
 class ClassDefinitionFactory
@@ -65,40 +67,36 @@ class ClassDefinitionFactory
     private function createSetupBeforeClassMethod(TestInterface $test): MethodDefinitionInterface
     {
         $method = new MethodDefinition('setUpBeforeClass', new CodeBlock([
-            new Statement('parent::setUpBeforeClass()'),
-            $this->createClientRequestStatement($test),
-            $this->createSetBasilTestPathStatement($test),
+            new Statement(
+                new StaticObjectMethodInvocation(
+                    new StaticObject('parent'),
+                    'setUpBeforeClass'
+                )
+            ),
+            new Statement(
+                new ObjectMethodInvocation(
+                    VariablePlaceholder::createDependency(VariableNames::PANTHER_CLIENT),
+                    'request',
+                    [
+                        new LiteralExpression('\'GET\''),
+                        new LiteralExpression('\'' . $test->getConfiguration()->getUrl() . '\''),
+                    ]
+                )
+            ),
+            new Statement(
+                new StaticObjectMethodInvocation(
+                    new StaticObject('self'),
+                    'setBasilTestPath',
+                    [
+                        new LiteralExpression('\'' . $test->getPath() . '\''),
+                    ]
+                )
+            ),
         ]));
 
         $method->setStatic();
         $method->setReturnType('void');
 
         return $method;
-    }
-
-    private function createClientRequestStatement(TestInterface $test): StatementInterface
-    {
-        $variableDependencies = new VariablePlaceholderCollection();
-        $pantherClientPlaceholder = $variableDependencies->create(VariableNames::PANTHER_CLIENT);
-
-        return new Statement(
-            sprintf(
-                '%s->request(\'GET\', \'%s\')',
-                $pantherClientPlaceholder,
-                $test->getConfiguration()->getUrl()
-            ),
-            (new Metadata())
-                ->withVariableDependencies($variableDependencies)
-        );
-    }
-
-    private function createSetBasilTestPathStatement(TestInterface $test): StatementInterface
-    {
-        return new Statement(
-            sprintf(
-                'self::setBasilTestPath(\'%s\')',
-                $test->getPath()
-            )
-        );
     }
 }
