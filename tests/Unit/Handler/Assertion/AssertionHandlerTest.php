@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Assertion;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
+use webignition\BasilCompilableSourceFactory\Handler\Assertion\ExistenceAssertionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromExcludesAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromExistsAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromIncludesAssertionDataProviderTrait;
@@ -15,6 +16,8 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\Create
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromMatchesAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromNotExistsAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
+use webignition\BasilCompilableSourceFactory\Tests\Services\ObjectReflector;
+use webignition\BasilDomIdentifierFactory\Factory;
 use webignition\BasilModels\Assertion\AssertionInterface;
 use webignition\BasilParser\AssertionParser;
 
@@ -65,9 +68,15 @@ class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
      */
     public function testHandleThrowsException(
         AssertionInterface $assertion,
-        UnsupportedStatementException $expectedException
+        UnsupportedStatementException $expectedException,
+        ?callable $initializer = null
     ) {
         $handler = AssertionHandler::createHandler();
+
+        if (null !== $initializer) {
+            $initializer($handler);
+        }
+
         $this->expectExceptionObject($expectedException);
 
         $handler->handle($assertion);
@@ -93,6 +102,40 @@ class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
                 'expectedException' => new UnsupportedStatementException(
                     $assertionParser->parse('$".selector" foo "value"')
                 ),
+            ],
+            'exists; identifier is not supported' => [
+                'assertion' => $assertionParser->parse('$elements.element_name exists'),
+                'expectedException' => new UnsupportedStatementException(
+                    $assertionParser->parse('$elements.element_name exists'),
+                    new UnsupportedContentException(
+                        UnsupportedContentException::TYPE_IDENTIFIER,
+                        '$elements.element_name'
+                    )
+                ),
+            ],
+            'exists; identifier cannot be extracted' => [
+                'assertion' => $assertionParser->parse('$".selector" exists'),
+                'expectedException' => new  UnsupportedStatementException(
+                    $assertionParser->parse('$".selector" exists'),
+                    new UnsupportedContentException(
+                        UnsupportedContentException::TYPE_IDENTIFIER,
+                        '$".selector"'
+                    )
+                ),
+                'initializer' => function (AssertionHandler $handler) {
+                    $domIdentifierFactory = \Mockery::mock(Factory::class);
+                    $domIdentifierFactory
+                        ->shouldReceive('createFromIdentifierString')
+                        ->with('$".selector"')
+                        ->andReturnNull();
+
+                    ObjectReflector::setProperty(
+                        $handler,
+                        AssertionHandler::class,
+                        'domIdentifierFactory',
+                        $domIdentifierFactory
+                    );
+                },
             ],
         ];
     }

@@ -4,7 +4,14 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
+use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\CodeBlockInterface;
+use webignition\BasilCompilableSource\Line\ComparisonExpression;
+use webignition\BasilCompilableSource\Line\LiteralExpression;
+use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
+use webignition\BasilCompilableSource\Line\Statement\Statement;
+use webignition\BasilCompilableSource\Line\Statement\StatementInterface;
+use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\AssertionFailureMessageFactory;
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
@@ -14,11 +21,14 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementExcep
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierExistenceHandler;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
+use webignition\BasilCompilableSourceFactory\Model\DomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\ValueTypeIdentifier;
+use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Assertion\AssertionInterface;
 use webignition\BasilModels\Assertion\ComparisonAssertionInterface;
+use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
 class AssertionHandler
 {
@@ -96,13 +106,102 @@ class AssertionHandler
             }
 
             if ($this->isExistenceAssertion($assertion)) {
-                return $this->existenceAssertionHandler->handle($assertion);
+                return $this->handleExistenceAssertion($assertion);
             }
         } catch (UnsupportedContentException $previous) {
             throw new UnsupportedStatementException($assertion, $previous);
         }
 
         throw new UnsupportedStatementException($assertion);
+    }
+
+    /**
+     * @param AssertionInterface $assertion
+     *
+     * @return CodeBlockInterface
+     *
+     * @throws UnsupportedContentException
+     */
+    public function handleExistenceAssertion(AssertionInterface $assertion): CodeBlockInterface
+    {
+        $valuePlaceholder = VariablePlaceholder::createExport(VariableNames::EXAMINED_VALUE);
+        $identifier = $assertion->getIdentifier();
+
+        if ($this->valueTypeIdentifier->isScalarValue($identifier)) {
+            return new CodeBlock([
+                new AssignmentStatement(
+                    $valuePlaceholder,
+                    new ComparisonExpression(
+                        $this->scalarValueHandler->handle($assertion->getIdentifier()),
+                        new LiteralExpression('null'),
+                        '??'
+                    )
+                ),
+                new AssignmentStatement(
+                    $valuePlaceholder,
+                    new ComparisonExpression(
+                        $valuePlaceholder,
+                        new LiteralExpression('null'),
+                        '!=='
+                    )
+                ),
+                $this->createAssertionStatement($assertion, $valuePlaceholder),
+            ]);
+        }
+
+        if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
+            $domIdentifier = $this->domIdentifierFactory->createFromIdentifierString($identifier);
+            if (null === $domIdentifier) {
+                throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
+            }
+
+            if (!$domIdentifier instanceof AttributeIdentifierInterface) {
+                return new CodeBlock([
+                    new AssignmentStatement(
+                        $valuePlaceholder,
+                        $this->domCrawlerNavigatorCallFactory->createHasCall($domIdentifier)
+                    ),
+                    $this->createAssertionStatement($assertion, $valuePlaceholder),
+                ]);
+            }
+
+            return new CodeBlock([
+                $this->domIdentifierExistenceHandler->createForElement(
+                    $domIdentifier,
+                    $this->assertionFailureMessageFactory->createForAssertion($assertion)
+                ),
+                new AssignmentStatement(
+                    $valuePlaceholder,
+                    $this->domIdentifierHandler->handle(new DomIdentifierValue($domIdentifier))
+                ),
+                new AssignmentStatement(
+                    $valuePlaceholder,
+                    new ComparisonExpression(
+                        $valuePlaceholder,
+                        new LiteralExpression('null'),
+                        '!=='
+                    )
+                ),
+                $this->createAssertionStatement($assertion, $valuePlaceholder),
+            ]);
+        }
+
+        throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
+    }
+
+    private function createAssertionStatement(
+        AssertionInterface $assertion,
+        VariablePlaceholder $valuePlaceholder
+    ): StatementInterface {
+        return new Statement(
+            $this->assertionMethodInvocationFactory->create(
+                'exists' === $assertion->getComparison() ? 'assertTrue' : 'assertFalse',
+                [
+                    $valuePlaceholder
+                ],
+                $this->assertionFailureMessageFactory->createForAssertion($assertion)
+            )
+        );
     }
 
     private function isComparisonAssertion(AssertionInterface $assertion): bool
