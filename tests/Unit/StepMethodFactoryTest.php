@@ -143,9 +143,9 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                     '    // $".selector" exists <- click $".selector"' . "\n" .
                     '    {{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\');' . "\n" .
                     '    {{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '    {{ HAS }} = {{ NAVIGATOR }}->hasOne(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ');' . "\n" .
+                    '    {{ HAS }} = {{ NAVIGATOR }}->hasOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": ".selector"' . "\n" .
+                    '    }\'));' . "\n" .
                     '    {{ PHPUNIT }}->assertTrue(' . "\n" .
                     '        {{ HAS }},' . "\n" .
                     '        \'{' . "\n" .
@@ -161,9 +161,9 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                     '    // click $".selector"' . "\n" .
                     '    {{ STATEMENT }} = Statement::createAction(\'click $".selector"\');' . "\n" .
                     '    {{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ');' . "\n" .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": ".selector"' . "\n" .
+                    '    }\'));' . "\n" .
                     '    {{ ELEMENT }}->click();' . "\n" .
                     '    {{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
@@ -238,9 +238,9 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                     '    // $".selector" exists <- set $".selector" to $data.field_value' . "\n" .
                     '    {{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\');' . "\n" .
                     '    {{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '    {{ HAS }} = {{ NAVIGATOR }}->has(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ');' . "\n" .
+                    '    {{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": ".selector"' . "\n" .
+                    '    }\'));' . "\n" .
                     '    {{ PHPUNIT }}->assertTrue(' . "\n" .
                     '        {{ HAS }},' . "\n" .
                     '        \'{' . "\n" .
@@ -256,9 +256,9 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                     '    // set $".selector" to $data.field_value' . "\n" .
                     '    {{ STATEMENT }} = Statement::createAction(\'set $".selector" to $data.field_value\');' . "\n" .
                     '    {{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '    {{ COLLECTION }} = {{ NAVIGATOR }}->find(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ');' . "\n" .
+                    '    {{ COLLECTION }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": ".selector"' . "\n" .
+                    '    }\'));' . "\n" .
                     '    {{ VALUE }} = $field_value;' . "\n" .
                     '    {{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});' . "\n" .
                     '    {{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
@@ -266,9 +266,9 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                     '    // $".selector" exists <- $".selector" is $data.expected_value' . "\n" .
                     '    {{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\');' . "\n" .
                     '    {{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '    {{ HAS }} = {{ NAVIGATOR }}->has(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ');' . "\n" .
+                    '    {{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": ".selector"' . "\n" .
+                    '    }\'));' . "\n" .
                     '    {{ PHPUNIT }}->assertTrue(' . "\n" .
                     '        {{ HAS }},' . "\n" .
                     '        \'{' . "\n" .
@@ -288,9 +288,9 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                     '    {{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
                     '    {{ EXPECTED }} = $expected_value ?? null;' . "\n" .
                     '    {{ EXAMINED }} = (function () {' . "\n" .
-                    '        {{ ELEMENT }} = {{ NAVIGATOR }}->find(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ');' . "\n" .
+                    '        {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '            "locator": ".selector"' . "\n" .
+                    '        }\'));' . "\n" .
                     "\n" .
                     '        return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
                     '    })();' . "\n" .

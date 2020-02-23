@@ -56,8 +56,6 @@ class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
     ) {
         $source = $this->handler->handle($assertion);
 
-//        echo "\n\n" . $source->render() . "\n\n";
-
         $this->assertEquals($expectedRenderedContent, $source->render());
         $this->assertEquals($expectedMetadata, $source->getMetadata());
     }

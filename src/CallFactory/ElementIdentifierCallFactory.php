@@ -30,7 +30,7 @@ class ElementIdentifierCallFactory
 
     public function createConstructorCall(ElementIdentifierInterface $elementIdentifier): ExpressionInterface
     {
-        $serializedSourceIdentifier = (string) json_encode($elementIdentifier);
+        $serializedSourceIdentifier = (string) json_encode($elementIdentifier, JSON_PRETTY_PRINT);
 
         return new StaticObjectMethodInvocation(
             new StaticObject(ElementIdentifier::class),
