@@ -26,8 +26,13 @@ trait CreateFromNotExistsAssertionDataProviderTrait
                     '{{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".selector"}\'));' . "\n" .
                     '{{ PHPUNIT }}->assertFalse(' . "\n" .
                     '    {{ EXAMINED }},' . "\n" .
-                    '    \'{"assertion":{"source":"$\\\".selector\\\" not-exists",' .
-                    '"identifier":"$\\\".selector\\\"","comparison":"not-exists"}}\'' . "\n" .
+                    '    \'{' . "\n" .
+                    '    "assertion": {' . "\n" .
+                    '        "source": "$\\\".selector\\\" not-exists",' . "\n" .
+                    '        "identifier": "$\\\".selector\\\"",' . "\n" .
+                    '        "comparison": "not-exists"' . "\n" .
+                    '    }' . "\n" .
+                    '}\'' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -51,8 +56,13 @@ trait CreateFromNotExistsAssertionDataProviderTrait
                     ');' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ HAS }},' . "\n" .
-                    '    \'{"assertion":{"source":"$\\\".selector\\\".attribute_name not-exists",' .
-                    '"identifier":"$\\\".selector\\\".attribute_name","comparison":"not-exists"}}\'' . "\n" .
+                    '    \'{' . "\n" .
+                    '    "assertion": {' . "\n" .
+                    '        "source": "$\\\".selector\\\".attribute_name not-exists",' . "\n" .
+                    '        "identifier": "$\\\".selector\\\".attribute_name",' . "\n" .
+                    '        "comparison": "not-exists"' . "\n" .
+                    '    }' . "\n" .
+                    '}\'' . "\n" .
                     ');' . "\n" .
                     '{{ EXAMINED }} = (function () {' . "\n" .
                     '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(' .
@@ -64,8 +74,13 @@ trait CreateFromNotExistsAssertionDataProviderTrait
                     '{{ EXAMINED }} = {{ EXAMINED }} !== null;' . "\n" .
                     '{{ PHPUNIT }}->assertFalse(' . "\n" .
                     '    {{ EXAMINED }},' . "\n" .
-                    '    \'{"assertion":{"source":"$\\\".selector\\\".attribute_name not-exists",' .
-                    '"identifier":"$\\\".selector\\\".attribute_name","comparison":"not-exists"}}\'' . "\n" .
+                    '    \'{' . "\n" .
+                    '    "assertion": {' . "\n" .
+                    '        "source": "$\\\".selector\\\".attribute_name not-exists",' . "\n" .
+                    '        "identifier": "$\\\".selector\\\".attribute_name",' . "\n" .
+                    '        "comparison": "not-exists"' . "\n" .
+                    '    }' . "\n" .
+                    '}\'' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([

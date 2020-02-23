@@ -15,8 +15,11 @@ class AssertionFailureMessageFactory
 
     public function createForAssertion(AssertionInterface $assertion): string
     {
-        return (string) json_encode([
-            'assertion' => $assertion,
-        ]);
+        return (string) json_encode(
+            [
+                'assertion' => $assertion,
+            ],
+            JSON_PRETTY_PRINT
+        );
     }
 }

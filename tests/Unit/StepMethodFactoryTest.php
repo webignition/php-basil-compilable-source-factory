@@ -129,7 +129,7 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                 'stepName' => 'Step Name',
                 'step' => $stepParser->parse([
                     'actions' => [
-                        'click $".sel"',
+                        'click $".selector"',
                     ],
                     'assertions' => [
                         '$page.title is "value"',
@@ -140,24 +140,29 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                     '{' . "\n" .
                     '    {{ PHPUNIT }}->setBasilStepName(\'Step Name\');' . "\n" .
                     "\n" .
-                    '    // $".sel" exists <- click $".sel"' . "\n" .
-                    '    {{ STATEMENT }} = Statement::createAssertion(\'$".sel" exists\');' . "\n" .
+                    '    // $".selector" exists <- click $".selector"' . "\n" .
+                    '    {{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\');' . "\n" .
                     '    {{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
                     '    {{ HAS }} = {{ NAVIGATOR }}->hasOne(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".sel"}\')' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                     ');' . "\n" .
                     '    {{ PHPUNIT }}->assertTrue(' . "\n" .
                     '        {{ HAS }},' . "\n" .
-                    '        \'{"assertion":{"source":"$\\\".sel\\\" exists",' .
-                    '"identifier":"$\\\".sel\\\"","comparison":"exists"}}\'' . "\n" .
+                    '        \'{' . "\n" .
+                    '        "assertion": {' . "\n" .
+                    '            "source": "$\\\".selector\\\" exists",' . "\n" .
+                    '            "identifier": "$\\\".selector\\\"",' . "\n" .
+                    '            "comparison": "exists"' . "\n" .
+                    '        }' . "\n" .
+                    '    }\'' . "\n" .
                     '    );' . "\n" .
                     '    {{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
-                    '    // click $".sel"' . "\n" .
-                    '    {{ STATEMENT }} = Statement::createAction(\'click $".sel"\');' . "\n" .
+                    '    // click $".selector"' . "\n" .
+                    '    {{ STATEMENT }} = Statement::createAction(\'click $".selector"\');' . "\n" .
                     '    {{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
                     '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".sel"}\')' .
+                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
                     ');' . "\n" .
                     '    {{ ELEMENT }}->click();' . "\n" .
                     '    {{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
@@ -238,8 +243,13 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                     ');' . "\n" .
                     '    {{ PHPUNIT }}->assertTrue(' . "\n" .
                     '        {{ HAS }},' . "\n" .
-                    '        \'{"assertion":{"source":"$\\\".selector\\\" exists",' .
-                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' . "\n" .
+                    '        \'{' . "\n" .
+                    '        "assertion": {' . "\n" .
+                    '            "source": "$\\\".selector\\\" exists",' . "\n" .
+                    '            "identifier": "$\\\".selector\\\"",' . "\n" .
+                    '            "comparison": "exists"' . "\n" .
+                    '        }' . "\n" .
+                    '    }\'' . "\n" .
                     '    );' . "\n" .
                     '    {{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
@@ -261,8 +271,13 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                     ');' . "\n" .
                     '    {{ PHPUNIT }}->assertTrue(' . "\n" .
                     '        {{ HAS }},' . "\n" .
-                    '        \'{"assertion":{"source":"$\\\".selector\\\" exists",' .
-                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' . "\n" .
+                    '        \'{' . "\n" .
+                    '        "assertion": {' . "\n" .
+                    '            "source": "$\\\".selector\\\" exists",' . "\n" .
+                    '            "identifier": "$\\\".selector\\\"",' . "\n" .
+                    '            "comparison": "exists"' . "\n" .
+                    '        }' . "\n" .
+                    '    }\'' . "\n" .
                     '    );' . "\n" .
                     '    {{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .

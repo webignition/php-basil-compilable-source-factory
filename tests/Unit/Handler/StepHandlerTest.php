@@ -64,8 +64,13 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     ');' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ HAS }},' . "\n" .
-                    '    \'{"assertion":{"source":"$\\\".selector\\\" exists",' .
-                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' . "\n" .
+                    '    \'{' . "\n" .
+                    '    "assertion": {' . "\n" .
+                    '        "source": "$\\\".selector\\\" exists",' . "\n" .
+                    '        "identifier": "$\\\".selector\\\"",' . "\n" .
+                    '        "comparison": "exists"' . "\n" .
+                    '    }' . "\n" .
+                    '}\'' . "\n" .
                     ');' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
@@ -109,8 +114,13 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     ');' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ HAS }},' . "\n" .
-                    '    \'{"assertion":{"source":"$\\\".selector\\\" exists",' .
-                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' . "\n" .
+                    '    \'{' . "\n" .
+                    '    "assertion": {' . "\n" .
+                    '        "source": "$\\\".selector\\\" exists",' . "\n" .
+                    '        "identifier": "$\\\".selector\\\"",' . "\n" .
+                    '        "comparison": "exists"' . "\n" .
+                    '    }' . "\n" .
+                    '}\'' . "\n" .
                     ');' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
@@ -120,8 +130,13 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".value"}\'));' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ HAS }},' . "\n" .
-                    '    \'{"assertion":{"source":"$\\\".value\\\" exists",' .
-                    '"identifier":"$\\\".value\\\"","comparison":"exists"}}\'' . "\n" .
+                    '    \'{' . "\n" .
+                    '    "assertion": {' . "\n" .
+                    '        "source": "$\\\".value\\\" exists",' . "\n" .
+                    '        "identifier": "$\\\".value\\\"",' . "\n" .
+                    '        "comparison": "exists"' . "\n" .
+                    '    }' . "\n" .
+                    '}\'' . "\n" .
                     ');' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
@@ -178,8 +193,13 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     ');' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ HAS }},' . "\n" .
-                    '    \'{"assertion":{"source":"$\\\".selector\\\" exists",' .
-                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' . "\n" .
+                    '    \'{' . "\n" .
+                    '    "assertion": {' . "\n" .
+                    '        "source": "$\\\".selector\\\" exists",' . "\n" .
+                    '        "identifier": "$\\\".selector\\\"",' . "\n" .
+                    '        "comparison": "exists"' . "\n" .
+                    '    }' . "\n" .
+                    '}\'' . "\n" .
                     ');' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
@@ -207,8 +227,13 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     ');' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ HAS }},' . "\n" .
-                    '    \'{"assertion":{"source":"$\\\".duration\\\" exists",' .
-                    '"identifier":"$\\\".duration\\\"","comparison":"exists"}}\'' . "\n" .
+                    '    \'{' . "\n" .
+                    '    "assertion": {' . "\n" .
+                    '        "source": "$\\\".duration\\\" exists",' . "\n" .
+                    '        "identifier": "$\\\".duration\\\"",' . "\n" .
+                    '        "comparison": "exists"' . "\n" .
+                    '    }' . "\n" .
+                    '}\'' . "\n" .
                     ');' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
@@ -291,8 +316,13 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     ');' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ EXAMINED }},' . "\n" .
-                    '    \'{"assertion":{"source":"$\\\".selector\\\" exists",' .
-                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' . "\n" .
+                    '    \'{' . "\n" .
+                    '    "assertion": {' . "\n" .
+                    '        "source": "$\\\".selector\\\" exists",' . "\n" .
+                    '        "identifier": "$\\\".selector\\\"",' . "\n" .
+                    '        "comparison": "exists"' . "\n" .
+                    '    }' . "\n" .
+                    '}\'' . "\n" .
                     ');' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n"
                 ,
@@ -326,8 +356,13 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     ');' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ HAS }},' . "\n" .
-                    '    \'{"assertion":{"source":"$\\\".selector\\\" exists",' .
-                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' . "\n" .
+                    '    \'{' . "\n" .
+                    '    "assertion": {' . "\n" .
+                    '        "source": "$\\\".selector\\\" exists",' . "\n" .
+                    '        "identifier": "$\\\".selector\\\"",' . "\n" .
+                    '        "comparison": "exists"' . "\n" .
+                    '    }' . "\n" .
+                    '}\'' . "\n" .
                     ');' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
@@ -382,8 +417,13 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     ');' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ HAS }},' . "\n" .
-                    '    \'{"assertion":{"source":"$\\\".selector\\\" exists",' .
-                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' . "\n" .
+                    '    \'{' . "\n" .
+                    '    "assertion": {' . "\n" .
+                    '        "source": "$\\\".selector\\\" exists",' . "\n" .
+                    '        "identifier": "$\\\".selector\\\"",' . "\n" .
+                    '        "comparison": "exists"' . "\n" .
+                    '    }' . "\n" .
+                    '}\'' . "\n" .
                     ');' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
@@ -393,8 +433,13 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".value"}\'));' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ HAS }},' . "\n" .
-                    '    \'{"assertion":{"source":"$\\\".value\\\" exists",' .
-                    '"identifier":"$\\\".value\\\"","comparison":"exists"}}\'' . "\n" .
+                    '    \'{' . "\n" .
+                    '    "assertion": {' . "\n" .
+                    '        "source": "$\\\".value\\\" exists",' . "\n" .
+                    '        "identifier": "$\\\".value\\\"",' . "\n" .
+                    '        "comparison": "exists"' . "\n" .
+                    '    }' . "\n" .
+                    '}\'' . "\n" .
                     ');' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
@@ -503,8 +548,13 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     ');' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ HAS }},' . "\n" .
-                    '    \'{"assertion":{"source":"$\\\".selector\\\" exists",' .
-                    '"identifier":"$\\\".selector\\\"","comparison":"exists"}}\'' . "\n" .
+                    '    \'{' . "\n" .
+                    '    "assertion": {' . "\n" .
+                    '        "source": "$\\\".selector\\\" exists",' . "\n" .
+                    '        "identifier": "$\\\".selector\\\"",' . "\n" .
+                    '        "comparison": "exists"' . "\n" .
+                    '    }' . "\n" .
+                    '}\'' . "\n" .
                     ');' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
