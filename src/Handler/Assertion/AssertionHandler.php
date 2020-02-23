@@ -6,7 +6,9 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\CodeBlockInterface;
+use webignition\BasilCompilableSource\Line\ClosureExpression;
 use webignition\BasilCompilableSource\Line\ComparisonExpression;
+use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
@@ -32,8 +34,12 @@ use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
 class AssertionHandler
 {
-    private $existenceAssertionHandler;
-    private $comparisonAssertionHandler;
+    public const ASSERT_EQUALS_METHOD = 'assertEquals';
+    public const ASSERT_NOT_EQUALS_METHOD = 'assertNotEquals';
+    public const ASSERT_STRING_CONTAINS_STRING_METHOD = 'assertStringContainsString';
+    public const ASSERT_STRING_NOT_CONTAINS_STRING_METHOD = 'assertStringNotContainsString';
+    public const ASSERT_MATCHES_METHOD = 'assertRegExp';
+
     private $accessorDefaultValueFactory;
     private $assertionFailureMessageFactory;
     private $assertionMethodInvocationFactory;
@@ -45,9 +51,23 @@ class AssertionHandler
     private $scalarValueHandler;
     private $valueTypeIdentifier;
 
+    private const COMPARISON_TO_ASSERTION_TEMPLATE_MAP = [
+        'includes' => self::ASSERT_STRING_CONTAINS_STRING_METHOD,
+        'excludes' => self::ASSERT_STRING_NOT_CONTAINS_STRING_METHOD,
+        'is' => self::ASSERT_EQUALS_METHOD,
+        'is-not' => self::ASSERT_NOT_EQUALS_METHOD,
+        'matches' => self::ASSERT_MATCHES_METHOD,
+    ];
+
+    /**
+     * @var string[]
+     */
+    private $methodsWithStringArguments = [
+        self::ASSERT_STRING_CONTAINS_STRING_METHOD,
+        self::ASSERT_STRING_NOT_CONTAINS_STRING_METHOD,
+    ];
+
     public function __construct(
-        ExistenceAssertionHandler $existenceComparisonHandler,
-        ComparisonAssertionHandler $comparisonAssertionHandler,
         AccessorDefaultValueFactory $accessorDefaultValueFactory,
         AssertionFailureMessageFactory $assertionFailureMessageFactory,
         AssertionMethodInvocationFactory $assertionMethodInvocationFactory,
@@ -59,8 +79,6 @@ class AssertionHandler
         ScalarValueHandler $scalarValueHandler,
         ValueTypeIdentifier $valueTypeIdentifier
     ) {
-        $this->existenceAssertionHandler = $existenceComparisonHandler;
-        $this->comparisonAssertionHandler = $comparisonAssertionHandler;
         $this->accessorDefaultValueFactory = $accessorDefaultValueFactory;
         $this->assertionFailureMessageFactory = $assertionFailureMessageFactory;
         $this->assertionMethodInvocationFactory = $assertionMethodInvocationFactory;
@@ -76,8 +94,6 @@ class AssertionHandler
     public static function createHandler(): AssertionHandler
     {
         return new AssertionHandler(
-            ExistenceAssertionHandler::createHandler(),
-            ComparisonAssertionHandler::createHandler(),
             AccessorDefaultValueFactory::createFactory(),
             AssertionFailureMessageFactory::createFactory(),
             AssertionMethodInvocationFactory::createFactory(),
@@ -102,7 +118,7 @@ class AssertionHandler
     {
         try {
             if ($this->isComparisonAssertion($assertion) && $assertion instanceof ComparisonAssertionInterface) {
-                return $this->comparisonAssertionHandler->handle($assertion);
+                return $this->handleComparisonAssertion($assertion);
             }
 
             if ($this->isExistenceAssertion($assertion)) {
@@ -122,7 +138,7 @@ class AssertionHandler
      *
      * @throws UnsupportedContentException
      */
-    public function handleExistenceAssertion(AssertionInterface $assertion): CodeBlockInterface
+    private function handleExistenceAssertion(AssertionInterface $assertion): CodeBlockInterface
     {
         $valuePlaceholder = VariablePlaceholder::createExport(VariableNames::EXAMINED_VALUE);
         $identifier = $assertion->getIdentifier();
@@ -187,6 +203,88 @@ class AssertionHandler
         }
 
         throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
+    }
+
+    /**
+     * @param ComparisonAssertionInterface $assertion
+     *
+     * @return CodeBlockInterface
+     *
+     * @throws UnsupportedContentException
+     */
+    private function handleComparisonAssertion(ComparisonAssertionInterface $assertion): CodeBlockInterface
+    {
+        $examinedValuePlaceholder = VariablePlaceholder::createExport(VariableNames::EXAMINED_VALUE);
+        $expectedValuePlaceholder = VariablePlaceholder::createExport(VariableNames::EXPECTED_VALUE);
+
+        $examinedValueAccessor = $this->createValueAccessor($assertion->getIdentifier());
+        $expectedValueAccessor = $this->createValueAccessor($assertion->getValue());
+
+        $examinedValueAssignment = new AssignmentStatement($examinedValuePlaceholder, $examinedValueAccessor);
+        $expectedValueAssignment = new AssignmentStatement($expectedValuePlaceholder, $expectedValueAccessor);
+
+        $assertionMethod = self::COMPARISON_TO_ASSERTION_TEMPLATE_MAP[$assertion->getComparison()];
+
+        if (in_array($assertionMethod, $this->methodsWithStringArguments)) {
+            $expectedValuePlaceholder = VariablePlaceholder::createExport(
+                $expectedValuePlaceholder->getName(),
+                'string'
+            );
+
+            $examinedValuePlaceholder = VariablePlaceholder::createExport(
+                $examinedValuePlaceholder->getName(),
+                'string'
+            );
+        }
+
+        return new CodeBlock([
+            $expectedValueAssignment,
+            $examinedValueAssignment,
+            new Statement(
+                $this->assertionMethodInvocationFactory->create(
+                    self::COMPARISON_TO_ASSERTION_TEMPLATE_MAP[$assertion->getComparison()],
+                    [
+                        $expectedValuePlaceholder,
+                        $examinedValuePlaceholder,
+                    ]
+                )
+            ),
+        ]);
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return ExpressionInterface
+     *
+     * @throws UnsupportedContentException
+     */
+    private function createValueAccessor(string $value): ExpressionInterface
+    {
+        if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($value)) {
+            $examinedValueDomIdentifier = $this->domIdentifierFactory->createFromIdentifierString($value);
+            if (null === $examinedValueDomIdentifier) {
+                throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $value);
+            }
+
+            $accessor = $this->domIdentifierHandler->handle(
+                new DomIdentifierValue($examinedValueDomIdentifier)
+            );
+        } else {
+            $accessor = $this->scalarValueHandler->handle($value);
+        }
+
+        if (!$accessor instanceof ClosureExpression) {
+            $defaultValue = $this->accessorDefaultValueFactory->createString($value) ?? 'null';
+
+            $accessor = new ComparisonExpression(
+                $accessor,
+                new LiteralExpression($defaultValue),
+                '??'
+            );
+        }
+
+        return $accessor;
     }
 
     private function createAssertionStatement(
