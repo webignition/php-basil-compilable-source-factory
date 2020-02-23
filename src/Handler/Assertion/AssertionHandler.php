@@ -12,21 +12,21 @@ use webignition\BasilModels\Assertion\ComparisonAssertionInterface;
 
 class AssertionHandler
 {
-    private $existenceComparisonHandler;
+    private $existenceAssertionHandler;
     private $comparisonAssertionHandler;
 
     public function __construct(
-        ExistenceComparisonHandler $existenceComparisonHandler,
+        ExistenceAssertionHandler $existenceComparisonHandler,
         ComparisonAssertionHandler $comparisonAssertionHandler
     ) {
-        $this->existenceComparisonHandler = $existenceComparisonHandler;
+        $this->existenceAssertionHandler = $existenceComparisonHandler;
         $this->comparisonAssertionHandler = $comparisonAssertionHandler;
     }
 
     public static function createHandler(): AssertionHandler
     {
         return new AssertionHandler(
-            ExistenceComparisonHandler::createHandler(),
+            ExistenceAssertionHandler::createHandler(),
             ComparisonAssertionHandler::createHandler()
         );
     }
@@ -46,7 +46,7 @@ class AssertionHandler
             }
 
             if ($this->isExistenceAssertion($assertion)) {
-                return $this->existenceComparisonHandler->handle($assertion);
+                return $this->existenceAssertionHandler->handle($assertion);
             }
         } catch (UnsupportedContentException $previous) {
             throw new UnsupportedStatementException($assertion, $previous);

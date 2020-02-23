@@ -27,7 +27,7 @@ use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Assertion\AssertionInterface;
 use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
-class ExistenceComparisonHandler
+class ExistenceAssertionHandler
 {
     private $scalarValueHandler;
     private $domIdentifierHandler;
@@ -61,9 +61,9 @@ class ExistenceComparisonHandler
         $this->assertionMethodInvocationFactory = $assertionMethodInvocationFactory;
     }
 
-    public static function createHandler(): ExistenceComparisonHandler
+    public static function createHandler(): ExistenceAssertionHandler
     {
-        return new ExistenceComparisonHandler(
+        return new ExistenceAssertionHandler(
             ScalarValueHandler::createHandler(),
             DomCrawlerNavigatorCallFactory::createFactory(),
             DomIdentifierHandler::createHandler(),

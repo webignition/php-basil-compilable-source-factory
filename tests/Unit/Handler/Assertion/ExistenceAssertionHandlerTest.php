@@ -6,15 +6,15 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ObjectReflector;
-use webignition\BasilCompilableSourceFactory\Handler\Assertion\ExistenceComparisonHandler;
+use webignition\BasilCompilableSourceFactory\Handler\Assertion\ExistenceAssertionHandler;
 use webignition\BasilDomIdentifierFactory\Factory;
 use webignition\BasilModels\Assertion\AssertionInterface;
 use webignition\BasilParser\AssertionParser;
 
-class ExistenceComparisonHandlerTest extends \PHPUnit\Framework\TestCase
+class ExistenceAssertionHandlerTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var ExistenceComparisonHandler
+     * @var ExistenceAssertionHandler
      */
     private $handler;
 
@@ -22,7 +22,7 @@ class ExistenceComparisonHandlerTest extends \PHPUnit\Framework\TestCase
     {
         parent::setUp();
 
-        $this->handler = ExistenceComparisonHandler::createHandler();
+        $this->handler = ExistenceAssertionHandler::createHandler();
     }
 
     /**
@@ -33,7 +33,7 @@ class ExistenceComparisonHandlerTest extends \PHPUnit\Framework\TestCase
         \Exception $expectedException,
         ?callable $initializer = null
     ) {
-        $handler = ExistenceComparisonHandler::createHandler();
+        $handler = ExistenceAssertionHandler::createHandler();
 
         if (null !== $initializer) {
             $initializer($handler);
@@ -62,7 +62,7 @@ class ExistenceComparisonHandlerTest extends \PHPUnit\Framework\TestCase
                     UnsupportedContentException::TYPE_IDENTIFIER,
                     '$".selector"'
                 ),
-                'initializer' => function (ExistenceComparisonHandler $handler) {
+                'initializer' => function (ExistenceAssertionHandler $handler) {
                     $domIdentifierFactory = \Mockery::mock(Factory::class);
                     $domIdentifierFactory
                         ->shouldReceive('createFromIdentifierString')
@@ -71,7 +71,7 @@ class ExistenceComparisonHandlerTest extends \PHPUnit\Framework\TestCase
 
                     ObjectReflector::setProperty(
                         $handler,
-                        ExistenceComparisonHandler::class,
+                        ExistenceAssertionHandler::class,
                         'domIdentifierFactory',
                         $domIdentifierFactory
                     );
