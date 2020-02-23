@@ -128,7 +128,9 @@ class DomCrawlerNavigatorCallFactoryTest extends \PHPUnit\Framework\TestCase
             'no parent, no ordinal position' => [
                 'identifier' => new ElementIdentifier('.selector'),
                 'expectedRenderedSource' =>
-                    '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
+                    '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector"' . "\n" .
+                    '}\'))',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -141,9 +143,10 @@ class DomCrawlerNavigatorCallFactoryTest extends \PHPUnit\Framework\TestCase
             'no parent, has ordinal position' => [
                 'identifier' => new ElementIdentifier('.selector', 3),
                 'expectedRenderedSource' =>
-                    '{{ NAVIGATOR }}->{{ METHOD }}(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector","position":3}\')' .
-                    ')',
+                    '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector",' . "\n" .
+                    '    "position": 3' . "\n" .
+                    '}\'))',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -156,7 +159,9 @@ class DomCrawlerNavigatorCallFactoryTest extends \PHPUnit\Framework\TestCase
             'no parent, has attribute' => [
                 'identifier' => new AttributeIdentifier('.selector', 'attribute_name'),
                 'expectedRenderedSource' =>
-                    '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))',
+                    '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector"' . "\n" .
+                    '}\'))',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -169,9 +174,10 @@ class DomCrawlerNavigatorCallFactoryTest extends \PHPUnit\Framework\TestCase
             'no parent, has ordinal position has attribute' => [
                 'identifier' => new AttributeIdentifier('.selector', 'attribute_name', 3),
                 'expectedRenderedSource' =>
-                    '{{ NAVIGATOR }}->{{ METHOD }}(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector","position":3}\')' .
-                    ')',
+                    '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector",' . "\n" .
+                    '    "position": 3' . "\n" .
+                    '}\'))',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -185,9 +191,12 @@ class DomCrawlerNavigatorCallFactoryTest extends \PHPUnit\Framework\TestCase
                 'identifier' => (new ElementIdentifier('.selector'))
                     ->withParentIdentifier(new ElementIdentifier('.parent')),
                 'expectedRenderedSource' =>
-                    '{{ NAVIGATOR }}->{{ METHOD }}(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector","parent":{"locator":".parent"}}\')' .
-                    ')',
+                    '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector",' . "\n" .
+                    '    "parent": {' . "\n" .
+                    '        "locator": ".parent"' . "\n" .
+                    '    }' . "\n" .
+                    '}\'))',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -201,9 +210,13 @@ class DomCrawlerNavigatorCallFactoryTest extends \PHPUnit\Framework\TestCase
                 'identifier' => (new ElementIdentifier('.selector', 2))
                     ->withParentIdentifier(new ElementIdentifier('.parent')),
                 'expectedRenderedSource' =>
-                    '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(' .
-                    '\'{"locator":".selector","parent":{"locator":".parent"},"position":2}\'' .
-                    '))',
+                    '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector",' . "\n" .
+                    '    "parent": {' . "\n" .
+                    '        "locator": ".parent"' . "\n" .
+                    '    },' . "\n" .
+                    '    "position": 2' . "\n" .
+                    '}\'))',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -217,9 +230,12 @@ class DomCrawlerNavigatorCallFactoryTest extends \PHPUnit\Framework\TestCase
                 'identifier' => (new AttributeIdentifier('.selector', 'attribute_name'))
                     ->withParentIdentifier(new ElementIdentifier('.parent')),
                 'expectedRenderedSource' =>
-                    '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(' .
-                    '\'{"locator":".selector","parent":{"locator":".parent"}}\'' .
-                    '))',
+                    '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector",' . "\n" .
+                    '    "parent": {' . "\n" .
+                    '        "locator": ".parent"' . "\n" .
+                    '    }' . "\n" .
+                    '}\'))',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -233,10 +249,13 @@ class DomCrawlerNavigatorCallFactoryTest extends \PHPUnit\Framework\TestCase
                 'identifier' => (new AttributeIdentifier('.selector', 'attribute_name', 5))
                     ->withParentIdentifier(new ElementIdentifier('.parent')),
                 'expectedRenderedSource' =>
-                    '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(' .
-                    '\'{"locator":".selector",' .
-                    '"parent":{"locator":".parent"},"position":5}\'' .
-                    '))',
+                    '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector",' . "\n" .
+                    '    "parent": {' . "\n" .
+                    '        "locator": ".parent"' . "\n" .
+                    '    },' . "\n" .
+                    '    "position": 5' . "\n" .
+                    '}\'))',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -250,9 +269,14 @@ class DomCrawlerNavigatorCallFactoryTest extends \PHPUnit\Framework\TestCase
                 'identifier' => (new ElementIdentifier('.selector', 3))
                     ->withParentIdentifier(new ElementIdentifier('.parent', 4)),
                 'expectedRenderedSource' =>
-                    '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(' .
-                    '\'{"locator":".selector","parent":{"locator":".parent","position":4},"position":3}\'' .
-                    '))',
+                    '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector",' . "\n" .
+                    '    "parent": {' . "\n" .
+                    '        "locator": ".parent",' . "\n" .
+                    '        "position": 4' . "\n" .
+                    '    },' . "\n" .
+                    '    "position": 3' . "\n" .
+                    '}\'))',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -271,9 +295,15 @@ class DomCrawlerNavigatorCallFactoryTest extends \PHPUnit\Framework\TestCase
                             )
                     ),
                 'expectedRenderedSource' =>
-                    '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(' .
-                    '\'{"locator":".child","parent":{"locator":".parent","parent":{"locator":"grandparent"}}}\'' .
-                    '))',
+                    '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".child",' . "\n" .
+                    '    "parent": {' . "\n" .
+                    '        "locator": ".parent",' . "\n" .
+                    '        "parent": {' . "\n" .
+                    '            "locator": "grandparent"' . "\n" .
+                    '        }' . "\n" .
+                    '    }' . "\n" .
+                    '}\'))',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),

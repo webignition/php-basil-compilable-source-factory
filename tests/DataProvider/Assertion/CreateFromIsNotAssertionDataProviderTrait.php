@@ -29,9 +29,9 @@ trait CreateFromIsNotAssertionDataProviderTrait
                 'expectedRenderedSource' =>
                     '{{ EXPECTED }} = "value" ?? null;' . "\n" .
                     '{{ EXAMINED }} = (function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ');' . "\n" .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": ".selector"' . "\n" .
+                    '    }\'));' . "\n" .
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
                     '})();' . "\n" .
@@ -58,9 +58,9 @@ trait CreateFromIsNotAssertionDataProviderTrait
                 'expectedRenderedSource' =>
                     '{{ EXPECTED }} = "value" ?? null;' . "\n" .
                     '{{ EXAMINED }} = (function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ');' . "\n" .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": ".selector"' . "\n" .
+                    '    }\'));' . "\n" .
                     "\n" .
                     '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
                     '})();' . "\n" .

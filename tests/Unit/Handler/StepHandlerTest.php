@@ -59,9 +59,9 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '// $".selector" exists <- click $".selector"' . "\n" .
                     '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\');' . "\n" .
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ');' . "\n" .
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector"' . "\n" .
+                    '}\'));' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ HAS }},' . "\n" .
                     '    \'{' . "\n" .
@@ -77,9 +77,9 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '// click $".selector"' . "\n" .
                     '{{ STATEMENT }} = Statement::createAction(\'click $".selector"\');' . "\n" .
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ');' . "\n" .
+                    '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector"' . "\n" .
+                    '}\'));' . "\n" .
                     '{{ ELEMENT }}->click();' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n"
                 ,
@@ -109,9 +109,9 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '// $".selector" exists <- set $".selector" to $".value"' . "\n" .
                     '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\');' . "\n" .
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '{{ HAS }} = {{ NAVIGATOR }}->has(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ');' . "\n" .
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector"' . "\n" .
+                    '}\'));' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ HAS }},' . "\n" .
                     '    \'{' . "\n" .
@@ -127,7 +127,9 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '// $".value" exists <- set $".selector" to $".value"' . "\n" .
                     '{{ STATEMENT }} = Statement::createAssertion(\'$".value" exists\');' . "\n" .
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".value"}\'));' . "\n" .
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".value"' . "\n" .
+                    '}\'));' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ HAS }},' . "\n" .
                     '    \'{' . "\n" .
@@ -143,13 +145,13 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '// set $".selector" to $".value"' . "\n" .
                     '{{ STATEMENT }} = Statement::createAction(\'set $".selector" to $".value"\');' . "\n" .
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ');' . "\n" .
+                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector"' . "\n" .
+                    '}\'));' . "\n" .
                     '{{ VALUE }} = (function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".value"}\')' .
-                    ');' . "\n" .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": ".value"' . "\n" .
+                    '    }\'));' . "\n" .
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
                     '})();' . "\n" .
@@ -188,9 +190,9 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '// $".selector" exists <- click $".selector"' . "\n" .
                     '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\');' . "\n" .
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ');' . "\n" .
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector"' . "\n" .
+                    '}\'));' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ HAS }},' . "\n" .
                     '    \'{' . "\n" .
@@ -206,9 +208,9 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '// click $".selector"' . "\n" .
                     '{{ STATEMENT }} = Statement::createAction(\'click $".selector"\');' . "\n" .
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ');' . "\n" .
+                    '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector"' . "\n" .
+                    '}\'));' . "\n" .
                     '{{ ELEMENT }}->click();' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
@@ -222,9 +224,9 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '// $".duration" exists <- wait $".duration"' . "\n" .
                     '{{ STATEMENT }} = Statement::createAssertion(\'$".duration" exists\');' . "\n" .
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '{{ HAS }} = {{ NAVIGATOR }}->has(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".duration"}\')' .
-                    ');' . "\n" .
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".duration"' . "\n" .
+                    '}\'));' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ HAS }},' . "\n" .
                     '    \'{' . "\n" .
@@ -241,9 +243,9 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '{{ STATEMENT }} = Statement::createAction(\'wait $".duration"\');' . "\n" .
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
                     '{{ DURATION }} = (int) ((function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".duration"}\')' .
-                    ');' . "\n" .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": ".duration"' . "\n" .
+                    '    }\'));' . "\n" .
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
                     '})() ?? 0);' . "\n" .
@@ -311,9 +313,9 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '// $".selector" exists' . "\n" .
                     '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\');' . "\n" .
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '{{ EXAMINED }} = {{ NAVIGATOR }}->has(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ');' . "\n" .
+                    '{{ EXAMINED }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector"' . "\n" .
+                    '}\'));' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ EXAMINED }},' . "\n" .
                     '    \'{' . "\n" .
@@ -351,9 +353,9 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '// $".selector" exists <- $".selector" is "value"' . "\n" .
                     '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\');' . "\n" .
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '{{ HAS }} = {{ NAVIGATOR }}->has(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ');' . "\n" .
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector"' . "\n" .
+                    '}\'));' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ HAS }},' . "\n" .
                     '    \'{' . "\n" .
@@ -371,9 +373,9 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
                     '{{ EXPECTED }} = "value" ?? null;' . "\n" .
                     '{{ EXAMINED }} = (function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ');' . "\n" .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": ".selector"' . "\n" .
+                    '    }\'));' . "\n" .
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
                     '})();' . "\n" .
@@ -412,9 +414,9 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '// $".selector" exists <- $".selector" is $".value"' . "\n" .
                     '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\');' . "\n" .
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '{{ HAS }} = {{ NAVIGATOR }}->has(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ');' . "\n" .
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector"' . "\n" .
+                    '}\'));' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ HAS }},' . "\n" .
                     '    \'{' . "\n" .
@@ -430,7 +432,9 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '// $".value" exists <- $".selector" is $".value"' . "\n" .
                     '{{ STATEMENT }} = Statement::createAssertion(\'$".value" exists\');' . "\n" .
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{"locator":".value"}\'));' . "\n" .
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".value"' . "\n" .
+                    '}\'));' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ HAS }},' . "\n" .
                     '    \'{' . "\n" .
@@ -447,16 +451,16 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" is $".value"\');' . "\n" .
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
                     '{{ EXPECTED }} = (function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".value"}\')' .
-                    ');' . "\n" .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": ".value"' . "\n" .
+                    '    }\'));' . "\n" .
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
                     '})();' . "\n" .
                     '{{ EXAMINED }} = (function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ');' . "\n" .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": ".selector"' . "\n" .
+                    '    }\'));' . "\n" .
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
                     '})();' . "\n" .
@@ -543,9 +547,9 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '// $".selector" exists <- click $".selector"' . "\n" .
                     '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\');' . "\n" .
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ');' . "\n" .
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector"' . "\n" .
+                    '}\'));' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ HAS }},' . "\n" .
                     '    \'{' . "\n" .
@@ -561,9 +565,9 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '// click $".selector"' . "\n" .
                     '{{ STATEMENT }} = Statement::createAction(\'click $".selector"\');' . "\n" .
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ');' . "\n" .
+                    '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector"' . "\n" .
+                    '}\'));' . "\n" .
                     '{{ ELEMENT }}->click();' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .

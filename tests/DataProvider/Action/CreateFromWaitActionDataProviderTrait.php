@@ -34,9 +34,9 @@ trait CreateFromWaitActionDataProviderTrait
                 'action' => $actionParser->parse('wait $".duration-selector"'),
                 'expectedRenderedSource' =>
                     '{{ DURATION }} = (int) ((function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(' .
-                             'ElementIdentifier::fromJson(\'{"locator":".duration-selector"}\')'
-                      . ');' . "\n" .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": ".duration-selector"' . "\n" .
+                    '    }\'));' . "\n" .
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
                     '})() ?? 0);' . "\n" .
@@ -59,9 +59,12 @@ trait CreateFromWaitActionDataProviderTrait
                 'action' => $actionParser->parse('wait $"{{ $".parent" }} .child"'),
                 'expectedRenderedSource' =>
                     '{{ DURATION }} = (int) ((function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".child","parent":{"locator":".parent"}}\')'
-                    . ');' . "\n" .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": ".child",' . "\n" .
+                    '        "parent": {' . "\n" .
+                    '            "locator": ".parent"' . "\n" .
+                    '        }' . "\n" .
+                    '    }\'));' . "\n" .
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
                     '})() ?? 0);' . "\n" .
@@ -84,9 +87,9 @@ trait CreateFromWaitActionDataProviderTrait
                 'action' => $actionParser->parse('wait $"a"'),
                 'expectedRenderedSource' =>
                     '{{ DURATION }} = (int) ((function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(' .
-                    'ElementIdentifier::fromJson(\'{"locator":"a"}\')'
-                    . ');' . "\n" .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": "a"' . "\n" .
+                    '    }\'));' . "\n" .
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
                     '})() ?? 0);' . "\n" .
@@ -109,9 +112,9 @@ trait CreateFromWaitActionDataProviderTrait
                 'action' => $actionParser->parse('wait $".duration-selector".attribute_name'),
                 'expectedRenderedSource' =>
                     '{{ DURATION }} = (int) ((function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".duration-selector"}\')'
-                    . ');' . "\n" .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": ".duration-selector"' . "\n" .
+                    '    }\'));' . "\n" .
                     "\n" .
                     '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
                     '})() ?? 0);' . "\n" .

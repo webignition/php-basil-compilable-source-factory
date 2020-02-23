@@ -54,7 +54,9 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                     new ElementIdentifier('.selector')
                 ),
                 'expectedRenderedSource' =>
-                    '{{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))'
+                    '{{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector"' . "\n" .
+                    '}\'))'
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -71,9 +73,12 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                         ->withParentIdentifier(new ElementIdentifier('.parent'))
                 ),
                 'expectedRenderedSource' =>
-                    '{{ NAVIGATOR }}->findOne(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector","parent":{"locator":".parent"}}\')' .
-                    ')'
+                    '{{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector",' . "\n" .
+                    '    "parent": {' . "\n" .
+                    '        "locator": ".parent"' . "\n" .
+                    '    }' . "\n" .
+                    '}\'))'
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -89,7 +94,9 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                     new ElementIdentifier('.selector')
                 ),
                 'expectedRenderedSource' =>
-                    '{{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{"locator":".selector"}\'))'
+                    '{{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector"' . "\n" .
+                    '}\'))'
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -106,9 +113,12 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                         ->withParentIdentifier(new ElementIdentifier('.parent'))
                 ),
                 'expectedRenderedSource' =>
-                    '{{ NAVIGATOR }}->find(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector","parent":{"locator":".parent"}}\')' .
-                    ')'
+                    '{{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector",' . "\n" .
+                    '    "parent": {' . "\n" .
+                    '        "locator": ".parent"' . "\n" .
+                    '    }' . "\n" .
+                    '}\'))'
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -125,9 +135,9 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                 ),
                 'expectedRenderedSource' =>
                     '(function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(' .
-                            'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                         ');' . "\n" .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": ".selector"' . "\n" .
+                    '    }\'));' . "\n" .
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
                     '})()'
@@ -152,9 +162,12 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                 ),
                 'expectedRenderedSource' =>
                     '(function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(' .
-                            'ElementIdentifier::fromJson(\'{"locator":".selector","parent":{"locator":".parent"}}\')' .
-                        ');' . "\n" .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": ".selector",' . "\n" .
+                    '        "parent": {' . "\n" .
+                    '            "locator": ".parent"' . "\n" .
+                    '        }' . "\n" .
+                    '    }\'));' . "\n" .
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
                     '})()'
@@ -178,9 +191,9 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                 ),
                 'expectedRenderedSource' =>
                     '(function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(' .
-                            'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                        ');' . "\n" .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": ".selector"' . "\n" .
+                    '    }\'));' . "\n" .
                     "\n" .
                     '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
                     '})()'
@@ -204,9 +217,12 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                 ),
                 'expectedRenderedSource' =>
                     '(function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(' .
-                            'ElementIdentifier::fromJson(\'{"locator":".selector","parent":{"locator":".parent"}}\')' .
-                        ');' . "\n" .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": ".selector",' . "\n" .
+                    '        "parent": {' . "\n" .
+                    '            "locator": ".parent"' . "\n" .
+                    '        }' . "\n" .
+                    '    }\'));' . "\n" .
                     "\n" .
                     '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
                     '})()'

@@ -22,8 +22,9 @@ trait CreateFromSubmitActionDataProviderTrait
             'interaction action (submit), element identifier' => [
                 'action' => $actionParser->parse('submit $".selector"'),
                 'expectedRenderedSource' =>
-                    '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector"' . "\n" .
+                    '}\')' .
                     ');' . "\n" .
                     '{{ ELEMENT }}->submit();',
                 'expectedMetadata' => new Metadata([

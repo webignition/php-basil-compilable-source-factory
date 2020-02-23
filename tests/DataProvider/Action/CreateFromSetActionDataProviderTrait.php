@@ -22,8 +22,9 @@ trait CreateFromSetActionDataProviderTrait
             'input action, element identifier, literal value' => [
                 'action' => $actionParser->parse('set $".selector" to "value"'),
                 'expectedRenderedSource' =>
-                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector"' . "\n" .
+                    '}\')' .
                     ');' . "\n" .
                     '{{ VALUE }} = "value";' . "\n" .
                     '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});',
@@ -44,13 +45,14 @@ trait CreateFromSetActionDataProviderTrait
             'input action, element identifier, element value' => [
                 'action' => $actionParser->parse('set $".selector" to $".source"'),
                 'expectedRenderedSource' =>
-                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector"' . "\n" .
+                    '}\')' .
                     ');' . "\n" .
                     '{{ VALUE }} = (function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".source"}\')' .
-                    ');' . "\n" .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": ".source"' . "\n" .
+                    '    }\'));' . "\n" .
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
                     '})();' . "\n" .
@@ -74,13 +76,14 @@ trait CreateFromSetActionDataProviderTrait
             'input action, element identifier, attribute value' => [
                 'action' => $actionParser->parse('set $".selector" to $".source".attribute_name'),
                 'expectedRenderedSource' =>
-                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector"' . "\n" .
+                    '}\')' .
                     ');' . "\n" .
                     '{{ VALUE }} = (function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".source"}\')' .
-                    ');' . "\n" .
+                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": ".source"' . "\n" .
+                    '    }\'));' . "\n" .
                     "\n" .
                     '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
                     '})();' . "\n" .
@@ -103,8 +106,9 @@ trait CreateFromSetActionDataProviderTrait
             'input action, browser property' => [
                 'action' => $actionParser->parse('set $".selector" to $browser.size'),
                 'expectedRenderedSource' =>
-                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector"' . "\n" .
+                    '}\')' .
                     ');' . "\n" .
                     '{{ VALUE }} = (function () {' . "\n" .
                     '    {{ WEBDRIVER_DIMENSION }} = ' .
@@ -133,8 +137,9 @@ trait CreateFromSetActionDataProviderTrait
             'input action, page property' => [
                 'action' => $actionParser->parse('set $".selector" to $page.url'),
                 'expectedRenderedSource' =>
-                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector"' . "\n" .
+                    '}\')' .
                     ');' . "\n" .
                     '{{ VALUE }} = {{ CLIENT }}->getCurrentURL();' . "\n" .
                     '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});',
@@ -156,8 +161,9 @@ trait CreateFromSetActionDataProviderTrait
             'input action, environment value' => [
                 'action' => $actionParser->parse('set $".selector" to $env.KEY'),
                 'expectedRenderedSource' =>
-                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector"' . "\n" .
+                    '}\')' .
                     ');' . "\n" .
                     '{{ VALUE }} = {{ ENV }}[\'KEY\'];' . "\n" .
                     '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});',
@@ -179,8 +185,9 @@ trait CreateFromSetActionDataProviderTrait
             'input action, environment value with default' => [
                 'action' => $actionParser->parse('set $".selector" to $env.KEY|"default"'),
                 'expectedRenderedSource' =>
-                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector"' . "\n" .
+                    '}\')' .
                     ');' . "\n" .
                     '{{ VALUE }} = {{ ENV }}[\'KEY\'] ?? \'default\';' . "\n" .
                     '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});',
@@ -202,8 +209,9 @@ trait CreateFromSetActionDataProviderTrait
             'input action, environment value with default with whitespace' => [
                 'action' => $actionParser->parse('set $".selector" to $env.KEY|"default value"'),
                 'expectedRenderedSource' =>
-                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
+                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector"' . "\n" .
+                    '}\')' .
                     ');' . "\n" .
                     '{{ VALUE }} = {{ ENV }}[\'KEY\'] ?? \'default value\';' . "\n" .
                     '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});',
@@ -225,8 +233,12 @@ trait CreateFromSetActionDataProviderTrait
             'input action, parent > child element identifier, literal value' => [
                 'action' => $actionParser->parse('set $"{{ $".parent" }} .child" to "value"'),
                 'expectedRenderedSource' =>
-                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".child","parent":{"locator":".parent"}}\')' .
+                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".child",' . "\n" .
+                    '    "parent": {' . "\n" .
+                    '        "locator": ".parent"' . "\n" .
+                    '    }' . "\n" .
+                    '}\')' .
                     ');' . "\n" .
                     '{{ VALUE }} = "value";' . "\n" .
                     '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});',

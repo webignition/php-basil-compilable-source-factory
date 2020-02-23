@@ -50,9 +50,9 @@ class DomIdentifierExistenceHandlerTest extends \PHPUnit\Framework\TestCase
                 'identifier' => new ElementIdentifier('.selector'),
                 'assertionFailureMessage' => 'false is not true',
                 'expectedRenderedContent' =>
-                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ');' . "\n" .
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector"' . "\n" .
+                    '}\'));' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ HAS }},' . "\n" .
                     '    \'false is not true\'' . "\n" .
@@ -75,9 +75,12 @@ class DomIdentifierExistenceHandlerTest extends \PHPUnit\Framework\TestCase
                     ->withParentIdentifier(new ElementIdentifier('.parent')),
                 'assertionFailureMessage' => 'false is not true',
                 'expectedRenderedContent' =>
-                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector","parent":{"locator":".parent"}}\')' .
-                    ');' . "\n" .
+                    '{{ HAS }} = {{ NAVIGATOR }}->hasOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector",' . "\n" .
+                    '    "parent": {' . "\n" .
+                    '        "locator": ".parent"' . "\n" .
+                    '    }' . "\n" .
+                    '}\'));' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ HAS }},' . "\n" .
                     '    \'false is not true\'' . "\n" .
@@ -120,9 +123,9 @@ class DomIdentifierExistenceHandlerTest extends \PHPUnit\Framework\TestCase
                 'identifier' => new ElementIdentifier('.selector'),
                 'assertionFailureMessage' => 'false is not true',
                 'expectedRenderedContent' =>
-                    '{{ HAS }} = {{ NAVIGATOR }}->has(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector"}\')' .
-                    ');' . "\n" .
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector"' . "\n" .
+                    '}\'));' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ HAS }},' . "\n" .
                     '    \'false is not true\'' . "\n" .
@@ -145,9 +148,12 @@ class DomIdentifierExistenceHandlerTest extends \PHPUnit\Framework\TestCase
                     ->withParentIdentifier(new ElementIdentifier('.parent')),
                 'assertionFailureMessage' => 'false is not true',
                 'expectedRenderedContent' =>
-                    '{{ HAS }} = {{ NAVIGATOR }}->has(' .
-                    'ElementIdentifier::fromJson(\'{"locator":".selector","parent":{"locator":".parent"}}\')' .
-                    ');' . "\n" .
+                    '{{ HAS }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector",' . "\n" .
+                    '    "parent": {' . "\n" .
+                    '        "locator": ".parent"' . "\n" .
+                    '    }' . "\n" .
+                    '}\'));' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ HAS }},' . "\n" .
                     '    \'false is not true\'' . "\n" .
