@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Assertion;
 
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSourceFactory\AssertionFailureMessageFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromExcludesAssertionDataProviderTrait;
@@ -15,8 +16,11 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\Create
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromMatchesAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromNotExistsAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
+use webignition\BasilCompilableSourceFactory\Tests\Services\ObjectReflector;
+use webignition\BasilDomIdentifierFactory\Factory;
 use webignition\BasilModels\Assertion\AssertionInterface;
 use webignition\BasilParser\AssertionParser;
+use webignition\DomElementIdentifier\ElementIdentifier;
 
 class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
 {
@@ -54,6 +58,8 @@ class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
         string $expectedRenderedContent,
         MetadataInterface $expectedMetadata
     ) {
+        $this->mockAssertionFailureMessageFactory($assertion, 'mocked failure message');
+
         $source = $this->handler->handle($assertion);
 
         $this->assertEquals($expectedRenderedContent, $source->render());
@@ -65,9 +71,15 @@ class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
      */
     public function testHandleThrowsException(
         AssertionInterface $assertion,
-        UnsupportedStatementException $expectedException
+        UnsupportedStatementException $expectedException,
+        ?callable $initializer = null
     ) {
         $handler = AssertionHandler::createHandler();
+
+        if (null !== $initializer) {
+            $initializer($handler);
+        }
+
         $this->expectExceptionObject($expectedException);
 
         $handler->handle($assertion);
@@ -78,7 +90,47 @@ class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
         $assertionParser = AssertionParser::create();
 
         return [
-            'comparison assertion, examined value is not supported' => [
+            'unsupported comparison' => [
+                'assertion' => $assertionParser->parse('$".selector" foo "value"'),
+                'expectedException' => new UnsupportedStatementException(
+                    $assertionParser->parse('$".selector" foo "value"')
+                ),
+            ],
+            'existence; identifier is not supported' => [
+                'assertion' => $assertionParser->parse('$elements.element_name exists'),
+                'expectedException' => new UnsupportedStatementException(
+                    $assertionParser->parse('$elements.element_name exists'),
+                    new UnsupportedContentException(
+                        UnsupportedContentException::TYPE_IDENTIFIER,
+                        '$elements.element_name'
+                    )
+                ),
+            ],
+            'existence; identifier cannot be extracted' => [
+                'assertion' => $assertionParser->parse('$".selector" exists'),
+                'expectedException' => new  UnsupportedStatementException(
+                    $assertionParser->parse('$".selector" exists'),
+                    new UnsupportedContentException(
+                        UnsupportedContentException::TYPE_IDENTIFIER,
+                        '$".selector"'
+                    )
+                ),
+                'initializer' => function (AssertionHandler $handler) {
+                    $domIdentifierFactory = \Mockery::mock(Factory::class);
+                    $domIdentifierFactory
+                        ->shouldReceive('createFromIdentifierString')
+                        ->with('$".selector"')
+                        ->andReturnNull();
+
+                    ObjectReflector::setProperty(
+                        $handler,
+                        AssertionHandler::class,
+                        'domIdentifierFactory',
+                        $domIdentifierFactory
+                    );
+                },
+            ],
+            'comparison; examined value is not supported' => [
                 'assertion' => $assertionParser->parse('$elements.examined is "value"'),
                 'expectedException' => new UnsupportedStatementException(
                     $assertionParser->parse('$elements.examined is "value"'),
@@ -88,12 +140,88 @@ class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
                     )
                 ),
             ],
-            'unsupported comparison' => [
-                'assertion' => $assertionParser->parse('$".selector" foo "value"'),
+            'comparison; expected value is not supported' => [
+                'assertion' => $assertionParser->parse('$".selector" is $elements.expected'),
                 'expectedException' => new UnsupportedStatementException(
-                    $assertionParser->parse('$".selector" foo "value"')
+                    $assertionParser->parse('$".selector" is $elements.expected'),
+                    new UnsupportedContentException(
+                        UnsupportedContentException::TYPE_VALUE,
+                        '$elements.expected'
+                    )
                 ),
             ],
+            'comparison; examined value identifier cannot be extracted' => [
+                'assertion' => $assertionParser->parse('$".examined" is "value"'),
+                'expectedException' => new UnsupportedStatementException(
+                    $assertionParser->parse('$".examined" is "value"'),
+                    new UnsupportedContentException(
+                        UnsupportedContentException::TYPE_IDENTIFIER,
+                        '$".examined"'
+                    )
+                ),
+                'initializer' => function (AssertionHandler $handler) {
+                    $domIdentifierFactory = \Mockery::mock(Factory::class);
+                    $domIdentifierFactory
+                        ->shouldReceive('createFromIdentifierString')
+                        ->with('$".examined"')
+                        ->andReturnNull();
+
+                    ObjectReflector::setProperty(
+                        $handler,
+                        AssertionHandler::class,
+                        'domIdentifierFactory',
+                        $domIdentifierFactory
+                    );
+                },
+            ],
+            'comparison; expected value identifier cannot be extracted' => [
+                'assertion' => $assertionParser->parse('$".examined" is $".expected"'),
+                'expectedException' => new UnsupportedStatementException(
+                    $assertionParser->parse('$".examined" is $".expected"'),
+                    new UnsupportedContentException(
+                        UnsupportedContentException::TYPE_IDENTIFIER,
+                        '$".expected"'
+                    )
+                ),
+                'initializer' => function (AssertionHandler $handler) {
+                    $domIdentifierFactory = \Mockery::mock(Factory::class);
+
+                    $domIdentifierFactory
+                        ->shouldReceive('createFromIdentifierString')
+                        ->with('$".examined"')
+                        ->andReturn(new ElementIdentifier('.examined'));
+
+                    $domIdentifierFactory
+                        ->shouldReceive('createFromIdentifierString')
+                        ->with('$".expected"')
+                        ->andReturnNull();
+
+                    ObjectReflector::setProperty(
+                        $handler,
+                        AssertionHandler::class,
+                        'domIdentifierFactory',
+                        $domIdentifierFactory
+                    );
+                },
+            ],
         ];
+    }
+
+    private function mockAssertionFailureMessageFactory(
+        AssertionInterface $assertion,
+        string $mockedFailureMessage
+    ): void {
+        $assertionFailureMessageFactory = \Mockery::mock(AssertionFailureMessageFactory::class);
+        $assertionFailureMessageFactory
+            ->shouldReceive('createForAssertion')
+            ->with($assertion)
+            ->andReturn($mockedFailureMessage);
+
+        ObjectReflector::setProperty(
+            $this->handler,
+            AssertionHandler::class,
+            'assertionFailureMessageFactory',
+            $assertionFailureMessageFactory
+        );
     }
 }

@@ -27,13 +27,7 @@ trait CreateFromNotExistsAssertionDataProviderTrait
                     '}\'));' . "\n" .
                     '{{ PHPUNIT }}->assertFalse(' . "\n" .
                     '    {{ EXAMINED }},' . "\n" .
-                    '    \'{' . "\n" .
-                    '    "assertion": {' . "\n" .
-                    '        "source": "$\\\".selector\\\" not-exists",' . "\n" .
-                    '        "identifier": "$\\\".selector\\\"",' . "\n" .
-                    '        "comparison": "not-exists"' . "\n" .
-                    '    }' . "\n" .
-                    '}\'' . "\n" .
+                    '    \'mocked failure message\'' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -57,13 +51,7 @@ trait CreateFromNotExistsAssertionDataProviderTrait
                     '}\'));' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ HAS }},' . "\n" .
-                    '    \'{' . "\n" .
-                    '    "assertion": {' . "\n" .
-                    '        "source": "$\\\".selector\\\".attribute_name not-exists",' . "\n" .
-                    '        "identifier": "$\\\".selector\\\".attribute_name",' . "\n" .
-                    '        "comparison": "not-exists"' . "\n" .
-                    '    }' . "\n" .
-                    '}\'' . "\n" .
+                    '    \'mocked failure message\'' . "\n" .
                     ');' . "\n" .
                     '{{ EXAMINED }} = (function () {' . "\n" .
                     '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
@@ -75,13 +63,7 @@ trait CreateFromNotExistsAssertionDataProviderTrait
                     '{{ EXAMINED }} = {{ EXAMINED }} !== null;' . "\n" .
                     '{{ PHPUNIT }}->assertFalse(' . "\n" .
                     '    {{ EXAMINED }},' . "\n" .
-                    '    \'{' . "\n" .
-                    '    "assertion": {' . "\n" .
-                    '        "source": "$\\\".selector\\\".attribute_name not-exists",' . "\n" .
-                    '        "identifier": "$\\\".selector\\\".attribute_name",' . "\n" .
-                    '        "comparison": "not-exists"' . "\n" .
-                    '    }' . "\n" .
-                    '}\'' . "\n" .
+                    '    \'mocked failure message\'' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([

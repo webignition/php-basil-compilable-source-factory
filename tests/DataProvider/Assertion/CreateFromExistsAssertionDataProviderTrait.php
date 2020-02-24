@@ -26,13 +26,7 @@ trait CreateFromExistsAssertionDataProviderTrait
                     '{{ EXAMINED }} = {{ EXAMINED }} !== null;' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ EXAMINED }},' . "\n" .
-                    '    \'{' . "\n" .
-                    '    "assertion": {' . "\n" .
-                    '        "source": "$page.url exists",' . "\n" .
-                    '        "identifier": "$page.url",' . "\n" .
-                    '        "comparison": "exists"' . "\n" .
-                    '    }' . "\n" .
-                    '}\'' . "\n" .
+                    '    \'mocked failure message\'' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -54,13 +48,7 @@ trait CreateFromExistsAssertionDataProviderTrait
                     '}\'));' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ EXAMINED }},' . "\n" .
-                    '    \'{' . "\n" .
-                    '    "assertion": {' . "\n" .
-                    '        "source": "$\\\".selector\\\" exists",' . "\n" .
-                    '        "identifier": "$\\\".selector\\\"",' . "\n" .
-                    '        "comparison": "exists"' . "\n" .
-                    '    }' . "\n" .
-                    '}\'' . "\n" .
+                    '    \'mocked failure message\'' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -84,13 +72,7 @@ trait CreateFromExistsAssertionDataProviderTrait
                     '}\'));' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ HAS }},' . "\n" .
-                    '    \'{' . "\n" .
-                    '    "assertion": {' . "\n" .
-                    '        "source": "$\\\".selector\\\".attribute_name exists",' . "\n" .
-                    '        "identifier": "$\\\".selector\\\".attribute_name",' . "\n" .
-                    '        "comparison": "exists"' . "\n" .
-                    '    }' . "\n" .
-                    '}\'' . "\n" .
+                    '    \'mocked failure message\'' . "\n" .
                     ');' . "\n" .
                     '{{ EXAMINED }} = (function () {' . "\n" .
                     '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
@@ -102,13 +84,7 @@ trait CreateFromExistsAssertionDataProviderTrait
                     '{{ EXAMINED }} = {{ EXAMINED }} !== null;' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ EXAMINED }},' . "\n" .
-                    '    \'{' . "\n" .
-                    '    "assertion": {' . "\n" .
-                    '        "source": "$\\\".selector\\\".attribute_name exists",' . "\n" .
-                    '        "identifier": "$\\\".selector\\\".attribute_name",' . "\n" .
-                    '        "comparison": "exists"' . "\n" .
-                    '    }' . "\n" .
-                    '}\'' . "\n" .
+                    '    \'mocked failure message\'' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -133,13 +109,7 @@ trait CreateFromExistsAssertionDataProviderTrait
                     '{{ EXAMINED }} = {{ EXAMINED }} !== null;' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ EXAMINED }},' . "\n" .
-                    '    \'{' . "\n" .
-                    '    "assertion": {' . "\n" .
-                    '        "source": "$data.key exists",' . "\n" .
-                    '        "identifier": "$data.key",' . "\n" .
-                    '        "comparison": "exists"' . "\n" .
-                    '    }' . "\n" .
-                    '}\'' . "\n" .
+                    '    \'mocked failure message\'' . "\n" .
                     ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
@@ -158,13 +128,7 @@ trait CreateFromExistsAssertionDataProviderTrait
                     '}\'));' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ EXAMINED }},' . "\n" .
-                    '    \'{' . "\n" .
-                    '    "assertion": {' . "\n" .
-                    '        "source": "$\\\"a[href=foo.html]\\\" exists",' . "\n" .
-                    '        "identifier": "$\\\"a[href=foo.html]\\\"",' . "\n" .
-                    '        "comparison": "exists"' . "\n" .
-                    '    }' . "\n" .
-                    '}\'' . "\n" .
+                    '    \'mocked failure message\'' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -188,13 +152,7 @@ trait CreateFromExistsAssertionDataProviderTrait
                     '}\'));' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ HAS }},' . "\n" .
-                    '    \'{' . "\n" .
-                    '    "assertion": {' . "\n" .
-                    '        "source": "$\\\"a[href=foo.html]\\\".attribute_name exists",' . "\n" .
-                    '        "identifier": "$\\\"a[href=foo.html]\\\".attribute_name",' . "\n" .
-                    '        "comparison": "exists"' . "\n" .
-                    '    }' . "\n" .
-                    '}\'' . "\n" .
+                    '    \'mocked failure message\'' . "\n" .
                     ');' . "\n" .
                     '{{ EXAMINED }} = (function () {' . "\n" .
                     '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
@@ -206,13 +164,7 @@ trait CreateFromExistsAssertionDataProviderTrait
                     '{{ EXAMINED }} = {{ EXAMINED }} !== null;' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ EXAMINED }},' . "\n" .
-                    '    \'{' . "\n" .
-                    '    "assertion": {' . "\n" .
-                    '        "source": "$\\\"a[href=foo.html]\\\".attribute_name exists",' . "\n" .
-                    '        "identifier": "$\\\"a[href=foo.html]\\\".attribute_name",' . "\n" .
-                    '        "comparison": "exists"' . "\n" .
-                    '    }' . "\n" .
-                    '}\'' . "\n" .
+                    '    \'mocked failure message\'' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
