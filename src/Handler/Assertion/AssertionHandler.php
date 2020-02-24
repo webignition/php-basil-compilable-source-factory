@@ -283,15 +283,17 @@ class AssertionHandler
         return $accessor;
     }
 
-    private function createAssertionStatement(
-        AssertionInterface $assertion,
-        array $arguments
-    ): StatementInterface {
-        $assertionMethod = self::COMPARISON_TO_ASSERTION_TEMPLATE_MAP[$assertion->getComparison()];
-
+    /**
+     * @param AssertionInterface $assertion
+     * @param ExpressionInterface[] $arguments
+     *
+     * @return StatementInterface
+     */
+    private function createAssertionStatement(AssertionInterface $assertion, array $arguments): StatementInterface
+    {
         return new Statement(
             $this->assertionMethodInvocationFactory->create(
-                $assertionMethod,
+                self::COMPARISON_TO_ASSERTION_TEMPLATE_MAP[$assertion->getComparison()],
                 $arguments,
                 $this->assertionFailureMessageFactory->createForAssertion($assertion)
             )

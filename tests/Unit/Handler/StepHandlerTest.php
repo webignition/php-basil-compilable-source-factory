@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler;
 
+use Mockery\MockInterface;
 use webignition\BaseBasilTestCase\Statement;
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Block\CodeBlock;
@@ -727,6 +728,11 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
+    /**
+     * @param array[] $handleCalls
+     *
+     * @return ActionHandler
+     */
     private function createMockActionHandler(array $handleCalls): ActionHandler
     {
         $actionHandler = \Mockery::mock(ActionHandler::class);
@@ -747,6 +753,11 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
         return $actionHandler;
     }
 
+    /**
+     * @param array[] $handleCalls
+     *
+     * @return AssertionHandler
+     */
     private function createMockAssertionHandler(array $handleCalls): AssertionHandler
     {
         $assertionHandler = \Mockery::mock(AssertionHandler::class);
@@ -767,6 +778,11 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
         return $assertionHandler;
     }
 
+    /**
+     * @param array[] $createForAssertionCalls
+     *
+     * @return AssertionFailureMessageFactory
+     */
     private function createMockAssertionFailureMessageFactory(array $createForAssertionCalls)
     {
         $assertionFailureMessageFactory = \Mockery::mock(AssertionFailureMessageFactory::class);
@@ -785,6 +801,12 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
         return $assertionFailureMessageFactory;
     }
 
+    /**
+     * @param array[] $createForElementCalls
+     * @param array[] $createForCollectionCalls
+     *
+     * @return MockInterface|DomIdentifierExistenceHandler
+     */
     private function createDomIdentifierExistenceHandler(
         array $createForElementCalls,
         array $createForCollectionCalls
@@ -834,6 +856,11 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
         return $domIdentifierExistenceHandler;
     }
 
+    /**
+     * @param array<mixed> $services
+     *
+     * @return StepHandler
+     */
     private function createStepHandler(array $services = []): StepHandler
     {
         $actionHandler = $services[ActionHandler::class] ?? ActionHandler::createHandler();

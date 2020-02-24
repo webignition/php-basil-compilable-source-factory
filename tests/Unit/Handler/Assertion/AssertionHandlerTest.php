@@ -207,8 +207,10 @@ class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    private function mockAssertionFailureMessageFactory(AssertionInterface $assertion, string $mockedFailureMessage)
-    {
+    private function mockAssertionFailureMessageFactory(
+        AssertionInterface $assertion,
+        string $mockedFailureMessage
+    ): void {
         $assertionFailureMessageFactory = \Mockery::mock(AssertionFailureMessageFactory::class);
         $assertionFailureMessageFactory
             ->shouldReceive('createForAssertion')
@@ -221,6 +223,5 @@ class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
             'assertionFailureMessageFactory',
             $assertionFailureMessageFactory
         );
-
     }
 }

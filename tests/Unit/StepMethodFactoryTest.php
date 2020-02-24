@@ -225,6 +225,11 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
+    /**
+     * @param array<string, mixed> $services
+     *
+     * @return StepMethodFactory
+     */
     private function createStepMethodFactory(array $services = []): StepMethodFactory
     {
         $stepHandler = $services[StepHandler::class] ?? StepHandler::createHandler();
