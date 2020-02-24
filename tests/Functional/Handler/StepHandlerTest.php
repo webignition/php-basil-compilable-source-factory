@@ -78,7 +78,7 @@ class StepHandlerTest extends AbstractBrowserTestCase
                 ]),
                 'additionalVariableIdentifiers' => [
                     'ELEMENT' => '$element',
-                    'HAS' => '$has',
+                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                     VariableNames::STATEMENT => ResolvedVariableNames::STATEMENT_VARIABLE_NAME,
                 ],
             ],
@@ -197,7 +197,7 @@ class StepHandlerTest extends AbstractBrowserTestCase
                 'teardownStatements' => null,
                 'variableIdentifiers' => [
                     'DURATION' => '$duration',
-                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
+                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                     VariableNames::STATEMENT => ResolvedVariableNames::STATEMENT_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
@@ -214,7 +214,7 @@ class StepHandlerTest extends AbstractBrowserTestCase
                 'teardownStatements' => null,
                 'variableIdentifiers' => [
                     'DURATION' => '$duration',
-                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
+                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                     VariableNames::STATEMENT => ResolvedVariableNames::STATEMENT_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],

@@ -138,7 +138,6 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                         VariableNames::PANTHER_CLIENT,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        'HAS',
                         'ELEMENT',
                         VariableNames::EXAMINED_VALUE,
                         VariableNames::EXPECTED_VALUE,
@@ -207,7 +206,6 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        'HAS',
                         'ELEMENT',
                         VariableNames::EXAMINED_VALUE,
                         VariableNames::EXPECTED_VALUE,

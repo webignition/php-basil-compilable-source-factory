@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler;
 
-use Mockery\MockInterface;
 use webignition\BaseBasilTestCase\Statement;
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Block\CodeBlock;
@@ -13,13 +12,11 @@ use webignition\BasilCompilableSource\Line\SingleLineComment;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\VariablePlaceholderCollection;
-use webignition\BasilCompilableSourceFactory\AssertionFailureMessageFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
-use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierExistenceHandler;
 use webignition\BasilCompilableSourceFactory\Handler\StepHandler;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\VariableNames;
@@ -31,9 +28,7 @@ use webignition\BasilModels\Step\StepInterface;
 use webignition\BasilParser\ActionParser;
 use webignition\BasilParser\AssertionParser;
 use webignition\BasilParser\StepParser;
-use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
-use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
 class StepHandlerTest extends \PHPUnit\Framework\TestCase
 {
@@ -80,27 +75,19 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                             ]),
                         ],
                     ]),
-                    AssertionFailureMessageFactory::class => $this->createMockAssertionFailureMessageFactory([
-                        '$".selector" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
-                                $actionParser->parse('click $".selector"'),
-                                '$".selector"'
-                            ),
-                            'message' => '$".selector" exists failure message',
-                        ],
-                    ]),
-                    DomIdentifierExistenceHandler::class => $this->createDomIdentifierExistenceHandler(
-                        [
-                            '$".selector"' => [
-                                'identifier' => new ElementIdentifier('.selector'),
-                                'assertionFailureMessage' => '$".selector" exists failure message',
+                    AssertionHandler::class => $this->createMockAssertionHandler([
+                        'handleExistenceAssertionAsElement' => [
+                            '$".selector" exists' => [
+                                'assertion' => new DerivedElementExistsAssertion(
+                                    $actionParser->parse('click $".selector"'),
+                                    '$".selector"'
+                                ),
                                 'return' => new CodeBlock([
                                     new SingleLineComment('derived $".selector" exists response'),
                                 ]),
                             ],
                         ],
-                        []
-                    ),
+                    ]),
                 ]),
                 'expectedRenderedSource' =>
                     '// $".selector" exists <- click $".selector"' . "\n" .
@@ -142,42 +129,28 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                             ]),
                         ],
                     ]),
-                    AssertionFailureMessageFactory::class => $this->createMockAssertionFailureMessageFactory([
-                        '$".selector" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
-                                $actionParser->parse('set $".selector" to $".value"'),
-                                '$".selector"'
-                            ),
-                            'message' => '$".selector" exists failure message',
-                        ],
-                        '$".value" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
-                                $actionParser->parse('set $".selector" to $".value"'),
-                                '$".value"'
-                            ),
-                            'message' => '$".value" exists failure message',
-                        ],
-                    ]),
-                    DomIdentifierExistenceHandler::class => $this->createDomIdentifierExistenceHandler(
-                        [
-                        ],
-                        [
-                            '$".selector"' => [
-                                'identifier' => new ElementIdentifier('.selector'),
-                                'assertionFailureMessage' => '$".selector" exists failure message',
+                    AssertionHandler::class => $this->createMockAssertionHandler([
+                        'handleExistenceAssertionAsCollection' => [
+                            '$".selector" exists' => [
+                                'assertion' => new DerivedElementExistsAssertion(
+                                    $actionParser->parse('set $".selector" to $".value"'),
+                                    '$".selector"'
+                                ),
                                 'return' => new CodeBlock([
                                     new SingleLineComment('derived $".selector" exists response'),
                                 ]),
                             ],
-                            '$".value"' => [
-                                'identifier' => new ElementIdentifier('.value'),
-                                'assertionFailureMessage' => '$".value" exists failure message',
+                            '$".value" exists' => [
+                                'assertion' => new DerivedElementExistsAssertion(
+                                    $actionParser->parse('set $".selector" to $".value"'),
+                                    '$".value"'
+                                ),
                                 'return' => new CodeBlock([
                                     new SingleLineComment('derived $".value" exists response'),
                                 ]),
                             ],
-                        ]
-                    ),
+                        ],
+                    ]),
                 ]),
                 'expectedRenderedSource' =>
                     '// $".selector" exists <- set $".selector" to $".value"' . "\n" .
@@ -239,42 +212,30 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                             ]),
                         ],
                     ]),
-                    AssertionFailureMessageFactory::class => $this->createMockAssertionFailureMessageFactory([
-                        '$".selector" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
-                                $actionParser->parse('click $".selector"'),
-                                '$".selector"'
-                            ),
-                            'message' => '$".selector" exists failure message',
-                        ],
-                        '$".duration" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
-                                $actionParser->parse('wait $".duration"'),
-                                '$".duration"'
-                            ),
-                            'message' => '$".duration" exists failure message',
-                        ],
-                    ]),
-                    DomIdentifierExistenceHandler::class => $this->createDomIdentifierExistenceHandler(
-                        [
-                            '$".selector"' => [
-                                'identifier' => new ElementIdentifier('.selector'),
-                                'assertionFailureMessage' => '$".selector" exists failure message',
+                    AssertionHandler::class => $this->createMockAssertionHandler([
+                        'handleExistenceAssertionAsElement' => [
+                            '$".selector" exists' => [
+                                'assertion' => new DerivedElementExistsAssertion(
+                                    $actionParser->parse('click $".selector"'),
+                                    '$".selector"'
+                                ),
                                 'return' => new CodeBlock([
                                     new SingleLineComment('derived $".selector" exists response'),
                                 ]),
                             ],
                         ],
-                        [
-                            '$".duration"' => [
-                                'identifier' => new ElementIdentifier('.duration'),
-                                'assertionFailureMessage' => '$".duration" exists failure message',
+                        'handleExistenceAssertionAsCollection' => [
+                            '$".duration" exists' => [
+                                'assertion' => new DerivedElementExistsAssertion(
+                                    $actionParser->parse('wait $".duration"'),
+                                    '$".duration"'
+                                ),
                                 'return' => new CodeBlock([
                                     new SingleLineComment('derived $".duration" exists response'),
                                 ]),
                             ],
-                        ]
-                    ),
+                        ],
+                    ]),
                 ]),
                 'expectedRenderedSource' =>
                     '// $".selector" exists <- click $".selector"' . "\n" .
@@ -327,11 +288,13 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                 ]),
                 'handler' => $this->createStepHandler([
                     AssertionHandler::class => $this->createMockAssertionHandler([
-                        '$page.title is "value"' => [
-                            'assertion' => $assertionParser->parse('$page.title is "value"'),
-                            'return' => new CodeBlock([
-                                new SingleLineComment('mocked $page.title is "value" response'),
-                            ]),
+                        'handle' => [
+                            '$page.title is "value"' => [
+                                'assertion' => $assertionParser->parse('$page.title is "value"'),
+                                'return' => new CodeBlock([
+                                    new SingleLineComment('mocked $page.title is "value" response'),
+                                ]),
+                            ],
                         ],
                     ]),
                 ]),
@@ -362,11 +325,13 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                 ]),
                 'handler' => $this->createStepHandler([
                     AssertionHandler::class => $this->createMockAssertionHandler([
-                        '$".selector" exists' => [
-                            'assertion' => $assertionParser->parse('$".selector" exists'),
-                            'return' => new CodeBlock([
-                                new SingleLineComment('mocked $".selector" exists response'),
-                            ]),
+                        'handle' => [
+                            '$".selector" exists' => [
+                                'assertion' => $assertionParser->parse('$".selector" exists'),
+                                'return' => new CodeBlock([
+                                    new SingleLineComment('mocked $".selector" exists response'),
+                                ]),
+                            ],
                         ],
                     ]),
                 ]),
@@ -397,35 +362,26 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                 ]),
                 'handler' => $this->createStepHandler([
                     AssertionHandler::class => $this->createMockAssertionHandler([
-                        '$".selector" is "value"' => [
-                            'assertion' => $assertionParser->parse('$".selector" is "value"'),
-                            'return' => new CodeBlock([
-                                new SingleLineComment('mocked $".selector" is "value" response'),
-                            ]),
+                        'handle' => [
+                            '$".selector" is "value"' => [
+                                'assertion' => $assertionParser->parse('$".selector" is "value"'),
+                                'return' => new CodeBlock([
+                                    new SingleLineComment('mocked $".selector" is "value" response'),
+                                ]),
+                            ],
                         ],
-                    ]),
-                    AssertionFailureMessageFactory::class => $this->createMockAssertionFailureMessageFactory([
-                        '$".selector" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
-                                $assertionParser->parse('$".selector" is "value"'),
-                                '$".selector"'
-                            ),
-                            'message' => '$".selector" exists failure message',
-                        ],
-                    ]),
-                    DomIdentifierExistenceHandler::class => $this->createDomIdentifierExistenceHandler(
-                        [
-                        ],
-                        [
-                            '$".selector"' => [
-                                'identifier' => new ElementIdentifier('.selector'),
-                                'assertionFailureMessage' => '$".selector" exists failure message',
+                        'handleExistenceAssertionAsCollection' => [
+                            '$".selector" exists' => [
+                                'assertion' => new DerivedElementExistsAssertion(
+                                    $assertionParser->parse('$".selector" is "value"'),
+                                    '$".selector"'
+                                ),
                                 'return' => new CodeBlock([
                                     new SingleLineComment('derived $".selector" exists response'),
                                 ]),
                             ],
-                        ]
-                    ),
+                        ],
+                    ]),
                 ]),
                 'expectedRenderedSource' =>
                     '// $".selector" exists <- $".selector" is "value"' . "\n" .
@@ -460,49 +416,35 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                 ]),
                 'handler' => $this->createStepHandler([
                     AssertionHandler::class => $this->createMockAssertionHandler([
-                        '$".selector" is $".value"' => [
-                            'assertion' => $assertionParser->parse('$".selector" is $".value"'),
-                            'return' => new CodeBlock([
-                                new SingleLineComment('mocked $".selector" is $".value" response'),
-                            ]),
+                        'handle' => [
+                            '$".selector" is $".value"' => [
+                                'assertion' => $assertionParser->parse('$".selector" is $".value"'),
+                                'return' => new CodeBlock([
+                                    new SingleLineComment('mocked $".selector" is $".value" response'),
+                                ]),
+                            ],
                         ],
-                    ]),
-                    AssertionFailureMessageFactory::class => $this->createMockAssertionFailureMessageFactory([
-                        '$".selector" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
-                                $assertionParser->parse('$".selector" is $".value"'),
-                                '$".selector"'
-                            ),
-                            'message' => '$".selector" exists failure message',
-                        ],
-                        '$".value" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
-                                $assertionParser->parse('$".selector" is $".value"'),
-                                '$".value"'
-                            ),
-                            'message' => '$".value" exists failure message',
-                        ],
-                    ]),
-                    DomIdentifierExistenceHandler::class => $this->createDomIdentifierExistenceHandler(
-                        [
-                        ],
-                        [
-                            '$".selector"' => [
-                                'identifier' => new ElementIdentifier('.selector'),
-                                'assertionFailureMessage' => '$".selector" exists failure message',
+                        'handleExistenceAssertionAsCollection' => [
+                            '$".selector" exists' => [
+                                'assertion' => new DerivedElementExistsAssertion(
+                                    $assertionParser->parse('$".selector" is $".value"'),
+                                    '$".selector"'
+                                ),
                                 'return' => new CodeBlock([
                                     new SingleLineComment('derived $".selector" exists response'),
                                 ]),
                             ],
-                            '$".value"' => [
-                                'identifier' => new ElementIdentifier('.value'),
-                                'assertionFailureMessage' => '$".value" exists failure message',
+                            '$".value" exists' => [
+                                'assertion' => new DerivedElementExistsAssertion(
+                                    $assertionParser->parse('$".selector" is $".value"'),
+                                    '$".value"'
+                                ),
                                 'return' => new CodeBlock([
                                     new SingleLineComment('derived $".value" exists response'),
                                 ]),
                             ],
-                        ]
-                    ),
+                        ],
+                    ]),
                 ]),
                 'expectedRenderedSource' =>
                     '// $".selector" exists <- $".selector" is $".value"' . "\n" .
@@ -544,17 +486,19 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                 ]),
                 'handler' => $this->createStepHandler([
                     AssertionHandler::class => $this->createMockAssertionHandler([
-                        '$page.title is "value"' => [
-                            'assertion' => $assertionParser->parse('$page.title is "value"'),
-                            'return' => new CodeBlock([
-                                new SingleLineComment('mocked $page.title is "value" response'),
-                            ]),
-                        ],
-                        '$page.url is "http://example.com"' => [
-                            'assertion' => $assertionParser->parse('$page.url is "http://example.com"'),
-                            'return' => new CodeBlock([
-                                new SingleLineComment('mocked $page.url is "http://example.com" response'),
-                            ]),
+                        'handle' => [
+                            '$page.title is "value"' => [
+                                'assertion' => $assertionParser->parse('$page.title is "value"'),
+                                'return' => new CodeBlock([
+                                    new SingleLineComment('mocked $page.title is "value" response'),
+                                ]),
+                            ],
+                            '$page.url is "http://example.com"' => [
+                                'assertion' => $assertionParser->parse('$page.url is "http://example.com"'),
+                                'return' => new CodeBlock([
+                                    new SingleLineComment('mocked $page.url is "http://example.com" response'),
+                                ]),
+                            ],
                         ],
                     ]),
                 ]),
@@ -602,34 +546,26 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                         ],
                     ]),
                     AssertionHandler::class => $this->createMockAssertionHandler([
-                        '$page.title is "value"' => [
-                            'assertion' => $assertionParser->parse('$page.title is "value"'),
-                            'return' => new CodeBlock([
-                                new SingleLineComment('mocked $page.title is "value" response'),
-                            ]),
+                        'handle' => [
+                            '$page.title is "value"' => [
+                                'assertion' => $assertionParser->parse('$page.title is "value"'),
+                                'return' => new CodeBlock([
+                                    new SingleLineComment('mocked $page.title is "value" response'),
+                                ]),
+                            ],
                         ],
-                    ]),
-                    AssertionFailureMessageFactory::class => $this->createMockAssertionFailureMessageFactory([
-                        '$".selector" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
-                                $actionParser->parse('click $".selector"'),
-                                '$".selector"'
-                            ),
-                            'message' => '$".selector" exists failure message',
-                        ],
-                    ]),
-                    DomIdentifierExistenceHandler::class => $this->createDomIdentifierExistenceHandler(
-                        [
-                            '$".selector"' => [
-                                'identifier' => new ElementIdentifier('.selector'),
-                                'assertionFailureMessage' => '$".selector" exists failure message',
+                        'handleExistenceAssertionAsElement' => [
+                            '$".selector" exists' => [
+                                'assertion' => new DerivedElementExistsAssertion(
+                                    $actionParser->parse('click $".selector"'),
+                                    '$".selector"'
+                                ),
                                 'return' => new CodeBlock([
                                     new SingleLineComment('derived $".selector" exists response'),
                                 ]),
                             ],
                         ],
-                        []
-                    ),
+                    ]),
                 ]),
                 'expectedRenderedSource' =>
                     '// $".selector" exists <- click $".selector"' . "\n" .
@@ -754,106 +690,30 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param array[] $handleCalls
+     * @param array[] $calls
      *
      * @return AssertionHandler
      */
-    private function createMockAssertionHandler(array $handleCalls): AssertionHandler
+    private function createMockAssertionHandler(array $calls): AssertionHandler
     {
         $assertionHandler = \Mockery::mock(AssertionHandler::class);
 
-        if (0 !== count($handleCalls)) {
-            $assertionHandler
-                ->shouldReceive('handle')
-                ->times(count($handleCalls))
-                ->andReturnUsing(function (AssertionInterface $action) use ($handleCalls) {
-                    $data = $handleCalls[$action->getSource()];
+        foreach ($calls as $methodName => $methodCalls) {
+            if (0 !== count($methodCalls)) {
+                $assertionHandler
+                    ->shouldReceive($methodName)
+                    ->times(count($methodCalls))
+                    ->andReturnUsing(function (AssertionInterface $assertion) use ($methodCalls) {
+                        $data = $methodCalls[$assertion->getSource()];
 
-                    $this->assertEquals($data['assertion'], $action);
+                        $this->assertEquals($data['assertion'], $assertion);
 
-                    return $data['return'];
-                });
+                        return $data['return'];
+                    });
+            }
         }
 
         return $assertionHandler;
-    }
-
-    /**
-     * @param array[] $createForAssertionCalls
-     *
-     * @return AssertionFailureMessageFactory
-     */
-    private function createMockAssertionFailureMessageFactory(array $createForAssertionCalls)
-    {
-        $assertionFailureMessageFactory = \Mockery::mock(AssertionFailureMessageFactory::class);
-
-        $assertionFailureMessageFactory
-            ->shouldReceive('createForAssertion')
-            ->times(count($createForAssertionCalls))
-            ->andReturnUsing(function (DerivedElementExistsAssertion $assertion) use ($createForAssertionCalls) {
-                $data = $createForAssertionCalls[$assertion->getSource()];
-
-                $this->assertEquals($data['assertion'], $assertion);
-
-                return $data['message'];
-            });
-
-        return $assertionFailureMessageFactory;
-    }
-
-    /**
-     * @param array[] $createForElementCalls
-     * @param array[] $createForCollectionCalls
-     *
-     * @return MockInterface|DomIdentifierExistenceHandler
-     */
-    private function createDomIdentifierExistenceHandler(
-        array $createForElementCalls,
-        array $createForCollectionCalls
-    ): DomIdentifierExistenceHandler {
-        $domIdentifierExistenceHandler = \Mockery::mock(DomIdentifierExistenceHandler::class);
-
-        $createForElementCallCount = count($createForElementCalls);
-        if ($createForElementCallCount > 0) {
-            $domIdentifierExistenceHandler
-                ->shouldReceive('createForElement')
-                ->times($createForElementCallCount)
-                ->andReturnUsing(function (
-                    ElementIdentifierInterface $identifier,
-                    string $assertionFailureMessage
-                ) use (
-                    $createForElementCalls
-                ) {
-                    $data = $createForElementCalls[(string) $identifier];
-
-                    $this->assertEquals($data['identifier'], $identifier);
-                    $this->assertSame($data['assertionFailureMessage'], $assertionFailureMessage);
-
-                    return $data['return'];
-                });
-        }
-
-        $createForCollectionCallCount = count($createForCollectionCalls);
-        if ($createForCollectionCallCount > 0) {
-            $domIdentifierExistenceHandler
-                ->shouldReceive('createForCollection')
-                ->times($createForCollectionCallCount)
-                ->andReturnUsing(function (
-                    ElementIdentifierInterface $identifier,
-                    string $assertionFailureMessage
-                ) use (
-                    $createForCollectionCalls
-                ) {
-                    $data = $createForCollectionCalls[(string) $identifier];
-
-                    $this->assertEquals($data['identifier'], $identifier);
-                    $this->assertSame($data['assertionFailureMessage'], $assertionFailureMessage);
-
-                    return $data['return'];
-                });
-        }
-
-        return $domIdentifierExistenceHandler;
     }
 
     /**
@@ -865,22 +725,16 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
     {
         $actionHandler = $services[ActionHandler::class] ?? ActionHandler::createHandler();
         $assertionHandler = $services[AssertionHandler::class] ?? AssertionHandler::createHandler();
-        $domIdentifierExistenceHandler =
-            $services[DomIdentifierExistenceHandler::class] ?? DomIdentifierExistenceHandler::createHandler();
         $domIdentifierFactory = $services[DomIdentifierFactory::class] ?? DomIdentifierFactory::createFactory();
         $identifierTypeAnalyser = $services[IdentifierTypeAnalyser::class] ?? IdentifierTypeAnalyser::create();
         $singleQuotedStringEscaper = $services[SingleQuotedStringEscaper::class] ?? SingleQuotedStringEscaper::create();
-        $assertionFailureMessageFactory =
-            $services[AssertionFailureMessageFactory::class] ?? AssertionFailureMessageFactory::createFactory();
 
         return new StepHandler(
             $actionHandler,
             $assertionHandler,
-            $domIdentifierExistenceHandler,
             $domIdentifierFactory,
             $identifierTypeAnalyser,
-            $singleQuotedStringEscaper,
-            $assertionFailureMessageFactory
+            $singleQuotedStringEscaper
         );
     }
 }
