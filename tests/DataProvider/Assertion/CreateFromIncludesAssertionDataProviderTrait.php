@@ -20,7 +20,8 @@ trait CreateFromIncludesAssertionDataProviderTrait
 
         $expectedAssertionCall = '{{ PHPUNIT }}->assertStringContainsString(' . "\n" .
             '    (string) {{ EXPECTED }},' . "\n" .
-            '    (string) {{ EXAMINED }}' . "\n" .
+            '    (string) {{ EXAMINED }},' . "\n" .
+            '    \'mocked failure message\'' . "\n" .
             ');';
 
         return [

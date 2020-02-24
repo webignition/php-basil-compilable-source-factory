@@ -20,7 +20,8 @@ trait CreateFromExcludesAssertionDataProviderTrait
 
         $expectedAssertionCall = '{{ PHPUNIT }}->assertStringNotContainsString(' . "\n" .
             '    (string) {{ EXPECTED }},' . "\n" .
-            '    (string) {{ EXAMINED }}' . "\n" .
+            '    (string) {{ EXAMINED }},' . "\n" .
+            '    \'mocked failure message\'' . "\n" .
             ');';
 
         return [

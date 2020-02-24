@@ -20,7 +20,8 @@ trait CreateFromIsAssertionDataProviderTrait
 
         $expectedAssertionCall = '{{ PHPUNIT }}->assertEquals(' . "\n" .
             '    {{ EXPECTED }},' . "\n" .
-            '    {{ EXAMINED }}' . "\n" .
+            '    {{ EXAMINED }},' . "\n" .
+            '    \'mocked failure message\'' . "\n" .
             ');';
 
         return [

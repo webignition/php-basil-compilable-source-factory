@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Assertion;
 
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSourceFactory\AssertionFailureMessageFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromExcludesAssertionDataProviderTrait;
@@ -57,6 +58,8 @@ class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
         string $expectedRenderedContent,
         MetadataInterface $expectedMetadata
     ) {
+        $this->mockAssertionFailureMessageFactory($assertion, 'mocked failure message');
+
         $source = $this->handler->handle($assertion);
 
         $this->assertEquals($expectedRenderedContent, $source->render());
@@ -87,16 +90,6 @@ class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
         $assertionParser = AssertionParser::create();
 
         return [
-//            'comparison assertion, examined value is not supported' => [
-//                'assertion' => $assertionParser->parse('$elements.examined is "value"'),
-//                'expectedException' => new UnsupportedStatementException(
-//                    $assertionParser->parse('$elements.examined is "value"'),
-//                    new UnsupportedContentException(
-//                        UnsupportedContentException::TYPE_VALUE,
-//                        '$elements.examined'
-//                    )
-//                ),
-//            ],
             'unsupported comparison' => [
                 'assertion' => $assertionParser->parse('$".selector" foo "value"'),
                 'expectedException' => new UnsupportedStatementException(
@@ -212,5 +205,22 @@ class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
                 },
             ],
         ];
+    }
+
+    private function mockAssertionFailureMessageFactory(AssertionInterface $assertion, string $mockedFailureMessage)
+    {
+        $assertionFailureMessageFactory = \Mockery::mock(AssertionFailureMessageFactory::class);
+        $assertionFailureMessageFactory
+            ->shouldReceive('createForAssertion')
+            ->with($assertion)
+            ->andReturn($mockedFailureMessage);
+
+        ObjectReflector::setProperty(
+            $this->handler,
+            AssertionHandler::class,
+            'assertionFailureMessageFactory',
+            $assertionFailureMessageFactory
+        );
+
     }
 }

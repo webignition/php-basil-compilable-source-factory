@@ -20,7 +20,8 @@ trait CreateFromMatchesAssertionDataProviderTrait
 
         $expectedAssertionCall = '{{ PHPUNIT }}->assertRegExp(' . "\n" .
             '    {{ EXPECTED }},' . "\n" .
-            '    {{ EXAMINED }}' . "\n" .
+            '    {{ EXAMINED }},' . "\n" .
+            '    \'mocked failure message\'' . "\n" .
             ');';
 
         return [

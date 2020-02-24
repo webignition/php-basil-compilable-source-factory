@@ -39,6 +39,8 @@ class AssertionHandler
     public const ASSERT_STRING_CONTAINS_STRING_METHOD = 'assertStringContainsString';
     public const ASSERT_STRING_NOT_CONTAINS_STRING_METHOD = 'assertStringNotContainsString';
     public const ASSERT_MATCHES_METHOD = 'assertRegExp';
+    public const ASSERT_TRUE_METHOD = 'assertTrue';
+    public const ASSERT_FALSE_METHOD = 'assertFalse';
 
     private $accessorDefaultValueFactory;
     private $assertionFailureMessageFactory;
@@ -57,6 +59,8 @@ class AssertionHandler
         'is' => self::ASSERT_EQUALS_METHOD,
         'is-not' => self::ASSERT_NOT_EQUALS_METHOD,
         'matches' => self::ASSERT_MATCHES_METHOD,
+        'exists' => self::ASSERT_TRUE_METHOD,
+        'not-exists' => self::ASSERT_FALSE_METHOD,
     ];
 
     /**
@@ -161,7 +165,7 @@ class AssertionHandler
                         '!=='
                     )
                 ),
-                $this->createAssertionStatement($assertion, $valuePlaceholder),
+                $this->createAssertionStatement($assertion, [$valuePlaceholder]),
             ]);
         }
 
@@ -177,7 +181,7 @@ class AssertionHandler
                         $valuePlaceholder,
                         $this->domCrawlerNavigatorCallFactory->createHasCall($domIdentifier)
                     ),
-                    $this->createAssertionStatement($assertion, $valuePlaceholder),
+                    $this->createAssertionStatement($assertion, [$valuePlaceholder]),
                 ]);
             }
 
@@ -198,7 +202,7 @@ class AssertionHandler
                         '!=='
                     )
                 ),
-                $this->createAssertionStatement($assertion, $valuePlaceholder),
+                $this->createAssertionStatement($assertion, [$valuePlaceholder]),
             ]);
         }
 
@@ -240,15 +244,7 @@ class AssertionHandler
         return new CodeBlock([
             $expectedValueAssignment,
             $examinedValueAssignment,
-            new Statement(
-                $this->assertionMethodInvocationFactory->create(
-                    self::COMPARISON_TO_ASSERTION_TEMPLATE_MAP[$assertion->getComparison()],
-                    [
-                        $expectedValuePlaceholder,
-                        $examinedValuePlaceholder,
-                    ]
-                )
-            ),
+            $this->createAssertionStatement($assertion, [$expectedValuePlaceholder, $examinedValuePlaceholder]),
         ]);
     }
 
@@ -289,14 +285,14 @@ class AssertionHandler
 
     private function createAssertionStatement(
         AssertionInterface $assertion,
-        VariablePlaceholder $valuePlaceholder
+        array $arguments
     ): StatementInterface {
+        $assertionMethod = self::COMPARISON_TO_ASSERTION_TEMPLATE_MAP[$assertion->getComparison()];
+
         return new Statement(
             $this->assertionMethodInvocationFactory->create(
-                'exists' === $assertion->getComparison() ? 'assertTrue' : 'assertFalse',
-                [
-                    $valuePlaceholder
-                ],
+                $assertionMethod,
+                $arguments,
                 $this->assertionFailureMessageFactory->createForAssertion($assertion)
             )
         );
