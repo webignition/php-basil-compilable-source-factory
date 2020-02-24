@@ -18,15 +18,15 @@ trait CreateFromMatchesAssertionDataProviderTrait
     {
         $assertionParser = AssertionParser::create();
 
-        $expectedAssertionCall = '{{ PHPUNIT }}->assertRegExp(' . "\n" .
-            '    {{ EXPECTED }},' . "\n" .
-            '    {{ EXAMINED }},' . "\n" .
-            '    \'mocked failure message\'' . "\n" .
-            ');';
-
         return [
             'matches comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" matches "/^value/"'),
+                'assertionFailureMessageFactoryCalls' => [
+                    '$".selector" matches "/^value/"' => [
+                        'assertion' => $assertionParser->parse('$".selector" matches "/^value/"'),
+                        'message' => '$".selector" matches "/^value/" failure message',
+                    ],
+                ],
                 'expectedRenderedSource' =>
                     '{{ EXPECTED }} = "/^value/" ?? null;' . "\n" .
                     '{{ EXAMINED }} = (function () {' . "\n" .
@@ -36,7 +36,11 @@ trait CreateFromMatchesAssertionDataProviderTrait
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
                     '})();' . "\n" .
-                    $expectedAssertionCall
+                    '{{ PHPUNIT }}->assertRegExp(' . "\n" .
+                    '    {{ EXPECTED }},' . "\n" .
+                    '    {{ EXAMINED }},' . "\n" .
+                    '    \'$".selector" matches "/^value/" failure message\'' . "\n" .
+                    ');'
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -56,6 +60,12 @@ trait CreateFromMatchesAssertionDataProviderTrait
             ],
             'matches comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name matches "/^value/"'),
+                'assertionFailureMessageFactoryCalls' => [
+                    '$".selector".attribute_name matches "/^value/"' => [
+                        'assertion' => $assertionParser->parse('$".selector".attribute_name matches "/^value/"'),
+                        'message' => '$".selector".attribute_name matches "/^value/" failure message',
+                    ],
+                ],
                 'expectedRenderedSource' =>
                     '{{ EXPECTED }} = "/^value/" ?? null;' . "\n" .
                     '{{ EXAMINED }} = (function () {' . "\n" .
@@ -65,7 +75,11 @@ trait CreateFromMatchesAssertionDataProviderTrait
                     "\n" .
                     '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
                     '})();' . "\n" .
-                    $expectedAssertionCall
+                    '{{ PHPUNIT }}->assertRegExp(' . "\n" .
+                    '    {{ EXPECTED }},' . "\n" .
+                    '    {{ EXAMINED }},' . "\n" .
+                    '    \'$".selector".attribute_name matches "/^value/" failure message\'' . "\n" .
+                    ');'
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([

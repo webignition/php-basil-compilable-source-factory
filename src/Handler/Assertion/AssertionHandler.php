@@ -20,7 +20,6 @@ use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
-use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierExistenceHandler;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Model\DomIdentifierValue;
@@ -28,9 +27,11 @@ use webignition\BasilCompilableSourceFactory\ValueTypeIdentifier;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
+use webignition\BasilModels\Assertion\Assertion;
 use webignition\BasilModels\Assertion\AssertionInterface;
 use webignition\BasilModels\Assertion\ComparisonAssertionInterface;
 use webignition\DomElementIdentifier\AttributeIdentifierInterface;
+use webignition\DomElementIdentifier\ElementIdentifier;
 
 class AssertionHandler
 {
@@ -46,7 +47,6 @@ class AssertionHandler
     private $assertionFailureMessageFactory;
     private $assertionMethodInvocationFactory;
     private $domCrawlerNavigatorCallFactory;
-    private $domIdentifierExistenceHandler;
     private $domIdentifierFactory;
     private $domIdentifierHandler;
     private $identifierTypeAnalyser;
@@ -76,7 +76,6 @@ class AssertionHandler
         AssertionFailureMessageFactory $assertionFailureMessageFactory,
         AssertionMethodInvocationFactory $assertionMethodInvocationFactory,
         DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory,
-        DomIdentifierExistenceHandler $domIdentifierExistenceHandler,
         DomIdentifierFactory $domIdentifierFactory,
         DomIdentifierHandler $domIdentifierHandler,
         IdentifierTypeAnalyser $identifierTypeAnalyser,
@@ -87,7 +86,6 @@ class AssertionHandler
         $this->assertionFailureMessageFactory = $assertionFailureMessageFactory;
         $this->assertionMethodInvocationFactory = $assertionMethodInvocationFactory;
         $this->domCrawlerNavigatorCallFactory = $domCrawlerNavigatorCallFactory;
-        $this->domIdentifierExistenceHandler = $domIdentifierExistenceHandler;
         $this->domIdentifierFactory = $domIdentifierFactory;
         $this->domIdentifierHandler = $domIdentifierHandler;
         $this->identifierTypeAnalyser = $identifierTypeAnalyser;
@@ -102,7 +100,6 @@ class AssertionHandler
             AssertionFailureMessageFactory::createFactory(),
             AssertionMethodInvocationFactory::createFactory(),
             DomCrawlerNavigatorCallFactory::createFactory(),
-            DomIdentifierExistenceHandler::createHandler(),
             DomIdentifierFactory::createFactory(),
             DomIdentifierHandler::createHandler(),
             IdentifierTypeAnalyser::create(),
@@ -185,11 +182,19 @@ class AssertionHandler
                 ]);
             }
 
+            $elementIdentifierString = (string) ElementIdentifier::fromAttributeIdentifier($domIdentifier);
+            $elementExistsAssertion = new Assertion(
+                $elementIdentifierString . ' exists',
+                $elementIdentifierString,
+                'exists'
+            );
+
             return new CodeBlock([
-                $this->domIdentifierExistenceHandler->createForElement(
-                    $domIdentifier,
-                    $this->assertionFailureMessageFactory->createForAssertion($assertion)
+                new AssignmentStatement(
+                    $valuePlaceholder,
+                    $this->domCrawlerNavigatorCallFactory->createHasOneCall($domIdentifier)
                 ),
+                $this->createAssertionStatement($elementExistsAssertion, [$valuePlaceholder]),
                 new AssignmentStatement(
                     $valuePlaceholder,
                     $this->domIdentifierHandler->handle(new DomIdentifierValue($domIdentifier))

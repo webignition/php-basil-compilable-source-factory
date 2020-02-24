@@ -18,15 +18,15 @@ trait CreateFromIsNotAssertionDataProviderTrait
     {
         $assertionParser = AssertionParser::create();
 
-        $expectedAssertionCall = '{{ PHPUNIT }}->assertNotEquals(' . "\n" .
-            '    {{ EXPECTED }},' . "\n" .
-            '    {{ EXAMINED }},' . "\n" .
-            '    \'mocked failure message\'' . "\n" .
-            ');';
-
         return [
             'is-not comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" is-not "value"'),
+                'assertionFailureMessageFactoryCalls' => [
+                    '$".selector" is-not "value"' => [
+                        'assertion' => $assertionParser->parse('$".selector" is-not "value"'),
+                        'message' => '$".selector" is-not "value" failure message',
+                    ],
+                ],
                 'expectedRenderedSource' =>
                     '{{ EXPECTED }} = "value" ?? null;' . "\n" .
                     '{{ EXAMINED }} = (function () {' . "\n" .
@@ -36,7 +36,11 @@ trait CreateFromIsNotAssertionDataProviderTrait
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
                     '})();' . "\n" .
-                    $expectedAssertionCall
+                    '{{ PHPUNIT }}->assertNotEquals(' . "\n" .
+                    '    {{ EXPECTED }},' . "\n" .
+                    '    {{ EXAMINED }},' . "\n" .
+                    '    \'$".selector" is-not "value" failure message\'' . "\n" .
+                    ');'
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -56,6 +60,12 @@ trait CreateFromIsNotAssertionDataProviderTrait
             ],
             'is-not comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name is-not "value"'),
+                'assertionFailureMessageFactoryCalls' => [
+                    '$".selector".attribute_name is-not "value"' => [
+                        'assertion' => $assertionParser->parse('$".selector".attribute_name is-not "value"'),
+                        'message' => '$".selector".attribute_name is-not "value" failure message',
+                    ],
+                ],
                 'expectedRenderedSource' =>
                     '{{ EXPECTED }} = "value" ?? null;' . "\n" .
                     '{{ EXAMINED }} = (function () {' . "\n" .
@@ -65,7 +75,11 @@ trait CreateFromIsNotAssertionDataProviderTrait
                     "\n" .
                     '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
                     '})();' . "\n" .
-                    $expectedAssertionCall
+                    '{{ PHPUNIT }}->assertNotEquals(' . "\n" .
+                    '    {{ EXPECTED }},' . "\n" .
+                    '    {{ EXAMINED }},' . "\n" .
+                    '    \'$".selector".attribute_name is-not "value" failure message\'' . "\n" .
+                    ');'
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([

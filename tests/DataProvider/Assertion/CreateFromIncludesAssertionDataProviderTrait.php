@@ -18,15 +18,15 @@ trait CreateFromIncludesAssertionDataProviderTrait
     {
         $assertionParser = AssertionParser::create();
 
-        $expectedAssertionCall = '{{ PHPUNIT }}->assertStringContainsString(' . "\n" .
-            '    (string) {{ EXPECTED }},' . "\n" .
-            '    (string) {{ EXAMINED }},' . "\n" .
-            '    \'mocked failure message\'' . "\n" .
-            ');';
-
         return [
             'includes comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" includes "value"'),
+                'assertionFailureMessageFactoryCalls' => [
+                    '$".selector" includes "value"' => [
+                        'assertion' => $assertionParser->parse('$".selector" includes "value"'),
+                        'message' => '$".selector" includes "value" failure message',
+                    ],
+                ],
                 'expectedRenderedSource' =>
                     '{{ EXPECTED }} = "value" ?? null;' . "\n" .
                     '{{ EXAMINED }} = (function () {' . "\n" .
@@ -36,7 +36,11 @@ trait CreateFromIncludesAssertionDataProviderTrait
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
                     '})();' . "\n" .
-                    $expectedAssertionCall
+                    '{{ PHPUNIT }}->assertStringContainsString(' . "\n" .
+                    '    (string) {{ EXPECTED }},' . "\n" .
+                    '    (string) {{ EXAMINED }},' . "\n" .
+                    '    \'$".selector" includes "value" failure message\'' . "\n" .
+                    ');'
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -56,6 +60,12 @@ trait CreateFromIncludesAssertionDataProviderTrait
             ],
             'includes comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name includes "value"'),
+                'assertionFailureMessageFactoryCalls' => [
+                    '$".selector".attribute_name includes "value"' => [
+                        'assertion' => $assertionParser->parse('$".selector".attribute_name includes "value"'),
+                        'message' => '$".selector".attribute_name includes "value" failure message',
+                    ],
+                ],
                 'expectedRenderedSource' =>
                     '{{ EXPECTED }} = "value" ?? null;' . "\n" .
                     '{{ EXAMINED }} = (function () {' . "\n" .
@@ -65,7 +75,11 @@ trait CreateFromIncludesAssertionDataProviderTrait
                     "\n" .
                     '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
                     '})();' . "\n" .
-                    $expectedAssertionCall
+                    '{{ PHPUNIT }}->assertStringContainsString(' . "\n" .
+                    '    (string) {{ EXPECTED }},' . "\n" .
+                    '    (string) {{ EXAMINED }},' . "\n" .
+                    '    \'$".selector".attribute_name includes "value" failure message\'' . "\n" .
+                    ');'
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
