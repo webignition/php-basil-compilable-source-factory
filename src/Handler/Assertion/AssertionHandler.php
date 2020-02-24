@@ -43,6 +43,9 @@ class AssertionHandler
     public const ASSERT_TRUE_METHOD = 'assertTrue';
     public const ASSERT_FALSE_METHOD = 'assertFalse';
 
+    private const HANDLE_EXISTENCE_AS_ELEMENT = 1;
+    private const HANDLE_EXISTENCE_AS_COLLECTION = 2;
+
     private $accessorDefaultValueFactory;
     private $assertionFailureMessageFactory;
     private $assertionMethodInvocationFactory;
@@ -139,8 +142,35 @@ class AssertionHandler
      *
      * @throws UnsupportedContentException
      */
-    private function handleExistenceAssertion(AssertionInterface $assertion): CodeBlockInterface
+    public function handleExistenceAssertionAsElement(AssertionInterface $assertion): CodeBlockInterface
     {
+        return $this->handleExistenceAssertion($assertion, self::HANDLE_EXISTENCE_AS_ELEMENT);
+    }
+
+    /**
+     * @param AssertionInterface $assertion
+     *
+     * @return CodeBlockInterface
+     *
+     * @throws UnsupportedContentException
+     */
+    public function handleExistenceAssertionAsCollection(AssertionInterface $assertion): CodeBlockInterface
+    {
+        return $this->handleExistenceAssertion($assertion, self::HANDLE_EXISTENCE_AS_COLLECTION);
+    }
+
+    /**
+     * @param AssertionInterface $assertion
+     *
+     * @param int $handleAs
+     * @return CodeBlockInterface
+     *
+     * @throws UnsupportedContentException
+     */
+    private function handleExistenceAssertion(
+        AssertionInterface $assertion,
+        ?int $handleAs = null
+    ): CodeBlockInterface {
         $valuePlaceholder = VariablePlaceholder::createExport(VariableNames::EXAMINED_VALUE);
         $identifier = $assertion->getIdentifier();
 
@@ -173,10 +203,14 @@ class AssertionHandler
             }
 
             if (!$domIdentifier instanceof AttributeIdentifierInterface) {
+                $domNavigatorCrawlerCall = self::HANDLE_EXISTENCE_AS_ELEMENT === $handleAs
+                    ? $this->domCrawlerNavigatorCallFactory->createHasOneCall($domIdentifier)
+                    : $this->domCrawlerNavigatorCallFactory->createHasCall($domIdentifier);
+
                 return new CodeBlock([
                     new AssignmentStatement(
                         $valuePlaceholder,
-                        $this->domCrawlerNavigatorCallFactory->createHasCall($domIdentifier)
+                        $domNavigatorCrawlerCall
                     ),
                     $this->createAssertionStatement($assertion, [$valuePlaceholder]),
                 ]);

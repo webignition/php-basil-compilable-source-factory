@@ -16,7 +16,6 @@ use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\StatementInterface;
 use webignition\BasilCompilableSource\StaticObject;
 use webignition\BasilCompilableSource\VariablePlaceholder;
-use webignition\BasilCompilableSourceFactory\AssertionFailureMessageFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
@@ -41,28 +40,22 @@ class StepHandler
 {
     private $actionHandler;
     private $assertionHandler;
-    private $domIdentifierExistenceHandler;
     private $domIdentifierFactory;
     private $identifierTypeAnalyser;
     private $singleQuotedStringEscaper;
-    private $assertionFailureMessageFactory;
 
     public function __construct(
         ActionHandler $actionHandler,
         AssertionHandler $assertionHandler,
-        DomIdentifierExistenceHandler $domIdentifierExistenceHandler,
         DomIdentifierFactory $domIdentifierFactory,
         IdentifierTypeAnalyser $identifierTypeAnalyser,
-        SingleQuotedStringEscaper $singleQuotedStringEscaper,
-        AssertionFailureMessageFactory $assertionFailureMessageFactory
+        SingleQuotedStringEscaper $singleQuotedStringEscaper
     ) {
         $this->actionHandler = $actionHandler;
         $this->assertionHandler = $assertionHandler;
-        $this->domIdentifierExistenceHandler = $domIdentifierExistenceHandler;
         $this->domIdentifierFactory = $domIdentifierFactory;
         $this->identifierTypeAnalyser = $identifierTypeAnalyser;
         $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
-        $this->assertionFailureMessageFactory = $assertionFailureMessageFactory;
     }
 
     public static function createHandler(): StepHandler
@@ -70,11 +63,9 @@ class StepHandler
         return new StepHandler(
             ActionHandler::createHandler(),
             AssertionHandler::createHandler(),
-            DomIdentifierExistenceHandler::createHandler(),
             DomIdentifierFactory::createFactory(),
             IdentifierTypeAnalyser::create(),
-            SingleQuotedStringEscaper::create(),
-            AssertionFailureMessageFactory::createFactory()
+            SingleQuotedStringEscaper::create()
         );
     }
 
@@ -147,12 +138,10 @@ class StepHandler
             throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }
 
-        $elementExistsBlock = $this->domIdentifierExistenceHandler->createForElement(
-            $domIdentifier,
-            $this->assertionFailureMessageFactory->createForAssertion($elementExistsAssertion)
+        return $this->createStatementBlock(
+            $elementExistsAssertion,
+            $this->assertionHandler->handleExistenceAssertionAsElement($elementExistsAssertion)
         );
-
-        return $this->createStatementBlock($elementExistsAssertion, $elementExistsBlock);
     }
 
     /**
@@ -174,12 +163,10 @@ class StepHandler
             throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }
 
-        $elementExistsBlock = $this->domIdentifierExistenceHandler->createForCollection(
-            $domIdentifier,
-            $this->assertionFailureMessageFactory->createForAssertion($elementExistsAssertion)
+        return $this->createStatementBlock(
+            $elementExistsAssertion,
+            $this->assertionHandler->handleExistenceAssertionAsCollection($elementExistsAssertion)
         );
-
-        return $this->createStatementBlock($elementExistsAssertion, $elementExistsBlock);
     }
 
     private function createStatementBlock(
