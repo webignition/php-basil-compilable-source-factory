@@ -222,6 +222,11 @@ class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
+    /**
+     * @param array<mixed> $services
+     *
+     * @return AssertionHandler
+     */
     private function createAssertionHandler(array $services = []): AssertionHandler
     {
         $accessorDefaultValueFactory =

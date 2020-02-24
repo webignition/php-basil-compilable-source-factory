@@ -690,7 +690,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param array[] $handleCalls
+     * @param array[] $calls
      *
      * @return AssertionHandler
      */
