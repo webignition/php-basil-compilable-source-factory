@@ -72,9 +72,6 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
                 'fixture' => '/index.html',
                 'assertion' => $assertionParser->parse('$".selector" exists'),
                 'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
-                'additionalVariableIdentifiers' => [
-                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
-                ],
             ],
             'exists comparison, attribute identifier examined value, element does not exist' => [
                 'fixture' => '/index.html',
@@ -82,7 +79,6 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
                 'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
                 'additionalVariableIdentifiers' => [
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
-                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
             ],
@@ -92,7 +88,6 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
                 'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
                 'additionalVariableIdentifiers' => [
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
-                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
             ],
@@ -102,7 +97,6 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
                 'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
                 'additionalVariableIdentifiers' => [
                     VariableNames::ENVIRONMENT_VARIABLE_ARRAY => '$_ENV',
-                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                 ],
             ],
         ];

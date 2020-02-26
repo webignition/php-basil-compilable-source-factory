@@ -28,8 +28,8 @@ trait CreateFromExcludesAssertionDataProviderTrait
                     ],
                 ],
                 'expectedRenderedSource' =>
-                    '{{ EXPECTED }} = "value" ?? null;' . "\n" .
-                    '{{ EXAMINED }} = (function () {' . "\n" .
+                    '{{ PHPUNIT }}->expectedValue = "value" ?? null;' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
                     '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".selector"' . "\n" .
                     '    }\'));' . "\n" .
@@ -37,8 +37,8 @@ trait CreateFromExcludesAssertionDataProviderTrait
                     '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
                     '})();' . "\n" .
                     '{{ PHPUNIT }}->assertStringNotContainsString(' . "\n" .
-                    '    (string) {{ EXPECTED }},' . "\n" .
-                    '    (string) {{ EXAMINED }},' . "\n" .
+                    '    (string) {{ PHPUNIT }}->expectedValue,' . "\n" .
+                    '    (string) {{ PHPUNIT }}->examinedValue,' . "\n" .
                     '    \'$".selector" excludes "value" failure message\'' . "\n" .
                     ');'
                 ,
@@ -52,8 +52,6 @@ trait CreateFromExcludesAssertionDataProviderTrait
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        VariableNames::EXPECTED_VALUE,
-                        VariableNames::EXAMINED_VALUE,
                         'ELEMENT',
                     ]),
                 ]),
@@ -67,8 +65,8 @@ trait CreateFromExcludesAssertionDataProviderTrait
                     ],
                 ],
                 'expectedRenderedSource' =>
-                    '{{ EXPECTED }} = "value" ?? null;' . "\n" .
-                    '{{ EXAMINED }} = (function () {' . "\n" .
+                    '{{ PHPUNIT }}->expectedValue = "value" ?? null;' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
                     '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".selector"' . "\n" .
                     '    }\'));' . "\n" .
@@ -76,8 +74,8 @@ trait CreateFromExcludesAssertionDataProviderTrait
                     '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
                     '})();' . "\n" .
                     '{{ PHPUNIT }}->assertStringNotContainsString(' . "\n" .
-                    '    (string) {{ EXPECTED }},' . "\n" .
-                    '    (string) {{ EXAMINED }},' . "\n" .
+                    '    (string) {{ PHPUNIT }}->expectedValue,' . "\n" .
+                    '    (string) {{ PHPUNIT }}->examinedValue,' . "\n" .
                     '    \'$".selector" excludes.attribute_name "value" failure message\'' . "\n" .
                     ');'
                 ,
@@ -90,8 +88,6 @@ trait CreateFromExcludesAssertionDataProviderTrait
                         VariableNames::PHPUNIT_TEST_CASE,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        VariableNames::EXPECTED_VALUE,
-                        VariableNames::EXAMINED_VALUE,
                         'ELEMENT',
                     ]),
                 ]),

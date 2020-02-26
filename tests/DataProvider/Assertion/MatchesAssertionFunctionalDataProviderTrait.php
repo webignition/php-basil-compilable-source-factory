@@ -20,8 +20,6 @@ trait MatchesAssertionFunctionalDataProviderTrait
                 'assertion' => $assertionParser->parse('$".selector" matches "/^\.selector [a-z]+$/"'),
                 'variableIdentifiers' => [
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
-                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
-                    VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
             ],
@@ -30,8 +28,6 @@ trait MatchesAssertionFunctionalDataProviderTrait
                 'assertion' => $assertionParser->parse('$".selector".data-test-attribute matches "/^[a-z]+ content$/"'),
                 'variableIdentifiers' => [
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
-                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
-                    VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
             ],
@@ -40,34 +36,24 @@ trait MatchesAssertionFunctionalDataProviderTrait
                 'assertion' => $assertionParser->parse('$env.TEST1 matches "/^environment/"'),
                 'variableIdentifiers' => [
                     VariableNames::ENVIRONMENT_VARIABLE_ARRAY => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
-                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
-                    VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
                 ],
             ],
             'matches comparison, browser object examined value, scalar expected value' => [
                 'fixture' => '/empty.html',
                 'assertion' => $assertionParser->parse('$browser.size matches "/[0-9]+x[0-9]+/"'),
                 'variableIdentifiers' => [
-                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
-                    VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
                     'WEBDRIVER_DIMENSION' => ResolvedVariableNames::WEBDRIVER_DIMENSION_VARIABLE_NAME,
                 ],
             ],
             'matches comparison, page object examined value, scalar expected value' => [
                 'fixture' => '/assertions.html',
                 'assertion' => $assertionParser->parse('$page.title matches "/fixture$/"'),
-                'variableIdentifiers' => [
-                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
-                    VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
-                ],
             ],
             'matches comparison, element identifier examined value, element identifier expected value' => [
                 'fixture' => '/assertions.html',
                 'assertion' => $assertionParser->parse('$".matches-examined" matches $".matches-expected"'),
                 'variableIdentifiers' => [
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
-                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
-                    VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
             ],
@@ -76,8 +62,6 @@ trait MatchesAssertionFunctionalDataProviderTrait
                 'assertion' => $assertionParser->parse('$".selector" matches $".selector".data-matches-content'),
                 'variableIdentifiers' => [
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
-                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
-                    VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
             ],
@@ -87,8 +71,6 @@ trait MatchesAssertionFunctionalDataProviderTrait
                 'variableIdentifiers' => [
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     VariableNames::ENVIRONMENT_VARIABLE_ARRAY => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
-                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
-                    VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
             ],

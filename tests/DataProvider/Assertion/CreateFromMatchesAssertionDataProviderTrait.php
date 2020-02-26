@@ -28,8 +28,8 @@ trait CreateFromMatchesAssertionDataProviderTrait
                     ],
                 ],
                 'expectedRenderedSource' =>
-                    '{{ EXPECTED }} = "/^value/" ?? null;' . "\n" .
-                    '{{ EXAMINED }} = (function () {' . "\n" .
+                    '{{ PHPUNIT }}->expectedValue = "/^value/" ?? null;' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
                     '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".selector"' . "\n" .
                     '    }\'));' . "\n" .
@@ -37,8 +37,8 @@ trait CreateFromMatchesAssertionDataProviderTrait
                     '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
                     '})();' . "\n" .
                     '{{ PHPUNIT }}->assertRegExp(' . "\n" .
-                    '    {{ EXPECTED }},' . "\n" .
-                    '    {{ EXAMINED }},' . "\n" .
+                    '    {{ PHPUNIT }}->expectedValue,' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
                     '    \'$".selector" matches "/^value/" failure message\'' . "\n" .
                     ');'
                 ,
@@ -52,8 +52,6 @@ trait CreateFromMatchesAssertionDataProviderTrait
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        VariableNames::EXPECTED_VALUE,
-                        VariableNames::EXAMINED_VALUE,
                         'ELEMENT',
                     ]),
                 ]),
@@ -67,8 +65,8 @@ trait CreateFromMatchesAssertionDataProviderTrait
                     ],
                 ],
                 'expectedRenderedSource' =>
-                    '{{ EXPECTED }} = "/^value/" ?? null;' . "\n" .
-                    '{{ EXAMINED }} = (function () {' . "\n" .
+                    '{{ PHPUNIT }}->expectedValue = "/^value/" ?? null;' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
                     '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".selector"' . "\n" .
                     '    }\'));' . "\n" .
@@ -76,8 +74,8 @@ trait CreateFromMatchesAssertionDataProviderTrait
                     '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
                     '})();' . "\n" .
                     '{{ PHPUNIT }}->assertRegExp(' . "\n" .
-                    '    {{ EXPECTED }},' . "\n" .
-                    '    {{ EXAMINED }},' . "\n" .
+                    '    {{ PHPUNIT }}->expectedValue,' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
                     '    \'$".selector".attribute_name matches "/^value/" failure message\'' . "\n" .
                     ');'
                 ,
@@ -90,8 +88,6 @@ trait CreateFromMatchesAssertionDataProviderTrait
                         VariableNames::PHPUNIT_TEST_CASE,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        VariableNames::EXPECTED_VALUE,
-                        VariableNames::EXAMINED_VALUE,
                         'ELEMENT',
                     ]),
                 ]),

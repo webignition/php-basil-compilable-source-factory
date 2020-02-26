@@ -28,10 +28,10 @@ trait CreateFromExistsAssertionDataProviderTrait
                     ],
                 ],
                 'expectedRenderedSource' =>
-                    '{{ EXAMINED }} = {{ CLIENT }}->getCurrentURL() ?? null;' . "\n" .
-                    '{{ EXAMINED }} = {{ EXAMINED }} !== null;' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = {{ CLIENT }}->getCurrentURL() ?? null;' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = {{ PHPUNIT }}->examinedValue !== null;' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
-                    '    {{ EXAMINED }},' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
                     '    \'$page.url exists failure message\'' . "\n" .
                     ');'
                 ,
@@ -39,9 +39,6 @@ trait CreateFromExistsAssertionDataProviderTrait
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PANTHER_CLIENT,
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        VariableNames::EXAMINED_VALUE,
                     ]),
                 ]),
             ],
@@ -54,11 +51,11 @@ trait CreateFromExistsAssertionDataProviderTrait
                     ],
                 ],
                 'expectedRenderedSource' =>
-                    '{{ EXAMINED }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{' . "\n" .
                     '    "locator": ".selector"' . "\n" .
                     '}\'));' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
-                    '    {{ EXAMINED }},' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
                     '    \'$".selector" exists failure message\'' . "\n" .
                     ');'
                 ,
@@ -69,9 +66,6 @@ trait CreateFromExistsAssertionDataProviderTrait
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        VariableNames::EXAMINED_VALUE,
                     ]),
                 ]),
             ],
@@ -88,23 +82,23 @@ trait CreateFromExistsAssertionDataProviderTrait
                     ],
                 ],
                 'expectedRenderedSource' =>
-                    '{{ EXAMINED }} = {{ NAVIGATOR }}->hasOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = {{ NAVIGATOR }}->hasOne(ElementIdentifier::fromJson(\'{' . "\n" .
                     '    "locator": ".selector"' . "\n" .
                     '}\'));' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
-                    '    {{ EXAMINED }},' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
                     '    \'$".selector" exists failure message\'' . "\n" .
                     ');' . "\n" .
-                    '{{ EXAMINED }} = (function () {' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
                     '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".selector"' . "\n" .
                     '    }\'));' . "\n" .
                     "\n" .
                     '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
                     '})();' . "\n" .
-                    '{{ EXAMINED }} = {{ EXAMINED }} !== null;' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = {{ PHPUNIT }}->examinedValue !== null;' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
-                    '    {{ EXAMINED }},' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
                     '    \'$".selector".attribute_name exists failure message\'' . "\n" .
                     ');'
                 ,
@@ -117,7 +111,6 @@ trait CreateFromExistsAssertionDataProviderTrait
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        VariableNames::EXAMINED_VALUE,
                         'ELEMENT',
                     ]),
                 ]),
@@ -131,18 +124,15 @@ trait CreateFromExistsAssertionDataProviderTrait
                     ],
                 ],
                 'expectedRenderedSource' =>
-                    '{{ EXAMINED }} = $key ?? null;' . "\n" .
-                    '{{ EXAMINED }} = {{ EXAMINED }} !== null;' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = $key ?? null;' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = {{ PHPUNIT }}->examinedValue !== null;' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
-                    '    {{ EXAMINED }},' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
                     '    \'$data.key exists failure message\'' . "\n" .
                     ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        VariableNames::EXAMINED_VALUE,
                     ]),
                 ]),
             ],
@@ -155,11 +145,11 @@ trait CreateFromExistsAssertionDataProviderTrait
                     ],
                 ],
                 'expectedRenderedSource' =>
-                    '{{ EXAMINED }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{' . "\n" .
                     '    "locator": "a[href=foo.html]"' . "\n" .
                     '}\'));' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
-                    '    {{ EXAMINED }},' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
                     '    \'$"a[href=foo.html]" exists failure message\'' . "\n" .
                     ');'
                 ,
@@ -170,9 +160,6 @@ trait CreateFromExistsAssertionDataProviderTrait
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        VariableNames::EXAMINED_VALUE,
                     ]),
                 ]),
             ],
@@ -189,23 +176,23 @@ trait CreateFromExistsAssertionDataProviderTrait
                     ],
                 ],
                 'expectedRenderedSource' =>
-                    '{{ EXAMINED }} = {{ NAVIGATOR }}->hasOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = {{ NAVIGATOR }}->hasOne(ElementIdentifier::fromJson(\'{' . "\n" .
                     '    "locator": "a[href=foo.html]"' . "\n" .
                     '}\'));' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
-                    '    {{ EXAMINED }},' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
                     '    \'$"a[href=foo.html]" exists failure message\'' . "\n" .
                     ');' . "\n" .
-                    '{{ EXAMINED }} = (function () {' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
                     '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": "a[href=foo.html]"' . "\n" .
                     '    }\'));' . "\n" .
                     "\n" .
                     '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
                     '})();' . "\n" .
-                    '{{ EXAMINED }} = {{ EXAMINED }} !== null;' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = {{ PHPUNIT }}->examinedValue !== null;' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
-                    '    {{ EXAMINED }},' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
                     '    \'$"a[href=foo.html]".attribute_name exists failure message\'' . "\n" .
                     ');'
                 ,
@@ -218,7 +205,6 @@ trait CreateFromExistsAssertionDataProviderTrait
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        VariableNames::EXAMINED_VALUE,
                         'ELEMENT',
                     ]),
                 ]),
