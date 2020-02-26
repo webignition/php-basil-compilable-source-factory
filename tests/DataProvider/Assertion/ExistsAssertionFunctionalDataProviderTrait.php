@@ -20,7 +20,6 @@ trait ExistsAssertionFunctionalDataProviderTrait
                 'assertion' => $assertionParser->parse('$".selector" exists'),
                 'variableIdentifiers' => [
                     'HAS' => '$has',
-                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                 ],
             ],
             'exists comparison, attribute identifier examined value' => [
@@ -28,7 +27,6 @@ trait ExistsAssertionFunctionalDataProviderTrait
                 'assertion' => $assertionParser->parse('$".selector".data-test-attribute exists'),
                 'variableIdentifiers' => [
                     'HAS' => '$has',
-                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
             ],
@@ -37,7 +35,6 @@ trait ExistsAssertionFunctionalDataProviderTrait
                 'assertion' => $assertionParser->parse('$env.TEST1 exists'),
                 'variableIdentifiers' => [
                     VariableNames::ENVIRONMENT_VARIABLE_ARRAY => '$_ENV',
-                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                 ],
             ],
             'exists comparison, browser object value' => [
@@ -45,15 +42,11 @@ trait ExistsAssertionFunctionalDataProviderTrait
                 'assertion' => $assertionParser->parse('$browser.size exists'),
                 'variableIdentifiers' => [
                     'WEBDRIVER_DIMENSION' => ResolvedVariableNames::WEBDRIVER_DIMENSION_VARIABLE_NAME,
-                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
                 ],
             ],
             'exists comparison, page object value' => [
                 'fixture' => '/empty.html',
                 'assertion' => $assertionParser->parse('$page.title exists'),
-                'variableIdentifiers' => [
-                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
-                ],
             ],
         ];
     }

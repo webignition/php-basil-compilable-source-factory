@@ -10,7 +10,9 @@ use webignition\BasilCompilableSource\Line\ClosureExpression;
 use webignition\BasilCompilableSource\Line\ComparisonExpression;
 use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
+use webignition\BasilCompilableSource\Line\ObjectPropertyAccessExpression;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
+use webignition\BasilCompilableSource\Line\Statement\ObjectPropertyAssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\Line\Statement\StatementInterface;
 use webignition\BasilCompilableSource\VariablePlaceholder;
@@ -171,12 +173,16 @@ class AssertionHandler
         AssertionInterface $assertion,
         ?int $handleAs = null
     ): CodeBlockInterface {
-        $valuePlaceholder = VariablePlaceholder::createExport(VariableNames::EXAMINED_VALUE);
         $identifier = $assertion->getIdentifier();
+
+        $valuePlaceholder = new ObjectPropertyAccessExpression(
+            VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+            'examinedValue'
+        );
 
         if ($this->valueTypeIdentifier->isScalarValue($identifier)) {
             return new CodeBlock([
-                new AssignmentStatement(
+                new ObjectPropertyAssignmentStatement(
                     $valuePlaceholder,
                     new ComparisonExpression(
                         $this->scalarValueHandler->handle($assertion->getIdentifier()),
@@ -184,7 +190,7 @@ class AssertionHandler
                         '??'
                     )
                 ),
-                new AssignmentStatement(
+                new ObjectPropertyAssignmentStatement(
                     $valuePlaceholder,
                     new ComparisonExpression(
                         $valuePlaceholder,
@@ -257,33 +263,32 @@ class AssertionHandler
      */
     private function handleComparisonAssertion(ComparisonAssertionInterface $assertion): CodeBlockInterface
     {
-        $examinedValuePlaceholder = VariablePlaceholder::createExport(VariableNames::EXAMINED_VALUE);
-        $expectedValuePlaceholder = VariablePlaceholder::createExport(VariableNames::EXPECTED_VALUE);
-
-        $examinedValueAccessor = $this->createValueAccessor($assertion->getIdentifier());
-        $expectedValueAccessor = $this->createValueAccessor($assertion->getValue());
-
-        $examinedValueAssignment = new AssignmentStatement($examinedValuePlaceholder, $examinedValueAccessor);
-        $expectedValueAssignment = new AssignmentStatement($expectedValuePlaceholder, $expectedValueAccessor);
-
         $assertionMethod = self::COMPARISON_TO_ASSERTION_TEMPLATE_MAP[$assertion->getComparison()];
 
-        if (in_array($assertionMethod, $this->methodsWithStringArguments)) {
-            $expectedValuePlaceholder = VariablePlaceholder::createExport(
-                $expectedValuePlaceholder->getName(),
-                'string'
-            );
+        $isStringArgumentAssertionMethod = in_array($assertionMethod, $this->methodsWithStringArguments);
 
-            $examinedValuePlaceholder = VariablePlaceholder::createExport(
-                $examinedValuePlaceholder->getName(),
-                'string'
-            );
-        }
+        $examinedPlaceholder = new ObjectPropertyAccessExpression(
+            VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+            'examinedValue',
+            $isStringArgumentAssertionMethod ? 'string' : null
+        );
+
+        $expectedPlaceholder = new ObjectPropertyAccessExpression(
+            VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+            'expectedValue',
+            $isStringArgumentAssertionMethod ? 'string' : null
+        );
+
+        $examinedAccessor = $this->createValueAccessor($assertion->getIdentifier());
+        $expectedAccessor = $this->createValueAccessor($assertion->getValue());
+
+        $examinedValueAssignment = new ObjectPropertyAssignmentStatement($examinedPlaceholder, $examinedAccessor);
+        $expectedValueAssignment = new ObjectPropertyAssignmentStatement($expectedPlaceholder, $expectedAccessor);
 
         return new CodeBlock([
             $expectedValueAssignment,
             $examinedValueAssignment,
-            $this->createAssertionStatement($assertion, [$expectedValuePlaceholder, $examinedValuePlaceholder]),
+            $this->createAssertionStatement($assertion, [$expectedPlaceholder, $examinedPlaceholder]),
         ]);
     }
 

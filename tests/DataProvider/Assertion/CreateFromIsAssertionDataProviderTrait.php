@@ -28,8 +28,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     ],
                 ],
                 'expectedRenderedSource' =>
-                    '{{ EXPECTED }} = "value" ?? null;' . "\n" .
-                    '{{ EXAMINED }} = (function () {' . "\n" .
+                    '{{ PHPUNIT }}->expectedValue = "value" ?? null;' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
                     '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".selector"' . "\n" .
                     '    }\'));' . "\n" .
@@ -37,8 +37,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
                     '})();' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
-                    '    {{ EXPECTED }},' . "\n" .
-                    '    {{ EXAMINED }},' . "\n" .
+                    '    {{ PHPUNIT }}->expectedValue,' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
                     '    \'$".selector" is "value" failure message\'' . "\n" .
                     ');'
                 ,
@@ -52,8 +52,6 @@ trait CreateFromIsAssertionDataProviderTrait
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        VariableNames::EXPECTED_VALUE,
-                        VariableNames::EXAMINED_VALUE,
                         'ELEMENT',
                     ]),
                 ]),
@@ -67,8 +65,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     ],
                 ],
                 'expectedRenderedSource' =>
-                    '{{ EXPECTED }} = "value" ?? null;' . "\n" .
-                    '{{ EXAMINED }} = (function () {' . "\n" .
+                    '{{ PHPUNIT }}->expectedValue = "value" ?? null;' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
                     '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".child",' . "\n" .
                     '        "parent": {' . "\n" .
@@ -79,8 +77,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
                     '})();' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
-                    '    {{ EXPECTED }},' . "\n" .
-                    '    {{ EXAMINED }},' . "\n" .
+                    '    {{ PHPUNIT }}->expectedValue,' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
                     '    \'$"{{ $".parent" }} .child" is "value" failure message\'' . "\n" .
                     ');'
                 ,
@@ -94,8 +92,6 @@ trait CreateFromIsAssertionDataProviderTrait
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        VariableNames::EXPECTED_VALUE,
-                        VariableNames::EXAMINED_VALUE,
                         'ELEMENT',
                     ]),
                 ]),
@@ -109,8 +105,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     ],
                 ],
                 'expectedRenderedSource' =>
-                    '{{ EXPECTED }} = "value" ?? null;' . "\n" .
-                    '{{ EXAMINED }} = (function () {' . "\n" .
+                    '{{ PHPUNIT }}->expectedValue = "value" ?? null;' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
                     '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".selector"' . "\n" .
                     '    }\'));' . "\n" .
@@ -118,8 +114,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
                     '})();' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
-                    '    {{ EXPECTED }},' . "\n" .
-                    '    {{ EXAMINED }},' . "\n" .
+                    '    {{ PHPUNIT }}->expectedValue,' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
                     '    \'$".selector".attribute_name is "value" failure message\'' . "\n" .
                     ');'
                 ,
@@ -132,8 +128,6 @@ trait CreateFromIsAssertionDataProviderTrait
                         VariableNames::PHPUNIT_TEST_CASE,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        VariableNames::EXPECTED_VALUE,
-                        VariableNames::EXAMINED_VALUE,
                         'ELEMENT',
                     ]),
                 ]),
@@ -147,8 +141,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     ],
                 ],
                 'expectedRenderedSource' =>
-                    '{{ EXPECTED }} = "value" ?? null;' . "\n" .
-                    '{{ EXAMINED }} = (function () {' . "\n" .
+                    '{{ PHPUNIT }}->expectedValue = "value" ?? null;' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
                     '    {{ WEBDRIVER_DIMENSION }} = ' .
                     '{{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n" .
                     "\n" .
@@ -156,8 +150,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     '(string) {{ WEBDRIVER_DIMENSION }}->getHeight();' . "\n" .
                     '})();' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
-                    '    {{ EXPECTED }},' . "\n" .
-                    '    {{ EXAMINED }},' . "\n" .
+                    '    {{ PHPUNIT }}->expectedValue,' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
                     '    \'$browser.size is "value" failure message\'' . "\n" .
                     ');'
                 ,
@@ -167,8 +161,6 @@ trait CreateFromIsAssertionDataProviderTrait
                         VariableNames::PHPUNIT_TEST_CASE,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        VariableNames::EXPECTED_VALUE,
-                        VariableNames::EXAMINED_VALUE,
                         'WEBDRIVER_DIMENSION',
                     ]),
                 ]),
@@ -182,11 +174,11 @@ trait CreateFromIsAssertionDataProviderTrait
                     ],
                 ],
                 'expectedRenderedSource' =>
-                    '{{ EXPECTED }} = "value" ?? null;' . "\n" .
-                    '{{ EXAMINED }} = {{ ENV }}[\'KEY\'] ?? null;' . "\n" .
+                    '{{ PHPUNIT }}->expectedValue = "value" ?? null;' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = {{ ENV }}[\'KEY\'] ?? null;' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
-                    '    {{ EXPECTED }},' . "\n" .
-                    '    {{ EXAMINED }},' . "\n" .
+                    '    {{ PHPUNIT }}->expectedValue,' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
                     '    \'$env.KEY is "value" failure message\'' . "\n" .
                     ');'
                 ,
@@ -194,10 +186,6 @@ trait CreateFromIsAssertionDataProviderTrait
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        VariableNames::EXPECTED_VALUE,
-                        VariableNames::EXAMINED_VALUE,
                     ]),
                 ]),
             ],
@@ -210,11 +198,11 @@ trait CreateFromIsAssertionDataProviderTrait
                     ],
                 ],
                 'expectedRenderedSource' =>
-                    '{{ EXPECTED }} = "value" ?? null;' . "\n" .
-                    '{{ EXAMINED }} = {{ ENV }}[\'KEY\'] ?? \'default value\';' . "\n" .
+                    '{{ PHPUNIT }}->expectedValue = "value" ?? null;' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = {{ ENV }}[\'KEY\'] ?? \'default value\';' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
-                    '    {{ EXPECTED }},' . "\n" .
-                    '    {{ EXAMINED }},' . "\n" .
+                    '    {{ PHPUNIT }}->expectedValue,' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
                     '    \'$env.KEY|"default value" is "value" failure message\'' . "\n" .
                     ');'
                 ,
@@ -222,10 +210,6 @@ trait CreateFromIsAssertionDataProviderTrait
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        VariableNames::EXPECTED_VALUE,
-                        VariableNames::EXAMINED_VALUE,
                     ]),
                 ]),
             ],
@@ -240,11 +224,11 @@ trait CreateFromIsAssertionDataProviderTrait
                     ],
                 ],
                 'expectedRenderedSource' =>
-                    '{{ EXPECTED }} = {{ ENV }}[\'KEY2\'] ?? \'default value 2\';' . "\n" .
-                    '{{ EXAMINED }} = {{ ENV }}[\'KEY1\'] ?? \'default value 1\';' . "\n" .
+                    '{{ PHPUNIT }}->expectedValue = {{ ENV }}[\'KEY2\'] ?? \'default value 2\';' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = {{ ENV }}[\'KEY1\'] ?? \'default value 1\';' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
-                    '    {{ EXPECTED }},' . "\n" .
-                    '    {{ EXAMINED }},' . "\n" .
+                    '    {{ PHPUNIT }}->expectedValue,' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
                     '    \'$env.KEY1|"default value 1" is $env.KEY2|"default value 2" failure message\'' . "\n" .
                     ');'
                 ,
@@ -252,10 +236,6 @@ trait CreateFromIsAssertionDataProviderTrait
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        VariableNames::EXPECTED_VALUE,
-                        VariableNames::EXAMINED_VALUE,
                     ]),
                 ]),
             ],
@@ -268,11 +248,11 @@ trait CreateFromIsAssertionDataProviderTrait
                     ],
                 ],
                 'expectedRenderedSource' =>
-                    '{{ EXPECTED }} = "value" ?? null;' . "\n" .
-                    '{{ EXAMINED }} = {{ CLIENT }}->getTitle() ?? null;' . "\n" .
+                    '{{ PHPUNIT }}->expectedValue = "value" ?? null;' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = {{ CLIENT }}->getTitle() ?? null;' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
-                    '    {{ EXPECTED }},' . "\n" .
-                    '    {{ EXAMINED }},' . "\n" .
+                    '    {{ PHPUNIT }}->expectedValue,' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
                     '    \'$page.title is "value" failure message\'' . "\n" .
                     ');'
                 ,
@@ -280,10 +260,6 @@ trait CreateFromIsAssertionDataProviderTrait
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::PANTHER_CLIENT,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        VariableNames::EXPECTED_VALUE,
-                        VariableNames::EXAMINED_VALUE,
                     ]),
                 ]),
             ],
@@ -296,7 +272,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     ],
                 ],
                 'expectedRenderedSource' =>
-                    '{{ EXPECTED }} = (function () {' . "\n" .
+                    '{{ PHPUNIT }}->expectedValue = (function () {' . "\n" .
                     '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".child",' . "\n" .
                     '        "parent": {' . "\n" .
@@ -306,7 +282,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
                     '})();' . "\n" .
-                    '{{ EXAMINED }} = (function () {' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
                     '    {{ WEBDRIVER_DIMENSION }} = ' .
                     '{{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n" .
                     "\n" .
@@ -314,8 +290,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     '(string) {{ WEBDRIVER_DIMENSION }}->getHeight();' . "\n" .
                     '})();' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
-                    '    {{ EXPECTED }},' . "\n" .
-                    '    {{ EXAMINED }},' . "\n" .
+                    '    {{ PHPUNIT }}->expectedValue,' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
                     '    \'$browser.size is $"{{ $".parent" }} .child" failure message\'' . "\n" .
                     ');'
                 ,
@@ -330,8 +306,6 @@ trait CreateFromIsAssertionDataProviderTrait
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        VariableNames::EXPECTED_VALUE,
-                        VariableNames::EXAMINED_VALUE,
                         'ELEMENT',
                         'WEBDRIVER_DIMENSION',
                     ]),
@@ -346,14 +320,14 @@ trait CreateFromIsAssertionDataProviderTrait
                     ],
                 ],
                 'expectedRenderedSource' =>
-                    '{{ EXPECTED }} = (function () {' . "\n" .
+                    '{{ PHPUNIT }}->expectedValue = (function () {' . "\n" .
                     '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".selector"' . "\n" .
                     '    }\'));' . "\n" .
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
                     '})();' . "\n" .
-                    '{{ EXAMINED }} = (function () {' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
                     '    {{ WEBDRIVER_DIMENSION }} = ' .
                     '{{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n" .
                     "\n" .
@@ -361,8 +335,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     '(string) {{ WEBDRIVER_DIMENSION }}->getHeight();' . "\n" .
                     '})();' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
-                    '    {{ EXPECTED }},' . "\n" .
-                    '    {{ EXAMINED }},' . "\n" .
+                    '    {{ PHPUNIT }}->expectedValue,' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
                     '    \'$browser.size is $".selector" failure message\'' . "\n" .
                     ');'
                 ,
@@ -377,8 +351,6 @@ trait CreateFromIsAssertionDataProviderTrait
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        VariableNames::EXPECTED_VALUE,
-                        VariableNames::EXAMINED_VALUE,
                         'ELEMENT',
                         'WEBDRIVER_DIMENSION',
                     ]),
@@ -393,14 +365,14 @@ trait CreateFromIsAssertionDataProviderTrait
                     ],
                 ],
                 'expectedRenderedSource' =>
-                    '{{ EXPECTED }} = (function () {' . "\n" .
+                    '{{ PHPUNIT }}->expectedValue = (function () {' . "\n" .
                     '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".selector"' . "\n" .
                     '    }\'));' . "\n" .
                     "\n" .
                     '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
                     '})();' . "\n" .
-                    '{{ EXAMINED }} = (function () {' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
                     '    {{ WEBDRIVER_DIMENSION }} = ' .
                     '{{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n" .
                     "\n" .
@@ -408,8 +380,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     '(string) {{ WEBDRIVER_DIMENSION }}->getHeight();' . "\n" .
                     '})();' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
-                    '    {{ EXPECTED }},' . "\n" .
-                    '    {{ EXAMINED }},' . "\n" .
+                    '    {{ PHPUNIT }}->expectedValue,' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
                     '    \'$browser.size is $".selector".attribute_name failure message\'' . "\n" .
                     ');'
                 ,
@@ -423,8 +395,6 @@ trait CreateFromIsAssertionDataProviderTrait
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        VariableNames::EXPECTED_VALUE,
-                        VariableNames::EXAMINED_VALUE,
                         'ELEMENT',
                         'WEBDRIVER_DIMENSION',
                     ]),
@@ -439,8 +409,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     ],
                 ],
                 'expectedRenderedSource' =>
-                    '{{ EXPECTED }} = {{ ENV }}[\'KEY\'] ?? null;' . "\n" .
-                    '{{ EXAMINED }} = (function () {' . "\n" .
+                    '{{ PHPUNIT }}->expectedValue = {{ ENV }}[\'KEY\'] ?? null;' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
                     '    {{ WEBDRIVER_DIMENSION }} = ' .
                     '{{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n" .
                     "\n" .
@@ -448,8 +418,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     '(string) {{ WEBDRIVER_DIMENSION }}->getHeight();' . "\n" .
                     '})();' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
-                    '    {{ EXPECTED }},' . "\n" .
-                    '    {{ EXAMINED }},' . "\n" .
+                    '    {{ PHPUNIT }}->expectedValue,' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
                     '    \'$browser.size is $env.KEY failure message\'' . "\n" .
                     ');'
                 ,
@@ -460,8 +430,6 @@ trait CreateFromIsAssertionDataProviderTrait
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        VariableNames::EXPECTED_VALUE,
-                        VariableNames::EXAMINED_VALUE,
                         'WEBDRIVER_DIMENSION',
                     ]),
                 ]),
@@ -475,8 +443,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     ],
                 ],
                 'expectedRenderedSource' =>
-                    '{{ EXPECTED }} = {{ ENV }}[\'KEY\'] ?? \'default value\';' . "\n" .
-                    '{{ EXAMINED }} = (function () {' . "\n" .
+                    '{{ PHPUNIT }}->expectedValue = {{ ENV }}[\'KEY\'] ?? \'default value\';' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
                     '    {{ WEBDRIVER_DIMENSION }} = ' .
                     '{{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n" .
                     "\n" .
@@ -484,8 +452,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     '(string) {{ WEBDRIVER_DIMENSION }}->getHeight();' . "\n" .
                     '})();' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
-                    '    {{ EXPECTED }},' . "\n" .
-                    '    {{ EXAMINED }},' . "\n" .
+                    '    {{ PHPUNIT }}->expectedValue,' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
                     '    \'$browser.size is $env.KEY|"default value" failure message\'' . "\n" .
                     ');'
                 ,
@@ -496,8 +464,6 @@ trait CreateFromIsAssertionDataProviderTrait
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        VariableNames::EXPECTED_VALUE,
-                        VariableNames::EXAMINED_VALUE,
                         'WEBDRIVER_DIMENSION',
                     ]),
                 ]),
@@ -511,8 +477,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     ],
                 ],
                 'expectedRenderedSource' =>
-                    '{{ EXPECTED }} = {{ CLIENT }}->getCurrentURL() ?? null;' . "\n" .
-                    '{{ EXAMINED }} = (function () {' . "\n" .
+                    '{{ PHPUNIT }}->expectedValue = {{ CLIENT }}->getCurrentURL() ?? null;' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
                     '    {{ WEBDRIVER_DIMENSION }} = ' .
                     '{{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n" .
                     "\n" .
@@ -520,8 +486,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     '(string) {{ WEBDRIVER_DIMENSION }}->getHeight();' . "\n" .
                     '})();' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
-                    '    {{ EXPECTED }},' . "\n" .
-                    '    {{ EXAMINED }},' . "\n" .
+                    '    {{ PHPUNIT }}->expectedValue,' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
                     '    \'$browser.size is $page.url failure message\'' . "\n" .
                     ');'
                 ,
@@ -531,8 +497,6 @@ trait CreateFromIsAssertionDataProviderTrait
                         VariableNames::PANTHER_CLIENT,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        VariableNames::EXPECTED_VALUE,
-                        VariableNames::EXAMINED_VALUE,
                         'WEBDRIVER_DIMENSION',
                     ]),
                 ]),
@@ -546,21 +510,17 @@ trait CreateFromIsAssertionDataProviderTrait
                     ],
                 ],
                 'expectedRenderedSource' =>
-                    '{{ EXPECTED }} = "expected" ?? null;' . "\n" .
-                    '{{ EXAMINED }} = "examined" ?? null;' . "\n" .
+                    '{{ PHPUNIT }}->expectedValue = "expected" ?? null;' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = "examined" ?? null;' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
-                    '    {{ EXPECTED }},' . "\n" .
-                    '    {{ EXAMINED }},' . "\n" .
+                    '    {{ PHPUNIT }}->expectedValue,' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
                     '    \'"examined" is "expected" failure message\'' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        VariableNames::EXPECTED_VALUE,
-                        VariableNames::EXAMINED_VALUE,
                     ]),
                 ]),
             ],

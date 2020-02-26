@@ -28,11 +28,11 @@ trait CreateFromNotExistsAssertionDataProviderTrait
                     ],
                 ],
                 'expectedRenderedSource' =>
-                    '{{ EXAMINED }} = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{' . "\n" .
                     '    "locator": ".selector"' . "\n" .
                     '}\'));' . "\n" .
                     '{{ PHPUNIT }}->assertFalse(' . "\n" .
-                    '    {{ EXAMINED }},' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
                     '    \'$".selector" not-exists failure message\'' . "\n" .
                     ');'
                 ,
@@ -43,9 +43,6 @@ trait CreateFromNotExistsAssertionDataProviderTrait
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        VariableNames::EXAMINED_VALUE,
                     ]),
                 ]),
             ],
@@ -62,23 +59,23 @@ trait CreateFromNotExistsAssertionDataProviderTrait
                     ],
                 ],
                 'expectedRenderedSource' =>
-                    '{{ EXAMINED }} = {{ NAVIGATOR }}->hasOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = {{ NAVIGATOR }}->hasOne(ElementIdentifier::fromJson(\'{' . "\n" .
                     '    "locator": ".selector"' . "\n" .
                     '}\'));' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
-                    '    {{ EXAMINED }},' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
                     '    \'$".selector" exists failure message\'' . "\n" .
                     ');' . "\n" .
-                    '{{ EXAMINED }} = (function () {' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
                     '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".selector"' . "\n" .
                     '    }\'));' . "\n" .
                     "\n" .
                     '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
                     '})();' . "\n" .
-                    '{{ EXAMINED }} = {{ EXAMINED }} !== null;' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = {{ PHPUNIT }}->examinedValue !== null;' . "\n" .
                     '{{ PHPUNIT }}->assertFalse(' . "\n" .
-                    '    {{ EXAMINED }},' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
                     '    \'$".selector".attribute_name not-exists failure message\'' . "\n" .
                     ');'
                 ,
@@ -91,7 +88,6 @@ trait CreateFromNotExistsAssertionDataProviderTrait
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        VariableNames::EXAMINED_VALUE,
                         'ELEMENT',
                     ]),
                 ]),

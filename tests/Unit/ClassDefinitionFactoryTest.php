@@ -139,8 +139,6 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'ELEMENT',
-                        VariableNames::EXAMINED_VALUE,
-                        VariableNames::EXPECTED_VALUE,
                         VariableNames::STATEMENT,
                     ]),
                 ]),
@@ -207,8 +205,6 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'ELEMENT',
-                        VariableNames::EXAMINED_VALUE,
-                        VariableNames::EXPECTED_VALUE,
                         VariableNames::STATEMENT,
                         'COLLECTION',
                         'VALUE',

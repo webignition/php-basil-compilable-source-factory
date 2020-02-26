@@ -17,8 +17,6 @@ trait InclusionAssertionFunctionalDataProviderTrait
                 'assertion' => null,
                 'additionalVariableIdentifiers' => [
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
-                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
-                    VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
             ],
@@ -27,8 +25,6 @@ trait InclusionAssertionFunctionalDataProviderTrait
                 'assertion' => null,
                 'additionalVariableIdentifiers' => [
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
-                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
-                    VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
             ],
@@ -37,8 +33,6 @@ trait InclusionAssertionFunctionalDataProviderTrait
                 'assertion' => null,
                 'additionalVariableIdentifiers' => [
                     VariableNames::ENVIRONMENT_VARIABLE_ARRAY => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
-                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
-                    VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
                 ],
             ],
             'browser object examined value, scalar expected value' => [
@@ -46,16 +40,12 @@ trait InclusionAssertionFunctionalDataProviderTrait
                 'assertion' => null,
                 'additionalVariableIdentifiers' => [
                     'WEBDRIVER_DIMENSION' => ResolvedVariableNames::WEBDRIVER_DIMENSION_VARIABLE_NAME,
-                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
-                    VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
                 ],
             ],
             'page object examined value, scalar expected value' => [
                 'fixture' => '/assertions.html',
                 'assertion' => null,
                 'additionalVariableIdentifiers' => [
-                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
-                    VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
                 ],
             ],
             'element identifier examined value, element identifier expected value' => [
@@ -63,8 +53,6 @@ trait InclusionAssertionFunctionalDataProviderTrait
                 'assertion' => null,
                 'additionalVariableIdentifiers' => [
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
-                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
-                    VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
             ],
@@ -73,8 +61,6 @@ trait InclusionAssertionFunctionalDataProviderTrait
                 'assertion' => null,
                 'additionalVariableIdentifiers' => [
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
-                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
-                    VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
             ],
@@ -84,8 +70,6 @@ trait InclusionAssertionFunctionalDataProviderTrait
                 'additionalVariableIdentifiers' => [
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     VariableNames::ENVIRONMENT_VARIABLE_ARRAY => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
-                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
-                    VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
             ],
@@ -95,8 +79,6 @@ trait InclusionAssertionFunctionalDataProviderTrait
                 'additionalVariableIdentifiers' => [
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     'WEBDRIVER_DIMENSION' => ResolvedVariableNames::WEBDRIVER_DIMENSION_VARIABLE_NAME,
-                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
-                    VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
             ],
@@ -105,8 +87,6 @@ trait InclusionAssertionFunctionalDataProviderTrait
                 'assertion' => null,
                 'additionalVariableIdentifiers' => [
                     'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
-                    VariableNames::EXAMINED_VALUE => ResolvedVariableNames::EXAMINED_VALUE_VARIABLE_NAME,
-                    VariableNames::EXPECTED_VALUE => ResolvedVariableNames::EXPECTED_VALUE_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
             ],
