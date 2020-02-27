@@ -3,21 +3,31 @@
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional;
 
 use Facebook\WebDriver\WebDriverDimension;
-use webignition\BasePantherTestCase\AbstractBrowserTestCase as BaseAbstractBrowserTestCase;
+use webignition\BaseBasilTestCase\AbstractBaseTest;
+use webignition\SymfonyPantherWebServerRunner\WebServerRunner;
 
-abstract class AbstractGeneratedTestCase extends BaseAbstractBrowserTestCase
+abstract class AbstractGeneratedTestCase extends AbstractBaseTest
 {
-    private const FIXTURES_RELATIVE_PATH = '/Fixtures';
-    private const FIXTURES_HTML_RELATIVE_PATH = '/html';
+    private const WEB_SERVER_DIR = __DIR__ . '/../Fixtures/html';
+
+    /**
+     * @var WebServerRunner
+     */
+    private static $webServerRunner;
 
     public static function setUpBeforeClass(): void
     {
-        self::$webServerDir = __DIR__
-            . '/..'
-            . self::FIXTURES_RELATIVE_PATH
-            . self::FIXTURES_HTML_RELATIVE_PATH;
+        self::$webServerRunner = new WebServerRunner((string) realpath(self::WEB_SERVER_DIR));
+        self::$webServerRunner->start();
 
         parent::setUpBeforeClass();
         self::$client->getWebDriver()->manage()->window()->setSize(new WebDriverDimension(1200, 1100));
+    }
+
+    public static function tearDownAfterClass(): void
+    {
+        parent::tearDownAfterClass();
+
+        self::$webServerRunner->stop();
     }
 }
