@@ -5,8 +5,12 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
 use webignition\BasilCompilableSource\Block\CodeBlockInterface;
+use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
+use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
+use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Action\ActionInterface;
 use webignition\BasilModels\Action\InputActionInterface;
 use webignition\BasilModels\Action\InteractionActionInterface;
@@ -56,15 +60,15 @@ class ActionHandler
     {
         try {
             if (in_array($action->getType(), ['back', 'forward', 'reload'])) {
-                return $this->browserOperationActionHandler->handle($action);
+                return $this->addRefreshCrawlerStatement($this->browserOperationActionHandler->handle($action));
             }
 
             if ($action instanceof InteractionActionInterface && in_array($action->getType(), ['click', 'submit'])) {
-                return $this->interactionActionHandler->handle($action);
+                return $this->addRefreshCrawlerStatement($this->interactionActionHandler->handle($action));
             }
 
             if ($action instanceof InputActionInterface) {
-                return $this->setActionHandler->handle($action);
+                return $this->addRefreshCrawlerStatement($this->setActionHandler->handle($action));
             }
 
             if ($action instanceof WaitActionInterface) {
@@ -79,5 +83,20 @@ class ActionHandler
         }
 
         throw new UnsupportedStatementException($action);
+    }
+
+    private function addRefreshCrawlerStatement(CodeBlockInterface $codeBlock): CodeBlockInterface
+    {
+        $codeBlock->addLines([
+            new AssignmentStatement(
+                VariablePlaceholder::createDependency(VariableNames::PANTHER_CRAWLER),
+                new ObjectMethodInvocation(
+                    VariablePlaceholder::createDependency(VariableNames::PANTHER_CLIENT),
+                    'refreshCrawler'
+                )
+            ),
+        ]);
+
+        return $codeBlock;
     }
 }

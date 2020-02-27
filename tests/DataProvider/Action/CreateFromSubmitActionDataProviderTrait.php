@@ -26,13 +26,16 @@ trait CreateFromSubmitActionDataProviderTrait
                     '    "locator": ".selector"' . "\n" .
                     '}\')' .
                     ');' . "\n" .
-                    '{{ ELEMENT }}->submit();',
+                    '{{ ELEMENT }}->submit();' . "\n" .
+                    '{{ CRAWLER }} = {{ CLIENT }}->refreshCrawler();',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::PANTHER_CRAWLER,
+                        VariableNames::PANTHER_CLIENT,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'ELEMENT',

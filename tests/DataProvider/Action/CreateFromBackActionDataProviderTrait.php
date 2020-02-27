@@ -18,7 +18,10 @@ trait CreateFromBackActionDataProviderTrait
         return [
             'no-arguments action (back)' => [
                 'action' => $actionParser->parse('back'),
-                'expectedRenderedSource' => '{{ CRAWLER }} = {{ CLIENT }}->back();',
+                'expectedRenderedSource' =>
+                    '{{ CRAWLER }} = {{ CLIENT }}->back();' . "\n" .
+                    '{{ CRAWLER }} = {{ CLIENT }}->refreshCrawler();'
+                ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PANTHER_CRAWLER,
