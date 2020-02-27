@@ -18,7 +18,8 @@ trait CreateFromReloadActionDataProviderTrait
         return [
             'no-arguments action (reload)' => [
                 'action' => $actionParser->parse('reload'),
-                'expectedRenderedSource' => '{{ CRAWLER }} = {{ CLIENT }}->reload();',
+                'expectedRenderedSource' => '{{ CRAWLER }} = {{ CLIENT }}->reload();' . "\n" .
+                    '{{ CRAWLER }} = {{ CLIENT }}->refreshCrawler();',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PANTHER_CRAWLER,

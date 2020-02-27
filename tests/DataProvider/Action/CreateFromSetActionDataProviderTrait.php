@@ -27,7 +27,8 @@ trait CreateFromSetActionDataProviderTrait
                     '}\')' .
                     ');' . "\n" .
                     '{{ VALUE }} = "value";' . "\n" .
-                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});',
+                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});' . "\n" .
+                    '{{ CRAWLER }} = {{ CLIENT }}->refreshCrawler();',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -35,6 +36,8 @@ trait CreateFromSetActionDataProviderTrait
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
+                        VariableNames::PANTHER_CRAWLER,
+                        VariableNames::PANTHER_CLIENT,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'COLLECTION',
@@ -56,7 +59,8 @@ trait CreateFromSetActionDataProviderTrait
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
                     '})();' . "\n" .
-                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});',
+                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});' . "\n" .
+                    '{{ CRAWLER }} = {{ CLIENT }}->refreshCrawler();',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -65,6 +69,8 @@ trait CreateFromSetActionDataProviderTrait
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
+                        VariableNames::PANTHER_CLIENT,
+                        VariableNames::PANTHER_CRAWLER,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'COLLECTION',
@@ -87,7 +93,8 @@ trait CreateFromSetActionDataProviderTrait
                     "\n" .
                     '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
                     '})();' . "\n" .
-                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});',
+                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});' . "\n" .
+                    '{{ CRAWLER }} = {{ CLIENT }}->refreshCrawler();',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -95,6 +102,8 @@ trait CreateFromSetActionDataProviderTrait
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
+                        VariableNames::PANTHER_CLIENT,
+                        VariableNames::PANTHER_CRAWLER,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'COLLECTION',
@@ -117,7 +126,8 @@ trait CreateFromSetActionDataProviderTrait
                     '    return (string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . ' .
                     '(string) {{ WEBDRIVER_DIMENSION }}->getHeight();' . "\n" .
                     '})();' . "\n" .
-                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});',
+                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});' . "\n" .
+                    '{{ CRAWLER }} = {{ CLIENT }}->refreshCrawler();',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -126,6 +136,7 @@ trait CreateFromSetActionDataProviderTrait
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
                         VariableNames::PANTHER_CLIENT,
+                        VariableNames::PANTHER_CRAWLER,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'COLLECTION',
@@ -142,7 +153,8 @@ trait CreateFromSetActionDataProviderTrait
                     '}\')' .
                     ');' . "\n" .
                     '{{ VALUE }} = {{ CLIENT }}->getCurrentURL();' . "\n" .
-                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});',
+                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});' . "\n" .
+                    '{{ CRAWLER }} = {{ CLIENT }}->refreshCrawler();',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -151,6 +163,7 @@ trait CreateFromSetActionDataProviderTrait
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
                         VariableNames::PANTHER_CLIENT,
+                        VariableNames::PANTHER_CRAWLER,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'COLLECTION',
@@ -166,7 +179,8 @@ trait CreateFromSetActionDataProviderTrait
                     '}\')' .
                     ');' . "\n" .
                     '{{ VALUE }} = {{ ENV }}[\'KEY\'];' . "\n" .
-                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});',
+                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});' . "\n" .
+                    '{{ CRAWLER }} = {{ CLIENT }}->refreshCrawler();',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -175,6 +189,8 @@ trait CreateFromSetActionDataProviderTrait
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
+                        VariableNames::PANTHER_CLIENT,
+                        VariableNames::PANTHER_CRAWLER,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'COLLECTION',
@@ -190,7 +206,8 @@ trait CreateFromSetActionDataProviderTrait
                     '}\')' .
                     ');' . "\n" .
                     '{{ VALUE }} = {{ ENV }}[\'KEY\'] ?? \'default\';' . "\n" .
-                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});',
+                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});' . "\n" .
+                    '{{ CRAWLER }} = {{ CLIENT }}->refreshCrawler();',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -199,6 +216,8 @@ trait CreateFromSetActionDataProviderTrait
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
+                        VariableNames::PANTHER_CLIENT,
+                        VariableNames::PANTHER_CRAWLER,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'COLLECTION',
@@ -214,7 +233,8 @@ trait CreateFromSetActionDataProviderTrait
                     '}\')' .
                     ');' . "\n" .
                     '{{ VALUE }} = {{ ENV }}[\'KEY\'] ?? \'default value\';' . "\n" .
-                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});',
+                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});' . "\n" .
+                    '{{ CRAWLER }} = {{ CLIENT }}->refreshCrawler();',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -223,6 +243,8 @@ trait CreateFromSetActionDataProviderTrait
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
+                        VariableNames::PANTHER_CLIENT,
+                        VariableNames::PANTHER_CRAWLER,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'COLLECTION',
@@ -241,7 +263,8 @@ trait CreateFromSetActionDataProviderTrait
                     '}\')' .
                     ');' . "\n" .
                     '{{ VALUE }} = "value";' . "\n" .
-                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});',
+                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});' . "\n" .
+                    '{{ CRAWLER }} = {{ CLIENT }}->refreshCrawler();',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -249,6 +272,8 @@ trait CreateFromSetActionDataProviderTrait
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
+                        VariableNames::PANTHER_CLIENT,
+                        VariableNames::PANTHER_CRAWLER,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'COLLECTION',
