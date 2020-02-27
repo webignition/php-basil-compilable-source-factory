@@ -23,18 +23,18 @@ trait SubmitActionFunctionalDataProviderTrait
 
         $setupStatements = new CodeBlock([
             StatementFactory::createAssertBrowserTitle('Click'),
-            StatementFactory::createCrawlerFilterCallForElement('#form input[type="submit"]', $submitPlaceholder),
-            StatementFactory::createCrawlerFilterCallForElement('#form', $formPlaceholder),
-            StatementFactory::createAssertSame('"false"', '$submitButton->getAttribute(\'data-submitted\')'),
-            StatementFactory::createAssertSame('"false"', '$form->getAttribute(\'data-submitted\')'),
+//            StatementFactory::createCrawlerFilterCallForElement('#form input[type="submit"]', $submitPlaceholder),
+//            StatementFactory::createCrawlerFilterCallForElement('#form', $formPlaceholder),
+//            StatementFactory::createAssertSame('"false"', '$submitButton->getAttribute(\'data-submitted\')'),
+//            StatementFactory::createAssertSame('"false"', '$form->getAttribute(\'data-submitted\')'),
         ]);
 
         $teardownStatements = new CodeBlock([
-            StatementFactory::createCrawlerFilterCallForElement('#form input[type="submit"]', $submitPlaceholder),
-            StatementFactory::createAssertSame('"false"', '$submitButton->getAttribute(\'data-submitted\')'),
-            StatementFactory::createCrawlerFilterCallForElement('#form', $formPlaceholder),
-            StatementFactory::createAssertSame('"true"', '$form->getAttribute(\'data-submitted\')'),
-
+            StatementFactory::createAssertBrowserTitle('Form'),
+//            StatementFactory::createCrawlerFilterCallForElement('#form input[type="submit"]', $submitPlaceholder),
+//            StatementFactory::createAssertSame('"false"', '$submitButton->getAttribute(\'data-submitted\')'),
+//            StatementFactory::createCrawlerFilterCallForElement('#form', $formPlaceholder),
+//            StatementFactory::createAssertSame('"true"', '$form->getAttribute(\'data-submitted\')'),
         ]);
 
         $variableIdentifiers = [
