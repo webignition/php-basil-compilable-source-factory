@@ -93,6 +93,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '// $".selector" exists <- click $".selector"' . "\n" .
                     '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\');' . "\n" .
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '{{ PHPUNIT }}->sourceStatement = Statement::createAction(\'click $".selector"\');' . "\n" .
                     '// derived $".selector" exists response' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
@@ -156,12 +157,16 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '// $".selector" exists <- set $".selector" to $".value"' . "\n" .
                     '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\');' . "\n" .
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '{{ PHPUNIT }}->sourceStatement = ' .
+                    'Statement::createAction(\'set $".selector" to $".value"\');' . "\n" .
                     '// derived $".selector" exists response' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
                     '// $".value" exists <- set $".selector" to $".value"' . "\n" .
                     '{{ STATEMENT }} = Statement::createAssertion(\'$".value" exists\');' . "\n" .
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '{{ PHPUNIT }}->sourceStatement = ' .
+                    'Statement::createAction(\'set $".selector" to $".value"\');' . "\n" .
                     '// derived $".value" exists response' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
@@ -241,6 +246,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '// $".selector" exists <- click $".selector"' . "\n" .
                     '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\');' . "\n" .
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '{{ PHPUNIT }}->sourceStatement = Statement::createAction(\'click $".selector"\');' . "\n" .
                     '// derived $".selector" exists response' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
@@ -259,6 +265,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '// $".duration" exists <- wait $".duration"' . "\n" .
                     '{{ STATEMENT }} = Statement::createAssertion(\'$".duration" exists\');' . "\n" .
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '{{ PHPUNIT }}->sourceStatement = Statement::createAction(\'wait $".duration"\');' . "\n" .
                     '// derived $".duration" exists response' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
@@ -387,6 +394,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '// $".selector" exists <- $".selector" is "value"' . "\n" .
                     '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\');' . "\n" .
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '{{ PHPUNIT }}->sourceStatement = Statement::createAssertion(\'$".selector" is "value"\');' . "\n" .
                     '// derived $".selector" exists response' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
@@ -450,12 +458,16 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '// $".selector" exists <- $".selector" is $".value"' . "\n" .
                     '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\');' . "\n" .
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '{{ PHPUNIT }}->sourceStatement = ' .
+                    'Statement::createAssertion(\'$".selector" is $".value"\');' . "\n" .
                     '// derived $".selector" exists response' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
                     '// $".value" exists <- $".selector" is $".value"' . "\n" .
                     '{{ STATEMENT }} = Statement::createAssertion(\'$".value" exists\');' . "\n" .
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '{{ PHPUNIT }}->sourceStatement = ' .
+                    'Statement::createAssertion(\'$".selector" is $".value"\');' . "\n" .
                     '// derived $".value" exists response' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
@@ -571,6 +583,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '// $".selector" exists <- click $".selector"' . "\n" .
                     '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\');' . "\n" .
                     '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '{{ PHPUNIT }}->sourceStatement = Statement::createAction(\'click $".selector"\');' . "\n" .
                     '// derived $".selector" exists response' . "\n" .
                     '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .

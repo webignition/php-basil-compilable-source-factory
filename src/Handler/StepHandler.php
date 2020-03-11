@@ -209,6 +209,29 @@ class StepHandler
         $block->addLine($statementAssignment);
         $block->addLine($currentStatementStatement);
 
+        if ($statement instanceof DerivedAssertionInterface) {
+            $sourceStatement = $statement->getSourceStatement();
+
+            $sourceStatementStatement = new AssignmentStatement(
+                new ObjectPropertyAccessExpression(
+                    VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+                    'sourceStatement'
+                ),
+                new StaticObjectMethodInvocation(
+                    new StaticObject(BasilTestStatement::class),
+                    $sourceStatement instanceof ActionInterface ? 'createAction' : 'createAssertion',
+                    [
+                        new LiteralExpression(sprintf(
+                            '\'%s\'',
+                            $this->singleQuotedStringEscaper->escape($sourceStatement->getSource())
+                        ))
+                    ]
+                )
+            );
+
+            $block->addLine($sourceStatementStatement);
+        }
+
         if ($source instanceof CodeBlockInterface) {
             foreach ($source->getLines() as $sourceLine) {
                 $block->addLine($sourceLine);
