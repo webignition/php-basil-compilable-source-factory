@@ -14,4 +14,5 @@ class VariableNames
     public const WEBDRIVER_ELEMENT_MUTATOR = 'MUTATOR';
     public const PANTHER_CRAWLER = 'CRAWLER';
     public const STATEMENT = 'STATEMENT';
+    public const SOURCE_STATEMENT = 'SOURCE_STATEMENT';
 }
