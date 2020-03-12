@@ -57,7 +57,6 @@ class DomIdentifierHandlerTest extends AbstractBrowserTestCase
             null,
             $teardownStatements,
             [
-                'HAS' => '$has',
                 'ELEMENT' => '$value',
             ]
         );

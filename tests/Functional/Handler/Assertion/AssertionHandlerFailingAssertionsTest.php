@@ -78,7 +78,6 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
                 'assertion' => $assertionParser->parse('$".selector".attribute_name exists'),
                 'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
                 'additionalVariableIdentifiers' => [
-                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
             ],
@@ -87,7 +86,6 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
                 'assertion' => $assertionParser->parse('$"h1".attribute_name exists'),
                 'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
                 'additionalVariableIdentifiers' => [
-                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
             ],

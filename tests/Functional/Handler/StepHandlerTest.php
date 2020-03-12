@@ -90,7 +90,6 @@ class StepHandlerTest extends AbstractBrowserTestCase
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [
                     'ELEMENT' => '$element',
-                    'HAS' => '$has',
                 ],
             ],
             'single click action, single assertion' => [
@@ -106,7 +105,6 @@ class StepHandlerTest extends AbstractBrowserTestCase
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [
                     'ELEMENT' => '$element',
-                    'HAS' => '$has',
                 ],
             ],
             'multiple actions, multiple assertions' => [
@@ -124,7 +122,6 @@ class StepHandlerTest extends AbstractBrowserTestCase
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [
                     'ELEMENT' => '$element',
-                    'HAS' => '$has',
                 ],
             ],
         ];

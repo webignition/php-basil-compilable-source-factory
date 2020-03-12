@@ -30,7 +30,6 @@ trait ClickActionFunctionalDataProviderTrait
                 ]),
                 'additionalVariableIdentifiers' => [
                     'ELEMENT' => ResolvedVariableNames::ELEMENT_VARIABLE_NAME,
-                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                 ]
             ],
             'interaction action (click), submit button' => [
@@ -53,7 +52,6 @@ trait ClickActionFunctionalDataProviderTrait
                 ]),
                 'additionalVariableIdentifiers' => [
                     'ELEMENT' => ResolvedVariableNames::ELEMENT_VARIABLE_NAME,
-                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     'SUBMIT' => '$submitButton',
                 ],
             ],

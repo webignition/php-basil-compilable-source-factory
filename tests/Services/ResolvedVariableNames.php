@@ -6,13 +6,9 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
 class ResolvedVariableNames
 {
-    public const EXAMINED_VALUE_VARIABLE_NAME = '$this->examinedValue';
-    public const EXPECTED_VALUE_VARIABLE_NAME = '$this->expectedValue';
-    public const HAS_VARIABLE_NAME = '$has';
     public const ENV_ARRAY_VARIABLE_NAME = '$_ENV';
     public const WEBDRIVER_DIMENSION_VARIABLE_NAME = '$webDriverDimension';
     public const ELEMENT_VARIABLE_NAME = '$element';
     public const COLLECTION_VARIABLE_NAME = '$collection';
     public const VALUE_VARIABLE_NAME = '$value';
-    public const STATEMENT_VARIABLE_NAME = '$statement';
 }
