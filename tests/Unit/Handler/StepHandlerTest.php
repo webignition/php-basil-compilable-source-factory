@@ -91,17 +91,17 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                 ]),
                 'expectedRenderedSource' =>
                     '// $".selector" exists <- click $".selector"' . "\n" .
-                    '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\');' . "\n" .
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '{{ PHPUNIT }}->sourceStatement = Statement::createAction(\'click $".selector"\');' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$".selector" exists\',' . "\n" .
+                    '    Statement::createAction(\'click $".selector"\')' . "\n" .
+                    ');' . "\n" .
                     '// derived $".selector" exists response' . "\n" .
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
                     '// click $".selector"' . "\n" .
-                    '{{ STATEMENT }} = Statement::createAction(\'click $".selector"\');' . "\n" .
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '// mocked click $".selector" response' . "\n" .
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n"
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAction(' . "\n" .
+                    '    \'click $".selector"\'' . "\n" .
+                    ');' . "\n" .
+                    '// mocked click $".selector" response' . "\n"
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -109,9 +109,6 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        VariableNames::STATEMENT,
                     ]),
                 ]),
             ],
@@ -155,26 +152,24 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                 ]),
                 'expectedRenderedSource' =>
                     '// $".selector" exists <- set $".selector" to $".value"' . "\n" .
-                    '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\');' . "\n" .
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '{{ PHPUNIT }}->sourceStatement = ' .
-                    'Statement::createAction(\'set $".selector" to $".value"\');' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$".selector" exists\',' . "\n" .
+                    '    Statement::createAction(\'set $".selector" to $".value"\')' . "\n" .
+                    ');' . "\n" .
                     '// derived $".selector" exists response' . "\n" .
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
                     '// $".value" exists <- set $".selector" to $".value"' . "\n" .
-                    '{{ STATEMENT }} = Statement::createAssertion(\'$".value" exists\');' . "\n" .
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '{{ PHPUNIT }}->sourceStatement = ' .
-                    'Statement::createAction(\'set $".selector" to $".value"\');' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$".value" exists\',' . "\n" .
+                    '    Statement::createAction(\'set $".selector" to $".value"\')' . "\n" .
+                    ');' . "\n" .
                     '// derived $".value" exists response' . "\n" .
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
                     '// set $".selector" to $".value"' . "\n" .
-                    '{{ STATEMENT }} = Statement::createAction(\'set $".selector" to $".value"\');' . "\n" .
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '// mocked set $".selector" to $".value" response' . "\n" .
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n"
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAction(' . "\n" .
+                    '    \'set $".selector" to $".value"\'' . "\n" .
+                    ');' . "\n" .
+                    '// mocked set $".selector" to $".value" response' . "\n"
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -182,9 +177,6 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        VariableNames::STATEMENT,
                     ]),
                 ]),
             ],
@@ -244,36 +236,36 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                 ]),
                 'expectedRenderedSource' =>
                     '// $".selector" exists <- click $".selector"' . "\n" .
-                    '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\');' . "\n" .
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '{{ PHPUNIT }}->sourceStatement = Statement::createAction(\'click $".selector"\');' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$".selector" exists\',' . "\n" .
+                    '    Statement::createAction(\'click $".selector"\')' . "\n" .
+                    ');' . "\n" .
                     '// derived $".selector" exists response' . "\n" .
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
                     '// click $".selector"' . "\n" .
-                    '{{ STATEMENT }} = Statement::createAction(\'click $".selector"\');' . "\n" .
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAction(' . "\n" .
+                    '    \'click $".selector"\'' . "\n" .
+                    ');' . "\n" .
                     '// mocked click $".selector" response' . "\n" .
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
                     '// wait 1' . "\n" .
-                    '{{ STATEMENT }} = Statement::createAction(\'wait 1\');' . "\n" .
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAction(' . "\n" .
+                    '    \'wait 1\'' . "\n" .
+                    ');' . "\n" .
                     '// mocked wait 1 response' . "\n" .
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
                     '// $".duration" exists <- wait $".duration"' . "\n" .
-                    '{{ STATEMENT }} = Statement::createAssertion(\'$".duration" exists\');' . "\n" .
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '{{ PHPUNIT }}->sourceStatement = Statement::createAction(\'wait $".duration"\');' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$".duration" exists\',' . "\n" .
+                    '    Statement::createAction(\'wait $".duration"\')' . "\n" .
+                    ');' . "\n" .
                     '// derived $".duration" exists response' . "\n" .
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
                     '// wait $".duration"' . "\n" .
-                    '{{ STATEMENT }} = Statement::createAction(\'wait $".duration"\');' . "\n" .
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '// mocked wait $".duration" response' . "\n" .
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n"
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAction(' . "\n" .
+                    '    \'wait $".duration"\'' . "\n" .
+                    ');' . "\n" .
+                    '// mocked wait $".duration" response' . "\n"
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -281,9 +273,6 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        VariableNames::STATEMENT,
                     ]),
                 ]),
             ],
@@ -307,10 +296,10 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                 ]),
                 'expectedRenderedSource' =>
                     '// $page.title is "value"' . "\n" .
-                    '{{ STATEMENT }} = Statement::createAssertion(\'$page.title is "value"\');' . "\n" .
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '// mocked $page.title is "value" response' . "\n" .
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n"
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$page.title is "value"\'' . "\n" .
+                    ');' . "\n" .
+                    '// mocked $page.title is "value" response' . "\n"
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -318,9 +307,6 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        VariableNames::STATEMENT,
                     ]),
                 ]),
             ],
@@ -344,10 +330,10 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                 ]),
                 'expectedRenderedSource' =>
                     '// $".selector" exists' . "\n" .
-                    '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\');' . "\n" .
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '// mocked $".selector" exists response' . "\n" .
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n"
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$".selector" exists\'' . "\n" .
+                    ');' . "\n" .
+                    '// mocked $".selector" exists response' . "\n"
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -355,9 +341,6 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        VariableNames::STATEMENT,
                     ]),
                 ]),
             ],
@@ -392,17 +375,17 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                 ]),
                 'expectedRenderedSource' =>
                     '// $".selector" exists <- $".selector" is "value"' . "\n" .
-                    '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\');' . "\n" .
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '{{ PHPUNIT }}->sourceStatement = Statement::createAssertion(\'$".selector" is "value"\');' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$".selector" exists\',' . "\n" .
+                    '    Statement::createAssertion(\'$".selector" is "value"\')' . "\n" .
+                    ');' . "\n" .
                     '// derived $".selector" exists response' . "\n" .
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
                     '// $".selector" is "value"' . "\n" .
-                    '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" is "value"\');' . "\n" .
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '// mocked $".selector" is "value" response' . "\n" .
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n"
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$".selector" is "value"\'' . "\n" .
+                    ');' . "\n" .
+                    '// mocked $".selector" is "value" response' . "\n"
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -410,9 +393,6 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        VariableNames::STATEMENT,
                     ]),
                 ]),
             ],
@@ -456,26 +436,24 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                 ]),
                 'expectedRenderedSource' =>
                     '// $".selector" exists <- $".selector" is $".value"' . "\n" .
-                    '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\');' . "\n" .
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '{{ PHPUNIT }}->sourceStatement = ' .
-                    'Statement::createAssertion(\'$".selector" is $".value"\');' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$".selector" exists\',' . "\n" .
+                    '    Statement::createAssertion(\'$".selector" is $".value"\')' . "\n" .
+                    ');' . "\n" .
                     '// derived $".selector" exists response' . "\n" .
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
                     '// $".value" exists <- $".selector" is $".value"' . "\n" .
-                    '{{ STATEMENT }} = Statement::createAssertion(\'$".value" exists\');' . "\n" .
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '{{ PHPUNIT }}->sourceStatement = ' .
-                    'Statement::createAssertion(\'$".selector" is $".value"\');' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$".value" exists\',' . "\n" .
+                    '    Statement::createAssertion(\'$".selector" is $".value"\')' . "\n" .
+                    ');' . "\n" .
                     '// derived $".value" exists response' . "\n" .
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
                     '// $".selector" is $".value"' . "\n" .
-                    '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" is $".value"\');' . "\n" .
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '// mocked $".selector" is $".value" response' . "\n" .
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n"
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$".selector" is $".value"\'' . "\n" .
+                    ');' . "\n" .
+                    '// mocked $".selector" is $".value" response' . "\n"
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -483,9 +461,6 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        VariableNames::STATEMENT,
                     ]),
                 ]),
             ],
@@ -516,16 +491,16 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                 ]),
                 'expectedRenderedSource' =>
                     '// $page.title is "value"' . "\n" .
-                    '{{ STATEMENT }} = Statement::createAssertion(\'$page.title is "value"\');' . "\n" .
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$page.title is "value"\'' . "\n" .
+                    ');' . "\n" .
                     '// mocked $page.title is "value" response' . "\n" .
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
                     '// $page.url is "http://example.com"' . "\n" .
-                    '{{ STATEMENT }} = Statement::createAssertion(\'$page.url is "http://example.com"\');' . "\n" .
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '// mocked $page.url is "http://example.com" response' . "\n" .
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n"
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$page.url is "http://example.com"\'' . "\n" .
+                    ');' . "\n" .
+                    '// mocked $page.url is "http://example.com" response' . "\n"
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -533,9 +508,6 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        VariableNames::STATEMENT,
                     ]),
                 ]),
             ],
@@ -581,23 +553,23 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                 ]),
                 'expectedRenderedSource' =>
                     '// $".selector" exists <- click $".selector"' . "\n" .
-                    '{{ STATEMENT }} = Statement::createAssertion(\'$".selector" exists\');' . "\n" .
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '{{ PHPUNIT }}->sourceStatement = Statement::createAction(\'click $".selector"\');' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$".selector" exists\',' . "\n" .
+                    '    Statement::createAction(\'click $".selector"\')' . "\n" .
+                    ');' . "\n" .
                     '// derived $".selector" exists response' . "\n" .
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
                     '// click $".selector"' . "\n" .
-                    '{{ STATEMENT }} = Statement::createAction(\'click $".selector"\');' . "\n" .
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAction(' . "\n" .
+                    '    \'click $".selector"\'' . "\n" .
+                    ');' . "\n" .
                     '// mocked click $".selector" response' . "\n" .
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n" .
                     "\n" .
                     '// $page.title is "value"' . "\n" .
-                    '{{ STATEMENT }} = Statement::createAssertion(\'$page.title is "value"\');' . "\n" .
-                    '{{ PHPUNIT }}->currentStatement = {{ STATEMENT }};' . "\n" .
-                    '// mocked $page.title is "value" response' . "\n" .
-                    '{{ PHPUNIT }}->completedStatements[] = {{ STATEMENT }};' . "\n"
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$page.title is "value"\'' . "\n" .
+                    ');' . "\n" .
+                    '// mocked $page.title is "value" response' . "\n"
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -605,9 +577,6 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        VariableNames::STATEMENT,
                     ]),
                 ]),
             ],

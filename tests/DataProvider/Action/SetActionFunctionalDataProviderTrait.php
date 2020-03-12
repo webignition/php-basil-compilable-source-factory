@@ -21,7 +21,6 @@ trait SetActionFunctionalDataProviderTrait
 
         $setActionFunctionalVariableIdentifiers = [
             'COLLECTION' => ResolvedVariableNames::COLLECTION_VARIABLE_NAME,
-            'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
             'VALUE' => ResolvedVariableNames::VALUE_VARIABLE_NAME,
             'ELEMENT' => '$element',
             'INPUT' => '$input',
@@ -161,7 +160,6 @@ trait SetActionFunctionalDataProviderTrait
 
         $setActionFunctionalVariableIdentifiers = [
             'COLLECTION' => ResolvedVariableNames::COLLECTION_VARIABLE_NAME,
-            'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
             'VALUE' => ResolvedVariableNames::VALUE_VARIABLE_NAME,
             'INPUT' => '$input',
             'ELEMENT' => '$element',
@@ -255,7 +253,6 @@ trait SetActionFunctionalDataProviderTrait
 
         $setActionFunctionalVariableIdentifiers = [
             'COLLECTION' => ResolvedVariableNames::COLLECTION_VARIABLE_NAME,
-            'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
             'VALUE' => ResolvedVariableNames::VALUE_VARIABLE_NAME,
             'TEXTAREA' => '$textarea',
             'ELEMENT' => '$element',
@@ -325,7 +322,6 @@ trait SetActionFunctionalDataProviderTrait
 
         $setActionFunctionalVariableIdentifiers = [
             'COLLECTION' => ResolvedVariableNames::COLLECTION_VARIABLE_NAME,
-            'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
             'VALUE' => ResolvedVariableNames::VALUE_VARIABLE_NAME,
             'SELECT' => '$select',
             'ELEMENT' => '$element',
@@ -421,7 +417,6 @@ trait SetActionFunctionalDataProviderTrait
 
         $setActionFunctionalVariableIdentifiers = [
             'COLLECTION' => ResolvedVariableNames::COLLECTION_VARIABLE_NAME,
-            'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
             'VALUE' => ResolvedVariableNames::VALUE_VARIABLE_NAME,
             'SELECT' => '$select',
             'ELEMENT' => '$element',
@@ -517,7 +512,6 @@ trait SetActionFunctionalDataProviderTrait
 
         $setActionFunctionalVariableIdentifiers = [
             'COLLECTION' => ResolvedVariableNames::COLLECTION_VARIABLE_NAME,
-            'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
             'VALUE' => ResolvedVariableNames::VALUE_VARIABLE_NAME,
             'RADIO_GROUP' => '$radioGroup',
         ];

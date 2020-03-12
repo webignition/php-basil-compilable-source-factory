@@ -69,9 +69,6 @@ class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
                         ],
                     ],
                 ])->withPath('test.yml'),
-                'additionalVariableIdentifiers' => [
-                    VariableNames::STATEMENT => ResolvedVariableNames::STATEMENT_VARIABLE_NAME,
-                ],
             ],
             'multi-step' => [
                 'test' => $testParser->parse([
@@ -112,11 +109,9 @@ class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
                     ],
                 ])->withPath('test.yml'),
                 'additionalVariableIdentifiers' => [
-                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     'ELEMENT' => ResolvedVariableNames::ELEMENT_VARIABLE_NAME,
                     'COLLECTION' => ResolvedVariableNames::COLLECTION_VARIABLE_NAME,
                     'VALUE' => ResolvedVariableNames::VALUE_VARIABLE_NAME,
-                    VariableNames::STATEMENT => ResolvedVariableNames::STATEMENT_VARIABLE_NAME,
                 ],
             ],
             'with data set collection' => [
@@ -154,9 +149,7 @@ class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
                 ])->withPath('test.yml'),
                 'additionalVariableIdentifiers' => [
                     'COLLECTION' => ResolvedVariableNames::COLLECTION_VARIABLE_NAME,
-                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     'VALUE' => ResolvedVariableNames::VALUE_VARIABLE_NAME,
-                    VariableNames::STATEMENT => ResolvedVariableNames::STATEMENT_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
             ],

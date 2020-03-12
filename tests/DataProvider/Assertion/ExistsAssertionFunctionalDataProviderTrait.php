@@ -19,14 +19,12 @@ trait ExistsAssertionFunctionalDataProviderTrait
                 'fixture' => '/assertions.html',
                 'assertion' => $assertionParser->parse('$".selector" exists'),
                 'variableIdentifiers' => [
-                    'HAS' => '$has',
                 ],
             ],
             'exists comparison, attribute identifier examined value' => [
                 'fixture' => '/assertions.html',
                 'assertion' => $assertionParser->parse('$".selector".data-test-attribute exists'),
                 'variableIdentifiers' => [
-                    'HAS' => '$has',
                     'ELEMENT' => '$element',
                 ],
             ],

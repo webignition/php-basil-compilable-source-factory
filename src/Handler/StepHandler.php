@@ -9,6 +9,7 @@ use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSource\Line\EmptyLine;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
+use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\Line\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\ObjectPropertyAccessExpression;
 use webignition\BasilCompilableSource\Line\SingleLineComment;
@@ -181,56 +182,8 @@ class StepHandler
             $statementCommentContent .= ' <- ' . $statement->getSourceStatement()->getSource();
         }
 
-        $statementPlaceholder = VariablePlaceholder::createExport(VariableNames::STATEMENT);
-
-        $statementAssignment = new AssignmentStatement(
-            $statementPlaceholder,
-            new StaticObjectMethodInvocation(
-                new StaticObject(BasilTestStatement::class),
-                $statement instanceof ActionInterface ? 'createAction' : 'createAssertion',
-                [
-                    new LiteralExpression(sprintf(
-                        '\'%s\'',
-                        $this->singleQuotedStringEscaper->escape($statement->getSource())
-                    ))
-                ]
-            )
-        );
-
-        $currentStatementStatement = new AssignmentStatement(
-            new ObjectPropertyAccessExpression(
-                VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
-                'currentStatement'
-            ),
-            $statementPlaceholder
-        );
-
         $block->addLine(new SingleLineComment($statementCommentContent));
-        $block->addLine($statementAssignment);
-        $block->addLine($currentStatementStatement);
-
-        if ($statement instanceof DerivedAssertionInterface) {
-            $sourceStatement = $statement->getSourceStatement();
-
-            $sourceStatementStatement = new AssignmentStatement(
-                new ObjectPropertyAccessExpression(
-                    VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
-                    'sourceStatement'
-                ),
-                new StaticObjectMethodInvocation(
-                    new StaticObject(BasilTestStatement::class),
-                    $sourceStatement instanceof ActionInterface ? 'createAction' : 'createAssertion',
-                    [
-                        new LiteralExpression(sprintf(
-                            '\'%s\'',
-                            $this->singleQuotedStringEscaper->escape($sourceStatement->getSource())
-                        ))
-                    ]
-                )
-            );
-
-            $block->addLine($sourceStatementStatement);
-        }
+        $block->addLine($this->createAddToHandledStatementsStatement($statement));
 
         if ($source instanceof CodeBlockInterface) {
             foreach ($source->getLines() as $sourceLine) {
@@ -238,21 +191,46 @@ class StepHandler
             }
         }
 
-        $block->addLine($this->createAddToCompletedStatementsStatement($statementPlaceholder));
         $block->addLine(new EmptyLine());
 
         return $block;
     }
 
-    private function createAddToCompletedStatementsStatement(
-        VariablePlaceholder $statementPlaceholder
-    ): StatementInterface {
+    private function createAddToHandledStatementsStatement(StatementModelInterface $statement): StatementInterface
+    {
         return new AssignmentStatement(
             new ObjectPropertyAccessExpression(
                 VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
-                'completedStatements[]'
+                'handledStatements[]'
             ),
-            $statementPlaceholder
+            $this->createCreateStatementInvocation($statement)
+        );
+    }
+
+    private function createCreateStatementInvocation(
+        StatementModelInterface $statement,
+        string $argumentFormat = MethodInvocation::ARGUMENT_FORMAT_STACKED
+    ): StaticObjectMethodInvocation {
+        $arguments = [
+            new LiteralExpression(sprintf(
+                '\'%s\'',
+                $this->singleQuotedStringEscaper->escape($statement->getSource())
+            )),
+        ];
+
+        if ($statement instanceof DerivedAssertionInterface) {
+            $sourceStatementInvocation = $this->createCreateStatementInvocation(
+                $statement->getSourceStatement(),
+                MethodInvocation::ARGUMENT_FORMAT_INLINE
+            );
+            $arguments[] = new LiteralExpression($sourceStatementInvocation->render());
+        }
+
+        return new StaticObjectMethodInvocation(
+            new StaticObject(BasilTestStatement::class),
+            $statement instanceof ActionInterface ? 'createAction' : 'createAssertion',
+            $arguments,
+            $argumentFormat
         );
     }
 

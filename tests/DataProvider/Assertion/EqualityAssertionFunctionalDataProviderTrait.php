@@ -16,7 +16,6 @@ trait EqualityAssertionFunctionalDataProviderTrait
                 'fixture' => '/assertions.html',
                 'assertion' => null,
                 'variableIdentifiers' => [
-                    'HAS' => '$has',
                     'ELEMENT' => '$element',
                 ],
             ],
@@ -24,7 +23,6 @@ trait EqualityAssertionFunctionalDataProviderTrait
                 'fixture' => '/assertions.html',
                 'assertion' => null,
                 'variableIdentifiers' => [
-                    'HAS' => '$has',
                     'ELEMENT' => '$element',
                 ],
             ],
@@ -50,7 +48,6 @@ trait EqualityAssertionFunctionalDataProviderTrait
                 'fixture' => '/assertions.html',
                 'assertion' => null,
                 'variableIdentifiers' => [
-                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
             ],
@@ -58,7 +55,6 @@ trait EqualityAssertionFunctionalDataProviderTrait
                 'fixture' => '/assertions.html',
                 'assertion' => null,
                 'variableIdentifiers' => [
-                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
             ],
@@ -66,7 +62,6 @@ trait EqualityAssertionFunctionalDataProviderTrait
                 'fixture' => '/assertions.html',
                 'assertion' => null,
                 'variableIdentifiers' => [
-                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     VariableNames::ENVIRONMENT_VARIABLE_ARRAY => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
@@ -75,7 +70,6 @@ trait EqualityAssertionFunctionalDataProviderTrait
                 'fixture' => '/assertions.html',
                 'assertion' => null,
                 'variableIdentifiers' => [
-                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     'WEBDRIVER_DIMENSION' => ResolvedVariableNames::WEBDRIVER_DIMENSION_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
@@ -84,7 +78,6 @@ trait EqualityAssertionFunctionalDataProviderTrait
                 'fixture' => '/assertions.html',
                 'assertion' => null,
                 'variableIdentifiers' => [
-                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
             ],
@@ -92,7 +85,6 @@ trait EqualityAssertionFunctionalDataProviderTrait
                 'fixture' => '/form.html',
                 'assertion' => null,
                 'variableIdentifiers' => [
-                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
             ],
@@ -100,7 +92,6 @@ trait EqualityAssertionFunctionalDataProviderTrait
                 'fixture' => '/form.html',
                 'assertion' => null,
                 'variableIdentifiers' => [
-                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
             ],
@@ -108,7 +99,6 @@ trait EqualityAssertionFunctionalDataProviderTrait
                 'fixture' => '/form.html',
                 'assertion' => null,
                 'variableIdentifiers' => [
-                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
             ],
@@ -116,7 +106,6 @@ trait EqualityAssertionFunctionalDataProviderTrait
                 'fixture' => '/form.html',
                 'assertion' => null,
                 'variableIdentifiers' => [
-                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
             ],
@@ -124,7 +113,6 @@ trait EqualityAssertionFunctionalDataProviderTrait
                 'fixture' => '/form.html',
                 'assertion' => null,
                 'variableIdentifiers' => [
-                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
             ],
@@ -132,7 +120,6 @@ trait EqualityAssertionFunctionalDataProviderTrait
                 'fixture' => '/form.html',
                 'assertion' => null,
                 'variableIdentifiers' => [
-                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
             ],

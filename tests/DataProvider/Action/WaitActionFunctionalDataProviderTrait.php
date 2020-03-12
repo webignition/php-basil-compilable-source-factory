@@ -33,7 +33,6 @@ trait WaitActionFunctionalDataProviderTrait
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [
                     'DURATION' => '$duration',
-                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
                 'expectedDuration' => 20,
@@ -45,7 +44,6 @@ trait WaitActionFunctionalDataProviderTrait
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [
                     'DURATION' => '$duration',
-                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
                 'expectedDuration' => 30,
@@ -57,7 +55,6 @@ trait WaitActionFunctionalDataProviderTrait
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [
                     'DURATION' => '$duration',
-                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
                 'expectedDuration' => 0,

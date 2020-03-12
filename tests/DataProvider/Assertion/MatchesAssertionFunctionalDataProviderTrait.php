@@ -19,7 +19,6 @@ trait MatchesAssertionFunctionalDataProviderTrait
                 'fixture' => '/assertions.html',
                 'assertion' => $assertionParser->parse('$".selector" matches "/^\.selector [a-z]+$/"'),
                 'variableIdentifiers' => [
-                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
             ],
@@ -27,7 +26,6 @@ trait MatchesAssertionFunctionalDataProviderTrait
                 'fixture' => '/assertions.html',
                 'assertion' => $assertionParser->parse('$".selector".data-test-attribute matches "/^[a-z]+ content$/"'),
                 'variableIdentifiers' => [
-                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
             ],
@@ -53,7 +51,6 @@ trait MatchesAssertionFunctionalDataProviderTrait
                 'fixture' => '/assertions.html',
                 'assertion' => $assertionParser->parse('$".matches-examined" matches $".matches-expected"'),
                 'variableIdentifiers' => [
-                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
             ],
@@ -61,7 +58,6 @@ trait MatchesAssertionFunctionalDataProviderTrait
                 'fixture' => '/assertions.html',
                 'assertion' => $assertionParser->parse('$".selector" matches $".selector".data-matches-content'),
                 'variableIdentifiers' => [
-                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
             ],
@@ -69,7 +65,6 @@ trait MatchesAssertionFunctionalDataProviderTrait
                 'fixture' => '/assertions.html',
                 'assertion' => $assertionParser->parse('$".selector".data-environment-value matches $env.MATCHES'),
                 'variableIdentifiers' => [
-                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     VariableNames::ENVIRONMENT_VARIABLE_ARRAY => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],

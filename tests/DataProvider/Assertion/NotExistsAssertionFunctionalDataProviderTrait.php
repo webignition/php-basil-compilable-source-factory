@@ -23,7 +23,6 @@ trait NotExistsAssertionFunctionalDataProviderTrait
                 'fixture' => '/assertions.html',
                 'assertion' => $assertionParser->parse('$".selector".data-non-existent-attribute not-exists'),
                 'variableIdentifiers' => [
-                    'HAS' => ResolvedVariableNames::HAS_VARIABLE_NAME,
                     'ELEMENT' => '$element',
                 ],
             ],
