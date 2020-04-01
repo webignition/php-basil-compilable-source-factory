@@ -8,7 +8,6 @@ use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
 class DomCrawlerNavigatorCallFactory
 {
@@ -26,33 +25,35 @@ class DomCrawlerNavigatorCallFactory
         );
     }
 
-    public function createFindCall(ElementIdentifierInterface $identifier): ExpressionInterface
+    public function createFindCall(ExpressionInterface $elementIdentifierExpression): ExpressionInterface
     {
-        return $this->createElementCall($identifier, 'find');
+        return $this->createElementCall('find', $elementIdentifierExpression);
     }
 
-    public function createFindOneCall(ElementIdentifierInterface $identifier): ExpressionInterface
+    public function createFindOneCall(ExpressionInterface $elementIdentifierExpression): ExpressionInterface
     {
-        return $this->createElementCall($identifier, 'findOne');
+        return $this->createElementCall('findOne', $elementIdentifierExpression);
     }
 
-    public function createHasCall(ElementIdentifierInterface $identifier): ExpressionInterface
+    public function createHasCall(ExpressionInterface $elementIdentifierExpression): ExpressionInterface
     {
-        return $this->createElementCall($identifier, 'has');
+        return $this->createElementCall('has', $elementIdentifierExpression);
     }
 
-    public function createHasOneCall(ElementIdentifierInterface $identifier): ExpressionInterface
+    public function createHasOneCall(ExpressionInterface $elementIdentifierExpression): ExpressionInterface
     {
-        return $this->createElementCall($identifier, 'hasOne');
+        return $this->createElementCall('hasOne', $elementIdentifierExpression);
     }
 
-    private function createElementCall(ElementIdentifierInterface $identifier, string $methodName): ExpressionInterface
-    {
+    private function createElementCall(
+        string $methodName,
+        ExpressionInterface $elementIdentifierExpression
+    ): ExpressionInterface {
         return new ObjectMethodInvocation(
             VariablePlaceholder::createDependency(VariableNames::DOM_CRAWLER_NAVIGATOR),
             $methodName,
             [
-                $this->elementIdentifierCallFactory->createConstructorCall($identifier),
+                $elementIdentifierExpression,
             ]
         );
     }

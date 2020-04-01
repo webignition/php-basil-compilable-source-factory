@@ -4,16 +4,13 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 
-use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSource\Line\ClassDependency;
+use webignition\BasilCompilableSource\Line\ExpressionInterface;
+use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\DomElementIdentifier\AttributeIdentifier;
-use webignition\DomElementIdentifier\ElementIdentifier;
-use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
 class DomCrawlerNavigatorCallFactoryTest extends \PHPUnit\Framework\TestCase
 {
@@ -33,11 +30,11 @@ class DomCrawlerNavigatorCallFactoryTest extends \PHPUnit\Framework\TestCase
      * @dataProvider createFindCallDataProvider
      */
     public function testCreateFindCall(
-        ElementIdentifierInterface $identifier,
+        ExpressionInterface $elementIdentifierExpression,
         string $expectedRenderedExpression,
         MetadataInterface $expectedMetadata
     ) {
-        $expression = $this->factory->createFindCall($identifier);
+        $expression = $this->factory->createFindCall($elementIdentifierExpression);
 
         $this->assertSame($expectedRenderedExpression, $expression->render());
         $this->assertEquals($expectedMetadata, $expression->getMetadata());
@@ -52,11 +49,11 @@ class DomCrawlerNavigatorCallFactoryTest extends \PHPUnit\Framework\TestCase
      * @dataProvider createFindOneCallDataProvider
      */
     public function testCreateFindOneCall(
-        ElementIdentifierInterface $identifier,
+        ExpressionInterface $elementIdentifierExpression,
         string $expectedRenderedExpression,
         MetadataInterface $expectedMetadata
     ) {
-        $expression = $this->factory->createFindOneCall($identifier);
+        $expression = $this->factory->createFindOneCall($elementIdentifierExpression);
 
         $this->assertSame($expectedRenderedExpression, $expression->render());
         $this->assertEquals($expectedMetadata, $expression->getMetadata());
@@ -71,11 +68,11 @@ class DomCrawlerNavigatorCallFactoryTest extends \PHPUnit\Framework\TestCase
      * @dataProvider createHasCallDataProvider
      */
     public function testCreateHasCall(
-        ElementIdentifierInterface $identifier,
+        ExpressionInterface $elementIdentifierExpression,
         string $expectedRenderedExpression,
         MetadataInterface $expectedMetadata
     ) {
-        $expression = $this->factory->createHasCall($identifier);
+        $expression = $this->factory->createHasCall($elementIdentifierExpression);
 
         $this->assertSame($expectedRenderedExpression, $expression->render());
         $this->assertEquals($expectedMetadata, $expression->getMetadata());
@@ -90,11 +87,11 @@ class DomCrawlerNavigatorCallFactoryTest extends \PHPUnit\Framework\TestCase
      * @dataProvider createHasOneCallDataProvider
      */
     public function testCreateHasOneCall(
-        ElementIdentifierInterface $identifier,
+        ExpressionInterface $elementIdentifierExpression,
         string $expectedRenderedExpression,
         MetadataInterface $expectedMetadata
     ) {
-        $expression = $this->factory->createHasOneCall($identifier);
+        $expression = $this->factory->createHasOneCall($elementIdentifierExpression);
 
         $this->assertSame($expectedRenderedExpression, $expression->render());
         $this->assertEquals($expectedMetadata, $expression->getMetadata());
@@ -125,189 +122,11 @@ class DomCrawlerNavigatorCallFactoryTest extends \PHPUnit\Framework\TestCase
     private function elementCallDataProvider(): array
     {
         return [
-            'no parent, no ordinal position' => [
-                'identifier' => new ElementIdentifier('.selector'),
+            'literal expression' => [
+                'elementIdentifierExpression' => new LiteralExpression('"literal expression"'),
                 'expectedRenderedSource' =>
-                    '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '    "locator": ".selector"' . "\n" .
-                    '}\'))',
+                    '{{ NAVIGATOR }}->{{ METHOD }}("literal expression")',
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
-                    ]),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                ]),
-            ],
-            'no parent, has ordinal position' => [
-                'identifier' => new ElementIdentifier('.selector', 3),
-                'expectedRenderedSource' =>
-                    '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '    "locator": ".selector",' . "\n" .
-                    '    "position": 3' . "\n" .
-                    '}\'))',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
-                    ]),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                ]),
-            ],
-            'no parent, has attribute' => [
-                'identifier' => new AttributeIdentifier('.selector', 'attribute_name'),
-                'expectedRenderedSource' =>
-                    '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '    "locator": ".selector"' . "\n" .
-                    '}\'))',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
-                    ]),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                ]),
-            ],
-            'no parent, has ordinal position has attribute' => [
-                'identifier' => new AttributeIdentifier('.selector', 'attribute_name', 3),
-                'expectedRenderedSource' =>
-                    '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '    "locator": ".selector",' . "\n" .
-                    '    "position": 3' . "\n" .
-                    '}\'))',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
-                    ]),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                ]),
-            ],
-            'has parent, no ordinal position' => [
-                'identifier' => (new ElementIdentifier('.selector'))
-                    ->withParentIdentifier(new ElementIdentifier('.parent')),
-                'expectedRenderedSource' =>
-                    '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '    "locator": ".selector",' . "\n" .
-                    '    "parent": {' . "\n" .
-                    '        "locator": ".parent"' . "\n" .
-                    '    }' . "\n" .
-                    '}\'))',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
-                    ]),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                ]),
-            ],
-            'has parent, has ordinal position' => [
-                'identifier' => (new ElementIdentifier('.selector', 2))
-                    ->withParentIdentifier(new ElementIdentifier('.parent')),
-                'expectedRenderedSource' =>
-                    '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '    "locator": ".selector",' . "\n" .
-                    '    "parent": {' . "\n" .
-                    '        "locator": ".parent"' . "\n" .
-                    '    },' . "\n" .
-                    '    "position": 2' . "\n" .
-                    '}\'))',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
-                    ]),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                ]),
-            ],
-            'has parent, has attribute' => [
-                'identifier' => (new AttributeIdentifier('.selector', 'attribute_name'))
-                    ->withParentIdentifier(new ElementIdentifier('.parent')),
-                'expectedRenderedSource' =>
-                    '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '    "locator": ".selector",' . "\n" .
-                    '    "parent": {' . "\n" .
-                    '        "locator": ".parent"' . "\n" .
-                    '    }' . "\n" .
-                    '}\'))',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
-                    ]),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                ]),
-            ],
-            'has parent, has ordinal position, has attribute' => [
-                'identifier' => (new AttributeIdentifier('.selector', 'attribute_name', 5))
-                    ->withParentIdentifier(new ElementIdentifier('.parent')),
-                'expectedRenderedSource' =>
-                    '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '    "locator": ".selector",' . "\n" .
-                    '    "parent": {' . "\n" .
-                    '        "locator": ".parent"' . "\n" .
-                    '    },' . "\n" .
-                    '    "position": 5' . "\n" .
-                    '}\'))',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
-                    ]),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                ]),
-            ],
-            'has parent, has ordinal positions' => [
-                'identifier' => (new ElementIdentifier('.selector', 3))
-                    ->withParentIdentifier(new ElementIdentifier('.parent', 4)),
-                'expectedRenderedSource' =>
-                    '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '    "locator": ".selector",' . "\n" .
-                    '    "parent": {' . "\n" .
-                    '        "locator": ".parent",' . "\n" .
-                    '        "position": 4' . "\n" .
-                    '    },' . "\n" .
-                    '    "position": 3' . "\n" .
-                    '}\'))',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
-                    ]),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                ]),
-            ],
-            'has attribute, has parents with attribute' => [
-                'identifier' => (new AttributeIdentifier('.child', 'child_attr'))
-                    ->withParentIdentifier(
-                        (new AttributeIdentifier('.parent', 'parent_attr'))
-                            ->withParentIdentifier(
-                                new AttributeIdentifier('grandparent', 'gp_attr')
-                            )
-                    ),
-                'expectedRenderedSource' =>
-                    '{{ NAVIGATOR }}->{{ METHOD }}(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '    "locator": ".child",' . "\n" .
-                    '    "parent": {' . "\n" .
-                    '        "locator": ".parent",' . "\n" .
-                    '        "parent": {' . "\n" .
-                    '            "locator": "grandparent"' . "\n" .
-                    '        }' . "\n" .
-                    '    }' . "\n" .
-                    '}\'))',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
-                    ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                     ]),

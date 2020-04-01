@@ -13,6 +13,7 @@ use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
 use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
+use webignition\BasilCompilableSourceFactory\CallFactory\ElementIdentifierCallFactory;
 use webignition\BasilCompilableSourceFactory\Model\DomIdentifierInterface;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\VariableNames;
@@ -22,30 +23,35 @@ class DomIdentifierHandler
 {
     private $domCrawlerNavigatorCallFactory;
     private $singleQuotedStringEscaper;
+    private $elementIdentifierCallFactory;
 
     public function __construct(
         DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory,
-        SingleQuotedStringEscaper $singleQuotedStringEscaper
+        SingleQuotedStringEscaper $singleQuotedStringEscaper,
+        ElementIdentifierCallFactory $elementIdentifierCallFactory
     ) {
         $this->domCrawlerNavigatorCallFactory = $domCrawlerNavigatorCallFactory;
         $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
+        $this->elementIdentifierCallFactory = $elementIdentifierCallFactory;
     }
 
     public static function createHandler(): DomIdentifierHandler
     {
         return new DomIdentifierHandler(
             DomCrawlerNavigatorCallFactory::createFactory(),
-            SingleQuotedStringEscaper::create()
+            SingleQuotedStringEscaper::create(),
+            ElementIdentifierCallFactory::createFactory()
         );
     }
 
     public function handle(DomIdentifierInterface $domIdentifier): ExpressionInterface
     {
         $identifier = $domIdentifier->getIdentifier();
+        $elementIdentifierExpression = $this->elementIdentifierCallFactory->createConstructorCall($identifier);
 
         $findCall = $domIdentifier->asCollection()
-            ? $this->domCrawlerNavigatorCallFactory->createFindCall($identifier)
-            : $this->domCrawlerNavigatorCallFactory->createFindOneCall($identifier);
+            ? $this->domCrawlerNavigatorCallFactory->createFindCall($elementIdentifierExpression)
+            : $this->domCrawlerNavigatorCallFactory->createFindOneCall($elementIdentifierExpression);
 
         if (false === $domIdentifier->includeValue()) {
             return $findCall;

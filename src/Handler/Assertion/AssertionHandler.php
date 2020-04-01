@@ -20,6 +20,7 @@ use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\AssertionFailureMessageFactory;
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
+use webignition\BasilCompilableSourceFactory\CallFactory\ElementIdentifierCallFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
@@ -57,6 +58,7 @@ class AssertionHandler
     private $identifierTypeAnalyser;
     private $scalarValueHandler;
     private $valueTypeIdentifier;
+    private $elementIdentifierCallFactory;
 
     private const COMPARISON_TO_ASSERTION_TEMPLATE_MAP = [
         'includes' => self::ASSERT_STRING_CONTAINS_STRING_METHOD,
@@ -85,7 +87,8 @@ class AssertionHandler
         DomIdentifierHandler $domIdentifierHandler,
         IdentifierTypeAnalyser $identifierTypeAnalyser,
         ScalarValueHandler $scalarValueHandler,
-        ValueTypeIdentifier $valueTypeIdentifier
+        ValueTypeIdentifier $valueTypeIdentifier,
+        ElementIdentifierCallFactory $elementIdentifierCallFactory
     ) {
         $this->accessorDefaultValueFactory = $accessorDefaultValueFactory;
         $this->assertionFailureMessageFactory = $assertionFailureMessageFactory;
@@ -96,6 +99,7 @@ class AssertionHandler
         $this->identifierTypeAnalyser = $identifierTypeAnalyser;
         $this->scalarValueHandler = $scalarValueHandler;
         $this->valueTypeIdentifier = $valueTypeIdentifier;
+        $this->elementIdentifierCallFactory = $elementIdentifierCallFactory;
     }
 
     public static function createHandler(): AssertionHandler
@@ -109,7 +113,8 @@ class AssertionHandler
             DomIdentifierHandler::createHandler(),
             IdentifierTypeAnalyser::create(),
             ScalarValueHandler::createHandler(),
-            new ValueTypeIdentifier()
+            new ValueTypeIdentifier(),
+            ElementIdentifierCallFactory::createFactory()
         );
     }
 
@@ -208,10 +213,12 @@ class AssertionHandler
                 throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
             }
 
+            $elementIdentifierExpression = $this->elementIdentifierCallFactory->createConstructorCall($domIdentifier);
+
             if (!$domIdentifier instanceof AttributeIdentifierInterface) {
                 $domNavigatorCrawlerCall = self::HANDLE_EXISTENCE_AS_ELEMENT === $handleAs
-                    ? $this->domCrawlerNavigatorCallFactory->createHasOneCall($domIdentifier)
-                    : $this->domCrawlerNavigatorCallFactory->createHasCall($domIdentifier);
+                    ? $this->domCrawlerNavigatorCallFactory->createHasOneCall($elementIdentifierExpression)
+                    : $this->domCrawlerNavigatorCallFactory->createHasCall($elementIdentifierExpression);
 
                 return new CodeBlock([
                     new AssignmentStatement(
@@ -232,7 +239,7 @@ class AssertionHandler
             return new CodeBlock([
                 new AssignmentStatement(
                     $valuePlaceholder,
-                    $this->domCrawlerNavigatorCallFactory->createHasOneCall($domIdentifier)
+                    $this->domCrawlerNavigatorCallFactory->createHasOneCall($elementIdentifierExpression)
                 ),
                 $this->createAssertionStatement($elementExistsAssertion, [$valuePlaceholder]),
                 new AssignmentStatement(

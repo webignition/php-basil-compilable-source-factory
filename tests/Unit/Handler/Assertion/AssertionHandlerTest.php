@@ -9,6 +9,7 @@ use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\AssertionFailureMessageFactory;
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
+use webignition\BasilCompilableSourceFactory\CallFactory\ElementIdentifierCallFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
@@ -242,6 +243,8 @@ class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
         $identifierTypeAnalyser = $services[IdentifierTypeAnalyser::class] ?? IdentifierTypeAnalyser::create();
         $scalarValueHandler = $services[ScalarValueHandler::class] ?? ScalarValueHandler::createHandler();
         $valueTypeIdentifier = $services[ValueTypeIdentifier::class] ?? new ValueTypeIdentifier();
+        $elementIdentifierCallFactory =
+            $services[ElementIdentifierCallFactory::class] ?? ElementIdentifierCallFactory::createFactory();
 
         return new AssertionHandler(
             $accessorDefaultValueFactory,
@@ -252,7 +255,8 @@ class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
             $domIdentifierHandler,
             $identifierTypeAnalyser,
             $scalarValueHandler,
-            $valueTypeIdentifier
+            $valueTypeIdentifier,
+            $elementIdentifierCallFactory
         );
     }
 }
