@@ -28,9 +28,12 @@ trait CreateFromNotExistsAssertionDataProviderTrait
                     ],
                 ],
                 'expectedRenderedSource' =>
-                    '{{ PHPUNIT }}->examinedValue = {{ NAVIGATOR }}->has(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '{{ PHPUNIT }}->examinedElementIdentifier = ElementIdentifier::fromJson(\'{' . "\n" .
                     '    "locator": ".selector"' . "\n" .
-                    '}\'));' . "\n" .
+                    '}\');' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = {{ NAVIGATOR }}->has(' .
+                    '{{ PHPUNIT }}->examinedElementIdentifier' .
+                    ');' . "\n" .
                     '{{ PHPUNIT }}->assertFalse(' . "\n" .
                     '    {{ PHPUNIT }}->examinedValue,' . "\n" .
                     '    \'$".selector" not-exists failure message\'' . "\n" .
