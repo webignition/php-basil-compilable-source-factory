@@ -85,9 +85,12 @@ trait CreateFromExistsAssertionDataProviderTrait
                     ],
                 ],
                 'expectedRenderedSource' =>
-                    '{{ PHPUNIT }}->examinedValue = {{ NAVIGATOR }}->hasOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '{{ PHPUNIT }}->examinedElementIdentifier = ElementIdentifier::fromJson(\'{' . "\n" .
                     '    "locator": ".selector"' . "\n" .
-                    '}\'));' . "\n" .
+                    '}\');' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = {{ NAVIGATOR }}->hasOne(' .
+                    '{{ PHPUNIT }}->examinedElementIdentifier' .
+                    ');' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ PHPUNIT }}->examinedValue,' . "\n" .
                     '    \'$".selector" exists failure message\'' . "\n" .
@@ -182,9 +185,12 @@ trait CreateFromExistsAssertionDataProviderTrait
                     ],
                 ],
                 'expectedRenderedSource' =>
-                    '{{ PHPUNIT }}->examinedValue = {{ NAVIGATOR }}->hasOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '{{ PHPUNIT }}->examinedElementIdentifier = ElementIdentifier::fromJson(\'{' . "\n" .
                     '    "locator": "a[href=foo.html]"' . "\n" .
-                    '}\'));' . "\n" .
+                    '}\');' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = {{ NAVIGATOR }}->hasOne(' .
+                    '{{ PHPUNIT }}->examinedElementIdentifier' .
+                    ');' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ PHPUNIT }}->examinedValue,' . "\n" .
                     '    \'$"a[href=foo.html]" exists failure message\'' . "\n" .

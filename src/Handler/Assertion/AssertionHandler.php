@@ -214,13 +214,12 @@ class AssertionHandler
             }
 
             $elementIdentifierExpression = $this->elementIdentifierCallFactory->createConstructorCall($domIdentifier);
+            $examinedElementIdentifierPlaceholder = new ObjectPropertyAccessExpression(
+                VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+                'examinedElementIdentifier'
+            );
 
             if (!$domIdentifier instanceof AttributeIdentifierInterface) {
-                $examinedElementIdentifierPlaceholder = new ObjectPropertyAccessExpression(
-                    VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
-                    'examinedElementIdentifier'
-                );
-
                 $domNavigatorCrawlerCall = self::HANDLE_EXISTENCE_AS_ELEMENT === $handleAs
                     ? $this->domCrawlerNavigatorCallFactory->createHasOneCall($examinedElementIdentifierPlaceholder)
                     : $this->domCrawlerNavigatorCallFactory->createHasCall($examinedElementIdentifierPlaceholder);
@@ -245,10 +244,17 @@ class AssertionHandler
                 'exists'
             );
 
+            $domNavigatorCrawlerCall =
+                $this->domCrawlerNavigatorCallFactory->createHasOneCall($examinedElementIdentifierPlaceholder);
+
             return new CodeBlock([
                 new AssignmentStatement(
+                    $examinedElementIdentifierPlaceholder,
+                    $elementIdentifierExpression
+                ),
+                new AssignmentStatement(
                     $valuePlaceholder,
-                    $this->domCrawlerNavigatorCallFactory->createHasOneCall($elementIdentifierExpression)
+                    $domNavigatorCrawlerCall
                 ),
                 $this->createAssertionStatement($elementExistsAssertion, [$valuePlaceholder]),
                 new AssignmentStatement(
