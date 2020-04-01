@@ -8,7 +8,6 @@ use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
 class DomCrawlerNavigatorCallFactory
@@ -49,13 +48,11 @@ class DomCrawlerNavigatorCallFactory
 
     private function createElementCall(ElementIdentifierInterface $identifier, string $methodName): ExpressionInterface
     {
-        $elementOnlyIdentifier = ElementIdentifier::fromAttributeIdentifier($identifier);
-
         return new ObjectMethodInvocation(
             VariablePlaceholder::createDependency(VariableNames::DOM_CRAWLER_NAVIGATOR),
             $methodName,
             [
-                $this->elementIdentifierCallFactory->createConstructorCall($elementOnlyIdentifier),
+                $this->elementIdentifierCallFactory->createConstructorCall($identifier),
             ]
         );
     }
