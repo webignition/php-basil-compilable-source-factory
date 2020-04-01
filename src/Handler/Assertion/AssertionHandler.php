@@ -219,11 +219,13 @@ class AssertionHandler
                 'examinedElementIdentifier'
             );
 
-            if (!$domIdentifier instanceof AttributeIdentifierInterface) {
-                $domNavigatorCrawlerCall = self::HANDLE_EXISTENCE_AS_ELEMENT === $handleAs
-                    ? $this->domCrawlerNavigatorCallFactory->createHasOneCall($examinedElementIdentifierPlaceholder)
-                    : $this->domCrawlerNavigatorCallFactory->createHasCall($examinedElementIdentifierPlaceholder);
+            $domNavigatorCrawlerCall =
+                self::HANDLE_EXISTENCE_AS_ELEMENT === $handleAs ||
+                $domIdentifier instanceof AttributeIdentifierInterface
+                ? $this->domCrawlerNavigatorCallFactory->createHasOneCall($examinedElementIdentifierPlaceholder)
+                : $this->domCrawlerNavigatorCallFactory->createHasCall($examinedElementIdentifierPlaceholder);
 
+            if (!$domIdentifier instanceof AttributeIdentifierInterface) {
                 return new CodeBlock([
                     new AssignmentStatement(
                         $examinedElementIdentifierPlaceholder,
@@ -243,9 +245,6 @@ class AssertionHandler
                 $elementIdentifierString,
                 'exists'
             );
-
-            $domNavigatorCrawlerCall =
-                $this->domCrawlerNavigatorCallFactory->createHasOneCall($examinedElementIdentifierPlaceholder);
 
             return new CodeBlock([
                 new AssignmentStatement(
