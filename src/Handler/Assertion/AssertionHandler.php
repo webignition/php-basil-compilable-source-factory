@@ -214,13 +214,23 @@ class AssertionHandler
             }
 
             $elementIdentifierExpression = $this->elementIdentifierCallFactory->createConstructorCall($domIdentifier);
+            $examinedElementIdentifierPlaceholder = new ObjectPropertyAccessExpression(
+                VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+                'examinedElementIdentifier'
+            );
+
+            $domNavigatorCrawlerCall =
+                self::HANDLE_EXISTENCE_AS_ELEMENT === $handleAs ||
+                $domIdentifier instanceof AttributeIdentifierInterface
+                ? $this->domCrawlerNavigatorCallFactory->createHasOneCall($examinedElementIdentifierPlaceholder)
+                : $this->domCrawlerNavigatorCallFactory->createHasCall($examinedElementIdentifierPlaceholder);
 
             if (!$domIdentifier instanceof AttributeIdentifierInterface) {
-                $domNavigatorCrawlerCall = self::HANDLE_EXISTENCE_AS_ELEMENT === $handleAs
-                    ? $this->domCrawlerNavigatorCallFactory->createHasOneCall($elementIdentifierExpression)
-                    : $this->domCrawlerNavigatorCallFactory->createHasCall($elementIdentifierExpression);
-
                 return new CodeBlock([
+                    new AssignmentStatement(
+                        $examinedElementIdentifierPlaceholder,
+                        $elementIdentifierExpression
+                    ),
                     new AssignmentStatement(
                         $valuePlaceholder,
                         $domNavigatorCrawlerCall
@@ -238,8 +248,12 @@ class AssertionHandler
 
             return new CodeBlock([
                 new AssignmentStatement(
+                    $examinedElementIdentifierPlaceholder,
+                    $elementIdentifierExpression
+                ),
+                new AssignmentStatement(
                     $valuePlaceholder,
-                    $this->domCrawlerNavigatorCallFactory->createHasOneCall($elementIdentifierExpression)
+                    $domNavigatorCrawlerCall
                 ),
                 $this->createAssertionStatement($elementExistsAssertion, [$valuePlaceholder]),
                 new AssignmentStatement(
