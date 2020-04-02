@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory;
 
-use webignition\BasilModels\Action\ActionInterface;
+use webignition\BasilAssertionFailureMessage\AssertionFailureMessage;
 use webignition\BasilModels\Assertion\AssertionInterface;
-use webignition\BasilModels\Assertion\DerivedElementExistsAssertion;
+use webignition\BasilModels\Assertion\DerivedAssertionInterface;
 
 class AssertionFailureMessageFactory
 {
@@ -17,19 +17,14 @@ class AssertionFailureMessageFactory
 
     public function createForAssertion(AssertionInterface $assertion): string
     {
-        $data = [
-            'assertion' => $assertion,
-        ];
-
-        if ($assertion instanceof DerivedElementExistsAssertion) {
-            $sourceStatement = $assertion->getSourceStatement();
-
-            $data['derived_from'] = [
-                'statement_type' => $sourceStatement instanceof ActionInterface ? 'action' : 'assertion',
-                'statement' => $sourceStatement,
-            ];
+        $derivationSource = null;
+        if ($assertion instanceof DerivedAssertionInterface) {
+            $derivationSource = $assertion->getSourceStatement();
         }
 
-        return (string) json_encode($data, JSON_PRETTY_PRINT);
+        return (string) json_encode(
+            new AssertionFailureMessage($assertion, $derivationSource),
+            JSON_PRETTY_PRINT
+        );
     }
 }
