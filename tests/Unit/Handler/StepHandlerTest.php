@@ -112,6 +112,158 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     ]),
                 ]),
             ],
+            'click action, has parent' => [
+                'step' => $stepParser->parse([
+                    'actions' => [
+                        'click $"{{ $".p" }} .c"',
+                    ],
+                ]),
+                'handler' => $this->createStepHandler([
+                    ActionHandler::class => $this->createMockActionHandler([
+                        'click $"{{ $".p" }} .c"' => [
+                            'action' => $actionParser->parse('click $"{{ $".p" }} .c"'),
+                            'return' => new CodeBlock([
+                                new SingleLineComment('mocked click response'),
+                            ]),
+                        ],
+                    ]),
+                    AssertionHandler::class => $this->createMockAssertionHandler([
+                        'handleExistenceAssertionAsElement' => [
+                            '$".p" exists' => [
+                                'assertion' => new DerivedElementExistsAssertion(
+                                    $actionParser->parse('click $"{{ $".p" }} .c"'),
+                                    '$".p"'
+                                ),
+                                'return' => new CodeBlock([
+                                    new SingleLineComment('derived p exists response'),
+                                ]),
+                            ],
+                            '$"{{ $".p" }} .c" exists' => [
+                                'assertion' => new DerivedElementExistsAssertion(
+                                    $actionParser->parse('click $"{{ $".p" }} .c"'),
+                                    '$"{{ $".p" }} .c"'
+                                ),
+                                'return' => new CodeBlock([
+                                    new SingleLineComment('derived p > c exists response'),
+                                ]),
+                            ],
+                        ],
+                    ]),
+                ]),
+                'expectedRenderedSource' =>
+                    '// $".p" exists <- click $"{{ $".p" }} .c"' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$".p" exists\',' . "\n" .
+                    '    Statement::createAction(\'click $"{{ $".p" }} .c"\')' . "\n" .
+                    ');' . "\n" .
+                    '// derived p exists response' . "\n" .
+                    "\n" .
+                    '// $"{{ $".p" }} .c" exists <- click $"{{ $".p" }} .c"' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$"{{ $".p" }} .c" exists\',' . "\n" .
+                    '    Statement::createAction(\'click $"{{ $".p" }} .c"\')' . "\n" .
+                    ');' . "\n" .
+                    '// derived p > c exists response' . "\n" .
+                    "\n" .
+                    '// click $"{{ $".p" }} .c"' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAction(' . "\n" .
+                    '    \'click $"{{ $".p" }} .c"\'' . "\n" .
+                    ');' . "\n" .
+                    '// mocked click response' . "\n"
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(Statement::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                        VariableNames::PHPUNIT_TEST_CASE,
+                    ]),
+                ]),
+            ],
+            'click action, has parent, has grandparent' => [
+                'step' => $stepParser->parse([
+                    'actions' => [
+                        'click $"{{ $"{{ $".gp" }} .p" }} .c"',
+                    ],
+                ]),
+                'handler' => $this->createStepHandler([
+                    ActionHandler::class => $this->createMockActionHandler([
+                        'click $"{{ $"{{ $".gp" }} .p" }} .c"' => [
+                            'action' => $actionParser->parse('click $"{{ $"{{ $".gp" }} .p" }} .c"'),
+                            'return' => new CodeBlock([
+                                new SingleLineComment('mocked click response'),
+                            ]),
+                        ],
+                    ]),
+                    AssertionHandler::class => $this->createMockAssertionHandler([
+                        'handleExistenceAssertionAsElement' => [
+                            '$".gp" exists' => [
+                                'assertion' => new DerivedElementExistsAssertion(
+                                    $actionParser->parse('click $"{{ $"{{ $".gp" }} .p" }} .c"'),
+                                    '$".gp"'
+                                ),
+                                'return' => new CodeBlock([
+                                    new SingleLineComment('derived gp exists response'),
+                                ]),
+                            ],
+                            '$"{{ $".gp" }} .p" exists' => [
+                                'assertion' => new DerivedElementExistsAssertion(
+                                    $actionParser->parse('click $"{{ $"{{ $".gp" }} .p" }} .c"'),
+                                    '$"{{ $".gp" }} .p"'
+                                ),
+                                'return' => new CodeBlock([
+                                    new SingleLineComment('derived gp > p exists response'),
+                                ]),
+                            ],
+                            '$"{{ $"{{ $".gp" }} .p" }} .c" exists' => [
+                                'assertion' => new DerivedElementExistsAssertion(
+                                    $actionParser->parse('click $"{{ $"{{ $".gp" }} .p" }} .c"'),
+                                    '$"{{ $"{{ $".gp" }} .p" }} .c"'
+                                ),
+                                'return' => new CodeBlock([
+                                    new SingleLineComment('derived gp > p > c exists response'),
+                                ]),
+                            ],
+                        ],
+                    ]),
+                ]),
+                'expectedRenderedSource' =>
+                    '// $".gp" exists <- click $"{{ $"{{ $".gp" }} .p" }} .c"' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$".gp" exists\',' . "\n" .
+                    '    Statement::createAction(\'click $"{{ $"{{ $".gp" }} .p" }} .c"\')' . "\n" .
+                    ');' . "\n" .
+                    '// derived gp exists response' .  "\n" .
+                    "\n" .
+                    '// $"{{ $".gp" }} .p" exists <- click $"{{ $"{{ $".gp" }} .p" }} .c"' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$"{{ $".gp" }} .p" exists\',' . "\n" .
+                    '    Statement::createAction(\'click $"{{ $"{{ $".gp" }} .p" }} .c"\')' . "\n" .
+                    ');' . "\n" .
+                    '// derived gp > p exists response' . "\n" .
+                    "\n" .
+                    '// $"{{ $"{{ $".gp" }} .p" }} .c" exists <- click $"{{ $"{{ $".gp" }} .p" }} .c"' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$"{{ $"{{ $".gp" }} .p" }} .c" exists\',' . "\n" .
+                    '    Statement::createAction(\'click $"{{ $"{{ $".gp" }} .p" }} .c"\')' . "\n" .
+                    ');' . "\n" .
+                    '// derived gp > p > c exists response' . "\n" .
+                    "\n" .
+                    '// click $"{{ $"{{ $".gp" }} .p" }} .c"' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAction(' . "\n" .
+                    '    \'click $"{{ $"{{ $".gp" }} .p" }} .c"\'' . "\n" .
+                    ');' . "\n" .
+                    '// mocked click response' . "\n"
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(Statement::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                        VariableNames::PHPUNIT_TEST_CASE,
+                    ]),
+                ]),
+            ],
             'set action with elemental value' => [
                 'step' => $stepParser->parse([
                     'actions' => [
@@ -170,6 +322,158 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '    \'set $".selector" to $".value"\'' . "\n" .
                     ');' . "\n" .
                     '// mocked set $".selector" to $".value" response' . "\n"
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(Statement::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                        VariableNames::PHPUNIT_TEST_CASE,
+                    ]),
+                ]),
+            ],
+            'set action with parent, literal value' => [
+                'step' => $stepParser->parse([
+                    'actions' => [
+                        'set $"{{ $".parent" }} .child" to "value"',
+                    ],
+                ]),
+                'handler' => $this->createStepHandler([
+                    ActionHandler::class => $this->createMockActionHandler([
+                        'set $"{{ $".parent" }} .child" to "value"' => [
+                            'action' => $actionParser->parse('set $"{{ $".parent" }} .child" to "value"'),
+                            'return' => new CodeBlock([
+                                new SingleLineComment('mocked set $"{{ $".parent" }} .child" to "value" response'),
+                            ]),
+                        ],
+                    ]),
+                    AssertionHandler::class => $this->createMockAssertionHandler([
+                        'handleExistenceAssertionAsCollection' => [
+                            '$".parent" exists' => [
+                                'assertion' => new DerivedElementExistsAssertion(
+                                    $actionParser->parse('set $"{{ $".parent" }} .child" to "value"'),
+                                    '$".parent"'
+                                ),
+                                'return' => new CodeBlock([
+                                    new SingleLineComment('derived $".parent" exists response'),
+                                ]),
+                            ],
+                            '$"{{ $".parent" }} .child" exists' => [
+                                'assertion' => new DerivedElementExistsAssertion(
+                                    $actionParser->parse('set $"{{ $".parent" }} .child" to "value"'),
+                                    '$"{{ $".parent" }} .child"'
+                                ),
+                                'return' => new CodeBlock([
+                                    new SingleLineComment('derived $"{{ $".parent" }} .child" exists response'),
+                                ]),
+                            ],
+                        ],
+                    ]),
+                ]),
+                'expectedRenderedSource' =>
+                    '// $".parent" exists <- set $"{{ $".parent" }} .child" to "value"' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$".parent" exists\',' . "\n" .
+                    '    Statement::createAction(\'set $"{{ $".parent" }} .child" to "value"\')' . "\n" .
+                    ');' . "\n" .
+                    '// derived $".parent" exists response' . "\n" .
+                    "\n" .
+                    '// $"{{ $".parent" }} .child" exists <- set $"{{ $".parent" }} .child" to "value"' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$"{{ $".parent" }} .child" exists\',' . "\n" .
+                    '    Statement::createAction(\'set $"{{ $".parent" }} .child" to "value"\')' . "\n" .
+                    ');' . "\n" .
+                    '// derived $"{{ $".parent" }} .child" exists response' . "\n" .
+                    "\n" .
+                    '// set $"{{ $".parent" }} .child" to "value"' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAction(' . "\n" .
+                    '    \'set $"{{ $".parent" }} .child" to "value"\'' . "\n" .
+                    ');' . "\n" .
+                    '// mocked set $"{{ $".parent" }} .child" to "value" response' . "\n"
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(Statement::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                        VariableNames::PHPUNIT_TEST_CASE,
+                    ]),
+                ]),
+            ],
+            'set action, value has parent' => [
+                'step' => $stepParser->parse([
+                    'actions' => [
+                        'set $".selector" to $"{{ $".parent" }} .child"',
+                    ],
+                ]),
+                'handler' => $this->createStepHandler([
+                    ActionHandler::class => $this->createMockActionHandler([
+                        'set $".selector" to $"{{ $".parent" }} .child"' => [
+                            'action' => $actionParser->parse('set $".selector" to $"{{ $".parent" }} .child"'),
+                            'return' => new CodeBlock([
+                                new SingleLineComment('mocked set $".selector" to $"{{ $".parent" }} .child" response'),
+                            ]),
+                        ],
+                    ]),
+                    AssertionHandler::class => $this->createMockAssertionHandler([
+                        'handleExistenceAssertionAsCollection' => [
+                            '$".selector" exists' => [
+                                'assertion' => new DerivedElementExistsAssertion(
+                                    $actionParser->parse('set $".selector" to $"{{ $".parent" }} .child"'),
+                                    '$".selector"'
+                                ),
+                                'return' => new CodeBlock([
+                                    new SingleLineComment('derived $".selector" exists response'),
+                                ]),
+                            ],
+                            '$".parent" exists' => [
+                                'assertion' => new DerivedElementExistsAssertion(
+                                    $actionParser->parse('set $".selector" to $"{{ $".parent" }} .child"'),
+                                    '$".parent"'
+                                ),
+                                'return' => new CodeBlock([
+                                    new SingleLineComment('derived $".parent" exists response'),
+                                ]),
+                            ],
+                            '$"{{ $".parent" }} .child" exists' => [
+                                'assertion' => new DerivedElementExistsAssertion(
+                                    $actionParser->parse('set $".selector" to $"{{ $".parent" }} .child"'),
+                                    '$"{{ $".parent" }} .child"'
+                                ),
+                                'return' => new CodeBlock([
+                                    new SingleLineComment('derived $"{{ $".parent" }} .child" exists response'),
+                                ]),
+                            ],
+                        ],
+                    ]),
+                ]),
+                'expectedRenderedSource' =>
+                    '// $".selector" exists <- set $".selector" to $"{{ $".parent" }} .child"' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$".selector" exists\',' . "\n" .
+                    '    Statement::createAction(\'set $".selector" to $"{{ $".parent" }} .child"\')' . "\n" .
+                    ');' . "\n" .
+                    '// derived $".selector" exists response' . "\n" .
+                    "\n" .
+                    '// $".parent" exists <- set $".selector" to $"{{ $".parent" }} .child"' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$".parent" exists\',' . "\n" .
+                    '    Statement::createAction(\'set $".selector" to $"{{ $".parent" }} .child"\')' . "\n" .
+                    ');' . "\n" .
+                    '// derived $".parent" exists response' . "\n" .
+                    "\n" .
+                    '// $"{{ $".parent" }} .child" exists <- set $".selector" to $"{{ $".parent" }} .child"' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$"{{ $".parent" }} .child" exists\',' . "\n" .
+                    '    Statement::createAction(\'set $".selector" to $"{{ $".parent" }} .child"\')' . "\n" .
+                    ');' . "\n" .
+                    '// derived $"{{ $".parent" }} .child" exists response' . "\n" .
+                    "\n" .
+                    '// set $".selector" to $"{{ $".parent" }} .child"' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAction(' . "\n" .
+                    '    \'set $".selector" to $"{{ $".parent" }} .child"\'' . "\n" .
+                    ');' . "\n" .
+                    '// mocked set $".selector" to $"{{ $".parent" }} .child" response' . "\n"
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -396,6 +700,74 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     ]),
                 ]),
             ],
+            'comparison assertion, elemental selector with parent, scalar value' => [
+                'step' => $stepParser->parse([
+                    'assertions' => [
+                        '$"{{ $".parent" }} .child" is "value"',
+                    ],
+                ]),
+                'handler' => $this->createStepHandler([
+                    AssertionHandler::class => $this->createMockAssertionHandler([
+                        'handle' => [
+                            '$"{{ $".parent" }} .child" is "value"' => [
+                                'assertion' => $assertionParser->parse('$"{{ $".parent" }} .child" is "value"'),
+                                'return' => new CodeBlock([
+                                    new SingleLineComment('mocked $"{{ $".parent" }} .child" is "value" response'),
+                                ]),
+                            ],
+                        ],
+                        'handleExistenceAssertionAsCollection' => [
+                            '$".parent" exists' => [
+                                'assertion' => new DerivedElementExistsAssertion(
+                                    $assertionParser->parse('$"{{ $".parent" }} .child" is "value"'),
+                                    '$".parent"'
+                                ),
+                                'return' => new CodeBlock([
+                                    new SingleLineComment('derived $".parent" exists response'),
+                                ]),
+                            ],
+                            '$"{{ $".parent" }} .child" exists' => [
+                                'assertion' => new DerivedElementExistsAssertion(
+                                    $assertionParser->parse('$"{{ $".parent" }} .child" is "value"'),
+                                    '$"{{ $".parent" }} .child"'
+                                ),
+                                'return' => new CodeBlock([
+                                    new SingleLineComment('derived $"{{ $".parent" }} .child" exists response'),
+                                ]),
+                            ],
+                        ],
+                    ]),
+                ]),
+                'expectedRenderedSource' =>
+                    '// $".parent" exists <- $"{{ $".parent" }} .child" is "value"' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$".parent" exists\',' . "\n" .
+                    '    Statement::createAssertion(\'$"{{ $".parent" }} .child" is "value"\')' . "\n" .
+                    ');' . "\n" .
+                    '// derived $".parent" exists response' . "\n" .
+                    "\n" .
+                    '// $"{{ $".parent" }} .child" exists <- $"{{ $".parent" }} .child" is "value"' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$"{{ $".parent" }} .child" exists\',' . "\n" .
+                    '    Statement::createAssertion(\'$"{{ $".parent" }} .child" is "value"\')' . "\n" .
+                    ');' . "\n" .
+                    '// derived $"{{ $".parent" }} .child" exists response' . "\n" .
+                    "\n" .
+                    '// $"{{ $".parent" }} .child" is "value"' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$"{{ $".parent" }} .child" is "value"\'' . "\n" .
+                    ');' . "\n" .
+                    '// mocked $"{{ $".parent" }} .child" is "value" response' . "\n"
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(Statement::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                        VariableNames::PHPUNIT_TEST_CASE,
+                    ]),
+                ]),
+            ],
             'comparison assertion, elemental selector, elemental value' => [
                 'step' => $stepParser->parse([
                     'assertions' => [
@@ -454,6 +826,90 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '    \'$".selector" is $".value"\'' . "\n" .
                     ');' . "\n" .
                     '// mocked $".selector" is $".value" response' . "\n"
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(Statement::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                        VariableNames::PHPUNIT_TEST_CASE,
+                    ]),
+                ]),
+            ],
+            'comparison assertion, elemental selector, elemental value with parent' => [
+                'step' => $stepParser->parse([
+                    'assertions' => [
+                        '$".selector" is $"{{ $".parent" }} .child"',
+                    ],
+                ]),
+                'handler' => $this->createStepHandler([
+                    AssertionHandler::class => $this->createMockAssertionHandler([
+                        'handle' => [
+                            '$".selector" is $"{{ $".parent" }} .child"' => [
+                                'assertion' => $assertionParser->parse('$".selector" is $"{{ $".parent" }} .child"'),
+                                'return' => new CodeBlock([
+                                    new SingleLineComment('mocked $".selector" is $"{{ $".parent" }} .child" response'),
+                                ]),
+                            ],
+                        ],
+                        'handleExistenceAssertionAsCollection' => [
+                            '$".selector" exists' => [
+                                'assertion' => new DerivedElementExistsAssertion(
+                                    $assertionParser->parse('$".selector" is $"{{ $".parent" }} .child"'),
+                                    '$".selector"'
+                                ),
+                                'return' => new CodeBlock([
+                                    new SingleLineComment('derived $".selector" exists response'),
+                                ]),
+                            ],
+                            '$".parent" exists' => [
+                                'assertion' => new DerivedElementExistsAssertion(
+                                    $assertionParser->parse('$".selector" is $"{{ $".parent" }} .child"'),
+                                    '$".parent"'
+                                ),
+                                'return' => new CodeBlock([
+                                    new SingleLineComment('derived $".parent" exists response'),
+                                ]),
+                            ],
+                            '$"{{ $".parent" }} .child" exists' => [
+                                'assertion' => new DerivedElementExistsAssertion(
+                                    $assertionParser->parse('$".selector" is $"{{ $".parent" }} .child"'),
+                                    '$"{{ $".parent" }} .child"'
+                                ),
+                                'return' => new CodeBlock([
+                                    new SingleLineComment('derived $"{{ $".parent" }} .child" exists response'),
+                                ]),
+                            ],
+                        ],
+                    ]),
+                ]),
+                'expectedRenderedSource' =>
+                    '// $".selector" exists <- $".selector" is $"{{ $".parent" }} .child"' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$".selector" exists\',' . "\n" .
+                    '    Statement::createAssertion(\'$".selector" is $"{{ $".parent" }} .child"\')' . "\n" .
+                    ');' . "\n" .
+                    '// derived $".selector" exists response' . "\n" .
+                    "\n" .
+                    '// $".parent" exists <- $".selector" is $"{{ $".parent" }} .child"' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$".parent" exists\',' . "\n" .
+                    '    Statement::createAssertion(\'$".selector" is $"{{ $".parent" }} .child"\')' . "\n" .
+                    ');' . "\n" .
+                    '// derived $".parent" exists response' . "\n" .
+                    "\n" .
+                    '// $"{{ $".parent" }} .child" exists <- $".selector" is $"{{ $".parent" }} .child"' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$"{{ $".parent" }} .child" exists\',' . "\n" .
+                    '    Statement::createAssertion(\'$".selector" is $"{{ $".parent" }} .child"\')' . "\n" .
+                    ');' . "\n" .
+                    '// derived $"{{ $".parent" }} .child" exists response' . "\n" .
+                    "\n" .
+                    '// $".selector" is $"{{ $".parent" }} .child"' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$".selector" is $"{{ $".parent" }} .child"\'' . "\n" .
+                    ');' . "\n" .
+                    '// mocked $".selector" is $"{{ $".parent" }} .child" response' . "\n"
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([

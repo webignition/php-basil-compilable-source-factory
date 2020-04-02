@@ -38,7 +38,7 @@
         "webignition/basil-dom-identifier-factory": ">=0.8,<1",
         "webignition/basil-identifier-analyser": ">=0.4,<1",
         "webignition/basil-models": ">=0.32,<1",
-        "webignition/php-dom-element-identifier": ">=0.10,<1",
+        "webignition/php-dom-element-identifier": ">=0.12,<1",
         "webignition/quoted-string-value-extractor": ">=0.1,<1"
     },
     "require-dev": {
