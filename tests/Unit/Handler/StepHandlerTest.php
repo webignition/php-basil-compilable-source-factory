@@ -112,6 +112,158 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     ]),
                 ]),
             ],
+            'click action, has parent' => [
+                'step' => $stepParser->parse([
+                    'actions' => [
+                        'click $"{{ $".p" }} .c"',
+                    ],
+                ]),
+                'handler' => $this->createStepHandler([
+                    ActionHandler::class => $this->createMockActionHandler([
+                        'click $"{{ $".p" }} .c"' => [
+                            'action' => $actionParser->parse('click $"{{ $".p" }} .c"'),
+                            'return' => new CodeBlock([
+                                new SingleLineComment('mocked click response'),
+                            ]),
+                        ],
+                    ]),
+                    AssertionHandler::class => $this->createMockAssertionHandler([
+                        'handleExistenceAssertionAsElement' => [
+                            '$".p" exists' => [
+                                'assertion' => new DerivedElementExistsAssertion(
+                                    $actionParser->parse('click $"{{ $".p" }} .c"'),
+                                    '$".p"'
+                                ),
+                                'return' => new CodeBlock([
+                                    new SingleLineComment('derived p exists response'),
+                                ]),
+                            ],
+                            '$"{{ $".p" }} .c" exists' => [
+                                'assertion' => new DerivedElementExistsAssertion(
+                                    $actionParser->parse('click $"{{ $".p" }} .c"'),
+                                    '$"{{ $".p" }} .c"'
+                                ),
+                                'return' => new CodeBlock([
+                                    new SingleLineComment('derived p > c exists response'),
+                                ]),
+                            ],
+                        ],
+                    ]),
+                ]),
+                'expectedRenderedSource' =>
+                    '// $".p" exists <- click $"{{ $".p" }} .c"' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$".p" exists\',' . "\n" .
+                    '    Statement::createAction(\'click $"{{ $".p" }} .c"\')' . "\n" .
+                    ');' . "\n" .
+                    '// derived p exists response' . "\n" .
+                    "\n" .
+                    '// $"{{ $".p" }} .c" exists <- click $"{{ $".p" }} .c"' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$"{{ $".p" }} .c" exists\',' . "\n" .
+                    '    Statement::createAction(\'click $"{{ $".p" }} .c"\')' . "\n" .
+                    ');' . "\n" .
+                    '// derived p > c exists response' . "\n" .
+                    "\n" .
+                    '// click $"{{ $".p" }} .c"' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAction(' . "\n" .
+                    '    \'click $"{{ $".p" }} .c"\'' . "\n" .
+                    ');' . "\n" .
+                    '// mocked click response' . "\n"
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(Statement::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                        VariableNames::PHPUNIT_TEST_CASE,
+                    ]),
+                ]),
+            ],
+            'click action, has parent, has grandparent' => [
+                'step' => $stepParser->parse([
+                    'actions' => [
+                        'click $"{{ $"{{ $".gp" }} .p" }} .c"',
+                    ],
+                ]),
+                'handler' => $this->createStepHandler([
+                    ActionHandler::class => $this->createMockActionHandler([
+                        'click $"{{ $"{{ $".gp" }} .p" }} .c"' => [
+                            'action' => $actionParser->parse('click $"{{ $"{{ $".gp" }} .p" }} .c"'),
+                            'return' => new CodeBlock([
+                                new SingleLineComment('mocked click response'),
+                            ]),
+                        ],
+                    ]),
+                    AssertionHandler::class => $this->createMockAssertionHandler([
+                        'handleExistenceAssertionAsElement' => [
+                            '$".gp" exists' => [
+                                'assertion' => new DerivedElementExistsAssertion(
+                                    $actionParser->parse('click $"{{ $"{{ $".gp" }} .p" }} .c"'),
+                                    '$".gp"'
+                                ),
+                                'return' => new CodeBlock([
+                                    new SingleLineComment('derived gp exists response'),
+                                ]),
+                            ],
+                            '$"{{ $".gp" }} .p" exists' => [
+                                'assertion' => new DerivedElementExistsAssertion(
+                                    $actionParser->parse('click $"{{ $"{{ $".gp" }} .p" }} .c"'),
+                                    '$"{{ $".gp" }} .p"'
+                                ),
+                                'return' => new CodeBlock([
+                                    new SingleLineComment('derived gp > p exists response'),
+                                ]),
+                            ],
+                            '$"{{ $"{{ $".gp" }} .p" }} .c" exists' => [
+                                'assertion' => new DerivedElementExistsAssertion(
+                                    $actionParser->parse('click $"{{ $"{{ $".gp" }} .p" }} .c"'),
+                                    '$"{{ $"{{ $".gp" }} .p" }} .c"'
+                                ),
+                                'return' => new CodeBlock([
+                                    new SingleLineComment('derived gp > p > c exists response'),
+                                ]),
+                            ],
+                        ],
+                    ]),
+                ]),
+                'expectedRenderedSource' =>
+                    '// $".gp" exists <- click $"{{ $"{{ $".gp" }} .p" }} .c"' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$".gp" exists\',' . "\n" .
+                    '    Statement::createAction(\'click $"{{ $"{{ $".gp" }} .p" }} .c"\')' . "\n" .
+                    ');' . "\n" .
+                    '// derived gp exists response' .  "\n" .
+                    "\n" .
+                    '// $"{{ $".gp" }} .p" exists <- click $"{{ $"{{ $".gp" }} .p" }} .c"' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$"{{ $".gp" }} .p" exists\',' . "\n" .
+                    '    Statement::createAction(\'click $"{{ $"{{ $".gp" }} .p" }} .c"\')' . "\n" .
+                    ');' . "\n" .
+                    '// derived gp > p exists response' . "\n" .
+                    "\n" .
+                    '// $"{{ $"{{ $".gp" }} .p" }} .c" exists <- click $"{{ $"{{ $".gp" }} .p" }} .c"' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$"{{ $"{{ $".gp" }} .p" }} .c" exists\',' . "\n" .
+                    '    Statement::createAction(\'click $"{{ $"{{ $".gp" }} .p" }} .c"\')' . "\n" .
+                    ');' . "\n" .
+                    '// derived gp > p > c exists response' . "\n" .
+                    "\n" .
+                    '// click $"{{ $"{{ $".gp" }} .p" }} .c"' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAction(' . "\n" .
+                    '    \'click $"{{ $"{{ $".gp" }} .p" }} .c"\'' . "\n" .
+                    ');' . "\n" .
+                    '// mocked click response' . "\n"
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(Statement::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                        VariableNames::PHPUNIT_TEST_CASE,
+                    ]),
+                ]),
+            ],
             'set action with elemental value' => [
                 'step' => $stepParser->parse([
                     'actions' => [
