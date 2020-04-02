@@ -332,6 +332,74 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     ]),
                 ]),
             ],
+            'set action with parent, literal value' => [
+                'step' => $stepParser->parse([
+                    'actions' => [
+                        'set $"{{ $".parent" }} .child" to "value"',
+                    ],
+                ]),
+                'handler' => $this->createStepHandler([
+                    ActionHandler::class => $this->createMockActionHandler([
+                        'set $"{{ $".parent" }} .child" to "value"' => [
+                            'action' => $actionParser->parse('set $"{{ $".parent" }} .child" to "value"'),
+                            'return' => new CodeBlock([
+                                new SingleLineComment('mocked set $"{{ $".parent" }} .child" to "value" response'),
+                            ]),
+                        ],
+                    ]),
+                    AssertionHandler::class => $this->createMockAssertionHandler([
+                        'handleExistenceAssertionAsCollection' => [
+                            '$".parent" exists' => [
+                                'assertion' => new DerivedElementExistsAssertion(
+                                    $actionParser->parse('set $"{{ $".parent" }} .child" to "value"'),
+                                    '$".parent"'
+                                ),
+                                'return' => new CodeBlock([
+                                    new SingleLineComment('derived $".parent" exists response'),
+                                ]),
+                            ],
+                            '$"{{ $".parent" }} .child" exists' => [
+                                'assertion' => new DerivedElementExistsAssertion(
+                                    $actionParser->parse('set $"{{ $".parent" }} .child" to "value"'),
+                                    '$"{{ $".parent" }} .child"'
+                                ),
+                                'return' => new CodeBlock([
+                                    new SingleLineComment('derived $"{{ $".parent" }} .child" exists response'),
+                                ]),
+                            ],
+                        ],
+                    ]),
+                ]),
+                'expectedRenderedSource' =>
+                    '// $".parent" exists <- set $"{{ $".parent" }} .child" to "value"' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$".parent" exists\',' . "\n" .
+                    '    Statement::createAction(\'set $"{{ $".parent" }} .child" to "value"\')' . "\n" .
+                    ');' . "\n" .
+                    '// derived $".parent" exists response' . "\n" .
+                    "\n" .
+                    '// $"{{ $".parent" }} .child" exists <- set $"{{ $".parent" }} .child" to "value"' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
+                    '    \'$"{{ $".parent" }} .child" exists\',' . "\n" .
+                    '    Statement::createAction(\'set $"{{ $".parent" }} .child" to "value"\')' . "\n" .
+                    ');' . "\n" .
+                    '// derived $"{{ $".parent" }} .child" exists response' . "\n" .
+                    "\n" .
+                    '// set $"{{ $".parent" }} .child" to "value"' . "\n" .
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAction(' . "\n" .
+                    '    \'set $"{{ $".parent" }} .child" to "value"\'' . "\n" .
+                    ');' . "\n" .
+                    '// mocked set $"{{ $".parent" }} .child" to "value" response' . "\n"
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(Statement::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                        VariableNames::PHPUNIT_TEST_CASE,
+                    ]),
+                ]),
+            ],
             'click action, wait action with literal value, wait action with element value' => [
                 'step' => $stepParser->parse([
                     'actions' => [

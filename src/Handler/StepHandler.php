@@ -165,17 +165,25 @@ class StepHandler
         string $identifier,
         StatementModelInterface $action
     ): CodeBlockInterface {
-        $elementExistsAssertion = new DerivedElementExistsAssertion($action, $identifier);
-
         $domIdentifier = $this->domIdentifierFactory->createFromIdentifierString($identifier);
         if (null === $domIdentifier) {
             throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }
 
-        return $this->createStatementBlock(
-            $elementExistsAssertion,
-            $this->assertionHandler->handleExistenceAssertionAsCollection($elementExistsAssertion)
-        );
+        $elementHierarchy = $domIdentifier->getScope();
+        $elementHierarchy[] = $domIdentifier;
+
+        $codeBlocks = [];
+
+        foreach ($elementHierarchy as $elementIdentifier) {
+            $elementExistsAssertion = new DerivedElementExistsAssertion($action, (string) $elementIdentifier);
+            $codeBlocks[] = $this->createStatementBlock(
+                $elementExistsAssertion,
+                $this->assertionHandler->handleExistenceAssertionAsCollection($elementExistsAssertion)
+            );
+        }
+
+        return new CodeBlock($codeBlocks);
     }
 
     private function createStatementBlock(
