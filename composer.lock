@@ -4,8 +4,51 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "8ab30402725043b51cf672a47151c10e",
+    "content-hash": "1ef43ed332d8aeebcd36903cc23d581b",
     "packages": [
+        {
+            "name": "webignition/basil-assertion-failure-message",
+            "version": "0.1",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/webignition/basil-assertion-failure-message.git",
+                "reference": "09fafcf6707bb8f38ac76baa397ae06b7c4412ae"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/webignition/basil-assertion-failure-message/zipball/09fafcf6707bb8f38ac76baa397ae06b7c4412ae",
+                "reference": "09fafcf6707bb8f38ac76baa397ae06b7c4412ae",
+                "shasum": ""
+            },
+            "require": {
+                "ext-json": "*",
+                "php": ">=7.2",
+                "webignition/basil-models": ">=0.35,<1"
+            },
+            "require-dev": {
+                "phpstan/phpstan": "^0.12",
+                "phpunit/phpunit": "~8.0",
+                "squizlabs/php_codesniffer": "3.*"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "webignition\\BasilAssertionFailureMessage\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jon Cram",
+                    "email": "webignition@gmail.com"
+                }
+            ],
+            "homepage": "https://github.com/webignition/basil-assertion-failure-message",
+            "time": "2020-04-02T17:27:59+00:00"
+        },
         {
             "name": "webignition/basil-compilable-source",
             "version": "0.16",
@@ -135,16 +178,16 @@
         },
         {
             "name": "webignition/basil-models",
-            "version": "0.34",
+            "version": "0.35",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/basil-models.git",
-                "reference": "151aaff471b26959916f00e762bcc640ad6b01e9"
+                "reference": "54a2d4a9348b4a81ea9c03909bfc5002c0b2a752"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/basil-models/zipball/151aaff471b26959916f00e762bcc640ad6b01e9",
-                "reference": "151aaff471b26959916f00e762bcc640ad6b01e9",
+                "url": "https://api.github.com/repos/webignition/basil-models/zipball/54a2d4a9348b4a81ea9c03909bfc5002c0b2a752",
+                "reference": "54a2d4a9348b4a81ea9c03909bfc5002c0b2a752",
                 "shasum": ""
             },
             "require": {
@@ -173,7 +216,7 @@
                 }
             ],
             "homepage": "https://github.com/webignition/basil-models",
-            "time": "2020-03-13T17:04:10+00:00"
+            "time": "2020-04-02T15:07:47+00:00"
         },
         {
             "name": "webignition/php-dom-element-identifier",
