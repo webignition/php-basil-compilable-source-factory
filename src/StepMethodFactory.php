@@ -15,7 +15,7 @@ use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\MethodDefinition;
 use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
-use webignition\BasilCompilableSourceFactory\Handler\StepHandler;
+use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
 use webignition\BasilCompilableSourceFactory\Model\StepMethods;
 use webignition\BasilModels\DataSet\DataSetCollectionInterface;
 use webignition\BasilModels\Step\StepInterface;

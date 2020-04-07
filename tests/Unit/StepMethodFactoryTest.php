@@ -12,7 +12,7 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodDefinitionInterface;
 use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 use webignition\BasilCompilableSourceFactory\ArrayExpressionFactory;
-use webignition\BasilCompilableSourceFactory\Handler\StepHandler;
+use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\StepMethodFactory;
 use webignition\BasilCompilableSourceFactory\StepMethodNameFactory;
