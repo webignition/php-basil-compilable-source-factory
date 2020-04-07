@@ -2,23 +2,21 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler;
+namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\Step;
 
 use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\CodeBlockInterface;
-use webignition\BasilCompilableSourceFactory\Handler\StepHandler;
+use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
-use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Step\StepInterface;
 use webignition\BasilParser\StepParser;
 
 class StepHandlerTest extends AbstractBrowserTestCase
 {
     /**
-     * @var StepHandler
+     * @var \webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler
      */
     private $handler;
 

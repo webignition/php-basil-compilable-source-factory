@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSourceFactory\Handler;
+namespace webignition\BasilCompilableSourceFactory\Handler\Step;
 
 use webignition\BaseBasilTestCase\Statement as BasilTestStatement;
 use webignition\BasilCompilableSource\Block\CodeBlock;
