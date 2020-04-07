@@ -47,7 +47,7 @@ class StatementBlockFactoryTest extends \PHPUnit\Framework\TestCase
                     '// click $".selector"' . "\n" .
                     '{{ PHPUNIT }}->handledStatements[] = Statement::createAction(' . "\n" .
                     '    \'click $".selector"\'' . "\n" .
-                    ');' . "\n"
+                    ');'
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -64,7 +64,7 @@ class StatementBlockFactoryTest extends \PHPUnit\Framework\TestCase
                     '// $".selector" exists' . "\n" .
                     '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
                     '    \'$".selector" exists\'' . "\n" .
-                    ');' . "\n"
+                    ');'
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -85,7 +85,7 @@ class StatementBlockFactoryTest extends \PHPUnit\Framework\TestCase
                     '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
                     '    \'$".selector" exists\',' . "\n" .
                     '    Statement::createAction(\'click $".selector"\')' . "\n" .
-                    ');' . "\n"
+                    ');'
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([

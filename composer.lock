@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "504334a626efcde7e7befc2dd6cf6844",
+    "content-hash": "92b59442f4f121b85736682ea654b37b",
     "packages": [
         {
             "name": "webignition/basil-assertion-failure-message",
-            "version": "0.1",
+            "version": "0.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/basil-assertion-failure-message.git",
-                "reference": "09fafcf6707bb8f38ac76baa397ae06b7c4412ae"
+                "reference": "ee2c5f8fd06dd207fc77e2a7131d538034869c68"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/basil-assertion-failure-message/zipball/09fafcf6707bb8f38ac76baa397ae06b7c4412ae",
-                "reference": "09fafcf6707bb8f38ac76baa397ae06b7c4412ae",
+                "url": "https://api.github.com/repos/webignition/basil-assertion-failure-message/zipball/ee2c5f8fd06dd207fc77e2a7131d538034869c68",
+                "reference": "ee2c5f8fd06dd207fc77e2a7131d538034869c68",
                 "shasum": ""
             },
             "require": {
@@ -47,20 +47,20 @@
                 }
             ],
             "homepage": "https://github.com/webignition/basil-assertion-failure-message",
-            "time": "2020-04-02T17:27:59+00:00"
+            "time": "2020-04-06T09:30:04+00:00"
         },
         {
             "name": "webignition/basil-compilable-source",
-            "version": "0.17",
+            "version": "0.18",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/basil-compilable-source.git",
-                "reference": "c573ddd3cb3ea555c62cfae64a18f3e1419245f2"
+                "reference": "52fe27cbb983a5423cbca78b37fdcfd677c883aa"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/basil-compilable-source/zipball/c573ddd3cb3ea555c62cfae64a18f3e1419245f2",
-                "reference": "c573ddd3cb3ea555c62cfae64a18f3e1419245f2",
+                "url": "https://api.github.com/repos/webignition/basil-compilable-source/zipball/52fe27cbb983a5423cbca78b37fdcfd677c883aa",
+                "reference": "52fe27cbb983a5423cbca78b37fdcfd677c883aa",
                 "shasum": ""
             },
             "require": {
@@ -88,7 +88,7 @@
                 }
             ],
             "homepage": "https://github.com/webignition/basil-compilable-source",
-            "time": "2020-04-07T10:29:17+00:00"
+            "time": "2020-04-07T16:24:53+00:00"
         },
         {
             "name": "webignition/basil-dom-identifier-factory",

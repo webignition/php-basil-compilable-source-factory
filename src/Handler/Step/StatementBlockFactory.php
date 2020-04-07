@@ -51,7 +51,6 @@ class StatementBlockFactory
 
         $block->addLine(new SingleLineComment($statementCommentContent));
         $block->addLine($this->createAddToHandledStatementsStatement($statement));
-        $block->addLine(new EmptyLine());
 
         return $block;
     }

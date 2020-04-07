@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Step;
 
 use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\CodeBlockInterface;
+use webignition\BasilCompilableSource\Line\EmptyLine;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
@@ -56,24 +57,34 @@ class StepHandler
         try {
             foreach ($step->getActions() as $action) {
                 try {
-                    $block->addBlock($this->derivedAssertionFactory->createForAction($action));
+                    $derivedAssertionBlock = $this->derivedAssertionFactory->createForAction($action);
+                    if (false === $derivedAssertionBlock->isEmpty()) {
+                        $block->addBlock($derivedAssertionBlock);
+                        $block->addLine(new EmptyLine());
+                    }
                 } catch (UnsupportedContentException $unsupportedContentException) {
                     throw new UnsupportedStatementException($action, $unsupportedContentException);
                 }
 
                 $block->addBlock($this->statementBlockFactory->create($action));
                 $block->addBlock($this->actionHandler->handle($action));
+                $block->addLine(new EmptyLine());
             }
 
             foreach ($step->getAssertions() as $assertion) {
                 try {
-                    $block->addBlock($this->derivedAssertionFactory->createForAssertion($assertion));
+                    $derivedAssertionBlock = $this->derivedAssertionFactory->createForAssertion($assertion);
+                    if (false === $derivedAssertionBlock->isEmpty()) {
+                        $block->addBlock($derivedAssertionBlock);
+                        $block->addLine(new EmptyLine());
+                    }
                 } catch (UnsupportedContentException $unsupportedContentException) {
                     throw new UnsupportedStatementException($assertion, $unsupportedContentException);
                 }
 
                 $block->addBlock($this->statementBlockFactory->create($assertion));
                 $block->addBlock($this->assertionHandler->handle($assertion));
+                $block->addLine(new EmptyLine());
             }
         } catch (UnsupportedStatementException $unsupportedStatementException) {
             throw new UnsupportedStepException($step, $unsupportedStatementException);
