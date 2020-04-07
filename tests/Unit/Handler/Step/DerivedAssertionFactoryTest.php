@@ -12,7 +12,6 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentExcepti
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Step\DerivedAssertionFactory;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StatementBlockFactory;
-use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Action\ActionInterface;
 use webignition\BasilModels\Action\InputAction;
@@ -508,6 +507,11 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
         $factory->createForAction($action);
     }
 
+    /**
+     * @param array<mixed> $createCalls
+     *
+     * @return StatementBlockFactory
+     */
     private function createMockStatementBlockFactory(array $createCalls): StatementBlockFactory
     {
         $statementBlockFactory = \Mockery::mock(StatementBlockFactory::class);
@@ -558,7 +562,7 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @param array<mixed> $services
      *
-     * @return StepHandler
+     * @return DerivedAssertionFactory
      */
     private function createFactory(array $services = []): DerivedAssertionFactory
     {

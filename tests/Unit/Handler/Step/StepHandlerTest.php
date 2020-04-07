@@ -494,6 +494,11 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
         return $derivedAssertionFactory;
     }
 
+    /**
+     * @param array<mixed> $createCalls
+     *
+     * @return StatementBlockFactory
+     */
     private function createMockStatementBlockFactory(array $createCalls): StatementBlockFactory
     {
         $statementBlockFactory = \Mockery::mock(StatementBlockFactory::class);
@@ -540,7 +545,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param array[] $calls
+     * @param array[] $handleCalls
      *
      * @return AssertionHandler
      */
