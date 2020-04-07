@@ -104,7 +104,9 @@ class DerivedAssertionFactory
                 $block->addBlock($this->createForCollectionExistenceExcludingSelf($identifier, $assertion));
             }
         } else {
-            $block->addBlock($this->createForCollectionExistenceIncludingSelf($identifier, $assertion));
+            if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
+                $block->addBlock($this->createForCollectionExistenceIncludingSelf($identifier, $assertion));
+            }
         }
 
         if ($assertion instanceof ComparisonAssertionInterface) {

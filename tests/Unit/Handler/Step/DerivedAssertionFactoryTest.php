@@ -15,9 +15,9 @@ use webignition\BasilCompilableSourceFactory\Handler\Step\StatementBlockFactory;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Action\ActionInterface;
+use webignition\BasilModels\Action\InputAction;
 use webignition\BasilModels\Action\InteractionAction;
 use webignition\BasilModels\Assertion\AssertionInterface;
-use webignition\BasilModels\Assertion\ComparisonAssertion;
 use webignition\BasilModels\Assertion\DerivedElementExistsAssertion;
 use webignition\BasilParser\ActionParser;
 use webignition\BasilParser\AssertionParser;
@@ -474,7 +474,7 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    public function testCreateForActionThrowsException()
+    public function testCreateForClickActionThrowsException()
     {
         $action = new InteractionAction(
             'click "foo"',
@@ -491,12 +491,12 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
         $factory->createForAction($action);
     }
 
-    public function testCreateForAssertionThrowsException()
+    public function testCreateForSetActionThrowsException()
     {
-        $assertion = new ComparisonAssertion(
-            '"foo" is "value"',
+        $action = new InputAction(
+            'set "foo" to "value"',
+            'set',
             '"foo"',
-            'is',
             '"value"'
         );
 
@@ -505,7 +505,7 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
         );
 
         $factory = DerivedAssertionFactory::createFactory();
-        $factory->createForAssertion($assertion);
+        $factory->createForAction($action);
     }
 
     private function createMockStatementBlockFactory(array $createCalls): StatementBlockFactory

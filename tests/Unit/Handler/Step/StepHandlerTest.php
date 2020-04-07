@@ -429,6 +429,44 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
+    public function testHandleAssertionWithUnsupportedIdentifier()
+    {
+        $stepParser = StepParser::create();
+        $assertionParser = AssertionParser::create();
+
+        $step = $stepParser->parse([
+            'assertions' => [
+                '$elements.examined is "value"',
+            ],
+        ]);
+
+        $assertion = $assertionParser->parse('$elements.examined is "value"');
+        $unsupportedContentException = new UnsupportedContentException(
+            UnsupportedContentException::TYPE_IDENTIFIER,
+            '$elements.examined'
+        );
+
+        $derivedAssertionFactory = \Mockery::mock(DerivedAssertionFactory::class);
+        $derivedAssertionFactory
+            ->shouldReceive('createForAssertion')
+            ->withArgs(function (AssertionInterface $passedAssertion) use ($assertion) {
+                $this->assertEquals($assertion, $passedAssertion);
+
+                return true;
+            })->andThrow($unsupportedContentException);
+
+        $handler = $this->createStepHandler([
+            DerivedAssertionFactory::class => $derivedAssertionFactory,
+        ]);
+
+        $this->expectExceptionObject(new UnsupportedStepException(
+            $step,
+            new UnsupportedStatementException($assertion, $unsupportedContentException)
+        ));
+
+        $handler->handle($step);
+    }
+
     /**
      * @param array[] $calls
      *
