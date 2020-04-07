@@ -94,8 +94,9 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                 ]),
                 'expectedRenderedSource' =>
                     '// DerivedAssertionFactory::createForAction(click $".selector")' . "\n" .
+                    "\n" .
                     '// StatementBlockFactory::create(click $".selector")' . "\n" .
-                    '// ActionHandler::handle(click $".selector")'
+                    '// ActionHandler::handle(click $".selector")' . "\n"
                 ,
                 'expectedMetadata' => new Metadata(),
             ],
@@ -162,11 +163,14 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                 ]),
                 'expectedRenderedSource' =>
                     '// DerivedAssertionFactory::createForAction(click $".selector1")' . "\n" .
+                    "\n" .
                     '// StatementBlockFactory::create(click $".selector1")' . "\n" .
                     '// ActionHandler::handle(click $".selector1")' . "\n" .
+                    "\n" .
                     '// DerivedAssertionFactory::createForAction(click $".selector2")' . "\n" .
+                    "\n" .
                     '// StatementBlockFactory::create(click $".selector2")' . "\n" .
-                    '// ActionHandler::handle(click $".selector2")'
+                    '// ActionHandler::handle(click $".selector2")' . "\n"
                 ,
                 'expectedMetadata' => new Metadata(),
             ],
@@ -210,8 +214,9 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                 ]),
                 'expectedRenderedSource' =>
                     '// DerivedAssertionFactory::createForAssertion($".selector" exists)' . "\n" .
+                    "\n" .
                     '// StatementBlockFactory::create($".selector" exists)' . "\n" .
-                    '// AssertionHandler::handle($".selector" exists)'
+                    '// AssertionHandler::handle($".selector" exists)' . "\n"
                 ,
                 'expectedMetadata' => new Metadata(),
             ],
@@ -278,11 +283,14 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                 ]),
                 'expectedRenderedSource' =>
                     '// DerivedAssertionFactory::createForAssertion($".selector1" exists)' . "\n" .
+                    "\n" .
                     '// StatementBlockFactory::create($".selector1" exists)' . "\n" .
                     '// AssertionHandler::handle($".selector1" exists)' . "\n" .
+                    "\n" .
                     '// DerivedAssertionFactory::createForAssertion($".selector2" exists)' . "\n" .
+                    "\n" .
                     '// StatementBlockFactory::create($".selector2" exists)' . "\n" .
-                    '// AssertionHandler::handle($".selector2" exists)'
+                    '// AssertionHandler::handle($".selector2" exists)' . "\n"
                 ,
                 'expectedMetadata' => new Metadata(),
             ],
@@ -355,11 +363,14 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                 ]),
                 'expectedRenderedSource' =>
                     '// DerivedAssertionFactory::createForAction(click $".selector")' . "\n" .
+                    "\n" .
                     '// StatementBlockFactory::create(click $".selector")' . "\n" .
                     '// ActionHandler::handle(click $".selector")' . "\n" .
+                    "\n" .
                     '// DerivedAssertionFactory::createForAssertion($".selector" exists)' . "\n" .
+                    "\n" .
                     '// StatementBlockFactory::create($".selector" exists)' . "\n" .
-                    '// AssertionHandler::handle($".selector" exists)'
+                    '// AssertionHandler::handle($".selector" exists)' . "\n"
                 ,
                 'expectedMetadata' => new Metadata(),
             ],
