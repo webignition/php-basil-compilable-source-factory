@@ -64,16 +64,14 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
                         ],
                     ]),
                     AssertionHandler::class => $this->createMockAssertionHandler([
-                        'handleExistenceAssertionAsElement' => [
-                            '$".selector" exists' => [
-                                'assertion' => new DerivedElementExistsAssertion(
-                                    $actionParser->parse('click $".selector"'),
-                                    '$".selector"'
-                                ),
-                                'return' => new CodeBlock([
-                                    new SingleLineComment('derived $".selector" exists response'),
-                                ]),
-                            ],
+                        '$".selector" exists' => [
+                            'assertion' => new DerivedElementExistsAssertion(
+                                $actionParser->parse('click $".selector"'),
+                                '$".selector"'
+                            ),
+                            'return' => new CodeBlock([
+                                new SingleLineComment('derived $".selector" exists response'),
+                            ]),
                         ],
                     ]),
                 ]),
@@ -107,25 +105,23 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
                         ],
                     ]),
                     AssertionHandler::class => $this->createMockAssertionHandler([
-                        'handleExistenceAssertionAsElement' => [
-                            '$".parent" exists' => [
-                                'assertion' => new DerivedElementExistsAssertion(
-                                    $actionParser->parse('click $"{{ $".parent" }} .child"'),
-                                    '$".parent"'
-                                ),
-                                'return' => new CodeBlock([
-                                    new SingleLineComment('derived $".parent" exists response'),
-                                ]),
-                            ],
-                            '$"{{ $".parent" }} .child" exists' => [
-                                'assertion' => new DerivedElementExistsAssertion(
-                                    $actionParser->parse('click $"{{ $".parent" }} .child"'),
-                                    '$"{{ $".parent" }} .child"'
-                                ),
-                                'return' => new CodeBlock([
-                                    new SingleLineComment('derived $"{{ $".parent" }} .child" exists response'),
-                                ]),
-                            ],
+                        '$".parent" exists' => [
+                            'assertion' => new DerivedElementExistsAssertion(
+                                $actionParser->parse('click $"{{ $".parent" }} .child"'),
+                                '$".parent"'
+                            ),
+                            'return' => new CodeBlock([
+                                new SingleLineComment('derived $".parent" exists response'),
+                            ]),
+                        ],
+                        '$"{{ $".parent" }} .child" exists' => [
+                            'assertion' => new DerivedElementExistsAssertion(
+                                $actionParser->parse('click $"{{ $".parent" }} .child"'),
+                                '$"{{ $".parent" }} .child"'
+                            ),
+                            'return' => new CodeBlock([
+                                new SingleLineComment('derived $"{{ $".parent" }} .child" exists response'),
+                            ]),
                         ],
                     ]),
                 ]),
@@ -152,16 +148,14 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
                         ],
                     ]),
                     AssertionHandler::class => $this->createMockAssertionHandler([
-                        'handleExistenceAssertionAsCollection' => [
-                            '$".selector" exists' => [
-                                'assertion' => new DerivedElementExistsAssertion(
-                                    $actionParser->parse('set $".selector" to "value"'),
-                                    '$".selector"'
-                                ),
-                                'return' => new CodeBlock([
-                                    new SingleLineComment('derived $".selector" exists response'),
-                                ]),
-                            ],
+                        '$".selector" exists' => [
+                            'assertion' => new DerivedElementExistsAssertion(
+                                $actionParser->parse('set $".selector" to "value"'),
+                                '$".selector"'
+                            ),
+                            'return' => new CodeBlock([
+                                new SingleLineComment('derived $".selector" exists response'),
+                            ]),
                         ],
                     ]),
                 ]),
@@ -195,25 +189,23 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
                         ],
                     ]),
                     AssertionHandler::class => $this->createMockAssertionHandler([
-                        'handleExistenceAssertionAsCollection' => [
-                            '$".parent" exists' => [
-                                'assertion' => new DerivedElementExistsAssertion(
-                                    $actionParser->parse('set $"{{ $".parent" }} .child" to "value"'),
-                                    '$".parent"'
-                                ),
-                                'return' => new CodeBlock([
-                                    new SingleLineComment('derived $".parent" exists response'),
-                                ]),
-                            ],
-                            '$"{{ $".parent" }} .child" exists' => [
-                                'assertion' => new DerivedElementExistsAssertion(
-                                    $actionParser->parse('set $"{{ $".parent" }} .child" to "value"'),
-                                    '$"{{ $".parent" }} .child"'
-                                ),
-                                'return' => new CodeBlock([
-                                    new SingleLineComment('derived $"{{ $".parent" }} .child" exists response'),
-                                ]),
-                            ],
+                        '$".parent" exists' => [
+                            'assertion' => new DerivedElementExistsAssertion(
+                                $actionParser->parse('set $"{{ $".parent" }} .child" to "value"'),
+                                '$".parent"'
+                            ),
+                            'return' => new CodeBlock([
+                                new SingleLineComment('derived $".parent" exists response'),
+                            ]),
+                        ],
+                        '$"{{ $".parent" }} .child" exists' => [
+                            'assertion' => new DerivedElementExistsAssertion(
+                                $actionParser->parse('set $"{{ $".parent" }} .child" to "value"'),
+                                '$"{{ $".parent" }} .child"'
+                            ),
+                            'return' => new CodeBlock([
+                                new SingleLineComment('derived $"{{ $".parent" }} .child" exists response'),
+                            ]),
                         ],
                     ]),
                 ]),
@@ -249,25 +241,23 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
                         ],
                     ]),
                     AssertionHandler::class => $this->createMockAssertionHandler([
-                        'handleExistenceAssertionAsCollection' => [
-                            '$".selector" exists' => [
-                                'assertion' => new DerivedElementExistsAssertion(
-                                    $actionParser->parse('set $".selector" to $".value"'),
-                                    '$".selector"'
-                                ),
-                                'return' => new CodeBlock([
-                                    new SingleLineComment('derived $".selector" exists response'),
-                                ]),
-                            ],
-                            '$".value" exists' => [
-                                'assertion' => new DerivedElementExistsAssertion(
-                                    $actionParser->parse('set $".selector" to $".value"'),
-                                    '$".value"'
-                                ),
-                                'return' => new CodeBlock([
-                                    new SingleLineComment('derived $".value" exists response'),
-                                ]),
-                            ],
+                        '$".selector" exists' => [
+                            'assertion' => new DerivedElementExistsAssertion(
+                                $actionParser->parse('set $".selector" to $".value"'),
+                                '$".selector"'
+                            ),
+                            'return' => new CodeBlock([
+                                new SingleLineComment('derived $".selector" exists response'),
+                            ]),
+                        ],
+                        '$".value" exists' => [
+                            'assertion' => new DerivedElementExistsAssertion(
+                                $actionParser->parse('set $".selector" to $".value"'),
+                                '$".value"'
+                            ),
+                            'return' => new CodeBlock([
+                                new SingleLineComment('derived $".value" exists response'),
+                            ]),
                         ],
                     ]),
                 ]),
@@ -294,16 +284,14 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
                         ],
                     ]),
                     AssertionHandler::class => $this->createMockAssertionHandler([
-                        'handleExistenceAssertionAsCollection' => [
-                            '$".duration" exists' => [
-                                'assertion' => new DerivedElementExistsAssertion(
-                                    $actionParser->parse('wait $".duration"'),
-                                    '$".duration"'
-                                ),
-                                'return' => new CodeBlock([
-                                    new SingleLineComment('derived $".duration" exists response'),
-                                ]),
-                            ],
+                        '$".duration" exists' => [
+                            'assertion' => new DerivedElementExistsAssertion(
+                                $actionParser->parse('wait $".duration"'),
+                                '$".duration"'
+                            ),
+                            'return' => new CodeBlock([
+                                new SingleLineComment('derived $".duration" exists response'),
+                            ]),
                         ],
                     ]),
                 ]),
@@ -363,16 +351,14 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
                         ],
                     ]),
                     AssertionHandler::class => $this->createMockAssertionHandler([
-                        'handleExistenceAssertionAsCollection' => [
-                            '$".parent" exists' => [
-                                'assertion' => new DerivedElementExistsAssertion(
-                                    $assertionParser->parse('$"{{ $".parent" }} .child" exists'),
-                                    '$".parent"'
-                                ),
-                                'return' => new CodeBlock([
-                                    new SingleLineComment('derived $".parent" exists response'),
-                                ]),
-                            ],
+                        '$".parent" exists' => [
+                            'assertion' => new DerivedElementExistsAssertion(
+                                $assertionParser->parse('$"{{ $".parent" }} .child" exists'),
+                                '$".parent"'
+                            ),
+                            'return' => new CodeBlock([
+                                new SingleLineComment('derived $".parent" exists response'),
+                            ]),
                         ],
                     ]),
                 ]),
@@ -397,16 +383,14 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
                         ],
                     ]),
                     AssertionHandler::class => $this->createMockAssertionHandler([
-                        'handleExistenceAssertionAsCollection' => [
-                            '$".selector" exists' => [
-                                'assertion' => new DerivedElementExistsAssertion(
-                                    $assertionParser->parse('$".selector" is "value"'),
-                                    '$".selector"'
-                                ),
-                                'return' => new CodeBlock([
-                                    new SingleLineComment('derived $".selector" exists response'),
-                                ]),
-                            ],
+                        '$".selector" exists' => [
+                            'assertion' => new DerivedElementExistsAssertion(
+                                $assertionParser->parse('$".selector" is "value"'),
+                                '$".selector"'
+                            ),
+                            'return' => new CodeBlock([
+                                new SingleLineComment('derived $".selector" exists response'),
+                            ]),
                         ],
                     ]),
                 ]),
@@ -440,25 +424,23 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
                         ],
                     ]),
                     AssertionHandler::class => $this->createMockAssertionHandler([
-                        'handleExistenceAssertionAsCollection' => [
-                            '$".selector" exists' => [
-                                'assertion' => new DerivedElementExistsAssertion(
-                                    $assertionParser->parse('$".selector" is $".value"'),
-                                    '$".selector"'
-                                ),
-                                'return' => new CodeBlock([
-                                    new SingleLineComment('derived $".selector" exists response'),
-                                ]),
-                            ],
-                            '$".value" exists' => [
-                                'assertion' => new DerivedElementExistsAssertion(
-                                    $assertionParser->parse('$".selector" is $".value"'),
-                                    '$".value"'
-                                ),
-                                'return' => new CodeBlock([
-                                    new SingleLineComment('derived $".value" exists response'),
-                                ]),
-                            ],
+                        '$".selector" exists' => [
+                            'assertion' => new DerivedElementExistsAssertion(
+                                $assertionParser->parse('$".selector" is $".value"'),
+                                '$".selector"'
+                            ),
+                            'return' => new CodeBlock([
+                                new SingleLineComment('derived $".selector" exists response'),
+                            ]),
+                        ],
+                        '$".value" exists' => [
+                            'assertion' => new DerivedElementExistsAssertion(
+                                $assertionParser->parse('$".selector" is $".value"'),
+                                '$".value"'
+                            ),
+                            'return' => new CodeBlock([
+                                new SingleLineComment('derived $".value" exists response'),
+                            ]),
                         ],
                     ]),
                 ]),
@@ -533,27 +515,25 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @param array[] $calls
+     * @param array[] $handleCalls
      *
      * @return AssertionHandler
      */
-    private function createMockAssertionHandler(array $calls): AssertionHandler
+    private function createMockAssertionHandler(array $handleCalls): AssertionHandler
     {
         $assertionHandler = \Mockery::mock(AssertionHandler::class);
 
-        foreach ($calls as $methodName => $methodCalls) {
-            if (0 !== count($methodCalls)) {
-                $assertionHandler
-                    ->shouldReceive($methodName)
-                    ->times(count($methodCalls))
-                    ->andReturnUsing(function (AssertionInterface $assertion) use ($methodCalls) {
-                        $data = $methodCalls[$assertion->getSource()];
+        if (0 !== count($handleCalls)) {
+            $assertionHandler
+                ->shouldReceive('handle')
+                ->times(count($handleCalls))
+                ->andReturnUsing(function (AssertionInterface $assertion) use ($handleCalls) {
+                    $data = $handleCalls[$assertion->getSource()];
 
-                        $this->assertEquals($data['assertion'], $assertion);
+                    $this->assertEquals($data['assertion'], $assertion);
 
-                        return $data['return'];
-                    });
-            }
+                    return $data['return'];
+                });
         }
 
         return $assertionHandler;

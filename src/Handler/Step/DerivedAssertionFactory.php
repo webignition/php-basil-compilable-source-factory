@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Step;
 use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
@@ -55,22 +56,23 @@ class DerivedAssertionFactory
      * @return CodeBlockInterface
      *
      * @throws UnsupportedContentException
+     * @throws UnsupportedStatementException
      */
     public function createForAction(ActionInterface $action): CodeBlockInterface
     {
         $block = new CodeBlock();
 
         if ($action instanceof InteractionActionInterface && !$action instanceof InputActionInterface) {
-            $block->addBlock($this->createForElementExistence($action->getIdentifier(), $action));
+            $block->addBlock($this->createForStatementAndAncestors($action->getIdentifier(), $action));
         }
 
         if ($action instanceof InputActionInterface) {
-            $block->addBlock($this->createForCollectionExistenceIncludingSelf($action->getIdentifier(), $action));
+            $block->addBlock($this->createForStatementAndAncestors($action->getIdentifier(), $action));
 
             $value = $action->getValue();
 
             if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($value)) {
-                $block->addBlock($this->createForCollectionExistenceIncludingSelf($value, $action));
+                $block->addBlock($this->createForStatementAndAncestors($value, $action));
             }
         }
 
@@ -78,7 +80,7 @@ class DerivedAssertionFactory
             $duration = $action->getDuration();
 
             if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($duration)) {
-                $block->addBlock($this->createForCollectionExistenceIncludingSelf($duration, $action));
+                $block->addBlock($this->createForStatementAndAncestors($duration, $action));
             }
         }
 
@@ -91,6 +93,7 @@ class DerivedAssertionFactory
      * @return CodeBlockInterface
      *
      * @throws UnsupportedContentException
+     * @throws UnsupportedStatementException
      */
     public function createForAssertion(AssertionInterface $assertion): CodeBlockInterface
     {
@@ -101,11 +104,11 @@ class DerivedAssertionFactory
 
         if ($isExistenceAssertion) {
             if ($this->identifierTypeAnalyser->isDescendantDomIdentifier($identifier)) {
-                $block->addBlock($this->createForCollectionExistenceExcludingSelf($identifier, $assertion));
+                $block->addBlock($this->createForStatementAncestorsOnly($identifier, $assertion));
             }
         } else {
             if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
-                $block->addBlock($this->createForCollectionExistenceIncludingSelf($identifier, $assertion));
+                $block->addBlock($this->createForStatementAndAncestors($identifier, $assertion));
             }
         }
 
@@ -113,43 +116,11 @@ class DerivedAssertionFactory
             $value = $assertion->getValue();
 
             if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($value)) {
-                $block->addBlock($this->createForCollectionExistenceIncludingSelf($value, $assertion));
+                $block->addBlock($this->createForStatementAndAncestors($value, $assertion));
             }
         }
 
         return $block;
-    }
-
-    /**
-     * @param string $identifier
-     * @param StatementModelInterface $action
-     *
-     * @throws UnsupportedContentException
-     *
-     * @return CodeBlockInterface
-     */
-    private function createForElementExistence(
-        string $identifier,
-        StatementModelInterface $action
-    ): CodeBlockInterface {
-        $domIdentifier = $this->domIdentifierFactory->createFromIdentifierString($identifier);
-        if (null === $domIdentifier) {
-            throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
-        }
-
-        $elementHierarchy = $domIdentifier->getScope();
-        $elementHierarchy[] = $domIdentifier;
-
-        $codeBlock = new CodeBlock();
-
-        foreach ($elementHierarchy as $elementIdentifier) {
-            $elementExistsAssertion = new DerivedElementExistsAssertion($action, (string) $elementIdentifier);
-
-            $codeBlock->addBlock($this->statementBlockFactory->create($elementExistsAssertion));
-            $codeBlock->addBlock($this->assertionHandler->handleExistenceAssertionAsElement($elementExistsAssertion));
-        }
-
-        return $codeBlock;
     }
 
     /**
@@ -159,8 +130,9 @@ class DerivedAssertionFactory
      * @return CodeBlockInterface
      *
      * @throws UnsupportedContentException
+     * @throws UnsupportedStatementException
      */
-    private function createForCollectionExistenceIncludingSelf(
+    private function createForStatementAndAncestors(
         string $identifier,
         StatementModelInterface $statement
     ): CodeBlockInterface {
@@ -180,11 +152,12 @@ class DerivedAssertionFactory
      * @param string $identifier
      * @param StatementModelInterface $statement
      *
-     * @throws UnsupportedContentException
-     *
      * @return CodeBlockInterface
+     *
+     * @throws UnsupportedStatementException
+     * @throws UnsupportedContentException
      */
-    private function createForCollectionExistenceExcludingSelf(
+    private function createForStatementAncestorsOnly(
         string $identifier,
         StatementModelInterface $statement
     ): CodeBlockInterface {
@@ -205,6 +178,7 @@ class DerivedAssertionFactory
      * @return CodeBlockInterface
      *
      * @throws UnsupportedContentException
+     * @throws UnsupportedStatementException
      */
     private function createForCollectionExistence(
         string $identifier,
@@ -225,7 +199,7 @@ class DerivedAssertionFactory
 
             $codeBlock->addBlock($this->statementBlockFactory->create($elementExistsAssertion));
             $codeBlock->addBlock(
-                $this->assertionHandler->handleExistenceAssertionAsCollection($elementExistsAssertion)
+                $this->assertionHandler->handle($elementExistsAssertion)
             );
         }
 
