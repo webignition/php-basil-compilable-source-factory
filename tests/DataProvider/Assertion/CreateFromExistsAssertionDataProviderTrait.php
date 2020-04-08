@@ -9,6 +9,8 @@ use webignition\BasilCompilableSource\Line\ClassDependency;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilModels\Assertion\DerivedElementExistsAssertion;
+use webignition\BasilParser\ActionParser;
 use webignition\BasilParser\AssertionParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
 
@@ -16,6 +18,7 @@ trait CreateFromExistsAssertionDataProviderTrait
 {
     public function createFromExistsAssertionDataProvider(): array
     {
+        $actionParser = ActionParser::create();
         $assertionParser = AssertionParser::create();
 
         return [
@@ -218,6 +221,150 @@ trait CreateFromExistsAssertionDataProviderTrait
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'ELEMENT',
+                    ]),
+                ]),
+            ],
+            'derived exists comparison, click action source' => [
+                'assertion' => new DerivedElementExistsAssertion(
+                    $actionParser->parse('click $".selector"'),
+                    '$".selector"'
+                ),
+                'assertionFailureMessageFactoryCalls' => [
+                    '$".selector" exists' => [
+                        'assertion' => new DerivedElementExistsAssertion(
+                            $actionParser->parse('click $".selector"'),
+                            '$".selector"'
+                        ),
+                        'message' => '$".selector" exists failure message',
+                    ],
+                ],
+                'expectedRenderedSource' =>
+                    '{{ PHPUNIT }}->examinedElementIdentifier = ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector"' . "\n" .
+                    '}\');' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = {{ NAVIGATOR }}->hasOne(' .
+                    '{{ PHPUNIT }}->examinedElementIdentifier' .
+                    ');' . "\n" .
+                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
+                    '    \'$".selector" exists failure message\'' . "\n" .
+                    ');'
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(ElementIdentifier::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                        VariableNames::PHPUNIT_TEST_CASE,
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                    ]),
+                ]),
+            ],
+            'derived exists comparison, submit action source' => [
+                'assertion' => new DerivedElementExistsAssertion(
+                    $actionParser->parse('submit $".selector"'),
+                    '$".selector"'
+                ),
+                'assertionFailureMessageFactoryCalls' => [
+                    '$".selector" exists' => [
+                        'assertion' => new DerivedElementExistsAssertion(
+                            $actionParser->parse('submit $".selector"'),
+                            '$".selector"'
+                        ),
+                        'message' => '$".selector" exists failure message',
+                    ],
+                ],
+                'expectedRenderedSource' =>
+                    '{{ PHPUNIT }}->examinedElementIdentifier = ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector"' . "\n" .
+                    '}\');' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = {{ NAVIGATOR }}->hasOne(' .
+                    '{{ PHPUNIT }}->examinedElementIdentifier' .
+                    ');' . "\n" .
+                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
+                    '    \'$".selector" exists failure message\'' . "\n" .
+                    ');'
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(ElementIdentifier::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                        VariableNames::PHPUNIT_TEST_CASE,
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                    ]),
+                ]),
+            ],
+            'derived exists comparison, set action source' => [
+                'assertion' => new DerivedElementExistsAssertion(
+                    $actionParser->parse('set $".selector" to "value"'),
+                    '$".selector"'
+                ),
+                'assertionFailureMessageFactoryCalls' => [
+                    '$".selector" exists' => [
+                        'assertion' => new DerivedElementExistsAssertion(
+                            $actionParser->parse('set $".selector" to "value"'),
+                            '$".selector"'
+                        ),
+                        'message' => '$".selector" exists failure message',
+                    ],
+                ],
+                'expectedRenderedSource' =>
+                    '{{ PHPUNIT }}->examinedElementIdentifier = ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".selector"' . "\n" .
+                    '}\');' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = {{ NAVIGATOR }}->has(' .
+                    '{{ PHPUNIT }}->examinedElementIdentifier' .
+                    ');' . "\n" .
+                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
+                    '    \'$".selector" exists failure message\'' . "\n" .
+                    ');'
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(ElementIdentifier::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                        VariableNames::PHPUNIT_TEST_CASE,
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                    ]),
+                ]),
+            ],
+            'derived exists comparison, wait action source' => [
+                'assertion' => new DerivedElementExistsAssertion(
+                    $actionParser->parse('wait $".duration"'),
+                    '$".duration"'
+                ),
+                'assertionFailureMessageFactoryCalls' => [
+                    '$".duration" exists' => [
+                        'assertion' => new DerivedElementExistsAssertion(
+                            $actionParser->parse('wait $".duration"'),
+                            '$".duration"'
+                        ),
+                        'message' => '$".duration" exists failure message',
+                    ],
+                ],
+                'expectedRenderedSource' =>
+                    '{{ PHPUNIT }}->examinedElementIdentifier = ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    "locator": ".duration"' . "\n" .
+                    '}\');' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = {{ NAVIGATOR }}->has(' .
+                    '{{ PHPUNIT }}->examinedElementIdentifier' .
+                    ');' . "\n" .
+                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
+                    '    \'$".duration" exists failure message\'' . "\n" .
+                    ');'
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(ElementIdentifier::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                        VariableNames::PHPUNIT_TEST_CASE,
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
                     ]),
                 ]),
             ],

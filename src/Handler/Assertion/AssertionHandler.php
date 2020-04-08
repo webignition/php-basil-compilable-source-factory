@@ -30,11 +30,15 @@ use webignition\BasilCompilableSourceFactory\ValueTypeIdentifier;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
+use webignition\BasilModels\Action\InputAction;
+use webignition\BasilModels\Action\InteractionAction;
 use webignition\BasilModels\Assertion\Assertion;
 use webignition\BasilModels\Assertion\AssertionInterface;
 use webignition\BasilModels\Assertion\ComparisonAssertionInterface;
+use webignition\BasilModels\Assertion\DerivedElementExistsAssertion;
 use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 use webignition\DomElementIdentifier\ElementIdentifier;
+use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
 class AssertionHandler
 {
@@ -45,9 +49,6 @@ class AssertionHandler
     public const ASSERT_MATCHES_METHOD = 'assertRegExp';
     public const ASSERT_TRUE_METHOD = 'assertTrue';
     public const ASSERT_FALSE_METHOD = 'assertFalse';
-
-    private const HANDLE_EXISTENCE_AS_ELEMENT = 1;
-    private const HANDLE_EXISTENCE_AS_COLLECTION = 2;
 
     private $accessorDefaultValueFactory;
     private $assertionFailureMessageFactory;
@@ -149,35 +150,8 @@ class AssertionHandler
      *
      * @throws UnsupportedContentException
      */
-    public function handleExistenceAssertionAsElement(AssertionInterface $assertion): CodeBlockInterface
+    private function handleExistenceAssertion(AssertionInterface $assertion): CodeBlockInterface
     {
-        return $this->handleExistenceAssertion($assertion, self::HANDLE_EXISTENCE_AS_ELEMENT);
-    }
-
-    /**
-     * @param AssertionInterface $assertion
-     *
-     * @return CodeBlockInterface
-     *
-     * @throws UnsupportedContentException
-     */
-    public function handleExistenceAssertionAsCollection(AssertionInterface $assertion): CodeBlockInterface
-    {
-        return $this->handleExistenceAssertion($assertion, self::HANDLE_EXISTENCE_AS_COLLECTION);
-    }
-
-    /**
-     * @param AssertionInterface $assertion
-     *
-     * @param int $handleAs
-     * @return CodeBlockInterface
-     *
-     * @throws UnsupportedContentException
-     */
-    private function handleExistenceAssertion(
-        AssertionInterface $assertion,
-        ?int $handleAs = null
-    ): CodeBlockInterface {
         $identifier = $assertion->getIdentifier();
 
         $valuePlaceholder = new ObjectPropertyAccessExpression(
@@ -219,11 +193,11 @@ class AssertionHandler
                 'examinedElementIdentifier'
             );
 
-            $domNavigatorCrawlerCall =
-                self::HANDLE_EXISTENCE_AS_ELEMENT === $handleAs ||
-                $domIdentifier instanceof AttributeIdentifierInterface
-                ? $this->domCrawlerNavigatorCallFactory->createHasOneCall($examinedElementIdentifierPlaceholder)
-                : $this->domCrawlerNavigatorCallFactory->createHasCall($examinedElementIdentifierPlaceholder);
+            $domNavigatorCrawlerCall = $this->createExistenceComparisonDomCrawlerNavigatorCall(
+                $domIdentifier,
+                $assertion,
+                $examinedElementIdentifierPlaceholder
+            );
 
             if (!$domIdentifier instanceof AttributeIdentifierInterface) {
                 return new CodeBlock([
@@ -273,6 +247,25 @@ class AssertionHandler
         }
 
         throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
+    }
+
+    private function createExistenceComparisonDomCrawlerNavigatorCall(
+        ElementIdentifierInterface $domIdentifier,
+        AssertionInterface $assertion,
+        ObjectPropertyAccessExpression $expression
+    ) {
+        $isAttributeIdentifier = $domIdentifier instanceof AttributeIdentifierInterface;
+        $isDerivedFromInteractionAction = false;
+
+        if ($assertion instanceof DerivedElementExistsAssertion) {
+            $sourceStatement = $assertion->getSourceStatement();
+            $isDerivedFromInteractionAction =
+                $sourceStatement instanceof InteractionAction && !$sourceStatement instanceof InputAction;
+        }
+
+        return $isAttributeIdentifier || $isDerivedFromInteractionAction
+                ? $this->domCrawlerNavigatorCallFactory->createHasOneCall($expression)
+                : $this->domCrawlerNavigatorCallFactory->createHasCall($expression);
     }
 
     /**
