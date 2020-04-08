@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "92b59442f4f121b85736682ea654b37b",
+    "content-hash": "7a54718fbea67d7a018a318e8cab639a",
     "packages": [
         {
             "name": "webignition/basil-assertion-failure-message",
@@ -178,16 +178,16 @@
         },
         {
             "name": "webignition/basil-models",
-            "version": "0.35",
+            "version": "0.37",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/basil-models.git",
-                "reference": "54a2d4a9348b4a81ea9c03909bfc5002c0b2a752"
+                "reference": "529c87d9fd8be2f0bd4ac934b7003fc41fc5b0fb"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/basil-models/zipball/54a2d4a9348b4a81ea9c03909bfc5002c0b2a752",
-                "reference": "54a2d4a9348b4a81ea9c03909bfc5002c0b2a752",
+                "url": "https://api.github.com/repos/webignition/basil-models/zipball/529c87d9fd8be2f0bd4ac934b7003fc41fc5b0fb",
+                "reference": "529c87d9fd8be2f0bd4ac934b7003fc41fc5b0fb",
                 "shasum": ""
             },
             "require": {
@@ -216,7 +216,7 @@
                 }
             ],
             "homepage": "https://github.com/webignition/basil-models",
-            "time": "2020-04-02T15:07:47+00:00"
+            "time": "2020-04-08T10:26:46+00:00"
         },
         {
             "name": "webignition/php-dom-element-identifier",
