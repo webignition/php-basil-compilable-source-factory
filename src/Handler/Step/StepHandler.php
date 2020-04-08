@@ -18,19 +18,19 @@ class StepHandler
 {
     private $actionHandler;
     private $assertionHandler;
-    private $derivedAssertionFactory;
     private $statementBlockFactory;
+    private $fooDerivedAssertionFactory;
 
     public function __construct(
         ActionHandler $actionHandler,
         AssertionHandler $assertionHandler,
-        DerivedAssertionFactory $derivedAssertionFactory,
-        StatementBlockFactory $statementBlockFactory
+        StatementBlockFactory $statementBlockFactory,
+        FooDerivedAssertionFactory $fooDerivedAssertionFactory
     ) {
         $this->actionHandler = $actionHandler;
         $this->assertionHandler = $assertionHandler;
-        $this->derivedAssertionFactory = $derivedAssertionFactory;
         $this->statementBlockFactory = $statementBlockFactory;
+        $this->fooDerivedAssertionFactory = $fooDerivedAssertionFactory;
     }
 
     public static function createHandler(): StepHandler
@@ -38,8 +38,8 @@ class StepHandler
         return new StepHandler(
             ActionHandler::createHandler(),
             AssertionHandler::createHandler(),
-            DerivedAssertionFactory::createFactory(),
-            StatementBlockFactory::createFactory()
+            StatementBlockFactory::createFactory(),
+            FooDerivedAssertionFactory::createFactory()
         );
     }
 
@@ -57,7 +57,14 @@ class StepHandler
         try {
             foreach ($step->getActions() as $action) {
                 try {
-                    $derivedAssertionBlock = $this->derivedAssertionFactory->createForAction($action);
+                    $derivedAssertionBlock = new CodeBlock();
+                    $derivedActionAssertions = $this->fooDerivedAssertionFactory->createForAction($action);
+
+                    foreach ($derivedActionAssertions as $derivedAssertion) {
+                        $derivedAssertionBlock->addBlock($this->statementBlockFactory->create($derivedAssertion));
+                        $derivedAssertionBlock->addBlock($this->assertionHandler->handle($derivedAssertion));
+                    }
+
                     if (false === $derivedAssertionBlock->isEmpty()) {
                         $block->addBlock($derivedAssertionBlock);
                         $block->addLine(new EmptyLine());
@@ -73,7 +80,15 @@ class StepHandler
 
             foreach ($step->getAssertions() as $assertion) {
                 try {
-                    $derivedAssertionBlock = $this->derivedAssertionFactory->createForAssertion($assertion);
+                    $derivedAssertionBlock = new CodeBlock();
+                    $derivedAssertionAssertions = $this->fooDerivedAssertionFactory->createForAssertion($assertion);
+
+                    foreach ($derivedAssertionAssertions as $derivedAssertion) {
+                        $derivedAssertionBlock->addBlock($this->statementBlockFactory->create($derivedAssertion));
+                        $derivedAssertionBlock->addBlock($this->assertionHandler->handle($derivedAssertion));
+                    }
+
+//                    $derivedAssertionBlock = $this->derivedAssertionFactory->createForAssertion($assertion);
                     if (false === $derivedAssertionBlock->isEmpty()) {
                         $block->addBlock($derivedAssertionBlock);
                         $block->addLine(new EmptyLine());
