@@ -13,7 +13,7 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementExcep
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
-use webignition\BasilCompilableSourceFactory\Handler\Step\FooDerivedAssertionFactory;
+use webignition\BasilCompilableSourceFactory\Handler\Step\DerivedAssertionFactory;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StatementBlockFactory;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
 use webignition\BasilModels\Action\ActionInterface;
@@ -604,7 +604,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
         $assertionHandler = $services[AssertionHandler::class] ?? AssertionHandler::createHandler();
         $statementBlockFactory = $services[StatementBlockFactory::class] ?? StatementBlockFactory::createFactory();
         $fooDerivedAssertionFactory =
-            $services[FooDerivedAssertionFactory::class] ?? FooDerivedAssertionFactory::createFactory();
+            $services[DerivedAssertionFactory::class] ?? DerivedAssertionFactory::createFactory();
 
         return new StepHandler(
             $actionHandler,

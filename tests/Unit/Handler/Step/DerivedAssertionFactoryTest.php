@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Step;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\Handler\Step\FooDerivedAssertionFactory;
+use webignition\BasilCompilableSourceFactory\Handler\Step\DerivedAssertionFactory;
 use webignition\BasilModels\Action\ActionInterface;
 use webignition\BasilModels\Action\InputAction;
 use webignition\BasilModels\Action\InteractionAction;
@@ -15,10 +15,10 @@ use webignition\BasilModels\Assertion\UniqueAssertionCollection;
 use webignition\BasilParser\ActionParser;
 use webignition\BasilParser\AssertionParser;
 
-class FooDerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
+class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @var FooDerivedAssertionFactory
+     * @var DerivedAssertionFactory
      */
     private $factory;
 
@@ -26,12 +26,12 @@ class FooDerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
     {
         parent::setUp();
 
-        $this->factory = FooDerivedAssertionFactory::createFactory();
+        $this->factory = DerivedAssertionFactory::createFactory();
     }
 
     public function testCreateFactory()
     {
-        $this->assertInstanceOf(FooDerivedAssertionFactory::class, FooDerivedAssertionFactory::createFactory());
+        $this->assertInstanceOf(DerivedAssertionFactory::class, DerivedAssertionFactory::createFactory());
     }
 
     /**

@@ -18,7 +18,7 @@ use webignition\BasilModels\Assertion\UniqueAssertionCollection;
 use webignition\BasilModels\StatementInterface as StatementModelInterface;
 use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
-class FooDerivedAssertionFactory
+class DerivedAssertionFactory
 {
     private $domIdentifierFactory;
     private $identifierTypeAnalyser;
@@ -33,7 +33,7 @@ class FooDerivedAssertionFactory
 
     public static function createFactory(): self
     {
-        return new FooDerivedAssertionFactory(
+        return new DerivedAssertionFactory(
             DomIdentifierFactory::createFactory(),
             IdentifierTypeAnalyser::create()
         );
