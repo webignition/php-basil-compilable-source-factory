@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Step;
 
-use webignition\BasilCompilableSource\Block\CodeBlock;
-use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
-use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Action\ActionInterface;
@@ -18,61 +14,55 @@ use webignition\BasilModels\Action\WaitActionInterface;
 use webignition\BasilModels\Assertion\AssertionInterface;
 use webignition\BasilModels\Assertion\ComparisonAssertionInterface;
 use webignition\BasilModels\Assertion\DerivedElementExistsAssertion;
+use webignition\BasilModels\Assertion\UniqueAssertionCollection;
 use webignition\BasilModels\StatementInterface as StatementModelInterface;
 use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
 class DerivedAssertionFactory
 {
-    private $assertionHandler;
     private $domIdentifierFactory;
     private $identifierTypeAnalyser;
-    private $statementBlockFactory;
 
     public function __construct(
-        AssertionHandler $assertionHandler,
         DomIdentifierFactory $domIdentifierFactory,
-        IdentifierTypeAnalyser $identifierTypeAnalyser,
-        StatementBlockFactory $statementBlockFactory
+        IdentifierTypeAnalyser $identifierTypeAnalyser
     ) {
-        $this->assertionHandler = $assertionHandler;
         $this->domIdentifierFactory = $domIdentifierFactory;
         $this->identifierTypeAnalyser = $identifierTypeAnalyser;
-        $this->statementBlockFactory = $statementBlockFactory;
     }
 
     public static function createFactory(): self
     {
         return new DerivedAssertionFactory(
-            AssertionHandler::createHandler(),
             DomIdentifierFactory::createFactory(),
-            IdentifierTypeAnalyser::create(),
-            StatementBlockFactory::createFactory()
+            IdentifierTypeAnalyser::create()
         );
     }
 
     /**
      * @param ActionInterface $action
      *
-     * @return CodeBlockInterface
+     * @return UniqueAssertionCollection
      *
      * @throws UnsupportedContentException
-     * @throws UnsupportedStatementException
      */
-    public function createForAction(ActionInterface $action): CodeBlockInterface
+    public function createForAction(ActionInterface $action): UniqueAssertionCollection
     {
-        $block = new CodeBlock();
+        $assertions = new UniqueAssertionCollection();
 
         if ($action instanceof InteractionActionInterface && !$action instanceof InputActionInterface) {
-            $block->addBlock($this->createForStatementAndAncestors($action->getIdentifier(), $action));
+            $assertions = $assertions->merge($this->createForStatementAndAncestors($action->getIdentifier(), $action));
         }
 
         if ($action instanceof InputActionInterface) {
-            $block->addBlock($this->createForStatementAndAncestors($action->getIdentifier(), $action));
+            $assertions = $assertions->merge(
+                $this->createForStatementAndAncestors($action->getIdentifier(), $action)
+            );
 
             $value = $action->getValue();
 
             if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($value)) {
-                $block->addBlock($this->createForStatementAndAncestors($value, $action));
+                $assertions = $assertions->merge($this->createForStatementAndAncestors($value, $action));
             }
         }
 
@@ -80,35 +70,34 @@ class DerivedAssertionFactory
             $duration = $action->getDuration();
 
             if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($duration)) {
-                $block->addBlock($this->createForStatementAndAncestors($duration, $action));
+                $assertions = $assertions->merge($this->createForStatementAndAncestors($duration, $action));
             }
         }
 
-        return $block;
+        return $assertions;
     }
 
     /**
      * @param AssertionInterface $assertion
      *
-     * @return CodeBlockInterface
+     * @return UniqueAssertionCollection
      *
      * @throws UnsupportedContentException
-     * @throws UnsupportedStatementException
      */
-    public function createForAssertion(AssertionInterface $assertion): CodeBlockInterface
+    public function createForAssertion(AssertionInterface $assertion): UniqueAssertionCollection
     {
-        $block = new CodeBlock();
+        $assertions = new UniqueAssertionCollection();
 
         $isExistenceAssertion = in_array($assertion->getComparison(), ['exists', 'not-exists']);
         $identifier = $assertion->getIdentifier();
 
         if ($isExistenceAssertion) {
             if ($this->identifierTypeAnalyser->isDescendantDomIdentifier($identifier)) {
-                $block->addBlock($this->createForStatementAncestorsOnly($identifier, $assertion));
+                $assertions = $assertions->merge($this->createForStatementAncestorsOnly($identifier, $assertion));
             }
         } else {
             if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
-                $block->addBlock($this->createForStatementAndAncestors($identifier, $assertion));
+                $assertions = $assertions->merge($this->createForStatementAndAncestors($identifier, $assertion));
             }
         }
 
@@ -116,27 +105,26 @@ class DerivedAssertionFactory
             $value = $assertion->getValue();
 
             if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($value)) {
-                $block->addBlock($this->createForStatementAndAncestors($value, $assertion));
+                $assertions = $assertions->merge($this->createForStatementAndAncestors($value, $assertion));
             }
         }
 
-        return $block;
+        return $assertions;
     }
 
     /**
      * @param string $identifier
      * @param StatementModelInterface $statement
      *
-     * @return CodeBlockInterface
+     * @return UniqueAssertionCollection
      *
      * @throws UnsupportedContentException
-     * @throws UnsupportedStatementException
      */
     private function createForStatementAndAncestors(
         string $identifier,
         StatementModelInterface $statement
-    ): CodeBlockInterface {
-        return $this->createForCollectionExistence(
+    ): UniqueAssertionCollection {
+        return $this->createForCollection(
             $identifier,
             $statement,
             function (ElementIdentifierInterface $domIdentifier): array {
@@ -152,16 +140,15 @@ class DerivedAssertionFactory
      * @param string $identifier
      * @param StatementModelInterface $statement
      *
-     * @return CodeBlockInterface
-     *
-     * @throws UnsupportedStatementException
      * @throws UnsupportedContentException
+     *
+     * @return UniqueAssertionCollection
      */
     private function createForStatementAncestorsOnly(
         string $identifier,
         StatementModelInterface $statement
-    ): CodeBlockInterface {
-        return $this->createForCollectionExistence(
+    ): UniqueAssertionCollection {
+        return $this->createForCollection(
             $identifier,
             $statement,
             function (ElementIdentifierInterface $domIdentifier): array {
@@ -175,16 +162,15 @@ class DerivedAssertionFactory
      * @param StatementModelInterface $action
      * @param callable $elementHierarchyCreator
      *
-     * @return CodeBlockInterface
+     * @return UniqueAssertionCollection
      *
      * @throws UnsupportedContentException
-     * @throws UnsupportedStatementException
      */
-    private function createForCollectionExistence(
+    private function createForCollection(
         string $identifier,
         StatementModelInterface $action,
         callable $elementHierarchyCreator
-    ): CodeBlockInterface {
+    ): UniqueAssertionCollection {
         $domIdentifier = $this->domIdentifierFactory->createFromIdentifierString($identifier);
         if (null === $domIdentifier) {
             throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
@@ -192,17 +178,12 @@ class DerivedAssertionFactory
 
         $elementHierarchy = $elementHierarchyCreator($domIdentifier);
 
-        $codeBlock = new CodeBlock();
+        $assertions = new UniqueAssertionCollection();
 
         foreach ($elementHierarchy as $elementIdentifier) {
-            $elementExistsAssertion = new DerivedElementExistsAssertion($action, (string) $elementIdentifier);
-
-            $codeBlock->addBlock($this->statementBlockFactory->create($elementExistsAssertion));
-            $codeBlock->addBlock(
-                $this->assertionHandler->handle($elementExistsAssertion)
-            );
+            $assertions->add(new DerivedElementExistsAssertion($action, (string) $elementIdentifier));
         }
 
-        return $codeBlock;
+        return $assertions;
     }
 }

@@ -4,26 +4,31 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Step;
 
-use webignition\BasilCompilableSource\Block\CodeBlock;
-use webignition\BasilCompilableSource\Line\SingleLineComment;
-use webignition\BasilCompilableSource\Metadata\Metadata;
-use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Step\DerivedAssertionFactory;
-use webignition\BasilCompilableSourceFactory\Handler\Step\StatementBlockFactory;
-use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Action\ActionInterface;
 use webignition\BasilModels\Action\InputAction;
 use webignition\BasilModels\Action\InteractionAction;
 use webignition\BasilModels\Assertion\AssertionInterface;
 use webignition\BasilModels\Assertion\DerivedElementExistsAssertion;
+use webignition\BasilModels\Assertion\UniqueAssertionCollection;
 use webignition\BasilParser\ActionParser;
 use webignition\BasilParser\AssertionParser;
-use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 
 class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
 {
+    /**
+     * @var DerivedAssertionFactory
+     */
+    private $factory;
+
+    protected function setUp(): void
+    {
+        parent::setUp();
+
+        $this->factory = DerivedAssertionFactory::createFactory();
+    }
+
     public function testCreateFactory()
     {
         $this->assertInstanceOf(DerivedAssertionFactory::class, DerivedAssertionFactory::createFactory());
@@ -32,16 +37,12 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider createForActionDataProvider
      */
-    public function testCreateForAction(
-        ActionInterface $action,
-        DerivedAssertionFactory $factory,
-        string $expectedRenderedContent,
-        MetadataInterface $expectedMetadata
-    ) {
-        $codeBlock = $factory->createForAction($action);
-
-        $this->assertEquals($expectedRenderedContent, $codeBlock->render());
-        $this->assertEquals($expectedMetadata, $codeBlock->getMetadata());
+    public function testCreateForAction(ActionInterface $action, UniqueAssertionCollection $expectedAssertions)
+    {
+        $this->assertEquals(
+            $expectedAssertions,
+            $this->factory->createForAction($action)
+        );
     }
 
     public function createForActionDataProvider(): array
@@ -51,255 +52,78 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
         return [
             'click action' => [
                 'action' => $actionParser->parse('click $".selector"'),
-                'factory' => $this->createFactory([
-                    StatementBlockFactory::class => $this->createMockStatementBlockFactory([
-                        '$".selector" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
-                                $actionParser->parse('click $".selector"'),
-                                '$".selector"'
-                            ),
-                            'return' => new CodeBlock([
-                                new SingleLineComment('derived $".selector" exists statement block'),
-                            ]),
-                        ],
-                    ]),
-                    AssertionHandler::class => $this->createMockAssertionHandler([
-                        '$".selector" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
-                                $actionParser->parse('click $".selector"'),
-                                '$".selector"'
-                            ),
-                            'return' => new CodeBlock([
-                                new SingleLineComment('derived $".selector" exists response'),
-                            ]),
-                        ],
-                    ]),
+                'expectedAssertions' => new UniqueAssertionCollection([
+                    new DerivedElementExistsAssertion(
+                        $actionParser->parse('click $".selector"'),
+                        '$".selector"'
+                    ),
                 ]),
-                'expectedRenderedSource' =>
-                    '// derived $".selector" exists statement block' . "\n" .
-                    '// derived $".selector" exists response'
-                ,
-                'expectedMetadata' => new Metadata(),
             ],
             'click action, descendant identifier' => [
                 'action' => $actionParser->parse('click $"{{ $".parent" }} .child"'),
-                'factory' => $this->createFactory([
-                    StatementBlockFactory::class => $this->createMockStatementBlockFactory([
-                        '$".parent" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
-                                $actionParser->parse('click $"{{ $".parent" }} .child"'),
-                                '$".parent"'
-                            ),
-                            'return' => new CodeBlock([
-                                new SingleLineComment('derived $".parent" exists statement block'),
-                            ]),
-                        ],
-                        '$"{{ $".parent" }} .child" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
-                                $actionParser->parse('click $"{{ $".parent" }} .child"'),
-                                '$"{{ $".parent" }} .child"'
-                            ),
-                            'return' => new CodeBlock([
-                                new SingleLineComment('derived $"{{ $".parent" }} .child" exists statement block'),
-                            ]),
-                        ],
-                    ]),
-                    AssertionHandler::class => $this->createMockAssertionHandler([
-                        '$".parent" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
-                                $actionParser->parse('click $"{{ $".parent" }} .child"'),
-                                '$".parent"'
-                            ),
-                            'return' => new CodeBlock([
-                                new SingleLineComment('derived $".parent" exists response'),
-                            ]),
-                        ],
-                        '$"{{ $".parent" }} .child" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
-                                $actionParser->parse('click $"{{ $".parent" }} .child"'),
-                                '$"{{ $".parent" }} .child"'
-                            ),
-                            'return' => new CodeBlock([
-                                new SingleLineComment('derived $"{{ $".parent" }} .child" exists response'),
-                            ]),
-                        ],
-                    ]),
+                'expectedAssertions' => new UniqueAssertionCollection([
+                    new DerivedElementExistsAssertion(
+                        $actionParser->parse('click $"{{ $".parent" }} .child"'),
+                        '$".parent"'
+                    ),
+                    new DerivedElementExistsAssertion(
+                        $actionParser->parse('click $"{{ $".parent" }} .child"'),
+                        '$"{{ $".parent" }} .child"'
+                    ),
                 ]),
-                'expectedRenderedSource' =>
-                    '// derived $".parent" exists statement block' . "\n" .
-                    '// derived $".parent" exists response' . "\n" .
-                    '// derived $"{{ $".parent" }} .child" exists statement block' . "\n" .
-                    '// derived $"{{ $".parent" }} .child" exists response'
-                ,
-                'expectedMetadata' => new Metadata(),
             ],
             'set action' => [
                 'action' => $actionParser->parse('set $".selector" to "value"'),
-                'factory' => $this->createFactory([
-                    StatementBlockFactory::class => $this->createMockStatementBlockFactory([
-                        '$".selector" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
-                                $actionParser->parse('set $".selector" to "value"'),
-                                '$".selector"'
-                            ),
-                            'return' => new CodeBlock([
-                                new SingleLineComment('derived $".selector" exists statement block'),
-                            ]),
-                        ],
-                    ]),
-                    AssertionHandler::class => $this->createMockAssertionHandler([
-                        '$".selector" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
-                                $actionParser->parse('set $".selector" to "value"'),
-                                '$".selector"'
-                            ),
-                            'return' => new CodeBlock([
-                                new SingleLineComment('derived $".selector" exists response'),
-                            ]),
-                        ],
-                    ]),
+                'expectedAssertions' => new UniqueAssertionCollection([
+                    new DerivedElementExistsAssertion(
+                        $actionParser->parse('set $".selector" to "value"'),
+                        '$".selector"'
+                    ),
                 ]),
-                'expectedRenderedSource' =>
-                    '// derived $".selector" exists statement block' . "\n" .
-                    '// derived $".selector" exists response'
-                ,
-                'expectedMetadata' => new Metadata(),
             ],
             'set action, descendant identifier' => [
                 'action' => $actionParser->parse('set $"{{ $".parent" }} .child" to "value"'),
-                'factory' => $this->createFactory([
-                    StatementBlockFactory::class => $this->createMockStatementBlockFactory([
-                        '$".parent" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
-                                $actionParser->parse('set $"{{ $".parent" }} .child" to "value"'),
-                                '$".parent"'
-                            ),
-                            'return' => new CodeBlock([
-                                new SingleLineComment('derived $".parent" exists statement block'),
-                            ]),
-                        ],
-                        '$"{{ $".parent" }} .child" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
-                                $actionParser->parse('set $"{{ $".parent" }} .child" to "value"'),
-                                '$"{{ $".parent" }} .child"'
-                            ),
-                            'return' => new CodeBlock([
-                                new SingleLineComment('derived $"{{ $".parent" }} .child" exists statement block'),
-                            ]),
-                        ],
-                    ]),
-                    AssertionHandler::class => $this->createMockAssertionHandler([
-                        '$".parent" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
-                                $actionParser->parse('set $"{{ $".parent" }} .child" to "value"'),
-                                '$".parent"'
-                            ),
-                            'return' => new CodeBlock([
-                                new SingleLineComment('derived $".parent" exists response'),
-                            ]),
-                        ],
-                        '$"{{ $".parent" }} .child" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
-                                $actionParser->parse('set $"{{ $".parent" }} .child" to "value"'),
-                                '$"{{ $".parent" }} .child"'
-                            ),
-                            'return' => new CodeBlock([
-                                new SingleLineComment('derived $"{{ $".parent" }} .child" exists response'),
-                            ]),
-                        ],
-                    ]),
+                'expectedAssertions' => new UniqueAssertionCollection([
+                    new DerivedElementExistsAssertion(
+                        $actionParser->parse('set $"{{ $".parent" }} .child" to "value"'),
+                        '$".parent"'
+                    ),
+                    new DerivedElementExistsAssertion(
+                        $actionParser->parse('set $"{{ $".parent" }} .child" to "value"'),
+                        '$"{{ $".parent" }} .child"'
+                    ),
                 ]),
-                'expectedRenderedSource' =>
-                    '// derived $".parent" exists statement block' . "\n" .
-                    '// derived $".parent" exists response' . "\n" .
-                    '// derived $"{{ $".parent" }} .child" exists statement block' . "\n" .
-                    '// derived $"{{ $".parent" }} .child" exists response'
-                ,
-                'expectedMetadata' => new Metadata(),
             ],
             'set action, elemental value' => [
                 'action' => $actionParser->parse('set $".selector" to $".value"'),
-                'factory' => $this->createFactory([
-                    StatementBlockFactory::class => $this->createMockStatementBlockFactory([
-                        '$".selector" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
-                                $actionParser->parse('set $".selector" to $".value"'),
-                                '$".selector"'
-                            ),
-                            'return' => new CodeBlock([
-                                new SingleLineComment('derived $".selector" exists statement block'),
-                            ]),
-                        ],
-                        '$".value" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
-                                $actionParser->parse('set $".selector" to $".value"'),
-                                '$".value"'
-                            ),
-                            'return' => new CodeBlock([
-                                new SingleLineComment('derived $".value" exists statement block'),
-                            ]),
-                        ],
-                    ]),
-                    AssertionHandler::class => $this->createMockAssertionHandler([
-                        '$".selector" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
-                                $actionParser->parse('set $".selector" to $".value"'),
-                                '$".selector"'
-                            ),
-                            'return' => new CodeBlock([
-                                new SingleLineComment('derived $".selector" exists response'),
-                            ]),
-                        ],
-                        '$".value" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
-                                $actionParser->parse('set $".selector" to $".value"'),
-                                '$".value"'
-                            ),
-                            'return' => new CodeBlock([
-                                new SingleLineComment('derived $".value" exists response'),
-                            ]),
-                        ],
-                    ]),
+                'expectedAssertions' => new UniqueAssertionCollection([
+                    new DerivedElementExistsAssertion(
+                        $actionParser->parse('set $".selector" to $".value"'),
+                        '$".selector"'
+                    ),
+                    new DerivedElementExistsAssertion(
+                        $actionParser->parse('set $".selector" to $".value"'),
+                        '$".value"'
+                    ),
                 ]),
-                'expectedRenderedSource' =>
-                    '// derived $".selector" exists statement block' . "\n" .
-                    '// derived $".selector" exists response' . "\n" .
-                    '// derived $".value" exists statement block' . "\n" .
-                    '// derived $".value" exists response'
-                ,
-                'expectedMetadata' => new Metadata(),
+            ],
+            'set action, elemental value matches identifier' => [
+                'action' => $actionParser->parse('set $".selector" to $".selector"'),
+                'expectedAssertions' => new UniqueAssertionCollection([
+                    new DerivedElementExistsAssertion(
+                        $actionParser->parse('set $".selector" to $".selector"'),
+                        '$".selector"'
+                    ),
+                ]),
             ],
             'wait action, elemental duration' => [
                 'action' => $actionParser->parse('wait $".duration"'),
-                'factory' => $this->createFactory([
-                    StatementBlockFactory::class => $this->createMockStatementBlockFactory([
-                        '$".duration" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
-                                $actionParser->parse('wait $".duration"'),
-                                '$".duration"'
-                            ),
-                            'return' => new CodeBlock([
-                                new SingleLineComment('derived $".duration" exists statement block'),
-                            ]),
-                        ],
-                    ]),
-                    AssertionHandler::class => $this->createMockAssertionHandler([
-                        '$".duration" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
-                                $actionParser->parse('wait $".duration"'),
-                                '$".duration"'
-                            ),
-                            'return' => new CodeBlock([
-                                new SingleLineComment('derived $".duration" exists response'),
-                            ]),
-                        ],
-                    ]),
+                'expectedAssertions' => new UniqueAssertionCollection([
+                    new DerivedElementExistsAssertion(
+                        $actionParser->parse('wait $".duration"'),
+                        '$".duration"'
+                    ),
                 ]),
-                'expectedRenderedSource' =>
-                    '// derived $".duration" exists statement block' . "\n" .
-                    '// derived $".duration" exists response'
-                ,
-                'expectedMetadata' => new Metadata(),
             ],
         ];
     }
@@ -309,14 +133,12 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
      */
     public function testCreateForAssertion(
         AssertionInterface $assertion,
-        DerivedAssertionFactory $factory,
-        string $expectedRenderedContent,
-        MetadataInterface $expectedMetadata
+        UniqueAssertionCollection $expectedAssertions
     ) {
-        $codeBlock = $factory->createForAssertion($assertion);
-
-        $this->assertEquals($expectedRenderedContent, $codeBlock->render());
-        $this->assertEquals($expectedMetadata, $codeBlock->getMetadata());
+        $this->assertEquals(
+            $expectedAssertions,
+            $this->factory->createForAssertion($assertion)
+        );
     }
 
     public function createForAssertionDataProvider(): array
@@ -326,131 +148,42 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
         return [
             'exists assertion' => [
                 'assertion' => $assertionParser->parse('$".selector" exists'),
-                'factory' => $this->createFactory(),
-                'expectedRenderedContent' => '',
-                'expectedMetadata' => new Metadata(),
+                'expectedAssertions' => new UniqueAssertionCollection([]),
             ],
             'not-exists assertion' => [
                 'assertion' => $assertionParser->parse('$".selector" not-exists'),
-                'factory' => $this->createFactory(),
-                'expectedRenderedContent' => '',
-                'expectedMetadata' => new Metadata(),
+                'expectedAssertions' => new UniqueAssertionCollection([]),
             ],
             'exists assertion, descendant identifier' => [
                 'assertion' => $assertionParser->parse('$"{{ $".parent" }} .child" exists'),
-                'factory' => $this->createFactory([
-                    StatementBlockFactory::class => $this->createMockStatementBlockFactory([
-                        '$".parent" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
-                                $assertionParser->parse('$"{{ $".parent" }} .child" exists'),
-                                '$".parent"'
-                            ),
-                            'return' => new CodeBlock([
-                                new SingleLineComment('derived $".parent" exists statement block'),
-                            ]),
-                        ],
-                    ]),
-                    AssertionHandler::class => $this->createMockAssertionHandler([
-                        '$".parent" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
-                                $assertionParser->parse('$"{{ $".parent" }} .child" exists'),
-                                '$".parent"'
-                            ),
-                            'return' => new CodeBlock([
-                                new SingleLineComment('derived $".parent" exists response'),
-                            ]),
-                        ],
-                    ]),
+                'expectedAssertions' => new UniqueAssertionCollection([
+                    new DerivedElementExistsAssertion(
+                        $assertionParser->parse('$"{{ $".parent" }} .child" exists'),
+                        '$".parent"'
+                    ),
                 ]),
-                'expectedRenderedSource' =>
-                    '// derived $".parent" exists statement block' . "\n" .
-                    '// derived $".parent" exists response'
-                ,
-                'expectedMetadata' => new Metadata(),
             ],
             'is assertion' => [
                 'assertion' => $assertionParser->parse('$".selector" is "value"'),
-                'factory' => $this->createFactory([
-                    StatementBlockFactory::class => $this->createMockStatementBlockFactory([
-                        '$".selector" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
-                                $assertionParser->parse('$".selector" is "value"'),
-                                '$".selector"'
-                            ),
-                            'return' => new CodeBlock([
-                                new SingleLineComment('derived $".selector" exists statement block'),
-                            ]),
-                        ],
-                    ]),
-                    AssertionHandler::class => $this->createMockAssertionHandler([
-                        '$".selector" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
-                                $assertionParser->parse('$".selector" is "value"'),
-                                '$".selector"'
-                            ),
-                            'return' => new CodeBlock([
-                                new SingleLineComment('derived $".selector" exists response'),
-                            ]),
-                        ],
-                    ]),
+                'expectedAssertions' => new UniqueAssertionCollection([
+                    new DerivedElementExistsAssertion(
+                        $assertionParser->parse('$".selector" is "value"'),
+                        '$".selector"'
+                    ),
                 ]),
-                'expectedRenderedSource' =>
-                    '// derived $".selector" exists statement block' . "\n" .
-                    '// derived $".selector" exists response'
-                ,
-                'expectedMetadata' => new Metadata(),
             ],
             'is assertion, elemental value' => [
                 'assertion' => $assertionParser->parse('$".selector" is $".value"'),
-                'factory' => $this->createFactory([
-                    StatementBlockFactory::class => $this->createMockStatementBlockFactory([
-                        '$".selector" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
-                                $assertionParser->parse('$".selector" is $".value"'),
-                                '$".selector"'
-                            ),
-                            'return' => new CodeBlock([
-                                new SingleLineComment('derived $".selector" exists statement block'),
-                            ]),
-                        ],
-                        '$".value" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
-                                $assertionParser->parse('$".selector" is $".value"'),
-                                '$".value"'
-                            ),
-                            'return' => new CodeBlock([
-                                new SingleLineComment('derived $".value" exists statement block'),
-                            ]),
-                        ],
-                    ]),
-                    AssertionHandler::class => $this->createMockAssertionHandler([
-                        '$".selector" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
-                                $assertionParser->parse('$".selector" is $".value"'),
-                                '$".selector"'
-                            ),
-                            'return' => new CodeBlock([
-                                new SingleLineComment('derived $".selector" exists response'),
-                            ]),
-                        ],
-                        '$".value" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
-                                $assertionParser->parse('$".selector" is $".value"'),
-                                '$".value"'
-                            ),
-                            'return' => new CodeBlock([
-                                new SingleLineComment('derived $".value" exists response'),
-                            ]),
-                        ],
-                    ]),
+                'expectedAssertions' => new UniqueAssertionCollection([
+                    new DerivedElementExistsAssertion(
+                        $assertionParser->parse('$".selector" is $".value"'),
+                        '$".selector"'
+                    ),
+                    new DerivedElementExistsAssertion(
+                        $assertionParser->parse('$".selector" is $".value"'),
+                        '$".value"'
+                    ),
                 ]),
-                'expectedRenderedSource' =>
-                    '// derived $".selector" exists statement block' . "\n" .
-                    '// derived $".selector" exists response' . "\n" .
-                    '// derived $".value" exists statement block' . "\n" .
-                    '// derived $".value" exists response'
-                ,
-                'expectedMetadata' => new Metadata(),
             ],
         ];
     }
@@ -468,8 +201,7 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
             new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, '"foo"')
         );
 
-        $factory = DerivedAssertionFactory::createFactory();
-        $factory->createForAction($action);
+        $this->factory->createForAction($action);
     }
 
     public function testCreateForSetActionThrowsException()
@@ -485,77 +217,6 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
             new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, '"foo"')
         );
 
-        $factory = DerivedAssertionFactory::createFactory();
-        $factory->createForAction($action);
-    }
-
-    /**
-     * @param array<mixed> $createCalls
-     *
-     * @return StatementBlockFactory
-     */
-    private function createMockStatementBlockFactory(array $createCalls): StatementBlockFactory
-    {
-        $statementBlockFactory = \Mockery::mock(StatementBlockFactory::class);
-
-        if (0 !== count($createCalls)) {
-            $statementBlockFactory
-                ->shouldReceive('create')
-                ->times(count($createCalls))
-                ->andReturnUsing(function (AssertionInterface $assertion) use ($createCalls) {
-                    $data = $createCalls[$assertion->getSource()];
-
-                    $this->assertEquals($data['assertion'], $assertion);
-
-                    return $data['return'];
-                });
-        }
-
-        return $statementBlockFactory;
-    }
-
-    /**
-     * @param array[] $handleCalls
-     *
-     * @return AssertionHandler
-     */
-    private function createMockAssertionHandler(array $handleCalls): AssertionHandler
-    {
-        $assertionHandler = \Mockery::mock(AssertionHandler::class);
-
-        if (0 !== count($handleCalls)) {
-            $assertionHandler
-                ->shouldReceive('handle')
-                ->times(count($handleCalls))
-                ->andReturnUsing(function (AssertionInterface $assertion) use ($handleCalls) {
-                    $data = $handleCalls[$assertion->getSource()];
-
-                    $this->assertEquals($data['assertion'], $assertion);
-
-                    return $data['return'];
-                });
-        }
-
-        return $assertionHandler;
-    }
-
-    /**
-     * @param array<mixed> $services
-     *
-     * @return DerivedAssertionFactory
-     */
-    private function createFactory(array $services = []): DerivedAssertionFactory
-    {
-        $assertionHandler = $services[AssertionHandler::class] ?? AssertionHandler::createHandler();
-        $domIdentifierFactory = $services[DomIdentifierFactory::class] ?? DomIdentifierFactory::createFactory();
-        $identifierTypeAnalyser = $services[IdentifierTypeAnalyser::class] ?? IdentifierTypeAnalyser::create();
-        $statementBlockFactory = $services[StatementBlockFactory::class] ?? StatementBlockFactory::createFactory();
-
-        return new DerivedAssertionFactory(
-            $assertionHandler,
-            $domIdentifierFactory,
-            $identifierTypeAnalyser,
-            $statementBlockFactory
-        );
+        $this->factory->createForAction($action);
     }
 }
