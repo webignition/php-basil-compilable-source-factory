@@ -425,6 +425,79 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                 ,
                 'expectedMetadata' => new Metadata(),
             ],
+            'two descendant exists assertions with common parent' => [
+                'step' => $stepParser->parse([
+                    'assertions' => [
+                        '$"{{ $".parent" }} .child1" exists',
+                        '$"{{ $".parent" }} .child2" exists',
+                    ],
+                ]),
+                'handler' => $this->createStepHandler([
+                    StatementBlockFactory::class => $this->createMockStatementBlockFactory([
+                        '$".parent" exists' => [
+                            'statement' => new DerivedElementExistsAssertion(
+                                $assertionParser->parse('$"{{ $".parent" }} .child1" exists'),
+                                '$".parent"'
+                            ),
+                            'return' => new CodeBlock([
+                                new SingleLineComment(
+                                    'StatementBlockFactory::create($".parent" exists)'
+                                ),
+                            ]),
+                        ],
+                        '$"{{ $".parent" }} .child1" exists' => [
+                            'statement' => $assertionParser->parse('$"{{ $".parent" }} .child1" exists'),
+                            'return' => new CodeBlock([
+                                new SingleLineComment(
+                                    'StatementBlockFactory::create($"{{ $".parent" }} .child1" exists)'
+                                ),
+                            ]),
+                        ],
+                        '$"{{ $".parent" }} .child2" exists' => [
+                            'statement' => $assertionParser->parse('$"{{ $".parent" }} .child2" exists'),
+                            'return' => new CodeBlock([
+                                new SingleLineComment(
+                                    'StatementBlockFactory::create($"{{ $".parent" }} .child2" exists)'
+                                ),
+                            ]),
+                        ],
+                    ]),
+                    AssertionHandler::class => $this->createMockAssertionHandler([
+                        '$".parent" exists' => [
+                            'assertion' => new DerivedElementExistsAssertion(
+                                $assertionParser->parse('$"{{ $".parent" }} .child1" exists'),
+                                '$".parent"'
+                            ),
+                            'return' => new CodeBlock([
+                                new SingleLineComment('AssertionHandler::handle($".parent" exists)'),
+                            ]),
+                        ],
+                        '$"{{ $".parent" }} .child1" exists' => [
+                            'assertion' => $assertionParser->parse('$"{{ $".parent" }} .child1" exists'),
+                            'return' => new CodeBlock([
+                                new SingleLineComment('AssertionHandler::handle($"{{ $".parent" }} .child1" exists)'),
+                            ]),
+                        ],
+                        '$"{{ $".parent" }} .child2" exists' => [
+                            'assertion' => $assertionParser->parse('$"{{ $".parent" }} .child2" exists'),
+                            'return' => new CodeBlock([
+                                new SingleLineComment('AssertionHandler::handle($"{{ $".parent" }} .child2" exists)'),
+                            ]),
+                        ],
+                    ]),
+                ]),
+                'expectedRenderedSource' =>
+                    '// StatementBlockFactory::create($".parent" exists)' . "\n" .
+                    '// AssertionHandler::handle($".parent" exists)' . "\n" .
+                    "\n" .
+                    '// StatementBlockFactory::create($"{{ $".parent" }} .child1" exists)' . "\n" .
+                    '// AssertionHandler::handle($"{{ $".parent" }} .child1" exists)' . "\n" .
+                    "\n" .
+                    '// StatementBlockFactory::create($"{{ $".parent" }} .child2" exists)' . "\n" .
+                    '// AssertionHandler::handle($"{{ $".parent" }} .child2" exists)' . "\n"
+                ,
+                'expectedMetadata' => new Metadata(),
+            ],
         ];
     }
 
@@ -442,7 +515,6 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
     public function handleThrowsExceptionDataProvider(): array
     {
         $actionParser = ActionParser::create();
-        $assertionParser = AssertionParser::create();
         $stepParser = StepParser::create();
 
         return [
@@ -467,27 +539,6 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     )
                 ),
             ],
-            'comparison assertion, examined value is not supported' => [
-                'step' => $stepParser->parse([
-                    'assertions' => [
-                        '$elements.examined is "value"',
-                    ],
-                ]),
-                'expectedException' => new UnsupportedStepException(
-                    $stepParser->parse([
-                        'assertions' => [
-                            '$elements.examined is "value"',
-                        ],
-                    ]),
-                    new UnsupportedStatementException(
-                        $assertionParser->parse('$elements.examined is "value"'),
-                        new UnsupportedContentException(
-                            UnsupportedContentException::TYPE_IDENTIFIER,
-                            '$elements.examined'
-                        )
-                    )
-                ),
-            ],
         ];
     }
 
@@ -503,12 +554,25 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
         ]);
 
         $assertion = $assertionParser->parse('$elements.examined is "value"');
+
         $unsupportedContentException = new UnsupportedContentException(
             UnsupportedContentException::TYPE_IDENTIFIER,
             '$elements.examined'
         );
 
-        $handler = $this->createStepHandler();
+        $derivedAssertionFactory = \Mockery::mock(DerivedAssertionFactory::class);
+        $derivedAssertionFactory
+            ->shouldReceive('createForAssertion')
+            ->withArgs(function (AssertionInterface $passedAssertion) use ($assertion) {
+                $this->assertEquals($assertion, $passedAssertion);
+
+                return true;
+            })
+            ->andThrow($unsupportedContentException);
+
+        $handler = $this->createStepHandler([
+            DerivedAssertionFactory::class => $derivedAssertionFactory,
+        ]);
 
         $this->expectExceptionObject(new UnsupportedStepException(
             $step,
@@ -603,14 +667,14 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
         $actionHandler = $services[ActionHandler::class] ?? ActionHandler::createHandler();
         $assertionHandler = $services[AssertionHandler::class] ?? AssertionHandler::createHandler();
         $statementBlockFactory = $services[StatementBlockFactory::class] ?? StatementBlockFactory::createFactory();
-        $fooDerivedAssertionFactory =
+        $derivedAssertionFactory =
             $services[DerivedAssertionFactory::class] ?? DerivedAssertionFactory::createFactory();
 
         return new StepHandler(
             $actionHandler,
             $assertionHandler,
             $statementBlockFactory,
-            $fooDerivedAssertionFactory
+            $derivedAssertionFactory
         );
     }
 }

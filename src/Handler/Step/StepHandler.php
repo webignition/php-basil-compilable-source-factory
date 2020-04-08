@@ -12,6 +12,7 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementExcep
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
+use webignition\BasilModels\Assertion\UniqueAssertionCollection;
 use webignition\BasilModels\Step\StepInterface;
 
 class StepHandler
@@ -78,24 +79,31 @@ class StepHandler
                 $block->addLine(new EmptyLine());
             }
 
-            foreach ($step->getAssertions() as $assertion) {
+            $stepAssertions = $step->getAssertions();
+
+            $derivedAssertionAssertions = new UniqueAssertionCollection();
+            foreach ($stepAssertions as $assertion) {
                 try {
-                    $derivedAssertionBlock = new CodeBlock();
-                    $derivedAssertionAssertions = $this->derivedAssertionFactory->createForAssertion($assertion);
-
-                    foreach ($derivedAssertionAssertions as $derivedAssertion) {
-                        $derivedAssertionBlock->addBlock($this->statementBlockFactory->create($derivedAssertion));
-                        $derivedAssertionBlock->addBlock($this->assertionHandler->handle($derivedAssertion));
-                    }
-
-                    if (false === $derivedAssertionBlock->isEmpty()) {
-                        $block->addBlock($derivedAssertionBlock);
-                        $block->addLine(new EmptyLine());
-                    }
+                    $derivedAssertionAssertions = $derivedAssertionAssertions->merge(
+                        $this->derivedAssertionFactory->createForAssertion($assertion)
+                    );
                 } catch (UnsupportedContentException $unsupportedContentException) {
                     throw new UnsupportedStatementException($assertion, $unsupportedContentException);
                 }
+            }
 
+            $derivedAssertionBlock = new CodeBlock();
+            foreach ($derivedAssertionAssertions as $derivedAssertion) {
+                $derivedAssertionBlock->addBlock($this->statementBlockFactory->create($derivedAssertion));
+                $derivedAssertionBlock->addBlock($this->assertionHandler->handle($derivedAssertion));
+            }
+
+            if (false === $derivedAssertionBlock->isEmpty()) {
+                $block->addBlock($derivedAssertionBlock);
+                $block->addLine(new EmptyLine());
+            }
+
+            foreach ($stepAssertions as $assertion) {
                 $block->addBlock($this->statementBlockFactory->create($assertion));
                 $block->addBlock($this->assertionHandler->handle($assertion));
                 $block->addLine(new EmptyLine());
