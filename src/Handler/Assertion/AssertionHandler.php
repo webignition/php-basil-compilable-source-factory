@@ -253,7 +253,7 @@ class AssertionHandler
         ElementIdentifierInterface $domIdentifier,
         AssertionInterface $assertion,
         ObjectPropertyAccessExpression $expression
-    ) {
+    ): ExpressionInterface {
         $isAttributeIdentifier = $domIdentifier instanceof AttributeIdentifierInterface;
         $isDerivedFromInteractionAction = false;
 
