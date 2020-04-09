@@ -7,12 +7,16 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Step;
 use webignition\BaseBasilTestCase\Statement;
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Line\ClassDependency;
+use webignition\BasilCompilableSource\Line\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\StaticObject;
 use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StatementBlockFactory;
+use webignition\BasilCompilableSourceFactory\Handler\Step\StatementInvocationFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Assertion\DerivedElementExistsAssertion;
+use webignition\BasilModels\StatementInterface;
 use webignition\BasilModels\StatementInterface as StatementModelInterface;
 use webignition\BasilParser\ActionParser;
 use webignition\BasilParser\AssertionParser;
@@ -24,11 +28,10 @@ class StatementBlockFactoryTest extends \PHPUnit\Framework\TestCase
      */
     public function testCreate(
         StatementModelInterface $statement,
+        StatementBlockFactory $factory,
         string $expectedRenderedContent,
         MetadataInterface $expectedMetadata
     ) {
-        $factory = StatementBlockFactory::createFactory();
-
         $codeBlock = $factory->create($statement);
 
         $this->assertEquals($expectedRenderedContent, $codeBlock->render());
@@ -40,14 +43,28 @@ class StatementBlockFactoryTest extends \PHPUnit\Framework\TestCase
         $actionParser = ActionParser::create();
         $assertionParser = AssertionParser::create();
 
+        $clickAction = $actionParser->parse('click $".selector"');
+        $existsAssertion = $assertionParser->parse('$".selector" exists');
+        $derivedElementExistsAssertion = new DerivedElementExistsAssertion(
+            $clickAction,
+            '$".selector"'
+        );
+
         return [
             'click action' => [
-                'statement' => $actionParser->parse('click $".selector"'),
+                'statement' => $clickAction,
+                'factory' => new StatementBlockFactory(
+                    $this->createMockStatementInvocationFactory(
+                        $clickAction,
+                        new StaticObjectMethodInvocation(
+                            new StaticObject(Statement::class),
+                            'createForClickAction'
+                        )
+                    )
+                ),
                 'expectedRenderedSource' =>
                     '// click $".selector"' . "\n" .
-                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAction(' . "\n" .
-                    '    \'click $".selector"\'' . "\n" .
-                    ');'
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createForClickAction();'
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -59,12 +76,19 @@ class StatementBlockFactoryTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             'exists assertion' => [
-                'statement' => $assertionParser->parse('$".selector" exists'),
+                'statement' => $existsAssertion,
+                'factory' => new StatementBlockFactory(
+                    $this->createMockStatementInvocationFactory(
+                        $existsAssertion,
+                        new StaticObjectMethodInvocation(
+                            new StaticObject(Statement::class),
+                            'createForExistsAssertion'
+                        )
+                    )
+                ),
                 'expectedRenderedSource' =>
                     '// $".selector" exists' . "\n" .
-                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
-                    '    \'$".selector" exists\'' . "\n" .
-                    ');'
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createForExistsAssertion();'
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -76,16 +100,19 @@ class StatementBlockFactoryTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             'derived exists assertion' => [
-                'statement' => new DerivedElementExistsAssertion(
-                    $actionParser->parse('click $".selector"'),
-                    '$".selector"'
+                'statement' => $derivedElementExistsAssertion,
+                'factory' => new StatementBlockFactory(
+                    $this->createMockStatementInvocationFactory(
+                        $derivedElementExistsAssertion,
+                        new StaticObjectMethodInvocation(
+                            new StaticObject(Statement::class),
+                            'createForDerivedExistsAssertion'
+                        )
+                    )
                 ),
                 'expectedRenderedSource' =>
                     '// $".selector" exists <- click $".selector"' . "\n" .
-                    '{{ PHPUNIT }}->handledStatements[] = Statement::createAssertion(' . "\n" .
-                    '    \'$".selector" exists\',' . "\n" .
-                    '    Statement::createAction(\'click $".selector"\')' . "\n" .
-                    ');'
+                    '{{ PHPUNIT }}->handledStatements[] = Statement::createForDerivedExistsAssertion();'
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -97,5 +124,19 @@ class StatementBlockFactoryTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
         ];
+    }
+
+    private function createMockStatementInvocationFactory(
+        StatementInterface $statement,
+        StaticObjectMethodInvocation $return
+    ): StatementInvocationFactory {
+        $statementInvocationFactory = \Mockery::mock(StatementInvocationFactory::class);
+
+        $statementInvocationFactory
+            ->shouldReceive('create')
+            ->with($statement)
+            ->andReturn($return);
+
+        return $statementInvocationFactory;
     }
 }
