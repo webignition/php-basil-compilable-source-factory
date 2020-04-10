@@ -11,23 +11,24 @@ use webignition\BasilCompilableSource\Line\SingleLineComment;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\StatementInterface;
 use webignition\BasilCompilableSource\VariablePlaceholder;
+use webignition\BasilCompilableSourceFactory\CallFactory\StatementFactoryCallFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Assertion\DerivedAssertionInterface;
 use webignition\BasilModels\StatementInterface as StatementModelInterface;
 
 class StatementBlockFactory
 {
-    private $statementInvocationFactory;
+    private $statementFactoryCallFactory;
 
-    public function __construct(StatementInvocationFactory $statementInvocationFactory)
+    public function __construct(StatementFactoryCallFactory $statementFactoryCallFactory)
     {
-        $this->statementInvocationFactory = $statementInvocationFactory;
+        $this->statementFactoryCallFactory = $statementFactoryCallFactory;
     }
 
     public static function createFactory(): self
     {
         return new StatementBlockFactory(
-            StatementInvocationFactory::createFactory()
+            StatementFactoryCallFactory::createFactory()
         );
     }
 
@@ -54,7 +55,7 @@ class StatementBlockFactory
                 VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
                 'handledStatements[]'
             ),
-            $this->statementInvocationFactory->create($statement)
+            $this->statementFactoryCallFactory->create($statement)
         );
     }
 }
