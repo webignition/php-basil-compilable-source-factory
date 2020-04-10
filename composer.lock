@@ -178,16 +178,16 @@
         },
         {
             "name": "webignition/basil-models",
-            "version": "0.37",
+            "version": "0.41",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/basil-models.git",
-                "reference": "529c87d9fd8be2f0bd4ac934b7003fc41fc5b0fb"
+                "reference": "a84de2a0b8a3089313afc00f4bade1b792b8c32b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/basil-models/zipball/529c87d9fd8be2f0bd4ac934b7003fc41fc5b0fb",
-                "reference": "529c87d9fd8be2f0bd4ac934b7003fc41fc5b0fb",
+                "url": "https://api.github.com/repos/webignition/basil-models/zipball/a84de2a0b8a3089313afc00f4bade1b792b8c32b",
+                "reference": "a84de2a0b8a3089313afc00f4bade1b792b8c32b",
                 "shasum": ""
             },
             "require": {
@@ -216,7 +216,7 @@
                 }
             ],
             "homepage": "https://github.com/webignition/basil-models",
-            "time": "2020-04-08T10:26:46+00:00"
+            "time": "2020-04-10T11:34:59+00:00"
         },
         {
             "name": "webignition/php-dom-element-identifier",
@@ -2875,22 +2875,23 @@
         },
         {
             "name": "webignition/base-basil-test-case",
-            "version": "0.16",
+            "version": "0.17",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/base-basil-test-case.git",
-                "reference": "6bee409887ef92e1766b8ef456f4153692e414b1"
+                "reference": "3365a1780d3bf3122fabdc79ad43818135ac302b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/base-basil-test-case/zipball/6bee409887ef92e1766b8ef456f4153692e414b1",
-                "reference": "6bee409887ef92e1766b8ef456f4153692e414b1",
+                "url": "https://api.github.com/repos/webignition/base-basil-test-case/zipball/3365a1780d3bf3122fabdc79ad43818135ac302b",
+                "reference": "3365a1780d3bf3122fabdc79ad43818135ac302b",
                 "shasum": ""
             },
             "require": {
                 "php": ">=7.2",
                 "phpunit/phpunit": "~8.0",
                 "symfony/panther": "^0.7",
+                "webignition/basil-models": ">=0.41,<1",
                 "webignition/symfony-panther-dom-crawler-navigator": ">=0.17,<1",
                 "webignition/webdriver-element-inspector": ">=0.7,<1",
                 "webignition/webdriver-element-mutator": ">=0.3,<1"
@@ -2917,7 +2918,7 @@
                 }
             ],
             "homepage": "https://github.com/webignition/base-basil-test-case",
-            "time": "2020-03-31T17:48:10+00:00"
+            "time": "2020-04-10T11:51:19+00:00"
         },
         {
             "name": "webignition/basil-parser",
