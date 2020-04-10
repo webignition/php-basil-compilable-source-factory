@@ -21,12 +21,6 @@ trait CreateFromIsNotAssertionDataProviderTrait
         return [
             'is-not comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" is-not "value"'),
-                'assertionFailureMessageFactoryCalls' => [
-                    '$".selector" is-not "value"' => [
-                        'assertion' => $assertionParser->parse('$".selector" is-not "value"'),
-                        'message' => '$".selector" is-not "value" failure message',
-                    ],
-                ],
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->expectedValue = "value" ?? null;' . "\n" .
                     '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
@@ -38,8 +32,7 @@ trait CreateFromIsNotAssertionDataProviderTrait
                     '})();' . "\n" .
                     '{{ PHPUNIT }}->assertNotEquals(' . "\n" .
                     '    {{ PHPUNIT }}->expectedValue,' . "\n" .
-                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
-                    '    \'$".selector" is-not "value" failure message\'' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -58,12 +51,6 @@ trait CreateFromIsNotAssertionDataProviderTrait
             ],
             'is-not comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name is-not "value"'),
-                'assertionFailureMessageFactoryCalls' => [
-                    '$".selector".attribute_name is-not "value"' => [
-                        'assertion' => $assertionParser->parse('$".selector".attribute_name is-not "value"'),
-                        'message' => '$".selector".attribute_name is-not "value" failure message',
-                    ],
-                ],
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->expectedValue = "value" ?? null;' . "\n" .
                     '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
@@ -75,8 +62,7 @@ trait CreateFromIsNotAssertionDataProviderTrait
                     '})();' . "\n" .
                     '{{ PHPUNIT }}->assertNotEquals(' . "\n" .
                     '    {{ PHPUNIT }}->expectedValue,' . "\n" .
-                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
-                    '    \'$".selector".attribute_name is-not "value" failure message\'' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
-use webignition\BaseBasilTestCase\Statement;
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Line\ClassDependency;
 use webignition\BasilCompilableSource\Metadata\Metadata;
@@ -129,14 +128,15 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(Statement::class),
                         new ClassDependency(ElementIdentifier::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                        VariableNames::ACTION_FACTORY,
+                        VariableNames::ASSERTION_FACTORY,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::PANTHER_CLIENT,
                         VariableNames::PANTHER_CRAWLER,
+                        VariableNames::PHPUNIT_TEST_CASE,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'ELEMENT',
@@ -193,16 +193,17 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(Statement::class),
                         new ClassDependency(ElementIdentifier::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                        VariableNames::ACTION_FACTORY,
+                        VariableNames::ASSERTION_FACTORY,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::PANTHER_CLIENT,
                         VariableNames::PANTHER_CRAWLER,
-                        VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
+                        VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'ELEMENT',

@@ -21,12 +21,6 @@ trait CreateFromNotExistsAssertionDataProviderTrait
         return [
             'not-exists comparison, element identifier examined value' => [
                 'assertion' => $assertionParser->parse('$".selector" not-exists'),
-                'assertionFailureMessageFactoryCalls' => [
-                    '$".selector" not-exists' => [
-                        'assertion' => $assertionParser->parse('$".selector" not-exists'),
-                        'message' => '$".selector" not-exists failure message',
-                    ],
-                ],
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->examinedElementIdentifier = ElementIdentifier::fromJson(\'{' . "\n" .
                     '    "locator": ".selector"' . "\n" .
@@ -35,8 +29,7 @@ trait CreateFromNotExistsAssertionDataProviderTrait
                     '{{ PHPUNIT }}->examinedElementIdentifier' .
                     ');' . "\n" .
                     '{{ PHPUNIT }}->assertFalse(' . "\n" .
-                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
-                    '    \'$".selector" not-exists failure message\'' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -51,16 +44,6 @@ trait CreateFromNotExistsAssertionDataProviderTrait
             ],
             'not-exists comparison, attribute identifier examined value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name not-exists'),
-                'assertionFailureMessageFactoryCalls' => [
-                    '$".selector" exists' => [
-                        'assertion' => $assertionParser->parse('$".selector" exists'),
-                        'message' => '$".selector" exists failure message',
-                    ],
-                    '$".selector".attribute_name not-exists' => [
-                        'assertion' => $assertionParser->parse('$".selector".attribute_name not-exists'),
-                        'message' => '$".selector".attribute_name not-exists failure message',
-                    ],
-                ],
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->examinedElementIdentifier = ElementIdentifier::fromJson(\'{' . "\n" .
                     '    "locator": ".selector"' . "\n" .
@@ -69,8 +52,7 @@ trait CreateFromNotExistsAssertionDataProviderTrait
                     '{{ PHPUNIT }}->examinedElementIdentifier' .
                     ');' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
-                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
-                    '    \'$".selector" exists failure message\'' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue' . "\n" .
                     ');' . "\n" .
                     '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
                     '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
@@ -81,8 +63,7 @@ trait CreateFromNotExistsAssertionDataProviderTrait
                     '})();' . "\n" .
                     '{{ PHPUNIT }}->examinedValue = {{ PHPUNIT }}->examinedValue !== null;' . "\n" .
                     '{{ PHPUNIT }}->assertFalse(' . "\n" .
-                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
-                    '    \'$".selector".attribute_name not-exists failure message\'' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([

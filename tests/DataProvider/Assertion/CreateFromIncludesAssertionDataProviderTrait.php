@@ -21,12 +21,6 @@ trait CreateFromIncludesAssertionDataProviderTrait
         return [
             'includes comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" includes "value"'),
-                'assertionFailureMessageFactoryCalls' => [
-                    '$".selector" includes "value"' => [
-                        'assertion' => $assertionParser->parse('$".selector" includes "value"'),
-                        'message' => '$".selector" includes "value" failure message',
-                    ],
-                ],
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->expectedValue = "value" ?? null;' . "\n" .
                     '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
@@ -38,8 +32,7 @@ trait CreateFromIncludesAssertionDataProviderTrait
                     '})();' . "\n" .
                     '{{ PHPUNIT }}->assertStringContainsString(' . "\n" .
                     '    (string) {{ PHPUNIT }}->expectedValue,' . "\n" .
-                    '    (string) {{ PHPUNIT }}->examinedValue,' . "\n" .
-                    '    \'$".selector" includes "value" failure message\'' . "\n" .
+                    '    (string) {{ PHPUNIT }}->examinedValue' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -58,12 +51,6 @@ trait CreateFromIncludesAssertionDataProviderTrait
             ],
             'includes comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name includes "value"'),
-                'assertionFailureMessageFactoryCalls' => [
-                    '$".selector".attribute_name includes "value"' => [
-                        'assertion' => $assertionParser->parse('$".selector".attribute_name includes "value"'),
-                        'message' => '$".selector".attribute_name includes "value" failure message',
-                    ],
-                ],
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->expectedValue = "value" ?? null;' . "\n" .
                     '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
@@ -75,8 +62,7 @@ trait CreateFromIncludesAssertionDataProviderTrait
                     '})();' . "\n" .
                     '{{ PHPUNIT }}->assertStringContainsString(' . "\n" .
                     '    (string) {{ PHPUNIT }}->expectedValue,' . "\n" .
-                    '    (string) {{ PHPUNIT }}->examinedValue,' . "\n" .
-                    '    \'$".selector".attribute_name includes "value" failure message\'' . "\n" .
+                    '    (string) {{ PHPUNIT }}->examinedValue' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([

@@ -21,12 +21,6 @@ trait CreateFromMatchesAssertionDataProviderTrait
         return [
             'matches comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" matches "/^value/"'),
-                'assertionFailureMessageFactoryCalls' => [
-                    '$".selector" matches "/^value/"' => [
-                        'assertion' => $assertionParser->parse('$".selector" matches "/^value/"'),
-                        'message' => '$".selector" matches "/^value/" failure message',
-                    ],
-                ],
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->expectedValue = "/^value/" ?? null;' . "\n" .
                     '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
@@ -38,8 +32,7 @@ trait CreateFromMatchesAssertionDataProviderTrait
                     '})();' . "\n" .
                     '{{ PHPUNIT }}->assertRegExp(' . "\n" .
                     '    {{ PHPUNIT }}->expectedValue,' . "\n" .
-                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
-                    '    \'$".selector" matches "/^value/" failure message\'' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -58,12 +51,6 @@ trait CreateFromMatchesAssertionDataProviderTrait
             ],
             'matches comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name matches "/^value/"'),
-                'assertionFailureMessageFactoryCalls' => [
-                    '$".selector".attribute_name matches "/^value/"' => [
-                        'assertion' => $assertionParser->parse('$".selector".attribute_name matches "/^value/"'),
-                        'message' => '$".selector".attribute_name matches "/^value/" failure message',
-                    ],
-                ],
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->expectedValue = "/^value/" ?? null;' . "\n" .
                     '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
@@ -75,8 +62,7 @@ trait CreateFromMatchesAssertionDataProviderTrait
                     '})();' . "\n" .
                     '{{ PHPUNIT }}->assertRegExp(' . "\n" .
                     '    {{ PHPUNIT }}->expectedValue,' . "\n" .
-                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
-                    '    \'$".selector".attribute_name matches "/^value/" failure message\'' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
