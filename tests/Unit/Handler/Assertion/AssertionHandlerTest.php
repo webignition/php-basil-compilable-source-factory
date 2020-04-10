@@ -6,7 +6,6 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Assertion;
 
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
-use webignition\BasilCompilableSourceFactory\AssertionFailureMessageFactory;
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\ElementIdentifierCallFactory;
@@ -22,7 +21,6 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\Create
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromMatchesAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromNotExistsAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
-use webignition\BasilCompilableSourceFactory\Tests\Services\AssertionFailureMessageFactoryFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ObjectReflector;
 use webignition\BasilCompilableSourceFactory\ValueTypeIdentifier;
 use webignition\BasilDomIdentifierFactory\Factory;
@@ -65,16 +63,10 @@ class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
      */
     public function testHandle(
         AssertionInterface $assertion,
-        array $assertionFailureMessageFactoryCalls,
         string $expectedRenderedContent,
         MetadataInterface $expectedMetadata
     ) {
-        $assertionFailureMessageFactory =
-            AssertionFailureMessageFactoryFactory::create($this, $assertionFailureMessageFactoryCalls);
-
-        $handler = $this->createAssertionHandler([
-            AssertionFailureMessageFactory::class => $assertionFailureMessageFactory,
-        ]);
+        $handler = $this->createAssertionHandler();
 
         $source = $handler->handle($assertion);
 
@@ -232,8 +224,6 @@ class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
     {
         $accessorDefaultValueFactory =
             $services[AccessorDefaultValueFactory::class] ?? AccessorDefaultValueFactory::createFactory();
-        $assertionFailureMessageFactory =
-            $services[AssertionFailureMessageFactory::class] ?? AssertionFailureMessageFactory::createFactory();
         $assertionMethodInvocationFactory =
             $services[AssertionMethodInvocationFactory::class] ?? AssertionMethodInvocationFactory::createFactory();
         $domCrawlerNavigatorCallFactory =
@@ -248,7 +238,6 @@ class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
 
         return new AssertionHandler(
             $accessorDefaultValueFactory,
-            $assertionFailureMessageFactory,
             $assertionMethodInvocationFactory,
             $domCrawlerNavigatorCallFactory,
             $domIdentifierFactory,

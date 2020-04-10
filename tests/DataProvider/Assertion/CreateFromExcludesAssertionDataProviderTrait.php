@@ -21,12 +21,6 @@ trait CreateFromExcludesAssertionDataProviderTrait
         return [
             'excludes comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" excludes "value"'),
-                'assertionFailureMessageFactoryCalls' => [
-                    '$".selector" excludes "value"' => [
-                        'assertion' => $assertionParser->parse('$".selector" excludes "value"'),
-                        'message' => '$".selector" excludes "value" failure message',
-                    ],
-                ],
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->expectedValue = "value" ?? null;' . "\n" .
                     '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
@@ -38,8 +32,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
                     '})();' . "\n" .
                     '{{ PHPUNIT }}->assertStringNotContainsString(' . "\n" .
                     '    (string) {{ PHPUNIT }}->expectedValue,' . "\n" .
-                    '    (string) {{ PHPUNIT }}->examinedValue,' . "\n" .
-                    '    \'$".selector" excludes "value" failure message\'' . "\n" .
+                    '    (string) {{ PHPUNIT }}->examinedValue' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -58,12 +51,6 @@ trait CreateFromExcludesAssertionDataProviderTrait
             ],
             'excludes comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name excludes "value"'),
-                'assertionFailureMessageFactoryCalls' => [
-                    '$".selector".attribute_name excludes "value"' => [
-                        'assertion' => $assertionParser->parse('$".selector".attribute_name excludes "value"'),
-                        'message' => '$".selector" excludes.attribute_name "value" failure message',
-                    ],
-                ],
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->expectedValue = "value" ?? null;' . "\n" .
                     '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
@@ -75,8 +62,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
                     '})();' . "\n" .
                     '{{ PHPUNIT }}->assertStringNotContainsString(' . "\n" .
                     '    (string) {{ PHPUNIT }}->expectedValue,' . "\n" .
-                    '    (string) {{ PHPUNIT }}->examinedValue,' . "\n" .
-                    '    \'$".selector" excludes.attribute_name "value" failure message\'' . "\n" .
+                    '    (string) {{ PHPUNIT }}->examinedValue' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([

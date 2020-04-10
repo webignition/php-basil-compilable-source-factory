@@ -17,7 +17,6 @@ use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\Line\Statement\StatementInterface;
 use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
-use webignition\BasilCompilableSourceFactory\AssertionFailureMessageFactory;
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\ElementIdentifierCallFactory;
@@ -51,7 +50,6 @@ class AssertionHandler
     public const ASSERT_FALSE_METHOD = 'assertFalse';
 
     private $accessorDefaultValueFactory;
-    private $assertionFailureMessageFactory;
     private $assertionMethodInvocationFactory;
     private $domCrawlerNavigatorCallFactory;
     private $domIdentifierFactory;
@@ -81,7 +79,6 @@ class AssertionHandler
 
     public function __construct(
         AccessorDefaultValueFactory $accessorDefaultValueFactory,
-        AssertionFailureMessageFactory $assertionFailureMessageFactory,
         AssertionMethodInvocationFactory $assertionMethodInvocationFactory,
         DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory,
         DomIdentifierFactory $domIdentifierFactory,
@@ -92,7 +89,6 @@ class AssertionHandler
         ElementIdentifierCallFactory $elementIdentifierCallFactory
     ) {
         $this->accessorDefaultValueFactory = $accessorDefaultValueFactory;
-        $this->assertionFailureMessageFactory = $assertionFailureMessageFactory;
         $this->assertionMethodInvocationFactory = $assertionMethodInvocationFactory;
         $this->domCrawlerNavigatorCallFactory = $domCrawlerNavigatorCallFactory;
         $this->domIdentifierFactory = $domIdentifierFactory;
@@ -107,7 +103,6 @@ class AssertionHandler
     {
         return new AssertionHandler(
             AccessorDefaultValueFactory::createFactory(),
-            AssertionFailureMessageFactory::createFactory(),
             AssertionMethodInvocationFactory::createFactory(),
             DomCrawlerNavigatorCallFactory::createFactory(),
             DomIdentifierFactory::createFactory(),
@@ -352,8 +347,7 @@ class AssertionHandler
         return new Statement(
             $this->assertionMethodInvocationFactory->create(
                 self::COMPARISON_TO_ASSERTION_TEMPLATE_MAP[$assertion->getComparison()],
-                $arguments,
-                $this->assertionFailureMessageFactory->createForAssertion($assertion)
+                $arguments
             )
         );
     }

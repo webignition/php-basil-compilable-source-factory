@@ -22,6 +22,8 @@ class TestCodeGenerator
     private const PHPUNIT_TEST_CASE_VARIABLE_NAME = '$this';
     private const WEBDRIVER_ELEMENT_INSPECTOR_VARIABLE_NAME = 'self::$inspector';
     private const WEBDRIVER_ELEMENT_MUTATOR_VARIABLE_NAME = 'self::$mutator';
+    private const WEBDRIVER_ASSERTION_FACTORY_VARIABLE_NAME = '$this->assertionFactory';
+    private const WEBDRIVER_ACTION_FACTORY_VARIABLE_NAME = '$this->actionFactory';
 
 
     public static function create(): TestCodeGenerator
@@ -111,6 +113,8 @@ class TestCodeGenerator
             VariableNames::PHPUNIT_TEST_CASE => self::PHPUNIT_TEST_CASE_VARIABLE_NAME,
             VariableNames::WEBDRIVER_ELEMENT_INSPECTOR => self::WEBDRIVER_ELEMENT_INSPECTOR_VARIABLE_NAME,
             VariableNames::WEBDRIVER_ELEMENT_MUTATOR => self::WEBDRIVER_ELEMENT_MUTATOR_VARIABLE_NAME,
+            VariableNames::ASSERTION_FACTORY => self::WEBDRIVER_ASSERTION_FACTORY_VARIABLE_NAME,
+            VariableNames::ACTION_FACTORY => self::WEBDRIVER_ACTION_FACTORY_VARIABLE_NAME,
         ];
 
         $variableIdentifiers = [];

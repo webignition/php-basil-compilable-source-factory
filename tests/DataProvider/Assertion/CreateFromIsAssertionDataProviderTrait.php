@@ -21,12 +21,6 @@ trait CreateFromIsAssertionDataProviderTrait
         return [
             'is comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" is "value"'),
-                'assertionFailureMessageFactoryCalls' => [
-                    '$".selector" is "value"' => [
-                        'assertion' => $assertionParser->parse('$".selector" is "value"'),
-                        'message' => '$".selector" is "value" failure message',
-                    ],
-                ],
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->expectedValue = "value" ?? null;' . "\n" .
                     '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
@@ -38,8 +32,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '})();' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->expectedValue,' . "\n" .
-                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
-                    '    \'$".selector" is "value" failure message\'' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -58,12 +51,6 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, descendant identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$"{{ $".parent" }} .child" is "value"'),
-                'assertionFailureMessageFactoryCalls' => [
-                    '$"{{ $".parent" }} .child" is "value"' => [
-                        'assertion' => $assertionParser->parse('$"{{ $".parent" }} .child" is "value"'),
-                        'message' => '$"{{ $".parent" }} .child" is "value" failure message',
-                    ],
-                ],
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->expectedValue = "value" ?? null;' . "\n" .
                     '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
@@ -78,8 +65,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '})();' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->expectedValue,' . "\n" .
-                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
-                    '    \'$"{{ $".parent" }} .child" is "value" failure message\'' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -98,12 +84,6 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name is "value"'),
-                'assertionFailureMessageFactoryCalls' => [
-                    '$".selector".attribute_name is "value"' => [
-                        'assertion' => $assertionParser->parse('$".selector".attribute_name is "value"'),
-                        'message' => '$".selector".attribute_name is "value" failure message',
-                    ],
-                ],
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->expectedValue = "value" ?? null;' . "\n" .
                     '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
@@ -115,8 +95,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '})();' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->expectedValue,' . "\n" .
-                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
-                    '    \'$".selector".attribute_name is "value" failure message\'' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -134,12 +113,6 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, browser object examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is "value"'),
-                'assertionFailureMessageFactoryCalls' => [
-                    '$browser.size is "value"' => [
-                        'assertion' => $assertionParser->parse('$browser.size is "value"'),
-                        'message' => '$browser.size is "value" failure message',
-                    ],
-                ],
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->expectedValue = "value" ?? null;' . "\n" .
                     '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
@@ -151,8 +124,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '})();' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->expectedValue,' . "\n" .
-                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
-                    '    \'$browser.size is "value" failure message\'' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -167,19 +139,12 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, environment examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$env.KEY is "value"'),
-                'assertionFailureMessageFactoryCalls' => [
-                    '$env.KEY is "value"' => [
-                        'assertion' => $assertionParser->parse('$env.KEY is "value"'),
-                        'message' => '$env.KEY is "value" failure message',
-                    ],
-                ],
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->expectedValue = "value" ?? null;' . "\n" .
                     '{{ PHPUNIT }}->examinedValue = {{ ENV }}[\'KEY\'] ?? null;' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->expectedValue,' . "\n" .
-                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
-                    '    \'$env.KEY is "value" failure message\'' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -191,19 +156,12 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, environment examined value with default, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$env.KEY|"default value" is "value"'),
-                'assertionFailureMessageFactoryCalls' => [
-                    '$env.KEY|"default value" is "value"' => [
-                        'assertion' => $assertionParser->parse('$env.KEY|"default value" is "value"'),
-                        'message' => '$env.KEY|"default value" is "value" failure message',
-                    ],
-                ],
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->expectedValue = "value" ?? null;' . "\n" .
                     '{{ PHPUNIT }}->examinedValue = {{ ENV }}[\'KEY\'] ?? \'default value\';' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->expectedValue,' . "\n" .
-                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
-                    '    \'$env.KEY|"default value" is "value" failure message\'' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -215,21 +173,12 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, environment examined value with default, environment examined value with default' => [
                 'assertion' => $assertionParser->parse('$env.KEY1|"default value 1" is $env.KEY2|"default value 2"'),
-                'assertionFailureMessageFactoryCalls' => [
-                    '$env.KEY1|"default value 1" is $env.KEY2|"default value 2"' => [
-                        'assertion' => $assertionParser->parse(
-                            '$env.KEY1|"default value 1" is $env.KEY2|"default value 2"'
-                        ),
-                        'message' => '$env.KEY1|"default value 1" is $env.KEY2|"default value 2" failure message',
-                    ],
-                ],
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->expectedValue = {{ ENV }}[\'KEY2\'] ?? \'default value 2\';' . "\n" .
                     '{{ PHPUNIT }}->examinedValue = {{ ENV }}[\'KEY1\'] ?? \'default value 1\';' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->expectedValue,' . "\n" .
-                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
-                    '    \'$env.KEY1|"default value 1" is $env.KEY2|"default value 2" failure message\'' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -241,19 +190,12 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, page object examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$page.title is "value"'),
-                'assertionFailureMessageFactoryCalls' => [
-                    '$page.title is "value"' => [
-                        'assertion' => $assertionParser->parse('$page.title is "value"'),
-                        'message' => '$page.title is "value" failure message',
-                    ],
-                ],
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->expectedValue = "value" ?? null;' . "\n" .
                     '{{ PHPUNIT }}->examinedValue = {{ CLIENT }}->getTitle() ?? null;' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->expectedValue,' . "\n" .
-                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
-                    '    \'$page.title is "value" failure message\'' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -265,12 +207,6 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, browser object examined value, descendant identifier expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $"{{ $".parent" }} .child"'),
-                'assertionFailureMessageFactoryCalls' => [
-                    '$browser.size is $"{{ $".parent" }} .child"' => [
-                        'assertion' => $assertionParser->parse('$browser.size is $"{{ $".parent" }} .child"'),
-                        'message' => '$browser.size is $"{{ $".parent" }} .child" failure message',
-                    ],
-                ],
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->expectedValue = (function () {' . "\n" .
                     '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
@@ -291,8 +227,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '})();' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->expectedValue,' . "\n" .
-                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
-                    '    \'$browser.size is $"{{ $".parent" }} .child" failure message\'' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -313,12 +248,6 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, browser object examined value, element identifier expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $".selector"'),
-                'assertionFailureMessageFactoryCalls' => [
-                    '$browser.size is $".selector"' => [
-                        'assertion' => $assertionParser->parse('$browser.size is $".selector"'),
-                        'message' => '$browser.size is $".selector" failure message',
-                    ],
-                ],
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->expectedValue = (function () {' . "\n" .
                     '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
@@ -336,8 +265,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '})();' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->expectedValue,' . "\n" .
-                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
-                    '    \'$browser.size is $".selector" failure message\'' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -358,12 +286,6 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, browser object examined value, attribute identifier expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $".selector".attribute_name'),
-                'assertionFailureMessageFactoryCalls' => [
-                    '$browser.size is $".selector".attribute_name' => [
-                        'assertion' => $assertionParser->parse('$browser.size is $".selector".attribute_name'),
-                        'message' => '$browser.size is $".selector".attribute_name failure message',
-                    ],
-                ],
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->expectedValue = (function () {' . "\n" .
                     '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
@@ -381,8 +303,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '})();' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->expectedValue,' . "\n" .
-                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
-                    '    \'$browser.size is $".selector".attribute_name failure message\'' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -402,12 +323,6 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, browser object examined value, environment expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $env.KEY'),
-                'assertionFailureMessageFactoryCalls' => [
-                    '$browser.size is $env.KEY' => [
-                        'assertion' => $assertionParser->parse('$browser.size is $env.KEY'),
-                        'message' => '$browser.size is $env.KEY failure message',
-                    ],
-                ],
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->expectedValue = {{ ENV }}[\'KEY\'] ?? null;' . "\n" .
                     '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
@@ -419,8 +334,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '})();' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->expectedValue,' . "\n" .
-                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
-                    '    \'$browser.size is $env.KEY failure message\'' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -436,12 +350,6 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, browser object examined value, environment expected value with default' => [
                 'assertion' => $assertionParser->parse('$browser.size is $env.KEY|"default value"'),
-                'assertionFailureMessageFactoryCalls' => [
-                    '$browser.size is $env.KEY|"default value"' => [
-                        'assertion' => $assertionParser->parse('$browser.size is $env.KEY|"default value"'),
-                        'message' => '$browser.size is $env.KEY|"default value" failure message',
-                    ],
-                ],
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->expectedValue = {{ ENV }}[\'KEY\'] ?? \'default value\';' . "\n" .
                     '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
@@ -453,8 +361,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '})();' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->expectedValue,' . "\n" .
-                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
-                    '    \'$browser.size is $env.KEY|"default value" failure message\'' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -470,12 +377,6 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, browser object examined value, page object expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $page.url'),
-                'assertionFailureMessageFactoryCalls' => [
-                    '$browser.size is $page.url' => [
-                        'assertion' => $assertionParser->parse('$browser.size is $page.url'),
-                        'message' => '$browser.size is $page.url failure message',
-                    ],
-                ],
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->expectedValue = {{ CLIENT }}->getCurrentURL() ?? null;' . "\n" .
                     '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
@@ -487,8 +388,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '})();' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->expectedValue,' . "\n" .
-                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
-                    '    \'$browser.size is $page.url failure message\'' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -503,19 +403,12 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, literal string examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('"examined" is "expected"'),
-                'assertionFailureMessageFactoryCalls' => [
-                    '"examined" is "expected"' => [
-                        'assertion' => $assertionParser->parse('"examined" is "expected"'),
-                        'message' => '"examined" is "expected" failure message',
-                    ],
-                ],
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->expectedValue = "expected" ?? null;' . "\n" .
                     '{{ PHPUNIT }}->examinedValue = "examined" ?? null;' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->expectedValue,' . "\n" .
-                    '    {{ PHPUNIT }}->examinedValue,' . "\n" .
-                    '    \'"examined" is "expected" failure message\'' . "\n" .
+                    '    {{ PHPUNIT }}->examinedValue' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
