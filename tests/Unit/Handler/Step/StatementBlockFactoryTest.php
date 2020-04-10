@@ -16,6 +16,9 @@ use webignition\BasilModels\StatementInterface as StatementModelInterface;
 
 class StatementBlockFactoryTest extends \PHPUnit\Framework\TestCase
 {
+    /**
+     * @var StatementBlockFactory
+     */
     private $factory;
 
     protected function setUp(): void
