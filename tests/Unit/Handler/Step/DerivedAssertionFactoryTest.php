@@ -60,15 +60,15 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             'click action, descendant identifier' => [
-                'action' => $actionParser->parse('click $"{{ $".parent" }} .child"'),
+                'action' => $actionParser->parse('click $".parent" >> $".child"'),
                 'expectedAssertions' => new UniqueAssertionCollection([
                     new DerivedElementExistsAssertion(
-                        $actionParser->parse('click $"{{ $".parent" }} .child"'),
+                        $actionParser->parse('click $".parent" >> $".child"'),
                         '$".parent"'
                     ),
                     new DerivedElementExistsAssertion(
-                        $actionParser->parse('click $"{{ $".parent" }} .child"'),
-                        '$"{{ $".parent" }} .child"'
+                        $actionParser->parse('click $".parent" >> $".child"'),
+                        '$".parent" >> $".child"'
                     ),
                 ]),
             ],
@@ -82,15 +82,15 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             'set action, descendant identifier' => [
-                'action' => $actionParser->parse('set $"{{ $".parent" }} .child" to "value"'),
+                'action' => $actionParser->parse('set $".parent" >> $".child" to "value"'),
                 'expectedAssertions' => new UniqueAssertionCollection([
                     new DerivedElementExistsAssertion(
-                        $actionParser->parse('set $"{{ $".parent" }} .child" to "value"'),
+                        $actionParser->parse('set $".parent" >> $".child" to "value"'),
                         '$".parent"'
                     ),
                     new DerivedElementExistsAssertion(
-                        $actionParser->parse('set $"{{ $".parent" }} .child" to "value"'),
-                        '$"{{ $".parent" }} .child"'
+                        $actionParser->parse('set $".parent" >> $".child" to "value"'),
+                        '$".parent" >> $".child"'
                     ),
                 ]),
             ],
@@ -155,10 +155,10 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
                 'expectedAssertions' => new UniqueAssertionCollection([]),
             ],
             'exists assertion, descendant identifier' => [
-                'assertion' => $assertionParser->parse('$"{{ $".parent" }} .child" exists'),
+                'assertion' => $assertionParser->parse('$".parent" >> $".child" exists'),
                 'expectedAssertions' => new UniqueAssertionCollection([
                     new DerivedElementExistsAssertion(
-                        $assertionParser->parse('$"{{ $".parent" }} .child" exists'),
+                        $assertionParser->parse('$".parent" >> $".child" exists'),
                         '$".parent"'
                     ),
                 ]),

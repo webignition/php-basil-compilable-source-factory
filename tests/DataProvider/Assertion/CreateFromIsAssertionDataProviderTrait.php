@@ -50,7 +50,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 ]),
             ],
             'is comparison, descendant identifier examined value, literal string expected value' => [
-                'assertion' => $assertionParser->parse('$"{{ $".parent" }} .child" is "value"'),
+                'assertion' => $assertionParser->parse('$".parent" >> $".child" is "value"'),
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->expectedValue = "value" ?? null;' . "\n" .
                     '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
@@ -206,7 +206,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 ]),
             ],
             'is comparison, browser object examined value, descendant identifier expected value' => [
-                'assertion' => $assertionParser->parse('$browser.size is $"{{ $".parent" }} .child"'),
+                'assertion' => $assertionParser->parse('$browser.size is $".parent" >> $".child"'),
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->expectedValue = (function () {' . "\n" .
                     '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .

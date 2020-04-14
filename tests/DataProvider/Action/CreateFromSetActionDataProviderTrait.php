@@ -253,7 +253,7 @@ trait CreateFromSetActionDataProviderTrait
                 ]),
             ],
             'input action, parent > child element identifier, literal value' => [
-                'action' => $actionParser->parse('set $"{{ $".parent" }} .child" to "value"'),
+                'action' => $actionParser->parse('set $".parent" >> $".child" to "value"'),
                 'expectedRenderedSource' =>
                     '{{ COLLECTION }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
                     '    "locator": ".child",' . "\n" .

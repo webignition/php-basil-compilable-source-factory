@@ -45,7 +45,7 @@ trait CreateFromClickActionDataProviderTrait
                 'expectedMetadata' => $expectedMetadata,
             ],
             'interaction action (click), parent > child identifier' => [
-                'action' => $actionParser->parse('click $"{{ $".parent" }} .child"'),
+                'action' => $actionParser->parse('click $".parent" >> $".child"'),
                 'expectedRenderedSource' =>
                     '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
                     '    "locator": ".child",' .  "\n" .
