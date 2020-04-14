@@ -245,14 +245,14 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
             'single exists assertion, descendant identifier' => [
                 'step' => $stepParser->parse([
                     'assertions' => [
-                        '$"{{ $".parent" }} .child" exists',
+                        '$".parent" >> $".child" exists',
                     ],
                 ]),
                 'handler' => $this->createStepHandler([
                     StatementBlockFactory::class => $this->createMockStatementBlockFactory([
                         '$".parent" exists' => [
                             'statement' => new DerivedElementExistsAssertion(
-                                $assertionParser->parse('$"{{ $".parent" }} .child" exists'),
+                                $assertionParser->parse('$".parent" >> $".child" exists'),
                                 '$".parent"'
                             ),
                             'return' => new CodeBlock([
@@ -261,11 +261,11 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                                 ),
                             ]),
                         ],
-                        '$"{{ $".parent" }} .child" exists' => [
-                            'statement' => $assertionParser->parse('$"{{ $".parent" }} .child" exists'),
+                        '$".parent" >> $".child" exists' => [
+                            'statement' => $assertionParser->parse('$".parent" >> $".child" exists'),
                             'return' => new CodeBlock([
                                 new SingleLineComment(
-                                    'StatementBlockFactory::create($"{{ $".parent" }} .child" exists)'
+                                    'StatementBlockFactory::create($".parent" >> $".child" exists)'
                                 ),
                             ]),
                         ],
@@ -273,17 +273,17 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     AssertionHandler::class => $this->createMockAssertionHandler([
                         '$".parent" exists' => [
                             'assertion' => new DerivedElementExistsAssertion(
-                                $assertionParser->parse('$"{{ $".parent" }} .child" exists'),
+                                $assertionParser->parse('$".parent" >> $".child" exists'),
                                 '$".parent"'
                             ),
                             'return' => new CodeBlock([
                                 new SingleLineComment('AssertionHandler::handle($".parent" exists)'),
                             ]),
                         ],
-                        '$"{{ $".parent" }} .child" exists' => [
-                            'assertion' => $assertionParser->parse('$"{{ $".parent" }} .child" exists'),
+                        '$".parent" >> $".child" exists' => [
+                            'assertion' => $assertionParser->parse('$".parent" >> $".child" exists'),
                             'return' => new CodeBlock([
-                                new SingleLineComment('AssertionHandler::handle($"{{ $".parent" }} .child" exists)'),
+                                new SingleLineComment('AssertionHandler::handle($".parent" >> $".child" exists)'),
                             ]),
                         ],
                     ]),
@@ -292,8 +292,8 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '// StatementBlockFactory::create($".parent" exists)' . "\n" .
                     '// AssertionHandler::handle($".parent" exists)' . "\n" .
                     "\n" .
-                    '// StatementBlockFactory::create($"{{ $".parent" }} .child" exists)' . "\n" .
-                    '// AssertionHandler::handle($"{{ $".parent" }} .child" exists)' . "\n"
+                    '// StatementBlockFactory::create($".parent" >> $".child" exists)' . "\n" .
+                    '// AssertionHandler::handle($".parent" >> $".child" exists)' . "\n"
 
                 ,
                 'expectedMetadata' => new Metadata(),
@@ -428,15 +428,15 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
             'two descendant exists assertions with common parent' => [
                 'step' => $stepParser->parse([
                     'assertions' => [
-                        '$"{{ $".parent" }} .child1" exists',
-                        '$"{{ $".parent" }} .child2" exists',
+                        '$".parent" >> $".child1" exists',
+                        '$".parent" >> $".child2" exists',
                     ],
                 ]),
                 'handler' => $this->createStepHandler([
                     StatementBlockFactory::class => $this->createMockStatementBlockFactory([
                         '$".parent" exists' => [
                             'statement' => new DerivedElementExistsAssertion(
-                                $assertionParser->parse('$"{{ $".parent" }} .child1" exists'),
+                                $assertionParser->parse('$".parent" >> $".child1" exists'),
                                 '$".parent"'
                             ),
                             'return' => new CodeBlock([
@@ -445,19 +445,19 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                                 ),
                             ]),
                         ],
-                        '$"{{ $".parent" }} .child1" exists' => [
-                            'statement' => $assertionParser->parse('$"{{ $".parent" }} .child1" exists'),
+                        '$".parent" >> $".child1" exists' => [
+                            'statement' => $assertionParser->parse('$".parent" >> $".child1" exists'),
                             'return' => new CodeBlock([
                                 new SingleLineComment(
-                                    'StatementBlockFactory::create($"{{ $".parent" }} .child1" exists)'
+                                    'StatementBlockFactory::create($".parent" >> $".child1" exists)'
                                 ),
                             ]),
                         ],
-                        '$"{{ $".parent" }} .child2" exists' => [
-                            'statement' => $assertionParser->parse('$"{{ $".parent" }} .child2" exists'),
+                        '$".parent" >> $".child2" exists' => [
+                            'statement' => $assertionParser->parse('$".parent" >> $".child2" exists'),
                             'return' => new CodeBlock([
                                 new SingleLineComment(
-                                    'StatementBlockFactory::create($"{{ $".parent" }} .child2" exists)'
+                                    'StatementBlockFactory::create($".parent" >> $".child2" exists)'
                                 ),
                             ]),
                         ],
@@ -465,23 +465,23 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     AssertionHandler::class => $this->createMockAssertionHandler([
                         '$".parent" exists' => [
                             'assertion' => new DerivedElementExistsAssertion(
-                                $assertionParser->parse('$"{{ $".parent" }} .child1" exists'),
+                                $assertionParser->parse('$".parent" >> $".child1" exists'),
                                 '$".parent"'
                             ),
                             'return' => new CodeBlock([
                                 new SingleLineComment('AssertionHandler::handle($".parent" exists)'),
                             ]),
                         ],
-                        '$"{{ $".parent" }} .child1" exists' => [
-                            'assertion' => $assertionParser->parse('$"{{ $".parent" }} .child1" exists'),
+                        '$".parent" >> $".child1" exists' => [
+                            'assertion' => $assertionParser->parse('$".parent" >> $".child1" exists'),
                             'return' => new CodeBlock([
-                                new SingleLineComment('AssertionHandler::handle($"{{ $".parent" }} .child1" exists)'),
+                                new SingleLineComment('AssertionHandler::handle($".parent" >> $".child1" exists)'),
                             ]),
                         ],
-                        '$"{{ $".parent" }} .child2" exists' => [
-                            'assertion' => $assertionParser->parse('$"{{ $".parent" }} .child2" exists'),
+                        '$".parent" >> $".child2" exists' => [
+                            'assertion' => $assertionParser->parse('$".parent" >> $".child2" exists'),
                             'return' => new CodeBlock([
-                                new SingleLineComment('AssertionHandler::handle($"{{ $".parent" }} .child2" exists)'),
+                                new SingleLineComment('AssertionHandler::handle($".parent" >> $".child2" exists)'),
                             ]),
                         ],
                     ]),
@@ -490,11 +490,11 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '// StatementBlockFactory::create($".parent" exists)' . "\n" .
                     '// AssertionHandler::handle($".parent" exists)' . "\n" .
                     "\n" .
-                    '// StatementBlockFactory::create($"{{ $".parent" }} .child1" exists)' . "\n" .
-                    '// AssertionHandler::handle($"{{ $".parent" }} .child1" exists)' . "\n" .
+                    '// StatementBlockFactory::create($".parent" >> $".child1" exists)' . "\n" .
+                    '// AssertionHandler::handle($".parent" >> $".child1" exists)' . "\n" .
                     "\n" .
-                    '// StatementBlockFactory::create($"{{ $".parent" }} .child2" exists)' . "\n" .
-                    '// AssertionHandler::handle($"{{ $".parent" }} .child2" exists)' . "\n"
+                    '// StatementBlockFactory::create($".parent" >> $".child2" exists)' . "\n" .
+                    '// AssertionHandler::handle($".parent" >> $".child2" exists)' . "\n"
                 ,
                 'expectedMetadata' => new Metadata(),
             ],

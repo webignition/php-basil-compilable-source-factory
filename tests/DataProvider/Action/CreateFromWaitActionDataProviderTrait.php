@@ -56,7 +56,7 @@ trait CreateFromWaitActionDataProviderTrait
                 ]),
             ],
             'wait action, descendant element value' => [
-                'action' => $actionParser->parse('wait $"{{ $".parent" }} .child"'),
+                'action' => $actionParser->parse('wait $".parent" >> $".child"'),
                 'expectedRenderedSource' =>
                     '{{ DURATION }} = (int) ((function () {' . "\n" .
                     '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
