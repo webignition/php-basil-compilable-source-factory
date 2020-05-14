@@ -6,7 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
 use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
+use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
@@ -60,15 +60,17 @@ class ActionHandler
     {
         try {
             if (in_array($action->getType(), ['back', 'forward', 'reload'])) {
-                return $this->addRefreshCrawlerStatement($this->browserOperationActionHandler->handle($action));
+                return $this->addRefreshCrawlerAndNavigatorStatement(
+                    $this->browserOperationActionHandler->handle($action)
+                );
             }
 
             if ($action instanceof InteractionActionInterface && in_array($action->getType(), ['click', 'submit'])) {
-                return $this->addRefreshCrawlerStatement($this->interactionActionHandler->handle($action));
+                return $this->addRefreshCrawlerAndNavigatorStatement($this->interactionActionHandler->handle($action));
             }
 
             if ($action instanceof InputActionInterface) {
-                return $this->addRefreshCrawlerStatement($this->setActionHandler->handle($action));
+                return $this->addRefreshCrawlerAndNavigatorStatement($this->setActionHandler->handle($action));
             }
 
             if ($action instanceof WaitActionInterface) {
@@ -85,16 +87,15 @@ class ActionHandler
         throw new UnsupportedStatementException($action);
     }
 
-    private function addRefreshCrawlerStatement(CodeBlockInterface $codeBlock): CodeBlockInterface
+    private function addRefreshCrawlerAndNavigatorStatement(CodeBlockInterface $codeBlock): CodeBlockInterface
     {
         $codeBlock->addLines([
-            new AssignmentStatement(
-                VariablePlaceholder::createDependency(VariableNames::PANTHER_CRAWLER),
+            new Statement(
                 new ObjectMethodInvocation(
-                    VariablePlaceholder::createDependency(VariableNames::PANTHER_CLIENT),
-                    'refreshCrawler'
+                    VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+                    'refreshCrawlerAndNavigator'
                 )
-            ),
+            )
         ]);
 
         return $codeBlock;
