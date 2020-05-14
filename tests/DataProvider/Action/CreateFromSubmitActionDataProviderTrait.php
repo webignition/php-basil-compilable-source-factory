@@ -27,15 +27,14 @@ trait CreateFromSubmitActionDataProviderTrait
                     '}\')' .
                     ');' . "\n" .
                     '{{ ELEMENT }}->submit();' . "\n" .
-                    '{{ CRAWLER }} = {{ CLIENT }}->refreshCrawler();',
+                    '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::PANTHER_CRAWLER,
-                        VariableNames::PANTHER_CLIENT,
+                        VariableNames::PHPUNIT_TEST_CASE,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                         'ELEMENT',

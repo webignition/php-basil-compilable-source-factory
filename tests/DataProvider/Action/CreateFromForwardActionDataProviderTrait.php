@@ -18,12 +18,14 @@ trait CreateFromForwardActionDataProviderTrait
         return [
             'no-arguments action (forward)' => [
                 'action' => $actionParser->parse('forward'),
-                'expectedRenderedSource' => '{{ CRAWLER }} = {{ CLIENT }}->forward();' . "\n" .
-                    '{{ CRAWLER }} = {{ CLIENT }}->refreshCrawler();',
+                'expectedRenderedSource' =>
+                    '{{ CRAWLER }} = {{ CLIENT }}->forward();' . "\n" .
+                    '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PANTHER_CRAWLER,
                         VariableNames::PANTHER_CLIENT,
+                        VariableNames::PHPUNIT_TEST_CASE,
                     ]),
                 ]),
             ],

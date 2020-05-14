@@ -24,8 +24,7 @@ trait CreateFromClickActionDataProviderTrait
             ]),
             Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                 VariableNames::DOM_CRAWLER_NAVIGATOR,
-                VariableNames::PANTHER_CLIENT,
-                VariableNames::PANTHER_CRAWLER,
+                VariableNames::PHPUNIT_TEST_CASE,
             ]),
             Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
                 'ELEMENT',
@@ -41,7 +40,7 @@ trait CreateFromClickActionDataProviderTrait
                     '}\')' .
                     ');' . "\n" .
                     '{{ ELEMENT }}->click();' . "\n" .
-                    '{{ CRAWLER }} = {{ CLIENT }}->refreshCrawler();',
+                    '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
                 'expectedMetadata' => $expectedMetadata,
             ],
             'interaction action (click), parent > child identifier' => [
@@ -55,7 +54,7 @@ trait CreateFromClickActionDataProviderTrait
                     '}\')' .
                     ');' . "\n" .
                     '{{ ELEMENT }}->click();' . "\n" .
-                    '{{ CRAWLER }} = {{ CLIENT }}->refreshCrawler();',
+                    '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
                 'expectedMetadata' => $expectedMetadata,
             ],
             'interaction action (click), single-character CSS selector element identifier' => [
@@ -66,7 +65,7 @@ trait CreateFromClickActionDataProviderTrait
                     '}\')' .
                     ');' . "\n" .
                     '{{ ELEMENT }}->click();' . "\n" .
-                    '{{ CRAWLER }} = {{ CLIENT }}->refreshCrawler();',
+                    '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
                 'expectedMetadata' => $expectedMetadata,
             ],
         ];

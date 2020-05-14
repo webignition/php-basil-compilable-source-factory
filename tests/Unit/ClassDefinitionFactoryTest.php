@@ -135,7 +135,6 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                         VariableNames::ASSERTION_FACTORY,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::PANTHER_CLIENT,
-                        VariableNames::PANTHER_CRAWLER,
                         VariableNames::PHPUNIT_TEST_CASE,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
@@ -200,7 +199,6 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                         VariableNames::ASSERTION_FACTORY,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::PANTHER_CLIENT,
-                        VariableNames::PANTHER_CRAWLER,
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
