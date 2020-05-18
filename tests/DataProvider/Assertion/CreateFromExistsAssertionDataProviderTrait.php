@@ -9,7 +9,7 @@ use webignition\BasilCompilableSource\Line\ClassDependency;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilModels\Assertion\DerivedElementExistsAssertion;
+use webignition\BasilModels\Assertion\DerivedValueOperationAssertion;
 use webignition\BasilParser\ActionParser;
 use webignition\BasilParser\AssertionParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
@@ -173,9 +173,10 @@ trait CreateFromExistsAssertionDataProviderTrait
                 ]),
             ],
             'derived exists comparison, click action source' => [
-                'assertion' => new DerivedElementExistsAssertion(
+                'assertion' => new DerivedValueOperationAssertion(
                     $actionParser->parse('click $".selector"'),
-                    '$".selector"'
+                    '$".selector"',
+                    'exists'
                 ),
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->examinedElementIdentifier = ElementIdentifier::fromJson(\'{' . "\n" .
@@ -199,9 +200,10 @@ trait CreateFromExistsAssertionDataProviderTrait
                 ]),
             ],
             'derived exists comparison, submit action source' => [
-                'assertion' => new DerivedElementExistsAssertion(
+                'assertion' => new DerivedValueOperationAssertion(
                     $actionParser->parse('submit $".selector"'),
-                    '$".selector"'
+                    '$".selector"',
+                    'exists'
                 ),
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->examinedElementIdentifier = ElementIdentifier::fromJson(\'{' . "\n" .
@@ -225,9 +227,10 @@ trait CreateFromExistsAssertionDataProviderTrait
                 ]),
             ],
             'derived exists comparison, set action source' => [
-                'assertion' => new DerivedElementExistsAssertion(
+                'assertion' => new DerivedValueOperationAssertion(
                     $actionParser->parse('set $".selector" to "value"'),
-                    '$".selector"'
+                    '$".selector"',
+                    'exists'
                 ),
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->examinedElementIdentifier = ElementIdentifier::fromJson(\'{' . "\n" .
@@ -251,9 +254,10 @@ trait CreateFromExistsAssertionDataProviderTrait
                 ]),
             ],
             'derived exists comparison, wait action source' => [
-                'assertion' => new DerivedElementExistsAssertion(
+                'assertion' => new DerivedValueOperationAssertion(
                     $actionParser->parse('wait $".duration"'),
-                    '$".duration"'
+                    '$".duration"',
+                    'exists'
                 ),
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->examinedElementIdentifier = ElementIdentifier::fromJson(\'{' . "\n" .

@@ -9,7 +9,7 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 use webignition\BasilCompilableSourceFactory\CallFactory\StatementFactoryCallFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilModels\Assertion\DerivedElementExistsAssertion;
+use webignition\BasilModels\Assertion\DerivedValueOperationAssertion;
 use webignition\BasilModels\StatementInterface;
 use webignition\BasilParser\ActionParser;
 use webignition\BasilParser\AssertionParser;
@@ -80,12 +80,14 @@ class StatementFactoryCallFactoryTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             'derived exists assertion' => [
-                'statement' => new DerivedElementExistsAssertion(
+                'statement' => new DerivedValueOperationAssertion(
                     $actionParser->parse('click $".selector"'),
-                    '$".selector"'
+                    '$".selector"',
+                    'exists'
                 ),
                 'expectedRenderedSource' =>
                     '{{ ASSERTION_FACTORY }}->createFromJson(\'{' . "\n" .
+                    '    "operator": "exists",' . "\n" .
                     '    "source_type": "action",' . "\n" .
                     '    "source": {' . "\n" .
                     '        "source": "click $\\\\".selector\\\\"",' . "\n" .
@@ -93,7 +95,7 @@ class StatementFactoryCallFactoryTest extends \PHPUnit\Framework\TestCase
                     '        "arguments": "$\\\\".selector\\\\"",' . "\n" .
                     '        "identifier": "$\\\\".selector\\\\""' . "\n" .
                     '    },' . "\n" .
-                    '    "identifier": "$\\\\".selector\\\\""' . "\n" .
+                    '    "value": "$\\\\".selector\\\\""' . "\n" .
                     '}\')'
                 ,
                 'expectedMetadata' => new Metadata([

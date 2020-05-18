@@ -11,7 +11,7 @@ use webignition\BasilCompilableSourceFactory\Handler\Step\StatementBlockFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Action\InteractionActionInterface;
 use webignition\BasilModels\Assertion\AssertionInterface;
-use webignition\BasilModels\Assertion\DerivedElementExistsAssertion;
+use webignition\BasilModels\Assertion\DerivedValueOperationAssertion;
 use webignition\BasilModels\StatementInterface as StatementModelInterface;
 
 class StatementBlockFactoryTest extends \PHPUnit\Framework\TestCase
@@ -64,7 +64,7 @@ class StatementBlockFactoryTest extends \PHPUnit\Framework\TestCase
                 'serialised' => 'exists assertion',
             ]);
 
-        $derivedElementExistsAssertion = \Mockery::mock(DerivedElementExistsAssertion::class);
+        $derivedElementExistsAssertion = \Mockery::mock(DerivedValueOperationAssertion::class);
         $derivedElementExistsAssertion
             ->shouldReceive('getSource')
             ->andReturn('$".selector" exists');
