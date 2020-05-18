@@ -18,7 +18,7 @@ use webignition\BasilCompilableSourceFactory\Handler\Step\StatementBlockFactory;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
 use webignition\BasilModels\Action\ActionInterface;
 use webignition\BasilModels\Assertion\AssertionInterface;
-use webignition\BasilModels\Assertion\DerivedElementExistsAssertion;
+use webignition\BasilModels\Assertion\DerivedValueOperationAssertion;
 use webignition\BasilModels\StatementInterface;
 use webignition\BasilModels\Step\StepInterface;
 use webignition\BasilParser\ActionParser;
@@ -64,9 +64,10 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                 'handler' => $this->createStepHandler([
                     StatementBlockFactory::class => $this->createMockStatementBlockFactory([
                         '$".selector" exists' => [
-                            'statement' => new DerivedElementExistsAssertion(
+                            'statement' => new DerivedValueOperationAssertion(
                                 $actionParser->parse('click $".selector"'),
-                                '$".selector"'
+                                '$".selector"',
+                                'exists'
                             ),
                             'return' => new CodeBlock([
                                 new SingleLineComment(
@@ -93,9 +94,10 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     ]),
                     AssertionHandler::class => $this->createMockAssertionHandler([
                         '$".selector" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
+                            'assertion' => new DerivedValueOperationAssertion(
                                 $actionParser->parse('click $".selector"'),
-                                '$".selector"'
+                                '$".selector"',
+                                'exists'
                             ),
                             'return' => new CodeBlock([
                                 new SingleLineComment('AssertionHandler::handle($".selector" exists)'),
@@ -122,9 +124,10 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                 'handler' => $this->createStepHandler([
                     StatementBlockFactory::class => $this->createMockStatementBlockFactory([
                         '$".selector1" exists' => [
-                            'statement' => new DerivedElementExistsAssertion(
+                            'statement' => new DerivedValueOperationAssertion(
                                 $actionParser->parse('click $".selector1"'),
-                                '$".selector1"'
+                                '$".selector1"',
+                                'exists'
                             ),
                             'return' => new CodeBlock([
                                 new SingleLineComment(
@@ -141,9 +144,10 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                             ]),
                         ],
                         '$".selector2" exists' => [
-                            'statement' => new DerivedElementExistsAssertion(
+                            'statement' => new DerivedValueOperationAssertion(
                                 $actionParser->parse('click $".selector2"'),
-                                '$".selector2"'
+                                '$".selector2"',
+                                'exists'
                             ),
                             'return' => new CodeBlock([
                                 new SingleLineComment(
@@ -176,18 +180,20 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     ]),
                     AssertionHandler::class => $this->createMockAssertionHandler([
                         '$".selector1" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
+                            'assertion' => new DerivedValueOperationAssertion(
                                 $actionParser->parse('click $".selector1"'),
-                                '$".selector1"'
+                                '$".selector1"',
+                                'exists'
                             ),
                             'return' => new CodeBlock([
                                 new SingleLineComment('AssertionHandler::handle($".selector1" exists)'),
                             ]),
                         ],
                         '$".selector2" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
+                            'assertion' => new DerivedValueOperationAssertion(
                                 $actionParser->parse('click $".selector2"'),
-                                '$".selector2"'
+                                '$".selector2"',
+                                'exists'
                             ),
                             'return' => new CodeBlock([
                                 new SingleLineComment('AssertionHandler::handle($".selector2" exists)'),
@@ -251,9 +257,10 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                 'handler' => $this->createStepHandler([
                     StatementBlockFactory::class => $this->createMockStatementBlockFactory([
                         '$".parent" exists' => [
-                            'statement' => new DerivedElementExistsAssertion(
+                            'statement' => new DerivedValueOperationAssertion(
                                 $assertionParser->parse('$".parent" >> $".child" exists'),
-                                '$".parent"'
+                                '$".parent"',
+                                'exists'
                             ),
                             'return' => new CodeBlock([
                                 new SingleLineComment(
@@ -272,9 +279,10 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     ]),
                     AssertionHandler::class => $this->createMockAssertionHandler([
                         '$".parent" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
+                            'assertion' => new DerivedValueOperationAssertion(
                                 $assertionParser->parse('$".parent" >> $".child" exists'),
-                                '$".parent"'
+                                '$".parent"',
+                                'exists'
                             ),
                             'return' => new CodeBlock([
                                 new SingleLineComment('AssertionHandler::handle($".parent" exists)'),
@@ -360,9 +368,10 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                 'handler' => $this->createStepHandler([
                     StatementBlockFactory::class => $this->createMockStatementBlockFactory([
                         '$".selector1" exists' => [
-                            'statement' => new DerivedElementExistsAssertion(
+                            'statement' => new DerivedValueOperationAssertion(
                                 $actionParser->parse('click $".selector1"'),
-                                '$".selector1"'
+                                '$".selector1"',
+                                'exists'
                             ),
                             'return' => new CodeBlock([
                                 new SingleLineComment(
@@ -397,9 +406,10 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     ]),
                     AssertionHandler::class => $this->createMockAssertionHandler([
                         '$".selector1" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
+                            'assertion' => new DerivedValueOperationAssertion(
                                 $actionParser->parse('click $".selector1"'),
-                                '$".selector1"'
+                                '$".selector1"',
+                                'exists'
                             ),
                             'return' => new CodeBlock([
                                 new SingleLineComment('AssertionHandler::handle($".selector1" exists)'),
@@ -435,9 +445,10 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                 'handler' => $this->createStepHandler([
                     StatementBlockFactory::class => $this->createMockStatementBlockFactory([
                         '$".parent" exists' => [
-                            'statement' => new DerivedElementExistsAssertion(
+                            'statement' => new DerivedValueOperationAssertion(
                                 $assertionParser->parse('$".parent" >> $".child1" exists'),
-                                '$".parent"'
+                                '$".parent"',
+                                'exists'
                             ),
                             'return' => new CodeBlock([
                                 new SingleLineComment(
@@ -464,9 +475,10 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     ]),
                     AssertionHandler::class => $this->createMockAssertionHandler([
                         '$".parent" exists' => [
-                            'assertion' => new DerivedElementExistsAssertion(
+                            'assertion' => new DerivedValueOperationAssertion(
                                 $assertionParser->parse('$".parent" >> $".child1" exists'),
-                                '$".parent"'
+                                '$".parent"',
+                                'exists'
                             ),
                             'return' => new CodeBlock([
                                 new SingleLineComment('AssertionHandler::handle($".parent" exists)'),

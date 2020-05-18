@@ -34,7 +34,7 @@ use webignition\BasilModels\Action\InteractionAction;
 use webignition\BasilModels\Assertion\Assertion;
 use webignition\BasilModels\Assertion\AssertionInterface;
 use webignition\BasilModels\Assertion\ComparisonAssertionInterface;
-use webignition\BasilModels\Assertion\DerivedElementExistsAssertion;
+use webignition\BasilModels\Assertion\DerivedValueOperationAssertion;
 use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifierInterface;
@@ -252,7 +252,7 @@ class AssertionHandler
         $isAttributeIdentifier = $domIdentifier instanceof AttributeIdentifierInterface;
         $isDerivedFromInteractionAction = false;
 
-        if ($assertion instanceof DerivedElementExistsAssertion) {
+        if ($assertion instanceof DerivedValueOperationAssertion) {
             $sourceStatement = $assertion->getSourceStatement();
             $isDerivedFromInteractionAction =
                 $sourceStatement instanceof InteractionAction && !$sourceStatement instanceof InputAction;

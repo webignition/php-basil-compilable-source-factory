@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "eb40a4b285fe6f43bd62d19f965e8920",
+    "content-hash": "ba931499ee2ab0db382f5c1e41094570",
     "packages": [
         {
             "name": "webignition/basil-compilable-source",
@@ -136,16 +136,16 @@
         },
         {
             "name": "webignition/basil-models",
-            "version": "0.41",
+            "version": "0.42",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/basil-models.git",
-                "reference": "a84de2a0b8a3089313afc00f4bade1b792b8c32b"
+                "reference": "160fe34bff0b638f95027dfaf0f33da2022bf508"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/basil-models/zipball/a84de2a0b8a3089313afc00f4bade1b792b8c32b",
-                "reference": "a84de2a0b8a3089313afc00f4bade1b792b8c32b",
+                "url": "https://api.github.com/repos/webignition/basil-models/zipball/160fe34bff0b638f95027dfaf0f33da2022bf508",
+                "reference": "160fe34bff0b638f95027dfaf0f33da2022bf508",
                 "shasum": ""
             },
             "require": {
@@ -174,7 +174,7 @@
                 }
             ],
             "homepage": "https://github.com/webignition/basil-models",
-            "time": "2020-04-10T11:34:59+00:00"
+            "time": "2020-05-18T12:11:25+00:00"
         },
         {
             "name": "webignition/basil-value-extractor",

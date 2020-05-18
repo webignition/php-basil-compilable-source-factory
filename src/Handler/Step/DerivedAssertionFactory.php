@@ -13,7 +13,7 @@ use webignition\BasilModels\Action\InteractionActionInterface;
 use webignition\BasilModels\Action\WaitActionInterface;
 use webignition\BasilModels\Assertion\AssertionInterface;
 use webignition\BasilModels\Assertion\ComparisonAssertionInterface;
-use webignition\BasilModels\Assertion\DerivedElementExistsAssertion;
+use webignition\BasilModels\Assertion\DerivedValueOperationAssertion;
 use webignition\BasilModels\Assertion\UniqueAssertionCollection;
 use webignition\BasilModels\StatementInterface as StatementModelInterface;
 use webignition\DomElementIdentifier\ElementIdentifierInterface;
@@ -181,7 +181,7 @@ class DerivedAssertionFactory
         $assertions = new UniqueAssertionCollection();
 
         foreach ($elementHierarchy as $elementIdentifier) {
-            $assertions->add(new DerivedElementExistsAssertion($action, (string) $elementIdentifier));
+            $assertions->add(new DerivedValueOperationAssertion($action, (string) $elementIdentifier, 'exists'));
         }
 
         return $assertions;

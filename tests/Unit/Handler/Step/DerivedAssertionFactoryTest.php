@@ -10,7 +10,7 @@ use webignition\BasilModels\Action\ActionInterface;
 use webignition\BasilModels\Action\InputAction;
 use webignition\BasilModels\Action\InteractionAction;
 use webignition\BasilModels\Assertion\AssertionInterface;
-use webignition\BasilModels\Assertion\DerivedElementExistsAssertion;
+use webignition\BasilModels\Assertion\DerivedValueOperationAssertion;
 use webignition\BasilModels\Assertion\UniqueAssertionCollection;
 use webignition\BasilParser\ActionParser;
 use webignition\BasilParser\AssertionParser;
@@ -53,75 +53,85 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
             'click action' => [
                 'action' => $actionParser->parse('click $".selector"'),
                 'expectedAssertions' => new UniqueAssertionCollection([
-                    new DerivedElementExistsAssertion(
+                    new DerivedValueOperationAssertion(
                         $actionParser->parse('click $".selector"'),
-                        '$".selector"'
+                        '$".selector"',
+                        'exists'
                     ),
                 ]),
             ],
             'click action, descendant identifier' => [
                 'action' => $actionParser->parse('click $".parent" >> $".child"'),
                 'expectedAssertions' => new UniqueAssertionCollection([
-                    new DerivedElementExistsAssertion(
+                    new DerivedValueOperationAssertion(
                         $actionParser->parse('click $".parent" >> $".child"'),
-                        '$".parent"'
+                        '$".parent"',
+                        'exists'
                     ),
-                    new DerivedElementExistsAssertion(
+                    new DerivedValueOperationAssertion(
                         $actionParser->parse('click $".parent" >> $".child"'),
-                        '$".parent" >> $".child"'
+                        '$".parent" >> $".child"',
+                        'exists'
                     ),
                 ]),
             ],
             'set action' => [
                 'action' => $actionParser->parse('set $".selector" to "value"'),
                 'expectedAssertions' => new UniqueAssertionCollection([
-                    new DerivedElementExistsAssertion(
+                    new DerivedValueOperationAssertion(
                         $actionParser->parse('set $".selector" to "value"'),
-                        '$".selector"'
+                        '$".selector"',
+                        'exists'
                     ),
                 ]),
             ],
             'set action, descendant identifier' => [
                 'action' => $actionParser->parse('set $".parent" >> $".child" to "value"'),
                 'expectedAssertions' => new UniqueAssertionCollection([
-                    new DerivedElementExistsAssertion(
+                    new DerivedValueOperationAssertion(
                         $actionParser->parse('set $".parent" >> $".child" to "value"'),
-                        '$".parent"'
+                        '$".parent"',
+                        'exists'
                     ),
-                    new DerivedElementExistsAssertion(
+                    new DerivedValueOperationAssertion(
                         $actionParser->parse('set $".parent" >> $".child" to "value"'),
-                        '$".parent" >> $".child"'
+                        '$".parent" >> $".child"',
+                        'exists'
                     ),
                 ]),
             ],
             'set action, elemental value' => [
                 'action' => $actionParser->parse('set $".selector" to $".value"'),
                 'expectedAssertions' => new UniqueAssertionCollection([
-                    new DerivedElementExistsAssertion(
+                    new DerivedValueOperationAssertion(
                         $actionParser->parse('set $".selector" to $".value"'),
-                        '$".selector"'
+                        '$".selector"',
+                        'exists'
                     ),
-                    new DerivedElementExistsAssertion(
+                    new DerivedValueOperationAssertion(
                         $actionParser->parse('set $".selector" to $".value"'),
-                        '$".value"'
+                        '$".value"',
+                        'exists'
                     ),
                 ]),
             ],
             'set action, elemental value matches identifier' => [
                 'action' => $actionParser->parse('set $".selector" to $".selector"'),
                 'expectedAssertions' => new UniqueAssertionCollection([
-                    new DerivedElementExistsAssertion(
+                    new DerivedValueOperationAssertion(
                         $actionParser->parse('set $".selector" to $".selector"'),
-                        '$".selector"'
+                        '$".selector"',
+                        'exists'
                     ),
                 ]),
             ],
             'wait action, elemental duration' => [
                 'action' => $actionParser->parse('wait $".duration"'),
                 'expectedAssertions' => new UniqueAssertionCollection([
-                    new DerivedElementExistsAssertion(
+                    new DerivedValueOperationAssertion(
                         $actionParser->parse('wait $".duration"'),
-                        '$".duration"'
+                        '$".duration"',
+                        'exists'
                     ),
                 ]),
             ],
@@ -157,31 +167,35 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
             'exists assertion, descendant identifier' => [
                 'assertion' => $assertionParser->parse('$".parent" >> $".child" exists'),
                 'expectedAssertions' => new UniqueAssertionCollection([
-                    new DerivedElementExistsAssertion(
+                    new DerivedValueOperationAssertion(
                         $assertionParser->parse('$".parent" >> $".child" exists'),
-                        '$".parent"'
+                        '$".parent"',
+                        'exists'
                     ),
                 ]),
             ],
             'is assertion' => [
                 'assertion' => $assertionParser->parse('$".selector" is "value"'),
                 'expectedAssertions' => new UniqueAssertionCollection([
-                    new DerivedElementExistsAssertion(
+                    new DerivedValueOperationAssertion(
                         $assertionParser->parse('$".selector" is "value"'),
-                        '$".selector"'
+                        '$".selector"',
+                        'exists'
                     ),
                 ]),
             ],
             'is assertion, elemental value' => [
                 'assertion' => $assertionParser->parse('$".selector" is $".value"'),
                 'expectedAssertions' => new UniqueAssertionCollection([
-                    new DerivedElementExistsAssertion(
+                    new DerivedValueOperationAssertion(
                         $assertionParser->parse('$".selector" is $".value"'),
-                        '$".selector"'
+                        '$".selector"',
+                        'exists'
                     ),
-                    new DerivedElementExistsAssertion(
+                    new DerivedValueOperationAssertion(
                         $assertionParser->parse('$".selector" is $".value"'),
-                        '$".value"'
+                        '$".value"',
+                        'exists'
                     ),
                 ]),
             ],
