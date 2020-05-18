@@ -10,6 +10,7 @@ use webignition\BasilCompilableSource\Line\ClosureExpression;
 use webignition\BasilCompilableSource\Line\ComparisonExpression;
 use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
+use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\Line\ObjectPropertyAccessExpression;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\ObjectPropertyAssignmentStatement;
@@ -67,6 +68,7 @@ class AssertionHandler
         'matches' => self::ASSERT_MATCHES_METHOD,
         'exists' => self::ASSERT_TRUE_METHOD,
         'not-exists' => self::ASSERT_FALSE_METHOD,
+        'is-regexp' => self::ASSERT_FALSE_METHOD,
     ];
 
     /**
@@ -130,6 +132,10 @@ class AssertionHandler
 
             if ($this->isExistenceAssertion($assertion)) {
                 return $this->handleExistenceAssertion($assertion);
+            }
+
+            if ($this->isIsRegExpAssertion($assertion)) {
+                return $this->handleIsRegExpAssertion($assertion);
             }
         } catch (UnsupportedContentException $previous) {
             throw new UnsupportedStatementException($assertion, $previous);
@@ -302,6 +308,88 @@ class AssertionHandler
     }
 
     /**
+     * @param AssertionInterface $assertion
+     *
+     * @return CodeBlockInterface
+     *
+     * @throws UnsupportedContentException
+     */
+    private function handleIsRegExpAssertion(AssertionInterface $assertion): CodeBlockInterface
+    {
+        $identifier = $assertion->getIdentifier();
+
+        $valuePlaceholder = new ObjectPropertyAccessExpression(
+            VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+            'examinedValue'
+        );
+
+        if ($this->valueTypeIdentifier->isScalarValue($identifier)) {
+            $pregMatchInvocation = new MethodInvocation(
+                'preg_match',
+                [
+                    new LiteralExpression($identifier),
+                    new LiteralExpression('null'),
+                ]
+            );
+            $pregMatchInvocation->enableErrorSuppression();
+
+            $identityComparison = new ComparisonExpression(
+                $pregMatchInvocation,
+                new LiteralExpression('false'),
+                '==='
+            );
+
+            return new CodeBlock([
+                new ObjectPropertyAssignmentStatement(
+                    $valuePlaceholder,
+                    $identityComparison
+                ),
+                $this->createAssertionStatement($assertion, [$valuePlaceholder]),
+            ]);
+        }
+
+        if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
+            $domIdentifier = $this->domIdentifierFactory->createFromIdentifierString($identifier);
+            if (null === $domIdentifier) {
+                throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
+            }
+
+            $examinedAccessor = $this->createValueAccessor($assertion->getIdentifier());
+
+            $examinedElementValueAssignment = new ObjectPropertyAssignmentStatement(
+                $valuePlaceholder,
+                $examinedAccessor
+            );
+
+            $pregMatchInvocation = new MethodInvocation(
+                'preg_match',
+                [
+                    $valuePlaceholder,
+                    new LiteralExpression('null'),
+                ]
+            );
+            $pregMatchInvocation->enableErrorSuppression();
+
+            $identityComparison = new ComparisonExpression(
+                $pregMatchInvocation,
+                new LiteralExpression('false'),
+                '==='
+            );
+
+            return new CodeBlock([
+                $examinedElementValueAssignment,
+                new ObjectPropertyAssignmentStatement(
+                    $valuePlaceholder,
+                    $identityComparison
+                ),
+                $this->createAssertionStatement($assertion, [$valuePlaceholder]),
+            ]);
+        }
+
+        throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
+    }
+
+    /**
      * @param string $value
      *
      * @return ExpressionInterface
@@ -366,5 +454,10 @@ class AssertionHandler
     private function isExistenceAssertion(AssertionInterface $assertion): bool
     {
         return in_array($assertion->getComparison(), ['exists', 'not-exists']);
+    }
+
+    private function isIsRegExpAssertion(AssertionInterface $assertion): bool
+    {
+        return 'is-regexp' === $assertion->getComparison();
     }
 }

@@ -18,6 +18,7 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\Create
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromIncludesAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromIsAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromIsNotAssertionDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromIsRegExpAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromMatchesAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromNotExistsAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
@@ -37,6 +38,7 @@ class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
     use CreateFromIncludesAssertionDataProviderTrait;
     use CreateFromIsAssertionDataProviderTrait;
     use CreateFromIsNotAssertionDataProviderTrait;
+    use CreateFromIsRegExpAssertionDataProviderTrait;
     use CreateFromMatchesAssertionDataProviderTrait;
     use CreateFromNotExistsAssertionDataProviderTrait;
 
@@ -60,6 +62,8 @@ class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
      * @dataProvider createFromIsNotAssertionDataProvider
      * @dataProvider createFromMatchesAssertionDataProvider
      * @dataProvider createFromNotExistsAssertionDataProvider
+     * @dataProvider createFromIsRegExpAssertionDataProvider
+     *
      */
     public function testHandle(
         AssertionInterface $assertion,

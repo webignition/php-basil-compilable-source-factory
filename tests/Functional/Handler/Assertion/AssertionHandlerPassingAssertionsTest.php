@@ -11,6 +11,7 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\Includ
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\InclusionAssertionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\IsAssertionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\IsNotAssertionFunctionalDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\IsRegExpAssertionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\MatchesAssertionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\NotExistsAssertionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
@@ -27,6 +28,7 @@ class AssertionHandlerPassingAssertionsTest extends AbstractBrowserTestCase
     use IncludesAssertionFunctionalDataProviderTrait;
     use IsAssertionFunctionalDataProviderTrait;
     use IsNotAssertionFunctionalDataProviderTrait;
+    use IsRegExpAssertionFunctionalDataProviderTrait;
     use MatchesAssertionFunctionalDataProviderTrait;
     use NotExistsAssertionFunctionalDataProviderTrait;
 
@@ -50,6 +52,7 @@ class AssertionHandlerPassingAssertionsTest extends AbstractBrowserTestCase
      * @dataProvider isNotAssertionFunctionalDataProvider
      * @dataProvider matchesAssertionFunctionalDataProvider
      * @dataProvider notExistsAssertionFunctionalDataProvider
+     * @dataProvider isRegExpAssertionFunctionalDataProvider
      */
     public function testHandle(
         string $fixture,

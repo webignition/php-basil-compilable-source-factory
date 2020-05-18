@@ -16,7 +16,7 @@ use webignition\BasilParser\StepParser;
 class StepHandlerTest extends AbstractBrowserTestCase
 {
     /**
-     * @var \webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler
+     * @var StepHandler
      */
     private $handler;
 
@@ -83,6 +83,18 @@ class StepHandlerTest extends AbstractBrowserTestCase
                 'step' => $stepParser->parse([
                     'assertions' => [
                         '$".selector" is ".selector content"',
+                    ],
+                ]),
+                'teardownStatements' => null,
+                'additionalVariableIdentifiers' => [
+                    'ELEMENT' => '$element',
+                ],
+            ],
+            'single matches assertion' => [
+                'fixture' => '/assertions.html',
+                'step' => $stepParser->parse([
+                    'assertions' => [
+                        '$".matches-examined" matches $".matches-expected"',
                     ],
                 ]),
                 'teardownStatements' => null,
