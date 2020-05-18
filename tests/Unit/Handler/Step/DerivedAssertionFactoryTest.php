@@ -199,6 +199,31 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
                     ),
                 ]),
             ],
+            'matches, scalar to scalar' => [
+                'assertion' => $assertionParser->parse('$page.title matches "pattern"'),
+                'expectedAssertions' => new UniqueAssertionCollection([
+                    new DerivedValueOperationAssertion(
+                        $assertionParser->parse('$page.title matches "pattern"'),
+                        '"pattern"',
+                        'is-regexp'
+                    )
+                ]),
+            ],
+            'matches, scalar to elemental' => [
+                'assertion' => $assertionParser->parse('$page.title matches $".pattern-container"'),
+                'expectedAssertions' => new UniqueAssertionCollection([
+                    new DerivedValueOperationAssertion(
+                        $assertionParser->parse('$page.title matches $".pattern-container"'),
+                        '$".pattern-container"',
+                        'exists'
+                    ),
+                    new DerivedValueOperationAssertion(
+                        $assertionParser->parse('$page.title matches $".pattern-container"'),
+                        '$".pattern-container"',
+                        'is-regexp'
+                    )
+                ]),
+            ],
         ];
     }
 

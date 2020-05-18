@@ -88,6 +88,24 @@ class DerivedAssertionFactory
     {
         $assertions = new UniqueAssertionCollection();
 
+        $assertions = $assertions->merge($this->createExistenceAssertionsForElementalComponents($assertion));
+        $assertions = $assertions->merge($this->createRegexValidationAssertions($assertion));
+
+        return $assertions;
+    }
+
+    /**
+     * @param AssertionInterface $assertion
+     *
+     * @return UniqueAssertionCollection
+     *
+     * @throws UnsupportedContentException
+     */
+    private function createExistenceAssertionsForElementalComponents(
+        AssertionInterface $assertion
+    ): UniqueAssertionCollection {
+        $assertions = new UniqueAssertionCollection();
+
         $isExistenceAssertion = in_array($assertion->getComparison(), ['exists', 'not-exists']);
         $identifier = $assertion->getIdentifier();
 
@@ -108,6 +126,23 @@ class DerivedAssertionFactory
                 $assertions = $assertions->merge($this->createForStatementAndAncestors($value, $assertion));
             }
         }
+
+        return $assertions;
+    }
+
+    private function createRegexValidationAssertions(AssertionInterface $assertion): UniqueAssertionCollection
+    {
+        $assertions = new UniqueAssertionCollection();
+
+        if (!$assertion instanceof ComparisonAssertionInterface) {
+            return $assertions;
+        }
+
+        if ('matches' !== $assertion->getComparison()) {
+            return $assertions;
+        }
+
+        $assertions->add(new DerivedValueOperationAssertion($assertion, $assertion->getValue(), 'is-regexp'));
 
         return $assertions;
     }
