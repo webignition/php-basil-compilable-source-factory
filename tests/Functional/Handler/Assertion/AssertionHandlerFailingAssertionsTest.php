@@ -10,6 +10,7 @@ use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableName
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Assertion\AssertionInterface;
+use webignition\BasilModels\Assertion\DerivedValueOperationAssertion;
 use webignition\BasilParser\AssertionParser;
 
 class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
@@ -78,7 +79,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
                 'assertion' => $assertionParser->parse('$".selector".attribute_name exists'),
                 'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
                 'additionalVariableIdentifiers' => [
-                    'ELEMENT' => '$element',
+                    'ELEMENT' => ResolvedVariableNames::ELEMENT_VARIABLE_NAME,
                 ],
             ],
             'exists comparison, attribute identifier examined value, attribute does not exist' => [
@@ -86,7 +87,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
                 'assertion' => $assertionParser->parse('$"h1".attribute_name exists'),
                 'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
                 'additionalVariableIdentifiers' => [
-                    'ELEMENT' => '$element',
+                    'ELEMENT' => ResolvedVariableNames::ELEMENT_VARIABLE_NAME,
                 ],
             ],
             'exists comparison, environment examined value, environment variable does not exist' => [
@@ -95,6 +96,27 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
                 'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
                 'additionalVariableIdentifiers' => [
                     VariableNames::ENVIRONMENT_VARIABLE_ARRAY => '$_ENV',
+                ],
+            ],
+            'is-regexp operation, scalar identifier, literal value is not a regular expression' => [
+                'fixture' => '/index.html',
+                'assertion' => new DerivedValueOperationAssertion(
+                    $assertionParser->parse('$page.title matches "pattern"'),
+                    '"pattern"',
+                    'is-regexp'
+                ),
+                'expectedExpectationFailedExceptionMessage' => 'Failed asserting that true is false.',
+            ],
+            'is-regexp operation, scalar identifier, elemental value is not a regular expression' => [
+                'fixture' => '/index.html',
+                'assertion' => new DerivedValueOperationAssertion(
+                    $assertionParser->parse('$page.title matches $"h1"'),
+                    '$"h1"',
+                    'is-regexp'
+                ),
+                'expectedExpectationFailedExceptionMessage' => 'Failed asserting that true is false.',
+                'additionalVariableIdentifiers' => [
+                    'ELEMENT' => ResolvedVariableNames::ELEMENT_VARIABLE_NAME,
                 ],
             ],
         ];
