@@ -27,9 +27,10 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     'is-regexp'
                 ),
                 'expectedRenderedSource' =>
-                    '{{ PHPUNIT }}->examinedValue = @preg_match("/^value/", null) === false;' . "\n" .
+                    '{{ PHPUNIT }}->examinedValue = "/^value/";' . "\n" .
+                    '{{ PHPUNIT }}->expectedValue = @preg_match({{ PHPUNIT }}->examinedValue, null) === false;' . "\n" .
                     '{{ PHPUNIT }}->assertFalse(' . "\n" .
-                    '    {{ PHPUNIT }}->examinedValue' . "\n" .
+                    '    {{ PHPUNIT }}->expectedValue' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -52,9 +53,9 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
                     '})();' . "\n" .
-                    '{{ PHPUNIT }}->examinedValue = @preg_match({{ PHPUNIT }}->examinedValue, null) === false;' . "\n" .
+                    '{{ PHPUNIT }}->expectedValue = @preg_match({{ PHPUNIT }}->examinedValue, null) === false;' . "\n" .
                     '{{ PHPUNIT }}->assertFalse(' . "\n" .
-                    '    {{ PHPUNIT }}->examinedValue' . "\n" .
+                    '    {{ PHPUNIT }}->expectedValue' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -85,9 +86,9 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     "\n" .
                     '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
                     '})();' . "\n" .
-                    '{{ PHPUNIT }}->examinedValue = @preg_match({{ PHPUNIT }}->examinedValue, null) === false;' . "\n" .
+                    '{{ PHPUNIT }}->expectedValue = @preg_match({{ PHPUNIT }}->examinedValue, null) === false;' . "\n" .
                     '{{ PHPUNIT }}->assertFalse(' . "\n" .
-                    '    {{ PHPUNIT }}->examinedValue' . "\n" .
+                    '    {{ PHPUNIT }}->expectedValue' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([

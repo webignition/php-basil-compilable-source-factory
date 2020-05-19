@@ -318,16 +318,21 @@ class AssertionHandler
     {
         $identifier = $assertion->getIdentifier();
 
-        $valuePlaceholder = new ObjectPropertyAccessExpression(
+        $examinedValuePlaceholder = new ObjectPropertyAccessExpression(
             VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
             'examinedValue'
+        );
+
+        $expectedValuePlaceholder = new ObjectPropertyAccessExpression(
+            VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+            'expectedValue'
         );
 
         if ($this->valueTypeIdentifier->isScalarValue($identifier)) {
             $pregMatchInvocation = new MethodInvocation(
                 'preg_match',
                 [
-                    new LiteralExpression($identifier),
+                    $examinedValuePlaceholder,
                     new LiteralExpression('null'),
                 ]
             );
@@ -341,10 +346,14 @@ class AssertionHandler
 
             return new CodeBlock([
                 new ObjectPropertyAssignmentStatement(
-                    $valuePlaceholder,
+                    $examinedValuePlaceholder,
+                    new LiteralExpression($identifier)
+                ),
+                new ObjectPropertyAssignmentStatement(
+                    $expectedValuePlaceholder,
                     $identityComparison
                 ),
-                $this->createAssertionStatement($assertion, [$valuePlaceholder]),
+                $this->createAssertionStatement($assertion, [$expectedValuePlaceholder]),
             ]);
         }
 
@@ -357,14 +366,14 @@ class AssertionHandler
             $examinedAccessor = $this->createValueAccessor($assertion->getIdentifier());
 
             $examinedElementValueAssignment = new ObjectPropertyAssignmentStatement(
-                $valuePlaceholder,
+                $examinedValuePlaceholder,
                 $examinedAccessor
             );
 
             $pregMatchInvocation = new MethodInvocation(
                 'preg_match',
                 [
-                    $valuePlaceholder,
+                    $examinedValuePlaceholder,
                     new LiteralExpression('null'),
                 ]
             );
@@ -379,10 +388,10 @@ class AssertionHandler
             return new CodeBlock([
                 $examinedElementValueAssignment,
                 new ObjectPropertyAssignmentStatement(
-                    $valuePlaceholder,
+                    $expectedValuePlaceholder,
                     $identityComparison
                 ),
-                $this->createAssertionStatement($assertion, [$valuePlaceholder]),
+                $this->createAssertionStatement($assertion, [$expectedValuePlaceholder]),
             ]);
         }
 
