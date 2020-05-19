@@ -8,9 +8,11 @@ use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSource\Line\ClosureExpression;
 use webignition\BasilCompilableSource\Line\ComparisonExpression;
+use webignition\BasilCompilableSource\Line\EncapsulatedExpression;
 use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
+use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\ObjectPropertyAccessExpression;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\ObjectPropertyAssignmentStatement;
@@ -162,23 +164,31 @@ class AssertionHandler
 
         if ($this->valueTypeIdentifier->isScalarValue($identifier)) {
             return new CodeBlock([
-                new ObjectPropertyAssignmentStatement(
-                    $valuePlaceholder,
-                    new ComparisonExpression(
-                        $this->scalarValueHandler->handle($assertion->getIdentifier()),
-                        new LiteralExpression('null'),
-                        '??'
+                new Statement(
+                    new ObjectMethodInvocation(
+                        VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+                        'setBooleanExaminedValue',
+                        [
+                            new ComparisonExpression(
+                                new EncapsulatedExpression(
+                                    new ComparisonExpression(
+                                        $this->scalarValueHandler->handle($assertion->getIdentifier()),
+                                        new LiteralExpression('null'),
+                                        '??'
+                                    )
+                                ),
+                                new LiteralExpression('null'),
+                                '!=='
+                            ),
+                        ]
                     )
                 ),
-                new ObjectPropertyAssignmentStatement(
-                    $valuePlaceholder,
-                    new ComparisonExpression(
-                        $valuePlaceholder,
-                        new LiteralExpression('null'),
-                        '!=='
+                $this->createAssertionStatement($assertion, [
+                    new ObjectMethodInvocation(
+                        VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+                        'getBooleanExaminedValue'
                     )
-                ),
-                $this->createAssertionStatement($assertion, [$valuePlaceholder]),
+                ]),
             ]);
         }
 

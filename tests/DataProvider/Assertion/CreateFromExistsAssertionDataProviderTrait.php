@@ -25,10 +25,9 @@ trait CreateFromExistsAssertionDataProviderTrait
             'exists comparison, page property examined value' => [
                 'assertion' => $assertionParser->parse('$page.url exists'),
                 'expectedRenderedSource' =>
-                    '{{ PHPUNIT }}->examinedValue = {{ CLIENT }}->getCurrentURL() ?? null;' . "\n" .
-                    '{{ PHPUNIT }}->examinedValue = {{ PHPUNIT }}->examinedValue !== null;' . "\n" .
+                    '{{ PHPUNIT }}->setBooleanExaminedValue(({{ CLIENT }}->getCurrentURL() ?? null) !== null);' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
-                    '    {{ PHPUNIT }}->examinedValue' . "\n" .
+                    '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -101,11 +100,11 @@ trait CreateFromExistsAssertionDataProviderTrait
             'exists comparison, data parameter value' => [
                 'assertion' => $assertionParser->parse('$data.key exists'),
                 'expectedRenderedSource' =>
-                    '{{ PHPUNIT }}->examinedValue = $key ?? null;' . "\n" .
-                    '{{ PHPUNIT }}->examinedValue = {{ PHPUNIT }}->examinedValue !== null;' . "\n" .
+                    '{{ PHPUNIT }}->setBooleanExaminedValue(($key ?? null) !== null);' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
-                    '    {{ PHPUNIT }}->examinedValue' . "\n" .
-                    ');',
+                    '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n" .
+                    ');'
+                ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
