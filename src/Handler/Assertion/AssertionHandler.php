@@ -6,14 +6,16 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\CodeBlockInterface;
+use webignition\BasilCompilableSource\Line\CastExpression;
 use webignition\BasilCompilableSource\Line\ClosureExpression;
 use webignition\BasilCompilableSource\Line\ComparisonExpression;
+use webignition\BasilCompilableSource\Line\EncapsulatedExpression;
 use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
+use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\ObjectPropertyAccessExpression;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
-use webignition\BasilCompilableSource\Line\Statement\ObjectPropertyAssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\Line\Statement\StatementInterface;
 use webignition\BasilCompilableSource\VariablePlaceholder;
@@ -155,31 +157,12 @@ class AssertionHandler
     {
         $identifier = $assertion->getIdentifier();
 
-        $valuePlaceholder = new ObjectPropertyAccessExpression(
-            VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
-            'examinedValue'
-        );
+        $assertionStatement = $this->createAssertionStatement($assertion, [
+            $this->createGetBooleanExaminedValueInvocation()
+        ]);
 
         if ($this->valueTypeIdentifier->isScalarValue($identifier)) {
-            return new CodeBlock([
-                new ObjectPropertyAssignmentStatement(
-                    $valuePlaceholder,
-                    new ComparisonExpression(
-                        $this->scalarValueHandler->handle($assertion->getIdentifier()),
-                        new LiteralExpression('null'),
-                        '??'
-                    )
-                ),
-                new ObjectPropertyAssignmentStatement(
-                    $valuePlaceholder,
-                    new ComparisonExpression(
-                        $valuePlaceholder,
-                        new LiteralExpression('null'),
-                        '!=='
-                    )
-                ),
-                $this->createAssertionStatement($assertion, [$valuePlaceholder]),
-            ]);
+            return $this->handleScalarExistenceAssertion($assertion);
         }
 
         if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
@@ -200,17 +183,21 @@ class AssertionHandler
                 $examinedElementIdentifierPlaceholder
             );
 
+            $elementSetBooleanExaminedValueInvocation = $this->createSetBooleanExaminedValueInvocation(
+                [
+                    $domNavigatorCrawlerCall
+                ],
+                ObjectMethodInvocation::ARGUMENT_FORMAT_STACKED
+            );
+
             if (!$domIdentifier instanceof AttributeIdentifierInterface) {
                 return new CodeBlock([
                     new AssignmentStatement(
                         $examinedElementIdentifierPlaceholder,
                         $elementIdentifierExpression
                     ),
-                    new AssignmentStatement(
-                        $valuePlaceholder,
-                        $domNavigatorCrawlerCall
-                    ),
-                    $this->createAssertionStatement($assertion, [$valuePlaceholder]),
+                    new Statement($elementSetBooleanExaminedValueInvocation),
+                    $assertionStatement,
                 ]);
             }
 
@@ -221,33 +208,169 @@ class AssertionHandler
                 'exists'
             );
 
+            $attributeNullComparisonExpression = $this->createNullComparisonExpression(
+                $this->domIdentifierHandler->handle(new DomIdentifierValue($domIdentifier))
+            );
+
+            $attributeSetBooleanExaminedValueInvocation = $this->createSetBooleanExaminedValueInvocation([
+                new ComparisonExpression(
+                    new EncapsulatedExpression($attributeNullComparisonExpression),
+                    new LiteralExpression('null'),
+                    '!=='
+                ),
+            ]);
+
             return new CodeBlock([
                 new AssignmentStatement(
                     $examinedElementIdentifierPlaceholder,
                     $elementIdentifierExpression
                 ),
-                new AssignmentStatement(
-                    $valuePlaceholder,
-                    $domNavigatorCrawlerCall
-                ),
-                $this->createAssertionStatement($elementExistsAssertion, [$valuePlaceholder]),
-                new AssignmentStatement(
-                    $valuePlaceholder,
-                    $this->domIdentifierHandler->handle(new DomIdentifierValue($domIdentifier))
-                ),
-                new AssignmentStatement(
-                    $valuePlaceholder,
-                    new ComparisonExpression(
-                        $valuePlaceholder,
-                        new LiteralExpression('null'),
-                        '!=='
-                    )
-                ),
-                $this->createAssertionStatement($assertion, [$valuePlaceholder]),
+                new Statement($elementSetBooleanExaminedValueInvocation),
+                $this->createAssertionStatement($elementExistsAssertion, [
+                    $this->createGetBooleanExaminedValueInvocation()
+                ]),
+                new Statement($attributeSetBooleanExaminedValueInvocation),
+                $assertionStatement,
             ]);
         }
 
         throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
+    }
+
+    /**
+     * @param AssertionInterface $assertion
+     *
+     * @return CodeBlockInterface
+     *
+     * @throws UnsupportedContentException
+     */
+    private function handleScalarExistenceAssertion(AssertionInterface $assertion): CodeBlockInterface
+    {
+        $nullComparisonExpression = $this->createNullComparisonExpression(
+            $this->scalarValueHandler->handle($assertion->getIdentifier())
+        );
+
+        $setBooleanExaminedValueInvocation = $this->createSetBooleanExaminedValueInvocation([
+            new ComparisonExpression(
+                new EncapsulatedExpression($nullComparisonExpression),
+                new LiteralExpression('null'),
+                '!=='
+            ),
+        ]);
+
+        $assertionStatement = $this->createAssertionStatement($assertion, [
+            $this->createGetBooleanExaminedValueInvocation()
+        ]);
+
+        return new CodeBlock([
+            new Statement($setBooleanExaminedValueInvocation),
+            $assertionStatement,
+        ]);
+    }
+
+    private function createNullComparisonExpression(ExpressionInterface $leftHandSide): ExpressionInterface
+    {
+        return new ComparisonExpression($leftHandSide, new LiteralExpression('null'), '??');
+    }
+
+    /**
+     * @param ExpressionInterface[] $arguments
+     * @param string $argumentFormat
+     *
+     * @return ExpressionInterface
+     */
+    private function createSetBooleanExaminedValueInvocation(
+        array $arguments,
+        string $argumentFormat = ObjectMethodInvocation::ARGUMENT_FORMAT_INLINE
+    ): ExpressionInterface {
+        return $this->createPhpUnitTestCaseObjectMethodInvocation(
+            'setBooleanExaminedValue',
+            $arguments,
+            $argumentFormat
+        );
+    }
+
+    /**
+     * @param ExpressionInterface[] $arguments
+     * @param string $argumentFormat
+     *
+     * @return ExpressionInterface
+     */
+    private function createSetBooleanExpectedValueInvocation(
+        array $arguments,
+        string $argumentFormat = ObjectMethodInvocation::ARGUMENT_FORMAT_INLINE
+    ): ExpressionInterface {
+        return $this->createPhpUnitTestCaseObjectMethodInvocation(
+            'setBooleanExpectedValue',
+            $arguments,
+            $argumentFormat
+        );
+    }
+
+    private function createGetBooleanExaminedValueInvocation(): ExpressionInterface
+    {
+        return $this->createPhpUnitTestCaseObjectMethodInvocation('getBooleanExaminedValue');
+    }
+
+    private function createGetBooleanExpectedValueInvocation(): ExpressionInterface
+    {
+        return $this->createPhpUnitTestCaseObjectMethodInvocation('getBooleanExpectedValue');
+    }
+
+    /**
+     * @param ExpressionInterface[] $arguments
+     *
+     * @return ExpressionInterface
+     */
+    private function createSetExaminedValueInvocation(array $arguments): ExpressionInterface
+    {
+        return $this->createPhpUnitTestCaseObjectMethodInvocation(
+            'setExaminedValue',
+            $arguments
+        );
+    }
+
+    private function createGetExaminedValueInvocation(): ExpressionInterface
+    {
+        return $this->createPhpUnitTestCaseObjectMethodInvocation('getExaminedValue');
+    }
+
+    private function createGetExpectedValueInvocation(): ExpressionInterface
+    {
+        return $this->createPhpUnitTestCaseObjectMethodInvocation('getExpectedValue');
+    }
+
+    /**
+     * @param ExpressionInterface[] $arguments
+     *
+     * @return ExpressionInterface
+     */
+    private function createSetExpectedValueInvocation(array $arguments): ExpressionInterface
+    {
+        return $this->createPhpUnitTestCaseObjectMethodInvocation(
+            'setExpectedValue',
+            $arguments
+        );
+    }
+
+    /**
+     * @param string $methodName
+     * @param ExpressionInterface[] $arguments
+     * @param string $argumentFormat
+     *
+     * @return ExpressionInterface
+     */
+    private function createPhpUnitTestCaseObjectMethodInvocation(
+        string $methodName,
+        array $arguments = [],
+        string $argumentFormat = ObjectMethodInvocation::ARGUMENT_FORMAT_INLINE
+    ): ExpressionInterface {
+        return new ObjectMethodInvocation(
+            VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+            $methodName,
+            $arguments,
+            $argumentFormat
+        );
     }
 
     private function createExistenceComparisonDomCrawlerNavigatorCall(
@@ -280,30 +403,25 @@ class AssertionHandler
     {
         $assertionMethod = self::COMPARISON_TO_ASSERTION_TEMPLATE_MAP[$assertion->getComparison()];
 
-        $isStringArgumentAssertionMethod = in_array($assertionMethod, $this->methodsWithStringArguments);
-
-        $examinedPlaceholder = new ObjectPropertyAccessExpression(
-            VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
-            'examinedValue',
-            $isStringArgumentAssertionMethod ? 'string' : null
-        );
-
-        $expectedPlaceholder = new ObjectPropertyAccessExpression(
-            VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
-            'expectedValue',
-            $isStringArgumentAssertionMethod ? 'string' : null
-        );
-
         $examinedAccessor = $this->createValueAccessor($assertion->getIdentifier());
         $expectedAccessor = $this->createValueAccessor($assertion->getValue());
 
-        $examinedValueAssignment = new ObjectPropertyAssignmentStatement($examinedPlaceholder, $examinedAccessor);
-        $expectedValueAssignment = new ObjectPropertyAssignmentStatement($expectedPlaceholder, $expectedAccessor);
+        $assertionArguments = [
+            $this->createGetExpectedValueInvocation(),
+            $this->createGetExaminedValueInvocation(),
+        ];
+
+        $isStringArgumentAssertionMethod = in_array($assertionMethod, $this->methodsWithStringArguments);
+        if ($isStringArgumentAssertionMethod) {
+            array_walk($assertionArguments, function (ExpressionInterface &$expression) {
+                $expression = new CastExpression($expression, 'string');
+            });
+        }
 
         return new CodeBlock([
-            $expectedValueAssignment,
-            $examinedValueAssignment,
-            $this->createAssertionStatement($assertion, [$expectedPlaceholder, $examinedPlaceholder]),
+            new Statement($this->createSetExpectedValueInvocation([$expectedAccessor])),
+            new Statement($this->createSetExaminedValueInvocation([$examinedAccessor])),
+            $this->createAssertionStatement($assertion, $assertionArguments),
         ]);
     }
 
@@ -318,43 +436,10 @@ class AssertionHandler
     {
         $identifier = $assertion->getIdentifier();
 
-        $examinedValuePlaceholder = new ObjectPropertyAccessExpression(
-            VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
-            'examinedValue'
-        );
-
-        $expectedValuePlaceholder = new ObjectPropertyAccessExpression(
-            VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
-            'expectedValue'
-        );
-
         if ($this->valueTypeIdentifier->isScalarValue($identifier)) {
-            $pregMatchInvocation = new MethodInvocation(
-                'preg_match',
-                [
-                    $examinedValuePlaceholder,
-                    new LiteralExpression('null'),
-                ]
-            );
-            $pregMatchInvocation->enableErrorSuppression();
+            $examinedAccessor = new LiteralExpression($identifier);
 
-            $identityComparison = new ComparisonExpression(
-                $pregMatchInvocation,
-                new LiteralExpression('false'),
-                '==='
-            );
-
-            return new CodeBlock([
-                new ObjectPropertyAssignmentStatement(
-                    $examinedValuePlaceholder,
-                    new LiteralExpression($identifier)
-                ),
-                new ObjectPropertyAssignmentStatement(
-                    $expectedValuePlaceholder,
-                    $identityComparison
-                ),
-                $this->createAssertionStatement($assertion, [$expectedValuePlaceholder]),
-            ]);
+            return $this->createIsRegExpAssertionCodeBlock($examinedAccessor, $assertion);
         }
 
         if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
@@ -365,37 +450,45 @@ class AssertionHandler
 
             $examinedAccessor = $this->createValueAccessor($assertion->getIdentifier());
 
-            $examinedElementValueAssignment = new ObjectPropertyAssignmentStatement(
-                $examinedValuePlaceholder,
-                $examinedAccessor
-            );
-
-            $pregMatchInvocation = new MethodInvocation(
-                'preg_match',
-                [
-                    $examinedValuePlaceholder,
-                    new LiteralExpression('null'),
-                ]
-            );
-            $pregMatchInvocation->enableErrorSuppression();
-
-            $identityComparison = new ComparisonExpression(
-                $pregMatchInvocation,
-                new LiteralExpression('false'),
-                '==='
-            );
-
-            return new CodeBlock([
-                $examinedElementValueAssignment,
-                new ObjectPropertyAssignmentStatement(
-                    $expectedValuePlaceholder,
-                    $identityComparison
-                ),
-                $this->createAssertionStatement($assertion, [$expectedValuePlaceholder]),
-            ]);
+            return $this->createIsRegExpAssertionCodeBlock($examinedAccessor, $assertion);
         }
 
         throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
+    }
+
+    private function createIsRegExpAssertionCodeBlock(
+        ExpressionInterface $examinedAccessor,
+        AssertionInterface $assertion
+    ): CodeBlockInterface {
+        $pregMatchInvocation = new MethodInvocation(
+            'preg_match',
+            [
+                $this->createGetExaminedValueInvocation(),
+                new LiteralExpression('null'),
+            ]
+        );
+        $pregMatchInvocation->enableErrorSuppression();
+
+        $identityComparison = new ComparisonExpression(
+            $pregMatchInvocation,
+            new LiteralExpression('false'),
+            '==='
+        );
+
+        return new CodeBlock([
+            new Statement($this->createSetExaminedValueInvocation([
+                $examinedAccessor
+            ])),
+            new Statement($this->createSetBooleanExpectedValueInvocation(
+                [
+                    $identityComparison
+                ],
+                MethodInvocation::ARGUMENT_FORMAT_STACKED
+            )),
+            $this->createAssertionStatement($assertion, [
+                $this->createGetBooleanExpectedValueInvocation()
+            ]),
+        ]);
     }
 
     /**

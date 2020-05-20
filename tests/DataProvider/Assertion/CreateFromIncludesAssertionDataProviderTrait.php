@@ -22,17 +22,17 @@ trait CreateFromIncludesAssertionDataProviderTrait
             'includes comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" includes "value"'),
                 'expectedRenderedSource' =>
-                    '{{ PHPUNIT }}->expectedValue = "value" ?? null;' . "\n" .
-                    '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
+                    '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n" .
+                    '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n" .
                     '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".selector"' . "\n" .
                     '    }\'));' . "\n" .
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
-                    '})();' . "\n" .
+                    '})());' . "\n" .
                     '{{ PHPUNIT }}->assertStringContainsString(' . "\n" .
-                    '    (string) {{ PHPUNIT }}->expectedValue,' . "\n" .
-                    '    (string) {{ PHPUNIT }}->examinedValue' . "\n" .
+                    '    (string) ({{ PHPUNIT }}->getExpectedValue()),' . "\n" .
+                    '    (string) ({{ PHPUNIT }}->getExaminedValue())' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -52,17 +52,17 @@ trait CreateFromIncludesAssertionDataProviderTrait
             'includes comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name includes "value"'),
                 'expectedRenderedSource' =>
-                    '{{ PHPUNIT }}->expectedValue = "value" ?? null;' . "\n" .
-                    '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
+                    '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n" .
+                    '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n" .
                     '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".selector"' . "\n" .
                     '    }\'));' . "\n" .
                     "\n" .
                     '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
-                    '})();' . "\n" .
+                    '})());' . "\n" .
                     '{{ PHPUNIT }}->assertStringContainsString(' . "\n" .
-                    '    (string) {{ PHPUNIT }}->expectedValue,' . "\n" .
-                    '    (string) {{ PHPUNIT }}->examinedValue' . "\n" .
+                    '    (string) ({{ PHPUNIT }}->getExpectedValue()),' . "\n" .
+                    '    (string) ({{ PHPUNIT }}->getExaminedValue())' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([

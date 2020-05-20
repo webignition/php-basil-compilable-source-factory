@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Value;
 
 use webignition\BasilCompilableSource\Block\CodeBlock;
+use webignition\BasilCompilableSource\Line\CastExpression;
 use webignition\BasilCompilableSource\Line\ClosureExpression;
 use webignition\BasilCompilableSource\Line\CompositeExpression;
 use webignition\BasilCompilableSource\Line\ExpressionInterface;
@@ -89,19 +90,23 @@ class ScalarValueHandler
             ),
             new ReturnStatement(
                 new CompositeExpression([
-                    new ObjectMethodInvocation(
-                        $webDriverDimensionPlaceholder,
-                        'getWidth',
-                        [],
-                        MethodInvocation::ARGUMENT_FORMAT_INLINE,
+                    new CastExpression(
+                        new ObjectMethodInvocation(
+                            $webDriverDimensionPlaceholder,
+                            'getWidth',
+                            [],
+                            MethodInvocation::ARGUMENT_FORMAT_INLINE
+                        ),
                         'string'
                     ),
                     new LiteralExpression(' . \'x\' . '),
-                    new ObjectMethodInvocation(
-                        $webDriverDimensionPlaceholder,
-                        'getHeight',
-                        [],
-                        MethodInvocation::ARGUMENT_FORMAT_INLINE,
+                    new CastExpression(
+                        new ObjectMethodInvocation(
+                            $webDriverDimensionPlaceholder,
+                            'getHeight',
+                            [],
+                            MethodInvocation::ARGUMENT_FORMAT_INLINE
+                        ),
                         'string'
                     ),
                 ])

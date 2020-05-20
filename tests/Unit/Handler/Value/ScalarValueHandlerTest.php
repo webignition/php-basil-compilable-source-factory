@@ -70,8 +70,8 @@ class ScalarValueHandlerTest extends \PHPUnit\Framework\TestCase
                     '    {{ WEBDRIVER_DIMENSION }} = ' .
                     '{{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n" .
                     "\n" .
-                    '    return (string) {{ WEBDRIVER_DIMENSION }}->getWidth() . \'x\' . ' .
-                    '(string) {{ WEBDRIVER_DIMENSION }}->getHeight();' . "\n" .
+                    '    return (string) ({{ WEBDRIVER_DIMENSION }}->getWidth()) . \'x\' . ' .
+                    '(string) ({{ WEBDRIVER_DIMENSION }}->getHeight());' . "\n" .
                     '})()'
                 ,
                 'expectedMetadata' => new Metadata([
