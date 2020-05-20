@@ -66,22 +66,21 @@ trait CreateFromExistsAssertionDataProviderTrait
                     '{{ PHPUNIT }}->examinedElementIdentifier = ElementIdentifier::fromJson(\'{' . "\n" .
                     '    "locator": ".selector"' . "\n" .
                     '}\');' . "\n" .
-                    '{{ PHPUNIT }}->examinedValue = {{ NAVIGATOR }}->hasOne(' .
-                    '{{ PHPUNIT }}->examinedElementIdentifier' .
+                    '{{ PHPUNIT }}->setBooleanExaminedValue(' . "\n" .
+                    '    {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier)' . "\n" .
                     ');' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
-                    '    {{ PHPUNIT }}->examinedValue' . "\n" .
+                    '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n" .
                     ');' . "\n" .
-                    '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
+                    '{{ PHPUNIT }}->setBooleanExaminedValue(((function () {' . "\n" .
                     '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".selector"' . "\n" .
                     '    }\'));' . "\n" .
                     "\n" .
                     '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
-                    '})();' . "\n" .
-                    '{{ PHPUNIT }}->examinedValue = {{ PHPUNIT }}->examinedValue !== null;' . "\n" .
+                    '})() ?? null) !== null);' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
-                    '    {{ PHPUNIT }}->examinedValue' . "\n" .
+                    '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -140,22 +139,21 @@ trait CreateFromExistsAssertionDataProviderTrait
                     '{{ PHPUNIT }}->examinedElementIdentifier = ElementIdentifier::fromJson(\'{' . "\n" .
                     '    "locator": "a[href=foo.html]"' . "\n" .
                     '}\');' . "\n" .
-                    '{{ PHPUNIT }}->examinedValue = {{ NAVIGATOR }}->hasOne(' .
-                    '{{ PHPUNIT }}->examinedElementIdentifier' .
+                    '{{ PHPUNIT }}->setBooleanExaminedValue(' . "\n" .
+                    '    {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier)' . "\n" .
                     ');' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
-                    '    {{ PHPUNIT }}->examinedValue' . "\n" .
+                    '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n" .
                     ');' . "\n" .
-                    '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
+                    '{{ PHPUNIT }}->setBooleanExaminedValue(((function () {' . "\n" .
                     '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": "a[href=foo.html]"' . "\n" .
                     '    }\'));' . "\n" .
                     "\n" .
                     '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
-                    '})();' . "\n" .
-                    '{{ PHPUNIT }}->examinedValue = {{ PHPUNIT }}->examinedValue !== null;' . "\n" .
+                    '})() ?? null) !== null);' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
-                    '    {{ PHPUNIT }}->examinedValue' . "\n" .
+                    '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([

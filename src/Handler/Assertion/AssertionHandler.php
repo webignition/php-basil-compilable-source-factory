@@ -157,41 +157,12 @@ class AssertionHandler
     {
         $identifier = $assertion->getIdentifier();
 
-        $valuePlaceholder = new ObjectPropertyAccessExpression(
-            VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
-            'examinedValue'
-        );
-
         $assertionStatement = $this->createAssertionStatement($assertion, [
-            new ObjectMethodInvocation(
-                VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
-                'getBooleanExaminedValue'
-            )
+            $this->createGetBooleanExaminedValueInvocation()
         ]);
 
         if ($this->valueTypeIdentifier->isScalarValue($identifier)) {
-            return new CodeBlock([
-                new Statement(
-                    new ObjectMethodInvocation(
-                        VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
-                        'setBooleanExaminedValue',
-                        [
-                            new ComparisonExpression(
-                                new EncapsulatedExpression(
-                                    new ComparisonExpression(
-                                        $this->scalarValueHandler->handle($assertion->getIdentifier()),
-                                        new LiteralExpression('null'),
-                                        '??'
-                                    )
-                                ),
-                                new LiteralExpression('null'),
-                                '!=='
-                            ),
-                        ]
-                    )
-                ),
-                $assertionStatement,
-            ]);
+            return $this->handleScalarExistenceAssertion($assertion);
         }
 
         if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
@@ -212,22 +183,20 @@ class AssertionHandler
                 $examinedElementIdentifierPlaceholder
             );
 
+            $elementSetBooleanExaminedValueInvocation = $this->createSetBooleanExaminedValueInvocation(
+                [
+                    $domNavigatorCrawlerCall
+                ],
+                ObjectMethodInvocation::ARGUMENT_FORMAT_STACKED
+            );
+
             if (!$domIdentifier instanceof AttributeIdentifierInterface) {
                 return new CodeBlock([
                     new AssignmentStatement(
                         $examinedElementIdentifierPlaceholder,
                         $elementIdentifierExpression
                     ),
-                    new Statement(
-                        new ObjectMethodInvocation(
-                            VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
-                            'setBooleanExaminedValue',
-                            [
-                                $domNavigatorCrawlerCall
-                            ],
-                            ObjectMethodInvocation::ARGUMENT_FORMAT_STACKED
-                        )
-                    ),
+                    new Statement($elementSetBooleanExaminedValueInvocation),
                     $assertionStatement,
                 ]);
             }
@@ -239,33 +208,95 @@ class AssertionHandler
                 'exists'
             );
 
+            $attributeNullComparisonExpression = $this->createNullComparisonExpression(
+                $this->domIdentifierHandler->handle(new DomIdentifierValue($domIdentifier))
+            );
+
+            $attributeSetBooleanExaminedValueInvocation = $this->createSetBooleanExaminedValueInvocation([
+                new ComparisonExpression(
+                    new EncapsulatedExpression($attributeNullComparisonExpression),
+                    new LiteralExpression('null'),
+                    '!=='
+                ),
+            ]);
+
             return new CodeBlock([
                 new AssignmentStatement(
                     $examinedElementIdentifierPlaceholder,
                     $elementIdentifierExpression
                 ),
-                new AssignmentStatement(
-                    $valuePlaceholder,
-                    $domNavigatorCrawlerCall
-                ),
-                $this->createAssertionStatement($elementExistsAssertion, [$valuePlaceholder]),
-                new AssignmentStatement(
-                    $valuePlaceholder,
-                    $this->domIdentifierHandler->handle(new DomIdentifierValue($domIdentifier))
-                ),
-                new AssignmentStatement(
-                    $valuePlaceholder,
-                    new ComparisonExpression(
-                        $valuePlaceholder,
-                        new LiteralExpression('null'),
-                        '!=='
-                    )
-                ),
-                $this->createAssertionStatement($assertion, [$valuePlaceholder]),
+                new Statement($elementSetBooleanExaminedValueInvocation),
+                $this->createAssertionStatement($elementExistsAssertion, [
+                    $this->createGetBooleanExaminedValueInvocation()
+                ]),
+                new Statement($attributeSetBooleanExaminedValueInvocation),
+                $assertionStatement,
             ]);
         }
 
         throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
+    }
+
+    /**
+     * @param AssertionInterface $assertion
+     *
+     * @return CodeBlockInterface
+     *
+     * @throws UnsupportedContentException
+     */
+    private function handleScalarExistenceAssertion(AssertionInterface $assertion): CodeBlockInterface
+    {
+        $nullComparisonExpression = $this->createNullComparisonExpression(
+            $this->scalarValueHandler->handle($assertion->getIdentifier())
+        );
+
+        $setBooleanExaminedValueInvocation = $this->createSetBooleanExaminedValueInvocation([
+            new ComparisonExpression(
+                new EncapsulatedExpression($nullComparisonExpression),
+                new LiteralExpression('null'),
+                '!=='
+            ),
+        ]);
+
+        $assertionStatement = $this->createAssertionStatement($assertion, [
+            $this->createGetBooleanExaminedValueInvocation()
+        ]);
+
+        return new CodeBlock([
+            new Statement($setBooleanExaminedValueInvocation),
+            $assertionStatement,
+        ]);
+    }
+
+    private function createNullComparisonExpression(ExpressionInterface $leftHandSide): ExpressionInterface
+    {
+        return new ComparisonExpression($leftHandSide, new LiteralExpression('null'), '??');
+    }
+
+    /**
+     * @param ExpressionInterface[] $arguments
+     * @param string $argumentFormat
+     *
+     * @return ExpressionInterface
+     */
+    private function createSetBooleanExaminedValueInvocation(
+        array $arguments,
+        string $argumentFormat = ObjectMethodInvocation::ARGUMENT_FORMAT_INLINE
+    ): ExpressionInterface {
+        return new ObjectMethodInvocation(
+            VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+            'setBooleanExaminedValue',
+            $arguments,
+            $argumentFormat
+        );
+    }
+
+    private function createGetBooleanExaminedValueInvocation(): ExpressionInterface
+    {
+        return new ObjectMethodInvocation(
+            VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+            'getBooleanExaminedValue'
+        );
     }
 
     private function createExistenceComparisonDomCrawlerNavigatorCall(
