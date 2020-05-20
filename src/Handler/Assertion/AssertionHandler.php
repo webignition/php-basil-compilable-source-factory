@@ -162,6 +162,13 @@ class AssertionHandler
             'examinedValue'
         );
 
+        $assertionStatement = $this->createAssertionStatement($assertion, [
+            new ObjectMethodInvocation(
+                VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+                'getBooleanExaminedValue'
+            )
+        ]);
+
         if ($this->valueTypeIdentifier->isScalarValue($identifier)) {
             return new CodeBlock([
                 new Statement(
@@ -183,12 +190,7 @@ class AssertionHandler
                         ]
                     )
                 ),
-                $this->createAssertionStatement($assertion, [
-                    new ObjectMethodInvocation(
-                        VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
-                        'getBooleanExaminedValue'
-                    )
-                ]),
+                $assertionStatement,
             ]);
         }
 
@@ -216,11 +218,17 @@ class AssertionHandler
                         $examinedElementIdentifierPlaceholder,
                         $elementIdentifierExpression
                     ),
-                    new AssignmentStatement(
-                        $valuePlaceholder,
-                        $domNavigatorCrawlerCall
+                    new Statement(
+                        new ObjectMethodInvocation(
+                            VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+                            'setBooleanExaminedValue',
+                            [
+                                $domNavigatorCrawlerCall
+                            ],
+                            ObjectMethodInvocation::ARGUMENT_FORMAT_STACKED
+                        )
                     ),
-                    $this->createAssertionStatement($assertion, [$valuePlaceholder]),
+                    $assertionStatement,
                 ]);
             }
 

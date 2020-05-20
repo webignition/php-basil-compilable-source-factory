@@ -25,11 +25,11 @@ trait CreateFromNotExistsAssertionDataProviderTrait
                     '{{ PHPUNIT }}->examinedElementIdentifier = ElementIdentifier::fromJson(\'{' . "\n" .
                     '    "locator": ".selector"' . "\n" .
                     '}\');' . "\n" .
-                    '{{ PHPUNIT }}->examinedValue = {{ NAVIGATOR }}->has(' .
-                    '{{ PHPUNIT }}->examinedElementIdentifier' .
+                    '{{ PHPUNIT }}->setBooleanExaminedValue(' . "\n" .
+                    '    {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier)' . "\n" .
                     ');' . "\n" .
                     '{{ PHPUNIT }}->assertFalse(' . "\n" .
-                    '    {{ PHPUNIT }}->examinedValue' . "\n" .
+                    '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
