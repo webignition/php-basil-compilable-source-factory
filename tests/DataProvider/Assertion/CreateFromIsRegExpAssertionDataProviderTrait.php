@@ -27,10 +27,12 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     'is-regexp'
                 ),
                 'expectedRenderedSource' =>
-                    '{{ PHPUNIT }}->examinedValue = "/^value/";' . "\n" .
-                    '{{ PHPUNIT }}->expectedValue = @preg_match({{ PHPUNIT }}->examinedValue, null) === false;' . "\n" .
+                    '{{ PHPUNIT }}->setExaminedValue("/^value/");' . "\n" .
+                    '{{ PHPUNIT }}->setBooleanExpectedValue(' . "\n" .
+                    '    @preg_match({{ PHPUNIT }}->getExaminedValue(), null) === false' . "\n" .
+                    ');' . "\n" .
                     '{{ PHPUNIT }}->assertFalse(' . "\n" .
-                    '    {{ PHPUNIT }}->expectedValue' . "\n" .
+                    '    {{ PHPUNIT }}->getBooleanExpectedValue()' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -46,16 +48,18 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     'is-regexp'
                 ),
                 'expectedRenderedSource' =>
-                    '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
+                    '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n" .
                     '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".pattern-container"' . "\n" .
                     '    }\'));' . "\n" .
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
-                    '})();' . "\n" .
-                    '{{ PHPUNIT }}->expectedValue = @preg_match({{ PHPUNIT }}->examinedValue, null) === false;' . "\n" .
+                    '})());' . "\n" .
+                    '{{ PHPUNIT }}->setBooleanExpectedValue(' . "\n" .
+                    '    @preg_match({{ PHPUNIT }}->getExaminedValue(), null) === false' . "\n" .
+                    ');' . "\n" .
                     '{{ PHPUNIT }}->assertFalse(' . "\n" .
-                    '    {{ PHPUNIT }}->expectedValue' . "\n" .
+                    '    {{ PHPUNIT }}->getBooleanExpectedValue()' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -79,16 +83,18 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     'is-regexp'
                 ),
                 'expectedRenderedSource' =>
-                    '{{ PHPUNIT }}->examinedValue = (function () {' . "\n" .
+                    '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n" .
                     '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".pattern-container"' . "\n" .
                     '    }\'));' . "\n" .
                     "\n" .
                     '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
-                    '})();' . "\n" .
-                    '{{ PHPUNIT }}->expectedValue = @preg_match({{ PHPUNIT }}->examinedValue, null) === false;' . "\n" .
+                    '})());' . "\n" .
+                    '{{ PHPUNIT }}->setBooleanExpectedValue(' . "\n" .
+                    '    @preg_match({{ PHPUNIT }}->getExaminedValue(), null) === false' . "\n" .
+                    ');' . "\n" .
                     '{{ PHPUNIT }}->assertFalse(' . "\n" .
-                    '    {{ PHPUNIT }}->expectedValue' . "\n" .
+                    '    {{ PHPUNIT }}->getBooleanExpectedValue()' . "\n" .
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
