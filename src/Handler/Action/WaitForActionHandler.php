@@ -20,9 +20,9 @@ use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
 class WaitForActionHandler
 {
-    private $singleQuotedStringEscaper;
-    private $domIdentifierFactory;
-    private $identifierTypeAnalyser;
+    private SingleQuotedStringEscaper $singleQuotedStringEscaper;
+    private DomIdentifierFactory $domIdentifierFactory;
+    private IdentifierTypeAnalyser $identifierTypeAnalyser;
 
     public function __construct(
         SingleQuotedStringEscaper $singleQuotedStringEscaper,

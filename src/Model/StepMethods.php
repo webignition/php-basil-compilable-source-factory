@@ -8,8 +8,8 @@ use webignition\BasilCompilableSource\MethodDefinitionInterface;
 
 class StepMethods
 {
-    private $testMethod;
-    private $dataProviderMethod;
+    private MethodDefinitionInterface $testMethod;
+    private ?MethodDefinitionInterface $dataProviderMethod;
 
     public function __construct(MethodDefinitionInterface $testMethod, ?MethodDefinitionInterface $dataProviderMethod)
     {

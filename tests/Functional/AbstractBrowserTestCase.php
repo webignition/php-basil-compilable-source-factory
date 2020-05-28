@@ -7,15 +7,8 @@ use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunner;
 
 abstract class AbstractBrowserTestCase extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var TestRunner
-     */
-    protected $testRunner;
-
-    /**
-     * @var TestCodeGenerator
-     */
-    protected $testCodeGenerator;
+    protected TestRunner $testRunner;
+    protected TestCodeGenerator $testCodeGenerator;
 
     protected function setUp(): void
     {

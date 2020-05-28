@@ -52,15 +52,15 @@ class AssertionHandler
     public const ASSERT_TRUE_METHOD = 'assertTrue';
     public const ASSERT_FALSE_METHOD = 'assertFalse';
 
-    private $accessorDefaultValueFactory;
-    private $assertionMethodInvocationFactory;
-    private $domCrawlerNavigatorCallFactory;
-    private $domIdentifierFactory;
-    private $domIdentifierHandler;
-    private $identifierTypeAnalyser;
-    private $scalarValueHandler;
-    private $valueTypeIdentifier;
-    private $elementIdentifierCallFactory;
+    private AccessorDefaultValueFactory $accessorDefaultValueFactory;
+    private AssertionMethodInvocationFactory $assertionMethodInvocationFactory;
+    private DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory;
+    private DomIdentifierFactory $domIdentifierFactory;
+    private DomIdentifierHandler $domIdentifierHandler;
+    private IdentifierTypeAnalyser $identifierTypeAnalyser;
+    private ScalarValueHandler $scalarValueHandler;
+    private ValueTypeIdentifier $valueTypeIdentifier;
+    private ElementIdentifierCallFactory $elementIdentifierCallFactory;
 
     private const COMPARISON_TO_ASSERTION_TEMPLATE_MAP = [
         'includes' => self::ASSERT_STRING_CONTAINS_STRING_METHOD,

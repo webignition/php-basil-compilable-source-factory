@@ -11,7 +11,7 @@ use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class DomCrawlerNavigatorCallFactory
 {
-    private $elementIdentifierCallFactory;
+    private ElementIdentifierCallFactory $elementIdentifierCallFactory;
 
     public function __construct(ElementIdentifierCallFactory $elementIdentifierCallFactory)
     {

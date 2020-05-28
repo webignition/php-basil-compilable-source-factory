@@ -23,8 +23,8 @@ use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class ScalarValueHandler
 {
-    private $valueTypeIdentifier;
-    private $environmentValueFactory;
+    private ValueTypeIdentifier $valueTypeIdentifier;
+    private EnvironmentValueFactory $environmentValueFactory;
 
     public function __construct(
         ValueTypeIdentifier $valueTypeIdentifier,

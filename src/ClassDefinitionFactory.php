@@ -20,8 +20,8 @@ use webignition\BasilModels\Test\TestInterface;
 
 class ClassDefinitionFactory
 {
-    private $classNameFactory;
-    private $stepMethodFactory;
+    private ClassNameFactory $classNameFactory;
+    private StepMethodFactory $stepMethodFactory;
 
     public function __construct(ClassNameFactory $classNameFactory, StepMethodFactory $stepMethodFactory)
     {

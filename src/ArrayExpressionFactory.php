@@ -10,7 +10,7 @@ use webignition\BasilModels\DataSet\DataSetCollectionInterface;
 
 class ArrayExpressionFactory
 {
-    private $singleQuotedStringEscaper;
+    private SingleQuotedStringEscaper $singleQuotedStringEscaper;
 
     public function __construct(SingleQuotedStringEscaper $singleQuotedStringEscaper)
     {

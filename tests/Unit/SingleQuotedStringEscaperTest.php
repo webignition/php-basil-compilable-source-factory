@@ -8,10 +8,7 @@ use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 
 class SingleQuotedStringEscaperTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var SingleQuotedStringEscaper
-     */
-    private $escaper;
+    private SingleQuotedStringEscaper $escaper;
 
     protected function setUp(): void
     {

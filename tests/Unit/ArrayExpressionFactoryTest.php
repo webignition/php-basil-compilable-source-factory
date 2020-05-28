@@ -11,10 +11,7 @@ use webignition\BasilModels\DataSet\DataSetCollectionInterface;
 
 class ArrayExpressionFactoryTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var ArrayExpressionFactory
-     */
-    private $arrayStatementFactory;
+    private ArrayExpressionFactory $arrayStatementFactory;
 
     protected function setUp(): void
     {

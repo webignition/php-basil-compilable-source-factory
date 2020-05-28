@@ -8,10 +8,7 @@ use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 
 class AccessorDefaultValueFactoryTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var AccessorDefaultValueFactory
-     */
-    private $accessorDefaultValueFactory;
+    private AccessorDefaultValueFactory $accessorDefaultValueFactory;
 
     protected function setUp(): void
     {

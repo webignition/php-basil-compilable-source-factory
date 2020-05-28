@@ -14,7 +14,7 @@ use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
 class ElementIdentifierCallFactory
 {
-    private $singleQuotedStringEscaper;
+    private SingleQuotedStringEscaper $singleQuotedStringEscaper;
 
     public function __construct(SingleQuotedStringEscaper $singleQuotedStringEscaper)
     {

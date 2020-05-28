@@ -13,7 +13,7 @@ class EnvironmentValueFactory
     private const WITH_DEFAULT_PATTERN = '/^[^|]+\|/';
     private const DEFAULT_DELIMITER = '|';
 
-    private $quotedStringValueExtractor;
+    private QuotedStringValueExtractor $quotedStringValueExtractor;
 
     public function __construct(QuotedStringValueExtractor $quotedStringValueExtractor)
     {

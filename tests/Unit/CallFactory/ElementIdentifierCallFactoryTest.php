@@ -16,15 +16,8 @@ use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
 class ElementIdentifierCallFactoryTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var ElementIdentifierCallFactory
-     */
-    private $factory;
-
-    /**
-     * @var TestCodeGenerator
-     */
-    private $testCodeGenerator;
+    private ElementIdentifierCallFactory $factory;
+    private TestCodeGenerator $testCodeGenerator;
 
     protected function setUp(): void
     {

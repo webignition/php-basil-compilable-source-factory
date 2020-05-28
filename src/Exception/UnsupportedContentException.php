@@ -9,8 +9,8 @@ class UnsupportedContentException extends \Exception
     public const TYPE_IDENTIFIER = 'identifier';
     public const TYPE_VALUE = 'value';
 
-    private $type;
-    private $content;
+    private string $type;
+    private ?string $content;
 
     public function __construct(string $type, ?string $content)
     {

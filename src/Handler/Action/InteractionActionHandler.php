@@ -19,8 +19,8 @@ use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
 class InteractionActionHandler
 {
-    private $domIdentifierHandler;
-    private $domIdentifierFactory;
+    private DomIdentifierHandler $domIdentifierHandler;
+    private DomIdentifierFactory $domIdentifierFactory;
 
     public function __construct(
         DomIdentifierHandler $domIdentifierHandler,

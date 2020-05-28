@@ -32,10 +32,7 @@ class AssertionHandlerPassingAssertionsTest extends AbstractBrowserTestCase
     use MatchesAssertionFunctionalDataProviderTrait;
     use NotExistsAssertionFunctionalDataProviderTrait;
 
-    /**
-     * @var AssertionHandler
-     */
-    private $handler;
+    private AssertionHandler $handler;
 
     protected function setUp(): void
     {

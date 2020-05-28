@@ -15,10 +15,7 @@ use webignition\BasilParser\AssertionParser;
 
 class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
 {
-    /**
-     * @var AssertionHandler
-     */
-    private $handler;
+    private AssertionHandler $handler;
 
     protected function setUp(): void
     {

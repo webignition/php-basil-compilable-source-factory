@@ -18,11 +18,11 @@ use webignition\BasilModels\Action\WaitActionInterface;
 
 class ActionHandler
 {
-    private $browserOperationActionHandler;
-    private $setActionHandler;
-    private $waitActionHandler;
-    private $waitForActionHandler;
-    private $interactionActionHandler;
+    private BrowserOperationActionHandler $browserOperationActionHandler;
+    private SetActionHandler $setActionHandler;
+    private WaitActionHandler $waitActionHandler;
+    private WaitForActionHandler $waitForActionHandler;
+    private InteractionActionHandler $interactionActionHandler;
 
     public function __construct(
         BrowserOperationActionHandler $browserOperationActionHandler,

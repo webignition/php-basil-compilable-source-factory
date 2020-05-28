@@ -22,10 +22,7 @@ use webignition\DomElementIdentifier\ElementIdentifier;
 
 class DomIdentifierHandlerTest extends AbstractBrowserTestCase
 {
-    /**
-     * @var DomIdentifierHandler
-     */
-    private $handler;
+    private DomIdentifierHandler $handler;
 
     protected function setUp(): void
     {

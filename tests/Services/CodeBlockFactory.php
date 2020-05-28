@@ -15,6 +15,10 @@ class CodeBlockFactory
         CodeBlockInterface $source,
         ?CodeBlockInterface $teardownStatements = null
     ): CodeBlock {
+        if (null === $teardownStatements) {
+            $teardownStatements = new CodeBlock();
+        }
+
         return new CodeBlock([
             new SingleLineComment('Code under test'),
             $source,

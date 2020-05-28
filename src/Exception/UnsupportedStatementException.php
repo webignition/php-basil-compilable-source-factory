@@ -12,8 +12,8 @@ class UnsupportedStatementException extends \Exception
     public const CODE_UNSUPPORTED_IDENTIFIER = 2;
     public const CODE_UNSUPPORTED_VALUE = 3;
 
-    private $statement;
-    private $unsupportedContentException;
+    private StatementInterface $statement;
+    private ?UnsupportedContentException $unsupportedContentException;
 
     public function __construct(
         StatementInterface $statement,
