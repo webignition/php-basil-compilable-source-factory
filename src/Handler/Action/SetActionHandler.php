@@ -21,7 +21,7 @@ use webignition\BasilCompilableSourceFactory\Model\DomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
-use webignition\BasilModels\Action\InputActionInterface;
+use webignition\BasilModels\Action\ActionInterface;
 use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
 class SetActionHandler
@@ -58,13 +58,13 @@ class SetActionHandler
     }
 
     /**
-     * @param InputActionInterface $action
+     * @param ActionInterface $action
      *
      * @return CodeBlockInterface
      *
      * @throws UnsupportedContentException
      */
-    public function handle(InputActionInterface $action): CodeBlockInterface
+    public function handle(ActionInterface $action): CodeBlockInterface
     {
         $identifier = $action->getIdentifier();
 

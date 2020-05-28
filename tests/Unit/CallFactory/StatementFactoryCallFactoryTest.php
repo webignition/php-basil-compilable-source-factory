@@ -49,6 +49,7 @@ class StatementFactoryCallFactoryTest extends \PHPUnit\Framework\TestCase
                 'statement' => $actionParser->parse('click $".selector"'),
                 'expectedRenderedSource' =>
                     '{{ ACTION_FACTORY }}->createFromJson(\'{' .  "\n" .
+                    '    "statement-type": "action",' . "\n" .
                     '    "source": "click $\\\\".selector\\\\"",' . "\n" .
                     '    "type": "click",' . "\n" .
                     '    "arguments": "$\\\\".selector\\\\"",' . "\n" .
@@ -65,9 +66,10 @@ class StatementFactoryCallFactoryTest extends \PHPUnit\Framework\TestCase
                 'statement' => $assertionParser->parse('$".selector" exists'),
                 'expectedRenderedSource' =>
                     '{{ ASSERTION_FACTORY }}->createFromJson(\'{' . "\n" .
+                    '    "statement-type": "assertion",' . "\n" .
                     '    "source": "$\\\\".selector\\\\" exists",' . "\n" .
                     '    "identifier": "$\\\\".selector\\\\"",' . "\n" .
-                    '    "comparison": "exists"' . "\n" .
+                    '    "operator": "exists"' . "\n" .
                     '}\')'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -84,15 +86,18 @@ class StatementFactoryCallFactoryTest extends \PHPUnit\Framework\TestCase
                 ),
                 'expectedRenderedSource' =>
                     '{{ ASSERTION_FACTORY }}->createFromJson(\'{' . "\n" .
-                    '    "operator": "exists",' . "\n" .
-                    '    "source_type": "action",' . "\n" .
-                    '    "source": {' . "\n" .
+                    '    "container": {' . "\n" .
+                    '        "type": "derived-value-operation-assertion",' . "\n" .
+                    '        "value": "$\\\\".selector\\\\"",' . "\n" .
+                    '        "operator": "exists"' . "\n" .
+                    '    },' . "\n" .
+                    '    "statement": {' . "\n" .
+                    '        "statement-type": "action",' . "\n" .
                     '        "source": "click $\\\\".selector\\\\"",' . "\n" .
                     '        "type": "click",' . "\n" .
                     '        "arguments": "$\\\\".selector\\\\"",' . "\n" .
                     '        "identifier": "$\\\\".selector\\\\""' . "\n" .
-                    '    },' . "\n" .
-                    '    "value": "$\\\\".selector\\\\""' . "\n" .
+                    '    }' . "\n" .
                     '}\')'
                 ,
                 'expectedMetadata' => new Metadata([

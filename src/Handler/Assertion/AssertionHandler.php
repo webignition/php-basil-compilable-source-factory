@@ -32,11 +32,9 @@ use webignition\BasilCompilableSourceFactory\ValueTypeIdentifier;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
-use webignition\BasilModels\Action\InputAction;
-use webignition\BasilModels\Action\InteractionAction;
+use webignition\BasilModels\Action\ActionInterface;
 use webignition\BasilModels\Assertion\Assertion;
 use webignition\BasilModels\Assertion\AssertionInterface;
-use webignition\BasilModels\Assertion\ComparisonAssertionInterface;
 use webignition\BasilModels\Assertion\DerivedValueOperationAssertion;
 use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 use webignition\DomElementIdentifier\ElementIdentifier;
@@ -62,7 +60,7 @@ class AssertionHandler
     private ValueTypeIdentifier $valueTypeIdentifier;
     private ElementIdentifierCallFactory $elementIdentifierCallFactory;
 
-    private const COMPARISON_TO_ASSERTION_TEMPLATE_MAP = [
+    private const OPERATOR_TO_ASSERTION_TEMPLATE_MAP = [
         'includes' => self::ASSERT_STRING_CONTAINS_STRING_METHOD,
         'excludes' => self::ASSERT_STRING_NOT_CONTAINS_STRING_METHOD,
         'is' => self::ASSERT_EQUALS_METHOD,
@@ -76,7 +74,7 @@ class AssertionHandler
     /**
      * @var string[]
      */
-    private $methodsWithStringArguments = [
+    private array $methodsWithStringArguments = [
         self::ASSERT_STRING_CONTAINS_STRING_METHOD,
         self::ASSERT_STRING_NOT_CONTAINS_STRING_METHOD,
     ];
@@ -128,16 +126,16 @@ class AssertionHandler
     public function handle(AssertionInterface $assertion): CodeBlockInterface
     {
         try {
-            if ($this->isComparisonAssertion($assertion) && $assertion instanceof ComparisonAssertionInterface) {
+            if ($assertion->isComparison()) {
                 return $this->handleComparisonAssertion($assertion);
-            }
+            } else {
+                if (in_array($assertion->getOperator(), ['exists', 'not-exists'])) {
+                    return $this->handleExistenceAssertion($assertion);
+                }
 
-            if ($this->isExistenceAssertion($assertion)) {
-                return $this->handleExistenceAssertion($assertion);
-            }
-
-            if ($this->isIsRegExpAssertion($assertion)) {
-                return $this->handleIsRegExpAssertion($assertion);
+                if ('is-regexp' === $assertion->getOperator()) {
+                    return $this->handleIsRegExpAssertion($assertion);
+                }
             }
         } catch (UnsupportedContentException $previous) {
             throw new UnsupportedStatementException($assertion, $previous);
@@ -177,7 +175,7 @@ class AssertionHandler
                 'examinedElementIdentifier'
             );
 
-            $domNavigatorCrawlerCall = $this->createExistenceComparisonDomCrawlerNavigatorCall(
+            $domNavigatorCrawlerCall = $this->createExistenceOperationDomCrawlerNavigatorCall(
                 $domIdentifier,
                 $assertion,
                 $examinedElementIdentifierPlaceholder
@@ -373,7 +371,7 @@ class AssertionHandler
         );
     }
 
-    private function createExistenceComparisonDomCrawlerNavigatorCall(
+    private function createExistenceOperationDomCrawlerNavigatorCall(
         ElementIdentifierInterface $domIdentifier,
         AssertionInterface $assertion,
         ObjectPropertyAccessExpression $expression
@@ -383,8 +381,9 @@ class AssertionHandler
 
         if ($assertion instanceof DerivedValueOperationAssertion) {
             $sourceStatement = $assertion->getSourceStatement();
+
             $isDerivedFromInteractionAction =
-                $sourceStatement instanceof InteractionAction && !$sourceStatement instanceof InputAction;
+                $sourceStatement instanceof ActionInterface && $sourceStatement->isInteraction();
         }
 
         return $isAttributeIdentifier || $isDerivedFromInteractionAction
@@ -393,15 +392,15 @@ class AssertionHandler
     }
 
     /**
-     * @param ComparisonAssertionInterface $assertion
+     * @param AssertionInterface $assertion
      *
      * @return CodeBlockInterface
      *
      * @throws UnsupportedContentException
      */
-    private function handleComparisonAssertion(ComparisonAssertionInterface $assertion): CodeBlockInterface
+    private function handleComparisonAssertion(AssertionInterface $assertion): CodeBlockInterface
     {
-        $assertionMethod = self::COMPARISON_TO_ASSERTION_TEMPLATE_MAP[$assertion->getComparison()];
+        $assertionMethod = self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP[$assertion->getOperator()];
 
         $examinedAccessor = $this->createValueAccessor($assertion->getIdentifier());
         $expectedAccessor = $this->createValueAccessor($assertion->getValue());
@@ -536,30 +535,9 @@ class AssertionHandler
     {
         return new Statement(
             $this->assertionMethodInvocationFactory->create(
-                self::COMPARISON_TO_ASSERTION_TEMPLATE_MAP[$assertion->getComparison()],
+                self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP[$assertion->getOperator()],
                 $arguments
             )
         );
-    }
-
-    private function isComparisonAssertion(AssertionInterface $assertion): bool
-    {
-        return in_array($assertion->getComparison(), [
-            'includes',
-            'excludes',
-            'is',
-            'is-not',
-            'matches',
-        ]);
-    }
-
-    private function isExistenceAssertion(AssertionInterface $assertion): bool
-    {
-        return in_array($assertion->getComparison(), ['exists', 'not-exists']);
-    }
-
-    private function isIsRegExpAssertion(AssertionInterface $assertion): bool
-    {
-        return 'is-regexp' === $assertion->getComparison();
     }
 }
