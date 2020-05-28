@@ -21,9 +21,9 @@ use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
 class DomIdentifierHandler
 {
-    private $domCrawlerNavigatorCallFactory;
-    private $singleQuotedStringEscaper;
-    private $elementIdentifierCallFactory;
+    private DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory;
+    private SingleQuotedStringEscaper $singleQuotedStringEscaper;
+    private ElementIdentifierCallFactory $elementIdentifierCallFactory;
 
     public function __construct(
         DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory,

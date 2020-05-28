@@ -43,18 +43,6 @@ class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
     use CreateFromNotExistsAssertionDataProviderTrait;
 
     /**
-     * @var AssertionHandler
-     */
-    private $handler;
-
-    protected function setUp(): void
-    {
-        parent::setUp();
-
-        $this->handler = AssertionHandler::createHandler();
-    }
-
-    /**
      * @dataProvider createFromExcludesAssertionDataProvider
      * @dataProvider createFromExistsAssertionDataProvider
      * @dataProvider createFromIncludesAssertionDataProvider

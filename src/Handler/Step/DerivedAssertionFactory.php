@@ -20,8 +20,8 @@ use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
 class DerivedAssertionFactory
 {
-    private $domIdentifierFactory;
-    private $identifierTypeAnalyser;
+    private DomIdentifierFactory $domIdentifierFactory;
+    private IdentifierTypeAnalyser $identifierTypeAnalyser;
 
     public function __construct(
         DomIdentifierFactory $domIdentifierFactory,

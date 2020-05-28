@@ -15,10 +15,7 @@ use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 
 class ScalarValueHandlerTest extends AbstractBrowserTestCase
 {
-    /**
-     * @var ScalarValueHandler
-     */
-    protected $handler;
+    private ScalarValueHandler $handler;
 
     protected function setUp(): void
     {

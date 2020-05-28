@@ -12,8 +12,8 @@ class UnsupportedStepException extends \Exception
     public const CODE_UNSUPPORTED_ACTION = 1;
     public const CODE_UNSUPPORTED_ASSERTION = 2;
 
-    private $step;
-    private $unsupportedStatementException;
+    private StepInterface $step;
+    private UnsupportedStatementException $unsupportedStatementException;
 
     public function __construct(StepInterface $step, UnsupportedStatementException $unsupportedStatementException)
     {

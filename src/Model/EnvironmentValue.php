@@ -8,8 +8,8 @@ class EnvironmentValue
 {
     private const PREFIX = '$env.';
 
-    private $property;
-    private $default;
+    private string $property;
+    private ?string $default = null;
 
     public function __construct(string $property, ?string $default)
     {

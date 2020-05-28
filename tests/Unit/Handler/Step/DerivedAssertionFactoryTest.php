@@ -17,10 +17,7 @@ use webignition\BasilParser\AssertionParser;
 
 class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var DerivedAssertionFactory
-     */
-    private $factory;
+    private DerivedAssertionFactory $factory;
 
     protected function setUp(): void
     {

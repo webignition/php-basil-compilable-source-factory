@@ -29,10 +29,7 @@ class ActionHandlerTest extends AbstractBrowserTestCase
     use WaitActionFunctionalDataProviderTrait;
     use WaitForActionFunctionalDataProviderTrait;
 
-    /**
-     * @var ActionHandler
-     */
-    private $handler;
+    private ActionHandler $handler;
 
     protected function setUp(): void
     {

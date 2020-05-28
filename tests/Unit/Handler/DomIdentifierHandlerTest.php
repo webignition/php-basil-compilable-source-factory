@@ -20,10 +20,7 @@ use webignition\DomElementIdentifier\ElementIdentifier;
 
 class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var DomIdentifierHandler
-     */
-    private $handler;
+    private DomIdentifierHandler $handler;
 
     protected function setUp(): void
     {

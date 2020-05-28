@@ -13,10 +13,7 @@ use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class ScalarValueHandlerTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var ScalarValueHandler
-     */
-    private $handler;
+    private ScalarValueHandler $handler;
 
     protected function setUp(): void
     {

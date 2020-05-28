@@ -14,10 +14,7 @@ use webignition\SymfonyPantherWebServerRunner\Options;
 
 class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
 {
-    /**
-     * @var ClassDefinitionFactory
-     */
-    private $factory;
+    private ClassDefinitionFactory $factory;
 
     protected function setUp(): void
     {

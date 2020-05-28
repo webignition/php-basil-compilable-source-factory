@@ -16,10 +16,7 @@ use webignition\BasilParser\AssertionParser;
 
 class StatementFactoryCallFactoryTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var StatementFactoryCallFactory
-     */
-    private $factory;
+    private StatementFactoryCallFactory $factory;
 
     protected function setUp(): void
     {

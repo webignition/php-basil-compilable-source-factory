@@ -15,10 +15,7 @@ use webignition\BasilParser\StepParser;
 
 class StepHandlerTest extends AbstractBrowserTestCase
 {
-    /**
-     * @var StepHandler
-     */
-    private $handler;
+    private StepHandler $handler;
 
     protected function setUp(): void
     {

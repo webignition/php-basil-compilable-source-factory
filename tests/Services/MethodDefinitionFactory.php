@@ -59,6 +59,10 @@ class MethodDefinitionFactory
     public static function createSetUpMethodDefinition(
         ?CodeBlockInterface $additionalSetupStatements
     ): MethodDefinitionInterface {
+        if (null === $additionalSetupStatements) {
+            $additionalSetupStatements = new CodeBlock();
+        }
+
         $block = new CodeBlock([
             new SingleLineComment('Test harness lines'),
             new Statement(new LiteralExpression('parent::setUp()')),

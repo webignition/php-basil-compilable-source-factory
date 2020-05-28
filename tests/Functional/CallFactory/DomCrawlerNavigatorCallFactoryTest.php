@@ -21,10 +21,7 @@ use webignition\DomElementIdentifier\ElementIdentifier;
 
 class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
 {
-    /**
-     * @var DomCrawlerNavigatorCallFactory
-     */
-    private $factory;
+    private DomCrawlerNavigatorCallFactory $factory;
 
     protected function setUp(): void
     {

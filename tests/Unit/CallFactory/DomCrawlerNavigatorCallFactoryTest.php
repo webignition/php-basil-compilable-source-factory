@@ -14,10 +14,7 @@ use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class DomCrawlerNavigatorCallFactoryTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var DomCrawlerNavigatorCallFactory
-     */
-    private $factory;
+    private DomCrawlerNavigatorCallFactory $factory;
 
     protected function setUp(): void
     {

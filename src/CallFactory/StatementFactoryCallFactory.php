@@ -14,7 +14,7 @@ use webignition\BasilModels\StatementInterface;
 
 class StatementFactoryCallFactory
 {
-    private $singleQuotedStringEscaper;
+    private SingleQuotedStringEscaper $singleQuotedStringEscaper;
 
     public function __construct(SingleQuotedStringEscaper $singleQuotedStringEscaper)
     {

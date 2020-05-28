@@ -22,10 +22,10 @@ use webignition\BasilModels\Step\StepInterface;
 
 class StepMethodFactory
 {
-    private $stepHandler;
-    private $arrayExpressionFactory;
-    private $stepMethodNameFactory;
-    private $singleQuotedStringEscaper;
+    private StepHandler $stepHandler;
+    private ArrayExpressionFactory $arrayExpressionFactory;
+    private StepMethodNameFactory $stepMethodNameFactory;
+    private SingleQuotedStringEscaper $singleQuotedStringEscaper;
 
     public function __construct(
         StepHandler $stepHandler,

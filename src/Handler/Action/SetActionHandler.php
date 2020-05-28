@@ -26,11 +26,11 @@ use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
 class SetActionHandler
 {
-    private $scalarValueHandler;
-    private $domIdentifierHandler;
-    private $accessorDefaultValueFactory;
-    private $domIdentifierFactory;
-    private $identifierTypeAnalyser;
+    private ScalarValueHandler $scalarValueHandler;
+    private DomIdentifierHandler $domIdentifierHandler;
+    private AccessorDefaultValueFactory $accessorDefaultValueFactory;
+    private DomIdentifierFactory $domIdentifierFactory;
+    private IdentifierTypeAnalyser $identifierTypeAnalyser;
 
     public function __construct(
         ScalarValueHandler $scalarValueHandler,

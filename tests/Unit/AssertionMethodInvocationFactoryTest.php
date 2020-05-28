@@ -14,10 +14,7 @@ use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class AssertionMethodInvocationFactoryTest extends \PHPUnit\Framework\TestCase
 {
-    /**
-     * @var AssertionMethodInvocationFactory
-     */
-    private $assertionMethodInvocationFactory;
+    private AssertionMethodInvocationFactory $assertionMethodInvocationFactory;
 
     protected function setUp(): void
     {

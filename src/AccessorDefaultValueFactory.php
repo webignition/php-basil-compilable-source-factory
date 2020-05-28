@@ -9,8 +9,8 @@ use webignition\BasilCompilableSourceFactory\ModelFactory\EnvironmentValueFactor
 
 class AccessorDefaultValueFactory
 {
-    private $singleQuotedStringEscaper;
-    private $environmentValueFactory;
+    private SingleQuotedStringEscaper $singleQuotedStringEscaper;
+    private EnvironmentValueFactory $environmentValueFactory;
 
     public function __construct(
         SingleQuotedStringEscaper $singleQuotedStringEscaper,

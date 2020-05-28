@@ -9,7 +9,7 @@ use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
 class DomIdentifierValue implements DomIdentifierInterface
 {
-    private $identifier;
+    private ElementIdentifierInterface $identifier;
 
     public function __construct(ElementIdentifierInterface $identifier)
     {

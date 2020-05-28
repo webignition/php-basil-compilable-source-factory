@@ -18,7 +18,7 @@ use webignition\BasilModels\StatementInterface as StatementModelInterface;
 
 class StatementBlockFactory
 {
-    private $statementFactoryCallFactory;
+    private StatementFactoryCallFactory $statementFactoryCallFactory;
 
     public function __construct(StatementFactoryCallFactory $statementFactoryCallFactory)
     {
