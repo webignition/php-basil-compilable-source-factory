@@ -9,7 +9,7 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StatementBlockFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilModels\Action\InteractionActionInterface;
+use webignition\BasilModels\Action\ActionInterface;
 use webignition\BasilModels\Assertion\AssertionInterface;
 use webignition\BasilModels\Assertion\DerivedValueOperationAssertion;
 use webignition\BasilModels\StatementInterface as StatementModelInterface;
@@ -41,7 +41,7 @@ class StatementBlockFactoryTest extends \PHPUnit\Framework\TestCase
 
     public function createDataProvider(): array
     {
-        $clickAction = \Mockery::mock(InteractionActionInterface::class);
+        $clickAction = \Mockery::mock(ActionInterface::class);
         $clickAction
             ->shouldReceive('getSource')
             ->andReturn('click $".selector"');
