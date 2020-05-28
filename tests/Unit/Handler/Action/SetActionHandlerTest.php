@@ -8,7 +8,7 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentExcepti
 use webignition\BasilCompilableSourceFactory\Tests\Services\ObjectReflector;
 use webignition\BasilCompilableSourceFactory\Handler\Action\SetActionHandler;
 use webignition\BasilDomIdentifierFactory\Factory;
-use webignition\BasilModels\Action\InputActionInterface;
+use webignition\BasilModels\Action\ActionInterface;
 use webignition\BasilParser\ActionParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
 
@@ -18,7 +18,7 @@ class SetActionHandlerTest extends \PHPUnit\Framework\TestCase
      * @dataProvider handleThrowsExceptionDataProvider
      */
     public function testHandleThrowsException(
-        InputActionInterface $action,
+        ActionInterface $action,
         \Exception $expectedException,
         ?callable $initializer = null
     ) {

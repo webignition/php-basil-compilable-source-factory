@@ -12,9 +12,6 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentExcepti
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Action\ActionInterface;
-use webignition\BasilModels\Action\InputActionInterface;
-use webignition\BasilModels\Action\InteractionActionInterface;
-use webignition\BasilModels\Action\WaitActionInterface;
 
 class ActionHandler
 {
@@ -65,20 +62,24 @@ class ActionHandler
                 );
             }
 
-            if ($action instanceof InteractionActionInterface && in_array($action->getType(), ['click', 'submit'])) {
-                return $this->addRefreshCrawlerAndNavigatorStatement($this->interactionActionHandler->handle($action));
+            if ($action->isInteraction()) {
+                if (in_array($action->getType(), ['click', 'submit'])) {
+                    return $this->addRefreshCrawlerAndNavigatorStatement(
+                        $this->interactionActionHandler->handle($action)
+                    );
+                }
+
+                if (in_array($action->getType(), ['wait-for'])) {
+                    return $this->waitForActionHandler->handle($action);
+                }
             }
 
-            if ($action instanceof InputActionInterface) {
+            if ($action->isInput()) {
                 return $this->addRefreshCrawlerAndNavigatorStatement($this->setActionHandler->handle($action));
             }
 
-            if ($action instanceof WaitActionInterface) {
+            if ($action->isWait()) {
                 return $this->waitActionHandler->handle($action);
-            }
-
-            if ($action instanceof InteractionActionInterface && in_array($action->getType(), ['wait-for'])) {
-                return $this->waitForActionHandler->handle($action);
             }
         } catch (UnsupportedContentException $unsupportedContentException) {
             throw new UnsupportedStatementException($action, $unsupportedContentException);

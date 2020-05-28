@@ -14,7 +14,7 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentExcepti
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Model\DomElementIdentifier;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
-use webignition\BasilModels\Action\InteractionActionInterface;
+use webignition\BasilModels\Action\ActionInterface;
 use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
 class InteractionActionHandler
@@ -39,13 +39,13 @@ class InteractionActionHandler
     }
 
     /**
-     * @param InteractionActionInterface $action
+     * @param ActionInterface $action
      *
      * @return CodeBlockInterface
      *
      * @throws UnsupportedContentException
      */
-    public function handle(InteractionActionInterface $action): CodeBlockInterface
+    public function handle(ActionInterface $action): CodeBlockInterface
     {
         $identifier = $action->getIdentifier();
 
@@ -59,13 +59,6 @@ class InteractionActionHandler
         }
 
         $elementPlaceholder = VariablePlaceholder::createExport('ELEMENT');
-
-//        $accessor = new AssignmentStatement(
-//            $elementPlaceholder,
-//            $this->domIdentifierHandler->handle(
-//                new DomElementIdentifier($domIdentifier, $elementPlaceholder)
-//            )
-//        );
 
         $accessor = new AssignmentStatement(
             $elementPlaceholder,

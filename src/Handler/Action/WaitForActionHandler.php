@@ -15,7 +15,7 @@ use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
-use webignition\BasilModels\Action\InteractionActionInterface;
+use webignition\BasilModels\Action\ActionInterface;
 use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
 class WaitForActionHandler
@@ -44,13 +44,13 @@ class WaitForActionHandler
     }
 
     /**
-     * @param InteractionActionInterface $action
+     * @param ActionInterface $action
      *
      * @return CodeBlockInterface
      *
      * @throws UnsupportedContentException
      */
-    public function handle(InteractionActionInterface $action): CodeBlockInterface
+    public function handle(ActionInterface $action): CodeBlockInterface
     {
         $identifier = $action->getIdentifier();
 

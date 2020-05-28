@@ -8,7 +8,7 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentExcepti
 use webignition\BasilCompilableSourceFactory\Handler\Action\WaitActionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ObjectReflector;
 use webignition\BasilDomIdentifierFactory\Factory;
-use webignition\BasilModels\Action\WaitActionInterface;
+use webignition\BasilModels\Action\ActionInterface;
 use webignition\BasilParser\ActionParser;
 
 class WaitActionHandlerTest extends \PHPUnit\Framework\TestCase
@@ -17,7 +17,7 @@ class WaitActionHandlerTest extends \PHPUnit\Framework\TestCase
      * @dataProvider handleThrowsExceptionDataProvider
      */
     public function testHandleThrowsException(
-        WaitActionInterface $action,
+        ActionInterface $action,
         \Exception $expectedException,
         ?callable $initializer = null
     ) {

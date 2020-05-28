@@ -21,7 +21,7 @@ use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Model\DomIdentifierValue;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
-use webignition\BasilModels\Action\WaitActionInterface;
+use webignition\BasilModels\Action\ActionInterface;
 
 class WaitActionHandler
 {
@@ -60,17 +60,17 @@ class WaitActionHandler
     }
 
     /**
-     * @param WaitActionInterface $waitAction
+     * @param ActionInterface $waitAction
      *
      * @return CodeBlockInterface
      *
      * @throws UnsupportedContentException
      */
-    public function handle(WaitActionInterface $waitAction): CodeBlockInterface
+    public function handle(ActionInterface $waitAction): CodeBlockInterface
     {
         $durationPlaceholder = VariablePlaceholder::createExport(self::DURATION_PLACEHOLDER);
 
-        $duration = $waitAction->getDuration();
+        $duration = $waitAction->getValue();
 
         if (ctype_digit($duration)) {
             $duration = '"' . $duration . '"';
