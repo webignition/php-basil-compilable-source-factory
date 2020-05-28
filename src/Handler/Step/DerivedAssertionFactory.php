@@ -8,11 +8,7 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentExcepti
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Action\ActionInterface;
-use webignition\BasilModels\Action\InputActionInterface;
-use webignition\BasilModels\Action\InteractionActionInterface;
-use webignition\BasilModels\Action\WaitActionInterface;
 use webignition\BasilModels\Assertion\AssertionInterface;
-use webignition\BasilModels\Assertion\ComparisonAssertionInterface;
 use webignition\BasilModels\Assertion\DerivedValueOperationAssertion;
 use webignition\BasilModels\Assertion\UniqueAssertionCollection;
 use webignition\BasilModels\StatementInterface as StatementModelInterface;
@@ -50,11 +46,11 @@ class DerivedAssertionFactory
     {
         $assertions = new UniqueAssertionCollection();
 
-        if ($action instanceof InteractionActionInterface && !$action instanceof InputActionInterface) {
+        if ($action->isInteraction()) {
             $assertions = $assertions->merge($this->createForStatementAndAncestors($action->getIdentifier(), $action));
         }
 
-        if ($action instanceof InputActionInterface) {
+        if ($action->isInput()) {
             $assertions = $assertions->merge(
                 $this->createForStatementAndAncestors($action->getIdentifier(), $action)
             );
@@ -66,8 +62,8 @@ class DerivedAssertionFactory
             }
         }
 
-        if ($action instanceof WaitActionInterface) {
-            $duration = $action->getDuration();
+        if ($action->isWait()) {
+            $duration = $action->getValue();
 
             if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($duration)) {
                 $assertions = $assertions->merge($this->createForStatementAndAncestors($duration, $action));
@@ -106,7 +102,7 @@ class DerivedAssertionFactory
     ): UniqueAssertionCollection {
         $assertions = new UniqueAssertionCollection();
 
-        $isExistenceAssertion = in_array($assertion->getComparison(), ['exists', 'not-exists']);
+        $isExistenceAssertion = in_array($assertion->getOperator(), ['exists', 'not-exists']);
         $identifier = $assertion->getIdentifier();
 
         if ($isExistenceAssertion) {
@@ -119,7 +115,7 @@ class DerivedAssertionFactory
             }
         }
 
-        if ($assertion instanceof ComparisonAssertionInterface) {
+        if ($assertion->isComparison()) {
             $value = $assertion->getValue();
 
             if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($value)) {
@@ -134,11 +130,11 @@ class DerivedAssertionFactory
     {
         $assertions = new UniqueAssertionCollection();
 
-        if (!$assertion instanceof ComparisonAssertionInterface) {
+        if (!$assertion->isComparison()) {
             return $assertions;
         }
 
-        if ('matches' !== $assertion->getComparison()) {
+        if ('matches' !== $assertion->getOperator()) {
             return $assertions;
         }
 

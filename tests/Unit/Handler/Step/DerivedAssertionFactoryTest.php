@@ -6,9 +6,8 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Step;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\Step\DerivedAssertionFactory;
+use webignition\BasilModels\Action\Action;
 use webignition\BasilModels\Action\ActionInterface;
-use webignition\BasilModels\Action\InputAction;
-use webignition\BasilModels\Action\InteractionAction;
 use webignition\BasilModels\Assertion\AssertionInterface;
 use webignition\BasilModels\Assertion\DerivedValueOperationAssertion;
 use webignition\BasilModels\Assertion\UniqueAssertionCollection;
@@ -226,7 +225,7 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
 
     public function testCreateForClickActionThrowsException()
     {
-        $action = new InteractionAction(
+        $action = new Action(
             'click "foo"',
             'click',
             '"foo"',
@@ -242,9 +241,10 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
 
     public function testCreateForSetActionThrowsException()
     {
-        $action = new InputAction(
+        $action = new Action(
             'set "foo" to "value"',
             'set',
+            '"foo" to "value"',
             '"foo"',
             '"value"'
         );
