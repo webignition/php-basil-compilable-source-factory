@@ -13,7 +13,7 @@ use webignition\BasilCompilableSource\Line\Statement\StatementInterface;
 use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\CallFactory\StatementFactoryCallFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilModels\Assertion\DerivedAssertionInterface;
+use webignition\BasilModels\EncapsulatingStatementInterface;
 use webignition\BasilModels\StatementInterface as StatementModelInterface;
 
 class StatementBlockFactory
@@ -38,7 +38,7 @@ class StatementBlockFactory
 
         $statementCommentContent = $statement->getSource();
 
-        if ($statement instanceof DerivedAssertionInterface) {
+        if ($statement instanceof EncapsulatingStatementInterface) {
             $statementCommentContent .= ' <- ' . $statement->getSourceStatement()->getSource();
         }
 
