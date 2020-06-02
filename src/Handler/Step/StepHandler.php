@@ -59,16 +59,9 @@ class StepHandler
             foreach ($step->getActions() as $action) {
                 try {
                     $derivedActionAssertions = $this->derivedAssertionFactory->createForAction($action);
-
-                    $derivedAssertionBlockSources = [];
-                    foreach ($derivedActionAssertions as $derivedAssertion) {
-                        $derivedAssertionBlockSources[] = $this->statementBlockFactory->create($derivedAssertion);
-                        $derivedAssertionBlockSources[] = $this->assertionHandler->handle($derivedAssertion);
-                    }
-
-                    if ([] !== $derivedAssertionBlockSources) {
-                        $blockSources[] = new CodeBlock($derivedAssertionBlockSources);
-                        $blockSources[] = new EmptyLine();
+                    $derivedActionAssertionsBlock = $this->createFoo($derivedActionAssertions);
+                    if (false === $derivedActionAssertionsBlock->isEmpty()) {
+                        $blockSources[] = $derivedActionAssertionsBlock;
                     }
                 } catch (UnsupportedContentException $unsupportedContentException) {
                     throw new UnsupportedStatementException($action, $unsupportedContentException);
@@ -92,15 +85,9 @@ class StepHandler
                 }
             }
 
-            $derivedAssertionBlockSources = [];
-            foreach ($derivedAssertionAssertions as $derivedAssertion) {
-                $derivedAssertionBlockSources[] = $this->statementBlockFactory->create($derivedAssertion);
-                $derivedAssertionBlockSources[] = $this->assertionHandler->handle($derivedAssertion);
-            }
-
-            if ([] !== $derivedAssertionBlockSources) {
-                $blockSources[] = new CodeBlock($derivedAssertionBlockSources);
-                $blockSources[] = new EmptyLine();
+            $derivedAssertionAssertionsBlock = $this->createFoo($derivedAssertionAssertions);
+            if (false === $derivedAssertionAssertionsBlock->isEmpty()) {
+                $blockSources[] = $derivedAssertionAssertionsBlock;
             }
 
             foreach ($stepAssertions as $assertion) {
@@ -113,5 +100,27 @@ class StepHandler
         }
 
         return new CodeBlock($blockSources);
+    }
+
+    /**
+     * @param UniqueAssertionCollection $assertions
+     *
+     * @return CodeBlockInterface
+     *
+     * @throws UnsupportedStatementException
+     */
+    private function createFoo(UniqueAssertionCollection $assertions): CodeBlockInterface
+    {
+        $derivedAssertionBlockSources = [];
+        foreach ($assertions as $assertion) {
+            $derivedAssertionBlockSources[] = $this->statementBlockFactory->create($assertion);
+            $derivedAssertionBlockSources[] = $this->assertionHandler->handle($assertion);
+        }
+
+        if ([] !== $derivedAssertionBlockSources) {
+            $derivedAssertionBlockSources[] = new EmptyLine();
+        }
+
+        return new CodeBlock($derivedAssertionBlockSources);
     }
 }
