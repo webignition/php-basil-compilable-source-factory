@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler;
 
 use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Line\ClosureExpression;
+use webignition\BasilCompilableSource\Line\EmptyLine;
 use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
@@ -61,6 +62,7 @@ class DomIdentifierHandler
 
         $closureExpressionStatements = [
             new AssignmentStatement($elementPlaceholder, $findCall),
+            new EmptyLine(),
         ];
 
         if ($identifier instanceof AttributeIdentifierInterface) {
