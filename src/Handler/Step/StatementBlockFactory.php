@@ -34,18 +34,16 @@ class StatementBlockFactory
 
     public function create(StatementModelInterface $statement): CodeBlockInterface
     {
-        $block = new CodeBlock();
-
         $statementCommentContent = $statement->getSource();
 
         if ($statement instanceof EncapsulatingStatementInterface) {
             $statementCommentContent .= ' <- ' . $statement->getSourceStatement()->getSource();
         }
 
-        $block->addLine(new SingleLineComment($statementCommentContent));
-        $block->addLine($this->createAddToHandledStatementsStatement($statement));
-
-        return $block;
+        return new CodeBlock([
+            new SingleLineComment($statementCommentContent),
+            $this->createAddToHandledStatementsStatement($statement),
+        ]);
     }
 
     private function createAddToHandledStatementsStatement(StatementModelInterface $statement): StatementInterface
