@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
+use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
@@ -90,15 +91,14 @@ class ActionHandler
 
     private function addRefreshCrawlerAndNavigatorStatement(CodeBlockInterface $codeBlock): CodeBlockInterface
     {
-        $codeBlock->addLines([
+        return new CodeBlock([
+            $codeBlock,
             new Statement(
                 new ObjectMethodInvocation(
                     VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
                     'refreshCrawlerAndNavigator'
                 )
-            )
+            ),
         ]);
-
-        return $codeBlock;
     }
 }
