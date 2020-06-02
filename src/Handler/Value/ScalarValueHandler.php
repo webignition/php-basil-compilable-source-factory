@@ -8,6 +8,7 @@ use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Line\CastExpression;
 use webignition\BasilCompilableSource\Line\ClosureExpression;
 use webignition\BasilCompilableSource\Line\CompositeExpression;
+use webignition\BasilCompilableSource\Line\EmptyLine;
 use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
@@ -88,6 +89,7 @@ class ScalarValueHandler
                     'getWebDriver()->manage()->window()->getSize'
                 )
             ),
+            new EmptyLine(),
             new ReturnStatement(
                 new CompositeExpression([
                     new CastExpression(
