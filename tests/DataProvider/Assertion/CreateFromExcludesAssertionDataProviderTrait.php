@@ -24,11 +24,11 @@ trait CreateFromExcludesAssertionDataProviderTrait
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n" .
                     '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".selector"' . "\n" .
                     '    }\'));' . "\n" .
                     "\n" .
-                    '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
+                    '    return {{ INSPECTOR }}->getValue($element);' . "\n" .
                     '})());' . "\n" .
                     '{{ PHPUNIT }}->assertStringNotContainsString(' . "\n" .
                     '    (string) ({{ PHPUNIT }}->getExpectedValue()),' . "\n" .
@@ -44,9 +44,6 @@ trait CreateFromExcludesAssertionDataProviderTrait
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
                     ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
-                        'ELEMENT',
-                    ]),
                 ]),
             ],
             'excludes comparison, attribute identifier examined value, literal string expected value' => [
@@ -54,11 +51,11 @@ trait CreateFromExcludesAssertionDataProviderTrait
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n" .
                     '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".selector"' . "\n" .
                     '    }\'));' . "\n" .
                     "\n" .
-                    '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
+                    '    return $element->getAttribute(\'attribute_name\');' . "\n" .
                     '})());' . "\n" .
                     '{{ PHPUNIT }}->assertStringNotContainsString(' . "\n" .
                     '    (string) ({{ PHPUNIT }}->getExpectedValue()),' . "\n" .
@@ -72,9 +69,6 @@ trait CreateFromExcludesAssertionDataProviderTrait
                     Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
-                        'ELEMENT',
                     ]),
                 ]),
             ],

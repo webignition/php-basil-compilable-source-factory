@@ -132,11 +132,11 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                 ),
                 'expectedRenderedSource' =>
                     '(function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".selector"' . "\n" .
                     '    }\'));' . "\n" .
                     "\n" .
-                    '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
+                    '    return {{ INSPECTOR }}->getValue($element);' . "\n" .
                     '})()'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -146,9 +146,6 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                     Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
-                        'ELEMENT',
                     ]),
                 ]),
             ],
@@ -159,14 +156,14 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                 ),
                 'expectedRenderedSource' =>
                     '(function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".selector",' . "\n" .
                     '        "parent": {' . "\n" .
                     '            "locator": ".parent"' . "\n" .
                     '        }' . "\n" .
                     '    }\'));' . "\n" .
                     "\n" .
-                    '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
+                    '    return {{ INSPECTOR }}->getValue($element);' . "\n" .
                     '})()'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -177,9 +174,6 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
                     ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
-                        'ELEMENT',
-                    ]),
                 ]),
             ],
             'attribute value, no parent' => [
@@ -188,11 +182,11 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                 ),
                 'expectedRenderedSource' =>
                     '(function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".selector"' . "\n" .
                     '    }\'));' . "\n" .
                     "\n" .
-                    '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
+                    '    return $element->getAttribute(\'attribute_name\');' . "\n" .
                     '})()'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -201,9 +195,6 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
-                        'ELEMENT',
                     ]),
                 ]),
             ],
@@ -214,14 +205,14 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                 ),
                 'expectedRenderedSource' =>
                     '(function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".selector",' . "\n" .
                     '        "parent": {' . "\n" .
                     '            "locator": ".parent"' . "\n" .
                     '        }' . "\n" .
                     '    }\'));' . "\n" .
                     "\n" .
-                    '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
+                    '    return $element->getAttribute(\'attribute_name\');' . "\n" .
                     '})()'
                 ,
                 'expectedMetadata' => new Metadata([
@@ -230,9 +221,6 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
-                        'ELEMENT',
                     ]),
                 ]),
             ],

@@ -34,11 +34,11 @@ trait CreateFromWaitActionDataProviderTrait
                 'action' => $actionParser->parse('wait $".duration-selector"'),
                 'expectedRenderedSource' =>
                     '{{ DURATION }} = (int) ((function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".duration-selector"' . "\n" .
                     '    }\'));' . "\n" .
                     "\n" .
-                    '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
+                    '    return {{ INSPECTOR }}->getValue($element);' . "\n" .
                     '})() ?? 0);' . "\n" .
                     'usleep({{ DURATION }} * 1000);',
                 'expectedMetadata' => new Metadata([
@@ -51,7 +51,6 @@ trait CreateFromWaitActionDataProviderTrait
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
                         'DURATION',
-                        'ELEMENT',
                     ]),
                 ]),
             ],
@@ -59,14 +58,14 @@ trait CreateFromWaitActionDataProviderTrait
                 'action' => $actionParser->parse('wait $".parent" >> $".child"'),
                 'expectedRenderedSource' =>
                     '{{ DURATION }} = (int) ((function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".child",' . "\n" .
                     '        "parent": {' . "\n" .
                     '            "locator": ".parent"' . "\n" .
                     '        }' . "\n" .
                     '    }\'));' . "\n" .
                     "\n" .
-                    '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
+                    '    return {{ INSPECTOR }}->getValue($element);' . "\n" .
                     '})() ?? 0);' . "\n" .
                     'usleep({{ DURATION }} * 1000);',
                 'expectedMetadata' => new Metadata([
@@ -79,7 +78,6 @@ trait CreateFromWaitActionDataProviderTrait
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
                         'DURATION',
-                        'ELEMENT',
                     ]),
                 ]),
             ],
@@ -87,11 +85,11 @@ trait CreateFromWaitActionDataProviderTrait
                 'action' => $actionParser->parse('wait $"a"'),
                 'expectedRenderedSource' =>
                     '{{ DURATION }} = (int) ((function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": "a"' . "\n" .
                     '    }\'));' . "\n" .
                     "\n" .
-                    '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
+                    '    return {{ INSPECTOR }}->getValue($element);' . "\n" .
                     '})() ?? 0);' . "\n" .
                     'usleep({{ DURATION }} * 1000);',
                 'expectedMetadata' => new Metadata([
@@ -104,7 +102,6 @@ trait CreateFromWaitActionDataProviderTrait
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
                         'DURATION',
-                        'ELEMENT',
                     ]),
                 ]),
             ],
@@ -112,11 +109,11 @@ trait CreateFromWaitActionDataProviderTrait
                 'action' => $actionParser->parse('wait $".duration-selector".attribute_name'),
                 'expectedRenderedSource' =>
                     '{{ DURATION }} = (int) ((function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".duration-selector"' . "\n" .
                     '    }\'));' . "\n" .
                     "\n" .
-                    '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
+                    '    return $element->getAttribute(\'attribute_name\');' . "\n" .
                     '})() ?? 0);' . "\n" .
                     'usleep({{ DURATION }} * 1000);',
                 'expectedMetadata' => new Metadata([
@@ -128,7 +125,6 @@ trait CreateFromWaitActionDataProviderTrait
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
                         'DURATION',
-                        'ELEMENT',
                     ]),
                 ]),
             ],
@@ -136,11 +132,11 @@ trait CreateFromWaitActionDataProviderTrait
                 'action' => $actionParser->parse('wait $browser.size'),
                 'expectedRenderedSource' =>
                     '{{ DURATION }} = (int) ((function () {' . "\n" .
-                    '    {{ WEBDRIVER_DIMENSION }} = ' .
+                    '    $webDriverDimension = ' .
                     '{{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n" .
                     "\n" .
-                    '    return (string) ({{ WEBDRIVER_DIMENSION }}->getWidth()) . \'x\' . ' .
-                    '(string) ({{ WEBDRIVER_DIMENSION }}->getHeight());' . "\n" .
+                    '    return (string) ($webDriverDimension->getWidth()) . \'x\' . ' .
+                    '(string) ($webDriverDimension->getHeight());' . "\n" .
                     '})() ?? 0);' . "\n" .
                     'usleep({{ DURATION }} * 1000);',
                 'expectedMetadata' => new Metadata([
@@ -149,7 +145,6 @@ trait CreateFromWaitActionDataProviderTrait
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
                         'DURATION',
-                        'WEBDRIVER_DIMENSION',
                     ]),
                 ]),
             ],

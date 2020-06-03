@@ -64,19 +64,15 @@ class ScalarValueHandlerTest extends \PHPUnit\Framework\TestCase
                 'value' => '$browser.size',
                 'expectedRenderedSource' =>
                     '(function () {' . "\n" .
-                    '    {{ WEBDRIVER_DIMENSION }} = ' .
-                    '{{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n" .
+                    '    $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n" .
                     "\n" .
-                    '    return (string) ({{ WEBDRIVER_DIMENSION }}->getWidth()) . \'x\' . ' .
-                    '(string) ({{ WEBDRIVER_DIMENSION }}->getHeight());' . "\n" .
+                    '    return (string) ($webDriverDimension->getWidth()) . \'x\' . ' .
+                    '(string) ($webDriverDimension->getHeight());' . "\n" .
                     '})()'
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PANTHER_CLIENT,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
-                        'WEBDRIVER_DIMENSION',
                     ]),
                 ]),
             ],

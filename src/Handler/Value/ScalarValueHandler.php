@@ -16,6 +16,7 @@ use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocati
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
 use webignition\BasilCompilableSource\ResolvablePlaceholder;
+use webignition\BasilCompilableSource\ResolvingPlaceholder;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Model\EnvironmentValue;
 use webignition\BasilCompilableSourceFactory\ModelFactory\EnvironmentValueFactory;
@@ -79,7 +80,7 @@ class ScalarValueHandler
 
     private function handleBrowserProperty(): ExpressionInterface
     {
-        $webDriverDimensionPlaceholder = ResolvablePlaceholder::createExport('WEBDRIVER_DIMENSION');
+        $webDriverDimensionPlaceholder = new ResolvingPlaceholder('webDriverDimension');
 
         return new ClosureExpression(new CodeBlock([
             new AssignmentStatement(

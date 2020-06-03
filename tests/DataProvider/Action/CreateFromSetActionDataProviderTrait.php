@@ -52,11 +52,11 @@ trait CreateFromSetActionDataProviderTrait
                     '}\')' .
                     ');' . "\n" .
                     '{{ VALUE }} = (function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".source"' . "\n" .
                     '    }\'));' . "\n" .
                     "\n" .
-                    '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
+                    '    return {{ INSPECTOR }}->getValue($element);' . "\n" .
                     '})();' . "\n" .
                     '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});' . "\n" .
                     '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
@@ -73,7 +73,6 @@ trait CreateFromSetActionDataProviderTrait
                     Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
                         'COLLECTION',
                         'VALUE',
-                        'ELEMENT',
                     ]),
                 ]),
             ],
@@ -85,11 +84,11 @@ trait CreateFromSetActionDataProviderTrait
                     '}\')' .
                     ');' . "\n" .
                     '{{ VALUE }} = (function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".source"' . "\n" .
                     '    }\'));' . "\n" .
                     "\n" .
-                    '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
+                    '    return $element->getAttribute(\'attribute_name\');' . "\n" .
                     '})();' . "\n" .
                     '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});' . "\n" .
                     '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
@@ -105,7 +104,6 @@ trait CreateFromSetActionDataProviderTrait
                     Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
                         'COLLECTION',
                         'VALUE',
-                        'ELEMENT',
                     ]),
                 ]),
             ],
@@ -117,11 +115,10 @@ trait CreateFromSetActionDataProviderTrait
                     '}\')' .
                     ');' . "\n" .
                     '{{ VALUE }} = (function () {' . "\n" .
-                    '    {{ WEBDRIVER_DIMENSION }} = ' .
-                    '{{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n" .
+                    '    $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n" .
                     "\n" .
-                    '    return (string) ({{ WEBDRIVER_DIMENSION }}->getWidth()) . \'x\' . ' .
-                    '(string) ({{ WEBDRIVER_DIMENSION }}->getHeight());' . "\n" .
+                    '    return (string) ($webDriverDimension->getWidth()) . \'x\' . ' .
+                    '(string) ($webDriverDimension->getHeight());' . "\n" .
                     '})();' . "\n" .
                     '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});' . "\n" .
                     '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
@@ -138,7 +135,6 @@ trait CreateFromSetActionDataProviderTrait
                     Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
                         'COLLECTION',
                         'VALUE',
-                        'WEBDRIVER_DIMENSION',
                     ]),
                 ]),
             ],

@@ -49,11 +49,11 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                 ),
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".pattern-container"' . "\n" .
                     '    }\'));' . "\n" .
                     "\n" .
-                    '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
+                    '    return {{ INSPECTOR }}->getValue($element);' . "\n" .
                     '})());' . "\n" .
                     '{{ PHPUNIT }}->setBooleanExpectedValue(' . "\n" .
                     '    @preg_match({{ PHPUNIT }}->getExaminedValue(), null) === false' . "\n" .
@@ -71,9 +71,6 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
                     ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
-                        'ELEMENT',
-                    ]),
                 ]),
             ],
             'derived is-regexp, matches assertion with attribute value' => [
@@ -84,11 +81,11 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                 ),
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".pattern-container"' . "\n" .
                     '    }\'));' . "\n" .
                     "\n" .
-                    '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
+                    '    return $element->getAttribute(\'attribute_name\');' . "\n" .
                     '})());' . "\n" .
                     '{{ PHPUNIT }}->setBooleanExpectedValue(' . "\n" .
                     '    @preg_match({{ PHPUNIT }}->getExaminedValue(), null) === false' . "\n" .
@@ -104,9 +101,6 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
-                        'ELEMENT',
                     ]),
                 ]),
             ],

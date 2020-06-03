@@ -55,11 +55,11 @@ trait CreateFromNotExistsAssertionDataProviderTrait
                     '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n" .
                     ');' . "\n" .
                     '{{ PHPUNIT }}->setBooleanExaminedValue(((function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".selector"' . "\n" .
                     '    }\'));' . "\n" .
                     "\n" .
-                    '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
+                    '    return $element->getAttribute(\'attribute_name\');' . "\n" .
                     '})() ?? null) !== null);' . "\n" .
                     '{{ PHPUNIT }}->assertFalse(' . "\n" .
                     '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n" .
@@ -72,9 +72,6 @@ trait CreateFromNotExistsAssertionDataProviderTrait
                     Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
-                        'ELEMENT',
                     ]),
                 ]),
             ],

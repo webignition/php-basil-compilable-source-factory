@@ -204,7 +204,6 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
                     ]),
                     Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
-                        'ELEMENT',
                         'COLLECTION',
                         'VALUE',
                     ]),
