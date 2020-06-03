@@ -59,10 +59,7 @@ class StepHandler
             foreach ($step->getActions() as $action) {
                 try {
                     $derivedActionAssertions = $this->derivedAssertionFactory->createForAction($action);
-                    $derivedActionAssertionsBlock = $this->createFoo($derivedActionAssertions);
-                    if (false === $derivedActionAssertionsBlock->isEmpty()) {
-                        $blockSources[] = $derivedActionAssertionsBlock;
-                    }
+                    $blockSources[] = $this->createDerivedAssertionsBlock($derivedActionAssertions);
                 } catch (UnsupportedContentException $unsupportedContentException) {
                     throw new UnsupportedStatementException($action, $unsupportedContentException);
                 }
@@ -85,10 +82,7 @@ class StepHandler
                 }
             }
 
-            $derivedAssertionAssertionsBlock = $this->createFoo($derivedAssertionAssertions);
-            if (false === $derivedAssertionAssertionsBlock->isEmpty()) {
-                $blockSources[] = $derivedAssertionAssertionsBlock;
-            }
+            $blockSources[] = $this->createDerivedAssertionsBlock($derivedAssertionAssertions);
 
             foreach ($stepAssertions as $assertion) {
                 $blockSources[] = $this->statementBlockFactory->create($assertion);
@@ -109,7 +103,7 @@ class StepHandler
      *
      * @throws UnsupportedStatementException
      */
-    private function createFoo(UniqueAssertionCollection $assertions): CodeBlockInterface
+    private function createDerivedAssertionsBlock(UniqueAssertionCollection $assertions): CodeBlockInterface
     {
         $derivedAssertionBlockSources = [];
         foreach ($assertions as $assertion) {
