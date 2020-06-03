@@ -9,7 +9,7 @@ use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
-use webignition\BasilCompilableSource\VariablePlaceholder;
+use webignition\BasilCompilableSource\ResolvablePlaceholder;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\VariableNames;
@@ -69,9 +69,9 @@ class WaitForActionHandler
 
         return new CodeBlock([
             new AssignmentStatement(
-                VariablePlaceholder::createDependency(VariableNames::PANTHER_CRAWLER),
+                ResolvablePlaceholder::createDependency(VariableNames::PANTHER_CRAWLER),
                 new ObjectMethodInvocation(
-                    VariablePlaceholder::createDependency(VariableNames::PANTHER_CLIENT),
+                    ResolvablePlaceholder::createDependency(VariableNames::PANTHER_CLIENT),
                     'waitFor',
                     [
                         new LiteralExpression(

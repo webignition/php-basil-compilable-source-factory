@@ -9,7 +9,7 @@ use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
-use webignition\BasilCompilableSource\VariablePlaceholder;
+use webignition\BasilCompilableSource\ResolvablePlaceholder;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Model\DomIdentifier;
 use webignition\BasilCompilableSourceFactory\Model\DomIdentifierInterface;
@@ -42,7 +42,7 @@ class DomIdentifierHandlerTest extends AbstractBrowserTestCase
         $source = $this->handler->handle($domIdentifier);
 
         $instrumentedSource = new AssignmentStatement(
-            VariablePlaceholder::createExport('ELEMENT'),
+            ResolvablePlaceholder::createExport('ELEMENT'),
             $source
         );
 

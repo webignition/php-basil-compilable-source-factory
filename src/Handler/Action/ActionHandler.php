@@ -8,7 +8,7 @@ use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
-use webignition\BasilCompilableSource\VariablePlaceholder;
+use webignition\BasilCompilableSource\ResolvablePlaceholder;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\VariableNames;
@@ -95,7 +95,7 @@ class ActionHandler
             $codeBlock,
             new Statement(
                 new ObjectMethodInvocation(
-                    VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+                    ResolvablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
                     'refreshCrawlerAndNavigator'
                 )
             ),

@@ -15,8 +15,8 @@ use webignition\BasilCompilableSource\Line\SingleLineComment;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\MethodDefinition;
 use webignition\BasilCompilableSource\MethodDefinitionInterface;
+use webignition\BasilCompilableSource\ResolvablePlaceholder;
 use webignition\BasilCompilableSource\StaticObject;
-use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\SymfonyPantherWebServerRunner\Options;
 
@@ -39,7 +39,7 @@ class MethodDefinitionFactory
             new Statement(new LiteralExpression('parent::setUpBeforeClass()')),
             new Statement(
                 new ObjectMethodInvocation(
-                    VariablePlaceholder::createDependency(VariableNames::PANTHER_CLIENT),
+                    ResolvablePlaceholder::createDependency(VariableNames::PANTHER_CLIENT),
                     'request',
                     [
                         new LiteralExpression('\'GET\''),

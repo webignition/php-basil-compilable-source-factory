@@ -6,7 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
 use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSource\VariablePlaceholder;
+use webignition\BasilCompilableSource\ResolvablePlaceholder;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class DomCrawlerNavigatorCallFactory
@@ -50,7 +50,7 @@ class DomCrawlerNavigatorCallFactory
         ExpressionInterface $elementIdentifierExpression
     ): ExpressionInterface {
         return new ObjectMethodInvocation(
-            VariablePlaceholder::createDependency(VariableNames::DOM_CRAWLER_NAVIGATOR),
+            ResolvablePlaceholder::createDependency(VariableNames::DOM_CRAWLER_NAVIGATOR),
             $methodName,
             [
                 $elementIdentifierExpression,

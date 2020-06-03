@@ -12,7 +12,8 @@ use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
-use webignition\BasilCompilableSource\VariablePlaceholder;
+use webignition\BasilCompilableSource\ResolvablePlaceholder;
+use webignition\BasilCompilableSource\ResolvingPlaceholder;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\ElementIdentifierCallFactory;
 use webignition\BasilCompilableSourceFactory\Model\DomIdentifierInterface;
@@ -58,7 +59,7 @@ class DomIdentifierHandler
             return $findCall;
         }
 
-        $elementPlaceholder = VariablePlaceholder::createExport('ELEMENT');
+        $elementPlaceholder = new ResolvingPlaceholder('element');
 
         $closureExpressionStatements = [
             new AssignmentStatement($elementPlaceholder, $findCall),
@@ -81,7 +82,7 @@ class DomIdentifierHandler
         } else {
             $closureExpressionStatements[] = new ReturnStatement(
                 new ObjectMethodInvocation(
-                    VariablePlaceholder::createDependency(VariableNames::WEBDRIVER_ELEMENT_INSPECTOR),
+                    ResolvablePlaceholder::createDependency(VariableNames::WEBDRIVER_ELEMENT_INSPECTOR),
                     'getValue',
                     [
                         $elementPlaceholder,

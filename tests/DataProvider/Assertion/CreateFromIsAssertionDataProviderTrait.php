@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Line\ClassDependency;
 use webignition\BasilCompilableSource\Metadata\Metadata;
-use webignition\BasilCompilableSource\VariablePlaceholderCollection;
+use webignition\BasilCompilableSource\ResolvablePlaceholderCollection;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilParser\AssertionParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
@@ -24,11 +24,11 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n" .
                     '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".selector"' . "\n" .
                     '    }\'));' . "\n" .
                     "\n" .
-                    '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
+                    '    return {{ INSPECTOR }}->getValue($element);' . "\n" .
                     '})());' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->getExpectedValue(),' . "\n" .
@@ -39,13 +39,10 @@ trait CreateFromIsAssertionDataProviderTrait
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
                     ]),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        'ELEMENT',
                     ]),
                 ]),
             ],
@@ -54,14 +51,14 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n" .
                     '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".child",' . "\n" .
                     '        "parent": {' . "\n" .
                     '            "locator": ".parent"' . "\n" .
                     '        }' . "\n" .
                     '    }\'));' . "\n" .
                     "\n" .
-                    '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
+                    '    return {{ INSPECTOR }}->getValue($element);' . "\n" .
                     '})());' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->getExpectedValue(),' . "\n" .
@@ -72,13 +69,10 @@ trait CreateFromIsAssertionDataProviderTrait
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
                     ]),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        'ELEMENT',
                     ]),
                 ]),
             ],
@@ -87,11 +81,11 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n" .
                     '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".selector"' . "\n" .
                     '    }\'));' . "\n" .
                     "\n" .
-                    '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
+                    '    return $element->getAttribute(\'attribute_name\');' . "\n" .
                     '})());' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->getExpectedValue(),' . "\n" .
@@ -102,12 +96,9 @@ trait CreateFromIsAssertionDataProviderTrait
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
                     ]),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        'ELEMENT',
                     ]),
                 ]),
             ],
@@ -116,11 +107,11 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n" .
                     '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n" .
-                    '    {{ WEBDRIVER_DIMENSION }} = ' .
+                    '    $webDriverDimension = ' .
                     '{{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n" .
                     "\n" .
-                    '    return (string) ({{ WEBDRIVER_DIMENSION }}->getWidth()) . \'x\' . ' .
-                    '(string) ({{ WEBDRIVER_DIMENSION }}->getHeight());' . "\n" .
+                    '    return (string) ($webDriverDimension->getWidth()) . \'x\' . ' .
+                    '(string) ($webDriverDimension->getHeight());' . "\n" .
                     '})());' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->getExpectedValue(),' . "\n" .
@@ -128,12 +119,9 @@ trait CreateFromIsAssertionDataProviderTrait
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PANTHER_CLIENT,
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        'WEBDRIVER_DIMENSION',
                     ]),
                 ]),
             ],
@@ -148,7 +136,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
                     ]),
@@ -165,7 +153,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
                     ]),
@@ -182,7 +170,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
                     ]),
@@ -199,7 +187,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::PANTHER_CLIENT,
                     ]),
@@ -209,21 +197,21 @@ trait CreateFromIsAssertionDataProviderTrait
                 'assertion' => $assertionParser->parse('$browser.size is $".parent" >> $".child"'),
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->setExpectedValue((function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".child",' . "\n" .
                     '        "parent": {' . "\n" .
                     '            "locator": ".parent"' . "\n" .
                     '        }' . "\n" .
                     '    }\'));' . "\n" .
                     "\n" .
-                    '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
+                    '    return {{ INSPECTOR }}->getValue($element);' . "\n" .
                     '})());' . "\n" .
                     '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n" .
-                    '    {{ WEBDRIVER_DIMENSION }} = ' .
+                    '    $webDriverDimension = ' .
                     '{{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n" .
                     "\n" .
-                    '    return (string) ({{ WEBDRIVER_DIMENSION }}->getWidth()) . \'x\' . ' .
-                    '(string) ({{ WEBDRIVER_DIMENSION }}->getHeight());' . "\n" .
+                    '    return (string) ($webDriverDimension->getWidth()) . \'x\' . ' .
+                    '(string) ($webDriverDimension->getHeight());' . "\n" .
                     '})());' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->getExpectedValue(),' . "\n" .
@@ -234,15 +222,11 @@ trait CreateFromIsAssertionDataProviderTrait
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
                     ]),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::PANTHER_CLIENT,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        'ELEMENT',
-                        'WEBDRIVER_DIMENSION',
                     ]),
                 ]),
             ],
@@ -250,18 +234,18 @@ trait CreateFromIsAssertionDataProviderTrait
                 'assertion' => $assertionParser->parse('$browser.size is $".selector"'),
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->setExpectedValue((function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".selector"' . "\n" .
                     '    }\'));' . "\n" .
                     "\n" .
-                    '    return {{ INSPECTOR }}->getValue({{ ELEMENT }});' . "\n" .
+                    '    return {{ INSPECTOR }}->getValue($element);' . "\n" .
                     '})());' . "\n" .
                     '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n" .
-                    '    {{ WEBDRIVER_DIMENSION }} = ' .
+                    '    $webDriverDimension = ' .
                     '{{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n" .
                     "\n" .
-                    '    return (string) ({{ WEBDRIVER_DIMENSION }}->getWidth()) . \'x\' . ' .
-                    '(string) ({{ WEBDRIVER_DIMENSION }}->getHeight());' . "\n" .
+                    '    return (string) ($webDriverDimension->getWidth()) . \'x\' . ' .
+                    '(string) ($webDriverDimension->getHeight());' . "\n" .
                     '})());' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->getExpectedValue(),' . "\n" .
@@ -272,15 +256,11 @@ trait CreateFromIsAssertionDataProviderTrait
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
                     ]),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::PANTHER_CLIENT,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        'ELEMENT',
-                        'WEBDRIVER_DIMENSION',
                     ]),
                 ]),
             ],
@@ -288,18 +268,18 @@ trait CreateFromIsAssertionDataProviderTrait
                 'assertion' => $assertionParser->parse('$browser.size is $".selector".attribute_name'),
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->setExpectedValue((function () {' . "\n" .
-                    '    {{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".selector"' . "\n" .
                     '    }\'));' . "\n" .
                     "\n" .
-                    '    return {{ ELEMENT }}->getAttribute(\'attribute_name\');' . "\n" .
+                    '    return $element->getAttribute(\'attribute_name\');' . "\n" .
                     '})());' . "\n" .
                     '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n" .
-                    '    {{ WEBDRIVER_DIMENSION }} = ' .
+                    '    $webDriverDimension = ' .
                     '{{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n" .
                     "\n" .
-                    '    return (string) ({{ WEBDRIVER_DIMENSION }}->getWidth()) . \'x\' . ' .
-                    '(string) ({{ WEBDRIVER_DIMENSION }}->getHeight());' . "\n" .
+                    '    return (string) ($webDriverDimension->getWidth()) . \'x\' . ' .
+                    '(string) ($webDriverDimension->getHeight());' . "\n" .
                     '})());' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->getExpectedValue(),' . "\n" .
@@ -310,14 +290,10 @@ trait CreateFromIsAssertionDataProviderTrait
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
                     ]),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::PANTHER_CLIENT,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        'ELEMENT',
-                        'WEBDRIVER_DIMENSION',
                     ]),
                 ]),
             ],
@@ -326,11 +302,11 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->setExpectedValue({{ ENV }}[\'KEY\'] ?? null);' . "\n" .
                     '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n" .
-                    '    {{ WEBDRIVER_DIMENSION }} = ' .
+                    '    $webDriverDimension = ' .
                     '{{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n" .
                     "\n" .
-                    '    return (string) ({{ WEBDRIVER_DIMENSION }}->getWidth()) . \'x\' . ' .
-                    '(string) ({{ WEBDRIVER_DIMENSION }}->getHeight());' . "\n" .
+                    '    return (string) ($webDriverDimension->getWidth()) . \'x\' . ' .
+                    '(string) ($webDriverDimension->getHeight());' . "\n" .
                     '})());' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->getExpectedValue(),' . "\n" .
@@ -338,13 +314,10 @@ trait CreateFromIsAssertionDataProviderTrait
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::PANTHER_CLIENT,
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        'WEBDRIVER_DIMENSION',
                     ]),
                 ]),
             ],
@@ -353,11 +326,11 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->setExpectedValue({{ ENV }}[\'KEY\'] ?? \'default value\');' . "\n" .
                     '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n" .
-                    '    {{ WEBDRIVER_DIMENSION }} = ' .
+                    '    $webDriverDimension = ' .
                     '{{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n" .
                     "\n" .
-                    '    return (string) ({{ WEBDRIVER_DIMENSION }}->getWidth()) . \'x\' . ' .
-                    '(string) ({{ WEBDRIVER_DIMENSION }}->getHeight());' . "\n" .
+                    '    return (string) ($webDriverDimension->getWidth()) . \'x\' . ' .
+                    '(string) ($webDriverDimension->getHeight());' . "\n" .
                     '})());' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->getExpectedValue(),' . "\n" .
@@ -365,13 +338,10 @@ trait CreateFromIsAssertionDataProviderTrait
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::PANTHER_CLIENT,
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        'WEBDRIVER_DIMENSION',
                     ]),
                 ]),
             ],
@@ -380,11 +350,11 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedRenderedSource' =>
                     '{{ PHPUNIT }}->setExpectedValue({{ CLIENT }}->getCurrentURL() ?? null);' . "\n" .
                     '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n" .
-                    '    {{ WEBDRIVER_DIMENSION }} = ' .
+                    '    $webDriverDimension = ' .
                     '{{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n" .
                     "\n" .
-                    '    return (string) ({{ WEBDRIVER_DIMENSION }}->getWidth()) . \'x\' . ' .
-                    '(string) ({{ WEBDRIVER_DIMENSION }}->getHeight());' . "\n" .
+                    '    return (string) ($webDriverDimension->getWidth()) . \'x\' . ' .
+                    '(string) ($webDriverDimension->getHeight());' . "\n" .
                     '})());' . "\n" .
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->getExpectedValue(),' . "\n" .
@@ -392,12 +362,9 @@ trait CreateFromIsAssertionDataProviderTrait
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::PANTHER_CLIENT,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
-                        'WEBDRIVER_DIMENSION',
                     ]),
                 ]),
             ],
@@ -412,7 +379,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
                     ]),
                 ]),

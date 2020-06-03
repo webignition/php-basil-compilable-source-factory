@@ -13,8 +13,8 @@ use webignition\BasilCompilableSource\Line\MethodInvocation\StaticObjectMethodIn
 use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\MethodDefinition;
 use webignition\BasilCompilableSource\MethodDefinitionInterface;
+use webignition\BasilCompilableSource\ResolvablePlaceholder;
 use webignition\BasilCompilableSource\StaticObject;
-use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilModels\Test\TestInterface;
 
@@ -75,7 +75,7 @@ class ClassDefinitionFactory
             ),
             new Statement(
                 new ObjectMethodInvocation(
-                    VariablePlaceholder::createDependency(VariableNames::PANTHER_CLIENT),
+                    ResolvablePlaceholder::createDependency(VariableNames::PANTHER_CLIENT),
                     'request',
                     [
                         new LiteralExpression('\'GET\''),

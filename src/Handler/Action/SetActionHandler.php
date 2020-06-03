@@ -11,7 +11,7 @@ use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
-use webignition\BasilCompilableSource\VariablePlaceholder;
+use webignition\BasilCompilableSource\ResolvablePlaceholder;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
@@ -82,8 +82,8 @@ class SetActionHandler
             throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }
 
-        $collectionPlaceholder = VariablePlaceholder::createExport('COLLECTION');
-        $valuePlaceholder = VariablePlaceholder::createExport('VALUE');
+        $collectionPlaceholder = ResolvablePlaceholder::createExport('COLLECTION');
+        $valuePlaceholder = ResolvablePlaceholder::createExport('VALUE');
 
         $collectionAccessor = new AssignmentStatement(
             $collectionPlaceholder,
@@ -116,7 +116,7 @@ class SetActionHandler
 
         $mutationCall = new Statement(
             new ObjectMethodInvocation(
-                VariablePlaceholder::createDependency(VariableNames::WEBDRIVER_ELEMENT_MUTATOR),
+                ResolvablePlaceholder::createDependency(VariableNames::WEBDRIVER_ELEMENT_MUTATOR),
                 'setValue',
                 [
                     $collectionPlaceholder,

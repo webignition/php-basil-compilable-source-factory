@@ -6,7 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSource\VariablePlaceholder;
+use webignition\BasilCompilableSource\ResolvablePlaceholder;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Assertion\AssertionInterface;
@@ -37,7 +37,7 @@ class StatementFactoryCallFactory
         $serializedStatementSource = (string) json_encode($statement, JSON_PRETTY_PRINT);
 
         return new ObjectMethodInvocation(
-            VariablePlaceholder::createDependency($objectPlaceholderName),
+            ResolvablePlaceholder::createDependency($objectPlaceholderName),
             'createFromJson',
             [
                 new LiteralExpression(sprintf(

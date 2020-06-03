@@ -8,7 +8,7 @@ use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
-use webignition\BasilCompilableSource\VariablePlaceholder;
+use webignition\BasilCompilableSource\ResolvablePlaceholder;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Action\ActionInterface;
 
@@ -23,9 +23,9 @@ class BrowserOperationActionHandler
     {
         return new CodeBlock([
             new AssignmentStatement(
-                VariablePlaceholder::createDependency(VariableNames::PANTHER_CRAWLER),
+                ResolvablePlaceholder::createDependency(VariableNames::PANTHER_CRAWLER),
                 new ObjectMethodInvocation(
-                    VariablePlaceholder::createDependency(VariableNames::PANTHER_CLIENT),
+                    ResolvablePlaceholder::createDependency(VariableNames::PANTHER_CLIENT),
                     $action->getType()
                 )
             ),

@@ -10,7 +10,7 @@ use webignition\BasilCompilableSource\Line\ObjectPropertyAccessExpression;
 use webignition\BasilCompilableSource\Line\SingleLineComment;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\StatementInterface;
-use webignition\BasilCompilableSource\VariablePlaceholder;
+use webignition\BasilCompilableSource\ResolvablePlaceholder;
 use webignition\BasilCompilableSourceFactory\CallFactory\StatementFactoryCallFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\EncapsulatingStatementInterface;
@@ -50,7 +50,7 @@ class StatementBlockFactory
     {
         return new AssignmentStatement(
             new ObjectPropertyAccessExpression(
-                VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+                ResolvablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
                 'handledStatements[]'
             ),
             $this->statementFactoryCallFactory->create($statement)
