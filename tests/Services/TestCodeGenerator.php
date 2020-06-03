@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
+use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSource\ClassDefinition;
 use webignition\BasilCompilableSource\ClassDefinitionInterface;
 use webignition\BasilCompilableSource\Line\ClassDependency;
+use webignition\BasilCompilableSource\Line\EmptyLine;
+use webignition\BasilCompilableSource\Line\SingleLineComment;
 use webignition\BasilCompilableSource\VariablePlaceholder;
 use webignition\BasilCompilableSource\VariablePlaceholderCollection;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractGeneratedTestCase;
@@ -47,11 +50,17 @@ class TestCodeGenerator
         ?CodeBlockInterface $teardownStatements = null,
         array $additionalVariableIdentifiers = []
     ): string {
-        $codeSource = CodeBlockFactory::createForSourceBlock($block, $teardownStatements);
+        $sources = [
+            new SingleLineComment('Code under test'),
+            $block,
+            new EmptyLine(),
+            new SingleLineComment('Additional teardown statements'),
+            ($teardownStatements instanceof CodeBlockInterface ? $teardownStatements : new CodeBlock()),
+        ];
 
         $classDefinition = ClassDefinitionFactory::createGeneratedBrowserTestForBlock(
             $fixture,
-            $codeSource,
+            $sources,
             $additionalSetupStatements
         );
 

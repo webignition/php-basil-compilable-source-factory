@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory;
 
-use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\DocBlock;
 use webignition\BasilCompilableSource\Line\EmptyLine;
 use webignition\BasilCompilableSource\Line\Literal;
@@ -70,7 +69,7 @@ class StepMethodFactory
 
         $testMethod = new MethodDefinition(
             $stepMethodName,
-            new CodeBlock([
+            [
                 new Statement(
                     new ObjectMethodInvocation(
                         VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
@@ -82,7 +81,7 @@ class StepMethodFactory
                 ),
                 new EmptyLine(),
                 $this->stepHandler->handle($step),
-            ]),
+            ],
             $parameterNames
         );
 
@@ -90,9 +89,9 @@ class StepMethodFactory
         if ($dataSetCollection instanceof DataSetCollectionInterface && count($parameterNames) > 0) {
             $dataProviderMethod = new MethodDefinition(
                 $this->stepMethodNameFactory->createDataProviderMethodName($stepName),
-                new CodeBlock([
+                [
                     new ReturnStatement($this->arrayExpressionFactory->create($dataSetCollection)),
-                ])
+                ]
             );
 
             $testMethod->setDocBlock(new DocBlock([

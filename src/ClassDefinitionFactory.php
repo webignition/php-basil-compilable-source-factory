@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory;
 
-use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\ClassDefinition;
 use webignition\BasilCompilableSource\ClassDefinitionInterface;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
@@ -66,7 +65,7 @@ class ClassDefinitionFactory
 
     private function createSetupBeforeClassMethod(TestInterface $test): MethodDefinitionInterface
     {
-        $method = new MethodDefinition('setUpBeforeClass', new CodeBlock([
+        $method = new MethodDefinition('setUpBeforeClass', [
             new Statement(
                 new StaticObjectMethodInvocation(
                     new StaticObject('parent'),
@@ -92,7 +91,7 @@ class ClassDefinitionFactory
                     ]
                 )
             ),
-        ]));
+        ]);
 
         $method->setStatic();
         $method->setReturnType('void');

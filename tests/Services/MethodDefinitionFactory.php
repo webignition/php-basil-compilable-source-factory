@@ -34,7 +34,7 @@ class MethodDefinitionFactory
             new LiteralExpression(' . \'' . $fixture . '\''),
         ]);
 
-        $block = new CodeBlock([
+        $sources = [
             new SingleLineComment('Test harness lines'),
             new Statement(new LiteralExpression('parent::setUpBeforeClass()')),
             new Statement(
@@ -47,9 +47,9 @@ class MethodDefinitionFactory
                     ]
                 )
             ),
-        ]);
+        ];
 
-        $methodDefinition = new MethodDefinition('setUpBeforeClass', $block);
+        $methodDefinition = new MethodDefinition('setUpBeforeClass', $sources);
         $methodDefinition->setStatic();
         $methodDefinition->setReturnType('void');
 
@@ -63,15 +63,15 @@ class MethodDefinitionFactory
             $additionalSetupStatements = new CodeBlock();
         }
 
-        $block = new CodeBlock([
+        $sources = [
             new SingleLineComment('Test harness lines'),
             new Statement(new LiteralExpression('parent::setUp()')),
             new EmptyLine(),
             new SingleLineComment('Additional setup statements'),
             $additionalSetupStatements,
-        ]);
+        ];
 
-        $methodDefinition = new MethodDefinition('setUp', $block);
+        $methodDefinition = new MethodDefinition('setUp', $sources);
         $methodDefinition->setProtected();
         $methodDefinition->setReturnType('void');
 
