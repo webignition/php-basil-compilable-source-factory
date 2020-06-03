@@ -6,7 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Value;
 
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\VariablePlaceholderCollection;
+use webignition\BasilCompilableSource\ResolvablePlaceholderCollection;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\VariableNames;
@@ -55,7 +55,7 @@ class ScalarValueHandlerTest extends \PHPUnit\Framework\TestCase
                 'value' => '$env.KEY',
                 'expectedRenderedSource' => '{{ ENV }}[\'KEY\']',
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         'ENV',
                     ])
                 ]),
@@ -72,10 +72,10 @@ class ScalarValueHandlerTest extends \PHPUnit\Framework\TestCase
                     '})()'
                 ,
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PANTHER_CLIENT,
                     ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
+                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
                         'WEBDRIVER_DIMENSION',
                     ]),
                 ]),
@@ -84,7 +84,7 @@ class ScalarValueHandlerTest extends \PHPUnit\Framework\TestCase
                 'value' => '$page.url',
                 'expectedRenderedSource' => '{{ CLIENT }}->getCurrentURL()',
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PANTHER_CLIENT,
                     ]),
                 ]),
@@ -93,7 +93,7 @@ class ScalarValueHandlerTest extends \PHPUnit\Framework\TestCase
                 'value' => '$page.title',
                 'expectedRenderedSource' => '{{ CLIENT }}->getTitle()',
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PANTHER_CLIENT,
                     ]),
                 ]),

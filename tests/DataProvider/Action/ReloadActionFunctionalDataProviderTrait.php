@@ -9,7 +9,7 @@ use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
-use webignition\BasilCompilableSource\VariablePlaceholder;
+use webignition\BasilCompilableSource\ResolvablePlaceholder;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilParser\ActionParser;
 
@@ -22,12 +22,12 @@ trait ReloadActionFunctionalDataProviderTrait
         $setupTeardownStatements = new CodeBlock([
             new Statement(
                 new ObjectMethodInvocation(
-                    VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+                    ResolvablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
                     'assertCount',
                     [
                         new LiteralExpression('0'),
                         new ObjectMethodInvocation(
-                            VariablePlaceholder::createDependency(VariableNames::PANTHER_CRAWLER),
+                            ResolvablePlaceholder::createDependency(VariableNames::PANTHER_CRAWLER),
                             'filter',
                             [
                                 new LiteralExpression('"#hello"')
@@ -41,12 +41,12 @@ trait ReloadActionFunctionalDataProviderTrait
             ),
             new Statement(
                 new ObjectMethodInvocation(
-                    VariablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+                    ResolvablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
                     'assertCount',
                     [
                         new LiteralExpression('1'),
                         new ObjectMethodInvocation(
-                            VariablePlaceholder::createDependency(VariableNames::PANTHER_CRAWLER),
+                            ResolvablePlaceholder::createDependency(VariableNames::PANTHER_CRAWLER),
                             'filter',
                             [
                                 new LiteralExpression('"#hello"')

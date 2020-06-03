@@ -9,7 +9,7 @@ use webignition\BasilCompilableSource\Line\ClassDependency;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodDefinitionInterface;
-use webignition\BasilCompilableSource\VariablePlaceholderCollection;
+use webignition\BasilCompilableSource\ResolvablePlaceholderCollection;
 use webignition\BasilCompilableSourceFactory\ArrayExpressionFactory;
 use webignition\BasilCompilableSourceFactory\ClassDefinitionFactory;
 use webignition\BasilCompilableSourceFactory\ClassNameFactory;
@@ -83,7 +83,7 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '}'
                 ,
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PANTHER_CLIENT,
                     ]),
                 ]),
@@ -130,14 +130,14 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
                     ]),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::ACTION_FACTORY,
                         VariableNames::ASSERTION_FACTORY,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::PANTHER_CLIENT,
                         VariableNames::PHPUNIT_TEST_CASE,
                     ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
+                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
                         'ELEMENT',
                     ]),
                 ]),
@@ -194,7 +194,7 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
                     ]),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::ACTION_FACTORY,
                         VariableNames::ASSERTION_FACTORY,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -203,7 +203,7 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
                     ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
+                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
                         'ELEMENT',
                         'COLLECTION',
                         'VALUE',

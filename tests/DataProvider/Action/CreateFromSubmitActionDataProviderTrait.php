@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Line\ClassDependency;
 use webignition\BasilCompilableSource\Metadata\Metadata;
-use webignition\BasilCompilableSource\VariablePlaceholderCollection;
+use webignition\BasilCompilableSource\ResolvablePlaceholderCollection;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilParser\ActionParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
@@ -32,11 +32,11 @@ trait CreateFromSubmitActionDataProviderTrait
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
                     ]),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::PHPUNIT_TEST_CASE,
                     ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
+                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
                         'ELEMENT',
                     ]),
                 ]),

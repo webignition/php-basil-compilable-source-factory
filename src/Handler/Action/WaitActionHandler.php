@@ -13,7 +13,7 @@ use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
-use webignition\BasilCompilableSource\VariablePlaceholder;
+use webignition\BasilCompilableSource\ResolvablePlaceholder;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
@@ -68,7 +68,7 @@ class WaitActionHandler
      */
     public function handle(ActionInterface $waitAction): CodeBlockInterface
     {
-        $durationPlaceholder = VariablePlaceholder::createExport(self::DURATION_PLACEHOLDER);
+        $durationPlaceholder = ResolvablePlaceholder::createExport(self::DURATION_PLACEHOLDER);
 
         $duration = $waitAction->getValue();
 

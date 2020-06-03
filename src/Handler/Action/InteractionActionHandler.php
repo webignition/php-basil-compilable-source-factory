@@ -9,7 +9,7 @@ use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
-use webignition\BasilCompilableSource\VariablePlaceholder;
+use webignition\BasilCompilableSource\ResolvablePlaceholder;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Model\DomElementIdentifier;
@@ -58,7 +58,7 @@ class InteractionActionHandler
             throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }
 
-        $elementPlaceholder = VariablePlaceholder::createExport('ELEMENT');
+        $elementPlaceholder = ResolvablePlaceholder::createExport('ELEMENT');
 
         $accessor = new AssignmentStatement(
             $elementPlaceholder,

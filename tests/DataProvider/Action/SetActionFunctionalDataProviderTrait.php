@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
 use webignition\BasilCompilableSource\Block\CodeBlock;
-use webignition\BasilCompilableSource\VariablePlaceholder;
+use webignition\BasilCompilableSource\ResolvablePlaceholder;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
@@ -17,7 +17,7 @@ trait SetActionFunctionalDataProviderTrait
     {
         $actionParser = ActionParser::create();
 
-        $inputPlaceholder = VariablePlaceholder::createExport('INPUT');
+        $inputPlaceholder = ResolvablePlaceholder::createExport('INPUT');
 
         $setActionFunctionalVariableIdentifiers = [
             'COLLECTION' => ResolvedVariableNames::COLLECTION_VARIABLE_NAME,
@@ -156,7 +156,7 @@ trait SetActionFunctionalDataProviderTrait
     {
         $actionParser = ActionParser::create();
 
-        $inputPlaceholder = VariablePlaceholder::createExport('INPUT');
+        $inputPlaceholder = ResolvablePlaceholder::createExport('INPUT');
 
         $setActionFunctionalVariableIdentifiers = [
             'COLLECTION' => ResolvedVariableNames::COLLECTION_VARIABLE_NAME,
@@ -249,7 +249,7 @@ trait SetActionFunctionalDataProviderTrait
     {
         $actionParser = ActionParser::create();
 
-        $textareaPlaceholder = VariablePlaceholder::createExport('TEXTAREA');
+        $textareaPlaceholder = ResolvablePlaceholder::createExport('TEXTAREA');
 
         $setActionFunctionalVariableIdentifiers = [
             'COLLECTION' => ResolvedVariableNames::COLLECTION_VARIABLE_NAME,
@@ -318,7 +318,7 @@ trait SetActionFunctionalDataProviderTrait
     {
         $actionParser = ActionParser::create();
 
-        $selectPlaceholder = VariablePlaceholder::createExport('SELECT');
+        $selectPlaceholder = ResolvablePlaceholder::createExport('SELECT');
 
         $setActionFunctionalVariableIdentifiers = [
             'COLLECTION' => ResolvedVariableNames::COLLECTION_VARIABLE_NAME,
@@ -413,7 +413,7 @@ trait SetActionFunctionalDataProviderTrait
     {
         $actionParser = ActionParser::create();
 
-        $selectPlaceholder = VariablePlaceholder::createExport('SELECT');
+        $selectPlaceholder = ResolvablePlaceholder::createExport('SELECT');
 
         $setActionFunctionalVariableIdentifiers = [
             'COLLECTION' => ResolvedVariableNames::COLLECTION_VARIABLE_NAME,
@@ -508,7 +508,7 @@ trait SetActionFunctionalDataProviderTrait
     {
         $actionParser = ActionParser::create();
 
-        $radioGroupPlaceholder = VariablePlaceholder::createExport('RADIO_GROUP');
+        $radioGroupPlaceholder = ResolvablePlaceholder::createExport('RADIO_GROUP');
 
         $setActionFunctionalVariableIdentifiers = [
             'COLLECTION' => ResolvedVariableNames::COLLECTION_VARIABLE_NAME,

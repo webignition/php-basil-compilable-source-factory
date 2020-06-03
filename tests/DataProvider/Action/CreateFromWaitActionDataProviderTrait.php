@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Line\ClassDependency;
 use webignition\BasilCompilableSource\Metadata\Metadata;
-use webignition\BasilCompilableSource\VariablePlaceholderCollection;
+use webignition\BasilCompilableSource\ResolvablePlaceholderCollection;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilParser\ActionParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
@@ -25,7 +25,7 @@ trait CreateFromWaitActionDataProviderTrait
                     '{{ DURATION }} = (int) ("30" ?? 0);' . "\n" .
                     'usleep({{ DURATION }} * 1000);',
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
+                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
                         'DURATION',
                     ]),
                 ]),
@@ -45,11 +45,11 @@ trait CreateFromWaitActionDataProviderTrait
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
                     ]),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
                     ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
+                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
                         'DURATION',
                         'ELEMENT',
                     ]),
@@ -73,11 +73,11 @@ trait CreateFromWaitActionDataProviderTrait
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
                     ]),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
                     ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
+                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
                         'DURATION',
                         'ELEMENT',
                     ]),
@@ -98,11 +98,11 @@ trait CreateFromWaitActionDataProviderTrait
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
                     ]),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
                     ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
+                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
                         'DURATION',
                         'ELEMENT',
                     ]),
@@ -123,10 +123,10 @@ trait CreateFromWaitActionDataProviderTrait
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
                     ]),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                     ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
+                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
                         'DURATION',
                         'ELEMENT',
                     ]),
@@ -144,10 +144,10 @@ trait CreateFromWaitActionDataProviderTrait
                     '})() ?? 0);' . "\n" .
                     'usleep({{ DURATION }} * 1000);',
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PANTHER_CLIENT,
                     ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
+                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
                         'DURATION',
                         'WEBDRIVER_DIMENSION',
                     ]),
@@ -159,10 +159,10 @@ trait CreateFromWaitActionDataProviderTrait
                     '{{ DURATION }} = (int) ({{ CLIENT }}->getTitle() ?? 0);' . "\n" .
                     'usleep({{ DURATION }} * 1000);',
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::PANTHER_CLIENT,
                     ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
+                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
                         'DURATION',
                     ]),
                 ]),
@@ -173,10 +173,10 @@ trait CreateFromWaitActionDataProviderTrait
                     '{{ DURATION }} = (int) ({{ ENV }}[\'DURATION\'] ?? 0);' . "\n" .
                     'usleep({{ DURATION }} * 1000);',
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
                     ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
+                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
                         'DURATION',
                     ]),
                 ]),
@@ -187,10 +187,10 @@ trait CreateFromWaitActionDataProviderTrait
                     '{{ DURATION }} = (int) ({{ ENV }}[\'DURATION\'] ?? 3);' . "\n" .
                     'usleep({{ DURATION }} * 1000);',
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
                     ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => VariablePlaceholderCollection::createExportCollection([
+                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
                         'DURATION',
                     ]),
                 ]),

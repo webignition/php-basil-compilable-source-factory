@@ -6,7 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Step;
 
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\VariablePlaceholderCollection;
+use webignition\BasilCompilableSource\ResolvablePlaceholderCollection;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StatementBlockFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Action\ActionInterface;
@@ -84,7 +84,7 @@ class StatementBlockFactoryTest extends \PHPUnit\Framework\TestCase
                     '}\');'
                 ,
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::ACTION_FACTORY,
                         VariableNames::PHPUNIT_TEST_CASE,
                     ]),
@@ -99,7 +99,7 @@ class StatementBlockFactoryTest extends \PHPUnit\Framework\TestCase
                     '}\');'
                 ,
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::ASSERTION_FACTORY,
                         VariableNames::PHPUNIT_TEST_CASE,
                     ]),
@@ -114,7 +114,7 @@ class StatementBlockFactoryTest extends \PHPUnit\Framework\TestCase
                     '}\');'
                 ,
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => VariablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::ASSERTION_FACTORY,
                         VariableNames::PHPUNIT_TEST_CASE,
                     ]),
