@@ -174,7 +174,9 @@ class AssertionHandler
             }
 
             $serializedElementIdentifier = $this->elementIdentifierSerializer->serialize($domIdentifier);
-            $elementIdentifierExpression = $this->elementIdentifierCallFactory->createConstructorCall($serializedElementIdentifier);
+            $elementIdentifierExpression = $this->elementIdentifierCallFactory->createConstructorCall(
+                $serializedElementIdentifier
+            );
 
             $examinedElementIdentifierPlaceholder = new ObjectPropertyAccessExpression(
                 ResolvablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
