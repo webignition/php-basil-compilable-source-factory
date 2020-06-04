@@ -9,11 +9,10 @@ use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSource\Line\CastExpression;
 use webignition\BasilCompilableSource\Line\ComparisonExpression;
 use webignition\BasilCompilableSource\Line\CompositeExpression;
+use webignition\BasilCompilableSource\Line\EncapsulatedExpression;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
-use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
-use webignition\BasilCompilableSource\ResolvablePlaceholder;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
@@ -21,7 +20,6 @@ use webignition\BasilModels\Action\ActionInterface;
 
 class WaitActionHandler
 {
-    private const DURATION_PLACEHOLDER = 'DURATION';
     private const MICROSECONDS_PER_MILLISECOND = 1000;
 
     private AccessorDefaultValueFactory $accessorDefaultValueFactory;
@@ -52,8 +50,6 @@ class WaitActionHandler
      */
     public function handle(ActionInterface $waitAction): CodeBlockInterface
     {
-        $durationPlaceholder = ResolvablePlaceholder::createExport(self::DURATION_PLACEHOLDER);
-
         $duration = $waitAction->getValue();
 
         if (ctype_digit($duration)) {
@@ -62,24 +58,20 @@ class WaitActionHandler
 
         $durationAccessor = $this->valueAccessorFactory->create($duration);
 
-        $durationAssignment = new AssignmentStatement(
-            $durationPlaceholder,
-            new CastExpression(
-                new ComparisonExpression(
-                    $durationAccessor,
-                    new LiteralExpression((string) ($this->accessorDefaultValueFactory->createInteger($duration) ?? 0)),
-                    '??'
-                ),
-                'int'
-            )
+        $nullCoalescingExpression = new ComparisonExpression(
+            $durationAccessor,
+            new LiteralExpression((string) ($this->accessorDefaultValueFactory->createInteger($duration) ?? 0)),
+            '??'
         );
+
+        $castToIntExpression = new CastExpression($nullCoalescingExpression, 'int');
 
         $sleepInvocation = new Statement(
             new MethodInvocation(
                 'usleep',
                 [
                     new CompositeExpression([
-                        $durationPlaceholder,
+                        new EncapsulatedExpression($castToIntExpression),
                         new LiteralExpression(' * '),
                         new LiteralExpression((string) self::MICROSECONDS_PER_MILLISECOND)
                     ]),
@@ -88,7 +80,6 @@ class WaitActionHandler
         );
 
         return new CodeBlock([
-            $durationAssignment,
             $sleepInvocation,
         ]);
     }
