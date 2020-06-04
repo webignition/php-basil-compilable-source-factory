@@ -10,7 +10,6 @@ use webignition\BasilCompilableSource\Line\MethodInvocation\StaticObjectMethodIn
 use webignition\BasilCompilableSource\StaticObject;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\DomElementIdentifier\ElementIdentifier;
-use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
 class ElementIdentifierCallFactory
 {
@@ -28,11 +27,8 @@ class ElementIdentifierCallFactory
         );
     }
 
-    public function createConstructorCall(ElementIdentifierInterface $elementIdentifier): ExpressionInterface
+    public function createConstructorCall(string $serializedSourceIdentifier): ExpressionInterface
     {
-        $elementOnlyIdentifier = ElementIdentifier::fromAttributeIdentifier($elementIdentifier);
-        $serializedSourceIdentifier = (string) json_encode($elementOnlyIdentifier, JSON_PRETTY_PRINT);
-
         return new StaticObjectMethodInvocation(
             new StaticObject(ElementIdentifier::class),
             'fromJson',
