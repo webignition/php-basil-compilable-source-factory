@@ -28,9 +28,6 @@ trait ClickActionFunctionalDataProviderTrait
                 'teardownStatements' => new CodeBlock([
                     StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
                 ]),
-                'additionalVariableIdentifiers' => [
-                    'ELEMENT' => ResolvedVariableNames::ELEMENT_VARIABLE_NAME,
-                ]
             ],
             'interaction action (click), submit button' => [
                 'fixture' => '/action-click-submit.html',

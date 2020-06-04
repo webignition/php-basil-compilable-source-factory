@@ -26,7 +26,6 @@ trait SubmitActionFunctionalDataProviderTrait
         ]);
 
         $variableIdentifiers = [
-            'ELEMENT' => ResolvedVariableNames::ELEMENT_VARIABLE_NAME,
             'SUBMIT' => '$submitButton',
             'FORM' => '$form',
         ];
