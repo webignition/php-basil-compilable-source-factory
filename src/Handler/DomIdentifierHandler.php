@@ -16,10 +16,8 @@ use webignition\BasilCompilableSource\ResolvablePlaceholder;
 use webignition\BasilCompilableSource\ResolvingPlaceholder;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\ElementIdentifierCallFactory;
-use webignition\BasilCompilableSourceFactory\Model\DomIdentifierInterface;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
 class DomIdentifierHandler
 {
@@ -46,18 +44,29 @@ class DomIdentifierHandler
         );
     }
 
-    public function handle(DomIdentifierInterface $domIdentifier): ExpressionInterface
+    public function handleElement(string $serializedElementIdentifier): ExpressionInterface
     {
-        $identifier = $domIdentifier->getIdentifier();
-        $elementIdentifierExpression = $this->elementIdentifierCallFactory->createConstructorCall($identifier);
+        return $this->domCrawlerNavigatorCallFactory->createFindOneCall(
+            $this->elementIdentifierCallFactory->createConstructorCall($serializedElementIdentifier)
+        );
+    }
 
-        $findCall = $domIdentifier->asCollection()
-            ? $this->domCrawlerNavigatorCallFactory->createFindCall($elementIdentifierExpression)
-            : $this->domCrawlerNavigatorCallFactory->createFindOneCall($elementIdentifierExpression);
+    public function handleElementCollection(string $serializedElementIdentifier): ExpressionInterface
+    {
+        return $this->domCrawlerNavigatorCallFactory->createFindCall(
+            $this->elementIdentifierCallFactory->createConstructorCall($serializedElementIdentifier)
+        );
+    }
 
-        if (false === $domIdentifier->includeValue()) {
-            return $findCall;
-        }
+    public function handleAttributeValue(
+        string $serializedElementIdentifier,
+        string $attributeName
+    ): ExpressionInterface {
+        $elementIdentifierExpression = $this->elementIdentifierCallFactory->createConstructorCall(
+            $serializedElementIdentifier
+        );
+
+        $findCall = $this->domCrawlerNavigatorCallFactory->createFindOneCall($elementIdentifierExpression);
 
         $elementPlaceholder = new ResolvingPlaceholder('element');
 
@@ -66,20 +75,37 @@ class DomIdentifierHandler
             new EmptyLine(),
         ];
 
-        if ($identifier instanceof AttributeIdentifierInterface) {
-            $closureExpressionStatements[] = new ReturnStatement(
-                new ObjectMethodInvocation(
-                    $elementPlaceholder,
-                    'getAttribute',
-                    [
-                        new LiteralExpression(sprintf(
-                            '\'%s\'',
-                            $this->singleQuotedStringEscaper->escape((string) $identifier->getAttributeName())
-                        )),
-                    ]
-                )
-            );
-        } else {
+        $closureExpressionStatements[] = new ReturnStatement(
+            new ObjectMethodInvocation(
+                $elementPlaceholder,
+                'getAttribute',
+                [
+                    new LiteralExpression(sprintf(
+                        '\'%s\'',
+                        $this->singleQuotedStringEscaper->escape($attributeName)
+                    )),
+                ]
+            )
+        );
+
+        return new ClosureExpression(new CodeBlock($closureExpressionStatements));
+    }
+
+    public function handleElementValue(string $serializedElementIdentifier): ExpressionInterface
+    {
+        $elementIdentifierExpression = $this->elementIdentifierCallFactory->createConstructorCall(
+            $serializedElementIdentifier
+        );
+
+        $findCall = $this->domCrawlerNavigatorCallFactory->createFindCall($elementIdentifierExpression);
+
+        $elementPlaceholder = new ResolvingPlaceholder('element');
+
+        $closureExpressionStatements = [
+            new AssignmentStatement($elementPlaceholder, $findCall),
+            new EmptyLine(),
+        ];
+
             $closureExpressionStatements[] = new ReturnStatement(
                 new ObjectMethodInvocation(
                     ResolvablePlaceholder::createDependency(VariableNames::WEBDRIVER_ELEMENT_INSPECTOR),
@@ -89,7 +115,7 @@ class DomIdentifierHandler
                     ]
                 )
             );
-        }
+
 
         return new ClosureExpression(new CodeBlock($closureExpressionStatements));
     }
