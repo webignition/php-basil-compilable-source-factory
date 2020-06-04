@@ -9,11 +9,8 @@ use webignition\BasilCompilableSource\Line\ClassDependency;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\ResolvablePlaceholderCollection;
+use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
-use webignition\BasilCompilableSourceFactory\Model\DomElementIdentifier;
-use webignition\BasilCompilableSourceFactory\Model\DomIdentifier;
-use webignition\BasilCompilableSourceFactory\Model\DomIdentifierInterface;
-use webignition\BasilCompilableSourceFactory\Model\DomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\DomElementIdentifier\AttributeIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifier;
@@ -30,24 +27,26 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @dataProvider handleDataProvider
+     * @dataProvider handleElementDataProvider
      */
-    public function testHandle(
-        DomIdentifierInterface $domIdentifier,
+    public function testHandleElement(
+        string $serializedElementIdentifier,
         string $expectedRenderedSource,
         MetadataInterface $expectedMetadata
     ) {
-        $source = $this->handler->handle($domIdentifier);
+        $source = $this->handler->handleElement($serializedElementIdentifier);
 
         $this->assertSame($expectedRenderedSource, $source->render());
         $this->assertEquals($expectedMetadata, $source->getMetadata());
     }
 
-    public function handleDataProvider(): array
+    public function handleElementDataProvider(): array
     {
+        $elementIdentifierSerializer = ElementIdentifierSerializer::createSerializer();
+
         return [
             'element, no parent' => [
-                'value' => new DomElementIdentifier(
+                'serializedElementIdentifier' => $elementIdentifierSerializer->serialize(
                     new ElementIdentifier('.selector')
                 ),
                 'expectedRenderedSource' =>
@@ -65,7 +64,7 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             'element, has parent' => [
-                'value' => new DomElementIdentifier(
+                'serializedElementIdentifier' => $elementIdentifierSerializer->serialize(
                     (new ElementIdentifier('.selector'))
                         ->withParentIdentifier(new ElementIdentifier('.parent'))
                 ),
@@ -86,8 +85,30 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                     ]),
                 ]),
             ],
-            'identifier, no parent' => [
-                'value' => new DomIdentifier(
+        ];
+    }
+
+    /**
+     * @dataProvider handleElementCollectionDataProvider
+     */
+    public function testHandleElementCollection(
+        string $serializedElementIdentifier,
+        string $expectedRenderedSource,
+        MetadataInterface $expectedMetadata
+    ) {
+        $source = $this->handler->handleElementCollection($serializedElementIdentifier);
+
+        $this->assertSame($expectedRenderedSource, $source->render());
+        $this->assertEquals($expectedMetadata, $source->getMetadata());
+    }
+
+    public function handleElementCollectionDataProvider(): array
+    {
+        $elementIdentifierSerializer = ElementIdentifierSerializer::createSerializer();
+
+        return [
+            'element, collection no parent' => [
+                'serializedElementIdentifier' => $elementIdentifierSerializer->serialize(
                     new ElementIdentifier('.selector')
                 ),
                 'expectedRenderedSource' =>
@@ -104,8 +125,8 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                     ]),
                 ]),
             ],
-            'identifier, has parent' => [
-                'value' => new DomIdentifier(
+            'element collection, has parent' => [
+                'serializedElementIdentifier' => $elementIdentifierSerializer->serialize(
                     (new ElementIdentifier('.selector'))
                         ->withParentIdentifier(new ElementIdentifier('.parent'))
                 ),
@@ -126,8 +147,103 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                     ]),
                 ]),
             ],
+        ];
+    }
+
+    /**
+     * @dataProvider handleAttributeValueDataProvider
+     */
+    public function testHandleAttributeValue(
+        string $serializedElementIdentifier,
+        string $attributeName,
+        string $expectedRenderedSource,
+        MetadataInterface $expectedMetadata
+    ) {
+        $source = $this->handler->handleAttributeValue($serializedElementIdentifier, $attributeName);
+
+        $this->assertSame($expectedRenderedSource, $source->render());
+        $this->assertEquals($expectedMetadata, $source->getMetadata());
+    }
+
+    public function handleAttributeValueDataProvider(): array
+    {
+        $elementIdentifierSerializer = ElementIdentifierSerializer::createSerializer();
+
+        return [
+            'attribute value, no parent' => [
+                'serializedElementIdentifier' => $elementIdentifierSerializer->serialize(
+                    new AttributeIdentifier('.selector', 'attribute_name')
+                ),
+                'attributeName' => 'attribute_name',
+                'expectedRenderedSource' =>
+                    '(function () {' . "\n" .
+                    '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": ".selector"' . "\n" .
+                    '    }\'));' . "\n" .
+                    "\n" .
+                    '    return $element->getAttribute(\'attribute_name\');' . "\n" .
+                    '})()'
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(ElementIdentifier::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                    ]),
+                ]),
+            ],
+            'attribute value, has parent' => [
+                'serializedElementIdentifier' => $elementIdentifierSerializer->serialize(
+                    (new AttributeIdentifier('.selector', 'attribute_name'))
+                        ->withParentIdentifier(new ElementIdentifier('.parent'))
+                ),
+                'attributeName' => 'attribute_name',
+                'expectedRenderedSource' =>
+                    '(function () {' . "\n" .
+                    '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": ".selector",' . "\n" .
+                    '        "parent": {' . "\n" .
+                    '            "locator": ".parent"' . "\n" .
+                    '        }' . "\n" .
+                    '    }\'));' . "\n" .
+                    "\n" .
+                    '    return $element->getAttribute(\'attribute_name\');' . "\n" .
+                    '})()'
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(ElementIdentifier::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                    ]),
+                ]),
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider handleElementValueDataProvider
+     */
+    public function testHandleElementValue(
+        string $serializedElementIdentifier,
+        string $expectedRenderedSource,
+        MetadataInterface $expectedMetadata
+    ) {
+        $source = $this->handler->handleElementValue($serializedElementIdentifier);
+
+        $this->assertSame($expectedRenderedSource, $source->render());
+        $this->assertEquals($expectedMetadata, $source->getMetadata());
+    }
+
+    public function handleElementValueDataProvider(): array
+    {
+        $elementIdentifierSerializer = ElementIdentifierSerializer::createSerializer();
+
+        return [
             'element value, no parent' => [
-                'value' => new DomIdentifierValue(
+                'serializedElementIdentifier' => $elementIdentifierSerializer->serialize(
                     new ElementIdentifier('.selector')
                 ),
                 'expectedRenderedSource' =>
@@ -150,7 +266,7 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             'element value, has parent' => [
-                'value' => new DomIdentifierValue(
+                'serializedElementIdentifier' => $elementIdentifierSerializer->serialize(
                     (new ElementIdentifier('.selector'))
                         ->withParentIdentifier(new ElementIdentifier('.parent'))
                 ),
@@ -173,54 +289,6 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                     Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
-                    ]),
-                ]),
-            ],
-            'attribute value, no parent' => [
-                'value' => new DomIdentifierValue(
-                    new AttributeIdentifier('.selector', 'attribute_name')
-                ),
-                'expectedRenderedSource' =>
-                    '(function () {' . "\n" .
-                    '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '        "locator": ".selector"' . "\n" .
-                    '    }\'));' . "\n" .
-                    "\n" .
-                    '    return $element->getAttribute(\'attribute_name\');' . "\n" .
-                    '})()'
-                ,
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
-                    ]),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                ]),
-            ],
-            'attribute value, has parent' => [
-                'value' => new DomIdentifierValue(
-                    (new AttributeIdentifier('.selector', 'attribute_name'))
-                        ->withParentIdentifier(new ElementIdentifier('.parent'))
-                ),
-                'expectedRenderedSource' =>
-                    '(function () {' . "\n" .
-                    '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '        "locator": ".selector",' . "\n" .
-                    '        "parent": {' . "\n" .
-                    '            "locator": ".parent"' . "\n" .
-                    '        }' . "\n" .
-                    '    }\'));' . "\n" .
-                    "\n" .
-                    '    return $element->getAttribute(\'attribute_name\');' . "\n" .
-                    '})()'
-                ,
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
-                    ]),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
                     ]),
                 ]),
             ],
