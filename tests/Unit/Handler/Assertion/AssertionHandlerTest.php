@@ -5,14 +5,8 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Assertion;
 
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
-use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
-use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
-use webignition\BasilCompilableSourceFactory\CallFactory\ElementIdentifierCallFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
-use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
-use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromExcludesAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromExistsAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromIncludesAssertionDataProviderTrait;
@@ -23,10 +17,7 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\Create
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromNotExistsAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ObjectReflector;
-use webignition\BasilCompilableSourceFactory\ValueTypeIdentifier;
 use webignition\BasilDomIdentifierFactory\Factory;
-use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
-use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Assertion\AssertionInterface;
 use webignition\BasilParser\AssertionParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
@@ -58,7 +49,7 @@ class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
         string $expectedRenderedContent,
         MetadataInterface $expectedMetadata
     ) {
-        $handler = $this->createAssertionHandler();
+        $handler = AssertionHandler::createHandler();
 
         $source = $handler->handle($assertion);
 
@@ -205,39 +196,5 @@ class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
                 },
             ],
         ];
-    }
-
-    /**
-     * @param array<mixed> $services
-     *
-     * @return AssertionHandler
-     */
-    private function createAssertionHandler(array $services = []): AssertionHandler
-    {
-        $accessorDefaultValueFactory =
-            $services[AccessorDefaultValueFactory::class] ?? AccessorDefaultValueFactory::createFactory();
-        $assertionMethodInvocationFactory =
-            $services[AssertionMethodInvocationFactory::class] ?? AssertionMethodInvocationFactory::createFactory();
-        $domCrawlerNavigatorCallFactory =
-            $services[DomCrawlerNavigatorCallFactory::class] ?? DomCrawlerNavigatorCallFactory::createFactory();
-        $domIdentifierFactory = $services[DomIdentifierFactory::class] ?? DomIdentifierFactory::createFactory();
-        $domIdentifierHandler = $services[DomIdentifierHandler::class] ?? DomIdentifierHandler::createHandler();
-        $identifierTypeAnalyser = $services[IdentifierTypeAnalyser::class] ?? IdentifierTypeAnalyser::create();
-        $scalarValueHandler = $services[ScalarValueHandler::class] ?? ScalarValueHandler::createHandler();
-        $valueTypeIdentifier = $services[ValueTypeIdentifier::class] ?? new ValueTypeIdentifier();
-        $elementIdentifierCallFactory =
-            $services[ElementIdentifierCallFactory::class] ?? ElementIdentifierCallFactory::createFactory();
-
-        return new AssertionHandler(
-            $accessorDefaultValueFactory,
-            $assertionMethodInvocationFactory,
-            $domCrawlerNavigatorCallFactory,
-            $domIdentifierFactory,
-            $domIdentifierHandler,
-            $identifierTypeAnalyser,
-            $scalarValueHandler,
-            $valueTypeIdentifier,
-            $elementIdentifierCallFactory
-        );
     }
 }

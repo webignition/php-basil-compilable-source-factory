@@ -15,13 +15,14 @@ use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\ResolvablePlaceholder;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
+use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
-use webignition\BasilCompilableSourceFactory\Model\DomIdentifierValue;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Action\ActionInterface;
+use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
 class WaitActionHandler
 {
@@ -33,19 +34,22 @@ class WaitActionHandler
     private AccessorDefaultValueFactory $accessorDefaultValueFactory;
     private DomIdentifierFactory $domIdentifierFactory;
     private IdentifierTypeAnalyser $identifierTypeAnalyser;
+    private ElementIdentifierSerializer $elementIdentifierSerializer;
 
     public function __construct(
         ScalarValueHandler $scalarValueHandler,
         DomIdentifierHandler $domIdentifierHandler,
         AccessorDefaultValueFactory $accessorDefaultValueFactory,
         DomIdentifierFactory $domIdentifierFactory,
-        IdentifierTypeAnalyser $identifierTypeAnalyser
+        IdentifierTypeAnalyser $identifierTypeAnalyser,
+        ElementIdentifierSerializer $elementIdentifierSerializer
     ) {
         $this->scalarValueHandler = $scalarValueHandler;
         $this->domIdentifierHandler = $domIdentifierHandler;
         $this->accessorDefaultValueFactory = $accessorDefaultValueFactory;
         $this->domIdentifierFactory = $domIdentifierFactory;
         $this->identifierTypeAnalyser = $identifierTypeAnalyser;
+        $this->elementIdentifierSerializer = $elementIdentifierSerializer;
     }
 
     public static function createHandler(): WaitActionHandler
@@ -55,7 +59,8 @@ class WaitActionHandler
             DomIdentifierHandler::createHandler(),
             AccessorDefaultValueFactory::createFactory(),
             DomIdentifierFactory::createFactory(),
-            IdentifierTypeAnalyser::create()
+            IdentifierTypeAnalyser::create(),
+            ElementIdentifierSerializer::createSerializer()
         );
     }
 
@@ -82,9 +87,16 @@ class WaitActionHandler
                 throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $duration);
             }
 
-            $durationAccessor = $this->domIdentifierHandler->handle(
-                new DomIdentifierValue($durationIdentifier)
-            );
+            if ($durationIdentifier instanceof AttributeIdentifierInterface) {
+                $durationAccessor = $this->domIdentifierHandler->handleAttributeValue(
+                    $this->elementIdentifierSerializer->serialize($durationIdentifier),
+                    $durationIdentifier->getAttributeName()
+                );
+            } else {
+                $durationAccessor = $this->domIdentifierHandler->handleElementValue(
+                    $this->elementIdentifierSerializer->serialize($durationIdentifier)
+                );
+            }
         } else {
             $durationAccessor = $this->scalarValueHandler->handle($duration);
         }

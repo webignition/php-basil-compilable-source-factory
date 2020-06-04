@@ -10,9 +10,9 @@ use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocati
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\ResolvablePlaceholder;
+use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
-use webignition\BasilCompilableSourceFactory\Model\DomElementIdentifier;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilModels\Action\ActionInterface;
 use webignition\DomElementIdentifier\AttributeIdentifierInterface;
@@ -21,20 +21,24 @@ class InteractionActionHandler
 {
     private DomIdentifierHandler $domIdentifierHandler;
     private DomIdentifierFactory $domIdentifierFactory;
+    private ElementIdentifierSerializer $elementIdentifierSerializer;
 
     public function __construct(
         DomIdentifierHandler $domIdentifierHandler,
-        DomIdentifierFactory $domIdentifierFactory
+        DomIdentifierFactory $domIdentifierFactory,
+        ElementIdentifierSerializer $elementIdentifierSerializer
     ) {
         $this->domIdentifierHandler = $domIdentifierHandler;
         $this->domIdentifierFactory = $domIdentifierFactory;
+        $this->elementIdentifierSerializer = $elementIdentifierSerializer;
     }
 
-    public static function createHandler(): InteractionActionHandler
+    public static function createHandler(): self
     {
         return new InteractionActionHandler(
             DomIdentifierHandler::createHandler(),
-            DomIdentifierFactory::createFactory()
+            DomIdentifierFactory::createFactory(),
+            ElementIdentifierSerializer::createSerializer()
         );
     }
 
@@ -62,9 +66,9 @@ class InteractionActionHandler
 
         $accessor = new AssignmentStatement(
             $elementPlaceholder,
-            $this->domIdentifierHandler->handle(
-                new DomElementIdentifier($domIdentifier)
-            )
+            $this->domIdentifierHandler->handleElement(
+                $this->elementIdentifierSerializer->serialize($domIdentifier)
+            ),
         );
 
         $invocation = new Statement(new ObjectMethodInvocation(

@@ -23,11 +23,11 @@ use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\ElementIdentifierCallFactory;
+use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
-use webignition\BasilCompilableSourceFactory\Model\DomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\ValueTypeIdentifier;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
@@ -59,6 +59,7 @@ class AssertionHandler
     private ScalarValueHandler $scalarValueHandler;
     private ValueTypeIdentifier $valueTypeIdentifier;
     private ElementIdentifierCallFactory $elementIdentifierCallFactory;
+    private ElementIdentifierSerializer $elementIdentifierSerializer;
 
     private const OPERATOR_TO_ASSERTION_TEMPLATE_MAP = [
         'includes' => self::ASSERT_STRING_CONTAINS_STRING_METHOD,
@@ -88,7 +89,8 @@ class AssertionHandler
         IdentifierTypeAnalyser $identifierTypeAnalyser,
         ScalarValueHandler $scalarValueHandler,
         ValueTypeIdentifier $valueTypeIdentifier,
-        ElementIdentifierCallFactory $elementIdentifierCallFactory
+        ElementIdentifierCallFactory $elementIdentifierCallFactory,
+        ElementIdentifierSerializer $elementIdentifierSerializer
     ) {
         $this->accessorDefaultValueFactory = $accessorDefaultValueFactory;
         $this->assertionMethodInvocationFactory = $assertionMethodInvocationFactory;
@@ -99,6 +101,7 @@ class AssertionHandler
         $this->scalarValueHandler = $scalarValueHandler;
         $this->valueTypeIdentifier = $valueTypeIdentifier;
         $this->elementIdentifierCallFactory = $elementIdentifierCallFactory;
+        $this->elementIdentifierSerializer = $elementIdentifierSerializer;
     }
 
     public static function createHandler(): AssertionHandler
@@ -112,7 +115,8 @@ class AssertionHandler
             IdentifierTypeAnalyser::create(),
             ScalarValueHandler::createHandler(),
             new ValueTypeIdentifier(),
-            ElementIdentifierCallFactory::createFactory()
+            ElementIdentifierCallFactory::createFactory(),
+            ElementIdentifierSerializer::createSerializer()
         );
     }
 
@@ -169,7 +173,9 @@ class AssertionHandler
                 throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
             }
 
-            $elementIdentifierExpression = $this->elementIdentifierCallFactory->createConstructorCall($domIdentifier);
+            $serializedElementIdentifier = $this->elementIdentifierSerializer->serialize($domIdentifier);
+            $elementIdentifierExpression = $this->elementIdentifierCallFactory->createConstructorCall($serializedElementIdentifier);
+
             $examinedElementIdentifierPlaceholder = new ObjectPropertyAccessExpression(
                 ResolvablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
                 'examinedElementIdentifier'
@@ -207,7 +213,10 @@ class AssertionHandler
             );
 
             $attributeNullComparisonExpression = $this->createNullComparisonExpression(
-                $this->domIdentifierHandler->handle(new DomIdentifierValue($domIdentifier))
+                $this->domIdentifierHandler->handleAttributeValue(
+                    $this->elementIdentifierSerializer->serialize($domIdentifier),
+                    $domIdentifier->getAttributeName()
+                )
             );
 
             $attributeSetBooleanExaminedValueInvocation = $this->createSetBooleanExaminedValueInvocation([
@@ -505,9 +514,16 @@ class AssertionHandler
                 throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $value);
             }
 
-            $accessor = $this->domIdentifierHandler->handle(
-                new DomIdentifierValue($examinedValueDomIdentifier)
-            );
+            if ($examinedValueDomIdentifier instanceof AttributeIdentifierInterface) {
+                $accessor = $this->domIdentifierHandler->handleAttributeValue(
+                    $this->elementIdentifierSerializer->serialize($examinedValueDomIdentifier),
+                    $examinedValueDomIdentifier->getAttributeName()
+                );
+            } else {
+                $accessor = $this->domIdentifierHandler->handleElementValue(
+                    $this->elementIdentifierSerializer->serialize($examinedValueDomIdentifier)
+                );
+            }
         } else {
             $accessor = $this->scalarValueHandler->handle($value);
         }

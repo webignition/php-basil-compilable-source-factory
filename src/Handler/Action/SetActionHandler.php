@@ -13,11 +13,10 @@ use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\ResolvablePlaceholder;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
+use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
-use webignition\BasilCompilableSourceFactory\Model\DomIdentifier;
-use webignition\BasilCompilableSourceFactory\Model\DomIdentifierValue;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
@@ -31,29 +30,33 @@ class SetActionHandler
     private AccessorDefaultValueFactory $accessorDefaultValueFactory;
     private DomIdentifierFactory $domIdentifierFactory;
     private IdentifierTypeAnalyser $identifierTypeAnalyser;
+    private ElementIdentifierSerializer $elementIdentifierSerializer;
 
     public function __construct(
         ScalarValueHandler $scalarValueHandler,
         DomIdentifierHandler $domIdentifierHandler,
         AccessorDefaultValueFactory $accessorDefaultValueFactory,
         DomIdentifierFactory $domIdentifierFactory,
-        IdentifierTypeAnalyser $identifierTypeAnalyser
+        IdentifierTypeAnalyser $identifierTypeAnalyser,
+        ElementIdentifierSerializer $elementIdentifierSerializer
     ) {
         $this->scalarValueHandler = $scalarValueHandler;
         $this->domIdentifierHandler = $domIdentifierHandler;
         $this->accessorDefaultValueFactory = $accessorDefaultValueFactory;
         $this->domIdentifierFactory = $domIdentifierFactory;
         $this->identifierTypeAnalyser = $identifierTypeAnalyser;
+        $this->elementIdentifierSerializer = $elementIdentifierSerializer;
     }
 
-    public static function createHandler(): SetActionHandler
+    public static function createHandler(): self
     {
         return new SetActionHandler(
             ScalarValueHandler::createHandler(),
             DomIdentifierHandler::createHandler(),
             AccessorDefaultValueFactory::createFactory(),
             DomIdentifierFactory::createFactory(),
-            IdentifierTypeAnalyser::create()
+            IdentifierTypeAnalyser::create(),
+            ElementIdentifierSerializer::createSerializer()
         );
     }
 
@@ -87,8 +90,8 @@ class SetActionHandler
 
         $collectionAccessor = new AssignmentStatement(
             $collectionPlaceholder,
-            $this->domIdentifierHandler->handle(
-                new DomIdentifier($domIdentifier)
+            $this->domIdentifierHandler->handleElementCollection(
+                $this->elementIdentifierSerializer->serialize($domIdentifier)
             )
         );
 
@@ -98,7 +101,16 @@ class SetActionHandler
                 throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $value);
             }
 
-            $valueAccessor = $this->domIdentifierHandler->handle(new DomIdentifierValue($valueDomIdentifier));
+            if ($valueDomIdentifier instanceof AttributeIdentifierInterface) {
+                $valueAccessor = $this->domIdentifierHandler->handleAttributeValue(
+                    $this->elementIdentifierSerializer->serialize($valueDomIdentifier),
+                    (string) $valueDomIdentifier->getAttributeName()
+                );
+            } else {
+                $valueAccessor = $this->domIdentifierHandler->handleElementValue(
+                    $this->elementIdentifierSerializer->serialize($valueDomIdentifier)
+                );
+            }
         } else {
             $valueAccessor = $this->scalarValueHandler->handle($value);
         }
