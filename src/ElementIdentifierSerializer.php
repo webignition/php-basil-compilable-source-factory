@@ -14,10 +14,22 @@ class ElementIdentifierSerializer
         return new ElementIdentifierSerializer();
     }
 
-    public function serialize(ElementIdentifierInterface $elementIdentifier): string
+    public function serialize(ElementIdentifierInterface $elementIdentifier, int $indentDepth = 0): string
     {
         $elementOnlyIdentifier = ElementIdentifier::fromAttributeIdentifier($elementIdentifier);
+        $serializedSourceIdentifier = (string) json_encode($elementOnlyIdentifier, JSON_PRETTY_PRINT);
 
-        return (string) json_encode($elementOnlyIdentifier, JSON_PRETTY_PRINT);
+        if ($indentDepth > 0) {
+            $indent = str_repeat('    ', $indentDepth);
+
+            $serializedSourceIdentifierLines = explode("\n", $serializedSourceIdentifier);
+            array_walk($serializedSourceIdentifierLines, function (&$line) use ($indent) {
+                $line = $indent . $line;
+            });
+
+            $serializedSourceIdentifier = implode("\n", $serializedSourceIdentifierLines);
+        }
+
+        return $serializedSourceIdentifier;
     }
 }
