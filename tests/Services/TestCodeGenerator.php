@@ -8,8 +8,8 @@ use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSource\ClassDefinition;
 use webignition\BasilCompilableSource\ClassDefinitionInterface;
 use webignition\BasilCompilableSource\Line\ClassDependency;
-use webignition\BasilCompilableSource\ResolvablePlaceholder;
-use webignition\BasilCompilableSource\ResolvablePlaceholderCollection;
+use webignition\BasilCompilableSource\VariableDependency;
+use webignition\BasilCompilableSource\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractGeneratedTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 
@@ -98,12 +98,12 @@ class TestCodeGenerator
     }
 
     /**
-     * @param ResolvablePlaceholderCollection $variableDependencies
+     * @param VariableDependencyCollection $variableDependencies
      *
      * @return array<string, string>
      */
     private function createVariableIdentifiersForVariableDependencies(
-        ResolvablePlaceholderCollection $variableDependencies
+        VariableDependencyCollection $variableDependencies
     ): array {
         $externalVariables = [
             VariableNames::DOM_CRAWLER_NAVIGATOR => self::DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME,
@@ -120,7 +120,7 @@ class TestCodeGenerator
         $variableIdentifiers = [];
 
         foreach ($variableDependencies as $variableDependency) {
-            /* @var ResolvablePlaceholder $variableDependency */
+            /* @var VariableDependency $variableDependency */
             $name = $variableDependency->getName();
             $externalVariable = $externalVariables[$name] ?? null;
 

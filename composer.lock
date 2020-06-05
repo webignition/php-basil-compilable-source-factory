@@ -4,20 +4,20 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "94df15eced49879e5aabdb6ce1a36145",
+    "content-hash": "d4294ff28e8c362bd2efb643de345d0c",
     "packages": [
         {
             "name": "webignition/basil-compilable-source",
-            "version": "0.33",
+            "version": "0.34",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/basil-compilable-source.git",
-                "reference": "f856769927538ac8f0124a7e3ffbafaa562b265c"
+                "reference": "664c34089533f6fbb8d53ac4e95fb5275659598f"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/basil-compilable-source/zipball/f856769927538ac8f0124a7e3ffbafaa562b265c",
-                "reference": "f856769927538ac8f0124a7e3ffbafaa562b265c",
+                "url": "https://api.github.com/repos/webignition/basil-compilable-source/zipball/664c34089533f6fbb8d53ac4e95fb5275659598f",
+                "reference": "664c34089533f6fbb8d53ac4e95fb5275659598f",
                 "shasum": ""
             },
             "require": {
@@ -45,7 +45,7 @@
                 }
             ],
             "homepage": "https://github.com/webignition/basil-compilable-source",
-            "time": "2020-06-05T08:49:23+00:00"
+            "time": "2020-06-05T14:59:00+00:00"
         },
         {
             "name": "webignition/basil-dom-identifier-factory",

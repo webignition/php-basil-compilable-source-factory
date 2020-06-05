@@ -11,7 +11,7 @@ use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
-use webignition\BasilCompilableSource\ResolvingPlaceholder;
+use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\ElementIdentifierCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
@@ -41,7 +41,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
     ) {
         $source = $this->factory->createFindCall($elementIdentifierExpression);
 
-        $collectionPlaceholder = new ResolvingPlaceholder('collection');
+        $collectionPlaceholder = new VariableName('collection');
 
         $instrumentedSource = new CodeBlock([
             new AssignmentStatement($collectionPlaceholder, $source),

@@ -12,8 +12,8 @@ use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
-use webignition\BasilCompilableSource\ResolvablePlaceholder;
-use webignition\BasilCompilableSource\ResolvingPlaceholder;
+use webignition\BasilCompilableSource\VariableDependency;
+use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\ElementIdentifierCallFactory;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
@@ -68,7 +68,7 @@ class DomIdentifierHandler
 
         $findCall = $this->domCrawlerNavigatorCallFactory->createFindOneCall($elementIdentifierExpression);
 
-        $elementPlaceholder = new ResolvingPlaceholder('element');
+        $elementPlaceholder = new VariableName('element');
 
         $closureExpressionStatements = [
             new AssignmentStatement($elementPlaceholder, $findCall),
@@ -99,7 +99,7 @@ class DomIdentifierHandler
 
         $findCall = $this->domCrawlerNavigatorCallFactory->createFindCall($elementIdentifierExpression);
 
-        $elementPlaceholder = new ResolvingPlaceholder('element');
+        $elementPlaceholder = new VariableName('element');
 
         $closureExpressionStatements = [
             new AssignmentStatement($elementPlaceholder, $findCall),
@@ -108,7 +108,7 @@ class DomIdentifierHandler
 
             $closureExpressionStatements[] = new ReturnStatement(
                 new ObjectMethodInvocation(
-                    ResolvablePlaceholder::createDependency(VariableNames::WEBDRIVER_ELEMENT_INSPECTOR),
+                    new VariableDependency(VariableNames::WEBDRIVER_ELEMENT_INSPECTOR),
                     'getValue',
                     [
                         $elementPlaceholder,
