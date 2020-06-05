@@ -22,12 +22,12 @@ trait CreateFromSetActionDataProviderTrait
             'input action, element identifier, literal value' => [
                 'action' => $actionParser->parse('set $".selector" to "value"'),
                 'expectedRenderedSource' =>
-                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '    "locator": ".selector"' . "\n" .
-                    '}\')' .
+                    '{{ MUTATOR }}->setValue(' . "\n" .
+                    '    {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": ".selector"' . "\n" .
+                    '    }\')),' . "\n" .
+                    '    "value"' . "\n" .
                     ');' . "\n" .
-                    '{{ VALUE }} = "value";' . "\n" .
-                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});' . "\n" .
                     '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -38,27 +38,23 @@ trait CreateFromSetActionDataProviderTrait
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
                         VariableNames::PHPUNIT_TEST_CASE,
                     ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
-                        'COLLECTION',
-                        'VALUE',
-                    ]),
                 ]),
             ],
             'input action, element identifier, element value' => [
                 'action' => $actionParser->parse('set $".selector" to $".source"'),
                 'expectedRenderedSource' =>
-                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '    "locator": ".selector"' . "\n" .
-                    '}\')' .
-                    ');' . "\n" .
-                    '{{ VALUE }} = (function () {' . "\n" .
-                    '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '        "locator": ".source"' . "\n" .
-                    '    }\'));' . "\n" .
+                    '{{ MUTATOR }}->setValue(' . "\n" .
+                    '    {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": ".selector"' . "\n" .
+                    '    }\')),' . "\n" .
+                    '    (function () {' . "\n" .
+                    '        $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '            "locator": ".source"' . "\n" .
+                    '        }\'));' . "\n" .
                     "\n" .
-                    '    return {{ INSPECTOR }}->getValue($element);' . "\n" .
-                    '})();' . "\n" .
-                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});' . "\n" .
+                    '        return {{ INSPECTOR }}->getValue($element);' . "\n" .
+                    '    })()' . "\n" .
+                    ');' . "\n" .
                     '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -70,27 +66,23 @@ trait CreateFromSetActionDataProviderTrait
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
                         VariableNames::PHPUNIT_TEST_CASE,
                     ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
-                        'COLLECTION',
-                        'VALUE',
-                    ]),
                 ]),
             ],
             'input action, element identifier, attribute value' => [
                 'action' => $actionParser->parse('set $".selector" to $".source".attribute_name'),
                 'expectedRenderedSource' =>
-                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '    "locator": ".selector"' . "\n" .
-                    '}\')' .
-                    ');' . "\n" .
-                    '{{ VALUE }} = (function () {' . "\n" .
-                    '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '        "locator": ".source"' . "\n" .
-                    '    }\'));' . "\n" .
+                    '{{ MUTATOR }}->setValue(' . "\n" .
+                    '    {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": ".selector"' . "\n" .
+                    '    }\')),' . "\n" .
+                    '    (function () {' . "\n" .
+                    '        $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '            "locator": ".source"' . "\n" .
+                    '        }\'));' . "\n" .
                     "\n" .
-                    '    return $element->getAttribute(\'attribute_name\');' . "\n" .
-                    '})();' . "\n" .
-                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});' . "\n" .
+                    '        return $element->getAttribute(\'attribute_name\');' . "\n" .
+                    '    })()' . "\n" .
+                    ');' . "\n" .
                     '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -100,27 +92,24 @@ trait CreateFromSetActionDataProviderTrait
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
-                        'COLLECTION',
-                        'VALUE',
                     ]),
                 ]),
             ],
             'input action, browser property' => [
                 'action' => $actionParser->parse('set $".selector" to $browser.size'),
                 'expectedRenderedSource' =>
-                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '    "locator": ".selector"' . "\n" .
-                    '}\')' .
+                    '{{ MUTATOR }}->setValue(' . "\n" .
+                    '    {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": ".selector"' . "\n" .
+                    '    }\')),' . "\n" .
+                    '    (function () {' . "\n" .
+                    '        $webDriverDimension = '
+                    . '{{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n" .
+                    '' . "\n" .
+                    '        return (string) ($webDriverDimension->getWidth()) . \'x\' . '
+                    . '(string) ($webDriverDimension->getHeight());' . "\n" .
+                    '    })()' . "\n" .
                     ');' . "\n" .
-                    '{{ VALUE }} = (function () {' . "\n" .
-                    '    $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n" .
-                    "\n" .
-                    '    return (string) ($webDriverDimension->getWidth()) . \'x\' . ' .
-                    '(string) ($webDriverDimension->getHeight());' . "\n" .
-                    '})();' . "\n" .
-                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});' . "\n" .
                     '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -131,22 +120,18 @@ trait CreateFromSetActionDataProviderTrait
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
                         VariableNames::PANTHER_CLIENT,
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
-                        'COLLECTION',
-                        'VALUE',
                     ]),
                 ]),
             ],
             'input action, page property' => [
                 'action' => $actionParser->parse('set $".selector" to $page.url'),
                 'expectedRenderedSource' =>
-                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '    "locator": ".selector"' . "\n" .
-                    '}\')' .
+                    '{{ MUTATOR }}->setValue(' . "\n" .
+                    '    {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": ".selector"' . "\n" .
+                    '    }\')),' . "\n" .
+                    '    {{ CLIENT }}->getCurrentURL()' . "\n" .
                     ');' . "\n" .
-                    '{{ VALUE }} = {{ CLIENT }}->getCurrentURL();' . "\n" .
-                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});' . "\n" .
                     '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -158,21 +143,17 @@ trait CreateFromSetActionDataProviderTrait
                         VariableNames::PANTHER_CLIENT,
                         VariableNames::PHPUNIT_TEST_CASE,
                     ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
-                        'COLLECTION',
-                        'VALUE',
-                    ]),
                 ]),
             ],
             'input action, environment value' => [
                 'action' => $actionParser->parse('set $".selector" to $env.KEY'),
                 'expectedRenderedSource' =>
-                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '    "locator": ".selector"' . "\n" .
-                    '}\')' .
+                    '{{ MUTATOR }}->setValue(' . "\n" .
+                    '    {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": ".selector"' . "\n" .
+                    '    }\')),' . "\n" .
+                    '    {{ ENV }}[\'KEY\']' . "\n" .
                     ');' . "\n" .
-                    '{{ VALUE }} = {{ ENV }}[\'KEY\'];' . "\n" .
-                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});' . "\n" .
                     '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -183,22 +164,18 @@ trait CreateFromSetActionDataProviderTrait
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
-                        'COLLECTION',
-                        'VALUE',
                     ]),
                 ]),
             ],
             'input action, environment value with default' => [
                 'action' => $actionParser->parse('set $".selector" to $env.KEY|"default"'),
                 'expectedRenderedSource' =>
-                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '    "locator": ".selector"' . "\n" .
-                    '}\')' .
+                    '{{ MUTATOR }}->setValue(' . "\n" .
+                    '    {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": ".selector"' . "\n" .
+                    '    }\')),' . "\n" .
+                    '    {{ ENV }}[\'KEY\'] ?? \'default\'' . "\n" .
                     ');' . "\n" .
-                    '{{ VALUE }} = {{ ENV }}[\'KEY\'] ?? \'default\';' . "\n" .
-                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});' . "\n" .
                     '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -209,22 +186,18 @@ trait CreateFromSetActionDataProviderTrait
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
-                        'COLLECTION',
-                        'VALUE',
                     ]),
                 ]),
             ],
             'input action, environment value with default with whitespace' => [
                 'action' => $actionParser->parse('set $".selector" to $env.KEY|"default value"'),
                 'expectedRenderedSource' =>
-                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '    "locator": ".selector"' . "\n" .
-                    '}\')' .
+                    '{{ MUTATOR }}->setValue(' . "\n" .
+                    '    {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": ".selector"' . "\n" .
+                    '    }\')),' . "\n" .
+                    '    {{ ENV }}[\'KEY\'] ?? \'default value\'' . "\n" .
                     ');' . "\n" .
-                    '{{ VALUE }} = {{ ENV }}[\'KEY\'] ?? \'default value\';' . "\n" .
-                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});' . "\n" .
                     '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -236,24 +209,20 @@ trait CreateFromSetActionDataProviderTrait
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
                         VariableNames::PHPUNIT_TEST_CASE,
                     ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
-                        'COLLECTION',
-                        'VALUE',
-                    ]),
                 ]),
             ],
             'input action, parent > child element identifier, literal value' => [
                 'action' => $actionParser->parse('set $".parent" >> $".child" to "value"'),
                 'expectedRenderedSource' =>
-                    '{{ COLLECTION }} = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '    "locator": ".child",' . "\n" .
-                    '    "parent": {' . "\n" .
-                    '        "locator": ".parent"' . "\n" .
-                    '    }' . "\n" .
-                    '}\')' .
+                    '{{ MUTATOR }}->setValue(' . "\n" .
+                    '    {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": ".child",' . "\n" .
+                    '        "parent": {' . "\n" .
+                    '            "locator": ".parent"' . "\n" .
+                    '        }' . "\n" .
+                    '    }\')),' . "\n" .
+                    '    "value"' . "\n" .
                     ');' . "\n" .
-                    '{{ VALUE }} = "value";' . "\n" .
-                    '{{ MUTATOR }}->setValue({{ COLLECTION }}, {{ VALUE }});' . "\n" .
                     '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -264,9 +233,26 @@ trait CreateFromSetActionDataProviderTrait
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
                         VariableNames::PHPUNIT_TEST_CASE,
                     ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
-                        'COLLECTION',
-                        'VALUE',
+                ]),
+            ],
+            'input action, element identifier, data parameter value' => [
+                'action' => $actionParser->parse('set $".selector" to $data.key'),
+                'expectedRenderedSource' =>
+                    '{{ MUTATOR }}->setValue(' . "\n" .
+                    '    {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": ".selector"' . "\n" .
+                    '    }\')),' . "\n" .
+                    '    $key' . "\n" .
+                    ');' . "\n" .
+                    '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(ElementIdentifier::class),
+                    ]),
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
+                        VariableNames::PHPUNIT_TEST_CASE,
                     ]),
                 ]),
             ],
