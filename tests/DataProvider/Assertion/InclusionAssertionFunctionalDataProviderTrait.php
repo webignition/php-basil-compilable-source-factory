@@ -15,16 +15,10 @@ trait InclusionAssertionFunctionalDataProviderTrait
             'element identifier examined value, scalar expected value' => [
                 'fixture' => '/assertions.html',
                 'assertion' => null,
-                'additionalVariableIdentifiers' => [
-                    'ELEMENT' => '$element',
-                ],
             ],
             'attribute identifier examined value, scalar expected value' => [
                 'fixture' => '/assertions.html',
                 'assertion' => null,
-                'additionalVariableIdentifiers' => [
-                    'ELEMENT' => '$element',
-                ],
             ],
             'environment examined value, scalar expected value' => [
                 'fixture' => '/empty.html',
@@ -36,52 +30,33 @@ trait InclusionAssertionFunctionalDataProviderTrait
             'browser object examined value, scalar expected value' => [
                 'fixture' => '/empty.html',
                 'assertion' => null,
-                'additionalVariableIdentifiers' => [
-                    'WEBDRIVER_DIMENSION' => ResolvedVariableNames::WEBDRIVER_DIMENSION_VARIABLE_NAME,
-                ],
             ],
             'page object examined value, scalar expected value' => [
                 'fixture' => '/assertions.html',
                 'assertion' => null,
-                'additionalVariableIdentifiers' => [
-                ],
             ],
             'element identifier examined value, element identifier expected value' => [
                 'fixture' => '/assertions.html',
                 'assertion' => null,
-                'additionalVariableIdentifiers' => [
-                    'ELEMENT' => '$element',
-                ],
             ],
             'element identifier examined value, attribute identifier expected value' => [
                 'fixture' => '/assertions.html',
                 'assertion' => null,
-                'additionalVariableIdentifiers' => [
-                    'ELEMENT' => '$element',
-                ],
             ],
             'attribute identifier examined value, environment expected value' => [
                 'fixture' => '/assertions.html',
                 'assertion' => null,
                 'additionalVariableIdentifiers' => [
                     VariableNames::ENVIRONMENT_VARIABLE_ARRAY => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
-                    'ELEMENT' => '$element',
                 ],
             ],
             'attribute identifier examined value, browser object expected value' => [
                 'fixture' => '/assertions.html',
                 'assertion' => null,
-                'additionalVariableIdentifiers' => [
-                    'WEBDRIVER_DIMENSION' => ResolvedVariableNames::WEBDRIVER_DIMENSION_VARIABLE_NAME,
-                    'ELEMENT' => '$element',
-                ],
             ],
             'attribute identifier examined value, page object expected value' => [
                 'fixture' => '/assertions.html',
                 'assertion' => null,
-                'additionalVariableIdentifiers' => [
-                    'ELEMENT' => '$element',
-                ],
             ],
         ];
     }

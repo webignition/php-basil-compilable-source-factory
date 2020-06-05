@@ -71,9 +71,6 @@ class StepHandlerTest extends AbstractBrowserTestCase
                 'teardownStatements' => new CodeBlock([
                     StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
                 ]),
-                'additionalVariableIdentifiers' => [
-                    'ELEMENT' => '$element',
-                ],
             ],
             'single is assertion' => [
                 'fixture' => '/assertions.html',
@@ -83,9 +80,6 @@ class StepHandlerTest extends AbstractBrowserTestCase
                     ],
                 ]),
                 'teardownStatements' => null,
-                'additionalVariableIdentifiers' => [
-                    'ELEMENT' => '$element',
-                ],
             ],
             'single matches assertion' => [
                 'fixture' => '/assertions.html',
@@ -95,9 +89,6 @@ class StepHandlerTest extends AbstractBrowserTestCase
                     ],
                 ]),
                 'teardownStatements' => null,
-                'additionalVariableIdentifiers' => [
-                    'ELEMENT' => '$element',
-                ],
             ],
             'single click action, single assertion' => [
                 'fixture' => '/action-click-submit.html',
@@ -110,9 +101,6 @@ class StepHandlerTest extends AbstractBrowserTestCase
                     ],
                 ]),
                 'teardownStatements' => null,
-                'additionalVariableIdentifiers' => [
-                    'ELEMENT' => '$element',
-                ],
             ],
             'multiple actions, multiple assertions' => [
                 'fixture' => '/form.html',
@@ -127,9 +115,6 @@ class StepHandlerTest extends AbstractBrowserTestCase
                     ],
                 ]),
                 'teardownStatements' => null,
-                'additionalVariableIdentifiers' => [
-                    'ELEMENT' => '$element',
-                ],
             ],
         ];
     }
@@ -188,10 +173,6 @@ class StepHandlerTest extends AbstractBrowserTestCase
                 'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
-                'variableIdentifiers' => [
-                    'DURATION' => '$duration',
-                    'ELEMENT' => '$element',
-                ],
             ],
             'wait, attribute identifier examined value, element does not exist' => [
                 'fixture' => '/action-wait.html',
@@ -203,10 +184,6 @@ class StepHandlerTest extends AbstractBrowserTestCase
                 'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
-                'variableIdentifiers' => [
-                    'DURATION' => '$duration',
-                    'ELEMENT' => '$element',
-                ],
             ],
         ];
     }

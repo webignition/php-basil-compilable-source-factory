@@ -10,7 +10,7 @@ use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
-use webignition\BasilCompilableSource\ResolvablePlaceholder;
+use webignition\BasilCompilableSource\ResolvingPlaceholder;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
@@ -163,7 +163,7 @@ class DomIdentifierHandlerTest extends AbstractBrowserTestCase
         CodeBlockInterface $teardownStatements
     ): void {
         $instrumentedSource = new AssignmentStatement(
-            ResolvablePlaceholder::createExport('ELEMENT'),
+            new ResolvingPlaceholder('value'),
             $source
         );
 
@@ -173,10 +173,7 @@ class DomIdentifierHandlerTest extends AbstractBrowserTestCase
             ]),
             $fixture,
             null,
-            $teardownStatements,
-            [
-                'ELEMENT' => '$value',
-            ]
+            $teardownStatements
         );
 
         $testRunJob = $this->testRunner->createTestRunJob($classCode);

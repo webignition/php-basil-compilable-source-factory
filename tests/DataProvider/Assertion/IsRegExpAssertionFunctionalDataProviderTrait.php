@@ -21,9 +21,6 @@ trait IsRegExpAssertionFunctionalDataProviderTrait
                     '"/^\.selector [a-z]+$/"',
                     'is-regexp'
                 ),
-                'variableIdentifiers' => [
-                    'ELEMENT' => '$element',
-                ],
             ],
             'matches comparison, element identifier examined value, element identifier expected value' => [
                 'fixture' => '/assertions.html',
@@ -32,9 +29,6 @@ trait IsRegExpAssertionFunctionalDataProviderTrait
                     '$".matches-expected"',
                     'is-regexp'
                 ),
-                'variableIdentifiers' => [
-                    'ELEMENT' => '$element',
-                ],
             ],
             'matches comparison, element identifier examined value, attribute identifier expected value' => [
                 'fixture' => '/assertions.html',
@@ -43,9 +37,6 @@ trait IsRegExpAssertionFunctionalDataProviderTrait
                     '$".selector".data-matches-content',
                     'is-regexp'
                 ),
-                'variableIdentifiers' => [
-                    'ELEMENT' => '$element',
-                ],
             ],
         ];
     }

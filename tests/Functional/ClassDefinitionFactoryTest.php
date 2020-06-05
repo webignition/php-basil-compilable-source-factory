@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional;
 
 use webignition\BasilCompilableSourceFactory\ClassDefinitionFactory;
-use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Test\TestInterface;
 use webignition\BasilParser\Test\TestParser;
 use webignition\SymfonyPantherWebServerRunner\Options;
@@ -105,11 +103,6 @@ class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
                         ],
                     ],
                 ])->withPath('test.yml'),
-                'additionalVariableIdentifiers' => [
-                    'ELEMENT' => ResolvedVariableNames::ELEMENT_VARIABLE_NAME,
-                    'COLLECTION' => ResolvedVariableNames::COLLECTION_VARIABLE_NAME,
-                    'VALUE' => ResolvedVariableNames::VALUE_VARIABLE_NAME,
-                ],
             ],
             'with data set collection' => [
                 'test' => $testParser->parse([
@@ -144,11 +137,6 @@ class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
                         ],
                     ],
                 ])->withPath('test.yml'),
-                'additionalVariableIdentifiers' => [
-                    'COLLECTION' => ResolvedVariableNames::COLLECTION_VARIABLE_NAME,
-                    'VALUE' => ResolvedVariableNames::VALUE_VARIABLE_NAME,
-                    'ELEMENT' => '$element',
-                ],
             ],
         ];
     }

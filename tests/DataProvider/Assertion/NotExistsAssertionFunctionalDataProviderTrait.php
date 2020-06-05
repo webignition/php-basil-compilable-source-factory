@@ -22,9 +22,6 @@ trait NotExistsAssertionFunctionalDataProviderTrait
             'not-exists comparison, attribute identifier examined value' => [
                 'fixture' => '/assertions.html',
                 'assertion' => $assertionParser->parse('$".selector".data-non-existent-attribute not-exists'),
-                'variableIdentifiers' => [
-                    'ELEMENT' => '$element',
-                ],
             ],
             'not-exists comparison, environment examined value' => [
                 'fixture' => '/empty.html',

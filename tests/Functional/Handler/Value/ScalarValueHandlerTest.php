@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\Valu
 use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
-use webignition\BasilCompilableSource\ResolvablePlaceholder;
+use webignition\BasilCompilableSource\ResolvingPlaceholder;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
@@ -35,13 +35,11 @@ class ScalarValueHandlerTest extends AbstractBrowserTestCase
     ) {
         $source = $this->handler->handle($value);
 
-        $valuePlaceholder = ResolvablePlaceholder::createExport('VALUE');
+        $valuePlaceholder = new ResolvingPlaceholder('value');
 
         $instrumentedSource = new CodeBlock([
             new AssignmentStatement($valuePlaceholder, $source),
         ]);
-
-        $additionalVariableIdentifiers[$valuePlaceholder->getName()] = '$value';
 
         $classCode = $this->testCodeGenerator->createBrowserTestForBlock(
             $instrumentedSource,
@@ -73,9 +71,6 @@ class ScalarValueHandlerTest extends AbstractBrowserTestCase
                 'teardownStatements' => new CodeBlock([
                     StatementFactory::createAssertSame('"1200x1100"', '$value'),
                 ]),
-                'additionalVariableIdentifiers' => [
-                    'WEBDRIVER_DIMENSION' => '$webDriverDimension',
-                ],
             ],
             'page property: title' => [
                 'fixture' => '/index.html',
