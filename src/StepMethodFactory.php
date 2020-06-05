@@ -13,7 +13,7 @@ use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocati
 use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\MethodDefinition;
-use webignition\BasilCompilableSource\ResolvablePlaceholder;
+use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
 use webignition\BasilCompilableSourceFactory\Model\StepMethods;
@@ -73,7 +73,7 @@ class StepMethodFactory
             new CodeBlock([
                 new Statement(
                     new ObjectMethodInvocation(
-                        ResolvablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+                        new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
                         'setBasilStepName',
                         [
                             new LiteralExpression('\'' . $this->singleQuotedStringEscaper->escape($stepName) . '\''),

@@ -18,7 +18,7 @@ use webignition\BasilCompilableSource\Line\ObjectPropertyAccessExpression;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\Line\Statement\StatementInterface;
-use webignition\BasilCompilableSource\ResolvablePlaceholder;
+use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
@@ -184,7 +184,7 @@ class AssertionHandler
             );
 
             $examinedElementIdentifierPlaceholder = new ObjectPropertyAccessExpression(
-                ResolvablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+                new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
                 'examinedElementIdentifier'
             );
 
@@ -380,7 +380,7 @@ class AssertionHandler
         string $argumentFormat = ObjectMethodInvocation::ARGUMENT_FORMAT_INLINE
     ): ExpressionInterface {
         return new ObjectMethodInvocation(
-            ResolvablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+            new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
             $methodName,
             $arguments,
             $argumentFormat

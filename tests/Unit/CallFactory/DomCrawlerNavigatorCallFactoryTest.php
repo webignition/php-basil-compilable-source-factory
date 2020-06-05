@@ -8,7 +8,7 @@ use webignition\BasilCompilableSource\Line\ExpressionInterface;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\ResolvablePlaceholderCollection;
+use webignition\BasilCompilableSource\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 
@@ -124,7 +124,7 @@ class DomCrawlerNavigatorCallFactoryTest extends \PHPUnit\Framework\TestCase
                 'expectedRenderedSource' =>
                     '{{ NAVIGATOR }}->{{ METHOD }}("literal expression")',
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                     ]),
                 ]),

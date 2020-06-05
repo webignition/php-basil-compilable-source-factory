@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Line\ClassDependency;
 use webignition\BasilCompilableSource\Metadata\Metadata;
-use webignition\BasilCompilableSource\ResolvablePlaceholderCollection;
+use webignition\BasilCompilableSource\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Assertion\DerivedValueOperationAssertion;
 use webignition\BasilParser\AssertionParser;
@@ -36,7 +36,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     ');'
                 ,
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
                     ]),
                 ]),
@@ -66,7 +66,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
                     ]),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
@@ -98,7 +98,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
                     ]),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                     ]),

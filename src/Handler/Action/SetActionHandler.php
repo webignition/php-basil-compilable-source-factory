@@ -10,7 +10,7 @@ use webignition\BasilCompilableSource\Line\ComparisonExpression;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
-use webignition\BasilCompilableSource\ResolvablePlaceholder;
+use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
@@ -119,7 +119,7 @@ class SetActionHandler
 
         $mutationCall = new Statement(
             new ObjectMethodInvocation(
-                ResolvablePlaceholder::createDependency(VariableNames::WEBDRIVER_ELEMENT_MUTATOR),
+                new VariableDependency(VariableNames::WEBDRIVER_ELEMENT_MUTATOR),
                 'setValue',
                 [
                     $collectionAccessor,

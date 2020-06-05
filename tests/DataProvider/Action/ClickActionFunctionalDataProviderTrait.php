@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
 use webignition\BasilCompilableSource\Block\CodeBlock;
-use webignition\BasilCompilableSource\ResolvingPlaceholder;
+use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilParser\ActionParser;
 
@@ -14,7 +14,7 @@ trait ClickActionFunctionalDataProviderTrait
     public function clickActionFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
-        $submitButtonPlaceholder = new ResolvingPlaceholder('submitButton');
+        $submitButtonPlaceholder = new VariableName('submitButton');
 
         return [
             'interaction action (click), link' => [

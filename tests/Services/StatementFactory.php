@@ -12,8 +12,8 @@ use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\Line\Statement\StatementInterface;
-use webignition\BasilCompilableSource\ResolvablePlaceholder;
-use webignition\BasilCompilableSource\ResolvingPlaceholder;
+use webignition\BasilCompilableSource\VariableDependency;
+use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSource\VariablePlaceholderInterface;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 
@@ -23,12 +23,12 @@ class StatementFactory
     {
         return new Statement(
             new ObjectMethodInvocation(
-                ResolvablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+                new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
                 'assertSame',
                 [
                     new LiteralExpression('"' . $expectedTitle . '"'),
                     new ObjectMethodInvocation(
-                        ResolvablePlaceholder::createDependency(VariableNames::PANTHER_CLIENT),
+                        new VariableDependency(VariableNames::PANTHER_CLIENT),
                         'getTitle'
                     ),
                 ]
@@ -40,7 +40,7 @@ class StatementFactory
         string $selector,
         VariablePlaceholderInterface $placeholder
     ): StatementInterface {
-        $elementPlaceholder = new ResolvingPlaceholder('element');
+        $elementPlaceholder = new VariableName('element');
 
         return new AssignmentStatement(
             $placeholder,
@@ -48,7 +48,7 @@ class StatementFactory
                 new AssignmentStatement(
                     $elementPlaceholder,
                     new ObjectMethodInvocation(
-                        ResolvablePlaceholder::createDependency(VariableNames::PANTHER_CRAWLER),
+                        new VariableDependency(VariableNames::PANTHER_CRAWLER),
                         'filter',
                         [
                             new LiteralExpression('\'' . $selector . '\''),
@@ -75,14 +75,14 @@ class StatementFactory
 
     public static function createCrawlerActionCallForElement(string $selector, string $action): StatementInterface
     {
-        $elementPlaceholder = new ResolvingPlaceholder('element');
+        $elementPlaceholder = new VariableName('element');
 
         return new Statement(
             new ClosureExpression(new CodeBlock([
                 new AssignmentStatement(
                     $elementPlaceholder,
                     new ObjectMethodInvocation(
-                        ResolvablePlaceholder::createDependency(VariableNames::PANTHER_CRAWLER),
+                        new VariableDependency(VariableNames::PANTHER_CRAWLER),
                         'filter',
                         [
                             new LiteralExpression('\'' . $selector . '\''),
@@ -113,7 +113,7 @@ class StatementFactory
     {
         return new Statement(
             new ObjectMethodInvocation(
-                ResolvablePlaceholder::createDependency(VariableNames::PANTHER_CLIENT),
+                new VariableDependency(VariableNames::PANTHER_CLIENT),
                 $action
             )
         );
@@ -126,7 +126,7 @@ class StatementFactory
         return new AssignmentStatement(
             $placeholder,
             new ObjectMethodInvocation(
-                ResolvablePlaceholder::createDependency(VariableNames::PANTHER_CRAWLER),
+                new VariableDependency(VariableNames::PANTHER_CRAWLER),
                 'filter',
                 [
                     new LiteralExpression('\'' . $selector . '\'')
@@ -139,7 +139,7 @@ class StatementFactory
     {
         return new Statement(
             new ObjectMethodInvocation(
-                ResolvablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+                new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
                 'assertFalse',
                 [
                     new LiteralExpression($actual)
@@ -152,7 +152,7 @@ class StatementFactory
     {
         return new Statement(
             new ObjectMethodInvocation(
-                ResolvablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+                new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
                 'assertTrue',
                 [
                     new LiteralExpression($actual)
@@ -178,7 +178,7 @@ class StatementFactory
     ): StatementInterface {
         return new Statement(
             new ObjectMethodInvocation(
-                ResolvablePlaceholder::createDependency(VariableNames::PHPUNIT_TEST_CASE),
+                new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
                 $methodName,
                 [
                     new LiteralExpression($expected),

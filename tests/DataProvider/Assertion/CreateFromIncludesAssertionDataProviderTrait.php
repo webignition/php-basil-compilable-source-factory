@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Line\ClassDependency;
 use webignition\BasilCompilableSource\Metadata\Metadata;
-use webignition\BasilCompilableSource\ResolvablePlaceholderCollection;
+use webignition\BasilCompilableSource\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilParser\AssertionParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
@@ -39,7 +39,7 @@ trait CreateFromIncludesAssertionDataProviderTrait
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
                     ]),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
@@ -66,7 +66,7 @@ trait CreateFromIncludesAssertionDataProviderTrait
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
                     ]),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::PHPUNIT_TEST_CASE,
                     ]),

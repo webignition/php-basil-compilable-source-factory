@@ -10,7 +10,7 @@ use webignition\BasilCompilableSource\Line\SingleLineComment;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodDefinitionInterface;
-use webignition\BasilCompilableSource\ResolvablePlaceholderCollection;
+use webignition\BasilCompilableSource\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\ArrayExpressionFactory;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
@@ -105,7 +105,7 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                     "}"
                 ,
                 'expectedTestMethodMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
                     ]),
                 ]),
@@ -131,7 +131,7 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                     "}"
                 ,
                 'expectedTestMethodMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
                     ]),
                 ]),
@@ -165,7 +165,7 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                     "}"
                 ,
                 'expectedTestMethodMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
                     ]),
                 ]),
@@ -206,7 +206,7 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                     "}"
                 ,
                 'expectedTestMethodMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
                     ]),
                 ]),

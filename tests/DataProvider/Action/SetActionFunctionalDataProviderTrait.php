@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
 use webignition\BasilCompilableSource\Block\CodeBlock;
-use webignition\BasilCompilableSource\ResolvingPlaceholder;
+use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
@@ -16,7 +16,7 @@ trait SetActionFunctionalDataProviderTrait
     public function setActionFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
-        $inputPlaceholder = new ResolvingPlaceholder('input');
+        $inputPlaceholder = new VariableName('input');
 
         return array_merge(
             $this->setActionForTextInputFunctionalDataProvider(),
@@ -141,7 +141,7 @@ trait SetActionFunctionalDataProviderTrait
     private function setActionForTextInputFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
-        $inputPlaceholder = new ResolvingPlaceholder('input');
+        $inputPlaceholder = new VariableName('input');
 
         return [
             'input action, literal value: empty text input, empty value' => [
@@ -222,7 +222,7 @@ trait SetActionFunctionalDataProviderTrait
     private function setActionForTextareaFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
-        $textareaPlaceholder = new ResolvingPlaceholder('textarea');
+        $textareaPlaceholder = new VariableName('textarea');
 
         return [
             'input action, literal value: empty textarea, empty value' => [
@@ -279,7 +279,7 @@ trait SetActionFunctionalDataProviderTrait
     private function setActionForSelectFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
-        $selectPlaceholder = new ResolvingPlaceholder('select');
+        $selectPlaceholder = new VariableName('select');
 
         return [
             'input action, literal value: select none selected, empty value' => [
@@ -360,7 +360,7 @@ trait SetActionFunctionalDataProviderTrait
     private function setActionForOptionCollectionFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
-        $selectPlaceholder = new ResolvingPlaceholder('select');
+        $selectPlaceholder = new VariableName('select');
 
         return [
             'input action, literal value: option group none selected, empty value' => [
@@ -441,7 +441,7 @@ trait SetActionFunctionalDataProviderTrait
     private function setActionForRadioGroupFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
-        $radioGroupPlaceholder = new ResolvingPlaceholder('radioGroup');
+        $radioGroupPlaceholder = new VariableName('radioGroup');
 
         return [
             'input action, literal value: radio group none checked, empty value' => [

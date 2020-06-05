@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\Valu
 use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
-use webignition\BasilCompilableSource\ResolvingPlaceholder;
+use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
@@ -35,7 +35,7 @@ class ScalarValueHandlerTest extends AbstractBrowserTestCase
     ) {
         $source = $this->handler->handle($value);
 
-        $valuePlaceholder = new ResolvingPlaceholder('value');
+        $valuePlaceholder = new VariableName('value');
 
         $instrumentedSource = new CodeBlock([
             new AssignmentStatement($valuePlaceholder, $source),

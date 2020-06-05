@@ -15,8 +15,8 @@ use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
-use webignition\BasilCompilableSource\ResolvablePlaceholder;
-use webignition\BasilCompilableSource\ResolvingPlaceholder;
+use webignition\BasilCompilableSource\VariableDependency;
+use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Model\EnvironmentValue;
 use webignition\BasilCompilableSourceFactory\ModelFactory\EnvironmentValueFactory;
@@ -80,13 +80,13 @@ class ScalarValueHandler
 
     private function handleBrowserProperty(): ExpressionInterface
     {
-        $webDriverDimensionPlaceholder = new ResolvingPlaceholder('webDriverDimension');
+        $webDriverDimensionPlaceholder = new VariableName('webDriverDimension');
 
         return new ClosureExpression(new CodeBlock([
             new AssignmentStatement(
                 $webDriverDimensionPlaceholder,
                 new ObjectMethodInvocation(
-                    ResolvablePlaceholder::createDependency(VariableNames::PANTHER_CLIENT),
+                    new VariableDependency(VariableNames::PANTHER_CLIENT),
                     'getWebDriver()->manage()->window()->getSize'
                 )
             ),
@@ -123,7 +123,7 @@ class ScalarValueHandler
         $property = $environmentValue->getProperty();
 
         return new CompositeExpression([
-            ResolvablePlaceholder::createDependency('ENV'),
+            new VariableDependency('ENV'),
             new LiteralExpression(sprintf('[\'%s\']', $property)),
         ]);
     }
@@ -148,7 +148,7 @@ class ScalarValueHandler
 
         if (is_string($methodName)) {
             return new ObjectMethodInvocation(
-                ResolvablePlaceholder::createDependency(VariableNames::PANTHER_CLIENT),
+                new VariableDependency(VariableNames::PANTHER_CLIENT),
                 $methodName
             );
         }
