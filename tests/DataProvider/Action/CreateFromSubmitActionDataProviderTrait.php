@@ -22,11 +22,12 @@ trait CreateFromSubmitActionDataProviderTrait
             'interaction action (submit), element identifier' => [
                 'action' => $actionParser->parse('submit $".selector"'),
                 'expectedRenderedSource' =>
-                    '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '    "locator": ".selector"' . "\n" .
-                    '}\')' .
-                    ');' . "\n" .
-                    '{{ ELEMENT }}->submit();' . "\n" .
+                    '(function () {' . "\n" .
+                    '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": ".selector"' . "\n" .
+                    '    }\'));' . "\n" .
+                    '    $element->submit();' . "\n" .
+                    '})();' . "\n" .
                     '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
@@ -35,9 +36,6 @@ trait CreateFromSubmitActionDataProviderTrait
                     Metadata::KEY_VARIABLE_DEPENDENCIES => ResolvablePlaceholderCollection::createDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
-                        'ELEMENT',
                     ]),
                 ]),
             ],

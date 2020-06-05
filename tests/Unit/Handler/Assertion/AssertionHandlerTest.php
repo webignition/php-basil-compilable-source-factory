@@ -20,7 +20,6 @@ use webignition\BasilCompilableSourceFactory\Tests\Services\ObjectReflector;
 use webignition\BasilDomIdentifierFactory\Factory;
 use webignition\BasilModels\Assertion\AssertionInterface;
 use webignition\BasilParser\AssertionParser;
-use webignition\DomElementIdentifier\ElementIdentifier;
 
 class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
 {
@@ -140,60 +139,6 @@ class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
                         '$elements.expected'
                     )
                 ),
-            ],
-            'comparison; examined value identifier cannot be extracted' => [
-                'assertion' => $assertionParser->parse('$".examined" is "value"'),
-                'expectedException' => new UnsupportedStatementException(
-                    $assertionParser->parse('$".examined" is "value"'),
-                    new UnsupportedContentException(
-                        UnsupportedContentException::TYPE_IDENTIFIER,
-                        '$".examined"'
-                    )
-                ),
-                'initializer' => function (AssertionHandler $handler) {
-                    $domIdentifierFactory = \Mockery::mock(Factory::class);
-                    $domIdentifierFactory
-                        ->shouldReceive('createFromIdentifierString')
-                        ->with('$".examined"')
-                        ->andReturnNull();
-
-                    ObjectReflector::setProperty(
-                        $handler,
-                        AssertionHandler::class,
-                        'domIdentifierFactory',
-                        $domIdentifierFactory
-                    );
-                },
-            ],
-            'comparison; expected value identifier cannot be extracted' => [
-                'assertion' => $assertionParser->parse('$".examined" is $".expected"'),
-                'expectedException' => new UnsupportedStatementException(
-                    $assertionParser->parse('$".examined" is $".expected"'),
-                    new UnsupportedContentException(
-                        UnsupportedContentException::TYPE_IDENTIFIER,
-                        '$".expected"'
-                    )
-                ),
-                'initializer' => function (AssertionHandler $handler) {
-                    $domIdentifierFactory = \Mockery::mock(Factory::class);
-
-                    $domIdentifierFactory
-                        ->shouldReceive('createFromIdentifierString')
-                        ->with('$".examined"')
-                        ->andReturn(new ElementIdentifier('.examined'));
-
-                    $domIdentifierFactory
-                        ->shouldReceive('createFromIdentifierString')
-                        ->with('$".expected"')
-                        ->andReturnNull();
-
-                    ObjectReflector::setProperty(
-                        $handler,
-                        AssertionHandler::class,
-                        'domIdentifierFactory',
-                        $domIdentifierFactory
-                    );
-                },
             ],
         ];
     }

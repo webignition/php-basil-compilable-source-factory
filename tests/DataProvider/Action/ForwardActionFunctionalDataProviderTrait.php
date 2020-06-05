@@ -27,9 +27,6 @@ trait ForwardActionFunctionalDataProviderTrait
                 'teardownStatements' => new CodeBlock([
                     StatementFactory::createAssertBrowserTitle('Assertions fixture'),
                 ]),
-                'additionalVariableIdentifiers' => [
-                    'ELEMENT' => '$element',
-                ],
             ],
         ];
     }

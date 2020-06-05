@@ -75,24 +75,18 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
                 'fixture' => '/index.html',
                 'assertion' => $assertionParser->parse('$".selector".attribute_name exists'),
                 'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
-                'additionalVariableIdentifiers' => [
-                    'ELEMENT' => ResolvedVariableNames::ELEMENT_VARIABLE_NAME,
-                ],
             ],
             'exists comparison, attribute identifier examined value, attribute does not exist' => [
                 'fixture' => '/index.html',
                 'assertion' => $assertionParser->parse('$"h1".attribute_name exists'),
                 'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
-                'additionalVariableIdentifiers' => [
-                    'ELEMENT' => ResolvedVariableNames::ELEMENT_VARIABLE_NAME,
-                ],
             ],
             'exists comparison, environment examined value, environment variable does not exist' => [
                 'fixture' => '/index.html',
                 'assertion' => $assertionParser->parse('$env.FOO exists'),
                 'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
                 'additionalVariableIdentifiers' => [
-                    VariableNames::ENVIRONMENT_VARIABLE_ARRAY => '$_ENV',
+                    VariableNames::ENVIRONMENT_VARIABLE_ARRAY => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
                 ],
             ],
             'is-regexp operation, scalar identifier, literal value is not a regular expression' => [
@@ -112,9 +106,6 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
                     'is-regexp'
                 ),
                 'expectedExpectationFailedExceptionMessage' => 'Failed asserting that true is false.',
-                'additionalVariableIdentifiers' => [
-                    'ELEMENT' => ResolvedVariableNames::ELEMENT_VARIABLE_NAME,
-                ],
             ],
         ];
     }

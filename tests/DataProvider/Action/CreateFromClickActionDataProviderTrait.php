@@ -26,45 +26,45 @@ trait CreateFromClickActionDataProviderTrait
                 VariableNames::DOM_CRAWLER_NAVIGATOR,
                 VariableNames::PHPUNIT_TEST_CASE,
             ]),
-            Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
-                'ELEMENT',
-            ]),
         ]);
 
         return [
             'interaction action (click), element identifier' => [
                 'action' => $actionParser->parse('click $".selector"'),
                 'expectedRenderedSource' =>
-                    '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '    "locator": ".selector"' . "\n" .
-                    '}\')' .
-                    ');' . "\n" .
-                    '{{ ELEMENT }}->click();' . "\n" .
+                    '(function () {' . "\n" .
+                    '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": ".selector"' . "\n" .
+                    '    }\'));' . "\n" .
+                    '    $element->click();' . "\n" .
+                    '})();' . "\n" .
                     '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
                 'expectedMetadata' => $expectedMetadata,
             ],
             'interaction action (click), parent > child identifier' => [
                 'action' => $actionParser->parse('click $".parent" >> $".child"'),
                 'expectedRenderedSource' =>
-                    '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '    "locator": ".child",' .  "\n" .
-                    '    "parent": {' . "\n" .
-                    '        "locator": ".parent"' . "\n" .
-                    '    }' . "\n" .
-                    '}\')' .
-                    ');' . "\n" .
-                    '{{ ELEMENT }}->click();' . "\n" .
+                    '(function () {' . "\n" .
+                    '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": ".child",' .  "\n" .
+                    '        "parent": {' . "\n" .
+                    '            "locator": ".parent"' . "\n" .
+                    '        }' . "\n" .
+                    '    }\'));' . "\n" .
+                    '    $element->click();' . "\n" .
+                    '})();' . "\n" .
                     '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
                 'expectedMetadata' => $expectedMetadata,
             ],
             'interaction action (click), single-character CSS selector element identifier' => [
                 'action' => $actionParser->parse('click $"a"'),
                 'expectedRenderedSource' =>
-                    '{{ ELEMENT }} = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '    "locator": "a"' . "\n" .
-                    '}\')' .
-                    ');' . "\n" .
-                    '{{ ELEMENT }}->click();' . "\n" .
+                    '(function () {' . "\n" .
+                    '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                    '        "locator": "a"' . "\n" .
+                    '    }\'));' . "\n" .
+                    '    $element->click();' . "\n" .
+                    '})();' . "\n" .
                     '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
                 'expectedMetadata' => $expectedMetadata,
             ],

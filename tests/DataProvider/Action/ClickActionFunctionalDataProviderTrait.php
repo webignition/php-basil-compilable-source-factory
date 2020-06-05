@@ -5,8 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
 use webignition\BasilCompilableSource\Block\CodeBlock;
-use webignition\BasilCompilableSource\ResolvablePlaceholder;
-use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
+use webignition\BasilCompilableSource\ResolvingPlaceholder;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilParser\ActionParser;
 
@@ -15,8 +14,7 @@ trait ClickActionFunctionalDataProviderTrait
     public function clickActionFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
-
-        $submitPlaceholder = ResolvablePlaceholder::createExport('SUBMIT');
+        $submitButtonPlaceholder = new ResolvingPlaceholder('submitButton');
 
         return [
             'interaction action (click), link' => [
@@ -28,9 +26,6 @@ trait ClickActionFunctionalDataProviderTrait
                 'teardownStatements' => new CodeBlock([
                     StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
                 ]),
-                'additionalVariableIdentifiers' => [
-                    'ELEMENT' => ResolvedVariableNames::ELEMENT_VARIABLE_NAME,
-                ]
             ],
             'interaction action (click), submit button' => [
                 'fixture' => '/action-click-submit.html',
@@ -39,21 +34,17 @@ trait ClickActionFunctionalDataProviderTrait
                     StatementFactory::createAssertBrowserTitle('Click'),
                     StatementFactory::createCrawlerFilterCallForElement(
                         '#form input[type="submit"]',
-                        $submitPlaceholder
+                        $submitButtonPlaceholder
                     ),
                     StatementFactory::createAssertSame('"false"', '$submitButton->getAttribute(\'data-clicked\')'),
                 ]),
                 'teardownStatements' => new CodeBlock([
                   StatementFactory::createCrawlerFilterCallForElement(
                       '#form input[type="submit"]',
-                      $submitPlaceholder
+                      $submitButtonPlaceholder
                   ),
                     StatementFactory::createAssertSame('"true"', '$submitButton->getAttribute(\'data-clicked\')'),
                 ]),
-                'additionalVariableIdentifiers' => [
-                    'ELEMENT' => ResolvedVariableNames::ELEMENT_VARIABLE_NAME,
-                    'SUBMIT' => '$submitButton',
-                ],
             ],
         ];
     }

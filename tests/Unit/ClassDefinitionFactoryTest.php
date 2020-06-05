@@ -137,9 +137,6 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                         VariableNames::PANTHER_CLIENT,
                         VariableNames::PHPUNIT_TEST_CASE,
                     ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
-                        'ELEMENT',
-                    ]),
                 ]),
             ],
             'single step with single action and single assertion with data provider' => [
@@ -202,10 +199,6 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
-                    ]),
-                    Metadata::KEY_VARIABLE_EXPORTS => ResolvablePlaceholderCollection::createExportCollection([
-                        'COLLECTION',
-                        'VALUE',
                     ]),
                 ]),
             ],

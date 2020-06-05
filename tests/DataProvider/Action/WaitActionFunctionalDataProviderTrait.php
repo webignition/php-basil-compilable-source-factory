@@ -21,9 +21,7 @@ trait WaitActionFunctionalDataProviderTrait
                 'action' => $actionParser->parse('wait 10'),
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
-                'additionalVariableIdentifiers' => [
-                    'DURATION' => '$duration',
-                ],
+                'additionalVariableIdentifiers' => [],
                 'expectedDuration' => 10,
             ],
             'wait action, element value' => [
@@ -31,10 +29,7 @@ trait WaitActionFunctionalDataProviderTrait
                 'action' => $actionParser->parse('wait $"[id=\"element-value\"]"'),
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
-                'additionalVariableIdentifiers' => [
-                    'DURATION' => '$duration',
-                    'ELEMENT' => '$element',
-                ],
+                'additionalVariableIdentifiers' => [],
                 'expectedDuration' => 20,
             ],
             'wait action, attribute value, attribute exists' => [
@@ -42,10 +37,7 @@ trait WaitActionFunctionalDataProviderTrait
                 'action' => $actionParser->parse('wait $"[id=\"attribute-value\"]".data-duration'),
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
-                'additionalVariableIdentifiers' => [
-                    'DURATION' => '$duration',
-                    'ELEMENT' => '$element',
-                ],
+                'additionalVariableIdentifiers' => [],
                 'expectedDuration' => 30,
             ],
             'wait action, attribute value, attribute does not exist' => [
@@ -53,10 +45,7 @@ trait WaitActionFunctionalDataProviderTrait
                 'action' => $actionParser->parse('wait $"[id=\"attribute-value\"]".data-non-existent'),
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
-                'additionalVariableIdentifiers' => [
-                    'DURATION' => '$duration',
-                    'ELEMENT' => '$element',
-                ],
+                'additionalVariableIdentifiers' => [],
                 'expectedDuration' => 0,
             ],
             'wait action, browser property' => [
@@ -64,10 +53,7 @@ trait WaitActionFunctionalDataProviderTrait
                 'action' => $actionParser->parse('wait $browser.size'),
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
-                'additionalVariableIdentifiers' => [
-                    'DURATION' => '$duration',
-                    'WEBDRIVER_DIMENSION' => ResolvedVariableNames::WEBDRIVER_DIMENSION_VARIABLE_NAME,
-                ],
+                'additionalVariableIdentifiers' => [],
                 'expectedDuration' => 1200,
             ],
             'wait action, page property' => [
@@ -75,9 +61,7 @@ trait WaitActionFunctionalDataProviderTrait
                 'action' => $actionParser->parse('wait $page.title'),
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
-                'additionalVariableIdentifiers' => [
-                    'DURATION' => '$duration',
-                ],
+                'additionalVariableIdentifiers' => [],
                 'expectedDuration' => 5,
             ],
             'wait action, environment value, value exists' => [
@@ -86,7 +70,6 @@ trait WaitActionFunctionalDataProviderTrait
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [
-                    'DURATION' => '$duration',
                     VariableNames::ENVIRONMENT_VARIABLE_ARRAY => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
                 ],
                 'expectedDuration' => 5,
@@ -97,7 +80,6 @@ trait WaitActionFunctionalDataProviderTrait
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [
-                    'DURATION' => '$duration',
                     VariableNames::ENVIRONMENT_VARIABLE_ARRAY => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
                 ],
                 'expectedDuration' => 0,

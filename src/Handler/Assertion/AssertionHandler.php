@@ -28,6 +28,7 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentExcepti
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
+use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
 use webignition\BasilCompilableSourceFactory\ValueTypeIdentifier;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
@@ -60,6 +61,7 @@ class AssertionHandler
     private ValueTypeIdentifier $valueTypeIdentifier;
     private ElementIdentifierCallFactory $elementIdentifierCallFactory;
     private ElementIdentifierSerializer $elementIdentifierSerializer;
+    private ValueAccessorFactory $valueAccessorFactory;
 
     private const OPERATOR_TO_ASSERTION_TEMPLATE_MAP = [
         'includes' => self::ASSERT_STRING_CONTAINS_STRING_METHOD,
@@ -90,7 +92,8 @@ class AssertionHandler
         ScalarValueHandler $scalarValueHandler,
         ValueTypeIdentifier $valueTypeIdentifier,
         ElementIdentifierCallFactory $elementIdentifierCallFactory,
-        ElementIdentifierSerializer $elementIdentifierSerializer
+        ElementIdentifierSerializer $elementIdentifierSerializer,
+        ValueAccessorFactory $valueAccessorFactory
     ) {
         $this->accessorDefaultValueFactory = $accessorDefaultValueFactory;
         $this->assertionMethodInvocationFactory = $assertionMethodInvocationFactory;
@@ -102,6 +105,7 @@ class AssertionHandler
         $this->valueTypeIdentifier = $valueTypeIdentifier;
         $this->elementIdentifierCallFactory = $elementIdentifierCallFactory;
         $this->elementIdentifierSerializer = $elementIdentifierSerializer;
+        $this->valueAccessorFactory = $valueAccessorFactory;
     }
 
     public static function createHandler(): AssertionHandler
@@ -116,7 +120,8 @@ class AssertionHandler
             ScalarValueHandler::createHandler(),
             new ValueTypeIdentifier(),
             ElementIdentifierCallFactory::createFactory(),
-            ElementIdentifierSerializer::createSerializer()
+            ElementIdentifierSerializer::createSerializer(),
+            ValueAccessorFactory::createFactory()
         );
     }
 
@@ -510,25 +515,7 @@ class AssertionHandler
      */
     private function createValueAccessor(string $value): ExpressionInterface
     {
-        if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($value)) {
-            $examinedValueDomIdentifier = $this->domIdentifierFactory->createFromIdentifierString($value);
-            if (null === $examinedValueDomIdentifier) {
-                throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $value);
-            }
-
-            if ($examinedValueDomIdentifier instanceof AttributeIdentifierInterface) {
-                $accessor = $this->domIdentifierHandler->handleAttributeValue(
-                    $this->elementIdentifierSerializer->serialize($examinedValueDomIdentifier),
-                    $examinedValueDomIdentifier->getAttributeName()
-                );
-            } else {
-                $accessor = $this->domIdentifierHandler->handleElementValue(
-                    $this->elementIdentifierSerializer->serialize($examinedValueDomIdentifier)
-                );
-            }
-        } else {
-            $accessor = $this->scalarValueHandler->handle($value);
-        }
+        $accessor = $this->valueAccessorFactory->create($value);
 
         if (!$accessor instanceof ClosureExpression) {
             $defaultValue = $this->accessorDefaultValueFactory->createString($value) ?? 'null';

@@ -13,6 +13,8 @@ use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\Line\Statement\StatementInterface;
 use webignition\BasilCompilableSource\ResolvablePlaceholder;
+use webignition\BasilCompilableSource\ResolvingPlaceholder;
+use webignition\BasilCompilableSource\VariablePlaceholderInterface;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class StatementFactory
@@ -36,12 +38,12 @@ class StatementFactory
 
     public static function createCrawlerFilterCallForElement(
         string $selector,
-        ResolvablePlaceholder $exportedPlaceholder
+        VariablePlaceholderInterface $placeholder
     ): StatementInterface {
-        $elementPlaceholder = ResolvablePlaceholder::createExport('ELEMENT');
+        $elementPlaceholder = new ResolvingPlaceholder('element');
 
         return new AssignmentStatement(
-            $exportedPlaceholder,
+            $placeholder,
             new ClosureExpression(new CodeBlock([
                 new AssignmentStatement(
                     $elementPlaceholder,
@@ -73,7 +75,7 @@ class StatementFactory
 
     public static function createCrawlerActionCallForElement(string $selector, string $action): StatementInterface
     {
-        $elementPlaceholder = ResolvablePlaceholder::createExport('ELEMENT');
+        $elementPlaceholder = new ResolvingPlaceholder('element');
 
         return new Statement(
             new ClosureExpression(new CodeBlock([
@@ -119,10 +121,10 @@ class StatementFactory
 
     public static function createCrawlerFilterCall(
         string $selector,
-        ResolvablePlaceholder $exportedPlaceholder
+        VariablePlaceholderInterface $placeholder
     ): StatementInterface {
         return new AssignmentStatement(
-            $exportedPlaceholder,
+            $placeholder,
             new ObjectMethodInvocation(
                 ResolvablePlaceholder::createDependency(VariableNames::PANTHER_CRAWLER),
                 'filter',

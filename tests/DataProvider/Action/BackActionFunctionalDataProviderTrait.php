@@ -26,9 +26,6 @@ trait BackActionFunctionalDataProviderTrait
                 'teardownStatements' => new CodeBlock([
                     StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
                 ]),
-                'additionalVariableIdentifiers' => [
-                    'ELEMENT' => '$element',
-                ]
             ],
         ];
     }

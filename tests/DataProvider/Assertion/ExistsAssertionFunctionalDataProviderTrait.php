@@ -18,29 +18,21 @@ trait ExistsAssertionFunctionalDataProviderTrait
             'exists comparison, element identifier examined value' => [
                 'fixture' => '/assertions.html',
                 'assertion' => $assertionParser->parse('$".selector" exists'),
-                'variableIdentifiers' => [
-                ],
             ],
             'exists comparison, attribute identifier examined value' => [
                 'fixture' => '/assertions.html',
                 'assertion' => $assertionParser->parse('$".selector".data-test-attribute exists'),
-                'variableIdentifiers' => [
-                    'ELEMENT' => '$element',
-                ],
             ],
             'exists comparison, environment examined value' => [
                 'fixture' => '/empty.html',
                 'assertion' => $assertionParser->parse('$env.TEST1 exists'),
                 'variableIdentifiers' => [
-                    VariableNames::ENVIRONMENT_VARIABLE_ARRAY => '$_ENV',
+                    VariableNames::ENVIRONMENT_VARIABLE_ARRAY => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
                 ],
             ],
             'exists comparison, browser object value' => [
                 'fixture' => '/empty.html',
                 'assertion' => $assertionParser->parse('$browser.size exists'),
-                'variableIdentifiers' => [
-                    'WEBDRIVER_DIMENSION' => ResolvedVariableNames::WEBDRIVER_DIMENSION_VARIABLE_NAME,
-                ],
             ],
             'exists comparison, page object value' => [
                 'fixture' => '/empty.html',

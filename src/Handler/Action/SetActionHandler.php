@@ -9,7 +9,6 @@ use webignition\BasilCompilableSource\Block\CodeBlockInterface;
 use webignition\BasilCompilableSource\Line\ComparisonExpression;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Line\Statement\Statement;
 use webignition\BasilCompilableSource\ResolvablePlaceholder;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
@@ -85,14 +84,8 @@ class SetActionHandler
             throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }
 
-        $collectionPlaceholder = ResolvablePlaceholder::createExport('COLLECTION');
-        $valuePlaceholder = ResolvablePlaceholder::createExport('VALUE');
-
-        $collectionAccessor = new AssignmentStatement(
-            $collectionPlaceholder,
-            $this->domIdentifierHandler->handleElementCollection(
-                $this->elementIdentifierSerializer->serialize($domIdentifier)
-            )
+        $collectionAccessor = $this->domIdentifierHandler->handleElementCollection(
+            trim($this->elementIdentifierSerializer->serialize($domIdentifier))
         );
 
         if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($value)) {
@@ -124,22 +117,19 @@ class SetActionHandler
             );
         }
 
-        $valueAssignment = new AssignmentStatement($valuePlaceholder, $valueAccessor);
-
         $mutationCall = new Statement(
             new ObjectMethodInvocation(
                 ResolvablePlaceholder::createDependency(VariableNames::WEBDRIVER_ELEMENT_MUTATOR),
                 'setValue',
                 [
-                    $collectionPlaceholder,
-                    $valuePlaceholder
-                ]
+                    $collectionAccessor,
+                    $valueAccessor
+                ],
+                ObjectMethodInvocation::ARGUMENT_FORMAT_STACKED
             )
         );
 
         return new CodeBlock([
-            $collectionAccessor,
-            $valueAssignment,
             $mutationCall
         ]);
     }
