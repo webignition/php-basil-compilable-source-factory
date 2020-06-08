@@ -107,6 +107,16 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
                 ),
                 'expectedExpectationFailedExceptionMessage' => 'Failed asserting that true is false.',
             ],
+            'exists comparison, element identifier examined value, invalid locator exception is caught' => [
+                'fixture' => '/index.html',
+                'assertion' => $assertionParser->parse('$"2" exists'),
+                'expectedExpectationFailedExceptionMessage' => 'Invalid locator',
+            ],
+            'exists comparison, attribute identifier examined value, invalid locator exception is caught' => [
+                'fixture' => '/index.html',
+                'assertion' => $assertionParser->parse('$"2".attribute_name exists'),
+                'expectedExpectationFailedExceptionMessage' => 'Invalid locator',
+            ],
         ];
     }
 }
