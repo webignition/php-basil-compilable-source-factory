@@ -4,9 +4,14 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
+use webignition\BasilCompilableSource\Block\TryCatch\CatchBlock;
+use webignition\BasilCompilableSource\Block\TryCatch\TryBlock;
+use webignition\BasilCompilableSource\Block\TryCatch\TryCatchBlock;
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\Expression\CastExpression;
+use webignition\BasilCompilableSource\Expression\CatchExpression;
+use webignition\BasilCompilableSource\Expression\ClassDependency;
 use webignition\BasilCompilableSource\Expression\ClosureExpression;
 use webignition\BasilCompilableSource\Expression\ComparisonExpression;
 use webignition\BasilCompilableSource\Expression\EncapsulatedExpression;
@@ -18,7 +23,10 @@ use webignition\BasilCompilableSource\Expression\ObjectPropertyAccessExpression;
 use webignition\BasilCompilableSource\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\Statement\StatementInterface;
+use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclaration;
+use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationCollection;
 use webignition\BasilCompilableSource\VariableDependency;
+use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
@@ -40,6 +48,7 @@ use webignition\BasilModels\Assertion\DerivedValueOperationAssertion;
 use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifierInterface;
+use webignition\SymfonyDomCrawlerNavigator\Exception\InvalidLocatorException;
 
 class AssertionHandler
 {
@@ -207,7 +216,7 @@ class AssertionHandler
                         $examinedElementIdentifierPlaceholder,
                         $elementIdentifierExpression
                     ),
-                    new Statement($elementSetBooleanExaminedValueInvocation),
+                    $this->createNavigatorHasCallTryCatchBlock($elementSetBooleanExaminedValueInvocation),
                     $assertionStatement,
                 ]);
             }
@@ -239,7 +248,7 @@ class AssertionHandler
                     $examinedElementIdentifierPlaceholder,
                     $elementIdentifierExpression
                 ),
-                new Statement($elementSetBooleanExaminedValueInvocation),
+                $this->createNavigatorHasCallTryCatchBlock($elementSetBooleanExaminedValueInvocation),
                 $this->createAssertionStatement($elementExistsAssertion, [
                     $this->createGetBooleanExaminedValueInvocation()
                 ]),
@@ -542,6 +551,45 @@ class AssertionHandler
             $this->assertionMethodInvocationFactory->create(
                 self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP[$assertion->getOperator()],
                 $arguments
+            )
+        );
+    }
+
+    private function createNavigatorHasCallTryCatchBlock(
+        ExpressionInterface $elementSetBooleanExaminedValueInvocation
+    ): TryCatchBlock {
+        return new TryCatchBlock(
+            new TryBlock(
+                new Body([
+                    new Statement($elementSetBooleanExaminedValueInvocation)
+                ])
+            ),
+            new CatchBlock(
+                new CatchExpression(
+                    new ObjectTypeDeclarationCollection([
+                        new ObjectTypeDeclaration(new ClassDependency(InvalidLocatorException::class))
+                    ])
+                ),
+                new Body([
+                    new Statement(
+                        new ObjectMethodInvocation(
+                            new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
+                            'setLastException',
+                            [
+                                new VariableName('exception')
+                            ]
+                        )
+                    ),
+                    new Statement(
+                        new ObjectMethodInvocation(
+                            new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
+                            'fail',
+                            [
+                                new LiteralExpression('"Invalid locator"'),
+                            ]
+                        )
+                    ),
+                ])
             )
         );
     }

@@ -22,6 +22,7 @@ use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Test\TestInterface;
 use webignition\BasilParser\Test\TestParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
+use webignition\SymfonyDomCrawlerNavigator\Exception\InvalidLocatorException;
 
 class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
 {
@@ -129,6 +130,7 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
+                        new ClassDependency(InvalidLocatorException::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::ACTION_FACTORY,
@@ -190,6 +192,7 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
+                        new ClassDependency(InvalidLocatorException::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::ACTION_FACTORY,
