@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Step;
 
-use webignition\BasilCompilableSource\Block\CodeBlock;
-use webignition\BasilCompilableSource\Line\SingleLineComment;
+use webignition\BasilCompilableSource\Body\Body;
+use webignition\BasilCompilableSource\SingleLineComment;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
@@ -69,7 +69,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                                 '$".selector"',
                                 'exists'
                             ),
-                            'return' => new CodeBlock([
+                            'return' => new Body([
                                 new SingleLineComment(
                                     'StatementBlockFactory::create($".selector" exists)'
                                 ),
@@ -77,7 +77,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                         ],
                         'click $".selector"' => [
                             'statement' => $actionParser->parse('click $".selector"'),
-                            'return' => new CodeBlock([
+                            'return' => new Body([
                                 new SingleLineComment(
                                     'StatementBlockFactory::create(click $".selector")'
                                 ),
@@ -87,7 +87,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     ActionHandler::class => $this->createMockActionHandler([
                         'click $".selector"' => [
                             'action' => $actionParser->parse('click $".selector"'),
-                            'return' => new CodeBlock([
+                            'return' => new Body([
                                 new SingleLineComment('ActionHandler::handle(click $".selector")'),
                             ]),
                         ],
@@ -99,7 +99,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                                 '$".selector"',
                                 'exists'
                             ),
-                            'return' => new CodeBlock([
+                            'return' => new Body([
                                 new SingleLineComment('AssertionHandler::handle($".selector" exists)'),
                             ]),
                         ],
@@ -129,7 +129,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                                 '$".selector1"',
                                 'exists'
                             ),
-                            'return' => new CodeBlock([
+                            'return' => new Body([
                                 new SingleLineComment(
                                     'StatementBlockFactory::create($".selector1" exists)'
                                 ),
@@ -137,7 +137,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                         ],
                         'click $".selector1"' => [
                             'statement' => $actionParser->parse('click $".selector1"'),
-                            'return' => new CodeBlock([
+                            'return' => new Body([
                                 new SingleLineComment(
                                     'StatementBlockFactory::create(click $".selector1")'
                                 ),
@@ -149,7 +149,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                                 '$".selector2"',
                                 'exists'
                             ),
-                            'return' => new CodeBlock([
+                            'return' => new Body([
                                 new SingleLineComment(
                                     'StatementBlockFactory::create($".selector2" exists)'
                                 ),
@@ -157,7 +157,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                         ],
                         'click $".selector2"' => [
                             'statement' => $actionParser->parse('click $".selector2"'),
-                            'return' => new CodeBlock([
+                            'return' => new Body([
                                 new SingleLineComment(
                                     'StatementBlockFactory::create(click $".selector2")'
                                 ),
@@ -167,13 +167,13 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     ActionHandler::class => $this->createMockActionHandler([
                         'click $".selector1"' => [
                             'action' => $actionParser->parse('click $".selector1"'),
-                            'return' => new CodeBlock([
+                            'return' => new Body([
                                 new SingleLineComment('ActionHandler::handle(click $".selector1")'),
                             ]),
                         ],
                         'click $".selector2"' => [
                             'action' => $actionParser->parse('click $".selector2"'),
-                            'return' => new CodeBlock([
+                            'return' => new Body([
                                 new SingleLineComment('ActionHandler::handle(click $".selector2")'),
                             ]),
                         ],
@@ -185,7 +185,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                                 '$".selector1"',
                                 'exists'
                             ),
-                            'return' => new CodeBlock([
+                            'return' => new Body([
                                 new SingleLineComment('AssertionHandler::handle($".selector1" exists)'),
                             ]),
                         ],
@@ -195,7 +195,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                                 '$".selector2"',
                                 'exists'
                             ),
-                            'return' => new CodeBlock([
+                            'return' => new Body([
                                 new SingleLineComment('AssertionHandler::handle($".selector2" exists)'),
                             ]),
                         ],
@@ -226,7 +226,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     StatementBlockFactory::class => $this->createMockStatementBlockFactory([
                         '$".selector" exists' => [
                             'statement' => $assertionParser->parse('$".selector" exists'),
-                            'return' => new CodeBlock([
+                            'return' => new Body([
                                 new SingleLineComment(
                                     'StatementBlockFactory::create($".selector" exists)'
                                 ),
@@ -236,7 +236,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     AssertionHandler::class => $this->createMockAssertionHandler([
                         '$".selector" exists' => [
                             'assertion' => $assertionParser->parse('$".selector" exists'),
-                            'return' => new CodeBlock([
+                            'return' => new Body([
                                 new SingleLineComment('AssertionHandler::handle($".selector" exists)'),
                             ]),
                         ],
@@ -262,7 +262,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                                 '$".parent"',
                                 'exists'
                             ),
-                            'return' => new CodeBlock([
+                            'return' => new Body([
                                 new SingleLineComment(
                                     'StatementBlockFactory::create($".parent" exists)'
                                 ),
@@ -270,7 +270,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                         ],
                         '$".parent" >> $".child" exists' => [
                             'statement' => $assertionParser->parse('$".parent" >> $".child" exists'),
-                            'return' => new CodeBlock([
+                            'return' => new Body([
                                 new SingleLineComment(
                                     'StatementBlockFactory::create($".parent" >> $".child" exists)'
                                 ),
@@ -284,13 +284,13 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                                 '$".parent"',
                                 'exists'
                             ),
-                            'return' => new CodeBlock([
+                            'return' => new Body([
                                 new SingleLineComment('AssertionHandler::handle($".parent" exists)'),
                             ]),
                         ],
                         '$".parent" >> $".child" exists' => [
                             'assertion' => $assertionParser->parse('$".parent" >> $".child" exists'),
-                            'return' => new CodeBlock([
+                            'return' => new Body([
                                 new SingleLineComment('AssertionHandler::handle($".parent" >> $".child" exists)'),
                             ]),
                         ],
@@ -317,7 +317,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     StatementBlockFactory::class => $this->createMockStatementBlockFactory([
                         '$".selector1" exists' => [
                             'statement' => $assertionParser->parse('$".selector1" exists'),
-                            'return' => new CodeBlock([
+                            'return' => new Body([
                                 new SingleLineComment(
                                     'StatementBlockFactory::create($".selector1" exists)'
                                 ),
@@ -325,7 +325,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                         ],
                         '$".selector2" exists' => [
                             'statement' => $assertionParser->parse('$".selector2" exists'),
-                            'return' => new CodeBlock([
+                            'return' => new Body([
                                 new SingleLineComment(
                                     'StatementBlockFactory::create($".selector2" exists)'
                                 ),
@@ -335,13 +335,13 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     AssertionHandler::class => $this->createMockAssertionHandler([
                         '$".selector1" exists' => [
                             'assertion' => $assertionParser->parse('$".selector1" exists'),
-                            'return' => new CodeBlock([
+                            'return' => new Body([
                                 new SingleLineComment('AssertionHandler::handle($".selector1" exists)'),
                             ]),
                         ],
                         '$".selector2" exists' => [
                             'assertion' => $assertionParser->parse('$".selector2" exists'),
-                            'return' => new CodeBlock([
+                            'return' => new Body([
                                 new SingleLineComment('AssertionHandler::handle($".selector2" exists)'),
                             ]),
                         ],
@@ -373,7 +373,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                                 '$".selector1"',
                                 'exists'
                             ),
-                            'return' => new CodeBlock([
+                            'return' => new Body([
                                 new SingleLineComment(
                                     'StatementBlockFactory::create($".selector1" exists)'
                                 ),
@@ -381,7 +381,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                         ],
                         'click $".selector1"' => [
                             'statement' => $actionParser->parse('click $".selector1"'),
-                            'return' => new CodeBlock([
+                            'return' => new Body([
                                 new SingleLineComment(
                                     'StatementBlockFactory::create(click $".selector1")'
                                 ),
@@ -389,7 +389,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                         ],
                         '$".selector2" exists' => [
                             'statement' => $assertionParser->parse('$".selector2" exists'),
-                            'return' => new CodeBlock([
+                            'return' => new Body([
                                 new SingleLineComment(
                                     'StatementBlockFactory::create($".selector2" exists)'
                                 ),
@@ -399,7 +399,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     ActionHandler::class => $this->createMockActionHandler([
                         'click $".selector1"' => [
                             'action' => $actionParser->parse('click $".selector1"'),
-                            'return' => new CodeBlock([
+                            'return' => new Body([
                                 new SingleLineComment('ActionHandler::handle(click $".selector1")'),
                             ]),
                         ],
@@ -411,13 +411,13 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                                 '$".selector1"',
                                 'exists'
                             ),
-                            'return' => new CodeBlock([
+                            'return' => new Body([
                                 new SingleLineComment('AssertionHandler::handle($".selector1" exists)'),
                             ]),
                         ],
                         '$".selector2" exists' => [
                             'assertion' => $assertionParser->parse('$".selector2" exists'),
-                            'return' => new CodeBlock([
+                            'return' => new Body([
                                 new SingleLineComment('AssertionHandler::handle($".selector2" exists)'),
                             ]),
                         ],
@@ -450,7 +450,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                                 '$".parent"',
                                 'exists'
                             ),
-                            'return' => new CodeBlock([
+                            'return' => new Body([
                                 new SingleLineComment(
                                     'StatementBlockFactory::create($".parent" exists)'
                                 ),
@@ -458,7 +458,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                         ],
                         '$".parent" >> $".child1" exists' => [
                             'statement' => $assertionParser->parse('$".parent" >> $".child1" exists'),
-                            'return' => new CodeBlock([
+                            'return' => new Body([
                                 new SingleLineComment(
                                     'StatementBlockFactory::create($".parent" >> $".child1" exists)'
                                 ),
@@ -466,7 +466,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                         ],
                         '$".parent" >> $".child2" exists' => [
                             'statement' => $assertionParser->parse('$".parent" >> $".child2" exists'),
-                            'return' => new CodeBlock([
+                            'return' => new Body([
                                 new SingleLineComment(
                                     'StatementBlockFactory::create($".parent" >> $".child2" exists)'
                                 ),
@@ -480,19 +480,19 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                                 '$".parent"',
                                 'exists'
                             ),
-                            'return' => new CodeBlock([
+                            'return' => new Body([
                                 new SingleLineComment('AssertionHandler::handle($".parent" exists)'),
                             ]),
                         ],
                         '$".parent" >> $".child1" exists' => [
                             'assertion' => $assertionParser->parse('$".parent" >> $".child1" exists'),
-                            'return' => new CodeBlock([
+                            'return' => new Body([
                                 new SingleLineComment('AssertionHandler::handle($".parent" >> $".child1" exists)'),
                             ]),
                         ],
                         '$".parent" >> $".child2" exists' => [
                             'assertion' => $assertionParser->parse('$".parent" >> $".child2" exists'),
-                            'return' => new CodeBlock([
+                            'return' => new Body([
                                 new SingleLineComment('AssertionHandler::handle($".parent" >> $".child2" exists)'),
                             ]),
                         ],

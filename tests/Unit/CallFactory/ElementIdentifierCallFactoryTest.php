@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSource\Line\ClassDependency;
-use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
+use webignition\BasilCompilableSource\Expression\ClassDependency;
+use webignition\BasilCompilableSource\Statement\ReturnStatement;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\CallFactory\ElementIdentifierCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;

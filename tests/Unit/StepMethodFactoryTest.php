@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
-use webignition\BasilCompilableSource\Block\CodeBlock;
-use webignition\BasilCompilableSource\Block\CodeBlockInterface;
-use webignition\BasilCompilableSource\Line\SingleLineComment;
+use webignition\BasilCompilableSource\Body\Body;
+use webignition\BasilCompilableSource\Body\BodyInterface;
+use webignition\BasilCompilableSource\SingleLineComment;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodDefinitionInterface;
@@ -151,7 +151,7 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                     ),
                     StepHandler::class => $this->createStepHandler(
                         $nonEmptyStep,
-                        new CodeBlock([
+                        new Body([
                             new SingleLineComment('mocked step handler response'),
                         ])
                     ),
@@ -189,7 +189,7 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                     ),
                     StepHandler::class => $this->createStepHandler(
                         $nonEmptyStepWithDataProvider,
-                        new CodeBlock([
+                        new Body([
                             new SingleLineComment('mocked step handler response'),
                         ])
                     ),
@@ -245,7 +245,7 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
         );
     }
 
-    private function createStepHandler(StepInterface $expectedStep, CodeBlockInterface $return): StepHandler
+    private function createStepHandler(StepInterface $expectedStep, BodyInterface $return): StepHandler
     {
         $stepHandler = \Mockery::mock(StepHandler::class);
 

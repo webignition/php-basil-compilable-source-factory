@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
-use webignition\BasilCompilableSource\Block\CodeBlock;
-use webignition\BasilCompilableSource\Block\CodeBlockInterface;
-use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
-use webignition\BasilCompilableSource\Line\Statement\Statement;
+use webignition\BasilCompilableSource\Body\Body;
+use webignition\BasilCompilableSource\Body\BodyInterface;
+use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSource\Statement\AssignmentStatement;
+use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
@@ -45,11 +45,11 @@ class InteractionActionHandler
     /**
      * @param ActionInterface $action
      *
-     * @return CodeBlockInterface
+     * @return BodyInterface
      *
      * @throws UnsupportedContentException
      */
-    public function handle(ActionInterface $action): CodeBlockInterface
+    public function handle(ActionInterface $action): BodyInterface
     {
         $identifier = $action->getIdentifier();
 
@@ -76,7 +76,7 @@ class InteractionActionHandler
             $action->getType()
         ));
 
-        return CodeBlock::createEnclosingCodeBlock(new CodeBlock([
+        return Body::createEnclosingBody(new Body([
             $accessor,
             $invocation,
         ]));

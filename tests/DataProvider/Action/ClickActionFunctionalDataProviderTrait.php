@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
-use webignition\BasilCompilableSource\Block\CodeBlock;
+use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilParser\ActionParser;
@@ -20,17 +20,17 @@ trait ClickActionFunctionalDataProviderTrait
             'interaction action (click), link' => [
                 'fixture' => '/action-click-submit.html',
                 'action' => $actionParser->parse('click $"#link-to-index"'),
-                'additionalSetupStatements' => new CodeBlock([
+                'additionalSetupStatements' => new Body([
                     StatementFactory::createAssertBrowserTitle('Click'),
                 ]),
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                     StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
                 ]),
             ],
             'interaction action (click), submit button' => [
                 'fixture' => '/action-click-submit.html',
                 'action' => $actionParser->parse('click $"#form input[type=\'submit\']"'),
-                'additionalSetupStatements' => new CodeBlock([
+                'additionalSetupStatements' => new Body([
                     StatementFactory::createAssertBrowserTitle('Click'),
                     StatementFactory::createCrawlerFilterCallForElement(
                         '#form input[type="submit"]',
@@ -38,7 +38,7 @@ trait ClickActionFunctionalDataProviderTrait
                     ),
                     StatementFactory::createAssertSame('"false"', '$submitButton->getAttribute(\'data-clicked\')'),
                 ]),
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                   StatementFactory::createCrawlerFilterCallForElement(
                       '#form input[type="submit"]',
                       $submitButtonPlaceholder

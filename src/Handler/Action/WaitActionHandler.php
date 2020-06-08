@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
-use webignition\BasilCompilableSource\Block\CodeBlock;
-use webignition\BasilCompilableSource\Block\CodeBlockInterface;
-use webignition\BasilCompilableSource\Line\CastExpression;
-use webignition\BasilCompilableSource\Line\ComparisonExpression;
-use webignition\BasilCompilableSource\Line\CompositeExpression;
-use webignition\BasilCompilableSource\Line\EncapsulatedExpression;
-use webignition\BasilCompilableSource\Line\LiteralExpression;
-use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
-use webignition\BasilCompilableSource\Line\Statement\Statement;
+use webignition\BasilCompilableSource\Body\Body;
+use webignition\BasilCompilableSource\Body\BodyInterface;
+use webignition\BasilCompilableSource\Expression\CastExpression;
+use webignition\BasilCompilableSource\Expression\ComparisonExpression;
+use webignition\BasilCompilableSource\Expression\CompositeExpression;
+use webignition\BasilCompilableSource\Expression\EncapsulatedExpression;
+use webignition\BasilCompilableSource\Expression\LiteralExpression;
+use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
+use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
@@ -44,11 +44,11 @@ class WaitActionHandler
     /**
      * @param ActionInterface $waitAction
      *
-     * @return CodeBlockInterface
+     * @return BodyInterface
      *
      * @throws UnsupportedContentException
      */
-    public function handle(ActionInterface $waitAction): CodeBlockInterface
+    public function handle(ActionInterface $waitAction): BodyInterface
     {
         $duration = $waitAction->getValue();
 
@@ -79,7 +79,7 @@ class WaitActionHandler
             )
         );
 
-        return new CodeBlock([
+        return new Body([
             $sleepInvocation,
         ]);
     }

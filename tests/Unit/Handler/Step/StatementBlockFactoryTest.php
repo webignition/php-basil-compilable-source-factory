@@ -33,10 +33,10 @@ class StatementBlockFactoryTest extends \PHPUnit\Framework\TestCase
         string $expectedRenderedContent,
         MetadataInterface $expectedMetadata
     ) {
-        $codeBlock = $this->factory->create($statement);
+        $body = $this->factory->create($statement);
 
-        $this->assertEquals($expectedRenderedContent, $codeBlock->render());
-        $this->assertEquals($expectedMetadata, $codeBlock->getMetadata());
+        $this->assertEquals($expectedRenderedContent, $body->render());
+        $this->assertEquals($expectedMetadata, $body->getMetadata());
     }
 
     public function createDataProvider(): array

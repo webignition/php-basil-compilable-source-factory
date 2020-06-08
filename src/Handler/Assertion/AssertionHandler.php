@@ -4,20 +4,20 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
-use webignition\BasilCompilableSource\Block\CodeBlock;
-use webignition\BasilCompilableSource\Block\CodeBlockInterface;
-use webignition\BasilCompilableSource\Line\CastExpression;
-use webignition\BasilCompilableSource\Line\ClosureExpression;
-use webignition\BasilCompilableSource\Line\ComparisonExpression;
-use webignition\BasilCompilableSource\Line\EncapsulatedExpression;
-use webignition\BasilCompilableSource\Line\ExpressionInterface;
-use webignition\BasilCompilableSource\Line\LiteralExpression;
-use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
-use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSource\Line\ObjectPropertyAccessExpression;
-use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
-use webignition\BasilCompilableSource\Line\Statement\Statement;
-use webignition\BasilCompilableSource\Line\Statement\StatementInterface;
+use webignition\BasilCompilableSource\Body\Body;
+use webignition\BasilCompilableSource\Body\BodyInterface;
+use webignition\BasilCompilableSource\Expression\CastExpression;
+use webignition\BasilCompilableSource\Expression\ClosureExpression;
+use webignition\BasilCompilableSource\Expression\ComparisonExpression;
+use webignition\BasilCompilableSource\Expression\EncapsulatedExpression;
+use webignition\BasilCompilableSource\Expression\ExpressionInterface;
+use webignition\BasilCompilableSource\Expression\LiteralExpression;
+use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
+use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSource\Expression\ObjectPropertyAccessExpression;
+use webignition\BasilCompilableSource\Statement\AssignmentStatement;
+use webignition\BasilCompilableSource\Statement\Statement;
+use webignition\BasilCompilableSource\Statement\StatementInterface;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
@@ -128,11 +128,11 @@ class AssertionHandler
     /**
      * @param AssertionInterface $assertion
      *
-     * @return CodeBlockInterface
+     * @return BodyInterface
      *
      * @throws UnsupportedStatementException
      */
-    public function handle(AssertionInterface $assertion): CodeBlockInterface
+    public function handle(AssertionInterface $assertion): BodyInterface
     {
         try {
             if ($assertion->isComparison()) {
@@ -156,11 +156,11 @@ class AssertionHandler
     /**
      * @param AssertionInterface $assertion
      *
-     * @return CodeBlockInterface
+     * @return BodyInterface
      *
      * @throws UnsupportedContentException
      */
-    private function handleExistenceAssertion(AssertionInterface $assertion): CodeBlockInterface
+    private function handleExistenceAssertion(AssertionInterface $assertion): BodyInterface
     {
         $identifier = $assertion->getIdentifier();
 
@@ -202,7 +202,7 @@ class AssertionHandler
             );
 
             if (!$domIdentifier instanceof AttributeIdentifierInterface) {
-                return new CodeBlock([
+                return new Body([
                     new AssignmentStatement(
                         $examinedElementIdentifierPlaceholder,
                         $elementIdentifierExpression
@@ -234,7 +234,7 @@ class AssertionHandler
                 ),
             ]);
 
-            return new CodeBlock([
+            return new Body([
                 new AssignmentStatement(
                     $examinedElementIdentifierPlaceholder,
                     $elementIdentifierExpression
@@ -254,11 +254,11 @@ class AssertionHandler
     /**
      * @param AssertionInterface $assertion
      *
-     * @return CodeBlockInterface
+     * @return BodyInterface
      *
      * @throws UnsupportedContentException
      */
-    private function handleScalarExistenceAssertion(AssertionInterface $assertion): CodeBlockInterface
+    private function handleScalarExistenceAssertion(AssertionInterface $assertion): BodyInterface
     {
         $nullComparisonExpression = $this->createNullComparisonExpression(
             $this->scalarValueHandler->handle($assertion->getIdentifier())
@@ -276,7 +276,7 @@ class AssertionHandler
             $this->createGetBooleanExaminedValueInvocation()
         ]);
 
-        return new CodeBlock([
+        return new Body([
             new Statement($setBooleanExaminedValueInvocation),
             $assertionStatement,
         ]);
@@ -410,11 +410,11 @@ class AssertionHandler
     /**
      * @param AssertionInterface $assertion
      *
-     * @return CodeBlockInterface
+     * @return BodyInterface
      *
      * @throws UnsupportedContentException
      */
-    private function handleComparisonAssertion(AssertionInterface $assertion): CodeBlockInterface
+    private function handleComparisonAssertion(AssertionInterface $assertion): BodyInterface
     {
         $assertionMethod = self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP[$assertion->getOperator()];
 
@@ -433,7 +433,7 @@ class AssertionHandler
             });
         }
 
-        return new CodeBlock([
+        return new Body([
             new Statement($this->createSetExpectedValueInvocation([$expectedAccessor])),
             new Statement($this->createSetExaminedValueInvocation([$examinedAccessor])),
             $this->createAssertionStatement($assertion, $assertionArguments),
@@ -443,18 +443,18 @@ class AssertionHandler
     /**
      * @param AssertionInterface $assertion
      *
-     * @return CodeBlockInterface
+     * @return BodyInterface
      *
      * @throws UnsupportedContentException
      */
-    private function handleIsRegExpAssertion(AssertionInterface $assertion): CodeBlockInterface
+    private function handleIsRegExpAssertion(AssertionInterface $assertion): BodyInterface
     {
         $identifier = $assertion->getIdentifier();
 
         if ($this->valueTypeIdentifier->isScalarValue($identifier)) {
             $examinedAccessor = new LiteralExpression($identifier);
 
-            return $this->createIsRegExpAssertionCodeBlock($examinedAccessor, $assertion);
+            return $this->createIsRegExpAssertionBody($examinedAccessor, $assertion);
         }
 
         if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
@@ -465,16 +465,16 @@ class AssertionHandler
 
             $examinedAccessor = $this->createValueAccessor($assertion->getIdentifier());
 
-            return $this->createIsRegExpAssertionCodeBlock($examinedAccessor, $assertion);
+            return $this->createIsRegExpAssertionBody($examinedAccessor, $assertion);
         }
 
         throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
     }
 
-    private function createIsRegExpAssertionCodeBlock(
+    private function createIsRegExpAssertionBody(
         ExpressionInterface $examinedAccessor,
         AssertionInterface $assertion
-    ): CodeBlockInterface {
+    ): BodyInterface {
         $pregMatchInvocation = new MethodInvocation(
             'preg_match',
             [
@@ -490,7 +490,7 @@ class AssertionHandler
             '==='
         );
 
-        return new CodeBlock([
+        return new Body([
             new Statement($this->createSetExaminedValueInvocation([
                 $examinedAccessor
             ])),

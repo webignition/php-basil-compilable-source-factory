@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory;
 
-use webignition\BasilCompilableSource\Line\ExpressionInterface;
-use webignition\BasilCompilableSource\Line\MethodInvocation\MethodInvocation;
-use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSource\Expression\ExpressionInterface;
+use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
+use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\VariableDependency;
 
 class AssertionMethodInvocationFactory

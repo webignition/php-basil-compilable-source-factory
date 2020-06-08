@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
-use webignition\BasilCompilableSource\Line\ArrayExpression;
+use webignition\BasilCompilableSource\Expression\ArrayExpression;
 use webignition\BasilCompilableSourceFactory\ArrayExpressionFactory;
 use webignition\BasilModels\DataSet\DataSetCollection;
 use webignition\BasilModels\DataSet\DataSetCollectionInterface;

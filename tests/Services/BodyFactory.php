@@ -9,7 +9,7 @@ use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\EmptyLine;
 use webignition\BasilCompilableSource\SingleLineComment;
 
-class CodeBlockFactory
+class BodyFactory
 {
     public static function createForSourceBlock(
         BodyInterface $source,

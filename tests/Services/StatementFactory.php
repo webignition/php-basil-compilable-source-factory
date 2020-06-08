@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
-use webignition\BasilCompilableSource\Block\CodeBlock;
-use webignition\BasilCompilableSource\Line\ClosureExpression;
-use webignition\BasilCompilableSource\Line\LiteralExpression;
-use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
-use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
-use webignition\BasilCompilableSource\Line\Statement\Statement;
-use webignition\BasilCompilableSource\Line\Statement\StatementInterface;
+use webignition\BasilCompilableSource\Body\Body;
+use webignition\BasilCompilableSource\Expression\ClosureExpression;
+use webignition\BasilCompilableSource\Expression\LiteralExpression;
+use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSource\Statement\AssignmentStatement;
+use webignition\BasilCompilableSource\Statement\ReturnStatement;
+use webignition\BasilCompilableSource\Statement\Statement;
+use webignition\BasilCompilableSource\Statement\StatementInterface;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSource\VariablePlaceholderInterface;
@@ -44,7 +44,7 @@ class StatementFactory
 
         return new AssignmentStatement(
             $placeholder,
-            new ClosureExpression(new CodeBlock([
+            new ClosureExpression(new Body([
                 new AssignmentStatement(
                     $elementPlaceholder,
                     new ObjectMethodInvocation(
@@ -78,7 +78,7 @@ class StatementFactory
         $elementPlaceholder = new VariableName('element');
 
         return new Statement(
-            new ClosureExpression(new CodeBlock([
+            new ClosureExpression(new Body([
                 new AssignmentStatement(
                     $elementPlaceholder,
                     new ObjectMethodInvocation(

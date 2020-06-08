@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\Step;
 
-use webignition\BasilCompilableSource\Block\CodeBlock;
-use webignition\BasilCompilableSource\Block\CodeBlockInterface;
+use webignition\BasilCompilableSource\Body\Body;
+use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
@@ -30,7 +30,7 @@ class StepHandlerTest extends AbstractBrowserTestCase
     public function testHandle(
         string $fixture,
         StepInterface $step,
-        ?CodeBlockInterface $teardownStatements = null,
+        ?BodyInterface $teardownStatements = null,
         array $additionalVariableIdentifiers = []
     ) {
         $source = $this->handler->handle($step);
@@ -68,7 +68,7 @@ class StepHandlerTest extends AbstractBrowserTestCase
                         'click $"#link-to-index"',
                     ],
                 ]),
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                     StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
                 ]),
             ],
@@ -126,8 +126,8 @@ class StepHandlerTest extends AbstractBrowserTestCase
         string $fixture,
         StepInterface $step,
         string $expectedExpectationFailedExceptionMessage,
-        ?CodeBlockInterface $additionalSetupStatements = null,
-        ?CodeBlockInterface $teardownStatements = null,
+        ?BodyInterface $additionalSetupStatements = null,
+        ?BodyInterface $teardownStatements = null,
         array $additionalVariableIdentifiers = []
     ) {
         $source = $this->handler->handle($step);

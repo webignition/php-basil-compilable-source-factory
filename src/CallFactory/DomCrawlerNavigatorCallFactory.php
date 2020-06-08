@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
-use webignition\BasilCompilableSource\Line\ExpressionInterface;
-use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSource\Expression\ExpressionInterface;
+use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 

@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
-use webignition\BasilCompilableSource\Block\CodeBlock;
-use webignition\BasilCompilableSource\Block\CodeBlockInterface;
-use webignition\BasilCompilableSource\Line\CompositeExpression;
-use webignition\BasilCompilableSource\Line\EmptyLine;
-use webignition\BasilCompilableSource\Line\LiteralExpression;
-use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSource\Line\MethodInvocation\StaticObjectMethodInvocation;
-use webignition\BasilCompilableSource\Line\SingleLineComment;
-use webignition\BasilCompilableSource\Line\Statement\Statement;
+use webignition\BasilCompilableSource\Body\Body;
+use webignition\BasilCompilableSource\Body\BodyInterface;
+use webignition\BasilCompilableSource\Expression\CompositeExpression;
+use webignition\BasilCompilableSource\EmptyLine;
+use webignition\BasilCompilableSource\Expression\LiteralExpression;
+use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
+use webignition\BasilCompilableSource\SingleLineComment;
+use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\MethodDefinition;
 use webignition\BasilCompilableSource\MethodDefinitionInterface;
 use webignition\BasilCompilableSource\StaticObject;
@@ -34,7 +34,7 @@ class MethodDefinitionFactory
             new LiteralExpression(' . \'' . $fixture . '\''),
         ]);
 
-        $block = new CodeBlock([
+        $body = new Body([
             new SingleLineComment('Test harness lines'),
             new Statement(new LiteralExpression('parent::setUpBeforeClass()')),
             new Statement(
@@ -49,7 +49,7 @@ class MethodDefinitionFactory
             ),
         ]);
 
-        $methodDefinition = new MethodDefinition('setUpBeforeClass', $block);
+        $methodDefinition = new MethodDefinition('setUpBeforeClass', $body);
         $methodDefinition->setStatic();
         $methodDefinition->setReturnType('void');
 
@@ -57,13 +57,13 @@ class MethodDefinitionFactory
     }
 
     public static function createSetUpMethodDefinition(
-        ?CodeBlockInterface $additionalSetupStatements
+        ?BodyInterface $additionalSetupStatements
     ): MethodDefinitionInterface {
         if (null === $additionalSetupStatements) {
-            $additionalSetupStatements = new CodeBlock();
+            $additionalSetupStatements = new Body([]);
         }
 
-        $block = new CodeBlock([
+        $body = new Body([
             new SingleLineComment('Test harness lines'),
             new Statement(new LiteralExpression('parent::setUp()')),
             new EmptyLine(),
@@ -71,7 +71,7 @@ class MethodDefinitionFactory
             $additionalSetupStatements,
         ]);
 
-        $methodDefinition = new MethodDefinition('setUp', $block);
+        $methodDefinition = new MethodDefinition('setUp', $body);
         $methodDefinition->setProtected();
         $methodDefinition->setReturnType('void');
 

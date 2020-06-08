@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
-use webignition\BasilCompilableSource\Block\CodeBlock;
+use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
@@ -30,14 +30,14 @@ trait SetActionFunctionalDataProviderTrait
                     'action' => $actionParser->parse(
                         'set $"input[name=input-without-value]" to $".textarea-non-empty"'
                     ),
-                    'additionalSetupStatements' => new CodeBlock([
+                    'additionalSetupStatements' => new Body([
                         StatementFactory::createCrawlerFilterCallForElement(
                             'input[name=input-without-value]',
                             $inputPlaceholder
                         ),
                         StatementFactory::createAssertSame('""', '$input->getAttribute("value")'),
                     ]),
-                    'teardownStatements' => new CodeBlock([
+                    'teardownStatements' => new Body([
                         StatementFactory::createCrawlerFilterCallForElement(
                             'input[name=input-without-value]',
                             $inputPlaceholder
@@ -50,14 +50,14 @@ trait SetActionFunctionalDataProviderTrait
                     'action' => $actionParser->parse(
                         'set $"input[name=input-without-value]" to $"#form1".action'
                     ),
-                    'additionalSetupStatements' => new CodeBlock([
+                    'additionalSetupStatements' => new Body([
                         StatementFactory::createCrawlerFilterCallForElement(
                             'input[name=input-without-value]',
                             $inputPlaceholder
                         ),
                         StatementFactory::createAssertSame('""', '$input->getAttribute("value")'),
                     ]),
-                    'teardownStatements' => new CodeBlock([
+                    'teardownStatements' => new Body([
                         StatementFactory::createCrawlerFilterCallForElement(
                             'input[name=input-without-value]',
                             $inputPlaceholder
@@ -71,14 +71,14 @@ trait SetActionFunctionalDataProviderTrait
                 'input action, browser property' => [
                     'fixture' => '/form.html',
                     'action' => $actionParser->parse('set $"input[name=input-without-value]" to $browser.size'),
-                    'additionalSetupStatements' => new CodeBlock([
+                    'additionalSetupStatements' => new Body([
                         StatementFactory::createCrawlerFilterCallForElement(
                             'input[name=input-without-value]',
                             $inputPlaceholder
                         ),
                         StatementFactory::createAssertSame('""', '$input->getAttribute("value")'),
                     ]),
-                    'teardownStatements' => new CodeBlock([
+                    'teardownStatements' => new Body([
                         StatementFactory::createCrawlerFilterCallForElement(
                             'input[name=input-without-value]',
                             $inputPlaceholder
@@ -92,14 +92,14 @@ trait SetActionFunctionalDataProviderTrait
                 'input action, page property' => [
                     'fixture' => '/form.html',
                     'action' => $actionParser->parse('set $"input[name=input-without-value]" to $page.url'),
-                    'additionalSetupStatements' => new CodeBlock([
+                    'additionalSetupStatements' => new Body([
                         StatementFactory::createCrawlerFilterCallForElement(
                             'input[name=input-without-value]',
                             $inputPlaceholder
                         ),
                         StatementFactory::createAssertSame('""', '$input->getAttribute("value")'),
                     ]),
-                    'teardownStatements' => new CodeBlock([
+                    'teardownStatements' => new Body([
                         StatementFactory::createCrawlerFilterCallForElement(
                             'input[name=input-without-value]',
                             $inputPlaceholder
@@ -113,14 +113,14 @@ trait SetActionFunctionalDataProviderTrait
                 'input action, environment value' => [
                     'fixture' => '/form.html',
                     'action' => $actionParser->parse('set $"input[name=input-without-value]" to $env.TEST1'),
-                    'additionalSetupStatements' => new CodeBlock([
+                    'additionalSetupStatements' => new Body([
                         StatementFactory::createCrawlerFilterCallForElement(
                             'input[name=input-without-value]',
                             $inputPlaceholder
                         ),
                         StatementFactory::createAssertSame('""', '$input->getAttribute("value")'),
                     ]),
-                    'teardownStatements' => new CodeBlock([
+                    'teardownStatements' => new Body([
                         StatementFactory::createCrawlerFilterCallForElement(
                             'input[name=input-without-value]',
                             $inputPlaceholder
@@ -147,14 +147,14 @@ trait SetActionFunctionalDataProviderTrait
             'input action, literal value: empty text input, empty value' => [
                 'fixture' => '/form.html',
                 'action' => $actionParser->parse('set $"input[name=input-without-value]" to ""'),
-                'additionalSetupStatements' => new CodeBlock([
+                'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement(
                         'input[name=input-without-value]',
                         $inputPlaceholder
                     ),
                     StatementFactory::createAssertSame('""', '$input->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement(
                         'input[name=input-without-value]',
                         $inputPlaceholder
@@ -165,14 +165,14 @@ trait SetActionFunctionalDataProviderTrait
             'input action, literal value: empty text input, non-empty value' => [
                 'fixture' => '/form.html',
                 'action' => $actionParser->parse('set $"input[name=input-without-value]" to "non-empty value"'),
-                'additionalSetupStatements' => new CodeBlock([
+                'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement(
                         'input[name=input-without-value]',
                         $inputPlaceholder
                     ),
                     StatementFactory::createAssertSame('""', '$input->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement(
                         'input[name=input-without-value]',
                         $inputPlaceholder
@@ -183,14 +183,14 @@ trait SetActionFunctionalDataProviderTrait
             'input action, literal value: non-empty text input, empty value' => [
                 'fixture' => '/form.html',
                 'action' => $actionParser->parse('set $"input[name=input-with-value]" to ""'),
-                'additionalSetupStatements' => new CodeBlock([
+                'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement(
                         'input[name=input-with-value]',
                         $inputPlaceholder
                     ),
                     StatementFactory::createAssertSame('"test"', '$input->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement(
                         'input[name=input-with-value]',
                         $inputPlaceholder
@@ -201,14 +201,14 @@ trait SetActionFunctionalDataProviderTrait
             'input action, literal value: non-empty text input, non-empty value' => [
                 'fixture' => '/form.html',
                 'action' => $actionParser->parse('set $"input[name=input-with-value]" to "new value"'),
-                'additionalSetupStatements' => new CodeBlock([
+                'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement(
                         'input[name=input-with-value]',
                         $inputPlaceholder
                     ),
                     StatementFactory::createAssertSame('"test"', '$input->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement(
                         'input[name=input-with-value]',
                         $inputPlaceholder
@@ -228,11 +228,11 @@ trait SetActionFunctionalDataProviderTrait
             'input action, literal value: empty textarea, empty value' => [
                 'fixture' => '/form.html',
                 'action' => $actionParser->parse('set $".textarea-empty" to ""'),
-                'additionalSetupStatements' => new CodeBlock([
+                'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.textarea-empty', $textareaPlaceholder),
                     StatementFactory::createAssertSame('""', '$textarea->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.textarea-empty', $textareaPlaceholder),
                     StatementFactory::createAssertSame('""', '$textarea->getAttribute("value")'),
                 ]),
@@ -240,11 +240,11 @@ trait SetActionFunctionalDataProviderTrait
             'input action, literal value: empty textarea, non-empty value' => [
                 'fixture' => '/form.html',
                 'action' => $actionParser->parse('set $".textarea-empty" to "non-empty value"'),
-                'additionalSetupStatements' => new CodeBlock([
+                'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.textarea-empty', $textareaPlaceholder),
                     StatementFactory::createAssertSame('""', '$textarea->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.textarea-empty', $textareaPlaceholder),
                     StatementFactory::createAssertSame('"non-empty value"', '$textarea->getAttribute("value")'),
                 ]),
@@ -252,11 +252,11 @@ trait SetActionFunctionalDataProviderTrait
             'input action, literal value: non-empty textarea, empty value' => [
                 'fixture' => '/form.html',
                 'action' => $actionParser->parse('set $".textarea-non-empty" to ""'),
-                'additionalSetupStatements' => new CodeBlock([
+                'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.textarea-non-empty', $textareaPlaceholder),
                     StatementFactory::createAssertSame('"textarea content"', '$textarea->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.textarea-non-empty', $textareaPlaceholder),
                     StatementFactory::createAssertSame('""', '$textarea->getAttribute("value")'),
                 ]),
@@ -264,11 +264,11 @@ trait SetActionFunctionalDataProviderTrait
             'input action, literal value: non-empty textarea, non-empty value' => [
                 'fixture' => '/form.html',
                 'action' => $actionParser->parse('set $".textarea-non-empty" to "new value"'),
-                'additionalSetupStatements' => new CodeBlock([
+                'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.textarea-non-empty', $textareaPlaceholder),
                     StatementFactory::createAssertSame('"textarea content"', '$textarea->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.textarea-non-empty', $textareaPlaceholder),
                     StatementFactory::createAssertSame('"new value"', '$textarea->getAttribute("value")'),
                 ]),
@@ -285,11 +285,11 @@ trait SetActionFunctionalDataProviderTrait
             'input action, literal value: select none selected, empty value' => [
                 'fixture' => '/form.html',
                 'action' => $actionParser->parse('set $".select-none-selected" to ""'),
-                'additionalSetupStatements' => new CodeBlock([
+                'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.select-none-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"none-selected-1"', '$select->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.select-none-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"none-selected-1"', '$select->getAttribute("value")'),
                 ]),
@@ -297,11 +297,11 @@ trait SetActionFunctionalDataProviderTrait
             'input action, literal value: select none selected, invalid non-empty value' => [
                 'fixture' => '/form.html',
                 'action' => $actionParser->parse('set $".select-none-selected" to "invalid"'),
-                'additionalSetupStatements' => new CodeBlock([
+                'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.select-none-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"none-selected-1"', '$select->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.select-none-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"none-selected-1"', '$select->getAttribute("value")'),
                 ]),
@@ -309,11 +309,11 @@ trait SetActionFunctionalDataProviderTrait
             'input action, literal value: select none selected, valid non-empty value' => [
                 'fixture' => '/form.html',
                 'action' => $actionParser->parse('set $".select-none-selected" to "none-selected-2"'),
-                'additionalSetupStatements' => new CodeBlock([
+                'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.select-none-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"none-selected-1"', '$select->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.select-none-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"none-selected-2"', '$select->getAttribute("value")'),
                 ]),
@@ -321,11 +321,11 @@ trait SetActionFunctionalDataProviderTrait
             'input action, literal value: select has selected, empty value' => [
                 'fixture' => '/form.html',
                 'action' => $actionParser->parse('set $".select-has-selected" to ""'),
-                'additionalSetupStatements' => new CodeBlock([
+                'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.select-has-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"has-selected-2"', '$select->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.select-has-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"has-selected-2"', '$select->getAttribute("value")'),
                 ]),
@@ -333,11 +333,11 @@ trait SetActionFunctionalDataProviderTrait
             'input action, literal value: select has selected, invalid non-empty value' => [
                 'fixture' => '/form.html',
                 'action' => $actionParser->parse('set $".select-has-selected" to "invalid"'),
-                'additionalSetupStatements' => new CodeBlock([
+                'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.select-has-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"has-selected-2"', '$select->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.select-has-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"has-selected-2"', '$select->getAttribute("value")'),
                 ]),
@@ -345,11 +345,11 @@ trait SetActionFunctionalDataProviderTrait
             'input action, literal value: select has selected, valid non-empty value' => [
                 'fixture' => '/form.html',
                 'action' => $actionParser->parse('set $".select-has-selected" to "has-selected-3"'),
-                'additionalSetupStatements' => new CodeBlock([
+                'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.select-has-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"has-selected-2"', '$select->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.select-has-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"has-selected-3"', '$select->getAttribute("value")'),
                 ]),
@@ -366,11 +366,11 @@ trait SetActionFunctionalDataProviderTrait
             'input action, literal value: option group none selected, empty value' => [
                 'fixture' => '/form.html',
                 'action' => $actionParser->parse('set $".select-none-selected option" to ""'),
-                'additionalSetupStatements' => new CodeBlock([
+                'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.select-none-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"none-selected-1"', '$select->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.select-none-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"none-selected-1"', '$select->getAttribute("value")'),
                 ]),
@@ -378,11 +378,11 @@ trait SetActionFunctionalDataProviderTrait
             'input action, literal value: option group none selected, invalid non-empty value' => [
                 'fixture' => '/form.html',
                 'action' => $actionParser->parse('set $".select-none-selected option" to "invalid"'),
-                'additionalSetupStatements' => new CodeBlock([
+                'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.select-none-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"none-selected-1"', '$select->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.select-none-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"none-selected-1"', '$select->getAttribute("value")'),
                 ]),
@@ -390,11 +390,11 @@ trait SetActionFunctionalDataProviderTrait
             'input action, literal value: option group none selected, valid non-empty value' => [
                 'fixture' => '/form.html',
                 'action' => $actionParser->parse('set $".select-none-selected option" to "none-selected-2"'),
-                'additionalSetupStatements' => new CodeBlock([
+                'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.select-none-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"none-selected-1"', '$select->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.select-none-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"none-selected-2"', '$select->getAttribute("value")'),
                 ]),
@@ -402,11 +402,11 @@ trait SetActionFunctionalDataProviderTrait
             'input action, literal value: option group has selected, empty value' => [
                 'fixture' => '/form.html',
                 'action' => $actionParser->parse('set $".select-has-selected option" to ""'),
-                'additionalSetupStatements' => new CodeBlock([
+                'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.select-has-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"has-selected-2"', '$select->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.select-has-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"has-selected-2"', '$select->getAttribute("value")'),
                 ]),
@@ -414,11 +414,11 @@ trait SetActionFunctionalDataProviderTrait
             'input action, literal value: option group has selected, invalid non-empty value' => [
                 'fixture' => '/form.html',
                 'action' => $actionParser->parse('set $".select-has-selected option" to "invalid"'),
-                'additionalSetupStatements' => new CodeBlock([
+                'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.select-has-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"has-selected-2"', '$select->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.select-has-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"has-selected-2"', '$select->getAttribute("value")'),
                 ]),
@@ -426,11 +426,11 @@ trait SetActionFunctionalDataProviderTrait
             'input action, literal value: option group has selected, valid non-empty value' => [
                 'fixture' => '/form.html',
                 'action' => $actionParser->parse('set $".select-has-selected option" to "has-selected-3"'),
-                'additionalSetupStatements' => new CodeBlock([
+                'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.select-has-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"has-selected-2"', '$select->getAttribute("value")'),
                 ]),
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.select-has-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"has-selected-3"', '$select->getAttribute("value")'),
                 ]),
@@ -447,13 +447,13 @@ trait SetActionFunctionalDataProviderTrait
             'input action, literal value: radio group none checked, empty value' => [
                 'fixture' => '/form.html',
                 'action' => $actionParser->parse('set $"input[name=radio-not-checked]" to ""'),
-                'additionalSetupStatements' => new CodeBlock([
+                'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCall('input[name=radio-not-checked]', $radioGroupPlaceholder),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(0)->isSelected()'),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(1)->isSelected()'),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(2)->isSelected()'),
                 ]),
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                     StatementFactory::createCrawlerFilterCall('input[name=radio-not-checked]', $radioGroupPlaceholder),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(0)->isSelected()'),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(1)->isSelected()'),
@@ -463,13 +463,13 @@ trait SetActionFunctionalDataProviderTrait
             'input action, literal value: radio group none checked, invalid non-empty value' => [
                 'fixture' => '/form.html',
                 'action' => $actionParser->parse('set $"input[name=radio-not-checked]" to "invalid"'),
-                'additionalSetupStatements' => new CodeBlock([
+                'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCall('input[name=radio-not-checked]', $radioGroupPlaceholder),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(0)->isSelected()'),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(1)->isSelected()'),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(2)->isSelected()'),
                 ]),
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                     StatementFactory::createCrawlerFilterCall('input[name=radio-not-checked]', $radioGroupPlaceholder),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(0)->isSelected()'),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(1)->isSelected()'),
@@ -479,13 +479,13 @@ trait SetActionFunctionalDataProviderTrait
             'input action, literal value: radio group none checked, valid non-empty value' => [
                 'fixture' => '/form.html',
                 'action' => $actionParser->parse('set $"input[name=radio-not-checked]" to "not-checked-2"'),
-                'additionalSetupStatements' => new CodeBlock([
+                'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCall('input[name=radio-not-checked]', $radioGroupPlaceholder),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(0)->isSelected()'),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(1)->isSelected()'),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(2)->isSelected()'),
                 ]),
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                     StatementFactory::createCrawlerFilterCall('input[name=radio-not-checked]', $radioGroupPlaceholder),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(0)->isSelected()'),
                     StatementFactory::createAssertTrue('$radioGroup->getElement(1)->isSelected()'),
@@ -495,13 +495,13 @@ trait SetActionFunctionalDataProviderTrait
             'input action, literal value: radio group has checked, empty value' => [
                 'fixture' => '/form.html',
                 'action' => $actionParser->parse('set $"input[name=radio-checked]" to ""'),
-                'additionalSetupStatements' => new CodeBlock([
+                'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCall('input[name=radio-checked]', $radioGroupPlaceholder),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(0)->isSelected()'),
                     StatementFactory::createAssertTrue('$radioGroup->getElement(1)->isSelected()'),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(2)->isSelected()'),
                 ]),
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                     StatementFactory::createCrawlerFilterCall('input[name=radio-checked]', $radioGroupPlaceholder),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(0)->isSelected()'),
                     StatementFactory::createAssertTrue('$radioGroup->getElement(1)->isSelected()'),
@@ -511,13 +511,13 @@ trait SetActionFunctionalDataProviderTrait
             'input action, literal value: radio group has checked, invalid non-empty value' => [
                 'fixture' => '/form.html',
                 'action' => $actionParser->parse('set $"input[name=radio-checked]" to "invalid"'),
-                'additionalSetupStatements' => new CodeBlock([
+                'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCall('input[name=radio-checked]', $radioGroupPlaceholder),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(0)->isSelected()'),
                     StatementFactory::createAssertTrue('$radioGroup->getElement(1)->isSelected()'),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(2)->isSelected()'),
                 ]),
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                     StatementFactory::createCrawlerFilterCall('input[name=radio-checked]', $radioGroupPlaceholder),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(0)->isSelected()'),
                     StatementFactory::createAssertTrue('$radioGroup->getElement(1)->isSelected()'),
@@ -527,13 +527,13 @@ trait SetActionFunctionalDataProviderTrait
             'input action, literal value: radio group has checked, valid non-empty value' => [
                 'fixture' => '/form.html',
                 'action' => $actionParser->parse('set $"input[name=radio-checked]" to "checked-3"'),
-                'additionalSetupStatements' => new CodeBlock([
+                'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCall('input[name=radio-checked]', $radioGroupPlaceholder),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(0)->isSelected()'),
                     StatementFactory::createAssertTrue('$radioGroup->getElement(1)->isSelected()'),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(2)->isSelected()'),
                 ]),
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                     StatementFactory::createCrawlerFilterCall('input[name=radio-checked]', $radioGroupPlaceholder),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(0)->isSelected()'),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(1)->isSelected()'),

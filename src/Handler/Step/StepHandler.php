@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Step;
 
-use webignition\BasilCompilableSource\Block\CodeBlock;
-use webignition\BasilCompilableSource\Block\CodeBlockInterface;
-use webignition\BasilCompilableSource\Line\EmptyLine;
+use webignition\BasilCompilableSource\Body\Body;
+use webignition\BasilCompilableSource\Body\BodyInterface;
+use webignition\BasilCompilableSource\EmptyLine;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
@@ -47,26 +47,26 @@ class StepHandler
     /**
      * @param StepInterface $step
      *
-     * @return CodeBlockInterface
+     * @return BodyInterface
      *
      * @throws UnsupportedStepException
      */
-    public function handle(StepInterface $step): CodeBlockInterface
+    public function handle(StepInterface $step): BodyInterface
     {
-        $blockSources = [];
+        $bodySources = [];
 
         try {
             foreach ($step->getActions() as $action) {
                 try {
                     $derivedActionAssertions = $this->derivedAssertionFactory->createForAction($action);
-                    $blockSources[] = $this->createDerivedAssertionsBlock($derivedActionAssertions);
+                    $bodySources[] = $this->createDerivedAssertionsBody($derivedActionAssertions);
                 } catch (UnsupportedContentException $unsupportedContentException) {
                     throw new UnsupportedStatementException($action, $unsupportedContentException);
                 }
 
-                $blockSources[] = $this->statementBlockFactory->create($action);
-                $blockSources[] = $this->actionHandler->handle($action);
-                $blockSources[] = new EmptyLine();
+                $bodySources[] = $this->statementBlockFactory->create($action);
+                $bodySources[] = $this->actionHandler->handle($action);
+                $bodySources[] = new EmptyLine();
             }
 
             $stepAssertions = $step->getAssertions();
@@ -82,28 +82,28 @@ class StepHandler
                 }
             }
 
-            $blockSources[] = $this->createDerivedAssertionsBlock($derivedAssertionAssertions);
+            $bodySources[] = $this->createDerivedAssertionsBody($derivedAssertionAssertions);
 
             foreach ($stepAssertions as $assertion) {
-                $blockSources[] = $this->statementBlockFactory->create($assertion);
-                $blockSources[] = $this->assertionHandler->handle($assertion);
-                $blockSources[] = new EmptyLine();
+                $bodySources[] = $this->statementBlockFactory->create($assertion);
+                $bodySources[] = $this->assertionHandler->handle($assertion);
+                $bodySources[] = new EmptyLine();
             }
         } catch (UnsupportedStatementException $unsupportedStatementException) {
             throw new UnsupportedStepException($step, $unsupportedStatementException);
         }
 
-        return new CodeBlock($blockSources);
+        return new Body($bodySources);
     }
 
     /**
      * @param UniqueAssertionCollection $assertions
      *
-     * @return CodeBlockInterface
+     * @return BodyInterface
      *
      * @throws UnsupportedStatementException
      */
-    private function createDerivedAssertionsBlock(UniqueAssertionCollection $assertions): CodeBlockInterface
+    private function createDerivedAssertionsBody(UniqueAssertionCollection $assertions): BodyInterface
     {
         $derivedAssertionBlockSources = [];
         foreach ($assertions as $assertion) {
@@ -115,6 +115,6 @@ class StepHandler
             $derivedAssertionBlockSources[] = new EmptyLine();
         }
 
-        return new CodeBlock($derivedAssertionBlockSources);
+        return new Body($derivedAssertionBlockSources);
     }
 }
