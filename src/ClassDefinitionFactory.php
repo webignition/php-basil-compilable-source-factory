@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory;
 
-use webignition\BasilCompilableSource\Block\CodeBlock;
+use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\ClassDefinition;
 use webignition\BasilCompilableSource\ClassDefinitionInterface;
-use webignition\BasilCompilableSource\Line\LiteralExpression;
-use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSource\Line\MethodInvocation\StaticObjectMethodInvocation;
-use webignition\BasilCompilableSource\Line\Statement\Statement;
+use webignition\BasilCompilableSource\Expression\LiteralExpression;
+use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
+use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\MethodDefinition;
 use webignition\BasilCompilableSource\MethodDefinitionInterface;
 use webignition\BasilCompilableSource\StaticObject;
@@ -66,7 +66,7 @@ class ClassDefinitionFactory
 
     private function createSetupBeforeClassMethod(TestInterface $test): MethodDefinitionInterface
     {
-        $method = new MethodDefinition('setUpBeforeClass', new CodeBlock([
+        $method = new MethodDefinition('setUpBeforeClass', new Body([
             new Statement(
                 new StaticObjectMethodInvocation(
                     new StaticObject('parent'),

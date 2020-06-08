@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler;
 
-use webignition\BasilCompilableSource\Block\CodeBlock;
-use webignition\BasilCompilableSource\Block\CodeBlockInterface;
-use webignition\BasilCompilableSource\Line\ExpressionInterface;
-use webignition\BasilCompilableSource\Line\LiteralExpression;
-use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
-use webignition\BasilCompilableSource\Line\Statement\Statement;
+use webignition\BasilCompilableSource\Body\Body;
+use webignition\BasilCompilableSource\Body\BodyInterface;
+use webignition\BasilCompilableSource\Expression\ExpressionInterface;
+use webignition\BasilCompilableSource\Expression\LiteralExpression;
+use webignition\BasilCompilableSource\Statement\AssignmentStatement;
+use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
@@ -36,7 +36,7 @@ class DomIdentifierHandlerTest extends AbstractBrowserTestCase
     public function testHandleElementValue(
         string $fixture,
         string $serializedElementIdentifier,
-        CodeBlockInterface $teardownStatements
+        BodyInterface $teardownStatements
     ) {
         $source = $this->handler->handleElementValue($serializedElementIdentifier);
 
@@ -53,7 +53,7 @@ class DomIdentifierHandlerTest extends AbstractBrowserTestCase
                 'serializedElementIdentifier' => $elementIdentifierSerializer->serialize(
                     new ElementIdentifier('input', 1)
                 ),
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                     StatementFactory::createAssertSame('""', '$value'),
                 ]),
             ],
@@ -63,7 +63,7 @@ class DomIdentifierHandlerTest extends AbstractBrowserTestCase
                     (new ElementIdentifier('input', 1))
                         ->withParentIdentifier(new ElementIdentifier('form[action="/action2"]'))
                 ),
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                     StatementFactory::createAssertSame('"test"', '$value'),
                 ]),
             ],
@@ -77,7 +77,7 @@ class DomIdentifierHandlerTest extends AbstractBrowserTestCase
         string $fixture,
         string $serializedElementIdentifier,
         string $attributeName,
-        CodeBlockInterface $teardownStatements
+        BodyInterface $teardownStatements
     ) {
         $source = $this->handler->handleAttributeValue($serializedElementIdentifier, $attributeName);
 
@@ -95,7 +95,7 @@ class DomIdentifierHandlerTest extends AbstractBrowserTestCase
                     new AttributeIdentifier('input', 'name', 1)
                 ),
                 'attributeName' => 'name',
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                     StatementFactory::createAssertSame('"input-without-value"', '$value'),
                 ]),
             ],
@@ -106,7 +106,7 @@ class DomIdentifierHandlerTest extends AbstractBrowserTestCase
                         ->withParentIdentifier(new ElementIdentifier('form[action="/action2"]'))
                 ),
                 'attributeName' => 'name',
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                     StatementFactory::createAssertSame('"input-2"', '$value'),
                 ]),
             ],
@@ -119,7 +119,7 @@ class DomIdentifierHandlerTest extends AbstractBrowserTestCase
     public function testHandleElementCollection(
         string $fixture,
         string $serializedElementIdentifier,
-        CodeBlockInterface $teardownStatements
+        BodyInterface $teardownStatements
     ) {
         $source = $this->handler->handleElementCollection($serializedElementIdentifier);
 
@@ -136,7 +136,7 @@ class DomIdentifierHandlerTest extends AbstractBrowserTestCase
                 'serializedElementIdentifier' => $elementIdentifierSerializer->serialize(
                     new ElementIdentifier('input', 1)
                 ),
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                     StatementFactory::createAssertCount('1', '$value'),
                     new Statement(new LiteralExpression('$element = $value->current()')),
                     StatementFactory::createAssertSame('""', '$element->getAttribute(\'value\')'),
@@ -148,7 +148,7 @@ class DomIdentifierHandlerTest extends AbstractBrowserTestCase
                     (new ElementIdentifier('input', 1))
                         ->withParentIdentifier(new ElementIdentifier('form[action="/action2"]'))
                 ),
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                     StatementFactory::createAssertCount('1', '$value'),
                     new Statement(new LiteralExpression('$element = $value->current()')),
                     StatementFactory::createAssertSame('null', '$element->getAttribute(\'test\')'),
@@ -160,7 +160,7 @@ class DomIdentifierHandlerTest extends AbstractBrowserTestCase
     private function assertSource(
         ExpressionInterface $source,
         string $fixture,
-        CodeBlockInterface $teardownStatements
+        BodyInterface $teardownStatements
     ): void {
         $instrumentedSource = new AssignmentStatement(
             new VariableName('value'),
@@ -168,7 +168,7 @@ class DomIdentifierHandlerTest extends AbstractBrowserTestCase
         );
 
         $classCode = $this->testCodeGenerator->createBrowserTestForBlock(
-            new CodeBlock([
+            new Body([
                 $instrumentedSource,
             ]),
             $fixture,

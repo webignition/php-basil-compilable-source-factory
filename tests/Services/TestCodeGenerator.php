@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
-use webignition\BasilCompilableSource\Block\CodeBlockInterface;
+use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\ClassDefinition;
 use webignition\BasilCompilableSource\ClassDefinitionInterface;
-use webignition\BasilCompilableSource\Line\ClassDependency;
+use webignition\BasilCompilableSource\Expression\ClassDependency;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractGeneratedTestCase;
@@ -32,22 +32,22 @@ class TestCodeGenerator
     }
 
     /**
-     * @param CodeBlockInterface $block
+     * @param BodyInterface $body
      * @param string $fixture
-     * @param CodeBlockInterface|null $additionalSetupStatements
-     * @param CodeBlockInterface|null $teardownStatements
+     * @param BodyInterface|null $additionalSetupStatements
+     * @param BodyInterface|null $teardownStatements
      * @param array<string, string> $additionalVariableIdentifiers
      *
      * @return string
      */
     public function createBrowserTestForBlock(
-        CodeBlockInterface $block,
+        BodyInterface $body,
         string $fixture,
-        ?CodeBlockInterface $additionalSetupStatements = null,
-        ?CodeBlockInterface $teardownStatements = null,
+        ?BodyInterface $additionalSetupStatements = null,
+        ?BodyInterface $teardownStatements = null,
         array $additionalVariableIdentifiers = []
     ): string {
-        $codeSource = CodeBlockFactory::createForSourceBlock($block, $teardownStatements);
+        $codeSource = BodyFactory::createForSourceBlock($body, $teardownStatements);
 
         $classDefinition = ClassDefinitionFactory::createGeneratedBrowserTestForBlock(
             $fixture,

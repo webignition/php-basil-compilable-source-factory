@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
-use webignition\BasilCompilableSource\Block\CodeBlock;
-use webignition\BasilCompilableSource\Block\CodeBlockInterface;
-use webignition\BasilCompilableSource\Line\LiteralExpression;
-use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
+use webignition\BasilCompilableSource\Body\Body;
+use webignition\BasilCompilableSource\Body\BodyInterface;
+use webignition\BasilCompilableSource\Expression\LiteralExpression;
+use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSource\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
@@ -46,11 +46,11 @@ class WaitForActionHandler
     /**
      * @param ActionInterface $action
      *
-     * @return CodeBlockInterface
+     * @return BodyInterface
      *
      * @throws UnsupportedContentException
      */
-    public function handle(ActionInterface $action): CodeBlockInterface
+    public function handle(ActionInterface $action): BodyInterface
     {
         $identifier = $action->getIdentifier();
 
@@ -67,7 +67,7 @@ class WaitForActionHandler
             throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }
 
-        return new CodeBlock([
+        return new Body([
             new AssignmentStatement(
                 new VariableDependency(VariableNames::PANTHER_CRAWLER),
                 new ObjectMethodInvocation(

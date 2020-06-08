@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\Action;
 
-use webignition\BasilCompilableSource\Block\CodeBlockInterface;
+use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\BackActionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\ClickActionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\ForwardActionFunctionalDataProviderTrait;
@@ -51,8 +51,8 @@ class ActionHandlerTest extends AbstractBrowserTestCase
     public function testHandleForExecutableActions(
         string $fixture,
         ActionInterface $action,
-        ?CodeBlockInterface $additionalSetupStatements = null,
-        ?CodeBlockInterface $teardownStatements = null,
+        ?BodyInterface $additionalSetupStatements = null,
+        ?BodyInterface $teardownStatements = null,
         array $additionalVariableIdentifiers = []
     ) {
         $source = $this->handler->handle($action);

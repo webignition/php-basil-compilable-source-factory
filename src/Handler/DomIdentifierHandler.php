@@ -4,14 +4,14 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler;
 
-use webignition\BasilCompilableSource\Block\CodeBlock;
-use webignition\BasilCompilableSource\Line\ClosureExpression;
-use webignition\BasilCompilableSource\Line\EmptyLine;
-use webignition\BasilCompilableSource\Line\ExpressionInterface;
-use webignition\BasilCompilableSource\Line\LiteralExpression;
-use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
-use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
+use webignition\BasilCompilableSource\Body\Body;
+use webignition\BasilCompilableSource\Expression\ClosureExpression;
+use webignition\BasilCompilableSource\EmptyLine;
+use webignition\BasilCompilableSource\Expression\ExpressionInterface;
+use webignition\BasilCompilableSource\Expression\LiteralExpression;
+use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSource\Statement\AssignmentStatement;
+use webignition\BasilCompilableSource\Statement\ReturnStatement;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
@@ -88,7 +88,7 @@ class DomIdentifierHandler
             )
         );
 
-        return new ClosureExpression(new CodeBlock($closureExpressionStatements));
+        return new ClosureExpression(new Body($closureExpressionStatements));
     }
 
     public function handleElementValue(string $serializedElementIdentifier): ExpressionInterface
@@ -117,6 +117,6 @@ class DomIdentifierHandler
             );
 
 
-        return new ClosureExpression(new CodeBlock($closureExpressionStatements));
+        return new ClosureExpression(new Body($closureExpressionStatements));
     }
 }

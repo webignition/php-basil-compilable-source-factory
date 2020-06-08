@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\CallFactory;
 
 use Facebook\WebDriver\WebDriverElement;
-use webignition\BasilCompilableSource\Block\CodeBlock;
-use webignition\BasilCompilableSource\Block\CodeBlockInterface;
-use webignition\BasilCompilableSource\Line\ExpressionInterface;
-use webignition\BasilCompilableSource\Line\LiteralExpression;
-use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
-use webignition\BasilCompilableSource\Line\Statement\Statement;
+use webignition\BasilCompilableSource\Body\Body;
+use webignition\BasilCompilableSource\Body\BodyInterface;
+use webignition\BasilCompilableSource\Expression\ExpressionInterface;
+use webignition\BasilCompilableSource\Expression\LiteralExpression;
+use webignition\BasilCompilableSource\Statement\AssignmentStatement;
+use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\ElementIdentifierCallFactory;
@@ -37,13 +37,13 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
     public function testCreateFindCall(
         string $fixture,
         ExpressionInterface $elementIdentifierExpression,
-        CodeBlockInterface $teardownStatements
+        BodyInterface $teardownStatements
     ) {
         $source = $this->factory->createFindCall($elementIdentifierExpression);
 
         $collectionPlaceholder = new VariableName('collection');
 
-        $instrumentedSource = new CodeBlock([
+        $instrumentedSource = new Body([
             new AssignmentStatement($collectionPlaceholder, $source),
         ]);
 
@@ -78,7 +78,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
                 'elementIdentifierExpression' => $elementIdentifierCallFactory->createConstructorCall(
                     $elementIdentifierSerializer->serialize(new ElementIdentifier('input', 1))
                 ),
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                     StatementFactory::createAssertCount('1', '$collection'),
                     new Statement(new LiteralExpression('$element = $collection->get(0)')),
                     StatementFactory::createAssertInstanceOf('\'' . WebDriverElement::class . '\'', '$element'),
@@ -93,7 +93,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
                             ->withParentIdentifier(new ElementIdentifier('form[action="/action2"]'))
                     )
                 ),
-                'teardownStatements' => new CodeBlock([
+                'teardownStatements' => new Body([
                     StatementFactory::createAssertCount('1', '$collection'),
                     new Statement(new LiteralExpression('$element = $collection->get(0)')),
                     StatementFactory::createAssertInstanceOf('\'' . WebDriverElement::class . '\'', '$element'),

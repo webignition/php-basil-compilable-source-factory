@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Step;
 
-use webignition\BasilCompilableSource\Block\CodeBlock;
-use webignition\BasilCompilableSource\Block\CodeBlockInterface;
-use webignition\BasilCompilableSource\Line\ObjectPropertyAccessExpression;
-use webignition\BasilCompilableSource\Line\SingleLineComment;
-use webignition\BasilCompilableSource\Line\Statement\AssignmentStatement;
-use webignition\BasilCompilableSource\Line\Statement\StatementInterface;
+use webignition\BasilCompilableSource\Body\Body;
+use webignition\BasilCompilableSource\Body\BodyInterface;
+use webignition\BasilCompilableSource\Expression\ObjectPropertyAccessExpression;
+use webignition\BasilCompilableSource\SingleLineComment;
+use webignition\BasilCompilableSource\Statement\AssignmentStatement;
+use webignition\BasilCompilableSource\Statement\StatementInterface;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSourceFactory\CallFactory\StatementFactoryCallFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
@@ -32,7 +32,7 @@ class StatementBlockFactory
         );
     }
 
-    public function create(StatementModelInterface $statement): CodeBlockInterface
+    public function create(StatementModelInterface $statement): BodyInterface
     {
         $statementCommentContent = $statement->getSource();
 
@@ -40,7 +40,7 @@ class StatementBlockFactory
             $statementCommentContent .= ' <- ' . $statement->getSourceStatement()->getSource();
         }
 
-        return new CodeBlock([
+        return new Body([
             new SingleLineComment($statementCommentContent),
             $this->createAddToHandledStatementsStatement($statement),
         ]);

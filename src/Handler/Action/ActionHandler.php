@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
-use webignition\BasilCompilableSource\Block\CodeBlock;
-use webignition\BasilCompilableSource\Block\CodeBlockInterface;
-use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSource\Line\Statement\Statement;
+use webignition\BasilCompilableSource\Body\Body;
+use webignition\BasilCompilableSource\Body\BodyInterface;
+use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
@@ -50,11 +50,11 @@ class ActionHandler
     /**
      * @param ActionInterface $action
      *
-     * @return CodeBlockInterface
+     * @return BodyInterface
      *
      * @throws UnsupportedStatementException
      */
-    public function handle(ActionInterface $action): CodeBlockInterface
+    public function handle(ActionInterface $action): BodyInterface
     {
         try {
             if (in_array($action->getType(), ['back', 'forward', 'reload'])) {
@@ -89,10 +89,10 @@ class ActionHandler
         throw new UnsupportedStatementException($action);
     }
 
-    private function addRefreshCrawlerAndNavigatorStatement(CodeBlockInterface $codeBlock): CodeBlockInterface
+    private function addRefreshCrawlerAndNavigatorStatement(BodyInterface $body): BodyInterface
     {
-        return new CodeBlock([
-            $codeBlock,
+        return new Body([
+            $body,
             new Statement(
                 new ObjectMethodInvocation(
                     new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),

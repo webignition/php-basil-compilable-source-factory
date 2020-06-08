@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
-use webignition\BasilCompilableSource\Block\CodeBlock;
+use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilParser\ActionParser;
 
@@ -16,11 +16,11 @@ trait SubmitActionFunctionalDataProviderTrait
 
         $fixture = '/action-click-submit.html';
 
-        $setupStatements = new CodeBlock([
+        $setupStatements = new Body([
             StatementFactory::createAssertBrowserTitle('Click'),
         ]);
 
-        $teardownStatements = new CodeBlock([
+        $teardownStatements = new Body([
             StatementFactory::createAssertBrowserTitle('Form'),
         ]);
 
