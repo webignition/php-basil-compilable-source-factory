@@ -7,7 +7,6 @@ namespace webignition\BasilCompilableSourceFactory;
 use webignition\BasilCompilableSource\Block\CodeBlock;
 use webignition\BasilCompilableSource\Block\DocBlock;
 use webignition\BasilCompilableSource\Line\EmptyLine;
-use webignition\BasilCompilableSource\Line\Literal;
 use webignition\BasilCompilableSource\Line\LiteralExpression;
 use webignition\BasilCompilableSource\Line\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Line\Statement\ReturnStatement;
@@ -96,7 +95,7 @@ class StepMethodFactory
             );
 
             $testMethod->setDocBlock(new DocBlock([
-                new Literal('@dataProvider ' . $dataProviderMethod->getName()),
+                '@dataProvider ' . $dataProviderMethod->getName(),
             ]));
         }
 
