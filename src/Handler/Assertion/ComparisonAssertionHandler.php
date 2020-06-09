@@ -7,10 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\Expression\CastExpression;
-use webignition\BasilCompilableSource\Expression\ClosureExpression;
-use webignition\BasilCompilableSource\Expression\ComparisonExpression;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
-use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\Statement\StatementInterface;
@@ -70,6 +67,39 @@ class ComparisonAssertionHandler
     }
 
     /**
+     * @param AssertionInterface $assertion
+     *
+     * @return BodyInterface
+     *
+     * @throws UnsupportedContentException
+     */
+    public function handle(AssertionInterface $assertion): BodyInterface
+    {
+        $assertionMethod = self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP[$assertion->getOperator()];
+
+        $examinedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull($assertion->getIdentifier());
+        $expectedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull($assertion->getValue());
+
+        $assertionArguments = [
+            $this->createGetExpectedValueInvocation(),
+            $this->createGetExaminedValueInvocation(),
+        ];
+
+        $isStringArgumentAssertionMethod = in_array($assertionMethod, $this->methodsWithStringArguments);
+        if ($isStringArgumentAssertionMethod) {
+            array_walk($assertionArguments, function (ExpressionInterface &$expression) {
+                $expression = new CastExpression($expression, 'string');
+            });
+        }
+
+        return new Body([
+            new Statement($this->createSetExpectedValueInvocation([$expectedAccessor])),
+            new Statement($this->createSetExaminedValueInvocation([$examinedAccessor])),
+            $this->createAssertionStatement($assertion, $assertionArguments),
+        ]);
+    }
+
+    /**
      * @param ExpressionInterface[] $arguments
      *
      * @return ExpressionInterface
@@ -123,63 +153,6 @@ class ComparisonAssertionHandler
             $arguments,
             $argumentFormat
         );
-    }
-
-    /**
-     * @param AssertionInterface $assertion
-     *
-     * @return BodyInterface
-     *
-     * @throws UnsupportedContentException
-     */
-    public function handle(AssertionInterface $assertion): BodyInterface
-    {
-        $assertionMethod = self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP[$assertion->getOperator()];
-
-        $examinedAccessor = $this->createValueAccessor($assertion->getIdentifier());
-        $expectedAccessor = $this->createValueAccessor($assertion->getValue());
-
-        $assertionArguments = [
-            $this->createGetExpectedValueInvocation(),
-            $this->createGetExaminedValueInvocation(),
-        ];
-
-        $isStringArgumentAssertionMethod = in_array($assertionMethod, $this->methodsWithStringArguments);
-        if ($isStringArgumentAssertionMethod) {
-            array_walk($assertionArguments, function (ExpressionInterface &$expression) {
-                $expression = new CastExpression($expression, 'string');
-            });
-        }
-
-        return new Body([
-            new Statement($this->createSetExpectedValueInvocation([$expectedAccessor])),
-            new Statement($this->createSetExaminedValueInvocation([$examinedAccessor])),
-            $this->createAssertionStatement($assertion, $assertionArguments),
-        ]);
-    }
-
-    /**
-     * @param string $value
-     *
-     * @return ExpressionInterface
-     *
-     * @throws UnsupportedContentException
-     */
-    private function createValueAccessor(string $value): ExpressionInterface
-    {
-        $accessor = $this->valueAccessorFactory->create($value);
-
-        if (!$accessor instanceof ClosureExpression) {
-            $defaultValue = $this->accessorDefaultValueFactory->createString($value) ?? 'null';
-
-            $accessor = new ComparisonExpression(
-                $accessor,
-                new LiteralExpression($defaultValue),
-                '??'
-            );
-        }
-
-        return $accessor;
     }
 
     /**

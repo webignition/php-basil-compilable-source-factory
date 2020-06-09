@@ -6,7 +6,6 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Body\BodyInterface;
-use webignition\BasilCompilableSource\Expression\ClosureExpression;
 use webignition\BasilCompilableSource\Expression\ComparisonExpression;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
@@ -66,6 +65,37 @@ class IsRegExpAssertionHandler
             new ValueTypeIdentifier(),
             ValueAccessorFactory::createFactory()
         );
+    }
+
+    /**
+     * @param AssertionInterface $assertion
+     *
+     * @return BodyInterface
+     *
+     * @throws UnsupportedContentException
+     */
+    public function handle(AssertionInterface $assertion): BodyInterface
+    {
+        $identifier = $assertion->getIdentifier();
+
+        if ($this->valueTypeIdentifier->isScalarValue($identifier)) {
+            $examinedAccessor = new LiteralExpression($identifier);
+
+            return $this->createIsRegExpAssertionBody($examinedAccessor, $assertion);
+        }
+
+        if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
+            $domIdentifier = $this->domIdentifierFactory->createFromIdentifierString($identifier);
+            if (null === $domIdentifier) {
+                throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
+            }
+
+            $examinedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull($assertion->getIdentifier());
+
+            return $this->createIsRegExpAssertionBody($examinedAccessor, $assertion);
+        }
+
+        throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
     }
 
     /**
@@ -129,37 +159,6 @@ class IsRegExpAssertionHandler
         );
     }
 
-    /**
-     * @param AssertionInterface $assertion
-     *
-     * @return BodyInterface
-     *
-     * @throws UnsupportedContentException
-     */
-    public function handle(AssertionInterface $assertion): BodyInterface
-    {
-        $identifier = $assertion->getIdentifier();
-
-        if ($this->valueTypeIdentifier->isScalarValue($identifier)) {
-            $examinedAccessor = new LiteralExpression($identifier);
-
-            return $this->createIsRegExpAssertionBody($examinedAccessor, $assertion);
-        }
-
-        if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
-            $domIdentifier = $this->domIdentifierFactory->createFromIdentifierString($identifier);
-            if (null === $domIdentifier) {
-                throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
-            }
-
-            $examinedAccessor = $this->createValueAccessor($assertion->getIdentifier());
-
-            return $this->createIsRegExpAssertionBody($examinedAccessor, $assertion);
-        }
-
-        throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
-    }
-
     private function createIsRegExpAssertionBody(
         ExpressionInterface $examinedAccessor,
         AssertionInterface $assertion
@@ -193,30 +192,6 @@ class IsRegExpAssertionHandler
                 $this->createGetBooleanExpectedValueInvocation()
             ]),
         ]);
-    }
-
-    /**
-     * @param string $value
-     *
-     * @return ExpressionInterface
-     *
-     * @throws UnsupportedContentException
-     */
-    private function createValueAccessor(string $value): ExpressionInterface
-    {
-        $accessor = $this->valueAccessorFactory->create($value);
-
-        if (!$accessor instanceof ClosureExpression) {
-            $defaultValue = $this->accessorDefaultValueFactory->createString($value) ?? 'null';
-
-            $accessor = new ComparisonExpression(
-                $accessor,
-                new LiteralExpression($defaultValue),
-                '??'
-            );
-        }
-
-        return $accessor;
     }
 
     /**
