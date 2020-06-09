@@ -46,14 +46,14 @@ class AssertionHandler
         try {
             if ($assertion->isComparison()) {
                 return $this->comparisonAssertionHandler->handle($assertion);
-            } else {
-                if (in_array($assertion->getOperator(), ['exists', 'not-exists'])) {
-                    return $this->existenceAssertionHandler->handle($assertion);
-                }
+            }
 
-                if ('is-regexp' === $assertion->getOperator()) {
-                    return $this->isRegExpAssertionHandler->handle($assertion);
-                }
+            if (in_array($assertion->getOperator(), ['exists', 'not-exists'])) {
+                return $this->existenceAssertionHandler->handle($assertion);
+            }
+
+            if ('is-regexp' === $assertion->getOperator()) {
+                return $this->isRegExpAssertionHandler->handle($assertion);
             }
         } catch (UnsupportedContentException $previous) {
             throw new UnsupportedStatementException($assertion, $previous);
