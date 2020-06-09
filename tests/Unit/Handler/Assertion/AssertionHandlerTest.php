@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Assertion;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
+use webignition\BasilCompilableSourceFactory\Handler\Assertion\ExistenceAssertionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromExcludesAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromExistsAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromIncludesAssertionDataProviderTrait;
@@ -17,7 +18,6 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\Create
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromNotExistsAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ObjectReflector;
-use webignition\BasilDomIdentifierFactory\Factory;
 use webignition\BasilModels\Assertion\AssertionInterface;
 use webignition\BasilParser\AssertionParser;
 
@@ -106,17 +106,19 @@ class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
                     )
                 ),
                 'initializer' => function (AssertionHandler $handler) {
-                    $domIdentifierFactory = \Mockery::mock(Factory::class);
-                    $domIdentifierFactory
-                        ->shouldReceive('createFromIdentifierString')
-                        ->with('$".selector"')
-                        ->andReturnNull();
+                    $existenceAssertionHandler = \Mockery::mock(ExistenceAssertionHandler::class);
+                    $existenceAssertionHandler
+                        ->shouldReceive('handle')
+                        ->andThrow(new UnsupportedContentException(
+                            UnsupportedContentException::TYPE_IDENTIFIER,
+                            '$".selector"'
+                        ));
 
                     ObjectReflector::setProperty(
                         $handler,
                         AssertionHandler::class,
-                        'domIdentifierFactory',
-                        $domIdentifierFactory
+                        'existenceAssertionHandler',
+                        $existenceAssertionHandler
                     );
                 },
             ],
