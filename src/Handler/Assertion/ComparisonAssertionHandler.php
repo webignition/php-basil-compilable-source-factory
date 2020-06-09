@@ -11,6 +11,7 @@ use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
+use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
 use webignition\BasilModels\Assertion\AssertionInterface;
 
@@ -68,9 +69,14 @@ class ComparisonAssertionHandler extends AbstractAssertionHandler
      * @return BodyInterface
      *
      * @throws UnsupportedContentException
+     * @throws UnsupportedStatementException
      */
     public function handle(AssertionInterface $assertion): BodyInterface
     {
+        if (!$assertion->isComparison()) {
+            throw new UnsupportedStatementException($assertion);
+        }
+
         $assertionMethod = self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP[$assertion->getOperator()];
 
         $examinedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull($assertion->getIdentifier());

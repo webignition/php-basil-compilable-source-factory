@@ -8,13 +8,8 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\ExistenceAssertionHandler;
-use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromExcludesAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromExistsAssertionDataProviderTrait;
-use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromIncludesAssertionDataProviderTrait;
-use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromIsAssertionDataProviderTrait;
-use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromIsNotAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromIsRegExpAssertionDataProviderTrait;
-use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromMatchesAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromNotExistsAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ObjectReflector;
@@ -23,22 +18,12 @@ use webignition\BasilParser\AssertionParser;
 
 class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
 {
-    use CreateFromExcludesAssertionDataProviderTrait;
     use CreateFromExistsAssertionDataProviderTrait;
-    use CreateFromIncludesAssertionDataProviderTrait;
-    use CreateFromIsAssertionDataProviderTrait;
-    use CreateFromIsNotAssertionDataProviderTrait;
     use CreateFromIsRegExpAssertionDataProviderTrait;
-    use CreateFromMatchesAssertionDataProviderTrait;
     use CreateFromNotExistsAssertionDataProviderTrait;
 
     /**
-     * @dataProvider createFromExcludesAssertionDataProvider
      * @dataProvider createFromExistsAssertionDataProvider
-     * @dataProvider createFromIncludesAssertionDataProvider
-     * @dataProvider createFromIsAssertionDataProvider
-     * @dataProvider createFromIsNotAssertionDataProvider
-     * @dataProvider createFromMatchesAssertionDataProvider
      * @dataProvider createFromNotExistsAssertionDataProvider
      * @dataProvider createFromIsRegExpAssertionDataProvider
      *
