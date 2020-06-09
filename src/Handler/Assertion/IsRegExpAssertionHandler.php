@@ -10,9 +10,7 @@ use webignition\BasilCompilableSource\Expression\ComparisonExpression;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
-use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Statement\Statement;
-use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
@@ -25,7 +23,6 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
 {
     public const ASSERT_FALSE_METHOD = 'assertFalse';
 
-    private AccessorDefaultValueFactory $accessorDefaultValueFactory;
     private DomIdentifierFactory $domIdentifierFactory;
     private IdentifierTypeAnalyser $identifierTypeAnalyser;
     private ValueTypeIdentifier $valueTypeIdentifier;
@@ -36,7 +33,6 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
     ];
 
     public function __construct(
-        AccessorDefaultValueFactory $accessorDefaultValueFactory,
         AssertionMethodInvocationFactory $assertionMethodInvocationFactory,
         DomIdentifierFactory $domIdentifierFactory,
         IdentifierTypeAnalyser $identifierTypeAnalyser,
@@ -45,7 +41,6 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
     ) {
         parent::__construct($assertionMethodInvocationFactory);
 
-        $this->accessorDefaultValueFactory = $accessorDefaultValueFactory;
         $this->domIdentifierFactory = $domIdentifierFactory;
         $this->identifierTypeAnalyser = $identifierTypeAnalyser;
         $this->valueTypeIdentifier = $valueTypeIdentifier;
@@ -55,7 +50,6 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
     public static function createHandler(): self
     {
         return new IsRegExpAssertionHandler(
-            AccessorDefaultValueFactory::createFactory(),
             AssertionMethodInvocationFactory::createFactory(),
             DomIdentifierFactory::createFactory(),
             IdentifierTypeAnalyser::create(),
@@ -100,46 +94,6 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
         throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
     }
 
-    /**
-     * @param ExpressionInterface[] $arguments
-     * @param string $argumentFormat
-     *
-     * @return ExpressionInterface
-     */
-    private function createSetBooleanExpectedValueInvocation(
-        array $arguments,
-        string $argumentFormat = ObjectMethodInvocation::ARGUMENT_FORMAT_INLINE
-    ): ExpressionInterface {
-        return $this->createPhpUnitTestCaseObjectMethodInvocation(
-            'setBooleanExpectedValue',
-            $arguments,
-            $argumentFormat
-        );
-    }
-
-    private function createGetBooleanExpectedValueInvocation(): ExpressionInterface
-    {
-        return $this->createPhpUnitTestCaseObjectMethodInvocation('getBooleanExpectedValue');
-    }
-
-    /**
-     * @param ExpressionInterface[] $arguments
-     *
-     * @return ExpressionInterface
-     */
-    private function createSetExaminedValueInvocation(array $arguments): ExpressionInterface
-    {
-        return $this->createPhpUnitTestCaseObjectMethodInvocation(
-            'setExaminedValue',
-            $arguments
-        );
-    }
-
-    private function createGetExaminedValueInvocation(): ExpressionInterface
-    {
-        return $this->createPhpUnitTestCaseObjectMethodInvocation('getExaminedValue');
-    }
-
     private function createIsRegExpAssertionBody(
         ExpressionInterface $examinedAccessor,
         AssertionInterface $assertion
@@ -147,7 +101,7 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
         $pregMatchInvocation = new MethodInvocation(
             'preg_match',
             [
-                $this->createGetExaminedValueInvocation(),
+                $this->createPhpUnitTestCaseObjectMethodInvocation('getExaminedValue'),
                 new LiteralExpression('null'),
             ]
         );
@@ -160,17 +114,20 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
         );
 
         return new Body([
-            new Statement($this->createSetExaminedValueInvocation([
-                $examinedAccessor
-            ])),
-            new Statement($this->createSetBooleanExpectedValueInvocation(
-                [
-                    $identityComparison
-                ],
-                MethodInvocation::ARGUMENT_FORMAT_STACKED
-            )),
+            new Statement(
+                $this->createPhpUnitTestCaseObjectMethodInvocation('setExaminedValue', [$examinedAccessor])
+            ),
+            new Statement(
+                $this->createPhpUnitTestCaseObjectMethodInvocation(
+                    'setBooleanExpectedValue',
+                    [
+                        $identityComparison
+                    ],
+                    MethodInvocation::ARGUMENT_FORMAT_STACKED
+                )
+            ),
             $this->createAssertionStatement($assertion, [
-                $this->createGetBooleanExpectedValueInvocation()
+                $this->createPhpUnitTestCaseObjectMethodInvocation('getBooleanExpectedValue')
             ]),
         ]);
     }
