@@ -10,16 +10,14 @@ use webignition\BasilCompilableSource\Expression\CastExpression;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Statement\Statement;
-use webignition\BasilCompilableSource\Statement\StatementInterface;
 use webignition\BasilCompilableSource\VariableDependency;
-use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Assertion\AssertionInterface;
 
-class ComparisonAssertionHandler
+class ComparisonAssertionHandler extends AbstractAssertionHandler
 {
     public const ASSERT_EQUALS_METHOD = 'assertEquals';
     public const ASSERT_NOT_EQUALS_METHOD = 'assertNotEquals';
@@ -27,8 +25,6 @@ class ComparisonAssertionHandler
     public const ASSERT_STRING_NOT_CONTAINS_STRING_METHOD = 'assertStringNotContainsString';
     public const ASSERT_MATCHES_METHOD = 'assertRegExp';
 
-    private AccessorDefaultValueFactory $accessorDefaultValueFactory;
-    private AssertionMethodInvocationFactory $assertionMethodInvocationFactory;
     private ValueAccessorFactory $valueAccessorFactory;
 
     private const OPERATOR_TO_ASSERTION_TEMPLATE_MAP = [
@@ -48,22 +44,25 @@ class ComparisonAssertionHandler
     ];
 
     public function __construct(
-        AccessorDefaultValueFactory $accessorDefaultValueFactory,
         AssertionMethodInvocationFactory $assertionMethodInvocationFactory,
         ValueAccessorFactory $valueAccessorFactory
     ) {
-        $this->accessorDefaultValueFactory = $accessorDefaultValueFactory;
-        $this->assertionMethodInvocationFactory = $assertionMethodInvocationFactory;
+        parent::__construct($assertionMethodInvocationFactory);
+
         $this->valueAccessorFactory = $valueAccessorFactory;
     }
 
     public static function createHandler(): self
     {
         return new ComparisonAssertionHandler(
-            AccessorDefaultValueFactory::createFactory(),
             AssertionMethodInvocationFactory::createFactory(),
             ValueAccessorFactory::createFactory()
         );
+    }
+
+    protected function getOperationToAssertionTemplateMap(): array
+    {
+        return self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP;
     }
 
     /**
@@ -152,22 +151,6 @@ class ComparisonAssertionHandler
             $methodName,
             $arguments,
             $argumentFormat
-        );
-    }
-
-    /**
-     * @param AssertionInterface $assertion
-     * @param ExpressionInterface[] $arguments
-     *
-     * @return StatementInterface
-     */
-    private function createAssertionStatement(AssertionInterface $assertion, array $arguments): StatementInterface
-    {
-        return new Statement(
-            $this->assertionMethodInvocationFactory->create(
-                self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP[$assertion->getOperator()],
-                $arguments
-            )
         );
     }
 }

@@ -19,7 +19,6 @@ use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Expression\ObjectPropertyAccessExpression;
 use webignition\BasilCompilableSource\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Statement\Statement;
-use webignition\BasilCompilableSource\Statement\StatementInterface;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclaration;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationCollection;
 use webignition\BasilCompilableSource\VariableDependency;
@@ -44,12 +43,11 @@ use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifierInterface;
 use webignition\SymfonyDomCrawlerNavigator\Exception\InvalidLocatorException;
 
-class ExistenceAssertionHandler
+class ExistenceAssertionHandler extends AbstractAssertionHandler
 {
     public const ASSERT_TRUE_METHOD = 'assertTrue';
     public const ASSERT_FALSE_METHOD = 'assertFalse';
 
-    private AssertionMethodInvocationFactory $assertionMethodInvocationFactory;
     private DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory;
     private DomIdentifierFactory $domIdentifierFactory;
     private DomIdentifierHandler $domIdentifierHandler;
@@ -75,7 +73,8 @@ class ExistenceAssertionHandler
         ElementIdentifierCallFactory $elementIdentifierCallFactory,
         ElementIdentifierSerializer $elementIdentifierSerializer
     ) {
-        $this->assertionMethodInvocationFactory = $assertionMethodInvocationFactory;
+        parent::__construct($assertionMethodInvocationFactory);
+
         $this->domCrawlerNavigatorCallFactory = $domCrawlerNavigatorCallFactory;
         $this->domIdentifierFactory = $domIdentifierFactory;
         $this->domIdentifierHandler = $domIdentifierHandler;
@@ -99,6 +98,11 @@ class ExistenceAssertionHandler
             ElementIdentifierCallFactory::createFactory(),
             ElementIdentifierSerializer::createSerializer(),
         );
+    }
+
+    protected function getOperationToAssertionTemplateMap(): array
+    {
+        return self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP;
     }
 
     /**
@@ -295,22 +299,6 @@ class ExistenceAssertionHandler
         return $isAttributeIdentifier || $isDerivedFromInteractionAction
                 ? $this->domCrawlerNavigatorCallFactory->createHasOneCall($expression)
                 : $this->domCrawlerNavigatorCallFactory->createHasCall($expression);
-    }
-
-    /**
-     * @param AssertionInterface $assertion
-     * @param ExpressionInterface[] $arguments
-     *
-     * @return StatementInterface
-     */
-    private function createAssertionStatement(AssertionInterface $assertion, array $arguments): StatementInterface
-    {
-        return new Statement(
-            $this->assertionMethodInvocationFactory->create(
-                self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP[$assertion->getOperator()],
-                $arguments
-            )
-        );
     }
 
     private function createNavigatorHasCallTryCatchBlock(

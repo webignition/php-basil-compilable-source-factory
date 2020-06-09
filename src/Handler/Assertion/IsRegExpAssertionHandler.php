@@ -12,7 +12,6 @@ use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Statement\Statement;
-use webignition\BasilCompilableSource\Statement\StatementInterface;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
@@ -24,12 +23,11 @@ use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Assertion\AssertionInterface;
 
-class IsRegExpAssertionHandler
+class IsRegExpAssertionHandler extends AbstractAssertionHandler
 {
     public const ASSERT_FALSE_METHOD = 'assertFalse';
 
     private AccessorDefaultValueFactory $accessorDefaultValueFactory;
-    private AssertionMethodInvocationFactory $assertionMethodInvocationFactory;
     private DomIdentifierFactory $domIdentifierFactory;
     private IdentifierTypeAnalyser $identifierTypeAnalyser;
     private ValueTypeIdentifier $valueTypeIdentifier;
@@ -47,8 +45,9 @@ class IsRegExpAssertionHandler
         ValueTypeIdentifier $valueTypeIdentifier,
         ValueAccessorFactory $valueAccessorFactory
     ) {
+        parent::__construct($assertionMethodInvocationFactory);
+
         $this->accessorDefaultValueFactory = $accessorDefaultValueFactory;
-        $this->assertionMethodInvocationFactory = $assertionMethodInvocationFactory;
         $this->domIdentifierFactory = $domIdentifierFactory;
         $this->identifierTypeAnalyser = $identifierTypeAnalyser;
         $this->valueTypeIdentifier = $valueTypeIdentifier;
@@ -65,6 +64,11 @@ class IsRegExpAssertionHandler
             new ValueTypeIdentifier(),
             ValueAccessorFactory::createFactory()
         );
+    }
+
+    protected function getOperationToAssertionTemplateMap(): array
+    {
+        return self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP;
     }
 
     /**
@@ -192,21 +196,5 @@ class IsRegExpAssertionHandler
                 $this->createGetBooleanExpectedValueInvocation()
             ]),
         ]);
-    }
-
-    /**
-     * @param AssertionInterface $assertion
-     * @param ExpressionInterface[] $arguments
-     *
-     * @return StatementInterface
-     */
-    private function createAssertionStatement(AssertionInterface $assertion, array $arguments): StatementInterface
-    {
-        return new Statement(
-            $this->assertionMethodInvocationFactory->create(
-                self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP[$assertion->getOperator()],
-                $arguments
-            )
-        );
     }
 }
