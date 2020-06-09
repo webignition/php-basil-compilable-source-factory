@@ -15,29 +15,14 @@ use webignition\BasilParser\AssertionParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\SymfonyDomCrawlerNavigator\Exception\InvalidLocatorException;
 
-trait CreateFromExistsAssertionDataProviderTrait
+trait CreateFromIdentifierExistsAssertionDataProviderTrait
 {
-    public function createFromExistsAssertionDataProvider(): array
+    public function createFromIdentifierExistsAssertionDataProvider(): array
     {
         $actionParser = ActionParser::create();
         $assertionParser = AssertionParser::create();
 
         return [
-            'exists comparison, page property examined value' => [
-                'assertion' => $assertionParser->parse('$page.url exists'),
-                'expectedRenderedSource' =>
-                    '{{ PHPUNIT }}->setBooleanExaminedValue(({{ CLIENT }}->getCurrentURL() ?? null) !== null);' . "\n" .
-                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
-                    '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n" .
-                    ');'
-                ,
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        VariableNames::PANTHER_CLIENT,
-                        VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
-            ],
             'exists comparison, element identifier examined value' => [
                 'assertion' => $assertionParser->parse('$".selector" exists'),
                 'expectedRenderedSource' =>
@@ -103,20 +88,6 @@ trait CreateFromExistsAssertionDataProviderTrait
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                ]),
-            ],
-            'exists comparison, data parameter value' => [
-                'assertion' => $assertionParser->parse('$data.key exists'),
-                'expectedRenderedSource' =>
-                    '{{ PHPUNIT }}->setBooleanExaminedValue(($key ?? null) !== null);' . "\n" .
-                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
-                    '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n" .
-                    ');'
-                ,
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
                     ]),
                 ]),
             ],

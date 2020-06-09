@@ -8,9 +8,7 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\ExistenceAssertionHandler;
-use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromExistsAssertionDataProviderTrait;
-use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromIsRegExpAssertionDataProviderTrait;
-use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromNotExistsAssertionDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ObjectReflector;
 use webignition\BasilModels\Assertion\AssertionInterface;
@@ -18,15 +16,16 @@ use webignition\BasilParser\AssertionParser;
 
 class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
 {
-    use CreateFromExistsAssertionDataProviderTrait;
-    use CreateFromIsRegExpAssertionDataProviderTrait;
-    use CreateFromNotExistsAssertionDataProviderTrait;
+    use Assertion\CreateFromIdentifierExistsAssertionDataProviderTrait;
+    use Assertion\CreateFromScalarExistsAssertionDataProviderTrait;
+    use Assertion\CreateFromIsRegExpAssertionDataProviderTrait;
+    use Assertion\CreateFromIdentifierNotExistsAssertionDataProviderTrait;
 
     /**
-     * @dataProvider createFromExistsAssertionDataProvider
-     * @dataProvider createFromNotExistsAssertionDataProvider
+     * @dataProvider createFromIdentifierExistsAssertionDataProvider
+     * @dataProvider createFromScalarExistsAssertionDataProvider
+     * @dataProvider createFromIdentifierNotExistsAssertionDataProvider
      * @dataProvider createFromIsRegExpAssertionDataProvider
-     *
      */
     public function testHandle(
         AssertionInterface $assertion,

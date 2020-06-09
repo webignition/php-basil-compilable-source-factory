@@ -13,9 +13,9 @@ use webignition\BasilParser\AssertionParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\SymfonyDomCrawlerNavigator\Exception\InvalidLocatorException;
 
-trait CreateFromNotExistsAssertionDataProviderTrait
+trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
 {
-    public function createFromNotExistsAssertionDataProvider(): array
+    public function createFromIdentifierNotExistsAssertionDataProvider(): array
     {
         $assertionParser = AssertionParser::create();
 
