@@ -12,13 +12,11 @@ use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Statement\Statement;
-use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
 use webignition\BasilCompilableSourceFactory\ValueTypeIdentifier;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Assertion\AssertionInterface;
@@ -140,27 +138,6 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
     private function createGetExaminedValueInvocation(): ExpressionInterface
     {
         return $this->createPhpUnitTestCaseObjectMethodInvocation('getExaminedValue');
-    }
-
-
-    /**
-     * @param string $methodName
-     * @param ExpressionInterface[] $arguments
-     * @param string $argumentFormat
-     *
-     * @return ExpressionInterface
-     */
-    private function createPhpUnitTestCaseObjectMethodInvocation(
-        string $methodName,
-        array $arguments = [],
-        string $argumentFormat = ObjectMethodInvocation::ARGUMENT_FORMAT_INLINE
-    ): ExpressionInterface {
-        return new ObjectMethodInvocation(
-            new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
-            $methodName,
-            $arguments,
-            $argumentFormat
-        );
     }
 
     private function createIsRegExpAssertionBody(

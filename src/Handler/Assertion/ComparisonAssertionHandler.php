@@ -8,13 +8,10 @@ use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\Expression\CastExpression;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
-use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Statement\Statement;
-use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Assertion\AssertionInterface;
 
 class ComparisonAssertionHandler extends AbstractAssertionHandler
@@ -131,26 +128,6 @@ class ComparisonAssertionHandler extends AbstractAssertionHandler
         return $this->createPhpUnitTestCaseObjectMethodInvocation(
             'setExpectedValue',
             $arguments
-        );
-    }
-
-    /**
-     * @param string $methodName
-     * @param ExpressionInterface[] $arguments
-     * @param string $argumentFormat
-     *
-     * @return ExpressionInterface
-     */
-    private function createPhpUnitTestCaseObjectMethodInvocation(
-        string $methodName,
-        array $arguments = [],
-        string $argumentFormat = ObjectMethodInvocation::ARGUMENT_FORMAT_INLINE
-    ): ExpressionInterface {
-        return new ObjectMethodInvocation(
-            new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
-            $methodName,
-            $arguments,
-            $argumentFormat
         );
     }
 }

@@ -261,26 +261,6 @@ class ExistenceAssertionHandler extends AbstractAssertionHandler
         return $this->createPhpUnitTestCaseObjectMethodInvocation('getBooleanExaminedValue');
     }
 
-    /**
-     * @param string $methodName
-     * @param ExpressionInterface[] $arguments
-     * @param string $argumentFormat
-     *
-     * @return ExpressionInterface
-     */
-    private function createPhpUnitTestCaseObjectMethodInvocation(
-        string $methodName,
-        array $arguments = [],
-        string $argumentFormat = ObjectMethodInvocation::ARGUMENT_FORMAT_INLINE
-    ): ExpressionInterface {
-        return new ObjectMethodInvocation(
-            new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
-            $methodName,
-            $arguments,
-            $argumentFormat
-        );
-    }
-
     private function createExistenceOperationDomCrawlerNavigatorCall(
         ElementIdentifierInterface $domIdentifier,
         AssertionInterface $assertion,
