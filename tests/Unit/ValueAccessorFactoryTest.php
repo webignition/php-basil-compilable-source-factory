@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
+use webignition\BasilCompilableSource\Expression\ComparisonExpression;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
+use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
@@ -64,6 +66,41 @@ class ValueAccessorFactoryTest extends \PHPUnit\Framework\TestCase
                         $domIdentifierFactory->createFromIdentifierString('$".selector"'),
                     ),
                     'attribute_name'
+                ),
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider createWithDefaultIfNullDataProvider
+     */
+    public function testCreateWithDefaultIfNull(string $value, ExpressionInterface $expectedExpression)
+    {
+        $this->assertEquals($expectedExpression, $this->factory->createWithDefaultIfNull($value));
+    }
+
+    public function createWithDefaultIfNullDataProvider(): array
+    {
+        $scalarValueHandler = ScalarValueHandler::createHandler();
+        $domIdentifierHandler = DomIdentifierHandler::createHandler();
+        $elementIdentifierSerializer = ElementIdentifierSerializer::createSerializer();
+        $domIdentifierFactory =  DomIdentifierFactory::createFactory();
+
+        return [
+            'scalar, literal' => [
+                'value' => '"literal"',
+                'expectedExpression' => new ComparisonExpression(
+                    $scalarValueHandler->handle('"literal"'),
+                    new LiteralExpression('null'),
+                    '??'
+                ),
+            ],
+            'element identifier' => [
+                'value' => '$".selector"',
+                'expectedExpression' => $domIdentifierHandler->handleElementValue(
+                    $elementIdentifierSerializer->serialize(
+                        $domIdentifierFactory->createFromIdentifierString('$".selector"')
+                    )
                 ),
             ],
         ];

@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory;
 
+use webignition\BasilCompilableSource\Expression\ClosureExpression;
+use webignition\BasilCompilableSource\Expression\ComparisonExpression;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
+use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
@@ -19,19 +22,22 @@ class ValueAccessorFactory
     private DomIdentifierHandler $domIdentifierHandler;
     private ElementIdentifierSerializer $elementIdentifierSerializer;
     private ScalarValueHandler $scalarValueHandler;
+    private AccessorDefaultValueFactory $accessorDefaultValueFactory;
 
     public function __construct(
         IdentifierTypeAnalyser $identifierTypeAnalyser,
         DomIdentifierFactory $domIdentifierFactory,
         DomIdentifierHandler $domIdentifierHandler,
         ElementIdentifierSerializer $elementIdentifierSerializer,
-        ScalarValueHandler $scalarValueHandler
+        ScalarValueHandler $scalarValueHandler,
+        AccessorDefaultValueFactory $accessorDefaultValueFactory
     ) {
         $this->identifierTypeAnalyser = $identifierTypeAnalyser;
         $this->domIdentifierFactory = $domIdentifierFactory;
         $this->domIdentifierHandler = $domIdentifierHandler;
         $this->elementIdentifierSerializer = $elementIdentifierSerializer;
         $this->scalarValueHandler = $scalarValueHandler;
+        $this->accessorDefaultValueFactory = $accessorDefaultValueFactory;
     }
 
     public static function createFactory(): self
@@ -41,7 +47,8 @@ class ValueAccessorFactory
             DomIdentifierFactory::createFactory(),
             DomIdentifierHandler::createHandler(),
             ElementIdentifierSerializer::createSerializer(),
-            ScalarValueHandler::createHandler()
+            ScalarValueHandler::createHandler(),
+            AccessorDefaultValueFactory::createFactory()
         );
     }
 
@@ -73,5 +80,29 @@ class ValueAccessorFactory
         }
 
         return $this->scalarValueHandler->handle($value);
+    }
+
+    /**
+     * @param string $value
+     *
+     * @return ExpressionInterface
+     *
+     * @throws UnsupportedContentException
+     */
+    public function createWithDefaultIfNull(string $value): ExpressionInterface
+    {
+        $accessor = $this->create($value);
+
+        if (!$accessor instanceof ClosureExpression) {
+            $defaultValue = $this->accessorDefaultValueFactory->createString($value) ?? 'null';
+
+            $accessor = new ComparisonExpression(
+                $accessor,
+                new LiteralExpression($defaultValue),
+                '??'
+            );
+        }
+
+        return $accessor;
     }
 }
