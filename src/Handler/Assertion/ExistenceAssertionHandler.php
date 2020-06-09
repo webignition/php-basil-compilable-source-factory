@@ -29,7 +29,6 @@ use webignition\BasilCompilableSourceFactory\CallFactory\ElementIdentifierCallFa
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
-use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\ValueTypeIdentifier;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
@@ -52,10 +51,10 @@ class ExistenceAssertionHandler extends AbstractAssertionHandler
     private DomIdentifierFactory $domIdentifierFactory;
     private DomIdentifierHandler $domIdentifierHandler;
     private IdentifierTypeAnalyser $identifierTypeAnalyser;
-    private ScalarValueHandler $scalarValueHandler;
     private ValueTypeIdentifier $valueTypeIdentifier;
     private ElementIdentifierCallFactory $elementIdentifierCallFactory;
     private ElementIdentifierSerializer $elementIdentifierSerializer;
+    private ScalarExistenceAssertionHandler $scalarExistenceAssertionHandler;
 
     private const OPERATOR_TO_ASSERTION_TEMPLATE_MAP = [
         'exists' => self::ASSERT_TRUE_METHOD,
@@ -68,10 +67,10 @@ class ExistenceAssertionHandler extends AbstractAssertionHandler
         DomIdentifierFactory $domIdentifierFactory,
         DomIdentifierHandler $domIdentifierHandler,
         IdentifierTypeAnalyser $identifierTypeAnalyser,
-        ScalarValueHandler $scalarValueHandler,
         ValueTypeIdentifier $valueTypeIdentifier,
         ElementIdentifierCallFactory $elementIdentifierCallFactory,
-        ElementIdentifierSerializer $elementIdentifierSerializer
+        ElementIdentifierSerializer $elementIdentifierSerializer,
+        ScalarExistenceAssertionHandler $scalarExistenceAssertionHandler
     ) {
         parent::__construct($assertionMethodInvocationFactory);
 
@@ -79,10 +78,10 @@ class ExistenceAssertionHandler extends AbstractAssertionHandler
         $this->domIdentifierFactory = $domIdentifierFactory;
         $this->domIdentifierHandler = $domIdentifierHandler;
         $this->identifierTypeAnalyser = $identifierTypeAnalyser;
-        $this->scalarValueHandler = $scalarValueHandler;
         $this->valueTypeIdentifier = $valueTypeIdentifier;
         $this->elementIdentifierCallFactory = $elementIdentifierCallFactory;
         $this->elementIdentifierSerializer = $elementIdentifierSerializer;
+        $this->scalarExistenceAssertionHandler = $scalarExistenceAssertionHandler;
     }
 
     public static function createHandler(): self
@@ -93,10 +92,10 @@ class ExistenceAssertionHandler extends AbstractAssertionHandler
             DomIdentifierFactory::createFactory(),
             DomIdentifierHandler::createHandler(),
             IdentifierTypeAnalyser::create(),
-            ScalarValueHandler::createHandler(),
             new ValueTypeIdentifier(),
             ElementIdentifierCallFactory::createFactory(),
             ElementIdentifierSerializer::createSerializer(),
+            ScalarExistenceAssertionHandler::createHandler()
         );
     }
 
@@ -121,7 +120,7 @@ class ExistenceAssertionHandler extends AbstractAssertionHandler
         ]);
 
         if ($this->valueTypeIdentifier->isScalarValue($identifier)) {
-            return $this->handleScalarExistenceAssertion($assertion);
+            return $this->scalarExistenceAssertionHandler->handle($assertion);
         }
 
         if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
@@ -201,37 +200,6 @@ class ExistenceAssertionHandler extends AbstractAssertionHandler
         }
 
         throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
-    }
-
-    /**
-     * @param AssertionInterface $assertion
-     *
-     * @return BodyInterface
-     *
-     * @throws UnsupportedContentException
-     */
-    private function handleScalarExistenceAssertion(AssertionInterface $assertion): BodyInterface
-    {
-        $nullComparisonExpression = $this->createNullComparisonExpression(
-            $this->scalarValueHandler->handle($assertion->getIdentifier())
-        );
-
-        $setBooleanExaminedValueInvocation = $this->createSetBooleanExaminedValueInvocation([
-            new ComparisonExpression(
-                new EncapsulatedExpression($nullComparisonExpression),
-                new LiteralExpression('null'),
-                '!=='
-            ),
-        ]);
-
-        $assertionStatement = $this->createAssertionStatement($assertion, [
-            $this->createGetBooleanExaminedValueInvocation()
-        ]);
-
-        return new Body([
-            new Statement($setBooleanExaminedValueInvocation),
-            $assertionStatement,
-        ]);
     }
 
     private function createNullComparisonExpression(ExpressionInterface $leftHandSide): ExpressionInterface
