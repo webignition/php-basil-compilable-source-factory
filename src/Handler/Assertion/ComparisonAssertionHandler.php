@@ -77,8 +77,8 @@ class ComparisonAssertionHandler extends AbstractAssertionHandler
         $expectedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull($assertion->getValue());
 
         $assertionArguments = [
-            $this->createGetExpectedValueInvocation(),
-            $this->createGetExaminedValueInvocation(),
+            $this->createPhpUnitTestCaseObjectMethodInvocation('getExpectedValue'),
+            $this->createPhpUnitTestCaseObjectMethodInvocation('getExaminedValue'),
         ];
 
         $isStringArgumentAssertionMethod = in_array($assertionMethod, $this->methodsWithStringArguments);
@@ -89,45 +89,13 @@ class ComparisonAssertionHandler extends AbstractAssertionHandler
         }
 
         return new Body([
-            new Statement($this->createSetExpectedValueInvocation([$expectedAccessor])),
-            new Statement($this->createSetExaminedValueInvocation([$examinedAccessor])),
+            new Statement(
+                $this->createPhpUnitTestCaseObjectMethodInvocation('setExpectedValue', [$expectedAccessor])
+            ),
+            new Statement(
+                $this->createPhpUnitTestCaseObjectMethodInvocation('setExaminedValue', [$examinedAccessor])
+            ),
             $this->createAssertionStatement($assertion, $assertionArguments),
         ]);
-    }
-
-    /**
-     * @param ExpressionInterface[] $arguments
-     *
-     * @return ExpressionInterface
-     */
-    private function createSetExaminedValueInvocation(array $arguments): ExpressionInterface
-    {
-        return $this->createPhpUnitTestCaseObjectMethodInvocation(
-            'setExaminedValue',
-            $arguments
-        );
-    }
-
-    private function createGetExaminedValueInvocation(): ExpressionInterface
-    {
-        return $this->createPhpUnitTestCaseObjectMethodInvocation('getExaminedValue');
-    }
-
-    private function createGetExpectedValueInvocation(): ExpressionInterface
-    {
-        return $this->createPhpUnitTestCaseObjectMethodInvocation('getExpectedValue');
-    }
-
-    /**
-     * @param ExpressionInterface[] $arguments
-     *
-     * @return ExpressionInterface
-     */
-    private function createSetExpectedValueInvocation(array $arguments): ExpressionInterface
-    {
-        return $this->createPhpUnitTestCaseObjectMethodInvocation(
-            'setExpectedValue',
-            $arguments
-        );
     }
 }
