@@ -17,13 +17,11 @@ use webignition\BasilParser\AssertionParser;
 class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
 {
     use Assertion\CreateFromIdentifierExistsAssertionDataProviderTrait;
-    use Assertion\CreateFromIsRegExpAssertionDataProviderTrait;
     use Assertion\CreateFromIdentifierNotExistsAssertionDataProviderTrait;
 
     /**
      * @dataProvider createFromIdentifierExistsAssertionDataProvider
      * @dataProvider createFromIdentifierNotExistsAssertionDataProvider
-     * @dataProvider createFromIsRegExpAssertionDataProvider
      */
     public function testHandle(
         AssertionInterface $assertion,
