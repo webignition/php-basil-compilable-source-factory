@@ -510,6 +510,65 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                 ,
                 'expectedMetadata' => new Metadata(),
             ],
+            'derived is-regexp' => [
+                'step' => $stepParser->parse([
+                    'assertions' => [
+                        '$page.title matches "/pattern/"',
+                    ],
+                ]),
+                'handler' => $this->createStepHandler([
+                    StatementBlockFactory::class => $this->createMockStatementBlockFactory([
+                        '"/pattern/" is-regexp' => [
+                            'statement' => new DerivedValueOperationAssertion(
+                                $assertionParser->parse('$page.title matches "/pattern/"'),
+                                '"/pattern/"',
+                                'is-regexp'
+                            ),
+                            'return' => new Body([
+                                new SingleLineComment(
+                                    'StatementBlockFactory::create("/pattern/" is-regexp)'
+                                ),
+                            ]),
+                        ],
+                        '$page.title matches "/pattern/"' => [
+                            'statement' => $assertionParser->parse('$page.title matches "/pattern/"'),
+                            'return' => new Body([
+                                new SingleLineComment(
+                                    'StatementBlockFactory::create($page.title matches "/pattern/")'
+                                ),
+                            ]),
+                        ],
+                    ]),
+                    AssertionHandler::class => $this->createMockAssertionHandler([
+                        '"/pattern/" is-regexp' => [
+                            'assertion' => new DerivedValueOperationAssertion(
+                                $assertionParser->parse('$page.title matches "/pattern/"'),
+                                '"/pattern/"',
+                                'is-regexp'
+                            ),
+                            'return' => new Body([
+                                new SingleLineComment(
+                                    'AssertionHandler::handle("/pattern/" is-regexp)'
+                                ),
+                            ]),
+                        ],
+                        '$page.title matches "/pattern/"' => [
+                            'assertion' => $assertionParser->parse('$page.title matches "/pattern/"'),
+                            'return' => new Body([
+                                new SingleLineComment('AssertionHandler::handle($page.title matches "/pattern/")'),
+                            ]),
+                        ],
+                    ]),
+                ]),
+                'expectedRenderedSource' =>
+                    '// StatementBlockFactory::create("/pattern/" is-regexp)' . "\n" .
+                    '// AssertionHandler::handle("/pattern/" is-regexp)' . "\n" .
+                    "\n" .
+                    '// StatementBlockFactory::create($page.title matches "/pattern/")' . "\n" .
+                    '// AssertionHandler::handle($page.title matches "/pattern/")' . "\n"
+                ,
+                'expectedMetadata' => new Metadata(),
+            ],
         ];
     }
 
