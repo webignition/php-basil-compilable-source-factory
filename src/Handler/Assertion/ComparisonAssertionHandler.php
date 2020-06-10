@@ -21,7 +21,7 @@ class ComparisonAssertionHandler extends AbstractAssertionHandler
     public const ASSERT_NOT_EQUALS_METHOD = 'assertNotEquals';
     public const ASSERT_STRING_CONTAINS_STRING_METHOD = 'assertStringContainsString';
     public const ASSERT_STRING_NOT_CONTAINS_STRING_METHOD = 'assertStringNotContainsString';
-    public const ASSERT_MATCHES_METHOD = 'assertRegExp';
+    public const ASSERT_MATCHES_METHOD = 'assertMatchesRegularExpression';
 
     private ValueAccessorFactory $valueAccessorFactory;
 

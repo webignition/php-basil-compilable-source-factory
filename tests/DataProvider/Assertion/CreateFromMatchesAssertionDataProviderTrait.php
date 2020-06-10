@@ -30,7 +30,7 @@ trait CreateFromMatchesAssertionDataProviderTrait
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue($element);' . "\n" .
                     '})());' . "\n" .
-                    '{{ PHPUNIT }}->assertRegExp(' . "\n" .
+                    '{{ PHPUNIT }}->assertMatchesRegularExpression(' . "\n" .
                     '    {{ PHPUNIT }}->getExpectedValue(),' . "\n" .
                     '    {{ PHPUNIT }}->getExaminedValue()' . "\n" .
                     ');'
@@ -57,7 +57,7 @@ trait CreateFromMatchesAssertionDataProviderTrait
                     "\n" .
                     '    return $element->getAttribute(\'attribute_name\');' . "\n" .
                     '})());' . "\n" .
-                    '{{ PHPUNIT }}->assertRegExp(' . "\n" .
+                    '{{ PHPUNIT }}->assertMatchesRegularExpression(' . "\n" .
                     '    {{ PHPUNIT }}->getExpectedValue(),' . "\n" .
                     '    {{ PHPUNIT }}->getExaminedValue()' . "\n" .
                     ');'
