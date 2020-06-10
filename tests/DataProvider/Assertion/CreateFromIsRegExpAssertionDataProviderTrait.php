@@ -20,14 +20,14 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
         $assertionParser = AssertionParser::create();
 
         return [
-            'derived is-regexp, matches assertion with scalar value' => [
+            'derived is-regexp, matches assertion with literal scalar value' => [
                 'assertion' => new DerivedValueOperationAssertion(
                     $assertionParser->parse('$".selector" matches "/^value/"'),
                     '"/^value/"',
                     'is-regexp'
                 ),
                 'expectedRenderedSource' =>
-                    '{{ PHPUNIT }}->setExaminedValue("/^value/");' . "\n" .
+                    '{{ PHPUNIT }}->setExaminedValue("/^value/" ?? null);' . "\n" .
                     '{{ PHPUNIT }}->setBooleanExpectedValue(' . "\n" .
                     '    @preg_match({{ PHPUNIT }}->getExaminedValue(), null) === false' . "\n" .
                     ');' . "\n" .
@@ -101,6 +101,27 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
+                    ]),
+                ]),
+            ],
+            'derived is-regexp, matches assertion with data parameter scalar value' => [
+                'assertion' => new DerivedValueOperationAssertion(
+                    $assertionParser->parse('$page.title matches $data.pattern'),
+                    '$data.pattern',
+                    'is-regexp'
+                ),
+                'expectedRenderedSource' =>
+                    '{{ PHPUNIT }}->setExaminedValue($pattern ?? null);' . "\n" .
+                    '{{ PHPUNIT }}->setBooleanExpectedValue(' . "\n" .
+                    '    @preg_match({{ PHPUNIT }}->getExaminedValue(), null) === false' . "\n" .
+                    ');' . "\n" .
+                    '{{ PHPUNIT }}->assertFalse(' . "\n" .
+                    '    {{ PHPUNIT }}->getBooleanExpectedValue()' . "\n" .
+                    ');'
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                        VariableNames::PHPUNIT_TEST_CASE,
                     ]),
                 ]),
             ],

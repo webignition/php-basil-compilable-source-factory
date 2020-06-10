@@ -75,7 +75,7 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
         $identifier = $assertion->getIdentifier();
 
         if ($this->valueTypeIdentifier->isScalarValue($identifier)) {
-            $examinedAccessor = new LiteralExpression($identifier);
+            $examinedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull($identifier);
 
             return $this->createIsRegExpAssertionBody($examinedAccessor, $assertion);
         }
