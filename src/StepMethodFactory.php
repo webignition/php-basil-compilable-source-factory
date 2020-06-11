@@ -4,18 +4,18 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory;
 
-use webignition\BasilCompilableSource\Block\DocBlock;
 use webignition\BasilCompilableSource\Body\Body;
+use webignition\BasilCompilableSource\DataProvidedMethodDefinition;
 use webignition\BasilCompilableSource\DataProviderMethodDefinition;
 use webignition\BasilCompilableSource\EmptyLine;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
+use webignition\BasilCompilableSource\MethodDefinitionInterface;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\MethodDefinition;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
-use webignition\BasilCompilableSourceFactory\Model\StepMethods;
 use webignition\BasilModels\DataSet\DataSetCollectionInterface;
 use webignition\BasilModels\Step\StepInterface;
 
@@ -48,11 +48,11 @@ class StepMethodFactory
      * @param string $stepName
      * @param StepInterface $step
      *
-     * @return StepMethods
+     * @return MethodDefinitionInterface
      *
      * @throws UnsupportedStepException
      */
-    public function createStepMethods(string $stepName, StepInterface $step): StepMethods
+    public function create(string $stepName, StepInterface $step): MethodDefinitionInterface
     {
         $dataSetCollection = $step->getData();
         $parameterNames = [];
@@ -88,10 +88,10 @@ class StepMethodFactory
                 $this->createEscapedDataProviderData($dataSetCollection)
             );
 
-            $testMethod->setDocBlock($this->createTestMethodDocBlock($dataProviderMethod, $parameterNames));
+            $testMethod = new DataProvidedMethodDefinition($testMethod, $dataProviderMethod);
         }
 
-        return new StepMethods($testMethod, $dataProviderMethod);
+        return $testMethod;
     }
 
     /**
@@ -112,27 +112,5 @@ class StepMethodFactory
         }
 
         return $data;
-    }
-
-    /**
-     * @param DataProviderMethodDefinition $dataProviderMethod
-     * @param string[] $parameterNames
-     *
-     * @return DocBlock
-     */
-    private function createTestMethodDocBlock(
-        DataProviderMethodDefinition $dataProviderMethod,
-        array $parameterNames
-    ): DocBlock {
-        $lines = [
-            '@dataProvider ' . $dataProviderMethod->getName(),
-            '',
-        ];
-
-        foreach ($parameterNames as $parameterName) {
-            $lines[] = '@param string $' . $parameterName;
-        }
-
-        return new DocBlock($lines);
     }
 }
