@@ -51,14 +51,7 @@ class ClassDefinitionFactory
         ];
 
         foreach ($test->getSteps() as $stepName => $step) {
-            $stepMethods = $this->stepMethodFactory->createStepMethods($stepName, $step);
-
-            $methodDefinitions[] = $stepMethods->getTestMethod();
-
-            $dataProviderMethod = $stepMethods->getDataProviderMethod();
-            if ($dataProviderMethod instanceof MethodDefinitionInterface) {
-                $methodDefinitions[] = $dataProviderMethod;
-            }
+            $methodDefinitions[] = $this->stepMethodFactory->create($stepName, $step);
         }
 
         return new ClassDefinition($this->classNameFactory->create($test), $methodDefinitions);
