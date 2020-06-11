@@ -79,7 +79,15 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
             'data' => [
                 0 => [
                     'field_value' => 'value1',
-                    'expected_value' => 'value1',
+                    'expected_value' => 'value2',
+                ],
+                1 => [
+                    'field_value' => '"value3"',
+                    'expected_value' => '"value4"',
+                ],
+                2 => [
+                    'field_value' => "'value5'",
+                    'expected_value' => "'value6'",
                 ],
             ],
         ]);
@@ -211,12 +219,20 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                     ]),
                 ]),
                 'expectedRenderedDataProviderMethod' =>
-                    "public function dataProviderMethodName()\n" .
+                    "public function dataProviderMethodName(): array\n" .
                     "{\n" .
                     "    return [\n" .
                     "        '0' => [\n" .
-                    "            'expected_value' => 'value1',\n" .
+                    "            'expected_value' => 'value2',\n" .
                     "            'field_value' => 'value1',\n" .
+                    "        ],\n" .
+                    "        '1' => [\n" .
+                    "            'expected_value' => '\"value4\"',\n" .
+                    "            'field_value' => '\"value3\"',\n" .
+                    "        ],\n" .
+                    "        '2' => [\n" .
+                    "            'expected_value' => '\'value6\'',\n" .
+                    "            'field_value' => '\'value5\'',\n" .
                     "        ],\n" .
                     "    ];\n" .
                     "}"
@@ -233,13 +249,11 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
     private function createStepMethodFactory(array $services = []): StepMethodFactory
     {
         $stepHandler = $services[StepHandler::class] ?? StepHandler::createHandler();
-        $arrayExpressionFactory = $services[ArrayExpressionFactory::class] ?? ArrayExpressionFactory::createFactory();
         $stepMethodNameFactory = $services[StepMethodNameFactory::class] ?? new StepMethodNameFactory();
         $singleQuotedStringEscaper = $services[SingleQuotedStringEscaper::class] ?? SingleQuotedStringEscaper::create();
 
         return new StepMethodFactory(
             $stepHandler,
-            $arrayExpressionFactory,
             $stepMethodNameFactory,
             $singleQuotedStringEscaper
         );

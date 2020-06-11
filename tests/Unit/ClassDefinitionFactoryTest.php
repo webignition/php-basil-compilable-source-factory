@@ -10,7 +10,6 @@ use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodDefinitionInterface;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
-use webignition\BasilCompilableSourceFactory\ArrayExpressionFactory;
 use webignition\BasilCompilableSourceFactory\ClassDefinitionFactory;
 use webignition\BasilCompilableSourceFactory\ClassNameFactory;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
@@ -234,7 +233,6 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
     {
         return new StepMethodFactory(
             StepHandler::createHandler(),
-            ArrayExpressionFactory::createFactory(),
             $stepMethodNameFactory,
             SingleQuotedStringEscaper::create()
         );
