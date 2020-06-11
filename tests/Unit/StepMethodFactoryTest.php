@@ -9,7 +9,6 @@ use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\SingleLineComment;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\MethodDefinitionInterface;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
@@ -23,38 +22,26 @@ use webignition\BasilParser\StepParser;
 class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @dataProvider createStepMethodsDataProvider
+     * @dataProvider createDataProvider
      */
-    public function testCreateStepMethods(
+    public function testCreate(
         string $stepName,
         StepInterface $step,
         StepMethodFactory $factory,
         string $expectedRenderedTestMethod,
-        MetadataInterface $expectedTestMethodMetadata,
-        ?string $expectedRenderedDataProviderMethod
+        MetadataInterface $expectedTestMethodMetadata
     ) {
-        $stepMethods = $factory->createStepMethods($stepName, $step);
-
-        $testMethod = $stepMethods->getTestMethod();
+        $testMethod = $factory->create($stepName, $step);
 
         $this->assertSame($expectedRenderedTestMethod, $testMethod->render());
 
         $this->assertNull($testMethod->getReturnType());
         $this->assertFalse($testMethod->isStatic());
         $this->assertSame('public', $testMethod->getVisibility());
-
         $this->assertEquals($expectedTestMethodMetadata, $testMethod->getMetadata());
-
-        $dataProviderMethod = $stepMethods->getDataProviderMethod();
-
-        if ($dataProviderMethod instanceof MethodDefinitionInterface) {
-            $this->assertSame($expectedRenderedDataProviderMethod, $dataProviderMethod->render());
-        } else {
-            $this->assertNull($dataProviderMethod);
-        }
     }
 
-    public function createStepMethodsDataProvider(): array
+    public function createDataProvider(): array
     {
         $stepParser = StepParser::create();
         $stepMethodNameFactoryFactory = new StepMethodNameFactoryFactory();
@@ -116,7 +103,6 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                         VariableNames::PHPUNIT_TEST_CASE,
                     ]),
                 ]),
-                'expectedRenderedDataProviderMethod' => null
             ],
             'empty test, step name contains single quotes' => [
                 'stepName' => 'step name \'contains\' single quotes',
@@ -142,7 +128,6 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                         VariableNames::PHPUNIT_TEST_CASE,
                     ]),
                 ]),
-                'expectedRenderedDataProviderMethod' => null
             ],
             'non-empty step' => [
                 'stepName' => 'Step Name',
@@ -176,7 +161,6 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                         VariableNames::PHPUNIT_TEST_CASE,
                     ]),
                 ]),
-                'expectedRenderedDataProviderMethod' => null
             ],
             'non-empty step with data provider' => [
                 'stepName' => 'Step Name',
@@ -213,14 +197,8 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                     "    {{ PHPUNIT }}->setBasilStepName('Step Name');\n" .
                     "\n" .
                     "    // mocked step handler response\n" .
-                    "}"
-                ,
-                'expectedTestMethodMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
-                'expectedRenderedDataProviderMethod' =>
+                    "}" . "\n" .
+                    "\n" .
                     "public function dataProviderMethodName(): array\n" .
                     "{\n" .
                     "    return [\n" .
@@ -239,6 +217,11 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                     "    ];\n" .
                     "}"
                 ,
+                'expectedTestMethodMetadata' => new Metadata([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                        VariableNames::PHPUNIT_TEST_CASE,
+                    ]),
+                ]),
             ],
         ];
     }
