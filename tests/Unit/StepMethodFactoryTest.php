@@ -11,7 +11,6 @@ use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\MethodDefinitionInterface;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
-use webignition\BasilCompilableSourceFactory\ArrayExpressionFactory;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\StepMethodFactory;
@@ -205,6 +204,9 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                 'expectedRenderedTestMethod' =>
                     "/**\n" .
                     " * @dataProvider dataProviderMethodName\n" .
+                    " * \n" .
+                    " * @param string " . '$expected_value' . "\n" .
+                    " * @param string " . '$field_value' . "\n" .
                     " */\n" .
                     'public function testMethodName($expected_value, $field_value)' . "\n"  .
                     "{\n" .

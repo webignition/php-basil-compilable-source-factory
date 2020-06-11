@@ -88,9 +88,7 @@ class StepMethodFactory
                 $this->createEscapedDataProviderData($dataSetCollection)
             );
 
-            $testMethod->setDocBlock(new DocBlock([
-                '@dataProvider ' . $dataProviderMethod->getName(),
-            ]));
+            $testMethod->setDocBlock($this->createTestMethodDocBlock($dataProviderMethod, $parameterNames));
         }
 
         return new StepMethods($testMethod, $dataProviderMethod);
@@ -114,5 +112,27 @@ class StepMethodFactory
         }
 
         return $data;
+    }
+
+    /**
+     * @param DataProviderMethodDefinition $dataProviderMethod
+     * @param string[] $parameterNames
+     *
+     * @return DocBlock
+     */
+    private function createTestMethodDocBlock(
+        DataProviderMethodDefinition $dataProviderMethod,
+        array $parameterNames
+    ): DocBlock {
+        $lines = [
+            '@dataProvider ' . $dataProviderMethod->getName(),
+            '',
+        ];
+
+        foreach ($parameterNames as $parameterName) {
+            $lines[] = '@param string $' . $parameterName;
+        }
+
+        return new DocBlock($lines);
     }
 }
