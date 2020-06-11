@@ -6,10 +6,10 @@ namespace webignition\BasilCompilableSourceFactory;
 
 use webignition\BasilCompilableSource\Block\DocBlock;
 use webignition\BasilCompilableSource\Body\Body;
+use webignition\BasilCompilableSource\DataProviderMethodDefinition;
 use webignition\BasilCompilableSource\EmptyLine;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSource\Statement\ReturnStatement;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\MethodDefinition;
 use webignition\BasilCompilableSource\VariableDependency;
@@ -22,27 +22,23 @@ use webignition\BasilModels\Step\StepInterface;
 class StepMethodFactory
 {
     private StepHandler $stepHandler;
-    private ArrayExpressionFactory $arrayExpressionFactory;
     private StepMethodNameFactory $stepMethodNameFactory;
     private SingleQuotedStringEscaper $singleQuotedStringEscaper;
 
     public function __construct(
         StepHandler $stepHandler,
-        ArrayExpressionFactory $arrayExpressionFactory,
         StepMethodNameFactory $stepMethodNameFactory,
         SingleQuotedStringEscaper $singleQuotedStringEscaper
     ) {
         $this->stepHandler = $stepHandler;
-        $this->arrayExpressionFactory = $arrayExpressionFactory;
         $this->stepMethodNameFactory = $stepMethodNameFactory;
         $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
     }
 
-    public static function createFactory(): StepMethodFactory
+    public static function createFactory(): self
     {
         return new StepMethodFactory(
             StepHandler::createHandler(),
-            ArrayExpressionFactory::createFactory(),
             new StepMethodNameFactory(),
             SingleQuotedStringEscaper::create()
         );
@@ -87,11 +83,9 @@ class StepMethodFactory
 
         $dataProviderMethod = null;
         if ($dataSetCollection instanceof DataSetCollectionInterface && count($parameterNames) > 0) {
-            $dataProviderMethod = new MethodDefinition(
+            $dataProviderMethod = new DataProviderMethodDefinition(
                 $this->stepMethodNameFactory->createDataProviderMethodName($stepName),
-                new Body([
-                    new ReturnStatement($this->arrayExpressionFactory->create($dataSetCollection)),
-                ])
+                $this->createEscapedDataProviderData($dataSetCollection)
             );
 
             $testMethod->setDocBlock(new DocBlock([
@@ -100,5 +94,25 @@ class StepMethodFactory
         }
 
         return new StepMethods($testMethod, $dataProviderMethod);
+    }
+
+    /**
+     * @param DataSetCollectionInterface $dataSetCollection
+     *
+     * @return array<string, array<int|string, string>>
+     */
+    private function createEscapedDataProviderData(DataSetCollectionInterface $dataSetCollection): array
+    {
+        $data = $dataSetCollection->toArray();
+
+        foreach ($data as $index => $dataSet) {
+            foreach ($dataSet as $key => $value) {
+                $dataSet[$key] = $this->singleQuotedStringEscaper->escape($value);
+            }
+
+            $data[$index] = $dataSet;
+        }
+
+        return $data;
     }
 }
