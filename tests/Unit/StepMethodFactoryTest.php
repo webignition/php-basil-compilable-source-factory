@@ -188,7 +188,7 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                 'expectedRenderedTestMethod' =>
                     "/**\n" .
                     " * @dataProvider dataProviderMethodName\n" .
-                    " * \n" .
+                    " *\n" .
                     " * @param string " . '$expected_value' . "\n" .
                     " * @param string " . '$field_value' . "\n" .
                     " */\n" .
