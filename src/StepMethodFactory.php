@@ -116,6 +116,11 @@ class StepMethodFactory
         );
     }
 
+    /**
+     * @param string[] $parameterNames
+     *
+     * @return StatementInterface
+     */
     private function createSetCurrentDataSetStatement(array $parameterNames): StatementInterface
     {
         $arguments = [
