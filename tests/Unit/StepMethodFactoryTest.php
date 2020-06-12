@@ -13,8 +13,6 @@ use webignition\BasilCompilableSource\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\StepMethodFactory;
-use webignition\BasilCompilableSourceFactory\StepMethodNameFactory;
-use webignition\BasilCompilableSourceFactory\Tests\Services\StepMethodNameFactoryFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Step\StepInterface;
 use webignition\BasilParser\StepParser;
@@ -25,13 +23,14 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
      * @dataProvider createDataProvider
      */
     public function testCreate(
+        int $index,
         string $stepName,
         StepInterface $step,
         StepMethodFactory $factory,
         string $expectedRenderedTestMethod,
         MetadataInterface $expectedTestMethodMetadata
     ) {
-        $testMethod = $factory->create($stepName, $step);
+        $testMethod = $factory->create($index, $stepName, $step);
 
         $this->assertSame($expectedRenderedTestMethod, $testMethod->render());
 
@@ -44,7 +43,6 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
     public function createDataProvider(): array
     {
         $stepParser = StepParser::create();
-        $stepMethodNameFactoryFactory = new StepMethodNameFactoryFactory();
 
         $emptyStep = $stepParser->parse([]);
         $nonEmptyStep = $stepParser->parse([
@@ -80,20 +78,12 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
 
         return [
             'empty test' => [
+                'index' => 1,
                 'stepName' => 'Step Name',
                 'step' => $emptyStep,
-                'stepMethodFactory' => $this->createStepMethodFactory([
-                    StepMethodNameFactory::class => $stepMethodNameFactoryFactory->create(
-                        [
-                            'Step Name' => [
-                                'testMethodName',
-                            ],
-                        ],
-                        []
-                    ),
-                ]),
+                'stepMethodFactory' => StepMethodFactory::createFactory(),
                 'expectedRenderedTestMethod' =>
-                    "public function testMethodName()\n"  .
+                    "public function test1()\n"  .
                     "{\n" .
                     "    {{ PHPUNIT }}->setBasilStepName('Step Name');\n" .
                     "}"
@@ -105,20 +95,12 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             'empty test, step name contains single quotes' => [
+                'index' => 2,
                 'stepName' => 'step name \'contains\' single quotes',
                 'step' => $emptyStep,
-                'stepMethodFactory' => $this->createStepMethodFactory([
-                    StepMethodNameFactory::class => $stepMethodNameFactoryFactory->create(
-                        [
-                            "step name 'contains' single quotes" => [
-                                'testMethodName',
-                            ],
-                        ],
-                        []
-                    ),
-                ]),
+                'stepMethodFactory' => StepMethodFactory::createFactory(),
                 'expectedRenderedTestMethod' =>
-                    "public function testMethodName()\n"  .
+                    "public function test2()\n"  .
                     "{\n" .
                     "    {{ PHPUNIT }}->setBasilStepName('step name \'contains\' single quotes');\n" .
                     "}"
@@ -130,17 +112,10 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             'non-empty step' => [
+                'index' => 3,
                 'stepName' => 'Step Name',
                 'step' => $nonEmptyStep,
                 'stepMethodFactory' => $this->createStepMethodFactory([
-                    StepMethodNameFactory::class => $stepMethodNameFactoryFactory->create(
-                        [
-                            'Step Name' => [
-                                'testMethodName',
-                            ],
-                        ],
-                        []
-                    ),
                     StepHandler::class => $this->createStepHandler(
                         $nonEmptyStep,
                         new Body([
@@ -149,7 +124,7 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                     ),
                 ]),
                 'expectedRenderedTestMethod' =>
-                    "public function testMethodName()\n"  .
+                    "public function test3()\n"  .
                     "{\n" .
                     "    {{ PHPUNIT }}->setBasilStepName('Step Name');\n" .
                     "\n" .
@@ -163,21 +138,10 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                 ]),
             ],
             'non-empty step with data provider' => [
+                'index' => 4,
                 'stepName' => 'Step Name',
                 'step' => $nonEmptyStepWithDataProvider,
                 'stepMethodFactory' => $this->createStepMethodFactory([
-                    StepMethodNameFactory::class => $stepMethodNameFactoryFactory->create(
-                        [
-                            'Step Name' => [
-                                'testMethodName',
-                            ],
-                        ],
-                        [
-                            'Step Name' => [
-                                'dataProviderMethodName',
-                            ],
-                        ]
-                    ),
                     StepHandler::class => $this->createStepHandler(
                         $nonEmptyStepWithDataProvider,
                         new Body([
@@ -187,19 +151,19 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                 ]),
                 'expectedRenderedTestMethod' =>
                     "/**\n" .
-                    " * @dataProvider dataProviderMethodName\n" .
+                    " * @dataProvider dataProvider4\n" .
                     " *\n" .
                     " * @param string " . '$expected_value' . "\n" .
                     " * @param string " . '$field_value' . "\n" .
                     " */\n" .
-                    'public function testMethodName($expected_value, $field_value)' . "\n"  .
+                    'public function test4($expected_value, $field_value)' . "\n"  .
                     "{\n" .
                     "    {{ PHPUNIT }}->setBasilStepName('Step Name');\n" .
                     "\n" .
                     "    // mocked step handler response\n" .
                     "}" . "\n" .
                     "\n" .
-                    "public function dataProviderMethodName(): array\n" .
+                    "public function dataProvider4(): array\n" .
                     "{\n" .
                     "    return [\n" .
                     "        '0' => [\n" .
@@ -234,12 +198,10 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
     private function createStepMethodFactory(array $services = []): StepMethodFactory
     {
         $stepHandler = $services[StepHandler::class] ?? StepHandler::createHandler();
-        $stepMethodNameFactory = $services[StepMethodNameFactory::class] ?? new StepMethodNameFactory();
         $singleQuotedStringEscaper = $services[SingleQuotedStringEscaper::class] ?? SingleQuotedStringEscaper::create();
 
         return new StepMethodFactory(
             $stepHandler,
-            $stepMethodNameFactory,
             $singleQuotedStringEscaper
         );
     }

@@ -50,8 +50,10 @@ class ClassDefinitionFactory
             $this->createSetupBeforeClassMethod($test),
         ];
 
+        $stepOrdinalIndex = 1;
         foreach ($test->getSteps() as $stepName => $step) {
-            $methodDefinitions[] = $this->stepMethodFactory->create($stepName, $step);
+            $methodDefinitions[] = $this->stepMethodFactory->create($stepOrdinalIndex, $stepName, $step);
+            $stepOrdinalIndex++;
         }
 
         return new ClassDefinition($this->classNameFactory->create($test), $methodDefinitions);
