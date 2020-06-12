@@ -8,14 +8,21 @@ use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\DataProvidedMethodDefinition;
 use webignition\BasilCompilableSource\DataProviderMethodDefinition;
 use webignition\BasilCompilableSource\EmptyLine;
+use webignition\BasilCompilableSource\Expression\ArrayExpression;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\MethodDefinitionInterface;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\MethodDefinition;
+use webignition\BasilCompilableSource\Statement\StatementInterface;
+use webignition\BasilCompilableSource\StaticObject;
 use webignition\BasilCompilableSource\VariableDependency;
+use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
+use webignition\BasilModels\DataSet\DataSet;
+use webignition\BasilModels\DataSet\DataSetCollection;
 use webignition\BasilModels\DataSet\DataSetCollectionInterface;
 use webignition\BasilModels\Step\StepInterface;
 
@@ -49,25 +56,14 @@ class StepMethodFactory
      */
     public function create(int $index, string $stepName, StepInterface $step): MethodDefinitionInterface
     {
-        $dataSetCollection = $step->getData();
-        $parameterNames = [];
-
-        if ($dataSetCollection instanceof DataSetCollectionInterface) {
-            $parameterNames = $dataSetCollection->getParameterNames();
-        }
+        $dataSetCollection = $step->getData() ?? new DataSetCollection([]);
+        $parameterNames = $dataSetCollection->getParameterNames();
 
         $testMethod = new MethodDefinition(
             'test' . (string) $index,
             new Body([
-                new Statement(
-                    new ObjectMethodInvocation(
-                        new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
-                        'setBasilStepName',
-                        [
-                            new LiteralExpression('\'' . $this->singleQuotedStringEscaper->escape($stepName) . '\''),
-                        ]
-                    )
-                ),
+                $this->createSetBasilStepNameStatement($stepName),
+                $this->createSetCurrentDataSetStatement($parameterNames),
                 new EmptyLine(),
                 $this->stepHandler->handle($step),
             ]),
@@ -105,5 +101,56 @@ class StepMethodFactory
         }
 
         return $data;
+    }
+
+    private function createSetBasilStepNameStatement(string $stepName): StatementInterface
+    {
+        return new Statement(
+            new ObjectMethodInvocation(
+                new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
+                'setBasilStepName',
+                [
+                    new LiteralExpression('\'' . $this->singleQuotedStringEscaper->escape($stepName) . '\''),
+                ]
+            )
+        );
+    }
+
+    private function createSetCurrentDataSetStatement(array $parameterNames): StatementInterface
+    {
+        $arguments = [
+            new LiteralExpression('null'),
+        ];
+
+        if (0 !== count($parameterNames)) {
+            $dataSetData = [];
+            foreach ($parameterNames as $parameterName) {
+                $dataSetData[$parameterName] = new VariableName($parameterName);
+            }
+
+            $arguments = [
+                new StaticObjectMethodInvocation(
+                    new StaticObject(DataSet::class),
+                    'fromArray',
+                    [
+                        new ArrayExpression([
+                            'name' => new ObjectMethodInvocation(
+                                new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
+                                'dataName'
+                            ),
+                            'data' => $dataSetData,
+                        ])
+                    ]
+                )
+            ];
+        }
+
+        return new Statement(
+            new ObjectMethodInvocation(
+                new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
+                'setCurrentDataSet',
+                $arguments
+            )
+        );
     }
 }
