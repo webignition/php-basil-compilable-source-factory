@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Action;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\Tests\Services\ObjectReflector;
 use webignition\BasilCompilableSourceFactory\Handler\Action\SetActionHandler;
 use webignition\BasilDomIdentifierFactory\Factory;
 use webignition\BasilModels\Action\ActionInterface;
 use webignition\BasilParser\ActionParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
+use webignition\ObjectReflector\ObjectReflector;
 
 class SetActionHandlerTest extends \PHPUnit\Framework\TestCase
 {

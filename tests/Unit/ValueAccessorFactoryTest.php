@@ -11,10 +11,10 @@ use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
-use webignition\BasilCompilableSourceFactory\Tests\Services\ObjectReflector;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
 use webignition\BasilDomIdentifierFactory\Factory;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
+use webignition\ObjectReflector\ObjectReflector;
 
 class ValueAccessorFactoryTest extends \PHPUnit\Framework\TestCase
 {

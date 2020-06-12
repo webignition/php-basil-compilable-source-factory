@@ -6,10 +6,10 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Action;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\Action\WaitForActionHandler;
-use webignition\BasilCompilableSourceFactory\Tests\Services\ObjectReflector;
 use webignition\BasilDomIdentifierFactory\Factory;
 use webignition\BasilModels\Action\ActionInterface;
 use webignition\BasilParser\ActionParser;
+use webignition\ObjectReflector\ObjectReflector;
 
 class WaitForActionHandlerTest extends \PHPUnit\Framework\TestCase
 {
