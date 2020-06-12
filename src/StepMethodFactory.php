@@ -22,16 +22,11 @@ use webignition\BasilModels\Step\StepInterface;
 class StepMethodFactory
 {
     private StepHandler $stepHandler;
-    private StepMethodNameFactory $stepMethodNameFactory;
     private SingleQuotedStringEscaper $singleQuotedStringEscaper;
 
-    public function __construct(
-        StepHandler $stepHandler,
-        StepMethodNameFactory $stepMethodNameFactory,
-        SingleQuotedStringEscaper $singleQuotedStringEscaper
-    ) {
+    public function __construct(StepHandler $stepHandler, SingleQuotedStringEscaper $singleQuotedStringEscaper)
+    {
         $this->stepHandler = $stepHandler;
-        $this->stepMethodNameFactory = $stepMethodNameFactory;
         $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
     }
 
@@ -39,12 +34,12 @@ class StepMethodFactory
     {
         return new StepMethodFactory(
             StepHandler::createHandler(),
-            new StepMethodNameFactory(),
             SingleQuotedStringEscaper::create()
         );
     }
 
     /**
+     * @param int $index
      * @param string $stepName
      * @param StepInterface $step
      *
@@ -52,7 +47,7 @@ class StepMethodFactory
      *
      * @throws UnsupportedStepException
      */
-    public function create(string $stepName, StepInterface $step): MethodDefinitionInterface
+    public function create(int $index, string $stepName, StepInterface $step): MethodDefinitionInterface
     {
         $dataSetCollection = $step->getData();
         $parameterNames = [];
@@ -61,10 +56,8 @@ class StepMethodFactory
             $parameterNames = $dataSetCollection->getParameterNames();
         }
 
-        $stepMethodName = $this->stepMethodNameFactory->createTestMethodName($stepName);
-
         $testMethod = new MethodDefinition(
-            $stepMethodName,
+            'test' . (string) $index,
             new Body([
                 new Statement(
                     new ObjectMethodInvocation(
@@ -84,7 +77,7 @@ class StepMethodFactory
         $dataProviderMethod = null;
         if ($dataSetCollection instanceof DataSetCollectionInterface && count($parameterNames) > 0) {
             $dataProviderMethod = new DataProviderMethodDefinition(
-                $this->stepMethodNameFactory->createDataProviderMethodName($stepName),
+                'dataProvider' . (string) $index,
                 $this->createEscapedDataProviderData($dataSetCollection)
             );
 

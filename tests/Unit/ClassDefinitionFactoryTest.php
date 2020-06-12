@@ -4,19 +4,14 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
-use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\MethodDefinition;
-use webignition\BasilCompilableSource\MethodDefinitionInterface;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\ClassDefinitionFactory;
 use webignition\BasilCompilableSourceFactory\ClassNameFactory;
 use webignition\BasilCompilableSourceFactory\StepMethodFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilModels\Step\StepInterface;
 use webignition\BasilModels\Test\TestInterface;
-use webignition\BasilParser\StepParser;
 use webignition\BasilParser\Test\TestParser;
 
 class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
@@ -41,7 +36,6 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
     public function createClassDefinitionDataProvider(): array
     {
         $testParser = TestParser::create();
-        $stepParser = StepParser::create();
 
         return [
             'empty test' => [
@@ -73,21 +67,10 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     ]),
                 ]),
             ],
-            'single step with single action and single assertion' => [
+            'single empty step' => [
                 'classDefinitionFactory' => $this->createClassDefinitionFactory(
                     $this->createClassNameFactory('GeneratedClassName'),
-                    $this->createStepMethodFactory(
-                        'step one',
-                        $stepParser->parse([
-                            'actions' => [
-                                'click $".selector"',
-                            ],
-                            'assertions' => [
-                                '$page.title is "value"',
-                            ],
-                        ]),
-                        new MethodDefinition('mockedMethodDefinition1', new Body([]), [])
-                    )
+                    StepMethodFactory::createFactory()
                 ),
                 'expectedClassName' => 'GeneratedClassName',
                 'test' => $testParser->parse([
@@ -95,14 +78,7 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                         'browser' => 'chrome',
                         'url' => 'http://example.com',
                     ],
-                    'step one' => [
-                        'actions' => [
-                            'click $".selector"',
-                        ],
-                        'assertions' => [
-                            '$page.title is "value"',
-                        ],
-                    ],
+                    'step one' => [],
                 ])->withPath('test.yml'),
                 'expectedRenderedClassDefinition' =>
                     'class GeneratedClassName' . "\n" .
@@ -114,15 +90,58 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '        self::setBasilTestPath(\'test.yml\');' . "\n" .
                     '    }' . "\n" .
                     "\n" .
-                    '    public function mockedMethodDefinition1()' . "\n" .
+                    '    public function test1()' . "\n" .
                     '    {' . "\n" .
-                    "\n" .
+                    '        {{ PHPUNIT }}->setBasilStepName(\'step one\');' . "\n" .
                     '    }' . "\n" .
                     '}'
                 ,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PANTHER_CLIENT,
+                        VariableNames::PHPUNIT_TEST_CASE,
+                    ]),
+                ]),
+            ],
+            'two empty steps' => [
+                'classDefinitionFactory' => $this->createClassDefinitionFactory(
+                    $this->createClassNameFactory('GeneratedClassName'),
+                    StepMethodFactory::createFactory()
+                ),
+                'expectedClassName' => 'GeneratedClassName',
+                'test' => $testParser->parse([
+                    'config' => [
+                        'browser' => 'chrome',
+                        'url' => 'http://example.com',
+                    ],
+                    'step one' => [],
+                    'step two' => [],
+                ])->withPath('test.yml'),
+                'expectedRenderedClassDefinition' =>
+                    'class GeneratedClassName' . "\n" .
+                    '{' . "\n" .
+                    '    public static function setUpBeforeClass(): void' . "\n" .
+                    '    {' . "\n" .
+                    '        parent::setUpBeforeClass();' . "\n" .
+                    '        {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
+                    '        self::setBasilTestPath(\'test.yml\');' . "\n" .
+                    '    }' . "\n" .
+                    "\n" .
+                    '    public function test1()' . "\n" .
+                    '    {' . "\n" .
+                    '        {{ PHPUNIT }}->setBasilStepName(\'step one\');' . "\n" .
+                    '    }' . "\n" .
+                    "\n" .
+                    '    public function test2()' . "\n" .
+                    '    {' . "\n" .
+                    '        {{ PHPUNIT }}->setBasilStepName(\'step two\');' . "\n" .
+                    '    }' . "\n" .
+                    '}'
+                ,
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                        VariableNames::PANTHER_CLIENT,
+                        VariableNames::PHPUNIT_TEST_CASE,
                     ]),
                 ]),
             ],
@@ -149,24 +168,5 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
             ->andReturn($className);
 
         return $classNameFactory;
-    }
-
-    private function createStepMethodFactory(
-        string $expectedStepName,
-        StepInterface $expectedStep,
-        MethodDefinitionInterface $return
-    ): StepMethodFactory {
-        $stepMethodFactory = \Mockery::mock(StepMethodFactory::class);
-        $stepMethodFactory
-            ->shouldReceive('create')
-            ->withArgs(function (string $stepName, StepInterface $step) use ($expectedStepName, $expectedStep) {
-                $this->assertSame($expectedStepName, $stepName);
-                $this->assertEquals($expectedStep, $step);
-
-                return true;
-            })
-            ->andReturn($return);
-
-        return $stepMethodFactory;
     }
 }
