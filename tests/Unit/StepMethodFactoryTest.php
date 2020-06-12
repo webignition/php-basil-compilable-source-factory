@@ -4,8 +4,10 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
+use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Body\BodyInterface;
+use webignition\BasilCompilableSource\Expression\ClassDependency;
 use webignition\BasilCompilableSource\SingleLineComment;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
@@ -14,6 +16,7 @@ use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\StepMethodFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilModels\DataSet\DataSet;
 use webignition\BasilModels\Step\StepInterface;
 use webignition\BasilParser\StepParser;
 
@@ -86,6 +89,7 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                     "public function test1()\n"  .
                     "{\n" .
                     "    {{ PHPUNIT }}->setBasilStepName('Step Name');\n" .
+                    "    {{ PHPUNIT }}->setCurrentDataSet(null);\n" .
                     "}"
                 ,
                 'expectedTestMethodMetadata' => new Metadata([
@@ -103,6 +107,7 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                     "public function test2()\n"  .
                     "{\n" .
                     "    {{ PHPUNIT }}->setBasilStepName('step name \'contains\' single quotes');\n" .
+                    "    {{ PHPUNIT }}->setCurrentDataSet(null);\n" .
                     "}"
                 ,
                 'expectedTestMethodMetadata' => new Metadata([
@@ -127,6 +132,7 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                     "public function test3()\n"  .
                     "{\n" .
                     "    {{ PHPUNIT }}->setBasilStepName('Step Name');\n" .
+                    "    {{ PHPUNIT }}->setCurrentDataSet(null);\n" .
                     "\n" .
                     "    // mocked step handler response\n" .
                     "}"
@@ -159,6 +165,13 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                     'public function test4($expected_value, $field_value)' . "\n"  .
                     "{\n" .
                     "    {{ PHPUNIT }}->setBasilStepName('Step Name');\n" .
+                    "    {{ PHPUNIT }}->setCurrentDataSet(DataSet::fromArray([\n" .
+                    "        'name' => {{ PHPUNIT }}->dataName(),\n" .
+                    "        'data' => [\n" .
+                    "            'expected_value' => \$expected_value,\n" .
+                    "            'field_value' => \$field_value,\n" .
+                    "        ],\n" .
+                    "    ]));\n" .
                     "\n" .
                     "    // mocked step handler response\n" .
                     "}" . "\n" .
@@ -182,6 +195,9 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                     "}"
                 ,
                 'expectedTestMethodMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(DataSet::class),
+                    ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
                     ]),
