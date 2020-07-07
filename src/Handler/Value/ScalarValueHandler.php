@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Value;
 
 use webignition\BasilCompilableSource\Body\Body;
+use webignition\BasilCompilableSource\EmptyLine;
 use webignition\BasilCompilableSource\Expression\CastExpression;
 use webignition\BasilCompilableSource\Expression\ClosureExpression;
 use webignition\BasilCompilableSource\Expression\CompositeExpression;
-use webignition\BasilCompilableSource\EmptyLine;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;

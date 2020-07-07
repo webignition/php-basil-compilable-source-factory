@@ -59,8 +59,7 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '        {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
                     '        self::setBasilTestPath(\'test.yml\');' . "\n" .
                     '    }' . "\n" .
-                    '}'
-                ,
+                    '}',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PANTHER_CLIENT,
@@ -95,8 +94,7 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '        {{ PHPUNIT }}->setBasilStepName(\'step one\');' . "\n" .
                     '        {{ PHPUNIT }}->setCurrentDataSet(null);' . "\n" .
                     '    }' . "\n" .
-                    '}'
-                ,
+                    '}',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PANTHER_CLIENT,
@@ -139,8 +137,7 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '        {{ PHPUNIT }}->setBasilStepName(\'step two\');' . "\n" .
                     '        {{ PHPUNIT }}->setCurrentDataSet(null);' . "\n" .
                     '    }' . "\n" .
-                    '}'
-                ,
+                    '}',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PANTHER_CLIENT,

@@ -22,7 +22,7 @@
         }
     },
     "scripts": {
-        "cs": "./vendor/bin/phpcs src tests --colors --standard=PSR12",
+        "cs": "./vendor/bin/ecs check --ansi",
         "static-analysis": "./vendor/bin/phpstan analyse src tests --level=7",
         "test": "./vendor/bin/phpunit --colors=always",
         "ci": [
@@ -49,6 +49,7 @@
         "phpstan/phpstan-mockery": "^0.12",
         "phpunit/phpunit": "~9.0",
         "squizlabs/php_codesniffer": "3.*",
+        "symplify/easy-coding-standard": "^8.1",
         "webignition/base-basil-test-case": ">=0.27,<1",
         "webignition/basil-parser": ">=0.25,<1",
         "webignition/object-reflector": ">=0.1,<1",

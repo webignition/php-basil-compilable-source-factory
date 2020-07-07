@@ -52,8 +52,7 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                 'expectedRenderedSource' =>
                     '{{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
                     '    "locator": ".selector"' . "\n" .
-                    '}\'))'
-                ,
+                    '}\'))',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -74,8 +73,7 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                     '    "parent": {' . "\n" .
                     '        "locator": ".parent"' . "\n" .
                     '    }' . "\n" .
-                    '}\'))'
-                ,
+                    '}\'))',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -114,8 +112,7 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                 'expectedRenderedSource' =>
                     '{{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
                     '    "locator": ".selector"' . "\n" .
-                    '}\'))'
-                ,
+                    '}\'))',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -136,8 +133,7 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                     '    "parent": {' . "\n" .
                     '        "locator": ".parent"' . "\n" .
                     '    }' . "\n" .
-                    '}\'))'
-                ,
+                    '}\'))',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -182,8 +178,7 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                     '    }\'));' . "\n" .
                     "\n" .
                     '    return $element->getAttribute(\'attribute_name\');' . "\n" .
-                    '})()'
-                ,
+                    '})()',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -209,8 +204,7 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                     '    }\'));' . "\n" .
                     "\n" .
                     '    return $element->getAttribute(\'attribute_name\');' . "\n" .
-                    '})()'
-                ,
+                    '})()',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -253,8 +247,7 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                     '    }\'));' . "\n" .
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue($element);' . "\n" .
-                    '})()'
-                ,
+                    '})()',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -280,8 +273,7 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                     '    }\'));' . "\n" .
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue($element);' . "\n" .
-                    '})()'
-                ,
+                    '})()',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),

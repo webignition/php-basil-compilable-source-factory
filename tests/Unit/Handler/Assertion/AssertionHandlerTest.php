@@ -7,10 +7,10 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Assertion;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
+use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\ComparisonAssertionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\ExistenceAssertionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\IsRegExpAssertionHandler;
-use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
 use webignition\BasilModels\Assertion\Assertion;
 use webignition\BasilParser\AssertionParser;
 

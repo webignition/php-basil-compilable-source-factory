@@ -48,14 +48,13 @@ class StatementFactoryCallFactoryTest extends \PHPUnit\Framework\TestCase
             'click action' => [
                 'statement' => $actionParser->parse('click $".selector"'),
                 'expectedRenderedSource' =>
-                    '{{ ACTION_FACTORY }}->createFromJson(\'{' .  "\n" .
+                    '{{ ACTION_FACTORY }}->createFromJson(\'{' . "\n" .
                     '    "statement-type": "action",' . "\n" .
                     '    "source": "click $\\\\".selector\\\\"",' . "\n" .
                     '    "type": "click",' . "\n" .
                     '    "arguments": "$\\\\".selector\\\\"",' . "\n" .
                     '    "identifier": "$\\\\".selector\\\\""' . "\n" .
-                    '}\')'
-                ,
+                    '}\')',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::ACTION_FACTORY,
@@ -70,8 +69,7 @@ class StatementFactoryCallFactoryTest extends \PHPUnit\Framework\TestCase
                     '    "source": "$\\\\".selector\\\\" exists",' . "\n" .
                     '    "identifier": "$\\\\".selector\\\\"",' . "\n" .
                     '    "operator": "exists"' . "\n" .
-                    '}\')'
-                ,
+                    '}\')',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::ASSERTION_FACTORY,
@@ -98,8 +96,7 @@ class StatementFactoryCallFactoryTest extends \PHPUnit\Framework\TestCase
                     '        "arguments": "$\\\\".selector\\\\"",' . "\n" .
                     '        "identifier": "$\\\\".selector\\\\""' . "\n" .
                     '    }' . "\n" .
-                    '}\')'
-                ,
+                    '}\')',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::ASSERTION_FACTORY,

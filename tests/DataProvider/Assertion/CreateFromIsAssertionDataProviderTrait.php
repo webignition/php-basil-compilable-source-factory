@@ -33,8 +33,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->getExpectedValue(),' . "\n" .
                     '    {{ PHPUNIT }}->getExaminedValue()' . "\n" .
-                    ');'
-                ,
+                    ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -63,8 +62,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->getExpectedValue(),' . "\n" .
                     '    {{ PHPUNIT }}->getExaminedValue()' . "\n" .
-                    ');'
-                ,
+                    ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -90,8 +88,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->getExpectedValue(),' . "\n" .
                     '    {{ PHPUNIT }}->getExaminedValue()' . "\n" .
-                    ');'
-                ,
+                    ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -116,8 +113,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->getExpectedValue(),' . "\n" .
                     '    {{ PHPUNIT }}->getExaminedValue()' . "\n" .
-                    ');'
-                ,
+                    ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PANTHER_CLIENT,
@@ -133,8 +129,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->getExpectedValue(),' . "\n" .
                     '    {{ PHPUNIT }}->getExaminedValue()' . "\n" .
-                    ');'
-                ,
+                    ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -150,8 +145,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->getExpectedValue(),' . "\n" .
                     '    {{ PHPUNIT }}->getExaminedValue()' . "\n" .
-                    ');'
-                ,
+                    ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -167,8 +161,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->getExpectedValue(),' . "\n" .
                     '    {{ PHPUNIT }}->getExaminedValue()' . "\n" .
-                    ');'
-                ,
+                    ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -184,8 +177,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->getExpectedValue(),' . "\n" .
                     '    {{ PHPUNIT }}->getExaminedValue()' . "\n" .
-                    ');'
-                ,
+                    ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -216,8 +208,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->getExpectedValue(),' . "\n" .
                     '    {{ PHPUNIT }}->getExaminedValue()' . "\n" .
-                    ');'
-                ,
+                    ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -250,8 +241,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->getExpectedValue(),' . "\n" .
                     '    {{ PHPUNIT }}->getExaminedValue()' . "\n" .
-                    ');'
-                ,
+                    ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -284,8 +274,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->getExpectedValue(),' . "\n" .
                     '    {{ PHPUNIT }}->getExaminedValue()' . "\n" .
-                    ');'
-                ,
+                    ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -311,8 +300,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->getExpectedValue(),' . "\n" .
                     '    {{ PHPUNIT }}->getExaminedValue()' . "\n" .
-                    ');'
-                ,
+                    ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -335,8 +323,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->getExpectedValue(),' . "\n" .
                     '    {{ PHPUNIT }}->getExaminedValue()' . "\n" .
-                    ');'
-                ,
+                    ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -359,8 +346,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->getExpectedValue(),' . "\n" .
                     '    {{ PHPUNIT }}->getExaminedValue()' . "\n" .
-                    ');'
-                ,
+                    ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -376,8 +362,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    {{ PHPUNIT }}->getExpectedValue(),' . "\n" .
                     '    {{ PHPUNIT }}->getExaminedValue()' . "\n" .
-                    ');'
-                ,
+                    ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,

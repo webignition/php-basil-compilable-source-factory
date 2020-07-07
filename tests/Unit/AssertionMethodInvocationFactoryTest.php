@@ -76,8 +76,7 @@ class AssertionMethodInvocationFactoryTest extends \PHPUnit\Framework\TestCase
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    100,' . "\n" .
                     '    \'string\'' . "\n" .
-                    ')'
-                ,
+                    ')',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -94,8 +93,7 @@ class AssertionMethodInvocationFactoryTest extends \PHPUnit\Framework\TestCase
                     '{{ PHPUNIT }}->assertNotEquals(' . "\n" .
                     '    100,' . "\n" .
                     '    \'string\'' . "\n" .
-                    ')'
-                ,
+                    ')',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -112,8 +110,7 @@ class AssertionMethodInvocationFactoryTest extends \PHPUnit\Framework\TestCase
                     '{{ PHPUNIT }}->assertNotEquals(' . "\n" .
                     '    100,' . "\n" .
                     '    \'string\'' . "\n" .
-                    ')'
-                ,
+                    ')',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,

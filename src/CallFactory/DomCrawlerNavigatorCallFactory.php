@@ -11,18 +11,9 @@ use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class DomCrawlerNavigatorCallFactory
 {
-    private ElementIdentifierCallFactory $elementIdentifierCallFactory;
-
-    public function __construct(ElementIdentifierCallFactory $elementIdentifierCallFactory)
-    {
-        $this->elementIdentifierCallFactory = $elementIdentifierCallFactory;
-    }
-
     public static function createFactory(): DomCrawlerNavigatorCallFactory
     {
-        return new DomCrawlerNavigatorCallFactory(
-            ElementIdentifierCallFactory::createFactory()
-        );
+        return new DomCrawlerNavigatorCallFactory();
     }
 
     public function createFindCall(ExpressionInterface $elementIdentifierExpression): ExpressionInterface

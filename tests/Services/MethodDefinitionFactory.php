@@ -6,15 +6,15 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Body\BodyInterface;
-use webignition\BasilCompilableSource\Expression\CompositeExpression;
 use webignition\BasilCompilableSource\EmptyLine;
+use webignition\BasilCompilableSource\Expression\CompositeExpression;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
+use webignition\BasilCompilableSource\MethodDefinition;
+use webignition\BasilCompilableSource\MethodDefinitionInterface;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSource\SingleLineComment;
 use webignition\BasilCompilableSource\Statement\Statement;
-use webignition\BasilCompilableSource\MethodDefinition;
-use webignition\BasilCompilableSource\MethodDefinitionInterface;
 use webignition\BasilCompilableSource\StaticObject;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSourceFactory\VariableNames;

@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Step;
 
 use webignition\BasilCompilableSource\Body\Body;
-use webignition\BasilCompilableSource\SingleLineComment;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
@@ -110,8 +110,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '// AssertionHandler::handle($".selector" exists)' . "\n" .
                     "\n" .
                     '// StatementBlockFactory::create(click $".selector")' . "\n" .
-                    '// ActionHandler::handle(click $".selector")' . "\n"
-                ,
+                    '// ActionHandler::handle(click $".selector")' . "\n",
                 'expectedMetadata' => new Metadata(),
             ],
             'two click actions' => [
@@ -212,8 +211,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '// AssertionHandler::handle($".selector2" exists)' . "\n" .
                     "\n" .
                     '// StatementBlockFactory::create(click $".selector2")' . "\n" .
-                    '// ActionHandler::handle(click $".selector2")' . "\n"
-                ,
+                    '// ActionHandler::handle(click $".selector2")' . "\n",
                 'expectedMetadata' => new Metadata(),
             ],
             'single exists assertion' => [
@@ -244,8 +242,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                 ]),
                 'expectedRenderedSource' =>
                     '// StatementBlockFactory::create($".selector" exists)' . "\n" .
-                    '// AssertionHandler::handle($".selector" exists)' . "\n"
-                ,
+                    '// AssertionHandler::handle($".selector" exists)' . "\n",
                 'expectedMetadata' => new Metadata(),
             ],
             'single exists assertion, descendant identifier' => [
@@ -301,9 +298,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '// AssertionHandler::handle($".parent" exists)' . "\n" .
                     "\n" .
                     '// StatementBlockFactory::create($".parent" >> $".child" exists)' . "\n" .
-                    '// AssertionHandler::handle($".parent" >> $".child" exists)' . "\n"
-
-                ,
+                    '// AssertionHandler::handle($".parent" >> $".child" exists)' . "\n",
                 'expectedMetadata' => new Metadata(),
             ],
             'two exists assertions' => [
@@ -352,8 +347,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '// AssertionHandler::handle($".selector1" exists)' . "\n" .
                     "\n" .
                     '// StatementBlockFactory::create($".selector2" exists)' . "\n" .
-                    '// AssertionHandler::handle($".selector2" exists)' . "\n"
-                ,
+                    '// AssertionHandler::handle($".selector2" exists)' . "\n",
                 'expectedMetadata' => new Metadata(),
             ],
             'single click action, single exists assertion' => [
@@ -431,8 +425,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '// ActionHandler::handle(click $".selector1")' . "\n" .
                     "\n" .
                     '// StatementBlockFactory::create($".selector2" exists)' . "\n" .
-                    '// AssertionHandler::handle($".selector2" exists)' . "\n"
-                ,
+                    '// AssertionHandler::handle($".selector2" exists)' . "\n",
                 'expectedMetadata' => new Metadata(),
             ],
             'two descendant exists assertions with common parent' => [
@@ -506,8 +499,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '// AssertionHandler::handle($".parent" >> $".child1" exists)' . "\n" .
                     "\n" .
                     '// StatementBlockFactory::create($".parent" >> $".child2" exists)' . "\n" .
-                    '// AssertionHandler::handle($".parent" >> $".child2" exists)' . "\n"
-                ,
+                    '// AssertionHandler::handle($".parent" >> $".child2" exists)' . "\n",
                 'expectedMetadata' => new Metadata(),
             ],
             'derived is-regexp' => [
@@ -565,8 +557,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
                     '// AssertionHandler::handle("/pattern/" is-regexp)' . "\n" .
                     "\n" .
                     '// StatementBlockFactory::create($page.title matches "/pattern/")' . "\n" .
-                    '// AssertionHandler::handle($page.title matches "/pattern/")' . "\n"
-                ,
+                    '// AssertionHandler::handle($page.title matches "/pattern/")' . "\n",
                 'expectedMetadata' => new Metadata(),
             ],
         ];

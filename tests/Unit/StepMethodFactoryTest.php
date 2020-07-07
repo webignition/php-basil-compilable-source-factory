@@ -8,9 +8,9 @@ use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\Expression\ClassDependency;
-use webignition\BasilCompilableSource\SingleLineComment;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\SingleLineComment;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
@@ -86,12 +86,11 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                 'step' => $emptyStep,
                 'stepMethodFactory' => StepMethodFactory::createFactory(),
                 'expectedRenderedTestMethod' =>
-                    "public function test1()\n"  .
+                    "public function test1()\n" .
                     "{\n" .
                     "    {{ PHPUNIT }}->setBasilStepName('Step Name');\n" .
                     "    {{ PHPUNIT }}->setCurrentDataSet(null);\n" .
-                    "}"
-                ,
+                    "}",
                 'expectedTestMethodMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -104,12 +103,11 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                 'step' => $emptyStep,
                 'stepMethodFactory' => StepMethodFactory::createFactory(),
                 'expectedRenderedTestMethod' =>
-                    "public function test2()\n"  .
+                    "public function test2()\n" .
                     "{\n" .
                     "    {{ PHPUNIT }}->setBasilStepName('step name \'contains\' single quotes');\n" .
                     "    {{ PHPUNIT }}->setCurrentDataSet(null);\n" .
-                    "}"
-                ,
+                    "}",
                 'expectedTestMethodMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -129,14 +127,13 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                     ),
                 ]),
                 'expectedRenderedTestMethod' =>
-                    "public function test3()\n"  .
+                    "public function test3()\n" .
                     "{\n" .
                     "    {{ PHPUNIT }}->setBasilStepName('Step Name');\n" .
                     "    {{ PHPUNIT }}->setCurrentDataSet(null);\n" .
                     "\n" .
                     "    // mocked step handler response\n" .
-                    "}"
-                ,
+                    "}",
                 'expectedTestMethodMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -162,7 +159,7 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                     " * @param string " . '$expected_value' . "\n" .
                     " * @param string " . '$field_value' . "\n" .
                     " */\n" .
-                    'public function test4($expected_value, $field_value)' . "\n"  .
+                    'public function test4($expected_value, $field_value)' . "\n" .
                     "{\n" .
                     "    {{ PHPUNIT }}->setBasilStepName('Step Name');\n" .
                     "    {{ PHPUNIT }}->setCurrentDataSet(DataSet::fromArray([\n" .
@@ -192,8 +189,7 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                     "            'field_value' => '\'value5\'',\n" .
                     "        ],\n" .
                     "    ];\n" .
-                    "}"
-                ,
+                    "}",
                 'expectedTestMethodMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(DataSet::class),

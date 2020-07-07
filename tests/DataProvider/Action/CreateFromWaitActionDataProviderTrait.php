@@ -33,8 +33,7 @@ trait CreateFromWaitActionDataProviderTrait
                     '    }\'));' . "\n" .
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue($element);' . "\n" .
-                    '})() ?? 0)) * 1000);'
-                ,
+                    '})() ?? 0)) * 1000);',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -57,8 +56,7 @@ trait CreateFromWaitActionDataProviderTrait
                     '    }\'));' . "\n" .
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue($element);' . "\n" .
-                    '})() ?? 0)) * 1000);'
-                ,
+                    '})() ?? 0)) * 1000);',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -78,8 +76,7 @@ trait CreateFromWaitActionDataProviderTrait
                     '    }\'));' . "\n" .
                     "\n" .
                     '    return {{ INSPECTOR }}->getValue($element);' . "\n" .
-                    '})() ?? 0)) * 1000);'
-                ,
+                    '})() ?? 0)) * 1000);',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -99,8 +96,7 @@ trait CreateFromWaitActionDataProviderTrait
                     '    }\'));' . "\n" .
                     "\n" .
                     '    return $element->getAttribute(\'attribute_name\');' . "\n" .
-                    '})() ?? 0)) * 1000);'
-                ,
+                    '})() ?? 0)) * 1000);',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -119,8 +115,7 @@ trait CreateFromWaitActionDataProviderTrait
                     "\n" .
                     '    return (string) ($webDriverDimension->getWidth()) . \'x\' . ' .
                     '(string) ($webDriverDimension->getHeight());' . "\n" .
-                    '})() ?? 0)) * 1000);'
-                ,
+                    '})() ?? 0)) * 1000);',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PANTHER_CLIENT,
