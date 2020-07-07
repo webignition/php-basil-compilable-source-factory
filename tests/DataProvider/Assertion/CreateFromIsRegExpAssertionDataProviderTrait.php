@@ -33,8 +33,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     ');' . "\n" .
                     '{{ PHPUNIT }}->assertFalse(' . "\n" .
                     '    {{ PHPUNIT }}->getBooleanExpectedValue()' . "\n" .
-                    ');'
-                ,
+                    ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -60,8 +59,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     ');' . "\n" .
                     '{{ PHPUNIT }}->assertFalse(' . "\n" .
                     '    {{ PHPUNIT }}->getBooleanExpectedValue()' . "\n" .
-                    ');'
-                ,
+                    ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -92,8 +90,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     ');' . "\n" .
                     '{{ PHPUNIT }}->assertFalse(' . "\n" .
                     '    {{ PHPUNIT }}->getBooleanExpectedValue()' . "\n" .
-                    ');'
-                ,
+                    ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -117,8 +114,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     ');' . "\n" .
                     '{{ PHPUNIT }}->assertFalse(' . "\n" .
                     '    {{ PHPUNIT }}->getBooleanExpectedValue()' . "\n" .
-                    ');'
-                ,
+                    ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,

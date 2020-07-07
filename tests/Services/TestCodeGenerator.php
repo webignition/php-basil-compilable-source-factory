@@ -120,7 +120,7 @@ class TestCodeGenerator
         $variableIdentifiers = [];
 
         foreach ($variableDependencies as $variableDependency) {
-            /* @var VariableDependency $variableDependency */
+            /** @var VariableDependency $variableDependency */
             $name = $variableDependency->getName();
             $externalVariable = $externalVariables[$name] ?? null;
 

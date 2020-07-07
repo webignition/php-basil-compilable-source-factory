@@ -36,8 +36,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                     '}' . "\n" .
                     '{{ PHPUNIT }}->assertFalse(' . "\n" .
                     '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n" .
-                    ');'
-                ,
+                    ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -75,8 +74,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                     '})() ?? null) !== null);' . "\n" .
                     '{{ PHPUNIT }}->assertFalse(' . "\n" .
                     '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n" .
-                    ');'
-                ,
+                    ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),

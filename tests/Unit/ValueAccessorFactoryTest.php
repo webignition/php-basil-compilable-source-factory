@@ -40,7 +40,7 @@ class ValueAccessorFactoryTest extends \PHPUnit\Framework\TestCase
         $scalarValueHandler = ScalarValueHandler::createHandler();
         $domIdentifierHandler = DomIdentifierHandler::createHandler();
         $elementIdentifierSerializer = ElementIdentifierSerializer::createSerializer();
-        $domIdentifierFactory =  DomIdentifierFactory::createFactory();
+        $domIdentifierFactory = DomIdentifierFactory::createFactory();
 
         return [
             'scalar, literal' => [
@@ -84,7 +84,7 @@ class ValueAccessorFactoryTest extends \PHPUnit\Framework\TestCase
         $scalarValueHandler = ScalarValueHandler::createHandler();
         $domIdentifierHandler = DomIdentifierHandler::createHandler();
         $elementIdentifierSerializer = ElementIdentifierSerializer::createSerializer();
-        $domIdentifierFactory =  DomIdentifierFactory::createFactory();
+        $domIdentifierFactory = DomIdentifierFactory::createFactory();
 
         return [
             'scalar, literal' => [

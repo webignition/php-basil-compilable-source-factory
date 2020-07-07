@@ -85,9 +85,7 @@ class DerivedAssertionFactory
         $assertions = new UniqueAssertionCollection();
 
         $assertions = $assertions->merge($this->createExistenceAssertionsForElementalComponents($assertion));
-        $assertions = $assertions->merge($this->createRegexValidationAssertions($assertion));
-
-        return $assertions;
+        return $assertions->merge($this->createRegexValidationAssertions($assertion));
     }
 
     /**

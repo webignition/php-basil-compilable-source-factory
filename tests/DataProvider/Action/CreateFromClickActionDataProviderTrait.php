@@ -46,7 +46,7 @@ trait CreateFromClickActionDataProviderTrait
                 'expectedRenderedSource' =>
                     '(function () {' . "\n" .
                     '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '        "locator": ".child",' .  "\n" .
+                    '        "locator": ".child",' . "\n" .
                     '        "parent": {' . "\n" .
                     '            "locator": ".parent"' . "\n" .
                     '        }' . "\n" .

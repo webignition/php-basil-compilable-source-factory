@@ -33,8 +33,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
                     '{{ PHPUNIT }}->assertStringNotContainsString(' . "\n" .
                     '    (string) ({{ PHPUNIT }}->getExpectedValue()),' . "\n" .
                     '    (string) ({{ PHPUNIT }}->getExaminedValue())' . "\n" .
-                    ');'
-                ,
+                    ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),
@@ -60,8 +59,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
                     '{{ PHPUNIT }}->assertStringNotContainsString(' . "\n" .
                     '    (string) ({{ PHPUNIT }}->getExpectedValue()),' . "\n" .
                     '    (string) ({{ PHPUNIT }}->getExaminedValue())' . "\n" .
-                    ');'
-                ,
+                    ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassDependency(ElementIdentifier::class),

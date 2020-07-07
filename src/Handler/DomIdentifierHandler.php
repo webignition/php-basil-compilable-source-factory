@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler;
 
 use webignition\BasilCompilableSource\Body\Body;
-use webignition\BasilCompilableSource\Expression\ClosureExpression;
 use webignition\BasilCompilableSource\EmptyLine;
+use webignition\BasilCompilableSource\Expression\ClosureExpression;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
@@ -106,15 +106,15 @@ class DomIdentifierHandler
             new EmptyLine(),
         ];
 
-            $closureExpressionStatements[] = new ReturnStatement(
-                new ObjectMethodInvocation(
-                    new VariableDependency(VariableNames::WEBDRIVER_ELEMENT_INSPECTOR),
-                    'getValue',
-                    [
-                        $elementPlaceholder,
-                    ]
-                )
-            );
+        $closureExpressionStatements[] = new ReturnStatement(
+            new ObjectMethodInvocation(
+                new VariableDependency(VariableNames::WEBDRIVER_ELEMENT_INSPECTOR),
+                'getValue',
+                [
+                    $elementPlaceholder,
+                ]
+            )
+        );
 
 
         return new ClosureExpression(new Body($closureExpressionStatements));

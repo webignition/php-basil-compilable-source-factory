@@ -12,7 +12,7 @@ trait IsNotAssertionFunctionalDataProviderTrait
     {
         $assertionParser = AssertionParser::create();
 
-        $assertions =  [
+        $assertions = [
             'element identifier examined value, scalar expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" is-not "incorrect value"'),
             ],

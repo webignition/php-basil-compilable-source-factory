@@ -6,8 +6,8 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Expression\ClassDependency;
-use webignition\BasilCompilableSource\Statement\ReturnStatement;
 use webignition\BasilCompilableSource\Metadata\Metadata;
+use webignition\BasilCompilableSource\Statement\ReturnStatement;
 use webignition\BasilCompilableSourceFactory\CallFactory\ElementIdentifierCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\DomElementIdentifier\AttributeIdentifier;

@@ -68,8 +68,7 @@ class ScalarValueHandlerTest extends \PHPUnit\Framework\TestCase
                     "\n" .
                     '    return (string) ($webDriverDimension->getWidth()) . \'x\' . ' .
                     '(string) ($webDriverDimension->getHeight());' . "\n" .
-                    '})()'
-                ,
+                    '})()',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PANTHER_CLIENT,

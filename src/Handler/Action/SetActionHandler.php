@@ -90,7 +90,7 @@ class SetActionHandler
 
         if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($value)) {
             $valueDomIdentifier = $this->domIdentifierFactory->createFromIdentifierString($value);
-            if (null ===  $valueDomIdentifier) {
+            if (null === $valueDomIdentifier) {
                 throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $value);
             }
 
