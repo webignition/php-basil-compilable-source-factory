@@ -10,10 +10,10 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentExcepti
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\ExistenceAssertionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\IdentifierExistenceAssertionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\ScalarExistenceAssertionHandler;
-use webignition\BasilCompilableSourceFactory\ValueTypeIdentifier;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Assertion\Assertion;
 use webignition\BasilParser\AssertionParser;
+use webignition\BasilValueTypeIdentifier\ValueTypeIdentifier;
 
 class ExistenceAssertionHandlerTest extends \PHPUnit\Framework\TestCase
 {

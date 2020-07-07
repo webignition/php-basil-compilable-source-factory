@@ -18,10 +18,9 @@ use webignition\BasilCompilableSource\Statement\ReturnStatement;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\Model\EnvironmentValue;
 use webignition\BasilCompilableSourceFactory\ModelFactory\EnvironmentValueFactory;
-use webignition\BasilCompilableSourceFactory\ValueTypeIdentifier;
 use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilValueTypeIdentifier\ValueTypeIdentifier;
 
 class ScalarValueHandler
 {
@@ -63,7 +62,7 @@ class ScalarValueHandler
             return new LiteralExpression('$' . $property);
         }
 
-        if (EnvironmentValue::is($value)) {
+        if ($this->valueTypeIdentifier->isEnvironmentValue($value)) {
             return $this->handleEnvironmentValue($value);
         }
 
