@@ -7,9 +7,9 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\ValueTypeIdentifier;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Assertion\AssertionInterface;
+use webignition\BasilValueTypeIdentifier\ValueTypeIdentifier;
 
 class ExistenceAssertionHandler extends AbstractAssertionHandler
 {

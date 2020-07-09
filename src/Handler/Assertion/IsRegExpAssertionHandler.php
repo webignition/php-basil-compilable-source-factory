@@ -14,10 +14,10 @@ use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
-use webignition\BasilCompilableSourceFactory\ValueTypeIdentifier;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Assertion\AssertionInterface;
+use webignition\BasilValueTypeIdentifier\ValueTypeIdentifier;
 
 class IsRegExpAssertionHandler extends AbstractAssertionHandler
 {
