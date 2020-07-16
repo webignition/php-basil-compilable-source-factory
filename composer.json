@@ -37,6 +37,7 @@
     "require": {
         "php": ">=7.4",
         "ext-json": "*",
+        "webignition/base-basil-test-case": ">=0.29,<1",
         "webignition/basil-compilable-source": ">=0.42,<1",
         "webignition/basil-dom-identifier-factory": ">=0.12,<1",
         "webignition/basil-identifier-analyser": ">=0.6,<1",
@@ -54,7 +55,6 @@
         "phpunit/phpunit": "~9.0",
         "squizlabs/php_codesniffer": "3.*",
         "symplify/easy-coding-standard": "^8.1",
-        "webignition/base-basil-test-case": ">=0.29,<1",
         "webignition/basil-parser": ">=0.25,<1",
         "webignition/object-reflector": ">=0.1,<1",
         "webignition/symfony-panther-webserver-runner": ">=0.3,<1"

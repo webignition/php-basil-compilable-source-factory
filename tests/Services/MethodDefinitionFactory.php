@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
+use webignition\BaseBasilTestCase\AbstractBaseTest;
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\EmptyLine;
@@ -35,6 +36,15 @@ class MethodDefinitionFactory
         ]);
 
         $body = new Body([
+            new Statement(
+                new StaticObjectMethodInvocation(
+                    new StaticObject('self'),
+                    'setUpClient',
+                    [
+                        new LiteralExpression('\'' . AbstractBaseTest::BROWSER_CHROME . '\''),
+                    ]
+                )
+            ),
             new SingleLineComment('Test harness lines'),
             new Statement(new LiteralExpression('parent::setUpBeforeClass()')),
             new Statement(
