@@ -22,7 +22,10 @@
         }
     },
     "scripts": {
-        "cs": "./vendor/bin/ecs check --ansi",
+        "cs": [
+            "./vendor/bin/ecs check src tests --ansi --config ecs.yaml",
+            "./vendor/bin/phpcs"
+        ],
         "static-analysis": "./vendor/bin/phpstan analyse src tests --level=7",
         "test": "./vendor/bin/phpunit --colors=always",
         "ci": [
