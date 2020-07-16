@@ -38,7 +38,7 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
         $testParser = TestParser::create();
 
         return [
-            'empty test' => [
+            'empty test, browser=chrome' => [
                 'classDefinitionFactory' => $this->createClassDefinitionFactory(
                     $this->createClassNameFactory('GeneratedClassName'),
                     \Mockery::mock(StepMethodFactory::class)
@@ -55,6 +55,65 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '{' . "\n" .
                     '    public static function setUpBeforeClass(): void' . "\n" .
                     '    {' . "\n" .
+                    '        self::setUpClient(0);' . "\n" .
+                    '        parent::setUpBeforeClass();' . "\n" .
+                    '        {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
+                    '        self::setBasilTestPath(\'test.yml\');' . "\n" .
+                    '    }' . "\n" .
+                    '}',
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                        VariableNames::PANTHER_CLIENT,
+                    ]),
+                ]),
+            ],
+            'empty test, browser=firefox' => [
+                'classDefinitionFactory' => $this->createClassDefinitionFactory(
+                    $this->createClassNameFactory('GeneratedClassName'),
+                    \Mockery::mock(StepMethodFactory::class)
+                ),
+                'expectedClassName' => 'GeneratedClassName',
+                'test' => $testParser->parse([
+                    'config' => [
+                        'browser' => 'firefox',
+                        'url' => 'http://example.com',
+                    ],
+                ])->withPath('test.yml'),
+                'expectedRenderedClassDefinition' =>
+                    'class GeneratedClassName' . "\n" .
+                    '{' . "\n" .
+                    '    public static function setUpBeforeClass(): void' . "\n" .
+                    '    {' . "\n" .
+                    '        self::setUpClient(1);' . "\n" .
+                    '        parent::setUpBeforeClass();' . "\n" .
+                    '        {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
+                    '        self::setBasilTestPath(\'test.yml\');' . "\n" .
+                    '    }' . "\n" .
+                    '}',
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                        VariableNames::PANTHER_CLIENT,
+                    ]),
+                ]),
+            ],
+            'empty test, browser=unknown' => [
+                'classDefinitionFactory' => $this->createClassDefinitionFactory(
+                    $this->createClassNameFactory('GeneratedClassName'),
+                    \Mockery::mock(StepMethodFactory::class)
+                ),
+                'expectedClassName' => 'GeneratedClassName',
+                'test' => $testParser->parse([
+                    'config' => [
+                        'browser' => 'unknown',
+                        'url' => 'http://example.com',
+                    ],
+                ])->withPath('test.yml'),
+                'expectedRenderedClassDefinition' =>
+                    'class GeneratedClassName' . "\n" .
+                    '{' . "\n" .
+                    '    public static function setUpBeforeClass(): void' . "\n" .
+                    '    {' . "\n" .
+                    '        self::setUpClient(0);' . "\n" .
                     '        parent::setUpBeforeClass();' . "\n" .
                     '        {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
                     '        self::setBasilTestPath(\'test.yml\');' . "\n" .
@@ -84,6 +143,7 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '{' . "\n" .
                     '    public static function setUpBeforeClass(): void' . "\n" .
                     '    {' . "\n" .
+                    '        self::setUpClient(0);' . "\n" .
                     '        parent::setUpBeforeClass();' . "\n" .
                     '        {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
                     '        self::setBasilTestPath(\'test.yml\');' . "\n" .
@@ -121,6 +181,7 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '{' . "\n" .
                     '    public static function setUpBeforeClass(): void' . "\n" .
                     '    {' . "\n" .
+                    '        self::setUpClient(0);' . "\n" .
                     '        parent::setUpBeforeClass();' . "\n" .
                     '        {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
                     '        self::setBasilTestPath(\'test.yml\');' . "\n" .

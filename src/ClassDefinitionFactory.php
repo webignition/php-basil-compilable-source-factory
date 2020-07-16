@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory;
 
+use webignition\BaseBasilTestCase\AbstractBaseTest;
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\ClassDefinition;
 use webignition\BasilCompilableSource\ClassDefinitionInterface;
@@ -22,6 +23,12 @@ class ClassDefinitionFactory
 {
     private ClassNameFactory $classNameFactory;
     private StepMethodFactory $stepMethodFactory;
+
+    private const DEFAULT_CLIENT_ID = AbstractBaseTest::BROWSER_CHROME;
+    private const BROWSER_NAME_CLIENT_ID_MAP = [
+        'chrome' => AbstractBaseTest::BROWSER_CHROME,
+        'firefox' => AbstractBaseTest::BROWSER_FIREFOX,
+    ];
 
     public function __construct(ClassNameFactory $classNameFactory, StepMethodFactory $stepMethodFactory)
     {
@@ -61,7 +68,21 @@ class ClassDefinitionFactory
 
     private function createSetupBeforeClassMethod(TestInterface $test): MethodDefinitionInterface
     {
+        $testConfiguration = $test->getConfiguration();
+
+        $browser = $testConfiguration->getBrowser();
+        $browserClientId = self::BROWSER_NAME_CLIENT_ID_MAP[$browser] ?? self::DEFAULT_CLIENT_ID;
+
         $method = new MethodDefinition('setUpBeforeClass', new Body([
+            new Statement(
+                new StaticObjectMethodInvocation(
+                    new StaticObject('self'),
+                    'setUpClient',
+                    [
+                        new LiteralExpression((string) $browserClientId),
+                    ]
+                )
+            ),
             new Statement(
                 new StaticObjectMethodInvocation(
                     new StaticObject('parent'),
@@ -74,7 +95,7 @@ class ClassDefinitionFactory
                     'request',
                     [
                         new LiteralExpression('\'GET\''),
-                        new LiteralExpression('\'' . $test->getConfiguration()->getUrl() . '\''),
+                        new LiteralExpression('\'' . $testConfiguration->getUrl() . '\''),
                     ]
                 )
             ),
