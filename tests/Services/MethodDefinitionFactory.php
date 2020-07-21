@@ -4,14 +4,15 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
-use webignition\BaseBasilTestCase\AbstractBaseTest;
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\EmptyLine;
+use webignition\BasilCompilableSource\Expression\ClassDependency;
 use webignition\BasilCompilableSource\Expression\CompositeExpression;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\MethodDefinition;
 use webignition\BasilCompilableSource\MethodDefinitionInterface;
+use webignition\BasilCompilableSource\MethodInvocation\ObjectConstructor;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSource\SingleLineComment;
@@ -19,6 +20,7 @@ use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\StaticObject;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilModels\Test\Configuration;
 use webignition\SymfonyPantherWebServerRunner\Options;
 
 class MethodDefinitionFactory
@@ -39,10 +41,17 @@ class MethodDefinitionFactory
             new Statement(
                 new StaticObjectMethodInvocation(
                     new StaticObject('self'),
-                    'setUpClient',
+                    'setBasilTestConfiguration',
                     [
-                        new LiteralExpression('\'' . AbstractBaseTest::BROWSER_CHROME . '\''),
-                    ]
+                        new ObjectConstructor(
+                            new ClassDependency(Configuration::class),
+                            [
+                                new LiteralExpression('\'chrome\''),
+                                $requestBaseUri,
+                            ],
+                            ObjectConstructor::ARGUMENT_FORMAT_STACKED
+                        ),
+                    ],
                 )
             ),
             new SingleLineComment('Test harness lines'),

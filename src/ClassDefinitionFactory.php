@@ -4,43 +4,45 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory;
 
-use webignition\BaseBasilTestCase\AbstractBaseTest;
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\ClassDefinition;
 use webignition\BasilCompilableSource\ClassDefinitionInterface;
+use webignition\BasilCompilableSource\Expression\ClassDependency;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\MethodDefinition;
 use webignition\BasilCompilableSource\MethodDefinitionInterface;
+use webignition\BasilCompilableSource\MethodInvocation\ObjectConstructor;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\StaticObject;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
+use webignition\BasilModels\Test\Configuration;
 use webignition\BasilModels\Test\TestInterface;
 
 class ClassDefinitionFactory
 {
     private ClassNameFactory $classNameFactory;
     private StepMethodFactory $stepMethodFactory;
+    private SingleQuotedStringEscaper $singleQuotedStringEscaper;
 
-    private const DEFAULT_CLIENT_ID = AbstractBaseTest::BROWSER_CHROME;
-    private const BROWSER_NAME_CLIENT_ID_MAP = [
-        'chrome' => AbstractBaseTest::BROWSER_CHROME,
-        'firefox' => AbstractBaseTest::BROWSER_FIREFOX,
-    ];
-
-    public function __construct(ClassNameFactory $classNameFactory, StepMethodFactory $stepMethodFactory)
-    {
+    public function __construct(
+        ClassNameFactory $classNameFactory,
+        StepMethodFactory $stepMethodFactory,
+        SingleQuotedStringEscaper $singleQuotedStringEscaper
+    ) {
         $this->classNameFactory = $classNameFactory;
         $this->stepMethodFactory = $stepMethodFactory;
+        $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
     }
 
     public static function createFactory(): ClassDefinitionFactory
     {
         return new ClassDefinitionFactory(
             new ClassNameFactory(),
-            StepMethodFactory::createFactory()
+            StepMethodFactory::createFactory(),
+            SingleQuotedStringEscaper::create()
         );
     }
 
@@ -70,17 +72,24 @@ class ClassDefinitionFactory
     {
         $testConfiguration = $test->getConfiguration();
 
-        $browser = $testConfiguration->getBrowser();
-        $browserClientId = self::BROWSER_NAME_CLIENT_ID_MAP[$browser] ?? self::DEFAULT_CLIENT_ID;
+        $escapedBrowser = $this->singleQuotedStringEscaper->escape($testConfiguration->getBrowser());
+        $escapedUrl = $this->singleQuotedStringEscaper->escape($testConfiguration->getUrl());
 
         $method = new MethodDefinition('setUpBeforeClass', new Body([
             new Statement(
                 new StaticObjectMethodInvocation(
                     new StaticObject('self'),
-                    'setUpClient',
+                    'setBasilTestConfiguration',
                     [
-                        new LiteralExpression((string) $browserClientId),
-                    ]
+                        new ObjectConstructor(
+                            new ClassDependency(Configuration::class),
+                            [
+                                new LiteralExpression('\'' . $escapedBrowser . '\''),
+                                new LiteralExpression('\'' . $escapedUrl . '\''),
+                            ],
+                            ObjectConstructor::ARGUMENT_FORMAT_STACKED
+                        ),
+                    ],
                 )
             ),
             new Statement(
@@ -95,7 +104,7 @@ class ClassDefinitionFactory
                     'request',
                     [
                         new LiteralExpression('\'GET\''),
-                        new LiteralExpression('\'' . $testConfiguration->getUrl() . '\''),
+                        new LiteralExpression('\'' . $escapedUrl . '\''),
                     ]
                 )
             ),
