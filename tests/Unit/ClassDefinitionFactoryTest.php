@@ -4,13 +4,17 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
+use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
+use webignition\BasilCompilableSource\Expression\ClassDependency;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\ClassDefinitionFactory;
 use webignition\BasilCompilableSourceFactory\ClassNameFactory;
+use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\StepMethodFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilModels\Test\Configuration;
 use webignition\BasilModels\Test\TestInterface;
 use webignition\BasilParser\Test\TestParser;
 
@@ -51,17 +55,25 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     ],
                 ])->withPath('test.yml'),
                 'expectedRenderedClassDefinition' =>
+                    'use webignition\BasilModels\Test\Configuration;' . "\n" .
+                    "\n" .
                     'class GeneratedClassName' . "\n" .
                     '{' . "\n" .
                     '    public static function setUpBeforeClass(): void' . "\n" .
                     '    {' . "\n" .
-                    '        self::setUpClient(0);' . "\n" .
+                    '        self::setBasilTestConfiguration(new Configuration(' . "\n" .
+                    '            \'chrome\',' . "\n" .
+                    '            \'http://example.com\'' . "\n" .
+                    '        ));' . "\n" .
                     '        parent::setUpBeforeClass();' . "\n" .
                     '        {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
                     '        self::setBasilTestPath(\'test.yml\');' . "\n" .
                     '    }' . "\n" .
                     '}',
                 'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(Configuration::class),
+                    ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PANTHER_CLIENT,
                     ]),
@@ -80,17 +92,25 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     ],
                 ])->withPath('test.yml'),
                 'expectedRenderedClassDefinition' =>
+                    'use webignition\BasilModels\Test\Configuration;' . "\n" .
+                    "\n" .
                     'class GeneratedClassName' . "\n" .
                     '{' . "\n" .
                     '    public static function setUpBeforeClass(): void' . "\n" .
                     '    {' . "\n" .
-                    '        self::setUpClient(1);' . "\n" .
+                    '        self::setBasilTestConfiguration(new Configuration(' . "\n" .
+                    '            \'firefox\',' . "\n" .
+                    '            \'http://example.com\'' . "\n" .
+                    '        ));' . "\n" .
                     '        parent::setUpBeforeClass();' . "\n" .
                     '        {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
                     '        self::setBasilTestPath(\'test.yml\');' . "\n" .
                     '    }' . "\n" .
                     '}',
                 'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(Configuration::class),
+                    ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PANTHER_CLIENT,
                     ]),
@@ -109,17 +129,25 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     ],
                 ])->withPath('test.yml'),
                 'expectedRenderedClassDefinition' =>
+                    'use webignition\BasilModels\Test\Configuration;' . "\n" .
+                    "\n" .
                     'class GeneratedClassName' . "\n" .
                     '{' . "\n" .
                     '    public static function setUpBeforeClass(): void' . "\n" .
                     '    {' . "\n" .
-                    '        self::setUpClient(0);' . "\n" .
+                    '        self::setBasilTestConfiguration(new Configuration(' . "\n" .
+                    '            \'unknown\',' . "\n" .
+                    '            \'http://example.com\'' . "\n" .
+                    '        ));' . "\n" .
                     '        parent::setUpBeforeClass();' . "\n" .
                     '        {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
                     '        self::setBasilTestPath(\'test.yml\');' . "\n" .
                     '    }' . "\n" .
                     '}',
                 'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(Configuration::class),
+                    ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PANTHER_CLIENT,
                     ]),
@@ -139,11 +167,16 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     'step one' => [],
                 ])->withPath('test.yml'),
                 'expectedRenderedClassDefinition' =>
+                    'use webignition\BasilModels\Test\Configuration;' . "\n" .
+                    "\n" .
                     'class GeneratedClassName' . "\n" .
                     '{' . "\n" .
                     '    public static function setUpBeforeClass(): void' . "\n" .
                     '    {' . "\n" .
-                    '        self::setUpClient(0);' . "\n" .
+                    '        self::setBasilTestConfiguration(new Configuration(' . "\n" .
+                    '            \'chrome\',' . "\n" .
+                    '            \'http://example.com\'' . "\n" .
+                    '        ));' . "\n" .
                     '        parent::setUpBeforeClass();' . "\n" .
                     '        {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
                     '        self::setBasilTestPath(\'test.yml\');' . "\n" .
@@ -156,6 +189,9 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '    }' . "\n" .
                     '}',
                 'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(Configuration::class),
+                    ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PANTHER_CLIENT,
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -177,11 +213,16 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     'step two' => [],
                 ])->withPath('test.yml'),
                 'expectedRenderedClassDefinition' =>
+                    'use webignition\BasilModels\Test\Configuration;' . "\n" .
+                    "\n" .
                     'class GeneratedClassName' . "\n" .
                     '{' . "\n" .
                     '    public static function setUpBeforeClass(): void' . "\n" .
                     '    {' . "\n" .
-                    '        self::setUpClient(0);' . "\n" .
+                    '        self::setBasilTestConfiguration(new Configuration(' . "\n" .
+                    '            \'chrome\',' . "\n" .
+                    '            \'http://example.com\'' . "\n" .
+                    '        ));' . "\n" .
                     '        parent::setUpBeforeClass();' . "\n" .
                     '        {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
                     '        self::setBasilTestPath(\'test.yml\');' . "\n" .
@@ -200,6 +241,9 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '    }' . "\n" .
                     '}',
                 'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
+                        new ClassDependency(Configuration::class),
+                    ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PANTHER_CLIENT,
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -213,7 +257,7 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
         ClassNameFactory $classNameFactory,
         StepMethodFactory $stepMethodFactory
     ): ClassDefinitionFactory {
-        return new ClassDefinitionFactory($classNameFactory, $stepMethodFactory);
+        return new ClassDefinitionFactory($classNameFactory, $stepMethodFactory, SingleQuotedStringEscaper::create());
     }
 
     private function createClassNameFactory(string $className): ClassNameFactory
