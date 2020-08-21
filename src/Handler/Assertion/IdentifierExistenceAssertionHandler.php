@@ -231,9 +231,7 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
     ): TryCatchBlock {
         return new TryCatchBlock(
             new TryBlock(
-                new Body([
-                    new Statement($elementSetBooleanExaminedValueInvocation)
-                ])
+                Body::createFromExpressions([$elementSetBooleanExaminedValueInvocation])
             ),
             new CatchBlock(
                 new CatchExpression(
@@ -241,25 +239,21 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
                         new ObjectTypeDeclaration(new ClassName(InvalidLocatorException::class))
                     ])
                 ),
-                new Body([
-                    new Statement(
-                        new StaticObjectMethodInvocation(
-                            new StaticObject('self'),
-                            'setLastException',
-                            [
-                                new VariableName('exception')
-                            ]
-                        )
+                Body::createFromExpressions([
+                    new StaticObjectMethodInvocation(
+                        new StaticObject('self'),
+                        'setLastException',
+                        [
+                            new VariableName('exception')
+                        ]
                     ),
-                    new Statement(
-                        new ObjectMethodInvocation(
-                            new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
-                            'fail',
-                            [
-                                new LiteralExpression('"Invalid locator"'),
-                            ]
-                        )
-                    ),
+                    new ObjectMethodInvocation(
+                        new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
+                        'fail',
+                        [
+                            new LiteralExpression('"Invalid locator"'),
+                        ]
+                    )
                 ])
             )
         );

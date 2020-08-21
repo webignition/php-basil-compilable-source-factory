@@ -9,7 +9,6 @@ use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\Expression\ComparisonExpression;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
@@ -117,20 +116,16 @@ class SetActionHandler
             );
         }
 
-        $mutationCall = new Statement(
-            new ObjectMethodInvocation(
-                new VariableDependency(VariableNames::WEBDRIVER_ELEMENT_MUTATOR),
-                'setValue',
-                [
-                    $collectionAccessor,
-                    $valueAccessor
-                ],
-                ObjectMethodInvocation::ARGUMENT_FORMAT_STACKED
-            )
+        $mutationInvocation = new ObjectMethodInvocation(
+            new VariableDependency(VariableNames::WEBDRIVER_ELEMENT_MUTATOR),
+            'setValue',
+            [
+                $collectionAccessor,
+                $valueAccessor
+            ],
+            ObjectMethodInvocation::ARGUMENT_FORMAT_STACKED
         );
 
-        return new Body([
-            $mutationCall
-        ]);
+        return Body::createFromExpressions([$mutationInvocation]);
     }
 }
