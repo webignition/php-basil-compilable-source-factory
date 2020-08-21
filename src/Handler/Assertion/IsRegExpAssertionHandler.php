@@ -10,7 +10,6 @@ use webignition\BasilCompilableSource\Expression\ComparisonExpression;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
-use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
@@ -114,18 +113,16 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
         );
 
         return new Body([
-            new Statement(
-                $this->createPhpUnitTestCaseObjectMethodInvocation('setExaminedValue', [$examinedAccessor])
-            ),
-            new Statement(
+            Body::createFromExpressions([
+                $this->createPhpUnitTestCaseObjectMethodInvocation('setExaminedValue', [$examinedAccessor]),
                 $this->createPhpUnitTestCaseObjectMethodInvocation(
                     'setBooleanExpectedValue',
                     [
                         $identityComparison
                     ],
                     MethodInvocation::ARGUMENT_FORMAT_STACKED
-                )
-            ),
+                ),
+            ]),
             $this->createAssertionStatement($assertion, [
                 $this->createPhpUnitTestCaseObjectMethodInvocation('getBooleanExpectedValue')
             ]),

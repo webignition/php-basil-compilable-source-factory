@@ -8,7 +8,6 @@ use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSource\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
@@ -67,19 +66,17 @@ class WaitForActionHandler
             throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }
 
-        return new Body([
-            new AssignmentStatement(
-                new VariableDependency(VariableNames::PANTHER_CRAWLER),
-                new ObjectMethodInvocation(
-                    new VariableDependency(VariableNames::PANTHER_CLIENT),
-                    'waitFor',
-                    [
-                        new LiteralExpression(
-                            '\'' . $this->singleQuotedStringEscaper->escape($domIdentifier->getLocator()) . '\''
-                        )
-                    ]
-                )
+        return Body::createForSingleAssignmentStatement(
+            new VariableDependency(VariableNames::PANTHER_CRAWLER),
+            new ObjectMethodInvocation(
+                new VariableDependency(VariableNames::PANTHER_CLIENT),
+                'waitFor',
+                [
+                    new LiteralExpression(
+                        '\'' . $this->singleQuotedStringEscaper->escape($domIdentifier->getLocator()) . '\''
+                    )
+                ]
             )
-        ]);
+        );
     }
 }

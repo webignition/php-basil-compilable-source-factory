@@ -14,7 +14,6 @@ use webignition\BasilCompilableSource\MethodDefinitionInterface;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectConstructor;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
-use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\StaticObject;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
@@ -75,48 +74,37 @@ class ClassDefinitionFactory
         $escapedBrowser = $this->singleQuotedStringEscaper->escape($testConfiguration->getBrowser());
         $escapedUrl = $this->singleQuotedStringEscaper->escape($testConfiguration->getUrl());
 
-        $method = new MethodDefinition('setUpBeforeClass', new Body([
-            new Statement(
-                new StaticObjectMethodInvocation(
-                    new StaticObject('self'),
-                    'setBasilTestConfiguration',
-                    [
-                        new ObjectConstructor(
-                            new ClassName(Configuration::class),
-                            [
-                                new LiteralExpression('\'' . $escapedBrowser . '\''),
-                                new LiteralExpression('\'' . $escapedUrl . '\''),
-                            ],
-                            ObjectConstructor::ARGUMENT_FORMAT_STACKED
-                        ),
-                    ],
-                )
+        $method = new MethodDefinition('setUpBeforeClass', Body::createFromExpressions([
+            new StaticObjectMethodInvocation(
+                new StaticObject('self'),
+                'setBasilTestConfiguration',
+                [
+                    new ObjectConstructor(
+                        new ClassName(Configuration::class),
+                        [
+                            new LiteralExpression('\'' . $escapedBrowser . '\''),
+                            new LiteralExpression('\'' . $escapedUrl . '\''),
+                        ],
+                        ObjectConstructor::ARGUMENT_FORMAT_STACKED
+                    ),
+                ],
             ),
-            new Statement(
-                new StaticObjectMethodInvocation(
-                    new StaticObject('parent'),
-                    'setUpBeforeClass'
-                )
+            new StaticObjectMethodInvocation(new StaticObject('parent'), 'setUpBeforeClass'),
+            new ObjectMethodInvocation(
+                new VariableDependency(VariableNames::PANTHER_CLIENT),
+                'request',
+                [
+                    new LiteralExpression('\'GET\''),
+                    new LiteralExpression('\'' . $escapedUrl . '\''),
+                ]
             ),
-            new Statement(
-                new ObjectMethodInvocation(
-                    new VariableDependency(VariableNames::PANTHER_CLIENT),
-                    'request',
-                    [
-                        new LiteralExpression('\'GET\''),
-                        new LiteralExpression('\'' . $escapedUrl . '\''),
-                    ]
-                )
-            ),
-            new Statement(
-                new StaticObjectMethodInvocation(
-                    new StaticObject('self'),
-                    'setBasilTestPath',
-                    [
-                        new LiteralExpression('\'' . $test->getPath() . '\''),
-                    ]
-                )
-            ),
+            new StaticObjectMethodInvocation(
+                new StaticObject('self'),
+                'setBasilTestPath',
+                [
+                    new LiteralExpression('\'' . $test->getPath() . '\''),
+                ]
+            )
         ]));
 
         $method->setStatic();
