@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\ClassDefinition;
 use webignition\BasilCompilableSource\ClassDefinitionInterface;
-use webignition\BasilCompilableSource\Expression\ClassDependency;
+use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractGeneratedTestCase;
@@ -84,7 +84,7 @@ class TestCodeGenerator
 
         if ($classDefinition instanceof ClassDefinition) {
             $classDefinition->setBaseClass(
-                new ClassDependency(AbstractGeneratedTestCase::class)
+                new ClassName(AbstractGeneratedTestCase::class)
             );
         }
 

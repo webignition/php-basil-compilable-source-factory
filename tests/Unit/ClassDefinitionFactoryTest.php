@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSource\Expression\ClassDependency;
+use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
@@ -72,7 +72,7 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '}',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(Configuration::class),
+                        new ClassName(Configuration::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PANTHER_CLIENT,
@@ -109,7 +109,7 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '}',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(Configuration::class),
+                        new ClassName(Configuration::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PANTHER_CLIENT,
@@ -146,7 +146,7 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '}',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(Configuration::class),
+                        new ClassName(Configuration::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PANTHER_CLIENT,
@@ -190,7 +190,7 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '}',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(Configuration::class),
+                        new ClassName(Configuration::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PANTHER_CLIENT,
@@ -242,7 +242,7 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '}',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(Configuration::class),
+                        new ClassName(Configuration::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PANTHER_CLIENT,

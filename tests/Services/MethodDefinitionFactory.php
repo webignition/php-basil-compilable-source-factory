@@ -6,8 +6,8 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Body\BodyInterface;
+use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\EmptyLine;
-use webignition\BasilCompilableSource\Expression\ClassDependency;
 use webignition\BasilCompilableSource\Expression\CompositeExpression;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\MethodDefinition;
@@ -44,7 +44,7 @@ class MethodDefinitionFactory
                     'setBasilTestConfiguration',
                     [
                         new ObjectConstructor(
-                            new ClassDependency(Configuration::class),
+                            new ClassName(Configuration::class),
                             [
                                 new LiteralExpression('\'chrome\''),
                                 $requestBaseUri,

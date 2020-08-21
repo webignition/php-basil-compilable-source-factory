@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSourceFactory;
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\ClassDefinition;
 use webignition\BasilCompilableSource\ClassDefinitionInterface;
-use webignition\BasilCompilableSource\Expression\ClassDependency;
+use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\MethodDefinition;
 use webignition\BasilCompilableSource\MethodDefinitionInterface;
@@ -82,7 +82,7 @@ class ClassDefinitionFactory
                     'setBasilTestConfiguration',
                     [
                         new ObjectConstructor(
-                            new ClassDependency(Configuration::class),
+                            new ClassName(Configuration::class),
                             [
                                 new LiteralExpression('\'' . $escapedBrowser . '\''),
                                 new LiteralExpression('\'' . $escapedUrl . '\''),

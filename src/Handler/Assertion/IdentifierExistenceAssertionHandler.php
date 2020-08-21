@@ -9,8 +9,8 @@ use webignition\BasilCompilableSource\Block\TryCatch\TryBlock;
 use webignition\BasilCompilableSource\Block\TryCatch\TryCatchBlock;
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Body\BodyInterface;
+use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\Expression\CatchExpression;
-use webignition\BasilCompilableSource\Expression\ClassDependency;
 use webignition\BasilCompilableSource\Expression\ComparisonExpression;
 use webignition\BasilCompilableSource\Expression\EncapsulatedExpression;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
@@ -236,7 +236,7 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
             new CatchBlock(
                 new CatchExpression(
                     new ObjectTypeDeclarationCollection([
-                        new ObjectTypeDeclaration(new ClassDependency(InvalidLocatorException::class))
+                        new ObjectTypeDeclaration(new ClassName(InvalidLocatorException::class))
                     ])
                 ),
                 new Body([
