@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSource\Expression\ClassDependency;
+use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Statement\ReturnStatement;
 use webignition\BasilCompilableSourceFactory\CallFactory\ElementIdentifierCallFactory;
@@ -39,7 +39,7 @@ class ElementIdentifierCallFactoryTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(
             new Metadata([
                 Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                    new ClassDependency(ElementIdentifier::class),
+                    new ClassName(ElementIdentifier::class),
                 ])
             ]),
             $constructorExpression->getMetadata()

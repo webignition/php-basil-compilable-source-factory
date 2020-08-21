@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSource\Expression\ClassDependency;
+use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\VariableNames;
@@ -42,8 +42,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
-                        new ClassDependency(InvalidLocatorException::class),
+                        new ClassName(ElementIdentifier::class),
+                        new ClassName(InvalidLocatorException::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -80,8 +80,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
-                        new ClassDependency(InvalidLocatorException::class),
+                        new ClassName(ElementIdentifier::class),
+                        new ClassName(InvalidLocatorException::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -108,8 +108,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
-                        new ClassDependency(InvalidLocatorException::class),
+                        new ClassName(ElementIdentifier::class),
+                        new ClassName(InvalidLocatorException::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -146,8 +146,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
-                        new ClassDependency(InvalidLocatorException::class),
+                        new ClassName(ElementIdentifier::class),
+                        new ClassName(InvalidLocatorException::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -178,8 +178,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
-                        new ClassDependency(InvalidLocatorException::class),
+                        new ClassName(ElementIdentifier::class),
+                        new ClassName(InvalidLocatorException::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -210,8 +210,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
-                        new ClassDependency(InvalidLocatorException::class),
+                        new ClassName(ElementIdentifier::class),
+                        new ClassName(InvalidLocatorException::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -242,8 +242,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
-                        new ClassDependency(InvalidLocatorException::class),
+                        new ClassName(ElementIdentifier::class),
+                        new ClassName(InvalidLocatorException::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -274,8 +274,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
-                        new ClassDependency(InvalidLocatorException::class),
+                        new ClassName(ElementIdentifier::class),
+                        new ClassName(InvalidLocatorException::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,

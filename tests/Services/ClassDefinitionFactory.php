@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\ClassDefinition;
 use webignition\BasilCompilableSource\ClassDefinitionInterface;
-use webignition\BasilCompilableSource\Expression\ClassDependency;
+use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\MethodDefinition;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractGeneratedTestCase;
 
@@ -32,7 +32,7 @@ class ClassDefinitionFactory
             ]
         );
 
-        $classDefinition->setBaseClass(new ClassDependency(AbstractGeneratedTestCase::class));
+        $classDefinition->setBaseClass(new ClassName(AbstractGeneratedTestCase::class));
 
         return $classDefinition;
     }

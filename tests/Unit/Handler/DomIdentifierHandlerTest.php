@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSource\Expression\ClassDependency;
+use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
@@ -55,7 +55,7 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                     '}\'))',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
+                        new ClassName(ElementIdentifier::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -76,7 +76,7 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                     '}\'))',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
+                        new ClassName(ElementIdentifier::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -115,7 +115,7 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                     '}\'))',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
+                        new ClassName(ElementIdentifier::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -136,7 +136,7 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                     '}\'))',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
+                        new ClassName(ElementIdentifier::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -181,7 +181,7 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                     '})()',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
+                        new ClassName(ElementIdentifier::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -207,7 +207,7 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                     '})()',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
+                        new ClassName(ElementIdentifier::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -250,7 +250,7 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                     '})()',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
+                        new ClassName(ElementIdentifier::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -276,7 +276,7 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
                     '})()',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassDependency(ElementIdentifier::class),
+                        new ClassName(ElementIdentifier::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
