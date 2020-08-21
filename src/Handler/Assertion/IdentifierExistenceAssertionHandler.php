@@ -17,8 +17,10 @@ use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Expression\ObjectPropertyAccessExpression;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSource\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Statement\Statement;
+use webignition\BasilCompilableSource\StaticObject;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclaration;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationCollection;
 use webignition\BasilCompilableSource\VariableDependency;
@@ -241,8 +243,8 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
                 ),
                 new Body([
                     new Statement(
-                        new ObjectMethodInvocation(
-                            new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
+                        new StaticObjectMethodInvocation(
+                            new StaticObject('self'),
                             'setLastException',
                             [
                                 new VariableName('exception')
