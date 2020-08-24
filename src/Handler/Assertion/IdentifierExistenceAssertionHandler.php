@@ -16,6 +16,7 @@ use webignition\BasilCompilableSource\Expression\EncapsulatedExpression;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Expression\ObjectPropertyAccessExpression;
+use webignition\BasilCompilableSource\Factory\ArgumentFactory;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSource\Statement\AssignmentStatement;
@@ -52,6 +53,7 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
     private DomIdentifierHandler $domIdentifierHandler;
     private ElementIdentifierCallFactory $elementIdentifierCallFactory;
     private ElementIdentifierSerializer $elementIdentifierSerializer;
+    private ArgumentFactory $argumentFactory;
 
     private const OPERATOR_TO_ASSERTION_TEMPLATE_MAP = [
         'exists' => self::ASSERT_TRUE_METHOD,
@@ -64,7 +66,8 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
         DomIdentifierFactory $domIdentifierFactory,
         DomIdentifierHandler $domIdentifierHandler,
         ElementIdentifierCallFactory $elementIdentifierCallFactory,
-        ElementIdentifierSerializer $elementIdentifierSerializer
+        ElementIdentifierSerializer $elementIdentifierSerializer,
+        ArgumentFactory $argumentFactory
     ) {
         parent::__construct($assertionMethodInvocationFactory);
 
@@ -73,6 +76,7 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
         $this->domIdentifierHandler = $domIdentifierHandler;
         $this->elementIdentifierCallFactory = $elementIdentifierCallFactory;
         $this->elementIdentifierSerializer = $elementIdentifierSerializer;
+        $this->argumentFactory = $argumentFactory;
     }
 
     public static function createHandler(): self
@@ -83,7 +87,8 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
             DomIdentifierFactory::createFactory(),
             DomIdentifierHandler::createHandler(),
             ElementIdentifierCallFactory::createFactory(),
-            ElementIdentifierSerializer::createSerializer()
+            ElementIdentifierSerializer::createSerializer(),
+            ArgumentFactory::createFactory()
         );
     }
 
@@ -250,9 +255,7 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
                     new ObjectMethodInvocation(
                         new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
                         'fail',
-                        [
-                            new LiteralExpression('"Invalid locator"'),
-                        ]
+                        $this->argumentFactory->create('Invalid locator')
                     )
                 ])
             )

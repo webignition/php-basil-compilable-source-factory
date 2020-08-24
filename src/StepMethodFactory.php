@@ -10,6 +10,7 @@ use webignition\BasilCompilableSource\DataProviderMethodDefinition;
 use webignition\BasilCompilableSource\EmptyLine;
 use webignition\BasilCompilableSource\Expression\ArrayExpression;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
+use webignition\BasilCompilableSource\Factory\ArgumentFactory;
 use webignition\BasilCompilableSource\MethodDefinition;
 use webignition\BasilCompilableSource\MethodDefinitionInterface;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
@@ -30,18 +31,24 @@ class StepMethodFactory
 {
     private StepHandler $stepHandler;
     private SingleQuotedStringEscaper $singleQuotedStringEscaper;
+    private ArgumentFactory $argumentFactory;
 
-    public function __construct(StepHandler $stepHandler, SingleQuotedStringEscaper $singleQuotedStringEscaper)
-    {
+    public function __construct(
+        StepHandler $stepHandler,
+        SingleQuotedStringEscaper $singleQuotedStringEscaper,
+        ArgumentFactory $argumentFactory
+    ) {
         $this->stepHandler = $stepHandler;
         $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
+        $this->argumentFactory = $argumentFactory;
     }
 
     public static function createFactory(): self
     {
         return new StepMethodFactory(
             StepHandler::createHandler(),
-            SingleQuotedStringEscaper::create()
+            SingleQuotedStringEscaper::create(),
+            ArgumentFactory::createFactory()
         );
     }
 
@@ -109,9 +116,7 @@ class StepMethodFactory
             new ObjectMethodInvocation(
                 new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
                 'setBasilStepName',
-                [
-                    new LiteralExpression('\'' . $this->singleQuotedStringEscaper->escape($stepName) . '\''),
-                ]
+                $this->argumentFactory->create($stepName)
             )
         );
     }

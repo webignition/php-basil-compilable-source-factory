@@ -9,6 +9,7 @@ use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\Expression\ComparisonExpression;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
+use webignition\BasilCompilableSource\Factory\ArgumentFactory;
 use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
@@ -26,6 +27,7 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
     private IdentifierTypeAnalyser $identifierTypeAnalyser;
     private ValueTypeIdentifier $valueTypeIdentifier;
     private ValueAccessorFactory $valueAccessorFactory;
+    private ArgumentFactory $argumentFactory;
 
     private const OPERATOR_TO_ASSERTION_TEMPLATE_MAP = [
         'is-regexp' => self::ASSERT_FALSE_METHOD,
@@ -36,7 +38,8 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
         DomIdentifierFactory $domIdentifierFactory,
         IdentifierTypeAnalyser $identifierTypeAnalyser,
         ValueTypeIdentifier $valueTypeIdentifier,
-        ValueAccessorFactory $valueAccessorFactory
+        ValueAccessorFactory $valueAccessorFactory,
+        ArgumentFactory $argumentFactory
     ) {
         parent::__construct($assertionMethodInvocationFactory);
 
@@ -44,6 +47,7 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
         $this->identifierTypeAnalyser = $identifierTypeAnalyser;
         $this->valueTypeIdentifier = $valueTypeIdentifier;
         $this->valueAccessorFactory = $valueAccessorFactory;
+        $this->argumentFactory = $argumentFactory;
     }
 
     public static function createHandler(): self
@@ -53,7 +57,8 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
             DomIdentifierFactory::createFactory(),
             IdentifierTypeAnalyser::create(),
             new ValueTypeIdentifier(),
-            ValueAccessorFactory::createFactory()
+            ValueAccessorFactory::createFactory(),
+            ArgumentFactory::createFactory()
         );
     }
 
@@ -99,10 +104,10 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
     ): BodyInterface {
         $pregMatchInvocation = new MethodInvocation(
             'preg_match',
-            [
+            $this->argumentFactory->create(
                 $this->createPhpUnitTestCaseObjectMethodInvocation('getExaminedValue'),
-                new LiteralExpression('null'),
-            ]
+                null,
+            )
         );
         $pregMatchInvocation->enableErrorSuppression();
 

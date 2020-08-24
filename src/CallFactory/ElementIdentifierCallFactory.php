@@ -5,25 +5,24 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
-use webignition\BasilCompilableSource\Expression\LiteralExpression;
+use webignition\BasilCompilableSource\Factory\ArgumentFactory;
 use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSource\StaticObject;
-use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\DomElementIdentifier\ElementIdentifier;
 
 class ElementIdentifierCallFactory
 {
-    private SingleQuotedStringEscaper $singleQuotedStringEscaper;
+    private ArgumentFactory $argumentFactory;
 
-    public function __construct(SingleQuotedStringEscaper $singleQuotedStringEscaper)
+    public function __construct(ArgumentFactory $argumentFactory)
     {
-        $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
+        $this->argumentFactory = $argumentFactory;
     }
 
     public static function createFactory(): ElementIdentifierCallFactory
     {
         return new ElementIdentifierCallFactory(
-            SingleQuotedStringEscaper::create()
+            ArgumentFactory::createFactory()
         );
     }
 
@@ -32,11 +31,7 @@ class ElementIdentifierCallFactory
         return new StaticObjectMethodInvocation(
             new StaticObject(ElementIdentifier::class),
             'fromJson',
-            [
-                new LiteralExpression(
-                    '\'' . $this->singleQuotedStringEscaper->escape($serializedSourceIdentifier) . '\''
-                )
-            ]
+            $this->argumentFactory->create($serializedSourceIdentifier)
         );
     }
 }

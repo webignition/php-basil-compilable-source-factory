@@ -10,6 +10,7 @@ use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\EmptyLine;
 use webignition\BasilCompilableSource\Expression\CompositeExpression;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
+use webignition\BasilCompilableSource\Factory\ArgumentFactory;
 use webignition\BasilCompilableSource\MethodDefinition;
 use webignition\BasilCompilableSource\MethodDefinitionInterface;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectConstructor;
@@ -37,20 +38,18 @@ class MethodDefinitionFactory
             new LiteralExpression(' . \'' . $fixture . '\''),
         ]);
 
+        $argumentFactory = ArgumentFactory::createFactory();
+
         $body = new Body([
             new Statement(
                 new StaticObjectMethodInvocation(
                     new StaticObject('self'),
                     'setBasilTestConfiguration',
                     [
-                        new ObjectConstructor(
+                        (new ObjectConstructor(
                             new ClassName(Configuration::class),
-                            [
-                                new LiteralExpression('\'chrome\''),
-                                $requestBaseUri,
-                            ],
-                            ObjectConstructor::ARGUMENT_FORMAT_STACKED
-                        ),
+                            $argumentFactory->create('chrome', $requestBaseUri)
+                        ))->withStackedArguments(),
                     ],
                 )
             ),
@@ -60,10 +59,7 @@ class MethodDefinitionFactory
                 new ObjectMethodInvocation(
                     new VariableDependency(VariableNames::PANTHER_CLIENT),
                     'request',
-                    [
-                        new LiteralExpression('\'GET\''),
-                        $requestUriExpression,
-                    ]
+                    $argumentFactory->create('GET', $requestUriExpression)
                 )
             ),
         ]);

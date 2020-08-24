@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Expression\ClosureExpression;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
+use webignition\BasilCompilableSource\Factory\ArgumentFactory;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Statement\ReturnStatement;
@@ -21,17 +22,19 @@ class StatementFactory
 {
     public static function createAssertBrowserTitle(string $expectedTitle): StatementInterface
     {
+        $argumentFactory = ArgumentFactory::createFactory();
+
         return new Statement(
             new ObjectMethodInvocation(
                 new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
                 'assertSame',
-                [
-                    new LiteralExpression('"' . $expectedTitle . '"'),
+                $argumentFactory->create(
+                    $expectedTitle,
                     new ObjectMethodInvocation(
                         new VariableDependency(VariableNames::PANTHER_CLIENT),
                         'getTitle'
                     ),
-                ]
+                )
             )
         );
     }
@@ -41,6 +44,7 @@ class StatementFactory
         VariablePlaceholderInterface $placeholder
     ): StatementInterface {
         $elementPlaceholder = new VariableName('element');
+        $argumentFactory = ArgumentFactory::createFactory();
 
         return new AssignmentStatement(
             $placeholder,
@@ -50,18 +54,14 @@ class StatementFactory
                     new ObjectMethodInvocation(
                         new VariableDependency(VariableNames::PANTHER_CRAWLER),
                         'filter',
-                        [
-                            new LiteralExpression('\'' . $selector . '\''),
-                        ]
+                        $argumentFactory->create($selector)
                     )
                 ),
                 new ReturnStatement(
                     new ObjectMethodInvocation(
                         $elementPlaceholder,
                         'getElement',
-                        [
-                            new LiteralExpression('0'),
-                        ]
+                        $argumentFactory->create(0)
                     )
                 ),
             ]))
@@ -76,6 +76,7 @@ class StatementFactory
     public static function createCrawlerActionCallForElement(string $selector, string $action): StatementInterface
     {
         $elementPlaceholder = new VariableName('element');
+        $argumentFactory = ArgumentFactory::createFactory();
 
         return new Statement(
             new ClosureExpression(new Body([
@@ -84,9 +85,7 @@ class StatementFactory
                     new ObjectMethodInvocation(
                         new VariableDependency(VariableNames::PANTHER_CRAWLER),
                         'filter',
-                        [
-                            new LiteralExpression('\'' . $selector . '\''),
-                        ]
+                        $argumentFactory->create($selector)
                     )
                 ),
                 new AssignmentStatement(
@@ -94,9 +93,7 @@ class StatementFactory
                     new ObjectMethodInvocation(
                         $elementPlaceholder,
                         'getElement',
-                        [
-                            new LiteralExpression('0'),
-                        ]
+                        $argumentFactory->create(0)
                     )
                 ),
                 new Statement(
@@ -123,14 +120,14 @@ class StatementFactory
         string $selector,
         VariablePlaceholderInterface $placeholder
     ): StatementInterface {
+        $argumentFactory = ArgumentFactory::createFactory();
+
         return new AssignmentStatement(
             $placeholder,
             new ObjectMethodInvocation(
                 new VariableDependency(VariableNames::PANTHER_CRAWLER),
                 'filter',
-                [
-                    new LiteralExpression('\'' . $selector . '\'')
-                ]
+                $argumentFactory->create($selector)
             )
         );
     }
