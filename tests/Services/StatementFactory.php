@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Expression\ClosureExpression;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
+use webignition\BasilCompilableSource\Factory\ArgumentFactory;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Statement\ReturnStatement;
@@ -21,17 +22,19 @@ class StatementFactory
 {
     public static function createAssertBrowserTitle(string $expectedTitle): StatementInterface
     {
+        $argumentFactory = ArgumentFactory::createFactory();
+
         return new Statement(
             new ObjectMethodInvocation(
                 new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
                 'assertSame',
-                [
-                    new LiteralExpression('"' . $expectedTitle . '"'),
+                $argumentFactory->create(
+                    $expectedTitle,
                     new ObjectMethodInvocation(
                         new VariableDependency(VariableNames::PANTHER_CLIENT),
                         'getTitle'
                     ),
-                ]
+                )
             )
         );
     }
