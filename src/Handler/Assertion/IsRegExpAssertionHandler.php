@@ -104,10 +104,10 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
     ): BodyInterface {
         $pregMatchInvocation = new MethodInvocation(
             'preg_match',
-            $this->argumentFactory->create([
+            $this->argumentFactory->create(
                 $this->createPhpUnitTestCaseObjectMethodInvocation('getExaminedValue'),
                 null,
-            ])
+            )
         );
         $pregMatchInvocation->enableErrorSuppression();
 

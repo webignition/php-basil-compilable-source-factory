@@ -38,9 +38,7 @@ class StatementFactoryCallFactory
         return new ObjectMethodInvocation(
             new VariableDependency($objectPlaceholderName),
             'createFromJson',
-            $this->argumentFactory->create([
-                $serializedStatementSource,
-            ])
+            $this->argumentFactory->create($serializedStatementSource)
         );
     }
 }

@@ -6,7 +6,6 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Body\BodyInterface;
-use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Factory\ArgumentFactory;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\VariableDependency;
@@ -76,9 +75,7 @@ class WaitForActionHandler
             new ObjectMethodInvocation(
                 new VariableDependency(VariableNames::PANTHER_CLIENT),
                 'waitFor',
-                $this->argumentFactory->create([
-                    $domIdentifier->getLocator(),
-                ])
+                $this->argumentFactory->create($domIdentifier->getLocator())
             )
         );
     }

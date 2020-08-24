@@ -31,9 +31,7 @@ class ElementIdentifierCallFactory
         return new StaticObjectMethodInvocation(
             new StaticObject(ElementIdentifier::class),
             'fromJson',
-            $this->argumentFactory->create([
-                $serializedSourceIdentifier,
-            ])
+            $this->argumentFactory->create($serializedSourceIdentifier)
         );
     }
 }

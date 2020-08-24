@@ -255,9 +255,7 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
                     new ObjectMethodInvocation(
                         new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
                         'fail',
-                        $this->argumentFactory->create([
-                            'Invalid locator',
-                        ])
+                        $this->argumentFactory->create('Invalid locator')
                     )
                 ])
             )

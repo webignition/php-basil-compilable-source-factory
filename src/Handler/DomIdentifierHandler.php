@@ -78,9 +78,7 @@ class DomIdentifierHandler
             new ObjectMethodInvocation(
                 $elementPlaceholder,
                 'getAttribute',
-                $this->argumentFactory->create([
-                    $attributeName
-                ])
+                $this->argumentFactory->create($attributeName)
             )
         );
 

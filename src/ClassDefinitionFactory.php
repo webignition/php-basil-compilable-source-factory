@@ -78,10 +78,7 @@ class ClassDefinitionFactory
                 [
                     (new ObjectConstructor(
                         new ClassName(Configuration::class),
-                        $this->argumentFactory->create([
-                            $testConfiguration->getBrowser(),
-                            $testConfiguration->getUrl(),
-                        ]),
+                        $this->argumentFactory->create($testConfiguration->getBrowser(), $testConfiguration->getUrl()),
                     ))->withStackedArguments(),
                 ],
             ),
@@ -89,17 +86,12 @@ class ClassDefinitionFactory
             new ObjectMethodInvocation(
                 new VariableDependency(VariableNames::PANTHER_CLIENT),
                 'request',
-                $this->argumentFactory->create([
-                    'GET',
-                    $testConfiguration->getUrl(),
-                ])
+                $this->argumentFactory->create('GET', $testConfiguration->getUrl())
             ),
             new StaticObjectMethodInvocation(
                 new StaticObject('self'),
                 'setBasilTestPath',
-                $this->argumentFactory->create([
-                    $test->getPath()
-                ])
+                $this->argumentFactory->create($test->getPath())
             )
         ]));
 

@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "3dd97593c1e3abf373c3a362bd6a50a9",
+    "content-hash": "e2f16e801f78332d0f6ee59ce0147032",
     "packages": [
         {
             "name": "doctrine/instantiator",
@@ -2570,16 +2570,16 @@
         },
         {
             "name": "webignition/basil-compilable-source",
-            "version": "0.47",
+            "version": "0.50",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/basil-compilable-source.git",
-                "reference": "5e0f43d8ef0c0af290b1d3b627b50eae788e90ae"
+                "reference": "6c087385ec839a022abb7cdf80e6d03d399d9774"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/basil-compilable-source/zipball/5e0f43d8ef0c0af290b1d3b627b50eae788e90ae",
-                "reference": "5e0f43d8ef0c0af290b1d3b627b50eae788e90ae",
+                "url": "https://api.github.com/repos/webignition/basil-compilable-source/zipball/6c087385ec839a022abb7cdf80e6d03d399d9774",
+                "reference": "6c087385ec839a022abb7cdf80e6d03d399d9774",
                 "shasum": ""
             },
             "require": {
@@ -2609,7 +2609,7 @@
                 }
             ],
             "homepage": "https://github.com/webignition/basil-compilable-source",
-            "time": "2020-08-24T11:33:27+00:00"
+            "time": "2020-08-24T14:40:59+00:00"
         },
         {
             "name": "webignition/basil-dom-identifier-factory",

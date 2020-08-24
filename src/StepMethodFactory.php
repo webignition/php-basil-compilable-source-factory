@@ -116,9 +116,7 @@ class StepMethodFactory
             new ObjectMethodInvocation(
                 new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
                 'setBasilStepName',
-                $this->argumentFactory->create([
-                    $stepName,
-                ])
+                $this->argumentFactory->create($stepName)
             )
         );
     }
