@@ -79,14 +79,13 @@ class ClassDefinitionFactory
                 new StaticObject('self'),
                 'setBasilTestConfiguration',
                 [
-                    new ObjectConstructor(
+                    (new ObjectConstructor(
                         new ClassName(Configuration::class),
                         [
                             new LiteralExpression('\'' . $escapedBrowser . '\''),
                             new LiteralExpression('\'' . $escapedUrl . '\''),
                         ],
-                        ObjectConstructor::ARGUMENT_FORMAT_STACKED
-                    ),
+                    ))->withStackedArguments(),
                 ],
             ),
             new StaticObjectMethodInvocation(new StaticObject('parent'), 'setUpBeforeClass'),

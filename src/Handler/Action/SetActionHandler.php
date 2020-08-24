@@ -122,9 +122,10 @@ class SetActionHandler
             [
                 $collectionAccessor,
                 $valueAccessor
-            ],
-            ObjectMethodInvocation::ARGUMENT_FORMAT_STACKED
+            ]
         );
+
+        $mutationInvocation = $mutationInvocation->withStackedArguments();
 
         return Body::createFromExpressions([$mutationInvocation]);
     }

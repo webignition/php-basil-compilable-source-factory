@@ -56,11 +56,16 @@ abstract class AbstractAssertionHandler
         array $arguments = [],
         string $argumentFormat = ObjectMethodInvocation::ARGUMENT_FORMAT_INLINE
     ): ExpressionInterface {
-        return new ObjectMethodInvocation(
+        $invocation = new ObjectMethodInvocation(
             new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
             $methodName,
-            $arguments,
-            $argumentFormat
+            $arguments
         );
+
+        if (ObjectMethodInvocation::ARGUMENT_FORMAT_STACKED === $argumentFormat) {
+            $invocation = $invocation->withStackedArguments();
+        }
+
+        return $invocation;
     }
 }
