@@ -44,6 +44,7 @@ class StatementFactory
         VariablePlaceholderInterface $placeholder
     ): StatementInterface {
         $elementPlaceholder = new VariableName('element');
+        $argumentFactory = ArgumentFactory::createFactory();
 
         return new AssignmentStatement(
             $placeholder,
@@ -53,18 +54,14 @@ class StatementFactory
                     new ObjectMethodInvocation(
                         new VariableDependency(VariableNames::PANTHER_CRAWLER),
                         'filter',
-                        [
-                            new LiteralExpression('\'' . $selector . '\''),
-                        ]
+                        $argumentFactory->create($selector)
                     )
                 ),
                 new ReturnStatement(
                     new ObjectMethodInvocation(
                         $elementPlaceholder,
                         'getElement',
-                        [
-                            new LiteralExpression('0'),
-                        ]
+                        $argumentFactory->create(0)
                     )
                 ),
             ]))
