@@ -61,18 +61,24 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '{' . "\n" .
                     '    public static function setUpBeforeClass(): void' . "\n" .
                     '    {' . "\n" .
-                    '        self::setBasilTestConfiguration(new Configuration(' . "\n" .
-                    '            \'chrome\',' . "\n" .
-                    '            \'http://example.com\'' . "\n" .
-                    '        ));' . "\n" .
-                    '        parent::setUpBeforeClass();' . "\n" .
-                    '        {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
-                    '        self::setBasilTestPath(\'test.yml\');' . "\n" .
+                    '        try {' . "\n" .
+                    '            self::setBasilTestConfiguration(new Configuration(' . "\n" .
+                    '                \'chrome\',' . "\n" .
+                    '                \'http://example.com\'' . "\n" .
+                    '            ));' . "\n" .
+                    '            parent::setUpBeforeClass();' . "\n" .
+                    '            {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
+                    '            self::setBasilTestPath(\'test.yml\');' . "\n" .
+                    '        } catch (\Throwable $exception) {' . "\n" .
+                    '            self::setLastException($exception);' . "\n" .
+                    '            self::fail(\'Exception raised during setUpBeforeClass()\');' . "\n" .
+                    '        }' . "\n" .
                     '    }' . "\n" .
                     '}',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassName(Configuration::class),
+                        new ClassName(\Throwable::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PANTHER_CLIENT,
@@ -98,18 +104,24 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '{' . "\n" .
                     '    public static function setUpBeforeClass(): void' . "\n" .
                     '    {' . "\n" .
-                    '        self::setBasilTestConfiguration(new Configuration(' . "\n" .
-                    '            \'firefox\',' . "\n" .
-                    '            \'http://example.com\'' . "\n" .
-                    '        ));' . "\n" .
-                    '        parent::setUpBeforeClass();' . "\n" .
-                    '        {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
-                    '        self::setBasilTestPath(\'test.yml\');' . "\n" .
+                    '        try {' . "\n" .
+                    '            self::setBasilTestConfiguration(new Configuration(' . "\n" .
+                    '                \'firefox\',' . "\n" .
+                    '                \'http://example.com\'' . "\n" .
+                    '            ));' . "\n" .
+                    '            parent::setUpBeforeClass();' . "\n" .
+                    '            {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
+                    '            self::setBasilTestPath(\'test.yml\');' . "\n" .
+                    '        } catch (\Throwable $exception) {' . "\n" .
+                    '            self::setLastException($exception);' . "\n" .
+                    '            self::fail(\'Exception raised during setUpBeforeClass()\');' . "\n" .
+                    '        }' . "\n" .
                     '    }' . "\n" .
                     '}',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassName(Configuration::class),
+                        new ClassName(\Throwable::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PANTHER_CLIENT,
@@ -135,18 +147,24 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '{' . "\n" .
                     '    public static function setUpBeforeClass(): void' . "\n" .
                     '    {' . "\n" .
-                    '        self::setBasilTestConfiguration(new Configuration(' . "\n" .
-                    '            \'unknown\',' . "\n" .
-                    '            \'http://example.com\'' . "\n" .
-                    '        ));' . "\n" .
-                    '        parent::setUpBeforeClass();' . "\n" .
-                    '        {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
-                    '        self::setBasilTestPath(\'test.yml\');' . "\n" .
+                    '        try {' . "\n" .
+                    '            self::setBasilTestConfiguration(new Configuration(' . "\n" .
+                    '                \'unknown\',' . "\n" .
+                    '                \'http://example.com\'' . "\n" .
+                    '            ));' . "\n" .
+                    '            parent::setUpBeforeClass();' . "\n" .
+                    '            {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
+                    '            self::setBasilTestPath(\'test.yml\');' . "\n" .
+                    '        } catch (\Throwable $exception) {' . "\n" .
+                    '            self::setLastException($exception);' . "\n" .
+                    '            self::fail(\'Exception raised during setUpBeforeClass()\');' . "\n" .
+                    '        }' . "\n" .
                     '    }' . "\n" .
                     '}',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassName(Configuration::class),
+                        new ClassName(\Throwable::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PANTHER_CLIENT,
@@ -173,13 +191,18 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '{' . "\n" .
                     '    public static function setUpBeforeClass(): void' . "\n" .
                     '    {' . "\n" .
-                    '        self::setBasilTestConfiguration(new Configuration(' . "\n" .
-                    '            \'chrome\',' . "\n" .
-                    '            \'http://example.com\'' . "\n" .
-                    '        ));' . "\n" .
-                    '        parent::setUpBeforeClass();' . "\n" .
-                    '        {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
-                    '        self::setBasilTestPath(\'test.yml\');' . "\n" .
+                    '        try {' . "\n" .
+                    '            self::setBasilTestConfiguration(new Configuration(' . "\n" .
+                    '                \'chrome\',' . "\n" .
+                    '                \'http://example.com\'' . "\n" .
+                    '            ));' . "\n" .
+                    '            parent::setUpBeforeClass();' . "\n" .
+                    '            {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
+                    '            self::setBasilTestPath(\'test.yml\');' . "\n" .
+                    '        } catch (\Throwable $exception) {' . "\n" .
+                    '            self::setLastException($exception);' . "\n" .
+                    '            self::fail(\'Exception raised during setUpBeforeClass()\');' . "\n" .
+                    '        }' . "\n" .
                     '    }' . "\n" .
                     "\n" .
                     '    public function test1()' . "\n" .
@@ -191,6 +214,7 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassName(Configuration::class),
+                        new ClassName(\Throwable::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PANTHER_CLIENT,
@@ -219,13 +243,18 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '{' . "\n" .
                     '    public static function setUpBeforeClass(): void' . "\n" .
                     '    {' . "\n" .
-                    '        self::setBasilTestConfiguration(new Configuration(' . "\n" .
-                    '            \'chrome\',' . "\n" .
-                    '            \'http://example.com\'' . "\n" .
-                    '        ));' . "\n" .
-                    '        parent::setUpBeforeClass();' . "\n" .
-                    '        {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
-                    '        self::setBasilTestPath(\'test.yml\');' . "\n" .
+                    '        try {' . "\n" .
+                    '            self::setBasilTestConfiguration(new Configuration(' . "\n" .
+                    '                \'chrome\',' . "\n" .
+                    '                \'http://example.com\'' . "\n" .
+                    '            ));' . "\n" .
+                    '            parent::setUpBeforeClass();' . "\n" .
+                    '            {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
+                    '            self::setBasilTestPath(\'test.yml\');' . "\n" .
+                    '        } catch (\Throwable $exception) {' . "\n" .
+                    '            self::setLastException($exception);' . "\n" .
+                    '            self::fail(\'Exception raised during setUpBeforeClass()\');' . "\n" .
+                    '        }' . "\n" .
                     '    }' . "\n" .
                     "\n" .
                     '    public function test1()' . "\n" .
@@ -243,6 +272,7 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassName(Configuration::class),
+                        new ClassName(\Throwable::class)
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PANTHER_CLIENT,
