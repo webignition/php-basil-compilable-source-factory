@@ -76,6 +76,7 @@ class StatementFactory
     public static function createCrawlerActionCallForElement(string $selector, string $action): StatementInterface
     {
         $elementPlaceholder = new VariableName('element');
+        $argumentFactory = ArgumentFactory::createFactory();
 
         return new Statement(
             new ClosureExpression(new Body([
@@ -84,9 +85,7 @@ class StatementFactory
                     new ObjectMethodInvocation(
                         new VariableDependency(VariableNames::PANTHER_CRAWLER),
                         'filter',
-                        [
-                            new LiteralExpression('\'' . $selector . '\''),
-                        ]
+                        $argumentFactory->create($selector)
                     )
                 ),
                 new AssignmentStatement(
@@ -94,9 +93,7 @@ class StatementFactory
                     new ObjectMethodInvocation(
                         $elementPlaceholder,
                         'getElement',
-                        [
-                            new LiteralExpression('0'),
-                        ]
+                        $argumentFactory->create(0)
                     )
                 ),
                 new Statement(
@@ -123,14 +120,14 @@ class StatementFactory
         string $selector,
         VariablePlaceholderInterface $placeholder
     ): StatementInterface {
+        $argumentFactory = ArgumentFactory::createFactory();
+
         return new AssignmentStatement(
             $placeholder,
             new ObjectMethodInvocation(
                 new VariableDependency(VariableNames::PANTHER_CRAWLER),
                 'filter',
-                [
-                    new LiteralExpression('\'' . $selector . '\'')
-                ]
+                $argumentFactory->create($selector)
             )
         );
     }
