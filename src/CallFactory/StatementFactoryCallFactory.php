@@ -4,27 +4,26 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
-use webignition\BasilCompilableSource\Expression\LiteralExpression;
+use webignition\BasilCompilableSource\Factory\ArgumentFactory;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\VariableDependency;
-use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Assertion\AssertionInterface;
 use webignition\BasilModels\StatementInterface;
 
 class StatementFactoryCallFactory
 {
-    private SingleQuotedStringEscaper $singleQuotedStringEscaper;
+    private ArgumentFactory $argumentFactory;
 
-    public function __construct(SingleQuotedStringEscaper $singleQuotedStringEscaper)
+    public function __construct(ArgumentFactory $argumentFactory)
     {
-        $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
+        $this->argumentFactory = $argumentFactory;
     }
 
     public static function createFactory(): self
     {
         return new StatementFactoryCallFactory(
-            SingleQuotedStringEscaper::create()
+            ArgumentFactory::createFactory()
         );
     }
 
@@ -39,12 +38,9 @@ class StatementFactoryCallFactory
         return new ObjectMethodInvocation(
             new VariableDependency($objectPlaceholderName),
             'createFromJson',
-            [
-                new LiteralExpression(sprintf(
-                    '\'%s\'',
-                    $this->singleQuotedStringEscaper->escape($serializedStatementSource)
-                )),
-            ]
+            $this->argumentFactory->create([
+                $serializedStatementSource,
+            ])
         );
     }
 }

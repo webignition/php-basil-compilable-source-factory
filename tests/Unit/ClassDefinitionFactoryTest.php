@@ -6,12 +6,12 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\ClassName;
+use webignition\BasilCompilableSource\Factory\ArgumentFactory;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\ClassDefinitionFactory;
 use webignition\BasilCompilableSourceFactory\ClassNameFactory;
-use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\StepMethodFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Test\Configuration;
@@ -257,7 +257,11 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
         ClassNameFactory $classNameFactory,
         StepMethodFactory $stepMethodFactory
     ): ClassDefinitionFactory {
-        return new ClassDefinitionFactory($classNameFactory, $stepMethodFactory, SingleQuotedStringEscaper::create());
+        return new ClassDefinitionFactory(
+            $classNameFactory,
+            $stepMethodFactory,
+            ArgumentFactory::createFactory()
+        );
     }
 
     private function createClassNameFactory(string $className): ClassNameFactory

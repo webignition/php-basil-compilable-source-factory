@@ -32,7 +32,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                     '    );' . "\n" .
                     '} catch (InvalidLocatorException $exception) {' . "\n" .
                     '    self::setLastException($exception);' . "\n" .
-                    '    {{ PHPUNIT }}->fail("Invalid locator");' . "\n" .
+                    '    {{ PHPUNIT }}->fail(\'Invalid locator\');' . "\n" .
                     '}' . "\n" .
                     '{{ PHPUNIT }}->assertFalse(' . "\n" .
                     '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n" .
@@ -60,7 +60,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                     '    );' . "\n" .
                     '} catch (InvalidLocatorException $exception) {' . "\n" .
                     '    self::setLastException($exception);' . "\n" .
-                    '    {{ PHPUNIT }}->fail("Invalid locator");' . "\n" .
+                    '    {{ PHPUNIT }}->fail(\'Invalid locator\');' . "\n" .
                     '}' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n" .

@@ -8,6 +8,7 @@ use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\ClassName;
+use webignition\BasilCompilableSource\Factory\ArgumentFactory;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\SingleLineComment;
@@ -214,7 +215,8 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
 
         return new StepMethodFactory(
             $stepHandler,
-            $singleQuotedStringEscaper
+            $singleQuotedStringEscaper,
+            ArgumentFactory::createFactory()
         );
     }
 

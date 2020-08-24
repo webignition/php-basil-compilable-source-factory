@@ -8,7 +8,7 @@ use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\ClassDefinition;
 use webignition\BasilCompilableSource\ClassDefinitionInterface;
 use webignition\BasilCompilableSource\ClassName;
-use webignition\BasilCompilableSource\Expression\LiteralExpression;
+use webignition\BasilCompilableSource\Factory\ArgumentFactory;
 use webignition\BasilCompilableSource\MethodDefinition;
 use webignition\BasilCompilableSource\MethodDefinitionInterface;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectConstructor;
@@ -24,16 +24,16 @@ class ClassDefinitionFactory
 {
     private ClassNameFactory $classNameFactory;
     private StepMethodFactory $stepMethodFactory;
-    private SingleQuotedStringEscaper $singleQuotedStringEscaper;
+    private ArgumentFactory $argumentFactory;
 
     public function __construct(
         ClassNameFactory $classNameFactory,
         StepMethodFactory $stepMethodFactory,
-        SingleQuotedStringEscaper $singleQuotedStringEscaper
+        ArgumentFactory $argumentFactory
     ) {
         $this->classNameFactory = $classNameFactory;
         $this->stepMethodFactory = $stepMethodFactory;
-        $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
+        $this->argumentFactory = $argumentFactory;
     }
 
     public static function createFactory(): ClassDefinitionFactory
@@ -41,7 +41,7 @@ class ClassDefinitionFactory
         return new ClassDefinitionFactory(
             new ClassNameFactory(),
             StepMethodFactory::createFactory(),
-            SingleQuotedStringEscaper::create()
+            ArgumentFactory::createFactory()
         );
     }
 
@@ -71,9 +71,6 @@ class ClassDefinitionFactory
     {
         $testConfiguration = $test->getConfiguration();
 
-        $escapedBrowser = $this->singleQuotedStringEscaper->escape($testConfiguration->getBrowser());
-        $escapedUrl = $this->singleQuotedStringEscaper->escape($testConfiguration->getUrl());
-
         $method = new MethodDefinition('setUpBeforeClass', Body::createFromExpressions([
             new StaticObjectMethodInvocation(
                 new StaticObject('self'),
@@ -81,10 +78,10 @@ class ClassDefinitionFactory
                 [
                     (new ObjectConstructor(
                         new ClassName(Configuration::class),
-                        [
-                            new LiteralExpression('\'' . $escapedBrowser . '\''),
-                            new LiteralExpression('\'' . $escapedUrl . '\''),
-                        ],
+                        $this->argumentFactory->create([
+                            $testConfiguration->getBrowser(),
+                            $testConfiguration->getUrl(),
+                        ]),
                     ))->withStackedArguments(),
                 ],
             ),
@@ -92,17 +89,17 @@ class ClassDefinitionFactory
             new ObjectMethodInvocation(
                 new VariableDependency(VariableNames::PANTHER_CLIENT),
                 'request',
-                [
-                    new LiteralExpression('\'GET\''),
-                    new LiteralExpression('\'' . $escapedUrl . '\''),
-                ]
+                $this->argumentFactory->create([
+                    'GET',
+                    $testConfiguration->getUrl(),
+                ])
             ),
             new StaticObjectMethodInvocation(
                 new StaticObject('self'),
                 'setBasilTestPath',
-                [
-                    new LiteralExpression('\'' . $test->getPath() . '\''),
-                ]
+                $this->argumentFactory->create([
+                    $test->getPath()
+                ])
             )
         ]));
 

@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
+use webignition\BasilCompilableSource\Factory\ArgumentFactory;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
@@ -22,15 +23,18 @@ class WaitForActionHandler
     private SingleQuotedStringEscaper $singleQuotedStringEscaper;
     private DomIdentifierFactory $domIdentifierFactory;
     private IdentifierTypeAnalyser $identifierTypeAnalyser;
+    private ArgumentFactory $argumentFactory;
 
     public function __construct(
         SingleQuotedStringEscaper $singleQuotedStringEscaper,
         DomIdentifierFactory $domIdentifierFactory,
-        IdentifierTypeAnalyser $identifierTypeAnalyser
+        IdentifierTypeAnalyser $identifierTypeAnalyser,
+        ArgumentFactory $argumentFactory
     ) {
         $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
         $this->domIdentifierFactory = $domIdentifierFactory;
         $this->identifierTypeAnalyser = $identifierTypeAnalyser;
+        $this->argumentFactory = $argumentFactory;
     }
 
     public static function createHandler(): WaitForActionHandler
@@ -38,7 +42,8 @@ class WaitForActionHandler
         return new WaitForActionHandler(
             SingleQuotedStringEscaper::create(),
             DomIdentifierFactory::createFactory(),
-            IdentifierTypeAnalyser::create()
+            IdentifierTypeAnalyser::create(),
+            ArgumentFactory::createFactory(),
         );
     }
 
@@ -71,11 +76,9 @@ class WaitForActionHandler
             new ObjectMethodInvocation(
                 new VariableDependency(VariableNames::PANTHER_CLIENT),
                 'waitFor',
-                [
-                    new LiteralExpression(
-                        '\'' . $this->singleQuotedStringEscaper->escape($domIdentifier->getLocator()) . '\''
-                    )
-                ]
+                $this->argumentFactory->create([
+                    $domIdentifier->getLocator(),
+                ])
             )
         );
     }

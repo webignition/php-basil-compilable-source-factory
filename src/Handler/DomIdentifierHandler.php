@@ -8,7 +8,7 @@ use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\EmptyLine;
 use webignition\BasilCompilableSource\Expression\ClosureExpression;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
-use webignition\BasilCompilableSource\Expression\LiteralExpression;
+use webignition\BasilCompilableSource\Factory\ArgumentFactory;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Statement\ReturnStatement;
@@ -16,31 +16,30 @@ use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\ElementIdentifierCallFactory;
-use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class DomIdentifierHandler
 {
     private DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory;
-    private SingleQuotedStringEscaper $singleQuotedStringEscaper;
     private ElementIdentifierCallFactory $elementIdentifierCallFactory;
+    private ArgumentFactory $argumentFactory;
 
     public function __construct(
         DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory,
-        SingleQuotedStringEscaper $singleQuotedStringEscaper,
-        ElementIdentifierCallFactory $elementIdentifierCallFactory
+        ElementIdentifierCallFactory $elementIdentifierCallFactory,
+        ArgumentFactory $argumentFactory
     ) {
         $this->domCrawlerNavigatorCallFactory = $domCrawlerNavigatorCallFactory;
-        $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
         $this->elementIdentifierCallFactory = $elementIdentifierCallFactory;
+        $this->argumentFactory = $argumentFactory;
     }
 
     public static function createHandler(): DomIdentifierHandler
     {
         return new DomIdentifierHandler(
             DomCrawlerNavigatorCallFactory::createFactory(),
-            SingleQuotedStringEscaper::create(),
-            ElementIdentifierCallFactory::createFactory()
+            ElementIdentifierCallFactory::createFactory(),
+            ArgumentFactory::createFactory()
         );
     }
 
@@ -79,12 +78,9 @@ class DomIdentifierHandler
             new ObjectMethodInvocation(
                 $elementPlaceholder,
                 'getAttribute',
-                [
-                    new LiteralExpression(sprintf(
-                        '\'%s\'',
-                        $this->singleQuotedStringEscaper->escape($attributeName)
-                    )),
-                ]
+                $this->argumentFactory->create([
+                    $attributeName
+                ])
             )
         );
 
