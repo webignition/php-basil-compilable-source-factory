@@ -10,7 +10,6 @@ use webignition\BasilCompilableSource\Factory\ArgumentFactory;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
@@ -19,18 +18,15 @@ use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
 class WaitForActionHandler
 {
-    private SingleQuotedStringEscaper $singleQuotedStringEscaper;
     private DomIdentifierFactory $domIdentifierFactory;
     private IdentifierTypeAnalyser $identifierTypeAnalyser;
     private ArgumentFactory $argumentFactory;
 
     public function __construct(
-        SingleQuotedStringEscaper $singleQuotedStringEscaper,
         DomIdentifierFactory $domIdentifierFactory,
         IdentifierTypeAnalyser $identifierTypeAnalyser,
         ArgumentFactory $argumentFactory
     ) {
-        $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
         $this->domIdentifierFactory = $domIdentifierFactory;
         $this->identifierTypeAnalyser = $identifierTypeAnalyser;
         $this->argumentFactory = $argumentFactory;
@@ -39,7 +35,6 @@ class WaitForActionHandler
     public static function createHandler(): WaitForActionHandler
     {
         return new WaitForActionHandler(
-            SingleQuotedStringEscaper::create(),
             DomIdentifierFactory::createFactory(),
             IdentifierTypeAnalyser::create(),
             ArgumentFactory::createFactory(),

@@ -43,14 +43,13 @@ class MethodDefinitionFactory
                     new StaticObject('self'),
                     'setBasilTestConfiguration',
                     [
-                        new ObjectConstructor(
+                        (new ObjectConstructor(
                             new ClassName(Configuration::class),
                             [
                                 new LiteralExpression('\'chrome\''),
                                 $requestBaseUri,
-                            ],
-                            ObjectConstructor::ARGUMENT_FORMAT_STACKED
-                        ),
+                            ]
+                        ))->withStackedArguments(),
                     ],
                 )
             ),
