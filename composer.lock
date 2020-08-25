@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "e2f16e801f78332d0f6ee59ce0147032",
+    "content-hash": "9b39eeb25a8cb22740bf420b174de1d4",
     "packages": [
         {
             "name": "doctrine/instantiator",
@@ -2522,16 +2522,16 @@
         },
         {
             "name": "webignition/base-basil-test-case",
-            "version": "0.31",
+            "version": "0.32",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/base-basil-test-case.git",
-                "reference": "66d5b64d6af57f56768747f92df8c570b4df86e7"
+                "reference": "3ebd39323c9676882cffd5a1815dc5294e0f9042"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/base-basil-test-case/zipball/66d5b64d6af57f56768747f92df8c570b4df86e7",
-                "reference": "66d5b64d6af57f56768747f92df8c570b4df86e7",
+                "url": "https://api.github.com/repos/webignition/base-basil-test-case/zipball/3ebd39323c9676882cffd5a1815dc5294e0f9042",
+                "reference": "3ebd39323c9676882cffd5a1815dc5294e0f9042",
                 "shasum": ""
             },
             "require": {
@@ -2544,9 +2544,13 @@
                 "webignition/webdriver-element-mutator": ">=0.4,<1"
             },
             "require-dev": {
+                "mockery/mockery": "^1.4",
+                "phpstan/extension-installer": "^1.0",
                 "phpstan/phpstan": "^0.12",
+                "phpstan/phpstan-mockery": "^0.12.7",
                 "squizlabs/php_codesniffer": "3.*",
                 "symplify/easy-coding-standard": "^8.1",
+                "webignition/object-reflector": "^0.2.0",
                 "webignition/symfony-panther-webserver-runner": ">=0.3,<1"
             },
             "type": "library",
@@ -2566,7 +2570,7 @@
                 }
             ],
             "homepage": "https://github.com/webignition/base-basil-test-case",
-            "time": "2020-08-21T10:09:20+00:00"
+            "time": "2020-08-25T12:03:10+00:00"
         },
         {
             "name": "webignition/basil-compilable-source",
