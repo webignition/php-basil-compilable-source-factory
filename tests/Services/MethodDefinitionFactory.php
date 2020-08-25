@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
+use webignition\BaseBasilTestCase\ClientManager;
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\ClassName;
@@ -44,11 +45,16 @@ class MethodDefinitionFactory
             new Statement(
                 new StaticObjectMethodInvocation(
                     new StaticObject('self'),
-                    'setBasilTestConfiguration',
+                    'setClientManager',
                     [
                         (new ObjectConstructor(
-                            new ClassName(Configuration::class),
-                            $argumentFactory->create('chrome', $requestBaseUri)
+                            new ClassName(ClientManager::class),
+                            [
+                                new ObjectConstructor(
+                                    new ClassName(Configuration::class),
+                                    $argumentFactory->create('chrome', $requestBaseUri)
+                                ),
+                            ]
                         ))->withStackedArguments(),
                     ],
                 )

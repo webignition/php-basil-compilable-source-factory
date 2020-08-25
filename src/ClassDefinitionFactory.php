@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory;
 
+use webignition\BaseBasilTestCase\ClientManager;
 use webignition\BasilCompilableSource\Block\TryCatch\CatchBlock;
 use webignition\BasilCompilableSource\Block\TryCatch\TryBlock;
 use webignition\BasilCompilableSource\Block\TryCatch\TryCatchBlock;
@@ -83,14 +84,19 @@ class ClassDefinitionFactory
             new Statement(
                 new StaticObjectMethodInvocation(
                     new StaticObject('self'),
-                    'setBasilTestConfiguration',
+                    'setClientManager',
                     [
                         (new ObjectConstructor(
-                            new ClassName(Configuration::class),
-                            $this->argumentFactory->create(
-                                $testConfiguration->getBrowser(),
-                                $testConfiguration->getUrl()
-                            )
+                            new ClassName(ClientManager::class),
+                            [
+                                (new ObjectConstructor(
+                                    new ClassName(Configuration::class),
+                                    $this->argumentFactory->create(
+                                        $testConfiguration->getBrowser(),
+                                        $testConfiguration->getUrl()
+                                    )
+                                ))->withStackedArguments(),
+                            ]
                         ))->withStackedArguments(),
                     ],
                 )

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
+use webignition\BaseBasilTestCase\ClientManager;
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\Factory\ArgumentFactory;
@@ -55,6 +56,7 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     ],
                 ])->withPath('test.yml'),
                 'expectedRenderedClassDefinition' =>
+                    'use webignition\BaseBasilTestCase\ClientManager;' . "\n" .
                     'use webignition\BasilModels\Test\Configuration;' . "\n" .
                     "\n" .
                     'class GeneratedClassName' . "\n" .
@@ -62,9 +64,11 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '    public static function setUpBeforeClass(): void' . "\n" .
                     '    {' . "\n" .
                     '        try {' . "\n" .
-                    '            self::setBasilTestConfiguration(new Configuration(' . "\n" .
-                    '                \'chrome\',' . "\n" .
-                    '                \'http://example.com\'' . "\n" .
+                    '            self::setClientManager(new ClientManager(' . "\n" .
+                    '                new Configuration(' . "\n" .
+                    '                    \'chrome\',' . "\n" .
+                    '                    \'http://example.com\'' . "\n" .
+                    '                )' . "\n" .
                     '            ));' . "\n" .
                     '            parent::setUpBeforeClass();' . "\n" .
                     '            {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
@@ -78,6 +82,7 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassName(Configuration::class),
+                        new ClassName(ClientManager::class),
                         new ClassName(\Throwable::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
@@ -98,6 +103,7 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     ],
                 ])->withPath('test.yml'),
                 'expectedRenderedClassDefinition' =>
+                    'use webignition\BaseBasilTestCase\ClientManager;' . "\n" .
                     'use webignition\BasilModels\Test\Configuration;' . "\n" .
                     "\n" .
                     'class GeneratedClassName' . "\n" .
@@ -105,9 +111,11 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '    public static function setUpBeforeClass(): void' . "\n" .
                     '    {' . "\n" .
                     '        try {' . "\n" .
-                    '            self::setBasilTestConfiguration(new Configuration(' . "\n" .
-                    '                \'firefox\',' . "\n" .
-                    '                \'http://example.com\'' . "\n" .
+                    '            self::setClientManager(new ClientManager(' . "\n" .
+                    '                new Configuration(' . "\n" .
+                    '                    \'firefox\',' . "\n" .
+                    '                    \'http://example.com\'' . "\n" .
+                    '                )' . "\n" .
                     '            ));' . "\n" .
                     '            parent::setUpBeforeClass();' . "\n" .
                     '            {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
@@ -121,6 +129,7 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassName(Configuration::class),
+                        new ClassName(ClientManager::class),
                         new ClassName(\Throwable::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
@@ -141,6 +150,7 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     ],
                 ])->withPath('test.yml'),
                 'expectedRenderedClassDefinition' =>
+                    'use webignition\BaseBasilTestCase\ClientManager;' . "\n" .
                     'use webignition\BasilModels\Test\Configuration;' . "\n" .
                     "\n" .
                     'class GeneratedClassName' . "\n" .
@@ -148,9 +158,11 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '    public static function setUpBeforeClass(): void' . "\n" .
                     '    {' . "\n" .
                     '        try {' . "\n" .
-                    '            self::setBasilTestConfiguration(new Configuration(' . "\n" .
-                    '                \'unknown\',' . "\n" .
-                    '                \'http://example.com\'' . "\n" .
+                    '            self::setClientManager(new ClientManager(' . "\n" .
+                    '                new Configuration(' . "\n" .
+                    '                    \'unknown\',' . "\n" .
+                    '                    \'http://example.com\'' . "\n" .
+                    '                )' . "\n" .
                     '            ));' . "\n" .
                     '            parent::setUpBeforeClass();' . "\n" .
                     '            {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
@@ -164,6 +176,7 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassName(Configuration::class),
+                        new ClassName(ClientManager::class),
                         new ClassName(\Throwable::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
@@ -185,6 +198,7 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     'step one' => [],
                 ])->withPath('test.yml'),
                 'expectedRenderedClassDefinition' =>
+                    'use webignition\BaseBasilTestCase\ClientManager;' . "\n" .
                     'use webignition\BasilModels\Test\Configuration;' . "\n" .
                     "\n" .
                     'class GeneratedClassName' . "\n" .
@@ -192,9 +206,11 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '    public static function setUpBeforeClass(): void' . "\n" .
                     '    {' . "\n" .
                     '        try {' . "\n" .
-                    '            self::setBasilTestConfiguration(new Configuration(' . "\n" .
-                    '                \'chrome\',' . "\n" .
-                    '                \'http://example.com\'' . "\n" .
+                    '            self::setClientManager(new ClientManager(' . "\n" .
+                    '                new Configuration(' . "\n" .
+                    '                    \'chrome\',' . "\n" .
+                    '                    \'http://example.com\'' . "\n" .
+                    '                )' . "\n" .
                     '            ));' . "\n" .
                     '            parent::setUpBeforeClass();' . "\n" .
                     '            {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
@@ -214,6 +230,7 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassName(Configuration::class),
+                        new ClassName(ClientManager::class),
                         new ClassName(\Throwable::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
@@ -237,6 +254,7 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     'step two' => [],
                 ])->withPath('test.yml'),
                 'expectedRenderedClassDefinition' =>
+                    'use webignition\BaseBasilTestCase\ClientManager;' . "\n" .
                     'use webignition\BasilModels\Test\Configuration;' . "\n" .
                     "\n" .
                     'class GeneratedClassName' . "\n" .
@@ -244,9 +262,11 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '    public static function setUpBeforeClass(): void' . "\n" .
                     '    {' . "\n" .
                     '        try {' . "\n" .
-                    '            self::setBasilTestConfiguration(new Configuration(' . "\n" .
-                    '                \'chrome\',' . "\n" .
-                    '                \'http://example.com\'' . "\n" .
+                    '            self::setClientManager(new ClientManager(' . "\n" .
+                    '                new Configuration(' . "\n" .
+                    '                    \'chrome\',' . "\n" .
+                    '                    \'http://example.com\'' . "\n" .
+                    '                )' . "\n" .
                     '            ));' . "\n" .
                     '            parent::setUpBeforeClass();' . "\n" .
                     '            {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
@@ -272,7 +292,8 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassName(Configuration::class),
-                        new ClassName(\Throwable::class)
+                        new ClassName(ClientManager::class),
+                        new ClassName(\Throwable::class),
                     ]),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PANTHER_CLIENT,
