@@ -84,6 +84,13 @@ class ClassDefinitionFactory
             new Statement(
                 new StaticObjectMethodInvocation(
                     new StaticObject('self'),
+                    'setBasilTestPath',
+                    $this->argumentFactory->create($test->getPath())
+                )
+            ),
+            new Statement(
+                new StaticObjectMethodInvocation(
+                    new StaticObject('self'),
                     'setClientManager',
                     [
                         (new ObjectConstructor(
@@ -112,13 +119,6 @@ class ClassDefinitionFactory
                     new VariableDependency(VariableNames::PANTHER_CLIENT),
                     'request',
                     $this->argumentFactory->create('GET', $testConfiguration->getUrl())
-                )
-            ),
-            new Statement(
-                new StaticObjectMethodInvocation(
-                    new StaticObject('self'),
-                    'setBasilTestPath',
-                    $this->argumentFactory->create($test->getPath())
                 )
             ),
         ]);
