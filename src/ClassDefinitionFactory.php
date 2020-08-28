@@ -127,7 +127,7 @@ class ClassDefinitionFactory
             new Statement(
                 new StaticObjectMethodInvocation(
                     new StaticObject('self'),
-                    'setLastException',
+                    'staticSetLastException',
                     [
                         new VariableName('exception')
                     ]

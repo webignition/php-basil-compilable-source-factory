@@ -247,7 +247,7 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
                 Body::createFromExpressions([
                     new StaticObjectMethodInvocation(
                         new StaticObject('self'),
-                        'setLastException',
+                        'staticSetLastException',
                         [
                             new VariableName('exception')
                         ]
