@@ -34,7 +34,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     '        {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier)' . "\n" .
                     '    );' . "\n" .
                     '} catch (InvalidLocatorException $exception) {' . "\n" .
-                    '    self::setLastException($exception);' . "\n" .
+                    '    self::staticSetLastException($exception);' . "\n" .
                     '    {{ PHPUNIT }}->fail(\'Invalid locator\');' . "\n" .
                     '}' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
@@ -62,7 +62,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     '        {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier)' . "\n" .
                     '    );' . "\n" .
                     '} catch (InvalidLocatorException $exception) {' . "\n" .
-                    '    self::setLastException($exception);' . "\n" .
+                    '    self::staticSetLastException($exception);' . "\n" .
                     '    {{ PHPUNIT }}->fail(\'Invalid locator\');' . "\n" .
                     '}' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
@@ -100,7 +100,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     '        {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier)' . "\n" .
                     '    );' . "\n" .
                     '} catch (InvalidLocatorException $exception) {' . "\n" .
-                    '    self::setLastException($exception);' . "\n" .
+                    '    self::staticSetLastException($exception);' . "\n" .
                     '    {{ PHPUNIT }}->fail(\'Invalid locator\');' . "\n" .
                     '}' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
@@ -128,7 +128,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     '        {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier)' . "\n" .
                     '    );' . "\n" .
                     '} catch (InvalidLocatorException $exception) {' . "\n" .
-                    '    self::setLastException($exception);' . "\n" .
+                    '    self::staticSetLastException($exception);' . "\n" .
                     '    {{ PHPUNIT }}->fail(\'Invalid locator\');' . "\n" .
                     '}' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
@@ -170,7 +170,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     '        {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier)' . "\n" .
                     '    );' . "\n" .
                     '} catch (InvalidLocatorException $exception) {' . "\n" .
-                    '    self::setLastException($exception);' . "\n" .
+                    '    self::staticSetLastException($exception);' . "\n" .
                     '    {{ PHPUNIT }}->fail(\'Invalid locator\');' . "\n" .
                     '}' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
@@ -202,7 +202,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     '        {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier)' . "\n" .
                     '    );' . "\n" .
                     '} catch (InvalidLocatorException $exception) {' . "\n" .
-                    '    self::setLastException($exception);' . "\n" .
+                    '    self::staticSetLastException($exception);' . "\n" .
                     '    {{ PHPUNIT }}->fail(\'Invalid locator\');' . "\n" .
                     '}' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
@@ -234,7 +234,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     '        {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier)' . "\n" .
                     '    );' . "\n" .
                     '} catch (InvalidLocatorException $exception) {' . "\n" .
-                    '    self::setLastException($exception);' . "\n" .
+                    '    self::staticSetLastException($exception);' . "\n" .
                     '    {{ PHPUNIT }}->fail(\'Invalid locator\');' . "\n" .
                     '}' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
@@ -266,7 +266,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     '        {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier)' . "\n" .
                     '    );' . "\n" .
                     '} catch (InvalidLocatorException $exception) {' . "\n" .
-                    '    self::setLastException($exception);' . "\n" .
+                    '    self::staticSetLastException($exception);' . "\n" .
                     '    {{ PHPUNIT }}->fail(\'Invalid locator\');' . "\n" .
                     '}' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
