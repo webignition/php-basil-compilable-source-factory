@@ -64,6 +64,7 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '    public static function setUpBeforeClass(): void' . "\n" .
                     '    {' . "\n" .
                     '        try {' . "\n" .
+                    '            self::setBasilTestPath(\'test.yml\');' . "\n" .
                     '            self::setClientManager(new ClientManager(' . "\n" .
                     '                new Configuration(' . "\n" .
                     '                    \'chrome\',' . "\n" .
@@ -72,7 +73,6 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '            ));' . "\n" .
                     '            parent::setUpBeforeClass();' . "\n" .
                     '            {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
-                    '            self::setBasilTestPath(\'test.yml\');' . "\n" .
                     '        } catch (\Throwable $exception) {' . "\n" .
                     '            self::setLastException($exception);' . "\n" .
                     '            self::fail(\'Exception raised during setUpBeforeClass()\');' . "\n" .
@@ -111,6 +111,7 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '    public static function setUpBeforeClass(): void' . "\n" .
                     '    {' . "\n" .
                     '        try {' . "\n" .
+                    '            self::setBasilTestPath(\'test.yml\');' . "\n" .
                     '            self::setClientManager(new ClientManager(' . "\n" .
                     '                new Configuration(' . "\n" .
                     '                    \'firefox\',' . "\n" .
@@ -119,7 +120,6 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '            ));' . "\n" .
                     '            parent::setUpBeforeClass();' . "\n" .
                     '            {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
-                    '            self::setBasilTestPath(\'test.yml\');' . "\n" .
                     '        } catch (\Throwable $exception) {' . "\n" .
                     '            self::setLastException($exception);' . "\n" .
                     '            self::fail(\'Exception raised during setUpBeforeClass()\');' . "\n" .
@@ -158,6 +158,7 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '    public static function setUpBeforeClass(): void' . "\n" .
                     '    {' . "\n" .
                     '        try {' . "\n" .
+                    '            self::setBasilTestPath(\'test.yml\');' . "\n" .
                     '            self::setClientManager(new ClientManager(' . "\n" .
                     '                new Configuration(' . "\n" .
                     '                    \'unknown\',' . "\n" .
@@ -166,7 +167,6 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '            ));' . "\n" .
                     '            parent::setUpBeforeClass();' . "\n" .
                     '            {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
-                    '            self::setBasilTestPath(\'test.yml\');' . "\n" .
                     '        } catch (\Throwable $exception) {' . "\n" .
                     '            self::setLastException($exception);' . "\n" .
                     '            self::fail(\'Exception raised during setUpBeforeClass()\');' . "\n" .
@@ -206,6 +206,7 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '    public static function setUpBeforeClass(): void' . "\n" .
                     '    {' . "\n" .
                     '        try {' . "\n" .
+                    '            self::setBasilTestPath(\'test.yml\');' . "\n" .
                     '            self::setClientManager(new ClientManager(' . "\n" .
                     '                new Configuration(' . "\n" .
                     '                    \'chrome\',' . "\n" .
@@ -214,7 +215,6 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '            ));' . "\n" .
                     '            parent::setUpBeforeClass();' . "\n" .
                     '            {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
-                    '            self::setBasilTestPath(\'test.yml\');' . "\n" .
                     '        } catch (\Throwable $exception) {' . "\n" .
                     '            self::setLastException($exception);' . "\n" .
                     '            self::fail(\'Exception raised during setUpBeforeClass()\');' . "\n" .
@@ -262,6 +262,7 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '    public static function setUpBeforeClass(): void' . "\n" .
                     '    {' . "\n" .
                     '        try {' . "\n" .
+                    '            self::setBasilTestPath(\'test.yml\');' . "\n" .
                     '            self::setClientManager(new ClientManager(' . "\n" .
                     '                new Configuration(' . "\n" .
                     '                    \'chrome\',' . "\n" .
@@ -270,7 +271,6 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '            ));' . "\n" .
                     '            parent::setUpBeforeClass();' . "\n" .
                     '            {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
-                    '            self::setBasilTestPath(\'test.yml\');' . "\n" .
                     '        } catch (\Throwable $exception) {' . "\n" .
                     '            self::setLastException($exception);' . "\n" .
                     '            self::fail(\'Exception raised during setUpBeforeClass()\');' . "\n" .
