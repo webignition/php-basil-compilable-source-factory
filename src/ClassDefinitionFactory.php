@@ -84,13 +84,6 @@ class ClassDefinitionFactory
             new Statement(
                 new StaticObjectMethodInvocation(
                     new StaticObject('self'),
-                    'setBasilTestPath',
-                    $this->argumentFactory->create($test->getPath())
-                )
-            ),
-            new Statement(
-                new StaticObjectMethodInvocation(
-                    new StaticObject('self'),
                     'setClientManager',
                     [
                         (new ObjectConstructor(
