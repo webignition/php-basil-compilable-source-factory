@@ -64,7 +64,6 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '    public static function setUpBeforeClass(): void' . "\n" .
                     '    {' . "\n" .
                     '        try {' . "\n" .
-                    '            self::setBasilTestPath(\'test.yml\');' . "\n" .
                     '            self::setClientManager(new ClientManager(' . "\n" .
                     '                new Configuration(' . "\n" .
                     '                    \'chrome\',' . "\n" .
@@ -111,7 +110,6 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '    public static function setUpBeforeClass(): void' . "\n" .
                     '    {' . "\n" .
                     '        try {' . "\n" .
-                    '            self::setBasilTestPath(\'test.yml\');' . "\n" .
                     '            self::setClientManager(new ClientManager(' . "\n" .
                     '                new Configuration(' . "\n" .
                     '                    \'firefox\',' . "\n" .
@@ -158,7 +156,6 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '    public static function setUpBeforeClass(): void' . "\n" .
                     '    {' . "\n" .
                     '        try {' . "\n" .
-                    '            self::setBasilTestPath(\'test.yml\');' . "\n" .
                     '            self::setClientManager(new ClientManager(' . "\n" .
                     '                new Configuration(' . "\n" .
                     '                    \'unknown\',' . "\n" .
@@ -206,7 +203,6 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '    public static function setUpBeforeClass(): void' . "\n" .
                     '    {' . "\n" .
                     '        try {' . "\n" .
-                    '            self::setBasilTestPath(\'test.yml\');' . "\n" .
                     '            self::setClientManager(new ClientManager(' . "\n" .
                     '                new Configuration(' . "\n" .
                     '                    \'chrome\',' . "\n" .
@@ -262,7 +258,6 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '    public static function setUpBeforeClass(): void' . "\n" .
                     '    {' . "\n" .
                     '        try {' . "\n" .
-                    '            self::setBasilTestPath(\'test.yml\');' . "\n" .
                     '            self::setClientManager(new ClientManager(' . "\n" .
                     '                new Configuration(' . "\n" .
                     '                    \'chrome\',' . "\n" .
