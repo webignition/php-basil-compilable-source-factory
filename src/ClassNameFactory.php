@@ -10,7 +10,20 @@ class ClassNameFactory
 {
     public function create(TestInterface $test): string
     {
-        $testName = $test->getPath();
-        return sprintf('Generated%sTest', ucfirst(md5($testName)));
+        return sprintf('Generated%sTest', $this->createHash($test));
+    }
+
+    private function createHash(TestInterface $test): string
+    {
+        $configuration = $test->getConfiguration();
+
+        $hashComponents = [
+            'path' => $test->getPath(),
+            'config' => [
+                'browser' => $configuration->getBrowser(),
+            ],
+        ];
+
+        return ucfirst(md5(json_encode($hashComponents)));
     }
 }
