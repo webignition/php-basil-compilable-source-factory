@@ -10,7 +10,7 @@ class ClassNameFactory
 {
     public function create(TestInterface $test): string
     {
-        return sprintf('Generated%sTest', $this->createHash($test));
+        return sprintf('Generated%sTest', ucfirst($this->createHash($test)));
     }
 
     private function createHash(TestInterface $test): string
@@ -24,6 +24,6 @@ class ClassNameFactory
             ],
         ];
 
-        return ucfirst(md5(json_encode($hashComponents)));
+        return md5((string) json_encode($hashComponents));
     }
 }

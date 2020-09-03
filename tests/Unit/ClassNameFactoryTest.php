@@ -4,23 +4,9 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
-use webignition\BaseBasilTestCase\ClientManager;
-use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSource\ClassName;
-use webignition\BasilCompilableSource\Factory\ArgumentFactory;
-use webignition\BasilCompilableSource\Metadata\Metadata;
-use webignition\BasilCompilableSource\Metadata\MetadataInterface;
-use webignition\BasilCompilableSource\VariableDependencyCollection;
-use webignition\BasilCompilableSourceFactory\ClassDefinitionFactory;
 use webignition\BasilCompilableSourceFactory\ClassNameFactory;
-use webignition\BasilCompilableSourceFactory\StepMethodFactory;
-use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilModels\Step\StepCollection;
-use webignition\BasilModels\Test\Configuration;
 use webignition\BasilModels\Test\ConfigurationInterface;
-use webignition\BasilModels\Test\Test;
 use webignition\BasilModels\Test\TestInterface;
-use webignition\BasilParser\Test\TestParser;
 
 class ClassNameFactoryTest extends \PHPUnit\Framework\TestCase
 {
