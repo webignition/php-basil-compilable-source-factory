@@ -74,7 +74,6 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '            {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
                     '        } catch (\Throwable $exception) {' . "\n" .
                     '            self::staticSetLastException($exception);' . "\n" .
-                    '            self::fail(\'Exception raised during setUpBeforeClass()\');' . "\n" .
                     '        }' . "\n" .
                     '    }' . "\n" .
                     '}',
@@ -120,7 +119,6 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '            {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
                     '        } catch (\Throwable $exception) {' . "\n" .
                     '            self::staticSetLastException($exception);' . "\n" .
-                    '            self::fail(\'Exception raised during setUpBeforeClass()\');' . "\n" .
                     '        }' . "\n" .
                     '    }' . "\n" .
                     '}',
@@ -166,7 +164,6 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '            {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
                     '        } catch (\Throwable $exception) {' . "\n" .
                     '            self::staticSetLastException($exception);' . "\n" .
-                    '            self::fail(\'Exception raised during setUpBeforeClass()\');' . "\n" .
                     '        }' . "\n" .
                     '    }' . "\n" .
                     '}',
@@ -213,7 +210,6 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '            {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
                     '        } catch (\Throwable $exception) {' . "\n" .
                     '            self::staticSetLastException($exception);' . "\n" .
-                    '            self::fail(\'Exception raised during setUpBeforeClass()\');' . "\n" .
                     '        }' . "\n" .
                     '    }' . "\n" .
                     "\n" .
@@ -268,7 +264,6 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     '            {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
                     '        } catch (\Throwable $exception) {' . "\n" .
                     '            self::staticSetLastException($exception);' . "\n" .
-                    '            self::fail(\'Exception raised during setUpBeforeClass()\');' . "\n" .
                     '        }' . "\n" .
                     '    }' . "\n" .
                     "\n" .

@@ -126,13 +126,6 @@ class ClassDefinitionFactory
                     ]
                 ),
             ),
-            new Statement(
-                new StaticObjectMethodInvocation(
-                    new StaticObject('self'),
-                    'fail',
-                    $this->argumentFactory->create('Exception raised during setUpBeforeClass()')
-                )
-            ),
         ]);
 
         $tryCatchBlock = new TryCatchBlock(
