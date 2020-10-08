@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "a3eacf361557b83bab932dd65184e884",
+    "content-hash": "e0ca8991802b6da447ec38f1a00ff069",
     "packages": [
         {
             "name": "doctrine/instantiator",
@@ -2522,16 +2522,16 @@
         },
         {
             "name": "webignition/base-basil-test-case",
-            "version": "0.38",
+            "version": "0.40",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/base-basil-test-case.git",
-                "reference": "f229faae5e1306db019fbcacdf092981ff625f24"
+                "reference": "e2faa13ba1d48a61c713d9ae347a87b42209a1a1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/base-basil-test-case/zipball/f229faae5e1306db019fbcacdf092981ff625f24",
-                "reference": "f229faae5e1306db019fbcacdf092981ff625f24",
+                "url": "https://api.github.com/repos/webignition/base-basil-test-case/zipball/e2faa13ba1d48a61c713d9ae347a87b42209a1a1",
+                "reference": "e2faa13ba1d48a61c713d9ae347a87b42209a1a1",
                 "shasum": ""
             },
             "require": {
@@ -2570,7 +2570,11 @@
                 }
             ],
             "homepage": "https://github.com/webignition/base-basil-test-case",
-            "time": "2020-09-01T09:09:06+00:00"
+            "support": {
+                "issues": "https://github.com/webignition/base-basil-test-case/issues",
+                "source": "https://github.com/webignition/base-basil-test-case/tree/0.40"
+            },
+            "time": "2020-10-08T11:08:26+00:00"
         },
         {
             "name": "webignition/basil-compilable-source",
@@ -7150,5 +7154,5 @@
         "ext-json": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "1.1.0"
+    "plugin-api-version": "2.0.0"
 }
