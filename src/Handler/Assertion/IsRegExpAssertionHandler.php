@@ -132,7 +132,7 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
                         [
                             $identityComparison
                         ],
-                        MethodInvocation::ARGUMENT_FORMAT_STACKED
+                        MethodArguments::FORMAT_STACKED
                     )
                 ),
             ]),
