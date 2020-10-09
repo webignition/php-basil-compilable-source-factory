@@ -11,6 +11,7 @@ use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Factory\ArgumentFactory;
 use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
+use webignition\BasilCompilableSource\MethodInvocation\ErrorSuppressedMethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
@@ -103,16 +104,17 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
         ExpressionInterface $examinedAccessor,
         AssertionInterface $assertion
     ): BodyInterface {
-        $pregMatchInvocation = new MethodInvocation(
-            'preg_match',
-            new MethodArguments(
-                $this->argumentFactory->create(
-                    $this->createPhpUnitTestCaseObjectMethodInvocation('getExaminedValue'),
-                    null,
+        $pregMatchInvocation = new ErrorSuppressedMethodInvocation(
+            new MethodInvocation(
+                'preg_match',
+                new MethodArguments(
+                    $this->argumentFactory->create(
+                        $this->createPhpUnitTestCaseObjectMethodInvocation('getExaminedValue'),
+                        null,
+                    )
                 )
             )
         );
-        $pregMatchInvocation->enableErrorSuppression();
 
         $identityComparison = new ComparisonExpression(
             $pregMatchInvocation,
