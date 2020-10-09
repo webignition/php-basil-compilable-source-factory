@@ -9,6 +9,7 @@ use webignition\BasilCompilableSource\EmptyLine;
 use webignition\BasilCompilableSource\Expression\ClosureExpression;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Factory\ArgumentFactory;
+use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Statement\ReturnStatement;
@@ -78,7 +79,7 @@ class DomIdentifierHandler
             new ObjectMethodInvocation(
                 $elementPlaceholder,
                 'getAttribute',
-                $this->argumentFactory->create($attributeName)
+                new MethodArguments($this->argumentFactory->create($attributeName))
             )
         );
 
@@ -104,9 +105,9 @@ class DomIdentifierHandler
             new ObjectMethodInvocation(
                 new VariableDependency(VariableNames::WEBDRIVER_ELEMENT_INSPECTOR),
                 'getValue',
-                [
+                new MethodArguments([
                     $elementPlaceholder,
-                ]
+                ])
             )
         );
 

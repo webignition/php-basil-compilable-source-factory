@@ -12,6 +12,7 @@ use webignition\BasilCompilableSource\EmptyLine;
 use webignition\BasilCompilableSource\Expression\CompositeExpression;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Factory\ArgumentFactory;
+use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\MethodDefinition;
 use webignition\BasilCompilableSource\MethodDefinitionInterface;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectConstructor;
@@ -46,17 +47,20 @@ class MethodDefinitionFactory
                 new StaticObjectMethodInvocation(
                     new StaticObject('self'),
                     'setClientManager',
-                    [
-                        (new ObjectConstructor(
+                    new MethodArguments([
+                        new ObjectConstructor(
                             new ClassName(ClientManager::class),
-                            [
-                                new ObjectConstructor(
-                                    new ClassName(Configuration::class),
-                                    $argumentFactory->create('chrome', $requestBaseUri)
-                                ),
-                            ]
-                        ))->withStackedArguments(),
-                    ],
+                            new MethodArguments(
+                                [
+                                    new ObjectConstructor(
+                                        new ClassName(Configuration::class),
+                                        new MethodArguments($argumentFactory->create('chrome', $requestBaseUri))
+                                    ),
+                                ],
+                                MethodArguments::FORMAT_STACKED
+                            )
+                        ),
+                    ]),
                 )
             ),
             new SingleLineComment('Test harness lines'),
@@ -65,7 +69,7 @@ class MethodDefinitionFactory
                 new ObjectMethodInvocation(
                     new VariableDependency(VariableNames::PANTHER_CLIENT),
                     'request',
-                    $argumentFactory->create('GET', $requestUriExpression)
+                    new MethodArguments($argumentFactory->create('GET', $requestUriExpression))
                 )
             ),
         ]);

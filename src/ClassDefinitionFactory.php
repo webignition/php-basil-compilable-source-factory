@@ -14,6 +14,7 @@ use webignition\BasilCompilableSource\ClassDefinitionInterface;
 use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\Expression\CatchExpression;
 use webignition\BasilCompilableSource\Factory\ArgumentFactory;
+use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\MethodDefinition;
 use webignition\BasilCompilableSource\MethodDefinitionInterface;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectConstructor;
@@ -85,20 +86,28 @@ class ClassDefinitionFactory
                 new StaticObjectMethodInvocation(
                     new StaticObject('self'),
                     'setClientManager',
-                    [
-                        (new ObjectConstructor(
-                            new ClassName(ClientManager::class),
-                            [
-                                (new ObjectConstructor(
-                                    new ClassName(Configuration::class),
-                                    $this->argumentFactory->create(
-                                        $testConfiguration->getBrowser(),
-                                        $testConfiguration->getUrl()
-                                    )
-                                ))->withStackedArguments(),
-                            ]
-                        ))->withStackedArguments(),
-                    ],
+                    new MethodArguments(
+                        [
+                            new ObjectConstructor(
+                                new ClassName(ClientManager::class),
+                                new MethodArguments(
+                                    [
+                                        new ObjectConstructor(
+                                            new ClassName(Configuration::class),
+                                            new MethodArguments(
+                                                $this->argumentFactory->create(
+                                                    $testConfiguration->getBrowser(),
+                                                    $testConfiguration->getUrl()
+                                                ),
+                                                MethodArguments::FORMAT_STACKED
+                                            )
+                                        ),
+                                    ],
+                                    MethodArguments::FORMAT_STACKED
+                                )
+                            ),
+                        ]
+                    ),
                 )
             ),
             new Statement(
@@ -111,7 +120,9 @@ class ClassDefinitionFactory
                 new ObjectMethodInvocation(
                     new VariableDependency(VariableNames::PANTHER_CLIENT),
                     'request',
-                    $this->argumentFactory->create('GET', $testConfiguration->getUrl())
+                    new MethodArguments(
+                        $this->argumentFactory->create('GET', $testConfiguration->getUrl())
+                    )
                 )
             ),
         ]);
@@ -121,9 +132,9 @@ class ClassDefinitionFactory
                 new StaticObjectMethodInvocation(
                     new StaticObject('self'),
                     'staticSetLastException',
-                    [
+                    new MethodArguments([
                         new VariableName('exception')
-                    ]
+                    ])
                 ),
             ),
         ]);

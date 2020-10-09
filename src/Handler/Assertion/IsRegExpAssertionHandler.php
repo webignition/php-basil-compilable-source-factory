@@ -10,6 +10,7 @@ use webignition\BasilCompilableSource\Expression\ComparisonExpression;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Factory\ArgumentFactory;
+use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
@@ -104,9 +105,11 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
     ): BodyInterface {
         $pregMatchInvocation = new MethodInvocation(
             'preg_match',
-            $this->argumentFactory->create(
-                $this->createPhpUnitTestCaseObjectMethodInvocation('getExaminedValue'),
-                null,
+            new MethodArguments(
+                $this->argumentFactory->create(
+                    $this->createPhpUnitTestCaseObjectMethodInvocation('getExaminedValue'),
+                    null,
+                )
             )
         );
         $pregMatchInvocation->enableErrorSuppression();
@@ -119,18 +122,26 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
 
         return new Body([
             Body::createFromExpressions([
-                $this->createPhpUnitTestCaseObjectMethodInvocation('setExaminedValue', [$examinedAccessor]),
+                $this->createPhpUnitTestCaseObjectMethodInvocation(
+                    'setExaminedValue',
+                    new MethodArguments([$examinedAccessor])
+                ),
                 $this->createPhpUnitTestCaseObjectMethodInvocation(
                     'setBooleanExpectedValue',
-                    [
-                        $identityComparison
-                    ],
-                    MethodInvocation::ARGUMENT_FORMAT_STACKED
+                    new MethodArguments(
+                        [
+                            $identityComparison
+                        ],
+                        MethodInvocation::ARGUMENT_FORMAT_STACKED
+                    )
                 ),
             ]),
-            $this->createAssertionStatement($assertion, [
-                $this->createPhpUnitTestCaseObjectMethodInvocation('getBooleanExpectedValue')
-            ]),
+            $this->createAssertionStatement(
+                $assertion,
+                new MethodArguments([
+                    $this->createPhpUnitTestCaseObjectMethodInvocation('getBooleanExpectedValue')
+                ])
+            ),
         ]);
     }
 }
