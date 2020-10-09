@@ -17,6 +17,8 @@ use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Expression\ObjectPropertyAccessExpression;
 use webignition\BasilCompilableSource\Factory\ArgumentFactory;
+use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
+use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSource\Statement\AssignmentStatement;
@@ -108,9 +110,12 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
     {
         $identifier = $assertion->getIdentifier();
 
-        $assertionStatement = $this->createAssertionStatement($assertion, [
-            $this->createGetBooleanExaminedValueInvocation()
-        ]);
+        $assertionStatement = $this->createAssertionStatement(
+            $assertion,
+            new MethodArguments([
+                $this->createGetBooleanExaminedValueInvocation()
+            ])
+        );
 
         $domIdentifier = $this->domIdentifierFactory->createFromIdentifierString($identifier);
         if (null === $domIdentifier) {
@@ -134,10 +139,12 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
         );
 
         $elementSetBooleanExaminedValueInvocation = $this->createSetBooleanExaminedValueInvocation(
-            [
-                $domNavigatorCrawlerCall
-            ],
-            ObjectMethodInvocation::ARGUMENT_FORMAT_STACKED
+            new MethodArguments(
+                [
+                    $domNavigatorCrawlerCall
+                ],
+                ObjectMethodInvocation::ARGUMENT_FORMAT_STACKED
+            )
         );
 
         if (!$domIdentifier instanceof AttributeIdentifierInterface) {
@@ -167,13 +174,15 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
             '??'
         );
 
-        $attributeSetBooleanExaminedValueInvocation = $this->createSetBooleanExaminedValueInvocation([
-            new ComparisonExpression(
-                new EncapsulatedExpression($attributeNullComparisonExpression),
-                new LiteralExpression('null'),
-                '!=='
-            ),
-        ]);
+        $attributeSetBooleanExaminedValueInvocation = $this->createSetBooleanExaminedValueInvocation(
+            new MethodArguments([
+                new ComparisonExpression(
+                    new EncapsulatedExpression($attributeNullComparisonExpression),
+                    new LiteralExpression('null'),
+                    '!=='
+                ),
+            ])
+        );
 
         return new Body([
             new AssignmentStatement(
@@ -181,29 +190,20 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
                 $elementIdentifierExpression
             ),
             $this->createNavigatorHasCallTryCatchBlock($elementSetBooleanExaminedValueInvocation),
-            $this->createAssertionStatement($elementExistsAssertion, [
-                $this->createGetBooleanExaminedValueInvocation()
-            ]),
+            $this->createAssertionStatement(
+                $elementExistsAssertion,
+                new MethodArguments([
+                    $this->createGetBooleanExaminedValueInvocation()
+                ])
+            ),
             new Statement($attributeSetBooleanExaminedValueInvocation),
             $assertionStatement,
         ]);
     }
 
-    /**
-     * @param ExpressionInterface[] $arguments
-     * @param string $argumentFormat
-     *
-     * @return ExpressionInterface
-     */
-    private function createSetBooleanExaminedValueInvocation(
-        array $arguments,
-        string $argumentFormat = ObjectMethodInvocation::ARGUMENT_FORMAT_INLINE
-    ): ExpressionInterface {
-        return $this->createPhpUnitTestCaseObjectMethodInvocation(
-            'setBooleanExaminedValue',
-            $arguments,
-            $argumentFormat
-        );
+    private function createSetBooleanExaminedValueInvocation(MethodArgumentsInterface $arguments): ExpressionInterface
+    {
+        return $this->createPhpUnitTestCaseObjectMethodInvocation('setBooleanExaminedValue', $arguments);
     }
 
     private function createGetBooleanExaminedValueInvocation(): ExpressionInterface
@@ -248,14 +248,14 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
                     new StaticObjectMethodInvocation(
                         new StaticObject('self'),
                         'staticSetLastException',
-                        [
+                        new MethodArguments([
                             new VariableName('exception')
-                        ]
+                        ])
                     ),
                     new ObjectMethodInvocation(
                         new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
                         'fail',
-                        $this->argumentFactory->create('Invalid locator')
+                        new MethodArguments($this->argumentFactory->create('Invalid locator'))
                     )
                 ])
             )

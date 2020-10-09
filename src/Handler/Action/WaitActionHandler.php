@@ -11,6 +11,7 @@ use webignition\BasilCompilableSource\Expression\ComparisonExpression;
 use webignition\BasilCompilableSource\Expression\CompositeExpression;
 use webignition\BasilCompilableSource\Expression\EncapsulatedExpression;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
+use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
@@ -67,13 +68,15 @@ class WaitActionHandler
 
         $sleepInvocation = new MethodInvocation(
             'usleep',
-            [
-                new CompositeExpression([
-                    new EncapsulatedExpression($castToIntExpression),
-                    new LiteralExpression(' * '),
-                    new LiteralExpression((string) self::MICROSECONDS_PER_MILLISECOND)
-                ]),
-            ]
+            new MethodArguments(
+                [
+                    new CompositeExpression([
+                        new EncapsulatedExpression($castToIntExpression),
+                        new LiteralExpression(' * '),
+                        new LiteralExpression((string) self::MICROSECONDS_PER_MILLISECOND)
+                    ]),
+                ]
+            )
         );
 
         return Body::createFromExpressions([$sleepInvocation]);

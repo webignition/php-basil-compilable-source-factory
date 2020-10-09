@@ -9,6 +9,7 @@ use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\Expression\ComparisonExpression;
 use webignition\BasilCompilableSource\Expression\EncapsulatedExpression;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
+use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
@@ -66,18 +67,21 @@ class ScalarExistenceAssertionHandler extends AbstractAssertionHandler
 
         $setBooleanExaminedValueInvocation = $this->createPhpUnitTestCaseObjectMethodInvocation(
             'setBooleanExaminedValue',
-            [
+            new MethodArguments([
                 new ComparisonExpression(
                     new EncapsulatedExpression($nullComparisonExpression),
                     new LiteralExpression('null'),
                     '!=='
                 ),
-            ]
+            ])
         );
 
-        $assertionStatement = $this->createAssertionStatement($assertion, [
-            $this->createPhpUnitTestCaseObjectMethodInvocation('getBooleanExaminedValue')
-        ]);
+        $assertionStatement = $this->createAssertionStatement(
+            $assertion,
+            new MethodArguments([
+                $this->createPhpUnitTestCaseObjectMethodInvocation('getBooleanExaminedValue')
+            ])
+        );
 
         return new Body([
             new Statement($setBooleanExaminedValueInvocation),

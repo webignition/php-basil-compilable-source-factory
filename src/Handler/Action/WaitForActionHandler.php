@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\Factory\ArgumentFactory;
+use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
@@ -70,7 +71,9 @@ class WaitForActionHandler
             new ObjectMethodInvocation(
                 new VariableDependency(VariableNames::PANTHER_CLIENT),
                 'waitFor',
-                $this->argumentFactory->create($domIdentifier->getLocator())
+                new MethodArguments(
+                    $this->argumentFactory->create($domIdentifier->getLocator())
+                )
             )
         );
     }

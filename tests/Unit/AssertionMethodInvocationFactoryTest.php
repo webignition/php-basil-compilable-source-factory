@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
-use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
+use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
@@ -25,15 +26,10 @@ class AssertionMethodInvocationFactoryTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @dataProvider createDataProvider
-     *
-     * @param string $assertionMethod
-     * @param array<string, ExpressionInterface> $arguments
-     * @param string $expectedRenderedInvocation
-     * @param MetadataInterface $expectedMetadata
      */
     public function testCreate(
         string $assertionMethod,
-        array $arguments,
+        MethodArgumentsInterface $arguments,
         string $expectedRenderedInvocation,
         MetadataInterface $expectedMetadata
     ) {
@@ -48,7 +44,7 @@ class AssertionMethodInvocationFactoryTest extends \PHPUnit\Framework\TestCase
         return [
             'no arguments, no failure message, assertTrue' => [
                 'assertionMethod' => 'assertTrue',
-                'arguments' => [],
+                'arguments' => new MethodArguments(),
                 'expectedRenderedInvocation' => '{{ PHPUNIT }}->assertTrue()',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
@@ -58,7 +54,7 @@ class AssertionMethodInvocationFactoryTest extends \PHPUnit\Framework\TestCase
             ],
             'no arguments, no failure message, assertFalse' => [
                 'assertionMethod' => 'assertFalse',
-                'arguments' => [],
+                'arguments' => new MethodArguments(),
                 'expectedRenderedInvocation' => '{{ PHPUNIT }}->assertFalse()',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
@@ -68,10 +64,10 @@ class AssertionMethodInvocationFactoryTest extends \PHPUnit\Framework\TestCase
             ],
             'has arguments, no failure message, assertEquals' => [
                 'assertionMethod' => 'assertEquals',
-                'arguments' => [
+                'arguments' => new MethodArguments([
                     new LiteralExpression('100'),
                     new LiteralExpression('\'string\''),
-                ],
+                ]),
                 'expectedRenderedInvocation' =>
                     '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    100,' . "\n" .
@@ -85,10 +81,10 @@ class AssertionMethodInvocationFactoryTest extends \PHPUnit\Framework\TestCase
             ],
             'has arguments, has failure message, assertNotEquals' => [
                 'assertionMethod' => 'assertNotEquals',
-                'arguments' => [
+                'arguments' => new MethodArguments([
                     new LiteralExpression('100'),
                     new LiteralExpression('\'string\''),
-                ],
+                ]),
                 'expectedRenderedInvocation' =>
                     '{{ PHPUNIT }}->assertNotEquals(' . "\n" .
                     '    100,' . "\n" .
@@ -102,10 +98,10 @@ class AssertionMethodInvocationFactoryTest extends \PHPUnit\Framework\TestCase
             ],
             'has arguments, has failure message containing quotes, assertNotEquals' => [
                 'assertionMethod' => 'assertNotEquals',
-                'arguments' => [
+                'arguments' => new MethodArguments([
                     new LiteralExpression('100'),
                     new LiteralExpression('\'string\''),
-                ],
+                ]),
                 'expectedRenderedInvocation' =>
                     '{{ PHPUNIT }}->assertNotEquals(' . "\n" .
                     '    100,' . "\n" .

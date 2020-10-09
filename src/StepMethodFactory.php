@@ -11,6 +11,7 @@ use webignition\BasilCompilableSource\EmptyLine;
 use webignition\BasilCompilableSource\Expression\ArrayExpression;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Factory\ArgumentFactory;
+use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\MethodDefinition;
 use webignition\BasilCompilableSource\MethodDefinitionInterface;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
@@ -116,7 +117,7 @@ class StepMethodFactory
             new ObjectMethodInvocation(
                 new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
                 'setBasilStepName',
-                $this->argumentFactory->create($stepName)
+                new MethodArguments($this->argumentFactory->create($stepName))
             )
         );
     }
@@ -142,7 +143,7 @@ class StepMethodFactory
                 new StaticObjectMethodInvocation(
                     new StaticObject(DataSet::class),
                     'fromArray',
-                    [
+                    new MethodArguments([
                         new ArrayExpression([
                             'name' => new ObjectMethodInvocation(
                                 new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
@@ -150,7 +151,7 @@ class StepMethodFactory
                             ),
                             'data' => $dataSetData,
                         ])
-                    ]
+                    ])
                 )
             ];
         }
@@ -159,7 +160,7 @@ class StepMethodFactory
             new ObjectMethodInvocation(
                 new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
                 'setCurrentDataSet',
-                $arguments
+                new MethodArguments($arguments)
             )
         );
     }

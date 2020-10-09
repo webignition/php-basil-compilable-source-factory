@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Factory\ArgumentFactory;
+use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSource\StaticObject;
 use webignition\DomElementIdentifier\ElementIdentifier;
@@ -31,7 +32,9 @@ class ElementIdentifierCallFactory
         return new StaticObjectMethodInvocation(
             new StaticObject(ElementIdentifier::class),
             'fromJson',
-            $this->argumentFactory->create($serializedSourceIdentifier)
+            new MethodArguments(
+                $this->argumentFactory->create($serializedSourceIdentifier)
+            )
         );
     }
 }

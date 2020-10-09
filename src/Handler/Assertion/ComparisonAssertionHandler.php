@@ -8,6 +8,7 @@ use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\Expression\CastExpression;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
+use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
@@ -96,12 +97,18 @@ class ComparisonAssertionHandler extends AbstractAssertionHandler
 
         return new Body([
             new Statement(
-                $this->createPhpUnitTestCaseObjectMethodInvocation('setExpectedValue', [$expectedAccessor])
+                $this->createPhpUnitTestCaseObjectMethodInvocation(
+                    'setExpectedValue',
+                    new MethodArguments([$expectedAccessor])
+                )
             ),
             new Statement(
-                $this->createPhpUnitTestCaseObjectMethodInvocation('setExaminedValue', [$examinedAccessor])
+                $this->createPhpUnitTestCaseObjectMethodInvocation(
+                    'setExaminedValue',
+                    new MethodArguments([$examinedAccessor])
+                )
             ),
-            $this->createAssertionStatement($assertion, $assertionArguments),
+            $this->createAssertionStatement($assertion, new MethodArguments($assertionArguments)),
         ]);
     }
 }

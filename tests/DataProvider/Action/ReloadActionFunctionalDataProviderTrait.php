@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Factory\ArgumentFactory;
+use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Statement\Statement;
@@ -25,29 +26,36 @@ trait ReloadActionFunctionalDataProviderTrait
                 new ObjectMethodInvocation(
                     new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
                     'assertCount',
-                    $argumentFactory->create(
-                        0,
-                        new ObjectMethodInvocation(
-                            new VariableDependency(VariableNames::PANTHER_CRAWLER),
-                            'filter',
-                            $argumentFactory->create('#hello')
-                        ),
+                    new MethodArguments(
+                        $argumentFactory->create(
+                            0,
+                            new ObjectMethodInvocation(
+                                new VariableDependency(VariableNames::PANTHER_CRAWLER),
+                                'filter',
+                                new MethodArguments($argumentFactory->create('#hello'))
+                            ),
+                        )
                     )
                 )
             ),
             new Statement(
-                new MethodInvocation('usleep', $argumentFactory->create(100000))
+                new MethodInvocation(
+                    'usleep',
+                    new MethodArguments($argumentFactory->create(100000))
+                )
             ),
             new Statement(
                 new ObjectMethodInvocation(
                     new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
                     'assertCount',
-                    $argumentFactory->create(
-                        1,
-                        new ObjectMethodInvocation(
-                            new VariableDependency(VariableNames::PANTHER_CRAWLER),
-                            'filter',
-                            $argumentFactory->create('#hello')
+                    new MethodArguments(
+                        $argumentFactory->create(
+                            1,
+                            new ObjectMethodInvocation(
+                                new VariableDependency(VariableNames::PANTHER_CRAWLER),
+                                'filter',
+                                new MethodArguments($argumentFactory->create('#hello'))
+                            )
                         )
                     )
                 )

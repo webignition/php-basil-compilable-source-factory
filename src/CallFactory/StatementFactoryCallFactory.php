@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
 use webignition\BasilCompilableSource\Factory\ArgumentFactory;
+use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSourceFactory\VariableNames;
@@ -38,7 +39,9 @@ class StatementFactoryCallFactory
         return new ObjectMethodInvocation(
             new VariableDependency($objectPlaceholderName),
             'createFromJson',
-            $this->argumentFactory->create($serializedStatementSource)
+            new MethodArguments(
+                $this->argumentFactory->create($serializedStatementSource)
+            )
         );
     }
 }
