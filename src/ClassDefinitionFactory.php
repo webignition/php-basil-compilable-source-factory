@@ -70,7 +70,10 @@ class ClassDefinitionFactory
 
         $stepOrdinalIndex = 1;
         foreach ($test->getSteps() as $stepName => $step) {
-            $methodDefinitions[] = $this->stepMethodFactory->create($stepOrdinalIndex, $stepName, $step);
+            $methodDefinitions = array_merge(
+                $methodDefinitions,
+                $this->stepMethodFactory->create($stepOrdinalIndex, $stepName, $step)
+            );
             $stepOrdinalIndex++;
         }
 

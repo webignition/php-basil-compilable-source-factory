@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory;
 
+use webignition\BasilCompilableSource\Annotation\DataProviderAnnotation;
 use webignition\BasilCompilableSource\Body\Body;
-use webignition\BasilCompilableSource\DataProvidedMethodDefinition;
 use webignition\BasilCompilableSource\DataProviderMethodDefinition;
+use webignition\BasilCompilableSource\DocBlock\DocBlock;
 use webignition\BasilCompilableSource\EmptyLine;
 use webignition\BasilCompilableSource\Expression\ArrayExpression;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
@@ -58,11 +59,11 @@ class StepMethodFactory
      * @param string $stepName
      * @param StepInterface $step
      *
-     * @return MethodDefinitionInterface
+     * @return MethodDefinitionInterface[]
      *
      * @throws UnsupportedStepException
      */
-    public function create(int $index, string $stepName, StepInterface $step): MethodDefinitionInterface
+    public function create(int $index, string $stepName, StepInterface $step): array
     {
         $dataSetCollection = $step->getData() ?? new DataSetCollection([]);
         $parameterNames = $dataSetCollection->getParameterNames();
@@ -78,17 +79,28 @@ class StepMethodFactory
             $parameterNames
         );
 
-        $dataProviderMethod = null;
-        if ($dataSetCollection instanceof DataSetCollectionInterface && count($parameterNames) > 0) {
-            $dataProviderMethod = new DataProviderMethodDefinition(
-                'dataProvider' . (string) $index,
-                $this->createEscapedDataProviderData($dataSetCollection)
-            );
-
-            $testMethod = new DataProvidedMethodDefinition($testMethod, $dataProviderMethod);
+        $hasDataProvider = count($parameterNames) > 0;
+        if (false === $hasDataProvider) {
+            return [$testMethod];
         }
 
-        return $testMethod;
+        $dataProviderMethod = new DataProviderMethodDefinition(
+            'dataProvider' . (string) $index,
+            $this->createEscapedDataProviderData($dataSetCollection)
+        );
+
+        $testMethodDocBlock = $testMethod->getDocBlock();
+        $testMethodDocBlock = $testMethodDocBlock->prepend(new DocBlock([
+            new DataProviderAnnotation($dataProviderMethod->getName()),
+            "\n",
+        ]));
+
+        $testMethod = $testMethod->withDocBlock($testMethodDocBlock);
+
+        return [
+            $testMethod,
+            $dataProviderMethod,
+        ];
     }
 
     /**
