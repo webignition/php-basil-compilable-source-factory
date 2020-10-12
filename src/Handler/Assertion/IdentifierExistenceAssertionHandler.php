@@ -149,7 +149,7 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
 
         if (!$domIdentifier instanceof AttributeIdentifierInterface) {
             return new Body([
-                new AssignmentStatement(
+                AssignmentStatement::create(
                     $examinedElementIdentifierPlaceholder,
                     $elementIdentifierExpression
                 ),
@@ -185,7 +185,7 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
         );
 
         return new Body([
-            new AssignmentStatement(
+            AssignmentStatement::create(
                 $examinedElementIdentifierPlaceholder,
                 $elementIdentifierExpression
             ),

@@ -44,7 +44,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
         $collectionPlaceholder = new VariableName('collection');
 
         $instrumentedSource = new Body([
-            new AssignmentStatement($collectionPlaceholder, $source),
+            AssignmentStatement::create($collectionPlaceholder, $source),
         ]);
 
         $classCode = $this->testCodeGenerator->createBrowserTestForBlock(

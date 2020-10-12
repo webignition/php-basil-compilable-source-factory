@@ -81,7 +81,7 @@ class ScalarValueHandler
         $webDriverDimensionPlaceholder = new VariableName('webDriverDimension');
 
         return new ClosureExpression(new Body([
-            new AssignmentStatement(
+            AssignmentStatement::create(
                 $webDriverDimensionPlaceholder,
                 new ObjectMethodInvocation(
                     new VariableDependency(VariableNames::PANTHER_CLIENT),
@@ -89,7 +89,7 @@ class ScalarValueHandler
                 )
             ),
             new EmptyLine(),
-            new ReturnStatement(
+            ReturnStatement::create(
                 new CompositeExpression([
                     new CastExpression(
                         new ObjectMethodInvocation($webDriverDimensionPlaceholder, 'getWidth'),

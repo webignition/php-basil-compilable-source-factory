@@ -64,7 +64,7 @@ class InteractionActionHandler
 
         $elementPlaceholder = new VariableName('element');
 
-        $accessor = new AssignmentStatement(
+        $accessor = AssignmentStatement::create(
             $elementPlaceholder,
             $this->domIdentifierHandler->handleElement(
                 $this->elementIdentifierSerializer->serialize($domIdentifier)

@@ -38,7 +38,7 @@ class ScalarValueHandlerTest extends AbstractBrowserTestCase
         $valuePlaceholder = new VariableName('value');
 
         $instrumentedSource = new Body([
-            new AssignmentStatement($valuePlaceholder, $source),
+            AssignmentStatement::create($valuePlaceholder, $source),
         ]);
 
         $classCode = $this->testCodeGenerator->createBrowserTestForBlock(
