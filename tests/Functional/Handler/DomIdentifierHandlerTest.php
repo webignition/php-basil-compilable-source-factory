@@ -6,9 +6,9 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler;
 
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Body\BodyInterface;
+use webignition\BasilCompilableSource\Expression\AssignmentExpression;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
-use webignition\BasilCompilableSource\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
@@ -162,9 +162,8 @@ class DomIdentifierHandlerTest extends AbstractBrowserTestCase
         string $fixture,
         BodyInterface $teardownStatements
     ): void {
-        $instrumentedSource = AssignmentStatement::create(
-            new VariableName('value'),
-            $source
+        $instrumentedSource = new Statement(
+            new AssignmentExpression(new VariableName('value'), $source)
         );
 
         $classCode = $this->testCodeGenerator->createBrowserTestForBlock(

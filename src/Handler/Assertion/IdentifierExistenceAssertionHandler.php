@@ -10,6 +10,7 @@ use webignition\BasilCompilableSource\Block\TryCatch\TryCatchBlock;
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Body\BodyInterface;
 use webignition\BasilCompilableSource\ClassName;
+use webignition\BasilCompilableSource\Expression\AssignmentExpression;
 use webignition\BasilCompilableSource\Expression\CatchExpression;
 use webignition\BasilCompilableSource\Expression\ComparisonExpression;
 use webignition\BasilCompilableSource\Expression\EncapsulatedExpression;
@@ -21,7 +22,6 @@ use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
-use webignition\BasilCompilableSource\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\StaticObject;
 use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclaration;
@@ -149,9 +149,8 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
 
         if (!$domIdentifier instanceof AttributeIdentifierInterface) {
             return new Body([
-                AssignmentStatement::create(
-                    $examinedElementIdentifierPlaceholder,
-                    $elementIdentifierExpression
+                new Statement(
+                    new AssignmentExpression($examinedElementIdentifierPlaceholder, $elementIdentifierExpression)
                 ),
                 $this->createNavigatorHasCallTryCatchBlock($elementSetBooleanExaminedValueInvocation),
                 $assertionStatement,
@@ -185,9 +184,8 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
         );
 
         return new Body([
-            AssignmentStatement::create(
-                $examinedElementIdentifierPlaceholder,
-                $elementIdentifierExpression
+            new Statement(
+                new AssignmentExpression($examinedElementIdentifierPlaceholder, $elementIdentifierExpression)
             ),
             $this->createNavigatorHasCallTryCatchBlock($elementSetBooleanExaminedValueInvocation),
             $this->createAssertionStatement(

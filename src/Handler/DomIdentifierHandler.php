@@ -6,13 +6,14 @@ namespace webignition\BasilCompilableSourceFactory\Handler;
 
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\EmptyLine;
+use webignition\BasilCompilableSource\Expression\AssignmentExpression;
 use webignition\BasilCompilableSource\Expression\ClosureExpression;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
+use webignition\BasilCompilableSource\Expression\ReturnExpression;
 use webignition\BasilCompilableSource\Factory\ArgumentFactory;
 use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSource\Statement\AssignmentStatement;
-use webignition\BasilCompilableSource\Statement\ReturnStatement;
+use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
@@ -71,17 +72,20 @@ class DomIdentifierHandler
         $elementPlaceholder = new VariableName('element');
 
         $closureExpressionStatements = [
-            AssignmentStatement::create($elementPlaceholder, $findCall),
+            new Statement(
+                new AssignmentExpression($elementPlaceholder, $findCall)
+            ),
             new EmptyLine(),
+            new Statement(
+                new ReturnExpression(
+                    new ObjectMethodInvocation(
+                        $elementPlaceholder,
+                        'getAttribute',
+                        new MethodArguments($this->argumentFactory->create($attributeName))
+                    )
+                )
+            ),
         ];
-
-        $closureExpressionStatements[] = ReturnStatement::create(
-            new ObjectMethodInvocation(
-                $elementPlaceholder,
-                'getAttribute',
-                new MethodArguments($this->argumentFactory->create($attributeName))
-            )
-        );
 
         return new ClosureExpression(new Body($closureExpressionStatements));
     }
@@ -97,20 +101,22 @@ class DomIdentifierHandler
         $elementPlaceholder = new VariableName('element');
 
         $closureExpressionStatements = [
-            AssignmentStatement::create($elementPlaceholder, $findCall),
+            new Statement(
+                new AssignmentExpression($elementPlaceholder, $findCall)
+            ),
             new EmptyLine(),
-        ];
-
-        $closureExpressionStatements[] = ReturnStatement::create(
-            new ObjectMethodInvocation(
-                new VariableDependency(VariableNames::WEBDRIVER_ELEMENT_INSPECTOR),
-                'getValue',
-                new MethodArguments([
-                    $elementPlaceholder,
-                ])
+            new Statement(
+                new ReturnExpression(
+                    new ObjectMethodInvocation(
+                        new VariableDependency(VariableNames::WEBDRIVER_ELEMENT_INSPECTOR),
+                        'getValue',
+                        new MethodArguments([
+                            $elementPlaceholder,
+                        ])
+                    )
+                )
             )
-        );
-
+        ];
 
         return new ClosureExpression(new Body($closureExpressionStatements));
     }

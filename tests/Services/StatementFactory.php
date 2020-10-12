@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
 use webignition\BasilCompilableSource\Body\Body;
+use webignition\BasilCompilableSource\Expression\AssignmentExpression;
 use webignition\BasilCompilableSource\Expression\ClosureExpression;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
+use webignition\BasilCompilableSource\Expression\ReturnExpression;
 use webignition\BasilCompilableSource\Factory\ArgumentFactory;
 use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSource\Statement\AssignmentStatement;
-use webignition\BasilCompilableSource\Statement\ReturnStatement;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\Statement\StatementInterface;
 use webignition\BasilCompilableSource\VariableDependency;
@@ -49,25 +49,31 @@ class StatementFactory
         $elementPlaceholder = new VariableName('element');
         $argumentFactory = ArgumentFactory::createFactory();
 
-        return AssignmentStatement::create(
-            $placeholder,
-            new ClosureExpression(new Body([
-                AssignmentStatement::create(
-                    $elementPlaceholder,
-                    new ObjectMethodInvocation(
-                        new VariableDependency(VariableNames::PANTHER_CRAWLER),
-                        'filter',
-                        new MethodArguments($argumentFactory->create($selector))
-                    )
-                ),
-                ReturnStatement::create(
-                    new ObjectMethodInvocation(
-                        $elementPlaceholder,
-                        'getElement',
-                        new MethodArguments($argumentFactory->create(0))
-                    )
-                ),
-            ]))
+        return new Statement(
+            new AssignmentExpression(
+                $placeholder,
+                new ClosureExpression(new Body([
+                    new Statement(
+                        new AssignmentExpression(
+                            $elementPlaceholder,
+                            new ObjectMethodInvocation(
+                                new VariableDependency(VariableNames::PANTHER_CRAWLER),
+                                'filter',
+                                new MethodArguments($argumentFactory->create($selector))
+                            )
+                        )
+                    ),
+                    new Statement(
+                        new ReturnExpression(
+                            new ObjectMethodInvocation(
+                                $elementPlaceholder,
+                                'getElement',
+                                new MethodArguments($argumentFactory->create(0))
+                            )
+                        )
+                    ),
+                ]))
+            )
         );
     }
 
@@ -83,20 +89,24 @@ class StatementFactory
 
         return new Statement(
             new ClosureExpression(new Body([
-                AssignmentStatement::create(
-                    $elementPlaceholder,
-                    new ObjectMethodInvocation(
-                        new VariableDependency(VariableNames::PANTHER_CRAWLER),
-                        'filter',
-                        new MethodArguments($argumentFactory->create($selector))
+                new Statement(
+                    new AssignmentExpression(
+                        $elementPlaceholder,
+                        new ObjectMethodInvocation(
+                            new VariableDependency(VariableNames::PANTHER_CRAWLER),
+                            'filter',
+                            new MethodArguments($argumentFactory->create($selector))
+                        )
                     )
                 ),
-                AssignmentStatement::create(
-                    $elementPlaceholder,
-                    new ObjectMethodInvocation(
+                new Statement(
+                    new AssignmentExpression(
                         $elementPlaceholder,
-                        'getElement',
-                        new MethodArguments($argumentFactory->create(0))
+                        new ObjectMethodInvocation(
+                            $elementPlaceholder,
+                            'getElement',
+                            new MethodArguments($argumentFactory->create(0))
+                        )
                     )
                 ),
                 new Statement(
@@ -125,12 +135,14 @@ class StatementFactory
     ): StatementInterface {
         $argumentFactory = ArgumentFactory::createFactory();
 
-        return AssignmentStatement::create(
-            $placeholder,
-            new ObjectMethodInvocation(
-                new VariableDependency(VariableNames::PANTHER_CRAWLER),
-                'filter',
-                new MethodArguments($argumentFactory->create($selector))
+        return new Statement(
+            new AssignmentExpression(
+                $placeholder,
+                new ObjectMethodInvocation(
+                    new VariableDependency(VariableNames::PANTHER_CRAWLER),
+                    'filter',
+                    new MethodArguments($argumentFactory->create($selector))
+                )
             )
         );
     }

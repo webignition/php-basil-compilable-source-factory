@@ -6,8 +6,9 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 
 use webignition\BasilCompilableSource\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSource\ClassName;
+use webignition\BasilCompilableSource\Expression\ReturnExpression;
 use webignition\BasilCompilableSource\Metadata\Metadata;
-use webignition\BasilCompilableSource\Statement\ReturnStatement;
+use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\CallFactory\ElementIdentifierCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\DomElementIdentifier\AttributeIdentifier;
@@ -45,7 +46,9 @@ class ElementIdentifierCallFactoryTest extends \PHPUnit\Framework\TestCase
             $constructorExpression->getMetadata()
         );
 
-        $constructorAccessStatement = ReturnStatement::create($constructorExpression);
+        $constructorAccessStatement = new Statement(
+            new ReturnExpression($constructorExpression)
+        );
 
         $code = $constructorAccessStatement->getMetadata()->getClassDependencies()->render() .
             "\n" .
