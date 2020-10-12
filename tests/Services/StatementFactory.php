@@ -49,10 +49,10 @@ class StatementFactory
         $elementPlaceholder = new VariableName('element');
         $argumentFactory = ArgumentFactory::createFactory();
 
-        return new AssignmentStatement(
+        return AssignmentStatement::create(
             $placeholder,
             new ClosureExpression(new Body([
-                new AssignmentStatement(
+                AssignmentStatement::create(
                     $elementPlaceholder,
                     new ObjectMethodInvocation(
                         new VariableDependency(VariableNames::PANTHER_CRAWLER),
@@ -60,7 +60,7 @@ class StatementFactory
                         new MethodArguments($argumentFactory->create($selector))
                     )
                 ),
-                new ReturnStatement(
+                ReturnStatement::create(
                     new ObjectMethodInvocation(
                         $elementPlaceholder,
                         'getElement',
@@ -83,7 +83,7 @@ class StatementFactory
 
         return new Statement(
             new ClosureExpression(new Body([
-                new AssignmentStatement(
+                AssignmentStatement::create(
                     $elementPlaceholder,
                     new ObjectMethodInvocation(
                         new VariableDependency(VariableNames::PANTHER_CRAWLER),
@@ -91,7 +91,7 @@ class StatementFactory
                         new MethodArguments($argumentFactory->create($selector))
                     )
                 ),
-                new AssignmentStatement(
+                AssignmentStatement::create(
                     $elementPlaceholder,
                     new ObjectMethodInvocation(
                         $elementPlaceholder,
@@ -125,7 +125,7 @@ class StatementFactory
     ): StatementInterface {
         $argumentFactory = ArgumentFactory::createFactory();
 
-        return new AssignmentStatement(
+        return AssignmentStatement::create(
             $placeholder,
             new ObjectMethodInvocation(
                 new VariableDependency(VariableNames::PANTHER_CRAWLER),

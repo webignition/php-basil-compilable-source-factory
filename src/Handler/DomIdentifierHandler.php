@@ -71,11 +71,11 @@ class DomIdentifierHandler
         $elementPlaceholder = new VariableName('element');
 
         $closureExpressionStatements = [
-            new AssignmentStatement($elementPlaceholder, $findCall),
+            AssignmentStatement::create($elementPlaceholder, $findCall),
             new EmptyLine(),
         ];
 
-        $closureExpressionStatements[] = new ReturnStatement(
+        $closureExpressionStatements[] = ReturnStatement::create(
             new ObjectMethodInvocation(
                 $elementPlaceholder,
                 'getAttribute',
@@ -97,11 +97,11 @@ class DomIdentifierHandler
         $elementPlaceholder = new VariableName('element');
 
         $closureExpressionStatements = [
-            new AssignmentStatement($elementPlaceholder, $findCall),
+            AssignmentStatement::create($elementPlaceholder, $findCall),
             new EmptyLine(),
         ];
 
-        $closureExpressionStatements[] = new ReturnStatement(
+        $closureExpressionStatements[] = ReturnStatement::create(
             new ObjectMethodInvocation(
                 new VariableDependency(VariableNames::WEBDRIVER_ELEMENT_INSPECTOR),
                 'getValue',

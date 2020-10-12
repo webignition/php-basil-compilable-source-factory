@@ -48,7 +48,7 @@ class StatementBlockFactory
 
     private function createAddToHandledStatementsStatement(StatementModelInterface $statement): StatementInterface
     {
-        return new AssignmentStatement(
+        return AssignmentStatement::create(
             new ObjectPropertyAccessExpression(
                 new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
                 'handledStatements[]'

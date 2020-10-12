@@ -162,7 +162,7 @@ class DomIdentifierHandlerTest extends AbstractBrowserTestCase
         string $fixture,
         BodyInterface $teardownStatements
     ): void {
-        $instrumentedSource = new AssignmentStatement(
+        $instrumentedSource = AssignmentStatement::create(
             new VariableName('value'),
             $source
         );

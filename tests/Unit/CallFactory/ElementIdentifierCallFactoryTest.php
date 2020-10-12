@@ -45,7 +45,7 @@ class ElementIdentifierCallFactoryTest extends \PHPUnit\Framework\TestCase
             $constructorExpression->getMetadata()
         );
 
-        $constructorAccessStatement = new ReturnStatement($constructorExpression);
+        $constructorAccessStatement = ReturnStatement::create($constructorExpression);
 
         $code = $constructorAccessStatement->getMetadata()->getClassDependencies()->render() .
             "\n" .
