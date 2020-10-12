@@ -11,6 +11,7 @@ use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\Factory\ArgumentFactory;
 use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
+use webignition\BasilCompilableSource\MethodDefinitionInterface;
 use webignition\BasilCompilableSource\SingleLineComment;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
@@ -24,9 +25,9 @@ use webignition\BasilParser\StepParser;
 class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
 {
     /**
-     * @dataProvider createDataProvider
+     * @dataProvider createWithoutDataProviderDataProvider
      */
-    public function testCreate(
+    public function testCreateWithoutDataProvider(
         int $index,
         string $stepName,
         StepInterface $step,
@@ -34,17 +35,16 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
         string $expectedRenderedTestMethod,
         MetadataInterface $expectedTestMethodMetadata
     ) {
-        $testMethod = $factory->create($index, $stepName, $step);
+        $testMethods = $factory->create($index, $stepName, $step);
+        self::assertCount(1, $testMethods);
 
-        $this->assertSame($expectedRenderedTestMethod, $testMethod->render());
+        $testMethod = $testMethods[0];
+        self::assertInstanceOf(MethodDefinitionInterface::class, $testMethod);
 
-        $this->assertNull($testMethod->getReturnType());
-        $this->assertFalse($testMethod->isStatic());
-        $this->assertSame('public', $testMethod->getVisibility());
-        $this->assertEquals($expectedTestMethodMetadata, $testMethod->getMetadata());
+        $this->assertTestMethod($expectedRenderedTestMethod, $expectedTestMethodMetadata, $testMethod);
     }
 
-    public function createDataProvider(): array
+    public function createWithoutDataProviderDataProvider(): array
     {
         $stepParser = StepParser::create();
 
@@ -55,28 +55,6 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
             ],
             'assertions' => [
                 '$page.title is "value"',
-            ],
-        ]);
-        $nonEmptyStepWithDataProvider = $stepParser->parse([
-            'actions' => [
-                'set $".selector" to $data.field_value',
-            ],
-            'assertions' => [
-                '$".selector" is $data.expected_value',
-            ],
-            'data' => [
-                0 => [
-                    'field_value' => 'value1',
-                    'expected_value' => 'value2',
-                ],
-                1 => [
-                    'field_value' => '"value3"',
-                    'expected_value' => '"value4"',
-                ],
-                2 => [
-                    'field_value' => "'value5'",
-                    'expected_value' => "'value6'",
-                ],
             ],
         ]);
 
@@ -141,6 +119,61 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                     ]),
                 ]),
             ],
+        ];
+    }
+
+    /**
+     * @dataProvider createWithDataProviderDataProvider
+     */
+    public function testCreateWithDataProvider(
+        int $index,
+        string $stepName,
+        StepInterface $step,
+        StepMethodFactory $factory,
+        string $expectedRenderedTestMethod,
+        string $expectedRenderedDataProvider,
+        MetadataInterface $expectedTestMethodMetadata
+    ) {
+        $testMethods = $factory->create($index, $stepName, $step);
+        self::assertCount(2, $testMethods);
+
+        $testMethod = $testMethods[0];
+        self::assertInstanceOf(MethodDefinitionInterface::class, $testMethod);
+        $this->assertTestMethod($expectedRenderedTestMethod, $expectedTestMethodMetadata, $testMethod);
+
+        $dataProvider = $testMethods[1];
+        self::assertInstanceOf(MethodDefinitionInterface::class, $dataProvider);
+        $this->assertDataProviderMethod($expectedRenderedDataProvider, $dataProvider);
+    }
+
+    public function createWithDataProviderDataProvider(): array
+    {
+        $stepParser = StepParser::create();
+
+        $nonEmptyStepWithDataProvider = $stepParser->parse([
+            'actions' => [
+                'set $".selector" to $data.field_value',
+            ],
+            'assertions' => [
+                '$".selector" is $data.expected_value',
+            ],
+            'data' => [
+                0 => [
+                    'field_value' => 'value1',
+                    'expected_value' => 'value2',
+                ],
+                1 => [
+                    'field_value' => '"value3"',
+                    'expected_value' => '"value4"',
+                ],
+                2 => [
+                    'field_value' => "'value5'",
+                    'expected_value' => "'value6'",
+                ],
+            ],
+        ]);
+
+        return [
             'non-empty step with data provider' => [
                 'index' => 4,
                 'stepName' => 'Step Name',
@@ -153,8 +186,7 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                         ])
                     ),
                 ]),
-                'expectedRenderedTestMethod' =>
-                    "/**\n" .
+                'expectedRenderedTestMethod' => "/**\n" .
                     " * @dataProvider dataProvider4\n" .
                     " *\n" .
                     " * @param string " . '$expected_value' . "\n" .
@@ -172,9 +204,8 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                     "    ]));\n" .
                     "\n" .
                     "    // mocked step handler response\n" .
-                    "}" . "\n" .
-                    "\n" .
-                    "public function dataProvider4(): array\n" .
+                    "}",
+                'expectedRenderedDataProvider' => "public function dataProvider4(): array\n" .
                     "{\n" .
                     "    return [\n" .
                     "        '0' => [\n" .
@@ -234,5 +265,30 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
             ->andReturn($return);
 
         return $stepHandler;
+    }
+
+    private function assertTestMethod(
+        string $expectedRendered,
+        MetadataInterface $expectedMetadata,
+        MethodDefinitionInterface $testMethod
+    ): void {
+        $this->assertSame($expectedRendered, $testMethod->render());
+
+        $this->assertNull($testMethod->getReturnType());
+        $this->assertFalse($testMethod->isStatic());
+        $this->assertSame('public', $testMethod->getVisibility());
+        $this->assertEquals($expectedMetadata, $testMethod->getMetadata());
+    }
+
+    private function assertDataProviderMethod(
+        string $expectedRendered,
+        MethodDefinitionInterface $testMethod
+    ): void {
+        $this->assertSame($expectedRendered, $testMethod->render());
+
+        $this->assertSame('array', $testMethod->getReturnType());
+        $this->assertFalse($testMethod->isStatic());
+        $this->assertSame('public', $testMethod->getVisibility());
+        $this->assertEquals(new Metadata(), $testMethod->getMetadata());
     }
 }
