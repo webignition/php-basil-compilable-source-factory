@@ -6,7 +6,8 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\Valu
 
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Body\BodyInterface;
-use webignition\BasilCompilableSource\Statement\AssignmentStatement;
+use webignition\BasilCompilableSource\Expression\AssignmentExpression;
+use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
@@ -38,7 +39,9 @@ class ScalarValueHandlerTest extends AbstractBrowserTestCase
         $valuePlaceholder = new VariableName('value');
 
         $instrumentedSource = new Body([
-            AssignmentStatement::create($valuePlaceholder, $source),
+            new Statement(
+                new AssignmentExpression($valuePlaceholder, $source)
+            ),
         ]);
 
         $classCode = $this->testCodeGenerator->createBrowserTestForBlock(

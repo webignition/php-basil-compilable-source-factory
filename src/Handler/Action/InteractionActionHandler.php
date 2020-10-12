@@ -6,8 +6,8 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Body\BodyInterface;
+use webignition\BasilCompilableSource\Expression\AssignmentExpression;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSource\Statement\AssignmentStatement;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
@@ -64,11 +64,13 @@ class InteractionActionHandler
 
         $elementPlaceholder = new VariableName('element');
 
-        $accessor = AssignmentStatement::create(
-            $elementPlaceholder,
-            $this->domIdentifierHandler->handleElement(
-                $this->elementIdentifierSerializer->serialize($domIdentifier)
-            ),
+        $accessor = new Statement(
+            new AssignmentExpression(
+                $elementPlaceholder,
+                $this->domIdentifierHandler->handleElement(
+                    $this->elementIdentifierSerializer->serialize($domIdentifier)
+                )
+            )
         );
 
         $invocation = new Statement(new ObjectMethodInvocation(

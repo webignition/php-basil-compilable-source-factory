@@ -6,14 +6,15 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Value;
 
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\EmptyLine;
+use webignition\BasilCompilableSource\Expression\AssignmentExpression;
 use webignition\BasilCompilableSource\Expression\CastExpression;
 use webignition\BasilCompilableSource\Expression\ClosureExpression;
 use webignition\BasilCompilableSource\Expression\CompositeExpression;
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
+use webignition\BasilCompilableSource\Expression\ReturnExpression;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSource\Statement\AssignmentStatement;
-use webignition\BasilCompilableSource\Statement\ReturnStatement;
+use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
@@ -81,27 +82,31 @@ class ScalarValueHandler
         $webDriverDimensionPlaceholder = new VariableName('webDriverDimension');
 
         return new ClosureExpression(new Body([
-            AssignmentStatement::create(
-                $webDriverDimensionPlaceholder,
-                new ObjectMethodInvocation(
-                    new VariableDependency(VariableNames::PANTHER_CLIENT),
-                    'getWebDriver()->manage()->window()->getSize'
+            new Statement(
+                new AssignmentExpression(
+                    $webDriverDimensionPlaceholder,
+                    new ObjectMethodInvocation(
+                        new VariableDependency(VariableNames::PANTHER_CLIENT),
+                        'getWebDriver()->manage()->window()->getSize'
+                    )
                 )
             ),
             new EmptyLine(),
-            ReturnStatement::create(
-                new CompositeExpression([
-                    new CastExpression(
-                        new ObjectMethodInvocation($webDriverDimensionPlaceholder, 'getWidth'),
-                        'string'
-                    ),
-                    new LiteralExpression(' . \'x\' . '),
-                    new CastExpression(
-                        new ObjectMethodInvocation($webDriverDimensionPlaceholder, 'getHeight'),
-                        'string'
-                    ),
-                ])
-            )
+            new Statement(
+                new ReturnExpression(
+                    new CompositeExpression([
+                        new CastExpression(
+                            new ObjectMethodInvocation($webDriverDimensionPlaceholder, 'getWidth'),
+                            'string'
+                        ),
+                        new LiteralExpression(' . \'x\' . '),
+                        new CastExpression(
+                            new ObjectMethodInvocation($webDriverDimensionPlaceholder, 'getHeight'),
+                            'string'
+                        ),
+                    ])
+                )
+            ),
         ]));
     }
 

@@ -6,9 +6,10 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Step;
 
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\Body\BodyInterface;
+use webignition\BasilCompilableSource\Expression\AssignmentExpression;
 use webignition\BasilCompilableSource\Expression\ObjectPropertyAccessExpression;
 use webignition\BasilCompilableSource\SingleLineComment;
-use webignition\BasilCompilableSource\Statement\AssignmentStatement;
+use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\Statement\StatementInterface;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSourceFactory\CallFactory\StatementFactoryCallFactory;
@@ -48,12 +49,14 @@ class StatementBlockFactory
 
     private function createAddToHandledStatementsStatement(StatementModelInterface $statement): StatementInterface
     {
-        return AssignmentStatement::create(
-            new ObjectPropertyAccessExpression(
-                new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
-                'handledStatements[]'
-            ),
-            $this->statementFactoryCallFactory->create($statement)
+        return new Statement(
+            new AssignmentExpression(
+                new ObjectPropertyAccessExpression(
+                    new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
+                    'handledStatements[]'
+                ),
+                $this->statementFactoryCallFactory->create($statement)
+            )
         );
     }
 }
