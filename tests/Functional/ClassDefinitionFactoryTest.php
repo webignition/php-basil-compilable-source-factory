@@ -26,7 +26,7 @@ class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
      */
     public function testCreateSource(TestInterface $test, array $additionalVariableIdentifiers = [])
     {
-        $classDefinition = $this->factory->createClassDefinition($test);
+        $classDefinition = $this->factory->createClassDefinition($test, AbstractGeneratedTestCase::class);
 
         $classCode = $this->testCodeGenerator->createBrowserTestForClass(
             $classDefinition,

@@ -9,9 +9,11 @@ use webignition\BasilCompilableSource\Block\TryCatch\CatchBlock;
 use webignition\BasilCompilableSource\Block\TryCatch\TryBlock;
 use webignition\BasilCompilableSource\Block\TryCatch\TryCatchBlock;
 use webignition\BasilCompilableSource\Body\Body;
+use webignition\BasilCompilableSource\ClassBody;
 use webignition\BasilCompilableSource\ClassDefinition;
 use webignition\BasilCompilableSource\ClassDefinitionInterface;
 use webignition\BasilCompilableSource\ClassName;
+use webignition\BasilCompilableSource\ClassSignature;
 use webignition\BasilCompilableSource\Expression\CatchExpression;
 use webignition\BasilCompilableSource\Factory\ArgumentFactory;
 use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
@@ -57,13 +59,16 @@ class ClassDefinitionFactory
 
     /**
      * @param TestInterface $test
+     * @param string|null $fullyQualifiedBaseClass
      *
      * @return ClassDefinitionInterface
      *
      * @throws UnsupportedStepException
      */
-    public function createClassDefinition(TestInterface $test): ClassDefinitionInterface
-    {
+    public function createClassDefinition(
+        TestInterface $test,
+        ?string $fullyQualifiedBaseClass = null
+    ): ClassDefinitionInterface {
         $methodDefinitions = [
             $this->createSetupBeforeClassMethod($test),
         ];
@@ -77,7 +82,15 @@ class ClassDefinitionFactory
             $stepOrdinalIndex++;
         }
 
-        return new ClassDefinition($this->classNameFactory->create($test), $methodDefinitions);
+        $baseClass = is_string($fullyQualifiedBaseClass) ? new ClassName($fullyQualifiedBaseClass) : null;
+
+        return new ClassDefinition(
+            new ClassSignature(
+                $this->classNameFactory->create($test),
+                $baseClass
+            ),
+            new ClassBody($methodDefinitions)
+        );
     }
 
     private function createSetupBeforeClassMethod(TestInterface $test): MethodDefinitionInterface
