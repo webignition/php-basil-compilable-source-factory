@@ -5,12 +5,9 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
 use webignition\BasilCompilableSource\Body\BodyInterface;
-use webignition\BasilCompilableSource\ClassDefinition;
 use webignition\BasilCompilableSource\ClassDefinitionInterface;
-use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
-use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractGeneratedTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class TestCodeGenerator
@@ -81,12 +78,6 @@ class TestCodeGenerator
         $variableDependencyIdentifiers = $this->createVariableIdentifiersForVariableDependencies(
             $classDefinition->getMetadata()->getVariableDependencies()
         );
-
-        if ($classDefinition instanceof ClassDefinition) {
-            $classDefinition->setBaseClass(
-                new ClassName(AbstractGeneratedTestCase::class)
-            );
-        }
 
         return VariablePlaceholderResolver::resolve(
             $classDefinition->render(),

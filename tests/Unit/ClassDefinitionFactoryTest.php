@@ -34,7 +34,7 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
         $classDefinition = $factory->createClassDefinition($test);
 
         $this->assertEquals($expectedMetadata, $classDefinition->getMetadata());
-        $this->assertSame($expectedClassName, $classDefinition->getName());
+        $this->assertSame($expectedClassName, $classDefinition->getSignature()->getName());
         $this->assertEquals($expectedRenderedClassDefinition, $classDefinition->render());
     }
 

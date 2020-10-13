@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "5898697b6a523aa9ac55cf334de29d00",
+    "content-hash": "1726098d2f07c2435d26e32adfd58746",
     "packages": [
         {
             "name": "doctrine/instantiator",
@@ -2578,16 +2578,16 @@
         },
         {
             "name": "webignition/basil-compilable-source",
-            "version": "0.57",
+            "version": "0.58",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/basil-compilable-source.git",
-                "reference": "152687eaab336cb9b7a1a6ee8b69c0396da351b4"
+                "reference": "c75580fef9ec9a4e98256565ced6071033339d2e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/basil-compilable-source/zipball/152687eaab336cb9b7a1a6ee8b69c0396da351b4",
-                "reference": "152687eaab336cb9b7a1a6ee8b69c0396da351b4",
+                "url": "https://api.github.com/repos/webignition/basil-compilable-source/zipball/c75580fef9ec9a4e98256565ced6071033339d2e",
+                "reference": "c75580fef9ec9a4e98256565ced6071033339d2e",
                 "shasum": ""
             },
             "require": {
@@ -2619,9 +2619,9 @@
             "homepage": "https://github.com/webignition/basil-compilable-source",
             "support": {
                 "issues": "https://github.com/webignition/basil-compilable-source/issues",
-                "source": "https://github.com/webignition/basil-compilable-source/tree/0.57"
+                "source": "https://github.com/webignition/basil-compilable-source/tree/0.58"
             },
-            "time": "2020-10-12T16:32:32+00:00"
+            "time": "2020-10-13T10:57:43+00:00"
         },
         {
             "name": "webignition/basil-dom-identifier-factory",
