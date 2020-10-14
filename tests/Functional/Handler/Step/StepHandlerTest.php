@@ -116,6 +116,14 @@ class StepHandlerTest extends AbstractBrowserTestCase
                 ]),
                 'teardownStatements' => null,
             ],
+            'assertion uses selector containing single quotes' => [
+                'fixture' => '/form.html',
+                'step' => $stepParser->parse([
+                    'assertions' => [
+                        '$"input[value=\"\'within single quotes\'\"]" is $"[name=input-with-single-quoted-value]"',
+                    ],
+                ]),
+            ],
         ];
     }
 
