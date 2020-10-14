@@ -82,6 +82,11 @@ class StatementFactory
         return self::createAssertExpectedActual('assertSame', $expected, $actual);
     }
 
+    public static function createAssertEquals(string $expected, string $actual): StatementInterface
+    {
+        return self::createAssertExpectedActual('assertEquals', $expected, $actual);
+    }
+
     public static function createCrawlerActionCallForElement(string $selector, string $action): StatementInterface
     {
         $elementPlaceholder = new VariableName('element');
