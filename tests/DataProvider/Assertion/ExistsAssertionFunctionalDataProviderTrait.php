@@ -38,6 +38,18 @@ trait ExistsAssertionFunctionalDataProviderTrait
                 'fixture' => '/empty.html',
                 'assertion' => $assertionParser->parse('$page.title exists'),
             ],
+            'exists comparison, element identifier examined value, selector contains single quotes (1)' => [
+                'fixture' => '/assertions.html',
+                'assertion' => $assertionParser->parse(
+                    '$"[data-value=\"\'data attribute within single quotes\'\"]" exists'
+                ),
+            ],
+            'exists comparison, element identifier examined value, selector contains single quotes (2)' => [
+                'fixture' => '/assertions.html',
+                'assertion' => $assertionParser->parse(
+                    '$"[data-value=\"data attribute \'containing\' single quotes\"]" exists'
+                ),
+            ],
         ];
     }
 }
