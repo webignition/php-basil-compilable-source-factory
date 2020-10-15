@@ -5,12 +5,14 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory;
 
 use webignition\BasilCompilableSource\Annotation\DataProviderAnnotation;
+use webignition\BasilCompilableSource\Block\IfBlock\IfBlock;
 use webignition\BasilCompilableSource\Body\Body;
 use webignition\BasilCompilableSource\DataProviderMethodDefinition;
 use webignition\BasilCompilableSource\DocBlock\DocBlock;
 use webignition\BasilCompilableSource\EmptyLine;
 use webignition\BasilCompilableSource\Expression\ArrayExpression;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
+use webignition\BasilCompilableSource\Expression\ReturnExpression;
 use webignition\BasilCompilableSource\Factory\ArgumentFactory;
 use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\MethodDefinition;
@@ -71,6 +73,7 @@ class StepMethodFactory
         $testMethod = new MethodDefinition(
             'test' . (string) $index,
             new Body([
+                $this->createIfHasExpressionBlock(),
                 $this->createSetBasilStepNameStatement($stepName),
                 $this->createSetCurrentDataSetStatement($parameterNames),
                 new EmptyLine(),
@@ -132,6 +135,22 @@ class StepMethodFactory
                 new MethodArguments($this->argumentFactory->create($stepName))
             )
         );
+    }
+
+    private function createIfHasExpressionBlock(): IfBlock
+    {
+        $expression = new StaticObjectMethodInvocation(
+            new StaticObject('self'),
+            'hasException'
+        );
+
+        $body = new Body([
+            new Statement(
+                new ReturnExpression()
+            )
+        ]);
+
+        return new IfBlock($expression, $body);
     }
 
     /**

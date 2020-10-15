@@ -67,6 +67,9 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                 'expectedRenderedTestMethod' =>
                     "public function test1()\n" .
                     "{\n" .
+                    "    if (self::hasException()) {\n" .
+                    "        return;\n" .
+                    "    }\n" .
                     "    {{ PHPUNIT }}->setBasilStepName('Step Name');\n" .
                     "    {{ PHPUNIT }}->setCurrentDataSet(null);\n" .
                     "}",
@@ -84,6 +87,9 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                 'expectedRenderedTestMethod' =>
                     "public function test2()\n" .
                     "{\n" .
+                    "    if (self::hasException()) {\n" .
+                    "        return;\n" .
+                    "    }\n" .
                     "    {{ PHPUNIT }}->setBasilStepName('step name \'contains\' single quotes');\n" .
                     "    {{ PHPUNIT }}->setCurrentDataSet(null);\n" .
                     "}",
@@ -108,6 +114,9 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                 'expectedRenderedTestMethod' =>
                     "public function test3()\n" .
                     "{\n" .
+                    "    if (self::hasException()) {\n" .
+                    "        return;\n" .
+                    "    }\n" .
                     "    {{ PHPUNIT }}->setBasilStepName('Step Name');\n" .
                     "    {{ PHPUNIT }}->setCurrentDataSet(null);\n" .
                     "\n" .
@@ -194,6 +203,9 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
                     " */\n" .
                     'public function test4($expected_value, $field_value)' . "\n" .
                     "{\n" .
+                    "    if (self::hasException()) {\n" .
+                    "        return;\n" .
+                    "    }\n" .
                     "    {{ PHPUNIT }}->setBasilStepName('Step Name');\n" .
                     "    {{ PHPUNIT }}->setCurrentDataSet(DataSet::fromArray([\n" .
                     "        'name' => {{ PHPUNIT }}->dataName(),\n" .
