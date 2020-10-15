@@ -215,6 +215,9 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     "\n" .
                     '    public function test1()' . "\n" .
                     '    {' . "\n" .
+                    "        if (self::hasException()) {\n" .
+                    "            return;\n" .
+                    "        }\n" .
                     '        {{ PHPUNIT }}->setBasilStepName(\'step one\');' . "\n" .
                     '        {{ PHPUNIT }}->setCurrentDataSet(null);' . "\n" .
                     '    }' . "\n" .
@@ -269,12 +272,18 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
                     "\n" .
                     '    public function test1()' . "\n" .
                     '    {' . "\n" .
+                    "        if (self::hasException()) {\n" .
+                    "            return;\n" .
+                    "        }\n" .
                     '        {{ PHPUNIT }}->setBasilStepName(\'step one\');' . "\n" .
                     '        {{ PHPUNIT }}->setCurrentDataSet(null);' . "\n" .
                     '    }' . "\n" .
                     "\n" .
                     '    public function test2()' . "\n" .
                     '    {' . "\n" .
+                    "        if (self::hasException()) {\n" .
+                    "            return;\n" .
+                    "        }\n" .
                     '        {{ PHPUNIT }}->setBasilStepName(\'step two\');' . "\n" .
                     '        {{ PHPUNIT }}->setCurrentDataSet(null);' . "\n" .
                     '    }' . "\n" .
