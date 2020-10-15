@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "1726098d2f07c2435d26e32adfd58746",
+    "content-hash": "c0bc26153f53a38afb9de8b9b95362d4",
     "packages": [
         {
             "name": "doctrine/instantiator",
@@ -2578,20 +2578,21 @@
         },
         {
             "name": "webignition/basil-compilable-source",
-            "version": "0.58",
+            "version": "0.60",
             "source": {
                 "type": "git",
                 "url": "https://github.com/webignition/basil-compilable-source.git",
-                "reference": "c75580fef9ec9a4e98256565ced6071033339d2e"
+                "reference": "77dcc7485265bbe77302c851d2a11530f4cfdb6a"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/webignition/basil-compilable-source/zipball/c75580fef9ec9a4e98256565ced6071033339d2e",
-                "reference": "c75580fef9ec9a4e98256565ced6071033339d2e",
+                "url": "https://api.github.com/repos/webignition/basil-compilable-source/zipball/77dcc7485265bbe77302c851d2a11530f4cfdb6a",
+                "reference": "77dcc7485265bbe77302c851d2a11530f4cfdb6a",
                 "shasum": ""
             },
             "require": {
-                "php": ">=7.4"
+                "php": ">=7.4",
+                "webignition/stubble": ">=0.7,<1"
             },
             "require-dev": {
                 "phpstan/phpstan": "~0.12",
@@ -2619,9 +2620,9 @@
             "homepage": "https://github.com/webignition/basil-compilable-source",
             "support": {
                 "issues": "https://github.com/webignition/basil-compilable-source/issues",
-                "source": "https://github.com/webignition/basil-compilable-source/tree/0.58"
+                "source": "https://github.com/webignition/basil-compilable-source/tree/0.60"
             },
-            "time": "2020-10-13T10:57:43+00:00"
+            "time": "2020-10-15T10:19:07+00:00"
         },
         {
             "name": "webignition/basil-dom-identifier-factory",
@@ -2964,6 +2965,61 @@
             ],
             "homepage": "https://github.com/webignition/quoted-string-value-extractor",
             "time": "2020-05-27T16:05:14+00:00"
+        },
+        {
+            "name": "webignition/stubble",
+            "version": "0.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/webignition/stubble.git",
+                "reference": "3dc07f07f50c775f1986e5c5eacd9202322411c1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/webignition/stubble/zipball/3dc07f07f50c775f1986e5c5eacd9202322411c1",
+                "reference": "3dc07f07f50c775f1986e5c5eacd9202322411c1",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=7.4"
+            },
+            "require-dev": {
+                "phpstan/extension-installer": "~1.0",
+                "phpstan/phpstan": "~0.12",
+                "phpunit/phpunit": "~9.4",
+                "squizlabs/php_codesniffer": "~3.5",
+                "symplify/easy-coding-standard": "~8.3"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "webignition\\Stubble\\": "src"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Jon Cram",
+                    "email": "webignition@gmail.com"
+                }
+            ],
+            "description": "A minimal library to replace mustache-like variables in strings",
+            "homepage": "https://github.com/webignition/stubble",
+            "keywords": [
+                "handlebars",
+                "mustache",
+                "replace",
+                "replacement",
+                "string"
+            ],
+            "support": {
+                "issues": "https://github.com/webignition/stubble/issues",
+                "source": "https://github.com/webignition/stubble/tree/0.7"
+            },
+            "time": "2020-10-15T10:13:58+00:00"
         },
         {
             "name": "webignition/symfony-panther-dom-crawler-navigator",
