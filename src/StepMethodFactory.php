@@ -113,17 +113,32 @@ class StepMethodFactory
      */
     private function createEscapedDataProviderData(DataSetCollectionInterface $dataSetCollection): array
     {
+        $parameterNames = $dataSetCollection->getParameterNames();
         $data = $dataSetCollection->toArray();
 
         foreach ($data as $index => $dataSet) {
-            foreach ($dataSet as $key => $value) {
-                $dataSet[$key] = $this->singleQuotedStringEscaper->escape($value);
-            }
-
-            $data[$index] = $dataSet;
+            $data[$index] = $this->createPreparedDataSet($parameterNames, $dataSet);
         }
 
         return $data;
+    }
+
+    /**
+     * @param string[] $parameterNames
+     * @param array<int|string, string> $dataSet
+     *
+     * @return array<int|string, string>
+     */
+    private function createPreparedDataSet(array $parameterNames, array $dataSet): array
+    {
+        $preparedDataSet = [];
+
+        foreach ($parameterNames as $parameterName) {
+            $parameter = $dataSet[$parameterName] ?? '';
+            $preparedDataSet[$parameterName] = $this->singleQuotedStringEscaper->escape($parameter);
+        }
+
+        return $preparedDataSet;
     }
 
     private function createSetBasilStepNameStatement(string $stepName): StatementInterface
