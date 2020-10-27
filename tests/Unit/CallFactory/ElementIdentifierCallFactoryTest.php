@@ -11,6 +11,7 @@ use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\CallFactory\ElementIdentifierCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
+use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvableRenderer;
 use webignition\DomElementIdentifier\AttributeIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifierInterface;
@@ -50,9 +51,11 @@ class ElementIdentifierCallFactoryTest extends \PHPUnit\Framework\TestCase
             new ReturnExpression($constructorExpression)
         );
 
-        $code = $constructorAccessStatement->getMetadata()->getClassDependencies()->render() .
-            "\n" .
-            $constructorAccessStatement->render();
+        $code = sprintf(
+            "%s\n%s",
+            ResolvableRenderer::resolve($constructorAccessStatement->getMetadata()->getClassDependencies()),
+            ResolvableRenderer::resolve($constructorAccessStatement)
+        );
 
         $evaluatedCodeOutput = eval($code);
 

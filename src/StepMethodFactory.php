@@ -190,7 +190,7 @@ class StepMethodFactory
                     new StaticObject(DataSet::class),
                     'fromArray',
                     new MethodArguments([
-                        new ArrayExpression([
+                        ArrayExpression::fromArray([
                             'name' => new ObjectMethodInvocation(
                                 new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
                                 'dataName'

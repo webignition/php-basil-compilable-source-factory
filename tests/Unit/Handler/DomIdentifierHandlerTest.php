@@ -11,11 +11,12 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTest;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\DomElementIdentifier\AttributeIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifier;
 
-class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
+class DomIdentifierHandlerTest extends AbstractResolvableTest
 {
     private DomIdentifierHandler $handler;
 
@@ -36,7 +37,7 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
     ) {
         $source = $this->handler->handleElement($serializedElementIdentifier);
 
-        $this->assertSame($expectedRenderedSource, $source->render());
+        $this->assertRenderResolvable($expectedRenderedSource, $source);
         $this->assertEquals($expectedMetadata, $source->getMetadata());
     }
 
@@ -96,7 +97,7 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
     ) {
         $source = $this->handler->handleElementCollection($serializedElementIdentifier);
 
-        $this->assertSame($expectedRenderedSource, $source->render());
+        $this->assertRenderResolvable($expectedRenderedSource, $source);
         $this->assertEquals($expectedMetadata, $source->getMetadata());
     }
 
@@ -157,7 +158,7 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
     ) {
         $source = $this->handler->handleAttributeValue($serializedElementIdentifier, $attributeName);
 
-        $this->assertSame($expectedRenderedSource, $source->render());
+        $this->assertRenderResolvable($expectedRenderedSource, $source);
         $this->assertEquals($expectedMetadata, $source->getMetadata());
     }
 
@@ -227,7 +228,7 @@ class DomIdentifierHandlerTest extends \PHPUnit\Framework\TestCase
     ) {
         $source = $this->handler->handleElementValue($serializedElementIdentifier);
 
-        $this->assertSame($expectedRenderedSource, $source->render());
+        $this->assertRenderResolvable($expectedRenderedSource, $source);
         $this->assertEquals($expectedMetadata, $source->getMetadata());
     }
 

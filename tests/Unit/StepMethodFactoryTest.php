@@ -22,7 +22,7 @@ use webignition\BasilModels\DataSet\DataSet;
 use webignition\BasilModels\Step\StepInterface;
 use webignition\BasilParser\StepParser;
 
-class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
+class StepMethodFactoryTest extends AbstractResolvableTest
 {
     /**
      * @dataProvider createWithoutDataProviderDataProvider
@@ -284,7 +284,7 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
         MetadataInterface $expectedMetadata,
         MethodDefinitionInterface $testMethod
     ): void {
-        $this->assertSame($expectedRendered, $testMethod->render());
+        $this->assertRenderResolvable($expectedRendered, $testMethod);
 
         $this->assertNull($testMethod->getReturnType());
         $this->assertFalse($testMethod->isStatic());
@@ -296,7 +296,7 @@ class StepMethodFactoryTest extends \PHPUnit\Framework\TestCase
         string $expectedRendered,
         MethodDefinitionInterface $testMethod
     ): void {
-        $this->assertSame($expectedRendered, $testMethod->render());
+        $this->assertRenderResolvable($expectedRendered, $testMethod);
 
         $this->assertSame('array', $testMethod->getReturnType());
         $this->assertFalse($testMethod->isStatic());

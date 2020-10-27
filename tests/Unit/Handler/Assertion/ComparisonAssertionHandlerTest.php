@@ -13,10 +13,11 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\Create
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromIsAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromIsNotAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromMatchesAssertionDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTest;
 use webignition\BasilModels\Assertion\AssertionInterface;
 use webignition\BasilParser\AssertionParser;
 
-class ComparisonAssertionHandlerTest extends \PHPUnit\Framework\TestCase
+class ComparisonAssertionHandlerTest extends AbstractResolvableTest
 {
     use CreateFromExcludesAssertionDataProviderTrait;
     use CreateFromIncludesAssertionDataProviderTrait;
@@ -40,7 +41,7 @@ class ComparisonAssertionHandlerTest extends \PHPUnit\Framework\TestCase
 
         $source = $handler->handle($assertion);
 
-        $this->assertEquals($expectedRenderedContent, $source->render());
+        $this->assertRenderResolvable($expectedRenderedContent, $source);
         $this->assertEquals($expectedMetadata, $source->getMetadata());
     }
 

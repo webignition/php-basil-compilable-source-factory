@@ -9,6 +9,7 @@ use webignition\BasilCompilableSource\ClassDefinitionInterface;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\StubbleResolvable\Resolvable;
 
 class TestCodeGenerator
 {
@@ -56,13 +57,15 @@ class TestCodeGenerator
             $classDefinition->getMetadata()->getVariableDependencies()
         );
 
-        return VariablePlaceholderResolver::resolve(
-            $classDefinition->render(),
+        $resolvedClassDefinition = ResolvableRenderer::resolve($classDefinition);
+
+        return ResolvableRenderer::resolve(new Resolvable(
+            $resolvedClassDefinition,
             array_merge(
                 $variableDependencyIdentifiers,
                 $additionalVariableIdentifiers
             )
-        );
+        ));
     }
 
     /**
@@ -79,13 +82,15 @@ class TestCodeGenerator
             $classDefinition->getMetadata()->getVariableDependencies()
         );
 
-        return VariablePlaceholderResolver::resolve(
-            $classDefinition->render(),
+        $resolvedClassDefinition = ResolvableRenderer::resolve($classDefinition);
+
+        return ResolvableRenderer::resolve(new Resolvable(
+            $resolvedClassDefinition,
             array_merge(
                 $variableDependencyIdentifiers,
                 $additionalVariableIdentifiers
             )
-        );
+        ));
     }
 
     /**
