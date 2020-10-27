@@ -13,7 +13,7 @@ use webignition\BasilCompilableSource\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 
-class AssertionMethodInvocationFactoryTest extends \PHPUnit\Framework\TestCase
+class AssertionMethodInvocationFactoryTest extends AbstractResolvableTest
 {
     private AssertionMethodInvocationFactory $assertionMethodInvocationFactory;
 
@@ -35,7 +35,7 @@ class AssertionMethodInvocationFactoryTest extends \PHPUnit\Framework\TestCase
     ) {
         $invocation = $this->assertionMethodInvocationFactory->create($assertionMethod, $arguments);
 
-        $this->assertSame($invocation->render(), $expectedRenderedInvocation);
+        $this->assertRenderResolvable($expectedRenderedInvocation, $invocation);
         $this->assertEquals($expectedMetadata, $invocation->getMetadata());
     }
 

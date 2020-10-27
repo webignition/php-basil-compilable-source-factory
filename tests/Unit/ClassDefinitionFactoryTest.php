@@ -19,7 +19,7 @@ use webignition\BasilModels\Test\Configuration;
 use webignition\BasilModels\Test\TestInterface;
 use webignition\BasilParser\Test\TestParser;
 
-class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
+class ClassDefinitionFactoryTest extends AbstractResolvableTest
 {
     /**
      * @dataProvider createClassDefinitionDataProvider
@@ -35,7 +35,7 @@ class ClassDefinitionFactoryTest extends \PHPUnit\Framework\TestCase
 
         $this->assertEquals($expectedMetadata, $classDefinition->getMetadata());
         $this->assertSame($expectedClassName, $classDefinition->getSignature()->getName());
-        $this->assertEquals($expectedRenderedClassDefinition, $classDefinition->render());
+        $this->assertRenderResolvable($expectedRenderedClassDefinition, $classDefinition);
     }
 
     public function createClassDefinitionDataProvider(): array

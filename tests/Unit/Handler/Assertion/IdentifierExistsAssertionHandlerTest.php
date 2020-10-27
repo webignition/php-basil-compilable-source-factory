@@ -8,12 +8,13 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\IdentifierExistenceAssertionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTest;
 use webignition\BasilDomIdentifierFactory\Factory;
 use webignition\BasilModels\Assertion\AssertionInterface;
 use webignition\BasilParser\AssertionParser;
 use webignition\ObjectReflector\ObjectReflector;
 
-class IdentifierExistsAssertionHandlerTest extends \PHPUnit\Framework\TestCase
+class IdentifierExistsAssertionHandlerTest extends AbstractResolvableTest
 {
     use Assertion\CreateFromIdentifierExistsAssertionDataProviderTrait;
     use Assertion\CreateFromIdentifierNotExistsAssertionDataProviderTrait;
@@ -31,7 +32,7 @@ class IdentifierExistsAssertionHandlerTest extends \PHPUnit\Framework\TestCase
 
         $source = $handler->handle($assertion);
 
-        $this->assertEquals($expectedRenderedContent, $source->render());
+        $this->assertRenderResolvable($expectedRenderedContent, $source);
         $this->assertEquals($expectedMetadata, $source->getMetadata());
     }
 

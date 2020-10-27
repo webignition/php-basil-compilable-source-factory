@@ -10,9 +10,10 @@ use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTest;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 
-class DomCrawlerNavigatorCallFactoryTest extends \PHPUnit\Framework\TestCase
+class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTest
 {
     private DomCrawlerNavigatorCallFactory $factory;
 
@@ -33,7 +34,7 @@ class DomCrawlerNavigatorCallFactoryTest extends \PHPUnit\Framework\TestCase
     ) {
         $expression = $this->factory->createFindCall($elementIdentifierExpression);
 
-        $this->assertSame($expectedRenderedExpression, $expression->render());
+        $this->assertRenderResolvable($expectedRenderedExpression, $expression);
         $this->assertEquals($expectedMetadata, $expression->getMetadata());
     }
 
@@ -52,7 +53,7 @@ class DomCrawlerNavigatorCallFactoryTest extends \PHPUnit\Framework\TestCase
     ) {
         $expression = $this->factory->createFindOneCall($elementIdentifierExpression);
 
-        $this->assertSame($expectedRenderedExpression, $expression->render());
+        $this->assertRenderResolvable($expectedRenderedExpression, $expression);
         $this->assertEquals($expectedMetadata, $expression->getMetadata());
     }
 
@@ -71,7 +72,7 @@ class DomCrawlerNavigatorCallFactoryTest extends \PHPUnit\Framework\TestCase
     ) {
         $expression = $this->factory->createHasCall($elementIdentifierExpression);
 
-        $this->assertSame($expectedRenderedExpression, $expression->render());
+        $this->assertRenderResolvable($expectedRenderedExpression, $expression);
         $this->assertEquals($expectedMetadata, $expression->getMetadata());
     }
 
@@ -90,7 +91,7 @@ class DomCrawlerNavigatorCallFactoryTest extends \PHPUnit\Framework\TestCase
     ) {
         $expression = $this->factory->createHasOneCall($elementIdentifierExpression);
 
-        $this->assertSame($expectedRenderedExpression, $expression->render());
+        $this->assertRenderResolvable($expectedRenderedExpression, $expression);
         $this->assertEquals($expectedMetadata, $expression->getMetadata());
     }
 

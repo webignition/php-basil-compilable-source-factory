@@ -9,9 +9,10 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTest;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 
-class ScalarValueHandlerTest extends \PHPUnit\Framework\TestCase
+class ScalarValueHandlerTest extends AbstractResolvableTest
 {
     private ScalarValueHandler $handler;
 
@@ -34,7 +35,7 @@ class ScalarValueHandlerTest extends \PHPUnit\Framework\TestCase
 
         $this->assertTrue(true);
 
-        $this->assertSame($expectedRenderedSource, $source->render());
+        $this->assertRenderResolvable($expectedRenderedSource, $source);
         $this->assertEquals($expectedMetadata, $source->getMetadata());
     }
 

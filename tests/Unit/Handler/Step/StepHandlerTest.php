@@ -16,6 +16,7 @@ use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Step\DerivedAssertionFactory;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StatementBlockFactory;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTest;
 use webignition\BasilModels\Action\ActionInterface;
 use webignition\BasilModels\Assertion\AssertionInterface;
 use webignition\BasilModels\Assertion\DerivedValueOperationAssertion;
@@ -25,7 +26,7 @@ use webignition\BasilParser\ActionParser;
 use webignition\BasilParser\AssertionParser;
 use webignition\BasilParser\StepParser;
 
-class StepHandlerTest extends \PHPUnit\Framework\TestCase
+class StepHandlerTest extends AbstractResolvableTest
 {
     /**
      * @dataProvider handleSuccessDataProvider
@@ -38,7 +39,7 @@ class StepHandlerTest extends \PHPUnit\Framework\TestCase
     ) {
         $source = $handler->handle($step);
 
-        $this->assertEquals($expectedRenderedContent, $source->render());
+        $this->assertRenderResolvable($expectedRenderedContent, $source);
         $this->assertEquals($expectedMetadata, $source->getMetadata());
     }
 

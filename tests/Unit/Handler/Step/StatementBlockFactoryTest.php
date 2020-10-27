@@ -8,13 +8,14 @@ use webignition\BasilCompilableSource\Metadata\Metadata;
 use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSource\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StatementBlockFactory;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTest;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Action\ActionInterface;
 use webignition\BasilModels\Assertion\AssertionInterface;
 use webignition\BasilModels\Assertion\DerivedValueOperationAssertion;
 use webignition\BasilModels\StatementInterface as StatementModelInterface;
 
-class StatementBlockFactoryTest extends \PHPUnit\Framework\TestCase
+class StatementBlockFactoryTest extends AbstractResolvableTest
 {
     private StatementBlockFactory $factory;
 
@@ -35,7 +36,7 @@ class StatementBlockFactoryTest extends \PHPUnit\Framework\TestCase
     ) {
         $body = $this->factory->create($statement);
 
-        $this->assertEquals($expectedRenderedContent, $body->render());
+        $this->assertRenderResolvable($expectedRenderedContent, $body);
         $this->assertEquals($expectedMetadata, $body->getMetadata());
     }
 

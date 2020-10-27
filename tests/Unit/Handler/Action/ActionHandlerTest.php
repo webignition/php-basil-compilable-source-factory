@@ -16,10 +16,11 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\CreateFro
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\CreateFromSubmitActionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\CreateFromWaitActionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\CreateFromWaitForActionDataProviderTrait;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTest;
 use webignition\BasilModels\Action\ActionInterface;
 use webignition\BasilParser\ActionParser;
 
-class ActionHandlerTest extends \PHPUnit\Framework\TestCase
+class ActionHandlerTest extends AbstractResolvableTest
 {
     use CreateFromBackActionDataProviderTrait;
     use CreateFromClickActionDataProviderTrait;
@@ -48,7 +49,7 @@ class ActionHandlerTest extends \PHPUnit\Framework\TestCase
         $handler = ActionHandler::createHandler();
         $source = $handler->handle($action);
 
-        $this->assertSame($expectedRenderedSource, $source->render());
+        $this->assertRenderResolvable($expectedRenderedSource, $source);
         $this->assertEquals($expectedMetadata, $source->getMetadata());
     }
 
