@@ -22,12 +22,19 @@
         }
     },
     "scripts": {
+        "cs-ecs": "./vendor/bin/ecs check src tests --ansi --no-progress-bar --config ecs.php",
+        "cs-phpcs": "./vendor/bin/phpcs",
         "cs": [
-            "./vendor/bin/ecs check src tests --ansi --config ecs.yaml",
-            "./vendor/bin/phpcs"
+            "@cs-ecs",
+            "@cs-phpcs"
         ],
         "static-analysis": "./vendor/bin/phpstan analyse src tests --level=7",
-        "test": "./vendor/bin/phpunit --colors=always",
+        "test-unit": "./vendor/bin/phpunit --colors=always tests/Unit",
+        "test-functional": "./vendor/bin/phpunit --colors=always tests/Functional",
+        "test": [
+            "@test-unit",
+            "@test-functional"
+        ],
         "ci": [
             "@composer cs",
             "@composer static-analysis",
