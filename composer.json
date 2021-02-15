@@ -55,6 +55,7 @@
         "webignition/symfony-panther-dom-crawler-navigator": ">=0.20,<1"
     },
     "require-dev": {
+        "dbrekelmans/bdi": "^0.3.0",
         "mockery/mockery": "^1.4",
         "phpstan/extension-installer": "^1.1",
         "phpstan/phpstan": "^0.12.76",
