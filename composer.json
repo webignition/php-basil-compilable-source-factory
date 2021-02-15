@@ -22,12 +22,19 @@
         }
     },
     "scripts": {
+        "cs-ecs": "./vendor/bin/ecs check src tests --ansi --no-progress-bar --config ecs.php",
+        "cs-phpcs": "./vendor/bin/phpcs",
         "cs": [
-            "./vendor/bin/ecs check src tests --ansi --config ecs.yaml",
-            "./vendor/bin/phpcs"
+            "@cs-ecs",
+            "@cs-phpcs"
         ],
-        "static-analysis": "./vendor/bin/phpstan analyse src tests --level=7",
-        "test": "./vendor/bin/phpunit --colors=always",
+        "static-analysis": "./vendor/bin/phpstan analyse --ansi",
+        "test-unit": "./vendor/bin/phpunit --colors=always tests/Unit",
+        "test-functional": "./vendor/bin/phpunit --colors=always tests/Functional",
+        "test": [
+            "@test-unit",
+            "@test-functional"
+        ],
         "ci": [
             "@composer cs",
             "@composer static-analysis",
@@ -37,7 +44,7 @@
     "require": {
         "php": ">=7.4",
         "ext-json": "*",
-        "webignition/base-basil-test-case": ">=0.40,<1",
+        "webignition/base-basil-test-case": ">=0.41,<1",
         "webignition/basil-compilable-source": ">=0.66,<1",
         "webignition/basil-dom-identifier-factory": ">=0.12,<1",
         "webignition/basil-identifier-analyser": ">=0.6,<1",
@@ -45,20 +52,21 @@
         "webignition/basil-value-type-identifier": ">=0.1,<1",
         "webignition/php-dom-element-identifier": ">=0.13,<1",
         "webignition/quoted-string-value-extractor": ">=0.2,<1",
-        "webignition/symfony-panther-dom-crawler-navigator": ">=0.19,<1"
+        "webignition/symfony-panther-dom-crawler-navigator": ">=0.20,<1"
     },
     "require-dev": {
+        "dbrekelmans/bdi": "^0.3.0",
         "mockery/mockery": "^1.4",
-        "phpstan/extension-installer": "^1.0",
-        "phpstan/phpstan": "^0.12",
-        "phpstan/phpstan-mockery": "^0.12",
+        "phpstan/extension-installer": "^1.1",
+        "phpstan/phpstan": "^0.12.76",
+        "phpstan/phpstan-mockery": "^0.12.12",
         "phpunit/phpunit": "~9.0",
         "squizlabs/php_codesniffer": "3.*",
-        "symplify/easy-coding-standard": "^8.1",
+        "symplify/easy-coding-standard": "^9.1",
         "webignition/basil-parser": ">=0.25,<1",
         "webignition/object-reflector": ">=0.1,<1",
         "webignition/stubble": ">=0.13,<1",
-        "webignition/symfony-panther-webserver-runner": ">=0.3,<1"
+        "webignition/symfony-panther-webserver-runner": ">=0.4,<1"
     },
     "config": {
         "sort-packages": true
