@@ -27,7 +27,7 @@ class IdentifierExistsAssertionHandlerTest extends AbstractResolvableTest
         AssertionInterface $assertion,
         string $expectedRenderedContent,
         MetadataInterface $expectedMetadata
-    ) {
+    ): void {
         $handler = IdentifierExistenceAssertionHandler::createHandler();
 
         $source = $handler->handle($assertion);
@@ -43,7 +43,7 @@ class IdentifierExistsAssertionHandlerTest extends AbstractResolvableTest
         AssertionInterface $assertion,
         \Exception $expectedException,
         ?callable $initializer = null
-    ) {
+    ): void {
         $handler = IdentifierExistenceAssertionHandler::createHandler();
 
         if (null !== $initializer) {
@@ -55,6 +55,9 @@ class IdentifierExistsAssertionHandlerTest extends AbstractResolvableTest
         $handler->handle($assertion);
     }
 
+    /**
+     * @return array[]
+     */
     public function handleThrowsExceptionDataProvider(): array
     {
         $assertionParser = AssertionParser::create();

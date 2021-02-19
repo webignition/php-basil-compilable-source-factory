@@ -11,6 +11,9 @@ use webignition\BasilParser\ActionParser;
 
 trait CreateFromForwardActionDataProviderTrait
 {
+    /**
+     * @return array[]
+     */
     public function createFromForwardActionDataProvider(): array
     {
         $actionParser = ActionParser::create();

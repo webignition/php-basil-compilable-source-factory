@@ -38,7 +38,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
         string $fixture,
         ExpressionInterface $elementIdentifierExpression,
         BodyInterface $teardownStatements
-    ) {
+    ): void {
         $source = $this->factory->createFindCall($elementIdentifierExpression);
 
         $collectionPlaceholder = new VariableName('collection');
@@ -69,6 +69,9 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
         }
     }
 
+    /**
+     * @return array[]
+     */
     public function createFindCallDataProvider(): array
     {
         $elementIdentifierCallFactory = ElementIdentifierCallFactory::createFactory();

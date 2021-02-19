@@ -10,6 +10,9 @@ use webignition\BasilParser\AssertionParser;
 
 trait NotExistsAssertionFunctionalDataProviderTrait
 {
+    /**
+     * @return array[]
+     */
     public function notExistsAssertionFunctionalDataProvider(): array
     {
         $assertionParser = AssertionParser::create();

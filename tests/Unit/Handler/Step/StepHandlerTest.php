@@ -36,13 +36,16 @@ class StepHandlerTest extends AbstractResolvableTest
         StepHandler $handler,
         string $expectedRenderedContent,
         MetadataInterface $expectedMetadata
-    ) {
+    ): void {
         $source = $handler->handle($step);
 
         $this->assertRenderResolvable($expectedRenderedContent, $source);
         $this->assertEquals($expectedMetadata, $source->getMetadata());
     }
 
+    /**
+     * @return array[]
+     */
     public function handleSuccessDataProvider(): array
     {
         $stepParser = StepParser::create();
@@ -567,7 +570,7 @@ class StepHandlerTest extends AbstractResolvableTest
     /**
      * @dataProvider handleThrowsExceptionDataProvider
      */
-    public function testHandleThrowsException(StepInterface $step, UnsupportedStepException $expectedException)
+    public function testHandleThrowsException(StepInterface $step, UnsupportedStepException $expectedException): void
     {
         $handler = StepHandler::createHandler();
         $this->expectExceptionObject($expectedException);
@@ -575,6 +578,9 @@ class StepHandlerTest extends AbstractResolvableTest
         $handler->handle($step);
     }
 
+    /**
+     * @return array[]
+     */
     public function handleThrowsExceptionDataProvider(): array
     {
         $actionParser = ActionParser::create();
@@ -605,7 +611,7 @@ class StepHandlerTest extends AbstractResolvableTest
         ];
     }
 
-    public function testHandleAssertionWithUnsupportedIdentifier()
+    public function testHandleAssertionWithUnsupportedIdentifier(): void
     {
         $stepParser = StepParser::create();
         $assertionParser = AssertionParser::create();

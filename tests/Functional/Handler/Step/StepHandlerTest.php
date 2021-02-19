@@ -30,17 +30,15 @@ class StepHandlerTest extends AbstractBrowserTestCase
     public function testHandle(
         string $fixture,
         StepInterface $step,
-        ?BodyInterface $teardownStatements = null,
-        array $additionalVariableIdentifiers = []
-    ) {
+        ?BodyInterface $teardownStatements = null
+    ): void {
         $source = $this->handler->handle($step);
 
         $classCode = $this->testCodeGenerator->createBrowserTestForBlock(
             $source,
             $fixture,
             null,
-            $teardownStatements,
-            $additionalVariableIdentifiers
+            $teardownStatements
         );
 
         $testRunJob = $this->testRunner->createTestRunJob($classCode);
@@ -56,6 +54,9 @@ class StepHandlerTest extends AbstractBrowserTestCase
         }
     }
 
+    /**
+     * @return array[]
+     */
     public function handleDataProvider(): array
     {
         $stepParser = StepParser::create();
@@ -135,17 +136,15 @@ class StepHandlerTest extends AbstractBrowserTestCase
         StepInterface $step,
         string $expectedExpectationFailedExceptionMessage,
         ?BodyInterface $additionalSetupStatements = null,
-        ?BodyInterface $teardownStatements = null,
-        array $additionalVariableIdentifiers = []
-    ) {
+        ?BodyInterface $teardownStatements = null
+    ): void {
         $source = $this->handler->handle($step);
 
         $classCode = $this->testCodeGenerator->createBrowserTestForBlock(
             $source,
             $fixture,
             $additionalSetupStatements,
-            $teardownStatements,
-            $additionalVariableIdentifiers
+            $teardownStatements
         );
 
         $testRunJob = $this->testRunner->createTestRunJob($classCode, 1);
@@ -166,6 +165,9 @@ class StepHandlerTest extends AbstractBrowserTestCase
         }
     }
 
+    /**
+     * @return array[]
+     */
     public function handleForFailingActionsDataProvider(): array
     {
         $stepParser = StepParser::create();

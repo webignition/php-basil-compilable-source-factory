@@ -36,7 +36,7 @@ class ComparisonAssertionHandlerTest extends AbstractResolvableTest
         AssertionInterface $assertion,
         string $expectedRenderedContent,
         MetadataInterface $expectedMetadata
-    ) {
+    ): void {
         $handler = ComparisonAssertionHandler::createHandler();
 
         $source = $handler->handle($assertion);
@@ -52,7 +52,7 @@ class ComparisonAssertionHandlerTest extends AbstractResolvableTest
         AssertionInterface $assertion,
         \Exception $expectedException,
         ?callable $initializer = null
-    ) {
+    ): void {
         $handler = ComparisonAssertionHandler::createHandler();
 
         if (null !== $initializer) {
@@ -64,6 +64,9 @@ class ComparisonAssertionHandlerTest extends AbstractResolvableTest
         $handler->handle($assertion);
     }
 
+    /**
+     * @return array[]
+     */
     public function handleThrowsExceptionDataProvider(): array
     {
         $assertionParser = AssertionParser::create();

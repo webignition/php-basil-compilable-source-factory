@@ -8,6 +8,9 @@ use webignition\BasilParser\AssertionParser;
 
 trait ExcludesAssertionFunctionalDataProviderTrait
 {
+    /**
+     * @return array[]
+     */
     public function excludesAssertionFunctionalDataProvider(): array
     {
         $assertionParser = AssertionParser::create();

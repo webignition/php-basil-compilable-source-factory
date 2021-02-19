@@ -20,11 +20,14 @@ class SingleQuotedStringEscaperTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider escapeDataProvider
      */
-    public function testEscape(string $string, string $expectedEscapedString)
+    public function testEscape(string $string, string $expectedEscapedString): void
     {
         $this->assertEquals($expectedEscapedString, $this->escaper->escape($string));
     }
 
+    /**
+     * @return array[]
+     */
     public function escapeDataProvider(): array
     {
         return [

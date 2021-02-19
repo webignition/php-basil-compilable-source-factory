@@ -17,7 +17,7 @@ use webignition\BasilValueTypeIdentifier\ValueTypeIdentifier;
 
 class ExistenceAssertionHandlerTest extends \PHPUnit\Framework\TestCase
 {
-    public function testHandleScalar()
+    public function testHandleScalar(): void
     {
         $assertionParser = AssertionParser::create();
 
@@ -41,7 +41,7 @@ class ExistenceAssertionHandlerTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($expectedReturnValue, $handler->handle($assertion));
     }
 
-    public function testHandleIdentifier()
+    public function testHandleIdentifier(): void
     {
         $assertionParser = AssertionParser::create();
 
@@ -65,7 +65,7 @@ class ExistenceAssertionHandlerTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($expectedReturnValue, $handler->handle($assertion));
     }
 
-    public function testHandleThrowsUnsupportedContentException()
+    public function testHandleThrowsUnsupportedContentException(): void
     {
         $assertion = new Assertion(
             'invalid exists',

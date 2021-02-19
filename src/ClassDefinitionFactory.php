@@ -29,6 +29,7 @@ use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationColle
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
+use webignition\BasilModels\Step\StepInterface;
 use webignition\BasilModels\Test\Configuration;
 use webignition\BasilModels\Test\TestInterface;
 
@@ -75,11 +76,13 @@ class ClassDefinitionFactory
 
         $stepOrdinalIndex = 1;
         foreach ($test->getSteps() as $stepName => $step) {
-            $methodDefinitions = array_merge(
-                $methodDefinitions,
-                $this->stepMethodFactory->create($stepOrdinalIndex, $stepName, $step)
-            );
-            $stepOrdinalIndex++;
+            if ($step instanceof StepInterface) {
+                $methodDefinitions = array_merge(
+                    $methodDefinitions,
+                    $this->stepMethodFactory->create($stepOrdinalIndex, $stepName, $step)
+                );
+                $stepOrdinalIndex++;
+            }
         }
 
         $baseClass = is_string($fullyQualifiedBaseClass) ? new ClassName($fullyQualifiedBaseClass) : null;

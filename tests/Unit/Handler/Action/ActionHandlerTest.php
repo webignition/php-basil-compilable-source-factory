@@ -45,7 +45,7 @@ class ActionHandlerTest extends AbstractResolvableTest
         ActionInterface $action,
         string $expectedRenderedSource,
         MetadataInterface $expectedMetadata
-    ) {
+    ): void {
         $handler = ActionHandler::createHandler();
         $source = $handler->handle($action);
 
@@ -56,14 +56,19 @@ class ActionHandlerTest extends AbstractResolvableTest
     /**
      * @dataProvider handleThrowsExceptionDataProvider
      */
-    public function testHandleThrowsException(ActionInterface $action, UnsupportedStatementException $expectedException)
-    {
+    public function testHandleThrowsException(
+        ActionInterface $action,
+        UnsupportedStatementException $expectedException
+    ): void {
         $handler = ActionHandler::createHandler();
         $this->expectExceptionObject($expectedException);
 
         $handler->handle($action);
     }
 
+    /**
+     * @return array[]
+     */
     public function handleThrowsExceptionDataProvider(): array
     {
         $actionParser = ActionParser::create();

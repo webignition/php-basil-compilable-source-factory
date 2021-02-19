@@ -24,14 +24,10 @@ class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
     /**
      * @dataProvider createSourceDataProvider
      */
-    public function testCreateSource(TestInterface $test, array $additionalVariableIdentifiers = [])
+    public function testCreateSource(TestInterface $test): void
     {
         $classDefinition = $this->factory->createClassDefinition($test, AbstractGeneratedTestCase::class);
-
-        $classCode = $this->testCodeGenerator->createBrowserTestForClass(
-            $classDefinition,
-            $additionalVariableIdentifiers
-        );
+        $classCode = $this->testCodeGenerator->createBrowserTestForClass($classDefinition);
 
         $testRunJob = $this->testRunner->createTestRunJob($classCode);
 
@@ -46,6 +42,9 @@ class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
         }
     }
 
+    /**
+     * @return array[]
+     */
     public function createSourceDataProvider(): array
     {
         $testParser = TestParser::create();

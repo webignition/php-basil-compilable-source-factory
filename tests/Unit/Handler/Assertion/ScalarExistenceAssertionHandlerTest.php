@@ -21,7 +21,7 @@ class ScalarExistenceAssertionHandlerTest extends AbstractResolvableTest
         AssertionInterface $assertion,
         string $expectedRenderedContent,
         MetadataInterface $expectedMetadata
-    ) {
+    ): void {
         $handler = ScalarExistenceAssertionHandler::createHandler();
 
         $source = $handler->handle($assertion);

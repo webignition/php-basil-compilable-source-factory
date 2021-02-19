@@ -13,6 +13,9 @@ use webignition\BasilParser\ActionParser;
 
 trait SetActionFunctionalDataProviderTrait
 {
+    /**
+     * @return array[]
+     */
     public function setActionFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
@@ -138,6 +141,9 @@ trait SetActionFunctionalDataProviderTrait
         );
     }
 
+    /**
+     * @return array[]
+     */
     private function setActionForTextInputFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
@@ -219,6 +225,9 @@ trait SetActionFunctionalDataProviderTrait
         ];
     }
 
+    /**
+     * @return array[]
+     */
     private function setActionForTextareaFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
@@ -276,6 +285,9 @@ trait SetActionFunctionalDataProviderTrait
         ];
     }
 
+    /**
+     * @return array[]
+     */
     private function setActionForSelectFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
@@ -357,6 +369,9 @@ trait SetActionFunctionalDataProviderTrait
         ];
     }
 
+    /**
+     * @return array[]
+     */
     private function setActionForOptionCollectionFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
@@ -438,6 +453,9 @@ trait SetActionFunctionalDataProviderTrait
         ];
     }
 
+    /**
+     * @return array[]
+     */
     private function setActionForRadioGroupFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();

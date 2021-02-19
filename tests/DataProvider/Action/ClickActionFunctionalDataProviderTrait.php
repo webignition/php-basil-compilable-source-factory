@@ -11,6 +11,9 @@ use webignition\BasilParser\ActionParser;
 
 trait ClickActionFunctionalDataProviderTrait
 {
+    /**
+     * @return array[]
+     */
     public function clickActionFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();

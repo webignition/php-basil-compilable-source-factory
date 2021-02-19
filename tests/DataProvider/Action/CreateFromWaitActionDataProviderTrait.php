@@ -14,6 +14,9 @@ use webignition\DomElementIdentifier\ElementIdentifier;
 
 trait CreateFromWaitActionDataProviderTrait
 {
+    /**
+     * @return array[]
+     */
     public function createFromWaitActionDataProvider(): array
     {
         $actionParser = ActionParser::create();

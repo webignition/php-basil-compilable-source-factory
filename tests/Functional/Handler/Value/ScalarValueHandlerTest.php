@@ -28,12 +28,8 @@ class ScalarValueHandlerTest extends AbstractBrowserTestCase
     /**
      * @dataProvider createSourceDataProvider
      */
-    public function testCreateSource(
-        string $fixture,
-        string $value,
-        BodyInterface $teardownStatements,
-        array $additionalVariableIdentifiers = []
-    ) {
+    public function testCreateSource(string $fixture, string $value, BodyInterface $teardownStatements): void
+    {
         $source = $this->handler->handle($value);
 
         $valuePlaceholder = new VariableName('value');
@@ -48,8 +44,7 @@ class ScalarValueHandlerTest extends AbstractBrowserTestCase
             $instrumentedSource,
             $fixture,
             null,
-            $teardownStatements,
-            $additionalVariableIdentifiers
+            $teardownStatements
         );
 
         $testRunJob = $this->testRunner->createTestRunJob($classCode);
@@ -65,6 +60,9 @@ class ScalarValueHandlerTest extends AbstractBrowserTestCase
         }
     }
 
+    /**
+     * @return array[]
+     */
     public function createSourceDataProvider(): array
     {
         return [

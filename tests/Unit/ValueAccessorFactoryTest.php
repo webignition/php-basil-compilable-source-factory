@@ -13,7 +13,7 @@ use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
 use webignition\BasilDomIdentifierFactory\Factory;
-use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
+use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\ObjectReflector\ObjectReflector;
 
 class ValueAccessorFactoryTest extends \PHPUnit\Framework\TestCase
@@ -30,17 +30,19 @@ class ValueAccessorFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider createDataProvider
      */
-    public function testCreate(string $value, ExpressionInterface $expectedExpression)
+    public function testCreate(string $value, ExpressionInterface $expectedExpression): void
     {
         $this->assertEquals($expectedExpression, $this->factory->create($value));
     }
 
+    /**
+     * @return array[]
+     */
     public function createDataProvider(): array
     {
         $scalarValueHandler = ScalarValueHandler::createHandler();
         $domIdentifierHandler = DomIdentifierHandler::createHandler();
         $elementIdentifierSerializer = ElementIdentifierSerializer::createSerializer();
-        $domIdentifierFactory = DomIdentifierFactory::createFactory();
 
         return [
             'scalar, literal' => [
@@ -55,7 +57,7 @@ class ValueAccessorFactoryTest extends \PHPUnit\Framework\TestCase
                 'value' => '$".selector"',
                 'expectedExpression' => $domIdentifierHandler->handleElementValue(
                     $elementIdentifierSerializer->serialize(
-                        $domIdentifierFactory->createFromIdentifierString('$".selector"')
+                        new ElementIdentifier('.selector')
                     )
                 ),
             ],
@@ -63,7 +65,7 @@ class ValueAccessorFactoryTest extends \PHPUnit\Framework\TestCase
                 'value' => '$".selector".attribute_name',
                 'expectedExpression' => $domIdentifierHandler->handleAttributeValue(
                     $elementIdentifierSerializer->serialize(
-                        $domIdentifierFactory->createFromIdentifierString('$".selector"'),
+                        new ElementIdentifier('.selector'),
                     ),
                     'attribute_name'
                 ),
@@ -74,17 +76,19 @@ class ValueAccessorFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider createWithDefaultIfNullDataProvider
      */
-    public function testCreateWithDefaultIfNull(string $value, ExpressionInterface $expectedExpression)
+    public function testCreateWithDefaultIfNull(string $value, ExpressionInterface $expectedExpression): void
     {
         $this->assertEquals($expectedExpression, $this->factory->createWithDefaultIfNull($value));
     }
 
+    /**
+     * @return array[]
+     */
     public function createWithDefaultIfNullDataProvider(): array
     {
         $scalarValueHandler = ScalarValueHandler::createHandler();
         $domIdentifierHandler = DomIdentifierHandler::createHandler();
         $elementIdentifierSerializer = ElementIdentifierSerializer::createSerializer();
-        $domIdentifierFactory = DomIdentifierFactory::createFactory();
 
         return [
             'scalar, literal' => [
@@ -99,7 +103,7 @@ class ValueAccessorFactoryTest extends \PHPUnit\Framework\TestCase
                 'value' => '$".selector"',
                 'expectedExpression' => $domIdentifierHandler->handleElementValue(
                     $elementIdentifierSerializer->serialize(
-                        $domIdentifierFactory->createFromIdentifierString('$".selector"')
+                        new ElementIdentifier('.selector')
                     )
                 ),
             ],
@@ -113,7 +117,7 @@ class ValueAccessorFactoryTest extends \PHPUnit\Framework\TestCase
         string $value,
         \Exception $expectedException,
         ?callable $initializer = null
-    ) {
+    ): void {
         if (null !== $initializer) {
             $initializer($this->factory);
         }
@@ -123,6 +127,9 @@ class ValueAccessorFactoryTest extends \PHPUnit\Framework\TestCase
         $this->factory->create($value);
     }
 
+    /**
+     * @return array[]
+     */
     public function createThrowsExceptionDataProvider(): array
     {
         return [

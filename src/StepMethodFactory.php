@@ -93,12 +93,13 @@ class StepMethodFactory
         );
 
         $testMethodDocBlock = $testMethod->getDocBlock();
-        $testMethodDocBlock = $testMethodDocBlock->prepend(new DocBlock([
-            new DataProviderAnnotation($dataProviderMethod->getName()),
-            "\n",
-        ]));
-
-        $testMethod = $testMethod->withDocBlock($testMethodDocBlock);
+        if ($testMethodDocBlock instanceof DocBlock) {
+            $testMethodDocBlock = $testMethodDocBlock->prepend(new DocBlock([
+                new DataProviderAnnotation($dataProviderMethod->getName()),
+                "\n",
+            ]));
+            $testMethod = $testMethod->withDocBlock($testMethodDocBlock);
+        }
 
         return [
             $testMethod,

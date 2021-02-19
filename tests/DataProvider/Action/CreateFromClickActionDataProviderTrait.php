@@ -14,6 +14,9 @@ use webignition\DomElementIdentifier\ElementIdentifier;
 
 trait CreateFromClickActionDataProviderTrait
 {
+    /**
+     * @return array[]
+     */
     public function createFromClickActionDataProvider(): array
     {
         $actionParser = ActionParser::create();

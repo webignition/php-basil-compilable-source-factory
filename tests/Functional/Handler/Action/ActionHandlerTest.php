@@ -47,6 +47,8 @@ class ActionHandlerTest extends AbstractBrowserTestCase
      * @dataProvider submitActionFunctionalDataProvider
      * @dataProvider waitActionFunctionalDataProvider
      * @dataProvider waitForActionFunctionalDataProvider
+     *
+     * @param array<string, string> $additionalVariableIdentifiers
      */
     public function testHandleForExecutableActions(
         string $fixture,
@@ -54,7 +56,7 @@ class ActionHandlerTest extends AbstractBrowserTestCase
         ?BodyInterface $additionalSetupStatements = null,
         ?BodyInterface $teardownStatements = null,
         array $additionalVariableIdentifiers = []
-    ) {
+    ): void {
         $source = $this->handler->handle($action);
 
         $classCode = $this->testCodeGenerator->createBrowserTestForBlock(

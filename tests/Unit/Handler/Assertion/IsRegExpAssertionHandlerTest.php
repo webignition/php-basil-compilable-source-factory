@@ -21,7 +21,7 @@ class IsRegExpAssertionHandlerTest extends AbstractResolvableTest
         AssertionInterface $assertion,
         string $expectedRenderedContent,
         MetadataInterface $expectedMetadata
-    ) {
+    ): void {
         $handler = IsRegExpAssertionHandler::createHandler();
 
         $source = $handler->handle($assertion);

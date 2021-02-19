@@ -33,7 +33,7 @@ class ElementIdentifierCallFactoryTest extends \PHPUnit\Framework\TestCase
     public function testCreateConstructorCall(
         string $serializedElementIdentifier,
         ElementIdentifierInterface $expectedElementIdentifier
-    ) {
+    ): void {
         $constructorExpression = $this->factory->createConstructorCall(
             $serializedElementIdentifier
         );
@@ -62,6 +62,9 @@ class ElementIdentifierCallFactoryTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals($expectedElementIdentifier, $evaluatedCodeOutput);
     }
 
+    /**
+     * @return array[]
+     */
     public function createConstructorCallDataProvider(): array
     {
         $elementIdentifierSerializer = ElementIdentifierSerializer::createSerializer();

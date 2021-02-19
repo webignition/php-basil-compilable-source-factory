@@ -11,6 +11,9 @@ use webignition\BasilParser\ActionParser;
 
 trait CreateFromBackActionDataProviderTrait
 {
+    /**
+     * @return array[]
+     */
     public function createFromBackActionDataProvider(): array
     {
         $actionParser = ActionParser::create();

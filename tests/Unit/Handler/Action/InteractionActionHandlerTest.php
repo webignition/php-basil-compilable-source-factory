@@ -17,7 +17,7 @@ class InteractionActionHandlerTest extends \PHPUnit\Framework\TestCase
     public function testHandleThrowsException(
         ActionInterface $action,
         \Exception $expectedException
-    ) {
+    ): void {
         $handler = InteractionActionHandler::createHandler();
 
         $this->expectExceptionObject($expectedException);
@@ -25,6 +25,9 @@ class InteractionActionHandlerTest extends \PHPUnit\Framework\TestCase
         $handler->handle($action);
     }
 
+    /**
+     * @return array[]
+     */
     public function handleThrowsExceptionDataProvider(): array
     {
         $actionParser = ActionParser::create();

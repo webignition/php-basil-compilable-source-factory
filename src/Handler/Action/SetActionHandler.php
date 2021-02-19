@@ -68,13 +68,13 @@ class SetActionHandler
      */
     public function handle(ActionInterface $action): BodyInterface
     {
-        $identifier = $action->getIdentifier();
+        $identifier = (string) $action->getIdentifier();
 
         if (!$this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
             throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }
 
-        $value = $action->getValue();
+        $value = (string) $action->getValue();
         $domIdentifier = $this->domIdentifierFactory->createFromIdentifierString($identifier);
         if (null === $domIdentifier) {
             throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
@@ -112,7 +112,7 @@ class SetActionHandler
         if (null !== $defaultValue) {
             $valueAccessor = new ComparisonExpression(
                 $valueAccessor,
-                new LiteralExpression($this->accessorDefaultValueFactory->createString($value)),
+                new LiteralExpression((string) $this->accessorDefaultValueFactory->createString($value)),
                 '??'
             );
         }
