@@ -11,6 +11,9 @@ use webignition\BasilParser\ActionParser;
 
 trait CreateFromWaitForActionDataProviderTrait
 {
+    /**
+     * @return array[]
+     */
     public function createFromWaitForActionDataProvider(): array
     {
         $actionParser = ActionParser::create();

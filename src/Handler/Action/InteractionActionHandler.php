@@ -51,7 +51,7 @@ class InteractionActionHandler
      */
     public function handle(ActionInterface $action): BodyInterface
     {
-        $identifier = $action->getIdentifier();
+        $identifier = (string) $action->getIdentifier();
 
         $domIdentifier = $this->domIdentifierFactory->createFromIdentifierString($identifier);
         if (null === $domIdentifier) {

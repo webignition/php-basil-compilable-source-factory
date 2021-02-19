@@ -34,7 +34,7 @@ class StepMethodFactoryTest extends AbstractResolvableTest
         StepMethodFactory $factory,
         string $expectedRenderedTestMethod,
         MetadataInterface $expectedTestMethodMetadata
-    ) {
+    ): void {
         $testMethods = $factory->create($index, $stepName, $step);
         self::assertCount(1, $testMethods);
 
@@ -44,6 +44,9 @@ class StepMethodFactoryTest extends AbstractResolvableTest
         $this->assertTestMethod($expectedRenderedTestMethod, $expectedTestMethodMetadata, $testMethod);
     }
 
+    /**
+     * @return array[]
+     */
     public function createWithoutDataProviderDataProvider(): array
     {
         $stepParser = StepParser::create();
@@ -142,7 +145,7 @@ class StepMethodFactoryTest extends AbstractResolvableTest
         string $expectedRenderedTestMethod,
         string $expectedRenderedDataProvider,
         MetadataInterface $expectedTestMethodMetadata
-    ) {
+    ): void {
         $testMethods = $factory->create($index, $stepName, $step);
         self::assertCount(2, $testMethods);
 
@@ -155,6 +158,9 @@ class StepMethodFactoryTest extends AbstractResolvableTest
         $this->assertDataProviderMethod($expectedRenderedDataProvider, $dataProvider);
     }
 
+    /**
+     * @return array[]
+     */
     public function createWithDataProviderDataProvider(): array
     {
         $stepParser = StepParser::create();

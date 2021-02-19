@@ -50,8 +50,7 @@ class WaitActionHandler
      */
     public function handle(ActionInterface $waitAction): BodyInterface
     {
-        $duration = $waitAction->getValue();
-
+        $duration = (string) $waitAction->getValue();
         if (ctype_digit($duration)) {
             $duration = '"' . $duration . '"';
         }

@@ -50,12 +50,14 @@ class AssertionHandlerPassingAssertionsTest extends AbstractBrowserTestCase
      * @dataProvider matchesAssertionFunctionalDataProvider
      * @dataProvider notExistsAssertionFunctionalDataProvider
      * @dataProvider isRegExpAssertionFunctionalDataProvider
+     *
+     * @param array<string, string> $additionalVariableIdentifiers
      */
     public function testHandle(
         string $fixture,
         AssertionInterface $assertion,
         array $additionalVariableIdentifiers = []
-    ) {
+    ): void {
         $source = $this->handler->handle($assertion);
 
         $classCode = $this->testCodeGenerator->createBrowserTestForBlock(

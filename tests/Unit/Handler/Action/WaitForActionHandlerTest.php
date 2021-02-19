@@ -20,7 +20,7 @@ class WaitForActionHandlerTest extends \PHPUnit\Framework\TestCase
         ActionInterface $action,
         \Exception $expectedException,
         ?callable $initializer = null
-    ) {
+    ): void {
         $handler = WaitForActionHandler::createHandler();
 
         if (null !== $initializer) {
@@ -32,6 +32,9 @@ class WaitForActionHandlerTest extends \PHPUnit\Framework\TestCase
         $handler->handle($action);
     }
 
+    /**
+     * @return array[]
+     */
     public function handleThrowsExceptionDataProvider(): array
     {
         $actionParser = ActionParser::create();

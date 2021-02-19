@@ -10,6 +10,9 @@ use webignition\BasilParser\ActionParser;
 
 trait ForwardActionFunctionalDataProviderTrait
 {
+    /**
+     * @return array[]
+     */
     public function forwardActionFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();

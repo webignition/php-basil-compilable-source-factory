@@ -30,7 +30,7 @@ class ScalarValueHandlerTest extends AbstractResolvableTest
         string $value,
         string $expectedRenderedSource,
         MetadataInterface $expectedMetadata
-    ) {
+    ): void {
         $source = $this->handler->handle($value);
 
         $this->assertTrue(true);
@@ -39,6 +39,9 @@ class ScalarValueHandlerTest extends AbstractResolvableTest
         $this->assertEquals($expectedMetadata, $source->getMetadata());
     }
 
+    /**
+     * @return array[]
+     */
     public function createFromValueDataProvider(): array
     {
         return [
@@ -105,13 +108,16 @@ class ScalarValueHandlerTest extends AbstractResolvableTest
     /**
      * @dataProvider handleThrowsExceptionDataProvider
      */
-    public function testHandleThrowsException(string $value, \Exception $expectedException)
+    public function testHandleThrowsException(string $value, \Exception $expectedException): void
     {
         $this->expectExceptionObject($expectedException);
 
         $this->handler->handle($value);
     }
 
+    /**
+     * @return array[]
+     */
     public function handleThrowsExceptionDataProvider(): array
     {
         return [

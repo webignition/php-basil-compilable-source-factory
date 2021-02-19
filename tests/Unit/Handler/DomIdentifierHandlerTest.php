@@ -34,13 +34,16 @@ class DomIdentifierHandlerTest extends AbstractResolvableTest
         string $serializedElementIdentifier,
         string $expectedRenderedSource,
         MetadataInterface $expectedMetadata
-    ) {
+    ): void {
         $source = $this->handler->handleElement($serializedElementIdentifier);
 
         $this->assertRenderResolvable($expectedRenderedSource, $source);
         $this->assertEquals($expectedMetadata, $source->getMetadata());
     }
 
+    /**
+     * @return array[]
+     */
     public function handleElementDataProvider(): array
     {
         $elementIdentifierSerializer = ElementIdentifierSerializer::createSerializer();
@@ -94,13 +97,16 @@ class DomIdentifierHandlerTest extends AbstractResolvableTest
         string $serializedElementIdentifier,
         string $expectedRenderedSource,
         MetadataInterface $expectedMetadata
-    ) {
+    ): void {
         $source = $this->handler->handleElementCollection($serializedElementIdentifier);
 
         $this->assertRenderResolvable($expectedRenderedSource, $source);
         $this->assertEquals($expectedMetadata, $source->getMetadata());
     }
 
+    /**
+     * @return array[]
+     */
     public function handleElementCollectionDataProvider(): array
     {
         $elementIdentifierSerializer = ElementIdentifierSerializer::createSerializer();
@@ -155,13 +161,16 @@ class DomIdentifierHandlerTest extends AbstractResolvableTest
         string $attributeName,
         string $expectedRenderedSource,
         MetadataInterface $expectedMetadata
-    ) {
+    ): void {
         $source = $this->handler->handleAttributeValue($serializedElementIdentifier, $attributeName);
 
         $this->assertRenderResolvable($expectedRenderedSource, $source);
         $this->assertEquals($expectedMetadata, $source->getMetadata());
     }
 
+    /**
+     * @return array[]
+     */
     public function handleAttributeValueDataProvider(): array
     {
         $elementIdentifierSerializer = ElementIdentifierSerializer::createSerializer();
@@ -225,13 +234,16 @@ class DomIdentifierHandlerTest extends AbstractResolvableTest
         string $serializedElementIdentifier,
         string $expectedRenderedSource,
         MetadataInterface $expectedMetadata
-    ) {
+    ): void {
         $source = $this->handler->handleElementValue($serializedElementIdentifier);
 
         $this->assertRenderResolvable($expectedRenderedSource, $source);
         $this->assertEquals($expectedMetadata, $source->getMetadata());
     }
 
+    /**
+     * @return array[]
+     */
     public function handleElementValueDataProvider(): array
     {
         $elementIdentifierSerializer = ElementIdentifierSerializer::createSerializer();

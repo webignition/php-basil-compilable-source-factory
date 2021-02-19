@@ -25,7 +25,7 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
         $this->factory = DerivedAssertionFactory::createFactory();
     }
 
-    public function testCreateFactory()
+    public function testCreateFactory(): void
     {
         $this->assertInstanceOf(DerivedAssertionFactory::class, DerivedAssertionFactory::createFactory());
     }
@@ -33,7 +33,7 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider createForActionDataProvider
      */
-    public function testCreateForAction(ActionInterface $action, UniqueAssertionCollection $expectedAssertions)
+    public function testCreateForAction(ActionInterface $action, UniqueAssertionCollection $expectedAssertions): void
     {
         $this->assertEquals(
             $expectedAssertions,
@@ -41,6 +41,9 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
         );
     }
 
+    /**
+     * @return array[]
+     */
     public function createForActionDataProvider(): array
     {
         $actionParser = ActionParser::create();
@@ -140,13 +143,16 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
     public function testCreateForAssertion(
         AssertionInterface $assertion,
         UniqueAssertionCollection $expectedAssertions
-    ) {
+    ): void {
         $this->assertEquals(
             $expectedAssertions,
             $this->factory->createForAssertion($assertion)
         );
     }
 
+    /**
+     * @return array[]
+     */
     public function createForAssertionDataProvider(): array
     {
         $assertionParser = AssertionParser::create();
@@ -223,7 +229,7 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
         ];
     }
 
-    public function testCreateForClickActionThrowsException()
+    public function testCreateForClickActionThrowsException(): void
     {
         $action = new Action(
             'click "foo"',
@@ -239,7 +245,7 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
         $this->factory->createForAction($action);
     }
 
-    public function testCreateForSetActionThrowsException()
+    public function testCreateForSetActionThrowsException(): void
     {
         $action = new Action(
             'set "foo" to "value"',

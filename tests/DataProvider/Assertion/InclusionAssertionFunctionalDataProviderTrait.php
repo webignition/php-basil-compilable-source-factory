@@ -9,6 +9,9 @@ use webignition\BasilCompilableSourceFactory\VariableNames;
 
 trait InclusionAssertionFunctionalDataProviderTrait
 {
+    /**
+     * @return array[]
+     */
     public function inclusionAssertionFunctionalDataProvider(): array
     {
         return [

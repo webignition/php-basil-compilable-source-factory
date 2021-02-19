@@ -81,7 +81,7 @@ class ComparisonAssertionHandler extends AbstractAssertionHandler
         $assertionMethod = self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP[$assertion->getOperator()];
 
         $examinedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull($assertion->getIdentifier());
-        $expectedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull($assertion->getValue());
+        $expectedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull((string) $assertion->getValue());
 
         $assertionArguments = [
             $this->createPhpUnitTestCaseObjectMethodInvocation('getExpectedValue'),

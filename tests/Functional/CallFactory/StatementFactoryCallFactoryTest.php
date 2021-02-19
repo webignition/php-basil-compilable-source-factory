@@ -32,7 +32,7 @@ class StatementFactoryCallFactoryTest extends AbstractBrowserTestCase
     /**
      * @dataProvider createDataProvider
      */
-    public function testCreate(string $fixture, StatementInterface $statement, BodyInterface $teardownStatements)
+    public function testCreate(string $fixture, StatementInterface $statement, BodyInterface $teardownStatements): void
     {
         $source = $this->factory->create($statement);
 
@@ -64,6 +64,9 @@ class StatementFactoryCallFactoryTest extends AbstractBrowserTestCase
         }
     }
 
+    /**
+     * @return array[]
+     */
     public function createDataProvider(): array
     {
         $assertionParser = AssertionParser::create();

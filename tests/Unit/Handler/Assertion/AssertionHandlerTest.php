@@ -16,7 +16,7 @@ use webignition\BasilParser\AssertionParser;
 
 class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
 {
-    public function testHandleComparison()
+    public function testHandleComparison(): void
     {
         $assertionParser = AssertionParser::create();
         $assertion = $assertionParser->parse('$page.title is "value"');
@@ -38,7 +38,7 @@ class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($expectedReturnValue, $handler->handle($assertion));
     }
 
-    public function testHandleExistence()
+    public function testHandleExistence(): void
     {
         $assertionParser = AssertionParser::create();
         $assertion = $assertionParser->parse('$page.title exists');
@@ -60,7 +60,7 @@ class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($expectedReturnValue, $handler->handle($assertion));
     }
 
-    public function testHandleIsRegExp()
+    public function testHandleIsRegExp(): void
     {
         $assertionParser = AssertionParser::create();
         $assertion = $assertionParser->parse('$page.title is-regexp');
@@ -82,7 +82,7 @@ class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
         $this->assertSame($expectedReturnValue, $handler->handle($assertion));
     }
 
-    public function testHandleWrapsUnsupportedContentException()
+    public function testHandleWrapsUnsupportedContentException(): void
     {
         $assertionParser = AssertionParser::create();
         $assertion = $assertionParser->parse('$elements.examined is "value"');
@@ -112,7 +112,7 @@ class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
         $handler->handle($assertion);
     }
 
-    public function testHandleThrowsUnsupportedStatementException()
+    public function testHandleThrowsUnsupportedStatementException(): void
     {
         $assertion = new Assertion(
             '$".selector" invalid-comparison "value"',

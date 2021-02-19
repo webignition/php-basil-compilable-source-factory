@@ -11,6 +11,9 @@ use webignition\BasilParser\AssertionParser;
 
 trait CreateFromScalarExistsAssertionDataProviderTrait
 {
+    /**
+     * @return array[]
+     */
     public function createFromScalarExistsAssertionDataProvider(): array
     {
         $assertionParser = AssertionParser::create();

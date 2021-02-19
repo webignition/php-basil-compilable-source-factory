@@ -51,7 +51,7 @@ class WaitForActionHandler
      */
     public function handle(ActionInterface $action): BodyInterface
     {
-        $identifier = $action->getIdentifier();
+        $identifier = (string) $action->getIdentifier();
 
         if (!$this->identifierTypeAnalyser->isDomIdentifier($identifier)) {
             throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);

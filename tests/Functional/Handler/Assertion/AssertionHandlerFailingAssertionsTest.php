@@ -30,18 +30,10 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
     public function testHandleForFailingAssertions(
         string $fixture,
         AssertionInterface $assertion,
-        string $expectedExpectationFailedExceptionMessage,
-        array $additionalVariableIdentifiers = []
-    ) {
+        string $expectedExpectationFailedExceptionMessage
+    ): void {
         $source = $this->handler->handle($assertion);
-
-        $classCode = $this->testCodeGenerator->createBrowserTestForBlock(
-            $source,
-            $fixture,
-            null,
-            null,
-            $additionalVariableIdentifiers
-        );
+        $classCode = $this->testCodeGenerator->createBrowserTestForBlock($source, $fixture);
 
         $testRunJob = $this->testRunner->createTestRunJob($classCode, 1);
 
@@ -61,6 +53,9 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
         }
     }
 
+    /**
+     * @return array[]
+     */
     public function createSourceForFailingAssertionsDataProvider(): array
     {
         $assertionParser = AssertionParser::create();

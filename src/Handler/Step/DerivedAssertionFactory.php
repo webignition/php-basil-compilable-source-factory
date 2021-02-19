@@ -47,15 +47,18 @@ class DerivedAssertionFactory
         $assertions = new UniqueAssertionCollection();
 
         if ($action->isInteraction()) {
-            $assertions = $assertions->merge($this->createForStatementAndAncestors($action->getIdentifier(), $action));
+            $assertions = $assertions->merge($this->createForStatementAndAncestors(
+                (string) $action->getIdentifier(),
+                $action
+            ));
         }
 
         if ($action->isInput()) {
             $assertions = $assertions->merge(
-                $this->createForStatementAndAncestors($action->getIdentifier(), $action)
+                $this->createForStatementAndAncestors((string) $action->getIdentifier(), $action)
             );
 
-            $value = $action->getValue();
+            $value = (string) $action->getValue();
 
             if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($value)) {
                 $assertions = $assertions->merge($this->createForStatementAndAncestors($value, $action));
@@ -63,7 +66,7 @@ class DerivedAssertionFactory
         }
 
         if ($action->isWait()) {
-            $duration = $action->getValue();
+            $duration = (string) $action->getValue();
 
             if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($duration)) {
                 $assertions = $assertions->merge($this->createForStatementAndAncestors($duration, $action));
@@ -114,7 +117,7 @@ class DerivedAssertionFactory
         }
 
         if ($assertion->isComparison()) {
-            $value = $assertion->getValue();
+            $value = (string) $assertion->getValue();
 
             if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($value)) {
                 $assertions = $assertions->merge($this->createForStatementAndAncestors($value, $assertion));
@@ -136,7 +139,7 @@ class DerivedAssertionFactory
             return $assertions;
         }
 
-        $assertions->add(new DerivedValueOperationAssertion($assertion, $assertion->getValue(), 'is-regexp'));
+        $assertions->add(new DerivedValueOperationAssertion($assertion, (string) $assertion->getValue(), 'is-regexp'));
 
         return $assertions;
     }

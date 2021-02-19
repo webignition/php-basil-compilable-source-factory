@@ -33,13 +33,16 @@ class StatementBlockFactoryTest extends AbstractResolvableTest
         StatementModelInterface $statement,
         string $expectedRenderedContent,
         MetadataInterface $expectedMetadata
-    ) {
+    ): void {
         $body = $this->factory->create($statement);
 
         $this->assertRenderResolvable($expectedRenderedContent, $body);
         $this->assertEquals($expectedMetadata, $body->getMetadata());
     }
 
+    /**
+     * @return array[]
+     */
     public function createDataProvider(): array
     {
         $clickAction = \Mockery::mock(ActionInterface::class);

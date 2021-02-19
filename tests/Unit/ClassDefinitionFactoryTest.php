@@ -30,7 +30,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTest
         TestInterface $test,
         string $expectedRenderedClassDefinition,
         MetadataInterface $expectedMetadata
-    ) {
+    ): void {
         $classDefinition = $factory->createClassDefinition($test);
 
         $this->assertEquals($expectedMetadata, $classDefinition->getMetadata());
@@ -38,6 +38,9 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTest
         $this->assertRenderResolvable($expectedRenderedClassDefinition, $classDefinition);
     }
 
+    /**
+     * @return array[]
+     */
     public function createClassDefinitionDataProvider(): array
     {
         $testParser = TestParser::create();

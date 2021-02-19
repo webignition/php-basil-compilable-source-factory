@@ -31,13 +31,16 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTest
         ExpressionInterface $elementIdentifierExpression,
         string $expectedRenderedExpression,
         MetadataInterface $expectedMetadata
-    ) {
+    ): void {
         $expression = $this->factory->createFindCall($elementIdentifierExpression);
 
         $this->assertRenderResolvable($expectedRenderedExpression, $expression);
         $this->assertEquals($expectedMetadata, $expression->getMetadata());
     }
 
+    /**
+     * @return array[]
+     */
     public function createFindCallDataProvider(): array
     {
         return $this->createElementCallDataProvider('find');
@@ -50,13 +53,16 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTest
         ExpressionInterface $elementIdentifierExpression,
         string $expectedRenderedExpression,
         MetadataInterface $expectedMetadata
-    ) {
+    ): void {
         $expression = $this->factory->createFindOneCall($elementIdentifierExpression);
 
         $this->assertRenderResolvable($expectedRenderedExpression, $expression);
         $this->assertEquals($expectedMetadata, $expression->getMetadata());
     }
 
+    /**
+     * @return array[]
+     */
     public function createFindOneCallDataProvider(): array
     {
         return $this->createElementCallDataProvider('findOne');
@@ -69,13 +75,16 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTest
         ExpressionInterface $elementIdentifierExpression,
         string $expectedRenderedExpression,
         MetadataInterface $expectedMetadata
-    ) {
+    ): void {
         $expression = $this->factory->createHasCall($elementIdentifierExpression);
 
         $this->assertRenderResolvable($expectedRenderedExpression, $expression);
         $this->assertEquals($expectedMetadata, $expression->getMetadata());
     }
 
+    /**
+     * @return array[]
+     */
     public function createHasCallDataProvider(): array
     {
         return $this->createElementCallDataProvider('has');
@@ -88,18 +97,24 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTest
         ExpressionInterface $elementIdentifierExpression,
         string $expectedRenderedExpression,
         MetadataInterface $expectedMetadata
-    ) {
+    ): void {
         $expression = $this->factory->createHasOneCall($elementIdentifierExpression);
 
         $this->assertRenderResolvable($expectedRenderedExpression, $expression);
         $this->assertEquals($expectedMetadata, $expression->getMetadata());
     }
 
+    /**
+     * @return array[]
+     */
     public function createHasOneCallDataProvider(): array
     {
         return $this->createElementCallDataProvider('hasOne');
     }
 
+    /**
+     * @return array[]
+     */
     private function createElementCallDataProvider(string $method): array
     {
         $testCases = $this->elementCallDataProvider();
@@ -117,6 +132,9 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTest
         return $testCases;
     }
 
+    /**
+     * @return array[]
+     */
     private function elementCallDataProvider(): array
     {
         return [

@@ -15,6 +15,9 @@ use webignition\DomElementIdentifier\ElementIdentifier;
 
 trait CreateFromIsRegExpAssertionDataProviderTrait
 {
+    /**
+     * @return array[]
+     */
     public function createFromIsRegExpAssertionDataProvider(): array
     {
         $assertionParser = AssertionParser::create();

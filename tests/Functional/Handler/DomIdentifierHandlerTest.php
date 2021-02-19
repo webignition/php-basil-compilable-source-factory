@@ -37,12 +37,15 @@ class DomIdentifierHandlerTest extends AbstractBrowserTestCase
         string $fixture,
         string $serializedElementIdentifier,
         BodyInterface $teardownStatements
-    ) {
+    ): void {
         $source = $this->handler->handleElementValue($serializedElementIdentifier);
 
         $this->assertSource($source, $fixture, $teardownStatements);
     }
 
+    /**
+     * @return array[]
+     */
     public function handleElementValueDataProvider(): array
     {
         $elementIdentifierSerializer = ElementIdentifierSerializer::createSerializer();
@@ -78,12 +81,15 @@ class DomIdentifierHandlerTest extends AbstractBrowserTestCase
         string $serializedElementIdentifier,
         string $attributeName,
         BodyInterface $teardownStatements
-    ) {
+    ): void {
         $source = $this->handler->handleAttributeValue($serializedElementIdentifier, $attributeName);
 
         $this->assertSource($source, $fixture, $teardownStatements);
     }
 
+    /**
+     * @return array[]
+     */
     public function handleAttributeValueDataProvider(): array
     {
         $elementIdentifierSerializer = ElementIdentifierSerializer::createSerializer();
@@ -120,12 +126,15 @@ class DomIdentifierHandlerTest extends AbstractBrowserTestCase
         string $fixture,
         string $serializedElementIdentifier,
         BodyInterface $teardownStatements
-    ) {
+    ): void {
         $source = $this->handler->handleElementCollection($serializedElementIdentifier);
 
         $this->assertSource($source, $fixture, $teardownStatements);
     }
 
+    /**
+     * @return array[]
+     */
     public function handleElementCollectionDataProvider(): array
     {
         $elementIdentifierSerializer = ElementIdentifierSerializer::createSerializer();

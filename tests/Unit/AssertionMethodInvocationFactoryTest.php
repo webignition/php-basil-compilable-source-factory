@@ -32,13 +32,16 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTest
         MethodArgumentsInterface $arguments,
         string $expectedRenderedInvocation,
         MetadataInterface $expectedMetadata
-    ) {
+    ): void {
         $invocation = $this->assertionMethodInvocationFactory->create($assertionMethod, $arguments);
 
         $this->assertRenderResolvable($expectedRenderedInvocation, $invocation);
         $this->assertEquals($expectedMetadata, $invocation->getMetadata());
     }
 
+    /**
+     * @return array[]
+     */
     public function createDataProvider(): array
     {
         return [

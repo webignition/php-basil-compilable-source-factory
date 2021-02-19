@@ -9,6 +9,9 @@ use webignition\BasilParser\AssertionParser;
 
 trait IsRegExpAssertionFunctionalDataProviderTrait
 {
+    /**
+     * @return array[]
+     */
     public function isRegExpAssertionFunctionalDataProvider(): array
     {
         $assertionParser = AssertionParser::create();

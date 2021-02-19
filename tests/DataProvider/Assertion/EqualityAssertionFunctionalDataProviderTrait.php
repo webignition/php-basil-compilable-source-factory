@@ -9,6 +9,9 @@ use webignition\BasilCompilableSourceFactory\VariableNames;
 
 trait EqualityAssertionFunctionalDataProviderTrait
 {
+    /**
+     * @return array[]
+     */
     public function equalityAssertionFunctionalDataProvider(): array
     {
         return [

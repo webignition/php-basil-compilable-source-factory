@@ -13,11 +13,14 @@ class ClassNameFactoryTest extends \PHPUnit\Framework\TestCase
     /**
      * @dataProvider createDataProvider
      */
-    public function testCreate(TestInterface $test, string $expectedClassName)
+    public function testCreate(TestInterface $test, string $expectedClassName): void
     {
         self::assertSame($expectedClassName, (new ClassNameFactory())->create($test));
     }
 
+    /**
+     * @return array[]
+     */
     public function createDataProvider(): array
     {
         return [

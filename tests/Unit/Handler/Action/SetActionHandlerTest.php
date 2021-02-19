@@ -21,7 +21,7 @@ class SetActionHandlerTest extends \PHPUnit\Framework\TestCase
         ActionInterface $action,
         \Exception $expectedException,
         ?callable $initializer = null
-    ) {
+    ): void {
         $handler = SetActionHandler::createHandler();
 
         if (null !== $initializer) {
@@ -33,6 +33,9 @@ class SetActionHandlerTest extends \PHPUnit\Framework\TestCase
         $handler->handle($action);
     }
 
+    /**
+     * @return array[]
+     */
     public function handleThrowsExceptionDataProvider(): array
     {
         $actionParser = ActionParser::create();

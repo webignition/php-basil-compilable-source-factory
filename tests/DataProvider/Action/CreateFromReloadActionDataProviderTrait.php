@@ -11,6 +11,9 @@ use webignition\BasilParser\ActionParser;
 
 trait CreateFromReloadActionDataProviderTrait
 {
+    /**
+     * @return array[]
+     */
     public function createFromReloadActionDataProvider(): array
     {
         $actionParser = ActionParser::create();

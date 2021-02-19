@@ -17,12 +17,15 @@ class ElementIdentifierSerializerTest extends \PHPUnit\Framework\TestCase
         ElementIdentifierInterface $elementIdentifier,
         int $indentDepth,
         string $expectedSerializedIdentifier
-    ) {
+    ): void {
         $serializer = ElementIdentifierSerializer::createSerializer();
 
         $this->assertSame($expectedSerializedIdentifier, $serializer->serialize($elementIdentifier, $indentDepth));
     }
 
+    /**
+     * @return array[]
+     */
     public function serializeDataProvider(): array
     {
         return [

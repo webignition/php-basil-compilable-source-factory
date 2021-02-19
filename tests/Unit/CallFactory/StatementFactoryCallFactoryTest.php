@@ -33,13 +33,16 @@ class StatementFactoryCallFactoryTest extends AbstractResolvableTest
         StatementInterface $statement,
         string $expectedRenderedContent,
         MetadataInterface $expectedMetadata
-    ) {
+    ): void {
         $objectMethodInvocation = $this->factory->create($statement);
 
         $this->assertRenderResolvable($expectedRenderedContent, $objectMethodInvocation);
         $this->assertEquals($expectedMetadata, $objectMethodInvocation->getMetadata());
     }
 
+    /**
+     * @return array[]
+     */
     public function createStatementFactoryCallDataProvider(): array
     {
         $actionParser = ActionParser::create();
