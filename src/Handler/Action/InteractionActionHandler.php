@@ -19,18 +19,11 @@ use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
 class InteractionActionHandler
 {
-    private DomIdentifierHandler $domIdentifierHandler;
-    private DomIdentifierFactory $domIdentifierFactory;
-    private ElementIdentifierSerializer $elementIdentifierSerializer;
-
     public function __construct(
-        DomIdentifierHandler $domIdentifierHandler,
-        DomIdentifierFactory $domIdentifierFactory,
-        ElementIdentifierSerializer $elementIdentifierSerializer
+        private DomIdentifierHandler $domIdentifierHandler,
+        private DomIdentifierFactory $domIdentifierFactory,
+        private ElementIdentifierSerializer $elementIdentifierSerializer
     ) {
-        $this->domIdentifierHandler = $domIdentifierHandler;
-        $this->domIdentifierFactory = $domIdentifierFactory;
-        $this->elementIdentifierSerializer = $elementIdentifierSerializer;
     }
 
     public static function createHandler(): self

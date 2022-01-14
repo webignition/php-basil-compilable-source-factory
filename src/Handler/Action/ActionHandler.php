@@ -16,24 +16,13 @@ use webignition\BasilModels\Action\ActionInterface;
 
 class ActionHandler
 {
-    private BrowserOperationActionHandler $browserOperationActionHandler;
-    private SetActionHandler $setActionHandler;
-    private WaitActionHandler $waitActionHandler;
-    private WaitForActionHandler $waitForActionHandler;
-    private InteractionActionHandler $interactionActionHandler;
-
     public function __construct(
-        BrowserOperationActionHandler $browserOperationActionHandler,
-        InteractionActionHandler $interactionActionHandler,
-        SetActionHandler $setActionHandler,
-        WaitActionHandler $waitActionHandler,
-        WaitForActionHandler $waitForActionHandler
+        private BrowserOperationActionHandler $browserOperationActionHandler,
+        private InteractionActionHandler $interactionActionHandler,
+        private SetActionHandler $setActionHandler,
+        private WaitActionHandler $waitActionHandler,
+        private WaitForActionHandler $waitForActionHandler
     ) {
-        $this->browserOperationActionHandler = $browserOperationActionHandler;
-        $this->interactionActionHandler = $interactionActionHandler;
-        $this->setActionHandler = $setActionHandler;
-        $this->waitActionHandler = $waitActionHandler;
-        $this->waitForActionHandler = $waitForActionHandler;
     }
 
     public static function createHandler(): ActionHandler

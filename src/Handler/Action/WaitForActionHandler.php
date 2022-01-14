@@ -19,18 +19,11 @@ use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
 class WaitForActionHandler
 {
-    private DomIdentifierFactory $domIdentifierFactory;
-    private IdentifierTypeAnalyser $identifierTypeAnalyser;
-    private ArgumentFactory $argumentFactory;
-
     public function __construct(
-        DomIdentifierFactory $domIdentifierFactory,
-        IdentifierTypeAnalyser $identifierTypeAnalyser,
-        ArgumentFactory $argumentFactory
+        private DomIdentifierFactory $domIdentifierFactory,
+        private IdentifierTypeAnalyser $identifierTypeAnalyser,
+        private ArgumentFactory $argumentFactory
     ) {
-        $this->domIdentifierFactory = $domIdentifierFactory;
-        $this->identifierTypeAnalyser = $identifierTypeAnalyser;
-        $this->argumentFactory = $argumentFactory;
     }
 
     public static function createHandler(): WaitForActionHandler
