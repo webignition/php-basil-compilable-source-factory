@@ -28,8 +28,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
         return [
             'exists comparison, element identifier examined value' => [
                 'assertion' => $assertionParser->parse('$".selector" exists'),
-                'expectedRenderedSource' =>
-                    '{{ PHPUNIT }}->examinedElementIdentifier = ElementIdentifier::fromJson(\'{' . "\n" .
+                'expectedRenderedSource' => '{{ PHPUNIT }}->examinedElementIdentifier = ' .
+                    'ElementIdentifier::fromJson(\'{' . "\n" .
                     '    "locator": ".selector"' . "\n" .
                     '}\');' . "\n" .
                     'try {' . "\n" .
@@ -56,8 +56,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
             ],
             'exists comparison, attribute identifier examined value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name exists'),
-                'expectedRenderedSource' =>
-                    '{{ PHPUNIT }}->examinedElementIdentifier = ElementIdentifier::fromJson(\'{' . "\n" .
+                'expectedRenderedSource' => '{{ PHPUNIT }}->examinedElementIdentifier = ' .
+                    'ElementIdentifier::fromJson(\'{' . "\n" .
                     '    "locator": ".selector"' . "\n" .
                     '}\');' . "\n" .
                     'try {' . "\n" .
@@ -94,8 +94,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
             ],
             'exists comparison, css attribute selector containing dot' => [
                 'assertion' => $assertionParser->parse('$"a[href=foo.html]" exists'),
-                'expectedRenderedSource' =>
-                    '{{ PHPUNIT }}->examinedElementIdentifier = ElementIdentifier::fromJson(\'{' . "\n" .
+                'expectedRenderedSource' => '{{ PHPUNIT }}->examinedElementIdentifier = ' .
+                    'ElementIdentifier::fromJson(\'{' . "\n" .
                     '    "locator": "a[href=foo.html]"' . "\n" .
                     '}\');' . "\n" .
                     'try {' . "\n" .
@@ -122,8 +122,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
             ],
             'exists comparison, css attribute selector containing dot with attribute name' => [
                 'assertion' => $assertionParser->parse('$"a[href=foo.html]".attribute_name exists'),
-                'expectedRenderedSource' =>
-                    '{{ PHPUNIT }}->examinedElementIdentifier = ElementIdentifier::fromJson(\'{' . "\n" .
+                'expectedRenderedSource' => '{{ PHPUNIT }}->examinedElementIdentifier = ' .
+                    'ElementIdentifier::fromJson(\'{' . "\n" .
                     '    "locator": "a[href=foo.html]"' . "\n" .
                     '}\');' . "\n" .
                     'try {' . "\n" .
@@ -164,8 +164,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     '$".selector"',
                     'exists'
                 ),
-                'expectedRenderedSource' =>
-                    '{{ PHPUNIT }}->examinedElementIdentifier = ElementIdentifier::fromJson(\'{' . "\n" .
+                'expectedRenderedSource' => '{{ PHPUNIT }}->examinedElementIdentifier = ' .
+                    'ElementIdentifier::fromJson(\'{' . "\n" .
                     '    "locator": ".selector"' . "\n" .
                     '}\');' . "\n" .
                     'try {' . "\n" .
@@ -196,8 +196,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     '$".selector"',
                     'exists'
                 ),
-                'expectedRenderedSource' =>
-                    '{{ PHPUNIT }}->examinedElementIdentifier = ElementIdentifier::fromJson(\'{' . "\n" .
+                'expectedRenderedSource' => '{{ PHPUNIT }}->examinedElementIdentifier = ' .
+                    'ElementIdentifier::fromJson(\'{' . "\n" .
                     '    "locator": ".selector"' . "\n" .
                     '}\');' . "\n" .
                     'try {' . "\n" .
@@ -228,8 +228,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     '$".selector"',
                     'exists'
                 ),
-                'expectedRenderedSource' =>
-                    '{{ PHPUNIT }}->examinedElementIdentifier = ElementIdentifier::fromJson(\'{' . "\n" .
+                'expectedRenderedSource' => '{{ PHPUNIT }}->examinedElementIdentifier = ' .
+                    'ElementIdentifier::fromJson(\'{' . "\n" .
                     '    "locator": ".selector"' . "\n" .
                     '}\');' . "\n" .
                     'try {' . "\n" .
@@ -260,8 +260,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     '$".duration"',
                     'exists'
                 ),
-                'expectedRenderedSource' =>
-                    '{{ PHPUNIT }}->examinedElementIdentifier = ElementIdentifier::fromJson(\'{' . "\n" .
+                'expectedRenderedSource' => '{{ PHPUNIT }}->examinedElementIdentifier = ' .
+                    'ElementIdentifier::fromJson(\'{' . "\n" .
                     '    "locator": ".duration"' . "\n" .
                     '}\');' . "\n" .
                     'try {' . "\n" .

@@ -24,8 +24,7 @@ trait CreateFromIncludesAssertionDataProviderTrait
         return [
             'includes comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" includes "value"'),
-                'expectedRenderedSource' =>
-                    '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n" .
+                'expectedRenderedSource' => '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n" .
                     '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n" .
                     '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".selector"' . "\n" .
@@ -50,8 +49,7 @@ trait CreateFromIncludesAssertionDataProviderTrait
             ],
             'includes comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name includes "value"'),
-                'expectedRenderedSource' =>
-                    '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n" .
+                'expectedRenderedSource' => '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n" .
                     '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n" .
                     '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".selector"' . "\n" .

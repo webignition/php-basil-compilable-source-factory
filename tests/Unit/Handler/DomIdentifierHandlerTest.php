@@ -53,8 +53,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTest
                 'serializedElementIdentifier' => $elementIdentifierSerializer->serialize(
                     new ElementIdentifier('.selector')
                 ),
-                'expectedRenderedSource' =>
-                    '{{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                'expectedRenderedSource' => '{{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
                     '    "locator": ".selector"' . "\n" .
                     '}\'))',
                 'expectedMetadata' => new Metadata([
@@ -71,8 +70,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTest
                     (new ElementIdentifier('.selector'))
                         ->withParentIdentifier(new ElementIdentifier('.parent'))
                 ),
-                'expectedRenderedSource' =>
-                    '{{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
+                'expectedRenderedSource' => '{{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
                     '    "locator": ".selector",' . "\n" .
                     '    "parent": {' . "\n" .
                     '        "locator": ".parent"' . "\n" .
@@ -116,8 +114,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTest
                 'serializedElementIdentifier' => $elementIdentifierSerializer->serialize(
                     new ElementIdentifier('.selector')
                 ),
-                'expectedRenderedSource' =>
-                    '{{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                'expectedRenderedSource' => '{{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
                     '    "locator": ".selector"' . "\n" .
                     '}\'))',
                 'expectedMetadata' => new Metadata([
@@ -134,8 +131,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTest
                     (new ElementIdentifier('.selector'))
                         ->withParentIdentifier(new ElementIdentifier('.parent'))
                 ),
-                'expectedRenderedSource' =>
-                    '{{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
+                'expectedRenderedSource' => '{{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
                     '    "locator": ".selector",' . "\n" .
                     '    "parent": {' . "\n" .
                     '        "locator": ".parent"' . "\n" .
@@ -181,8 +177,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTest
                     new AttributeIdentifier('.selector', 'attribute_name')
                 ),
                 'attributeName' => 'attribute_name',
-                'expectedRenderedSource' =>
-                    '(function () {' . "\n" .
+                'expectedRenderedSource' => '(function () {' . "\n" .
                     '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".selector"' . "\n" .
                     '    }\'));' . "\n" .
@@ -204,8 +199,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTest
                         ->withParentIdentifier(new ElementIdentifier('.parent'))
                 ),
                 'attributeName' => 'attribute_name',
-                'expectedRenderedSource' =>
-                    '(function () {' . "\n" .
+                'expectedRenderedSource' => '(function () {' . "\n" .
                     '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".selector",' . "\n" .
                     '        "parent": {' . "\n" .
@@ -253,8 +247,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTest
                 'serializedElementIdentifier' => $elementIdentifierSerializer->serialize(
                     new ElementIdentifier('.selector')
                 ),
-                'expectedRenderedSource' =>
-                    '(function () {' . "\n" .
+                'expectedRenderedSource' => '(function () {' . "\n" .
                     '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".selector"' . "\n" .
                     '    }\'));' . "\n" .
@@ -276,8 +269,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTest
                     (new ElementIdentifier('.selector'))
                         ->withParentIdentifier(new ElementIdentifier('.parent'))
                 ),
-                'expectedRenderedSource' =>
-                    '(function () {' . "\n" .
+                'expectedRenderedSource' => '(function () {' . "\n" .
                     '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".selector",' . "\n" .
                     '        "parent": {' . "\n" .

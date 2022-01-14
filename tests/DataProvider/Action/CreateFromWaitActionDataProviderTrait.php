@@ -29,8 +29,7 @@ trait CreateFromWaitActionDataProviderTrait
             ],
             'wait action, element value' => [
                 'action' => $actionParser->parse('wait $".duration-selector"'),
-                'expectedRenderedSource' =>
-                    'usleep(((int) ((function () {' . "\n" .
+                'expectedRenderedSource' => 'usleep(((int) ((function () {' . "\n" .
                     '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".duration-selector"' . "\n" .
                     '    }\'));' . "\n" .
@@ -49,8 +48,7 @@ trait CreateFromWaitActionDataProviderTrait
             ],
             'wait action, descendant element value' => [
                 'action' => $actionParser->parse('wait $".parent" >> $".child"'),
-                'expectedRenderedSource' =>
-                    'usleep(((int) ((function () {' . "\n" .
+                'expectedRenderedSource' => 'usleep(((int) ((function () {' . "\n" .
                     '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".child",' . "\n" .
                     '        "parent": {' . "\n" .
@@ -72,8 +70,7 @@ trait CreateFromWaitActionDataProviderTrait
             ],
             'wait action, single-character CSS selector element value' => [
                 'action' => $actionParser->parse('wait $"a"'),
-                'expectedRenderedSource' =>
-                    'usleep(((int) ((function () {' . "\n" .
+                'expectedRenderedSource' => 'usleep(((int) ((function () {' . "\n" .
                     '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": "a"' . "\n" .
                     '    }\'));' . "\n" .
@@ -92,8 +89,7 @@ trait CreateFromWaitActionDataProviderTrait
             ],
             'wait action, attribute value' => [
                 'action' => $actionParser->parse('wait $".duration-selector".attribute_name'),
-                'expectedRenderedSource' =>
-                    'usleep(((int) ((function () {' . "\n" .
+                'expectedRenderedSource' => 'usleep(((int) ((function () {' . "\n" .
                     '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".duration-selector"' . "\n" .
                     '    }\'));' . "\n" .
@@ -111,8 +107,7 @@ trait CreateFromWaitActionDataProviderTrait
             ],
             'wait action, browser property' => [
                 'action' => $actionParser->parse('wait $browser.size'),
-                'expectedRenderedSource' =>
-                    'usleep(((int) ((function () {' . "\n" .
+                'expectedRenderedSource' => 'usleep(((int) ((function () {' . "\n" .
                     '    $webDriverDimension = ' .
                     '{{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n" .
                     "\n" .
@@ -154,8 +149,7 @@ trait CreateFromWaitActionDataProviderTrait
             ],
             'wait action, data parameter' => [
                 'action' => $actionParser->parse('wait $data.key'),
-                'expectedRenderedSource' =>
-                    'usleep(((int) ($key ?? 0)) * 1000);',
+                'expectedRenderedSource' => 'usleep(((int) ($key ?? 0)) * 1000);',
                 'expectedMetadata' => new Metadata(),
             ],
         ];

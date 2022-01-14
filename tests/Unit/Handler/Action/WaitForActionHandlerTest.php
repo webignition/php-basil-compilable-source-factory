@@ -65,7 +65,8 @@ class WaitForActionHandlerTest extends \PHPUnit\Framework\TestCase
                     $domIdentifierFactory
                         ->shouldReceive('createFromIdentifierString')
                         ->with('$".selector"')
-                        ->andReturnNull();
+                        ->andReturnNull()
+                    ;
 
                     ObjectReflector::setProperty(
                         $handler,

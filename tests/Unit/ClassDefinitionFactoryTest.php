@@ -58,8 +58,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTest
                         'url' => 'http://example.com',
                     ],
                 ])->withPath('test.yml'),
-                'expectedRenderedClassDefinition' =>
-                    'use webignition\BaseBasilTestCase\ClientManager;' . "\n" .
+                'expectedRenderedClassDefinition' => 'use webignition\BaseBasilTestCase\ClientManager;' . "\n" .
                     'use webignition\BasilModels\Test\Configuration;' . "\n" .
                     "\n" .
                     'class GeneratedClassName' . "\n" .
@@ -103,8 +102,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTest
                         'url' => 'http://example.com',
                     ],
                 ])->withPath('test.yml'),
-                'expectedRenderedClassDefinition' =>
-                    'use webignition\BaseBasilTestCase\ClientManager;' . "\n" .
+                'expectedRenderedClassDefinition' => 'use webignition\BaseBasilTestCase\ClientManager;' . "\n" .
                     'use webignition\BasilModels\Test\Configuration;' . "\n" .
                     "\n" .
                     'class GeneratedClassName' . "\n" .
@@ -148,8 +146,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTest
                         'url' => 'http://example.com',
                     ],
                 ])->withPath('test.yml'),
-                'expectedRenderedClassDefinition' =>
-                    'use webignition\BaseBasilTestCase\ClientManager;' . "\n" .
+                'expectedRenderedClassDefinition' => 'use webignition\BaseBasilTestCase\ClientManager;' . "\n" .
                     'use webignition\BasilModels\Test\Configuration;' . "\n" .
                     "\n" .
                     'class GeneratedClassName' . "\n" .
@@ -194,8 +191,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTest
                     ],
                     'step one' => [],
                 ])->withPath('test.yml'),
-                'expectedRenderedClassDefinition' =>
-                    'use webignition\BaseBasilTestCase\ClientManager;' . "\n" .
+                'expectedRenderedClassDefinition' => 'use webignition\BaseBasilTestCase\ClientManager;' . "\n" .
                     'use webignition\BasilModels\Test\Configuration;' . "\n" .
                     "\n" .
                     'class GeneratedClassName' . "\n" .
@@ -251,8 +247,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTest
                     'step one' => [],
                     'step two' => [],
                 ])->withPath('test.yml'),
-                'expectedRenderedClassDefinition' =>
-                    'use webignition\BaseBasilTestCase\ClientManager;' . "\n" .
+                'expectedRenderedClassDefinition' => 'use webignition\BaseBasilTestCase\ClientManager;' . "\n" .
                     'use webignition\BasilModels\Test\Configuration;' . "\n" .
                     "\n" .
                     'class GeneratedClassName' . "\n" .
@@ -327,7 +322,8 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTest
 
                 return true;
             })
-            ->andReturn($className);
+            ->andReturn($className)
+        ;
 
         return $classNameFactory;
     }

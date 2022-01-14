@@ -45,10 +45,7 @@ class AccessorDefaultValueFactory
     }
 
     /**
-     * @param string $value
-     * @param callable $defaultValueHandler
-     *
-     * @return mixed|null
+     * @return null|mixed
      */
     private function create(string $value, callable $defaultValueHandler)
     {

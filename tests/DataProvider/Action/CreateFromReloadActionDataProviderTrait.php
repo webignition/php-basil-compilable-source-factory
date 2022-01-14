@@ -21,8 +21,7 @@ trait CreateFromReloadActionDataProviderTrait
         return [
             'no-arguments action (reload)' => [
                 'action' => $actionParser->parse('reload'),
-                'expectedRenderedSource' =>
-                    '{{ CRAWLER }} = {{ CLIENT }}->reload();' . "\n" .
+                'expectedRenderedSource' => '{{ CRAWLER }} = {{ CLIENT }}->reload();' . "\n" .
                     '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([

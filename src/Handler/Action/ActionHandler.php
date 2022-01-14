@@ -48,10 +48,6 @@ class ActionHandler
     }
 
     /**
-     * @param ActionInterface $action
-     *
-     * @return BodyInterface
-     *
      * @throws UnsupportedStatementException
      */
     public function handle(ActionInterface $action): BodyInterface

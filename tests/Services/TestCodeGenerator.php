@@ -23,20 +23,13 @@ class TestCodeGenerator
     private const WEBDRIVER_ASSERTION_FACTORY_VARIABLE_NAME = '$this->assertionFactory';
     private const WEBDRIVER_ACTION_FACTORY_VARIABLE_NAME = '$this->actionFactory';
 
-
     public static function create(): TestCodeGenerator
     {
         return new TestCodeGenerator();
     }
 
     /**
-     * @param BodyInterface $body
-     * @param string $fixture
-     * @param BodyInterface|null $additionalSetupStatements
-     * @param BodyInterface|null $teardownStatements
      * @param array<string, string> $additionalVariableIdentifiers
-     *
-     * @return string
      */
     public function createBrowserTestForBlock(
         BodyInterface $body,
@@ -69,10 +62,7 @@ class TestCodeGenerator
     }
 
     /**
-     * @param ClassDefinitionInterface $classDefinition
      * @param array<string, string> $additionalVariableIdentifiers
-     *
-     * @return string
      */
     public function createBrowserTestForClass(
         ClassDefinitionInterface $classDefinition,
@@ -94,8 +84,6 @@ class TestCodeGenerator
     }
 
     /**
-     * @param VariableDependencyCollection $variableDependencies
-     *
      * @return array<string, string>
      */
     private function createVariableIdentifiersForVariableDependencies(

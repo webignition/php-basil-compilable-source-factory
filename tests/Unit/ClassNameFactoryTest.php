@@ -54,11 +54,13 @@ class ClassNameFactoryTest extends \PHPUnit\Framework\TestCase
 
         $test
             ->shouldReceive('getPath')
-            ->andReturn($path);
+            ->andReturn($path)
+        ;
 
         $test
             ->shouldReceive('getConfiguration')
-            ->andReturn($configuration);
+            ->andReturn($configuration)
+        ;
 
         return $test;
     }
@@ -69,7 +71,8 @@ class ClassNameFactoryTest extends \PHPUnit\Framework\TestCase
 
         $configuration
             ->shouldReceive('getBrowser')
-            ->andReturn($browser);
+            ->andReturn($browser)
+        ;
 
         return $configuration;
     }

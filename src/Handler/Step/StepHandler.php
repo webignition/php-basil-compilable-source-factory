@@ -45,10 +45,6 @@ class StepHandler
     }
 
     /**
-     * @param StepInterface $step
-     *
-     * @return BodyInterface
-     *
      * @throws UnsupportedStepException
      */
     public function handle(StepInterface $step): BodyInterface
@@ -97,10 +93,6 @@ class StepHandler
     }
 
     /**
-     * @param UniqueAssertionCollection $assertions
-     *
-     * @return BodyInterface
-     *
      * @throws UnsupportedStatementException
      */
     private function createDerivedAssertionsBody(UniqueAssertionCollection $assertions): BodyInterface

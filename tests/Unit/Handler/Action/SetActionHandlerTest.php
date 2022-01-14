@@ -66,7 +66,8 @@ class SetActionHandlerTest extends \PHPUnit\Framework\TestCase
                     $domIdentifierFactory
                         ->shouldReceive('createFromIdentifierString')
                         ->with('$".selector"')
-                        ->andReturnNull();
+                        ->andReturnNull()
+                    ;
 
                     ObjectReflector::setProperty(
                         $handler,
@@ -88,12 +89,14 @@ class SetActionHandlerTest extends \PHPUnit\Framework\TestCase
                     $domIdentifierFactory
                         ->shouldReceive('createFromIdentifierString')
                         ->with('$".selector"')
-                        ->andReturn(new ElementIdentifier('.selector'));
+                        ->andReturn(new ElementIdentifier('.selector'))
+                    ;
 
                     $domIdentifierFactory
                         ->shouldReceive('createFromIdentifierString')
                         ->with('$".value"')
-                        ->andReturnNull();
+                        ->andReturnNull()
+                    ;
 
                     ObjectReflector::setProperty(
                         $handler,

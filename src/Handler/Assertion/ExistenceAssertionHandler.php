@@ -16,15 +16,15 @@ class ExistenceAssertionHandler extends AbstractAssertionHandler
     public const ASSERT_TRUE_METHOD = 'assertTrue';
     public const ASSERT_FALSE_METHOD = 'assertFalse';
 
-    private IdentifierTypeAnalyser $identifierTypeAnalyser;
-    private ValueTypeIdentifier $valueTypeIdentifier;
-    private ScalarExistenceAssertionHandler $scalarExistenceAssertionHandler;
-    private IdentifierExistenceAssertionHandler $identifierExistenceAssertionHandler;
-
     private const OPERATOR_TO_ASSERTION_TEMPLATE_MAP = [
         'exists' => self::ASSERT_TRUE_METHOD,
         'not-exists' => self::ASSERT_FALSE_METHOD,
     ];
+
+    private IdentifierTypeAnalyser $identifierTypeAnalyser;
+    private ValueTypeIdentifier $valueTypeIdentifier;
+    private ScalarExistenceAssertionHandler $scalarExistenceAssertionHandler;
+    private IdentifierExistenceAssertionHandler $identifierExistenceAssertionHandler;
 
     public function __construct(
         AssertionMethodInvocationFactory $assertionMethodInvocationFactory,
@@ -52,16 +52,7 @@ class ExistenceAssertionHandler extends AbstractAssertionHandler
         );
     }
 
-    protected function getOperationToAssertionTemplateMap(): array
-    {
-        return self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP;
-    }
-
     /**
-     * @param AssertionInterface $assertion
-     *
-     * @return BodyInterface
-     *
      * @throws UnsupportedContentException
      */
     public function handle(AssertionInterface $assertion): BodyInterface
@@ -77,5 +68,10 @@ class ExistenceAssertionHandler extends AbstractAssertionHandler
         }
 
         throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
+    }
+
+    protected function getOperationToAssertionTemplateMap(): array
+    {
+        return self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP;
     }
 }

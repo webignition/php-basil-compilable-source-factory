@@ -24,8 +24,6 @@ class ComparisonAssertionHandler extends AbstractAssertionHandler
     public const ASSERT_STRING_NOT_CONTAINS_STRING_METHOD = 'assertStringNotContainsString';
     public const ASSERT_MATCHES_METHOD = 'assertMatchesRegularExpression';
 
-    private ValueAccessorFactory $valueAccessorFactory;
-
     private const OPERATOR_TO_ASSERTION_TEMPLATE_MAP = [
         'includes' => self::ASSERT_STRING_CONTAINS_STRING_METHOD,
         'excludes' => self::ASSERT_STRING_NOT_CONTAINS_STRING_METHOD,
@@ -33,6 +31,8 @@ class ComparisonAssertionHandler extends AbstractAssertionHandler
         'is-not' => self::ASSERT_NOT_EQUALS_METHOD,
         'matches' => self::ASSERT_MATCHES_METHOD,
     ];
+
+    private ValueAccessorFactory $valueAccessorFactory;
 
     /**
      * @var string[]
@@ -59,16 +59,7 @@ class ComparisonAssertionHandler extends AbstractAssertionHandler
         );
     }
 
-    protected function getOperationToAssertionTemplateMap(): array
-    {
-        return self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP;
-    }
-
     /**
-     * @param AssertionInterface $assertion
-     *
-     * @return BodyInterface
-     *
      * @throws UnsupportedContentException
      * @throws UnsupportedStatementException
      */
@@ -110,5 +101,10 @@ class ComparisonAssertionHandler extends AbstractAssertionHandler
             ),
             $this->createAssertionStatement($assertion, new MethodArguments($assertionArguments)),
         ]);
+    }
+
+    protected function getOperationToAssertionTemplateMap(): array
+    {
+        return self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP;
     }
 }

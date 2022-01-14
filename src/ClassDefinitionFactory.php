@@ -59,11 +59,6 @@ class ClassDefinitionFactory
     }
 
     /**
-     * @param TestInterface $test
-     * @param string|null $fullyQualifiedBaseClass
-     *
-     * @return ClassDefinitionInterface
-     *
      * @throws UnsupportedStepException
      */
     public function createClassDefinition(
@@ -81,7 +76,7 @@ class ClassDefinitionFactory
                     $methodDefinitions,
                     $this->stepMethodFactory->create($stepOrdinalIndex, $stepName, $step)
                 );
-                $stepOrdinalIndex++;
+                ++$stepOrdinalIndex;
             }
         }
 

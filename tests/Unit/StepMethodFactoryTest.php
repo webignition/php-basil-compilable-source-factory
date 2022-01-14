@@ -67,15 +67,14 @@ class StepMethodFactoryTest extends AbstractResolvableTest
                 'stepName' => 'Step Name',
                 'step' => $emptyStep,
                 'stepMethodFactory' => StepMethodFactory::createFactory(),
-                'expectedRenderedTestMethod' =>
-                    "public function test1()\n" .
+                'expectedRenderedTestMethod' => "public function test1()\n" .
                     "{\n" .
                     "    if (self::hasException()) {\n" .
                     "        return;\n" .
                     "    }\n" .
                     "    {{ PHPUNIT }}->setBasilStepName('Step Name');\n" .
                     "    {{ PHPUNIT }}->setCurrentDataSet(null);\n" .
-                    "}",
+                    '}',
                 'expectedTestMethodMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -87,15 +86,14 @@ class StepMethodFactoryTest extends AbstractResolvableTest
                 'stepName' => 'step name \'contains\' single quotes',
                 'step' => $emptyStep,
                 'stepMethodFactory' => StepMethodFactory::createFactory(),
-                'expectedRenderedTestMethod' =>
-                    "public function test2()\n" .
+                'expectedRenderedTestMethod' => "public function test2()\n" .
                     "{\n" .
                     "    if (self::hasException()) {\n" .
                     "        return;\n" .
                     "    }\n" .
-                    "    {{ PHPUNIT }}->setBasilStepName('step name \'contains\' single quotes');\n" .
+                    "    {{ PHPUNIT }}->setBasilStepName('step name \\'contains\\' single quotes');\n" .
                     "    {{ PHPUNIT }}->setCurrentDataSet(null);\n" .
-                    "}",
+                    '}',
                 'expectedTestMethodMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -114,8 +112,7 @@ class StepMethodFactoryTest extends AbstractResolvableTest
                         ])
                     ),
                 ]),
-                'expectedRenderedTestMethod' =>
-                    "public function test3()\n" .
+                'expectedRenderedTestMethod' => "public function test3()\n" .
                     "{\n" .
                     "    if (self::hasException()) {\n" .
                     "        return;\n" .
@@ -124,7 +121,7 @@ class StepMethodFactoryTest extends AbstractResolvableTest
                     "    {{ PHPUNIT }}->setCurrentDataSet(null);\n" .
                     "\n" .
                     "    // mocked step handler response\n" .
-                    "}",
+                    '}',
                 'expectedTestMethodMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -204,8 +201,8 @@ class StepMethodFactoryTest extends AbstractResolvableTest
                 'expectedRenderedTestMethod' => "/**\n" .
                     " * @dataProvider dataProvider4\n" .
                     " *\n" .
-                    " * @param string " . '$expected_value' . "\n" .
-                    " * @param string " . '$field_value' . "\n" .
+                    ' * @param string ' . '$expected_value' . "\n" .
+                    ' * @param string ' . '$field_value' . "\n" .
                     " */\n" .
                     'public function test4($expected_value, $field_value)' . "\n" .
                     "{\n" .
@@ -222,7 +219,7 @@ class StepMethodFactoryTest extends AbstractResolvableTest
                     "    ]));\n" .
                     "\n" .
                     "    // mocked step handler response\n" .
-                    "}",
+                    '}',
                 'expectedRenderedDataProvider' => "public function dataProvider4(): array\n" .
                     "{\n" .
                     "    return [\n" .
@@ -235,11 +232,11 @@ class StepMethodFactoryTest extends AbstractResolvableTest
                     "            'field_value' => '\"value3\"',\n" .
                     "        ],\n" .
                     "        '2' => [\n" .
-                    "            'expected_value' => '\'value6\'',\n" .
-                    "            'field_value' => '\'value5\'',\n" .
+                    "            'expected_value' => '\\'value6\\'',\n" .
+                    "            'field_value' => '\\'value5\\'',\n" .
                     "        ],\n" .
                     "    ];\n" .
-                    "}",
+                    '}',
                 'expectedTestMethodMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
                         new ClassName(DataSet::class),
@@ -254,8 +251,6 @@ class StepMethodFactoryTest extends AbstractResolvableTest
 
     /**
      * @param array<string, mixed> $services
-     *
-     * @return StepMethodFactory
      */
     private function createStepMethodFactory(array $services = []): StepMethodFactory
     {
@@ -280,7 +275,8 @@ class StepMethodFactoryTest extends AbstractResolvableTest
 
                 return true;
             })
-            ->andReturn($return);
+            ->andReturn($return)
+        ;
 
         return $stepHandler;
     }

@@ -29,8 +29,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     '"/^value/"',
                     'is-regexp'
                 ),
-                'expectedRenderedSource' =>
-                    '{{ PHPUNIT }}->setExaminedValue("/^value/" ?? null);' . "\n" .
+                'expectedRenderedSource' => '{{ PHPUNIT }}->setExaminedValue("/^value/" ?? null);' . "\n" .
                     '{{ PHPUNIT }}->setBooleanExpectedValue(' . "\n" .
                     '    @preg_match({{ PHPUNIT }}->getExaminedValue(), null) === false' . "\n" .
                     ');' . "\n" .
@@ -49,8 +48,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     '$".pattern-container"',
                     'is-regexp'
                 ),
-                'expectedRenderedSource' =>
-                    '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n" .
+                'expectedRenderedSource' => '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n" .
                     '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".pattern-container"' . "\n" .
                     '    }\'));' . "\n" .
@@ -80,8 +78,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     '$".pattern-container".attribute_name',
                     'is-regexp'
                 ),
-                'expectedRenderedSource' =>
-                    '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n" .
+                'expectedRenderedSource' => '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n" .
                     '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".pattern-container"' . "\n" .
                     '    }\'));' . "\n" .
@@ -110,8 +107,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     '$data.pattern',
                     'is-regexp'
                 ),
-                'expectedRenderedSource' =>
-                    '{{ PHPUNIT }}->setExaminedValue($pattern ?? null);' . "\n" .
+                'expectedRenderedSource' => '{{ PHPUNIT }}->setExaminedValue($pattern ?? null);' . "\n" .
                     '{{ PHPUNIT }}->setBooleanExpectedValue(' . "\n" .
                     '    @preg_match({{ PHPUNIT }}->getExaminedValue(), null) === false' . "\n" .
                     ');' . "\n" .

@@ -42,10 +42,6 @@ class WaitActionHandler
     }
 
     /**
-     * @param ActionInterface $waitAction
-     *
-     * @return BodyInterface
-     *
      * @throws UnsupportedContentException
      */
     public function handle(ActionInterface $waitAction): BodyInterface

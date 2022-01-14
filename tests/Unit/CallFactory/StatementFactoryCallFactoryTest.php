@@ -51,8 +51,7 @@ class StatementFactoryCallFactoryTest extends AbstractResolvableTest
         return [
             'click action' => [
                 'statement' => $actionParser->parse('click $".selector"'),
-                'expectedRenderedSource' =>
-                    '{{ ACTION_FACTORY }}->createFromJson(\'{' . "\n" .
+                'expectedRenderedSource' => '{{ ACTION_FACTORY }}->createFromJson(\'{' . "\n" .
                     '    "statement-type": "action",' . "\n" .
                     '    "source": "click $\\\\".selector\\\\"",' . "\n" .
                     '    "type": "click",' . "\n" .
@@ -67,8 +66,7 @@ class StatementFactoryCallFactoryTest extends AbstractResolvableTest
             ],
             'exists assertion' => [
                 'statement' => $assertionParser->parse('$".selector" exists'),
-                'expectedRenderedSource' =>
-                    '{{ ASSERTION_FACTORY }}->createFromJson(\'{' . "\n" .
+                'expectedRenderedSource' => '{{ ASSERTION_FACTORY }}->createFromJson(\'{' . "\n" .
                     '    "statement-type": "assertion",' . "\n" .
                     '    "source": "$\\\\".selector\\\\" exists",' . "\n" .
                     '    "identifier": "$\\\\".selector\\\\"",' . "\n" .
@@ -86,8 +84,7 @@ class StatementFactoryCallFactoryTest extends AbstractResolvableTest
                     '$".selector"',
                     'exists'
                 ),
-                'expectedRenderedSource' =>
-                    '{{ ASSERTION_FACTORY }}->createFromJson(\'{' . "\n" .
+                'expectedRenderedSource' => '{{ ASSERTION_FACTORY }}->createFromJson(\'{' . "\n" .
                     '    "container": {' . "\n" .
                     '        "type": "derived-value-operation-assertion",' . "\n" .
                     '        "value": "$\\\\".selector\\\\"",' . "\n" .

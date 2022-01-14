@@ -53,10 +53,6 @@ class ValueAccessorFactory
     }
 
     /**
-     * @param string $value
-     *
-     * @return ExpressionInterface
-     *
      * @throws UnsupportedContentException
      */
     public function create(string $value): ExpressionInterface
@@ -83,10 +79,6 @@ class ValueAccessorFactory
     }
 
     /**
-     * @param string $value
-     *
-     * @return ExpressionInterface
-     *
      * @throws UnsupportedContentException
      */
     public function createWithDefaultIfNull(string $value): ExpressionInterface

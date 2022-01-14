@@ -57,13 +57,9 @@ class StepMethodFactory
     }
 
     /**
-     * @param int $index
-     * @param string $stepName
-     * @param StepInterface $step
+     * @throws UnsupportedStepException
      *
      * @return MethodDefinitionInterface[]
-     *
-     * @throws UnsupportedStepException
      */
     public function create(int $index, string $stepName, StepInterface $step): array
     {
@@ -108,8 +104,6 @@ class StepMethodFactory
     }
 
     /**
-     * @param DataSetCollectionInterface $dataSetCollection
-     *
      * @return array<string, array<int|string, string>>
      */
     private function createEscapedDataProviderData(DataSetCollectionInterface $dataSetCollection): array
@@ -125,7 +119,7 @@ class StepMethodFactory
     }
 
     /**
-     * @param string[] $parameterNames
+     * @param string[]                  $parameterNames
      * @param array<int|string, string> $dataSet
      *
      * @return array<int|string, string>
@@ -171,8 +165,6 @@ class StepMethodFactory
 
     /**
      * @param string[] $parameterNames
-     *
-     * @return StatementInterface
      */
     private function createSetCurrentDataSetStatement(array $parameterNames): StatementInterface
     {

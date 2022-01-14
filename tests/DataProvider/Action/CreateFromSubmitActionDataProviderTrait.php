@@ -24,8 +24,7 @@ trait CreateFromSubmitActionDataProviderTrait
         return [
             'interaction action (submit), element identifier' => [
                 'action' => $actionParser->parse('submit $".selector"'),
-                'expectedRenderedSource' =>
-                    '(function () {' . "\n" .
+                'expectedRenderedSource' => '(function () {' . "\n" .
                     '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".selector"' . "\n" .
                     '    }\'));' . "\n" .

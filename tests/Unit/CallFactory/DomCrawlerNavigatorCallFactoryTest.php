@@ -140,8 +140,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTest
         return [
             'literal expression' => [
                 'elementIdentifierExpression' => new LiteralExpression('"literal expression"'),
-                'expectedRenderedSource' =>
-                    '{{ NAVIGATOR }}->{{ METHOD }}("literal expression")',
+                'expectedRenderedSource' => '{{ NAVIGATOR }}->{{ METHOD }}("literal expression")',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
