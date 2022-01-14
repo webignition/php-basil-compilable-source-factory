@@ -35,18 +35,11 @@ use webignition\BasilModels\Test\TestInterface;
 
 class ClassDefinitionFactory
 {
-    private ClassNameFactory $classNameFactory;
-    private StepMethodFactory $stepMethodFactory;
-    private ArgumentFactory $argumentFactory;
-
     public function __construct(
-        ClassNameFactory $classNameFactory,
-        StepMethodFactory $stepMethodFactory,
-        ArgumentFactory $argumentFactory
+        private ClassNameFactory $classNameFactory,
+        private StepMethodFactory $stepMethodFactory,
+        private ArgumentFactory $argumentFactory
     ) {
-        $this->classNameFactory = $classNameFactory;
-        $this->stepMethodFactory = $stepMethodFactory;
-        $this->argumentFactory = $argumentFactory;
     }
 
     public static function createFactory(): ClassDefinitionFactory

@@ -33,18 +33,11 @@ use webignition\BasilModels\Step\StepInterface;
 
 class StepMethodFactory
 {
-    private StepHandler $stepHandler;
-    private SingleQuotedStringEscaper $singleQuotedStringEscaper;
-    private ArgumentFactory $argumentFactory;
-
     public function __construct(
-        StepHandler $stepHandler,
-        SingleQuotedStringEscaper $singleQuotedStringEscaper,
-        ArgumentFactory $argumentFactory
+        private StepHandler $stepHandler,
+        private SingleQuotedStringEscaper $singleQuotedStringEscaper,
+        private ArgumentFactory $argumentFactory
     ) {
-        $this->stepHandler = $stepHandler;
-        $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
-        $this->argumentFactory = $argumentFactory;
     }
 
     public static function createFactory(): self

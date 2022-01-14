@@ -9,15 +9,10 @@ use webignition\BasilCompilableSourceFactory\ModelFactory\EnvironmentValueFactor
 
 class AccessorDefaultValueFactory
 {
-    private SingleQuotedStringEscaper $singleQuotedStringEscaper;
-    private EnvironmentValueFactory $environmentValueFactory;
-
     public function __construct(
-        SingleQuotedStringEscaper $singleQuotedStringEscaper,
-        EnvironmentValueFactory $environmentValueFactory
+        private SingleQuotedStringEscaper $singleQuotedStringEscaper,
+        private EnvironmentValueFactory $environmentValueFactory
     ) {
-        $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
-        $this->environmentValueFactory = $environmentValueFactory;
     }
 
     public static function createFactory(): AccessorDefaultValueFactory
@@ -30,24 +25,25 @@ class AccessorDefaultValueFactory
 
     public function createInteger(string $value): ?int
     {
-        return $this->create($value, function (string $valueDefault) {
+        $value = $this->create($value, function (string $valueDefault): ?int {
             return ctype_digit($valueDefault)
                 ? (int) $valueDefault
                 : null;
         });
+
+        return null === $value ? $value : (int) $value;
     }
 
     public function createString(string $value): ?string
     {
-        return $this->create($value, function (string $valueDefault) {
-            return "'" . $this->singleQuotedStringEscaper->escape((string) $valueDefault) . "'";
+        $value = $this->create($value, function (string $valueDefault): string {
+            return "'" . $this->singleQuotedStringEscaper->escape($valueDefault) . "'";
         });
+
+        return null === $value ? $value : (string) $value;
     }
 
-    /**
-     * @return null|mixed
-     */
-    private function create(string $value, callable $defaultValueHandler)
+    private function create(string $value, callable $defaultValueHandler): string|int|null
     {
         if (EnvironmentValue::is($value)) {
             $environmentValue = $this->environmentValueFactory->create($value);
