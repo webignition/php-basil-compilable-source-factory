@@ -8,13 +8,10 @@ class EnvironmentValue
 {
     private const PREFIX = '$env.';
 
-    private string $property;
-    private ?string $default = null;
-
-    public function __construct(string $property, ?string $default)
-    {
-        $this->property = $property;
-        $this->default = $default;
+    public function __construct(
+        private string $property,
+        private ?string $default = null
+    ) {
     }
 
     public static function is(string $value): bool
