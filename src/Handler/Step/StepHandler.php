@@ -17,21 +17,12 @@ use webignition\BasilModels\Step\StepInterface;
 
 class StepHandler
 {
-    private ActionHandler $actionHandler;
-    private AssertionHandler $assertionHandler;
-    private StatementBlockFactory $statementBlockFactory;
-    private DerivedAssertionFactory $derivedAssertionFactory;
-
     public function __construct(
-        ActionHandler $actionHandler,
-        AssertionHandler $assertionHandler,
-        StatementBlockFactory $statementBlockFactory,
-        DerivedAssertionFactory $derivedAssertionFactory
+        private ActionHandler $actionHandler,
+        private AssertionHandler $assertionHandler,
+        private StatementBlockFactory $statementBlockFactory,
+        private DerivedAssertionFactory $derivedAssertionFactory
     ) {
-        $this->actionHandler = $actionHandler;
-        $this->assertionHandler = $assertionHandler;
-        $this->statementBlockFactory = $statementBlockFactory;
-        $this->derivedAssertionFactory = $derivedAssertionFactory;
     }
 
     public static function createHandler(): StepHandler
