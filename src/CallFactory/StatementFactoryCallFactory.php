@@ -14,11 +14,9 @@ use webignition\BasilModels\StatementInterface;
 
 class StatementFactoryCallFactory
 {
-    private ArgumentFactory $argumentFactory;
-
-    public function __construct(ArgumentFactory $argumentFactory)
-    {
-        $this->argumentFactory = $argumentFactory;
+    public function __construct(
+        private ArgumentFactory $argumentFactory
+    ) {
     }
 
     public static function createFactory(): self
