@@ -21,24 +21,14 @@ class ExistenceAssertionHandler extends AbstractAssertionHandler
         'not-exists' => self::ASSERT_FALSE_METHOD,
     ];
 
-    private IdentifierTypeAnalyser $identifierTypeAnalyser;
-    private ValueTypeIdentifier $valueTypeIdentifier;
-    private ScalarExistenceAssertionHandler $scalarExistenceAssertionHandler;
-    private IdentifierExistenceAssertionHandler $identifierExistenceAssertionHandler;
-
     public function __construct(
         AssertionMethodInvocationFactory $assertionMethodInvocationFactory,
-        IdentifierTypeAnalyser $identifierTypeAnalyser,
-        ValueTypeIdentifier $valueTypeIdentifier,
-        ScalarExistenceAssertionHandler $scalarExistenceAssertionHandler,
-        IdentifierExistenceAssertionHandler $identifierExistenceAssertionHandler
+        private IdentifierTypeAnalyser $identifierTypeAnalyser,
+        private ValueTypeIdentifier $valueTypeIdentifier,
+        private ScalarExistenceAssertionHandler $scalarExistenceAssertionHandler,
+        private IdentifierExistenceAssertionHandler $identifierExistenceAssertionHandler
     ) {
         parent::__construct($assertionMethodInvocationFactory);
-
-        $this->identifierTypeAnalyser = $identifierTypeAnalyser;
-        $this->valueTypeIdentifier = $valueTypeIdentifier;
-        $this->scalarExistenceAssertionHandler = $scalarExistenceAssertionHandler;
-        $this->identifierExistenceAssertionHandler = $identifierExistenceAssertionHandler;
     }
 
     public static function createHandler(): self

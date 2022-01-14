@@ -11,18 +11,11 @@ use webignition\BasilModels\Assertion\AssertionInterface;
 
 class AssertionHandler
 {
-    private ComparisonAssertionHandler $comparisonAssertionHandler;
-    private ExistenceAssertionHandler $existenceAssertionHandler;
-    private IsRegExpAssertionHandler $isRegExpAssertionHandler;
-
     public function __construct(
-        ComparisonAssertionHandler $comparisonAssertionHandler,
-        ExistenceAssertionHandler $existenceAssertionHandler,
-        IsRegExpAssertionHandler $isRegExpAssertionHandler
+        private ComparisonAssertionHandler $comparisonAssertionHandler,
+        private ExistenceAssertionHandler $existenceAssertionHandler,
+        private IsRegExpAssertionHandler $isRegExpAssertionHandler
     ) {
-        $this->comparisonAssertionHandler = $comparisonAssertionHandler;
-        $this->existenceAssertionHandler = $existenceAssertionHandler;
-        $this->isRegExpAssertionHandler = $isRegExpAssertionHandler;
     }
 
     public static function createHandler(): AssertionHandler

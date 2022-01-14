@@ -29,27 +29,15 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
         'is-regexp' => self::ASSERT_FALSE_METHOD,
     ];
 
-    private DomIdentifierFactory $domIdentifierFactory;
-    private IdentifierTypeAnalyser $identifierTypeAnalyser;
-    private ValueTypeIdentifier $valueTypeIdentifier;
-    private ValueAccessorFactory $valueAccessorFactory;
-    private ArgumentFactory $argumentFactory;
-
     public function __construct(
         AssertionMethodInvocationFactory $assertionMethodInvocationFactory,
-        DomIdentifierFactory $domIdentifierFactory,
-        IdentifierTypeAnalyser $identifierTypeAnalyser,
-        ValueTypeIdentifier $valueTypeIdentifier,
-        ValueAccessorFactory $valueAccessorFactory,
-        ArgumentFactory $argumentFactory
+        private DomIdentifierFactory $domIdentifierFactory,
+        private IdentifierTypeAnalyser $identifierTypeAnalyser,
+        private ValueTypeIdentifier $valueTypeIdentifier,
+        private ValueAccessorFactory $valueAccessorFactory,
+        private ArgumentFactory $argumentFactory
     ) {
         parent::__construct($assertionMethodInvocationFactory);
-
-        $this->domIdentifierFactory = $domIdentifierFactory;
-        $this->identifierTypeAnalyser = $identifierTypeAnalyser;
-        $this->valueTypeIdentifier = $valueTypeIdentifier;
-        $this->valueAccessorFactory = $valueAccessorFactory;
-        $this->argumentFactory = $argumentFactory;
     }
 
     public static function createHandler(): self
