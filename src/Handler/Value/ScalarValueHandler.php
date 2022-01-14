@@ -24,15 +24,10 @@ use webignition\BasilValueTypeIdentifier\ValueTypeIdentifier;
 
 class ScalarValueHandler
 {
-    private ValueTypeIdentifier $valueTypeIdentifier;
-    private EnvironmentValueFactory $environmentValueFactory;
-
     public function __construct(
-        ValueTypeIdentifier $valueTypeIdentifier,
-        EnvironmentValueFactory $environmentValueFactory
+        private ValueTypeIdentifier $valueTypeIdentifier,
+        private EnvironmentValueFactory $environmentValueFactory
     ) {
-        $this->valueTypeIdentifier = $valueTypeIdentifier;
-        $this->environmentValueFactory = $environmentValueFactory;
     }
 
     public static function createHandler(): ScalarValueHandler
@@ -67,7 +62,7 @@ class ScalarValueHandler
         }
 
         if ($this->valueTypeIdentifier->isLiteralValue($value)) {
-            return new LiteralExpression((string) $value);
+            return new LiteralExpression($value);
         }
 
         throw new UnsupportedContentException(UnsupportedContentException::TYPE_VALUE, $value);

@@ -16,12 +16,9 @@ use webignition\BasilModels\Assertion\AssertionInterface;
 
 abstract class AbstractAssertionHandler
 {
-    private AssertionMethodInvocationFactory $assertionMethodInvocationFactory;
-
     public function __construct(
-        AssertionMethodInvocationFactory $assertionMethodInvocationFactory
+        private AssertionMethodInvocationFactory $assertionMethodInvocationFactory
     ) {
-        $this->assertionMethodInvocationFactory = $assertionMethodInvocationFactory;
     }
 
     /**

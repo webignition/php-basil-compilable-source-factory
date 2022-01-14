@@ -13,11 +13,9 @@ class EnvironmentValueFactory
     private const WITH_DEFAULT_PATTERN = '/^[^|]+\|/';
     private const DEFAULT_DELIMITER = '|';
 
-    private QuotedStringValueExtractor $quotedStringValueExtractor;
-
-    public function __construct(QuotedStringValueExtractor $quotedStringValueExtractor)
-    {
-        $this->quotedStringValueExtractor = $quotedStringValueExtractor;
+    public function __construct(
+        private QuotedStringValueExtractor $quotedStringValueExtractor
+    ) {
     }
 
     public static function createFactory(): EnvironmentValueFactory

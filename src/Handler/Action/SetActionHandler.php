@@ -24,27 +24,14 @@ use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
 class SetActionHandler
 {
-    private ScalarValueHandler $scalarValueHandler;
-    private DomIdentifierHandler $domIdentifierHandler;
-    private AccessorDefaultValueFactory $accessorDefaultValueFactory;
-    private DomIdentifierFactory $domIdentifierFactory;
-    private IdentifierTypeAnalyser $identifierTypeAnalyser;
-    private ElementIdentifierSerializer $elementIdentifierSerializer;
-
     public function __construct(
-        ScalarValueHandler $scalarValueHandler,
-        DomIdentifierHandler $domIdentifierHandler,
-        AccessorDefaultValueFactory $accessorDefaultValueFactory,
-        DomIdentifierFactory $domIdentifierFactory,
-        IdentifierTypeAnalyser $identifierTypeAnalyser,
-        ElementIdentifierSerializer $elementIdentifierSerializer
+        private ScalarValueHandler $scalarValueHandler,
+        private DomIdentifierHandler $domIdentifierHandler,
+        private AccessorDefaultValueFactory $accessorDefaultValueFactory,
+        private DomIdentifierFactory $domIdentifierFactory,
+        private IdentifierTypeAnalyser $identifierTypeAnalyser,
+        private ElementIdentifierSerializer $elementIdentifierSerializer
     ) {
-        $this->scalarValueHandler = $scalarValueHandler;
-        $this->domIdentifierHandler = $domIdentifierHandler;
-        $this->accessorDefaultValueFactory = $accessorDefaultValueFactory;
-        $this->domIdentifierFactory = $domIdentifierFactory;
-        $this->identifierTypeAnalyser = $identifierTypeAnalyser;
-        $this->elementIdentifierSerializer = $elementIdentifierSerializer;
     }
 
     public static function createHandler(): self

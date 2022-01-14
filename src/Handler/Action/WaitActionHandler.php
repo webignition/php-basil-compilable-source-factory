@@ -22,15 +22,10 @@ class WaitActionHandler
 {
     private const MICROSECONDS_PER_MILLISECOND = 1000;
 
-    private AccessorDefaultValueFactory $accessorDefaultValueFactory;
-    private ValueAccessorFactory $valueAccessorFactory;
-
     public function __construct(
-        AccessorDefaultValueFactory $accessorDefaultValueFactory,
-        ValueAccessorFactory $valueAccessorFactory
+        private AccessorDefaultValueFactory $accessorDefaultValueFactory,
+        private ValueAccessorFactory $valueAccessorFactory
     ) {
-        $this->accessorDefaultValueFactory = $accessorDefaultValueFactory;
-        $this->valueAccessorFactory = $valueAccessorFactory;
     }
 
     public static function createHandler(): WaitActionHandler

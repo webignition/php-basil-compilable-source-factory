@@ -17,27 +17,14 @@ use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
 class ValueAccessorFactory
 {
-    private IdentifierTypeAnalyser $identifierTypeAnalyser;
-    private DomIdentifierFactory $domIdentifierFactory;
-    private DomIdentifierHandler $domIdentifierHandler;
-    private ElementIdentifierSerializer $elementIdentifierSerializer;
-    private ScalarValueHandler $scalarValueHandler;
-    private AccessorDefaultValueFactory $accessorDefaultValueFactory;
-
     public function __construct(
-        IdentifierTypeAnalyser $identifierTypeAnalyser,
-        DomIdentifierFactory $domIdentifierFactory,
-        DomIdentifierHandler $domIdentifierHandler,
-        ElementIdentifierSerializer $elementIdentifierSerializer,
-        ScalarValueHandler $scalarValueHandler,
-        AccessorDefaultValueFactory $accessorDefaultValueFactory
+        private IdentifierTypeAnalyser $identifierTypeAnalyser,
+        private DomIdentifierFactory $domIdentifierFactory,
+        private DomIdentifierHandler $domIdentifierHandler,
+        private ElementIdentifierSerializer $elementIdentifierSerializer,
+        private ScalarValueHandler $scalarValueHandler,
+        private AccessorDefaultValueFactory $accessorDefaultValueFactory
     ) {
-        $this->identifierTypeAnalyser = $identifierTypeAnalyser;
-        $this->domIdentifierFactory = $domIdentifierFactory;
-        $this->domIdentifierHandler = $domIdentifierHandler;
-        $this->elementIdentifierSerializer = $elementIdentifierSerializer;
-        $this->scalarValueHandler = $scalarValueHandler;
-        $this->accessorDefaultValueFactory = $accessorDefaultValueFactory;
     }
 
     public static function createFactory(): self

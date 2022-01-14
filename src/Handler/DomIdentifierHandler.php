@@ -22,18 +22,11 @@ use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class DomIdentifierHandler
 {
-    private DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory;
-    private ElementIdentifierCallFactory $elementIdentifierCallFactory;
-    private ArgumentFactory $argumentFactory;
-
     public function __construct(
-        DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory,
-        ElementIdentifierCallFactory $elementIdentifierCallFactory,
-        ArgumentFactory $argumentFactory
+        private DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory,
+        private ElementIdentifierCallFactory $elementIdentifierCallFactory,
+        private ArgumentFactory $argumentFactory
     ) {
-        $this->domCrawlerNavigatorCallFactory = $domCrawlerNavigatorCallFactory;
-        $this->elementIdentifierCallFactory = $elementIdentifierCallFactory;
-        $this->argumentFactory = $argumentFactory;
     }
 
     public static function createHandler(): DomIdentifierHandler

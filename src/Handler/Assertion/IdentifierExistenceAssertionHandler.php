@@ -55,30 +55,16 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
         'not-exists' => self::ASSERT_FALSE_METHOD,
     ];
 
-    private DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory;
-    private DomIdentifierFactory $domIdentifierFactory;
-    private DomIdentifierHandler $domIdentifierHandler;
-    private ElementIdentifierCallFactory $elementIdentifierCallFactory;
-    private ElementIdentifierSerializer $elementIdentifierSerializer;
-    private ArgumentFactory $argumentFactory;
-
     public function __construct(
         AssertionMethodInvocationFactory $assertionMethodInvocationFactory,
-        DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory,
-        DomIdentifierFactory $domIdentifierFactory,
-        DomIdentifierHandler $domIdentifierHandler,
-        ElementIdentifierCallFactory $elementIdentifierCallFactory,
-        ElementIdentifierSerializer $elementIdentifierSerializer,
-        ArgumentFactory $argumentFactory
+        private DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory,
+        private DomIdentifierFactory $domIdentifierFactory,
+        private DomIdentifierHandler $domIdentifierHandler,
+        private ElementIdentifierCallFactory $elementIdentifierCallFactory,
+        private ElementIdentifierSerializer $elementIdentifierSerializer,
+        private ArgumentFactory $argumentFactory
     ) {
         parent::__construct($assertionMethodInvocationFactory);
-
-        $this->domCrawlerNavigatorCallFactory = $domCrawlerNavigatorCallFactory;
-        $this->domIdentifierFactory = $domIdentifierFactory;
-        $this->domIdentifierHandler = $domIdentifierHandler;
-        $this->elementIdentifierCallFactory = $elementIdentifierCallFactory;
-        $this->elementIdentifierSerializer = $elementIdentifierSerializer;
-        $this->argumentFactory = $argumentFactory;
     }
 
     public static function createHandler(): self

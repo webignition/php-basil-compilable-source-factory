@@ -16,15 +16,10 @@ use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
 class DerivedAssertionFactory
 {
-    private DomIdentifierFactory $domIdentifierFactory;
-    private IdentifierTypeAnalyser $identifierTypeAnalyser;
-
     public function __construct(
-        DomIdentifierFactory $domIdentifierFactory,
-        IdentifierTypeAnalyser $identifierTypeAnalyser
+        private DomIdentifierFactory $domIdentifierFactory,
+        private IdentifierTypeAnalyser $identifierTypeAnalyser
     ) {
-        $this->domIdentifierFactory = $domIdentifierFactory;
-        $this->identifierTypeAnalyser = $identifierTypeAnalyser;
     }
 
     public static function createFactory(): self

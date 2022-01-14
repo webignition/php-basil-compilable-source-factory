@@ -26,15 +26,11 @@ class ScalarExistenceAssertionHandler extends AbstractAssertionHandler
         'not-exists' => self::ASSERT_FALSE_METHOD,
     ];
 
-    private ScalarValueHandler $scalarValueHandler;
-
     public function __construct(
         AssertionMethodInvocationFactory $assertionMethodInvocationFactory,
-        ScalarValueHandler $scalarValueHandler
+        private ScalarValueHandler $scalarValueHandler
     ) {
         parent::__construct($assertionMethodInvocationFactory);
-
-        $this->scalarValueHandler = $scalarValueHandler;
     }
 
     public static function createHandler(): self

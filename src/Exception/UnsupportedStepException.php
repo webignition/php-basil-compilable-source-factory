@@ -12,19 +12,15 @@ class UnsupportedStepException extends \Exception
     public const CODE_UNSUPPORTED_ACTION = 1;
     public const CODE_UNSUPPORTED_ASSERTION = 2;
 
-    private StepInterface $step;
-    private UnsupportedStatementException $unsupportedStatementException;
-
-    public function __construct(StepInterface $step, UnsupportedStatementException $unsupportedStatementException)
-    {
+    public function __construct(
+        private StepInterface $step,
+        private UnsupportedStatementException $unsupportedStatementException
+    ) {
         $code = $unsupportedStatementException->getStatement() instanceof ActionInterface
             ? self::CODE_UNSUPPORTED_ACTION
             : self::CODE_UNSUPPORTED_ASSERTION;
 
         parent::__construct('Unsupported step', $code, $unsupportedStatementException);
-
-        $this->step = $step;
-        $this->unsupportedStatementException = $unsupportedStatementException;
     }
 
     public function getStep(): StepInterface

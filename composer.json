@@ -43,7 +43,7 @@
         ]
     },
     "require": {
-        "php": ">=7.4|^8",
+        "php": "^8.0",
         "ext-json": "*",
         "webignition/base-basil-test-case": ">=0.42,<1",
         "webignition/basil-compilable-source": ">=0.67,<1",

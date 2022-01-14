@@ -32,8 +32,6 @@ class ComparisonAssertionHandler extends AbstractAssertionHandler
         'matches' => self::ASSERT_MATCHES_METHOD,
     ];
 
-    private ValueAccessorFactory $valueAccessorFactory;
-
     /**
      * @var string[]
      */
@@ -44,11 +42,9 @@ class ComparisonAssertionHandler extends AbstractAssertionHandler
 
     public function __construct(
         AssertionMethodInvocationFactory $assertionMethodInvocationFactory,
-        ValueAccessorFactory $valueAccessorFactory
+        private ValueAccessorFactory $valueAccessorFactory
     ) {
         parent::__construct($assertionMethodInvocationFactory);
-
-        $this->valueAccessorFactory = $valueAccessorFactory;
     }
 
     public static function createHandler(): self
