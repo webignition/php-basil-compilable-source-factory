@@ -42,7 +42,7 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createForActionDataProvider(): array
     {
@@ -151,7 +151,7 @@ class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createForAssertionDataProvider(): array
     {

@@ -43,7 +43,7 @@ class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createSourceDataProvider(): array
     {

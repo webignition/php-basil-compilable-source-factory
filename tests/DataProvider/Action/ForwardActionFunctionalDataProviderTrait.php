@@ -11,7 +11,7 @@ use webignition\BasilParser\ActionParser;
 trait ForwardActionFunctionalDataProviderTrait
 {
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function forwardActionFunctionalDataProvider(): array
     {

@@ -63,7 +63,7 @@ class ElementIdentifierCallFactoryTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createConstructorCallDataProvider(): array
     {

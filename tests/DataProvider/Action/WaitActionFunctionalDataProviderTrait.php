@@ -11,7 +11,7 @@ use webignition\BasilParser\ActionParser;
 trait WaitActionFunctionalDataProviderTrait
 {
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function waitActionFunctionalDataProvider(): array
     {

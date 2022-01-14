@@ -44,7 +44,7 @@ class StepHandlerTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function handleSuccessDataProvider(): array
     {
@@ -571,7 +571,7 @@ class StepHandlerTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function handleThrowsExceptionDataProvider(): array
     {

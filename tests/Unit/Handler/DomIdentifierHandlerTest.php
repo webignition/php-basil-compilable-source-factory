@@ -42,7 +42,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function handleElementDataProvider(): array
     {
@@ -103,7 +103,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function handleElementCollectionDataProvider(): array
     {
@@ -165,7 +165,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function handleAttributeValueDataProvider(): array
     {
@@ -236,7 +236,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function handleElementValueDataProvider(): array
     {

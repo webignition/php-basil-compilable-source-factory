@@ -15,7 +15,7 @@ use webignition\DomElementIdentifier\ElementIdentifier;
 trait CreateFromIncludesAssertionDataProviderTrait
 {
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createFromIncludesAssertionDataProvider(): array
     {

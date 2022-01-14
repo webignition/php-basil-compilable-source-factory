@@ -10,7 +10,7 @@ use webignition\BasilCompilableSourceFactory\VariableNames;
 trait InclusionAssertionFunctionalDataProviderTrait
 {
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function inclusionAssertionFunctionalDataProvider(): array
     {

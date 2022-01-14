@@ -45,7 +45,7 @@ class StepMethodFactoryTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createWithoutDataProviderDataProvider(): array
     {
@@ -156,7 +156,7 @@ class StepMethodFactoryTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createWithDataProviderDataProvider(): array
     {

@@ -41,7 +41,7 @@ class StatementBlockFactoryTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createDataProvider(): array
     {

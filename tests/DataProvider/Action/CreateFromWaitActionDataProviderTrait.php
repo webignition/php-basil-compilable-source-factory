@@ -15,7 +15,7 @@ use webignition\DomElementIdentifier\ElementIdentifier;
 trait CreateFromWaitActionDataProviderTrait
 {
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createFromWaitActionDataProvider(): array
     {

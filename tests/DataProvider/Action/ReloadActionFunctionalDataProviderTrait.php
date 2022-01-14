@@ -17,7 +17,7 @@ use webignition\BasilParser\ActionParser;
 trait ReloadActionFunctionalDataProviderTrait
 {
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function reloadActionFunctionalDataProvider(): array
     {

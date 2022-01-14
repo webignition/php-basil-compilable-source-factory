@@ -12,7 +12,7 @@ use webignition\BasilParser\ActionParser;
 trait CreateFromForwardActionDataProviderTrait
 {
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createFromForwardActionDataProvider(): array
     {

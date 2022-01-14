@@ -26,7 +26,7 @@ class AccessorDefaultValueFactoryTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createIntegerDataProvider(): array
     {
@@ -59,7 +59,7 @@ class AccessorDefaultValueFactoryTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createStringDataProvider(): array
     {

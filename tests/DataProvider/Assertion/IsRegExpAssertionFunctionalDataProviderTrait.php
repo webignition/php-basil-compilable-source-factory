@@ -10,7 +10,7 @@ use webignition\BasilParser\AssertionParser;
 trait IsRegExpAssertionFunctionalDataProviderTrait
 {
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function isRegExpAssertionFunctionalDataProvider(): array
     {

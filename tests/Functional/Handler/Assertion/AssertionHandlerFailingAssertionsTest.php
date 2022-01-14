@@ -54,7 +54,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createSourceForFailingAssertionsDataProvider(): array
     {

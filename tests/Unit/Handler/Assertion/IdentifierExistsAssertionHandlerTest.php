@@ -56,7 +56,7 @@ class IdentifierExistsAssertionHandlerTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function handleThrowsExceptionDataProvider(): array
     {

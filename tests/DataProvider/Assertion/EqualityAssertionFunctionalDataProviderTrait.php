@@ -10,7 +10,7 @@ use webignition\BasilCompilableSourceFactory\VariableNames;
 trait EqualityAssertionFunctionalDataProviderTrait
 {
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function equalityAssertionFunctionalDataProvider(): array
     {

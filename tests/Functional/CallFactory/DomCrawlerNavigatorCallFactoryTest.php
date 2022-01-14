@@ -70,7 +70,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createFindCallDataProvider(): array
     {

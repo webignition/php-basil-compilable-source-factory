@@ -16,7 +16,7 @@ use webignition\DomElementIdentifier\ElementIdentifier;
 trait CreateFromIsRegExpAssertionDataProviderTrait
 {
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createFromIsRegExpAssertionDataProvider(): array
     {

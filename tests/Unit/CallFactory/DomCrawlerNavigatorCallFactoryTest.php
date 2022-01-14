@@ -39,7 +39,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createFindCallDataProvider(): array
     {
@@ -61,7 +61,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createFindOneCallDataProvider(): array
     {
@@ -83,7 +83,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createHasCallDataProvider(): array
     {
@@ -105,7 +105,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createHasOneCallDataProvider(): array
     {
@@ -113,7 +113,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     private function createElementCallDataProvider(string $method): array
     {
@@ -133,7 +133,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     private function elementCallDataProvider(): array
     {

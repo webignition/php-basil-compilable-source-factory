@@ -16,7 +16,7 @@ use webignition\SymfonyDomCrawlerNavigator\Exception\InvalidLocatorException;
 trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
 {
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createFromIdentifierNotExistsAssertionDataProvider(): array
     {

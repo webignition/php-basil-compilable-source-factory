@@ -65,7 +65,7 @@ class StatementFactoryCallFactoryTest extends AbstractBrowserTestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createDataProvider(): array
     {

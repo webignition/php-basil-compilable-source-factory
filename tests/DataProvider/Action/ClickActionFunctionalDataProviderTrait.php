@@ -12,7 +12,7 @@ use webignition\BasilParser\ActionParser;
 trait ClickActionFunctionalDataProviderTrait
 {
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function clickActionFunctionalDataProvider(): array
     {

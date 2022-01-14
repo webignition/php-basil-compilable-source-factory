@@ -12,7 +12,7 @@ use webignition\BasilParser\ActionParser;
 trait CreateFromReloadActionDataProviderTrait
 {
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createFromReloadActionDataProvider(): array
     {
