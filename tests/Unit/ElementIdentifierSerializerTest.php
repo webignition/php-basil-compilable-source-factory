@@ -24,7 +24,7 @@ class ElementIdentifierSerializerTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function serializeDataProvider(): array
     {

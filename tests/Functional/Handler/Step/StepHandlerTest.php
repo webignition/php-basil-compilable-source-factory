@@ -55,7 +55,7 @@ class StepHandlerTest extends AbstractBrowserTestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function handleDataProvider(): array
     {
@@ -166,7 +166,7 @@ class StepHandlerTest extends AbstractBrowserTestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function handleForFailingActionsDataProvider(): array
     {

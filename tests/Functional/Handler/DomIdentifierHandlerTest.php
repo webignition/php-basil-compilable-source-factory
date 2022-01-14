@@ -44,7 +44,7 @@ class DomIdentifierHandlerTest extends AbstractBrowserTestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function handleElementValueDataProvider(): array
     {
@@ -88,7 +88,7 @@ class DomIdentifierHandlerTest extends AbstractBrowserTestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function handleAttributeValueDataProvider(): array
     {
@@ -133,7 +133,7 @@ class DomIdentifierHandlerTest extends AbstractBrowserTestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function handleElementCollectionDataProvider(): array
     {

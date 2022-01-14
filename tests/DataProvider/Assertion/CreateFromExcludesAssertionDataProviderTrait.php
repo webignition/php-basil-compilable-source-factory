@@ -15,7 +15,7 @@ use webignition\DomElementIdentifier\ElementIdentifier;
 trait CreateFromExcludesAssertionDataProviderTrait
 {
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createFromExcludesAssertionDataProvider(): array
     {

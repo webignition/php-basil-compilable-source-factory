@@ -15,7 +15,7 @@ use webignition\DomElementIdentifier\ElementIdentifier;
 trait CreateFromSubmitActionDataProviderTrait
 {
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createFromSubmitActionDataProvider(): array
     {

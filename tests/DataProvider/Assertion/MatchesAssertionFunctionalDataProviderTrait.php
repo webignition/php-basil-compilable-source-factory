@@ -11,7 +11,7 @@ use webignition\BasilParser\AssertionParser;
 trait MatchesAssertionFunctionalDataProviderTrait
 {
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function matchesAssertionFunctionalDataProvider(): array
     {

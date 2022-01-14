@@ -12,7 +12,7 @@ use webignition\BasilParser\ActionParser;
 trait CreateFromWaitForActionDataProviderTrait
 {
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createFromWaitForActionDataProvider(): array
     {

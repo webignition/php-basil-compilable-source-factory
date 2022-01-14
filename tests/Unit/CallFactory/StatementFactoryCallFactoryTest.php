@@ -41,7 +41,7 @@ class StatementFactoryCallFactoryTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createStatementFactoryCallDataProvider(): array
     {

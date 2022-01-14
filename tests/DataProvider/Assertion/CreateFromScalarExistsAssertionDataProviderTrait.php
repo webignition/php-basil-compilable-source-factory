@@ -12,7 +12,7 @@ use webignition\BasilParser\AssertionParser;
 trait CreateFromScalarExistsAssertionDataProviderTrait
 {
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createFromScalarExistsAssertionDataProvider(): array
     {

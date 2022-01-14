@@ -9,7 +9,7 @@ use webignition\BasilParser\ActionParser;
 trait WaitForActionFunctionalDataProviderTrait
 {
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function waitForActionFunctionalDataProvider(): array
     {

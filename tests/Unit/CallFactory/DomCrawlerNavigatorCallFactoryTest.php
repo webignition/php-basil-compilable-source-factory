@@ -39,7 +39,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createFindCallDataProvider(): array
     {
@@ -61,7 +61,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createFindOneCallDataProvider(): array
     {
@@ -83,7 +83,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createHasCallDataProvider(): array
     {
@@ -105,7 +105,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createHasOneCallDataProvider(): array
     {
@@ -113,11 +113,21 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTest
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     private function createElementCallDataProvider(string $method): array
     {
-        $testCases = $this->elementCallDataProvider();
+        $testCases = [
+            'literal expression' => [
+                'elementIdentifierExpression' => new LiteralExpression('"literal expression"'),
+                'expectedRenderedSource' => '{{ NAVIGATOR }}->{{ METHOD }}("literal expression")',
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                    ]),
+                ]),
+            ],
+        ];
 
         foreach ($testCases as $testCaseIndex => $testCase) {
             $testCase['expectedRenderedSource'] = str_replace(
@@ -130,23 +140,5 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTest
         }
 
         return $testCases;
-    }
-
-    /**
-     * @return array[]
-     */
-    private function elementCallDataProvider(): array
-    {
-        return [
-            'literal expression' => [
-                'elementIdentifierExpression' => new LiteralExpression('"literal expression"'),
-                'expectedRenderedSource' => '{{ NAVIGATOR }}->{{ METHOD }}("literal expression")',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                ]),
-            ],
-        ];
     }
 }

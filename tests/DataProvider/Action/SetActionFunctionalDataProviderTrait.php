@@ -14,7 +14,7 @@ use webignition\BasilParser\ActionParser;
 trait SetActionFunctionalDataProviderTrait
 {
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function setActionFunctionalDataProvider(): array
     {
@@ -142,7 +142,7 @@ trait SetActionFunctionalDataProviderTrait
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     private function setActionForTextInputFunctionalDataProvider(): array
     {
@@ -226,7 +226,7 @@ trait SetActionFunctionalDataProviderTrait
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     private function setActionForTextareaFunctionalDataProvider(): array
     {
@@ -286,7 +286,7 @@ trait SetActionFunctionalDataProviderTrait
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     private function setActionForSelectFunctionalDataProvider(): array
     {
@@ -370,7 +370,7 @@ trait SetActionFunctionalDataProviderTrait
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     private function setActionForOptionCollectionFunctionalDataProvider(): array
     {
@@ -454,7 +454,7 @@ trait SetActionFunctionalDataProviderTrait
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     private function setActionForRadioGroupFunctionalDataProvider(): array
     {

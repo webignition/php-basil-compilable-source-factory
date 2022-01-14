@@ -9,7 +9,7 @@ use webignition\BasilParser\AssertionParser;
 trait IncludesAssertionFunctionalDataProviderTrait
 {
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function includesAssertionFunctionalDataProvider(): array
     {

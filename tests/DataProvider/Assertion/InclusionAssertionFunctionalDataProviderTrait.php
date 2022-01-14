@@ -10,7 +10,10 @@ use webignition\BasilCompilableSourceFactory\VariableNames;
 trait InclusionAssertionFunctionalDataProviderTrait
 {
     /**
-     * @return array[]
+     * @return array<
+     *     string,
+     *     array{"fixture": string, "assertion": null, "additionalVariableIdentifiers"?: array<string, string>}
+     * >
      */
     public function inclusionAssertionFunctionalDataProvider(): array
     {

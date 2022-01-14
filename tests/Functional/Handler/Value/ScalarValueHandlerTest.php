@@ -61,7 +61,7 @@ class ScalarValueHandlerTest extends AbstractBrowserTestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createSourceDataProvider(): array
     {

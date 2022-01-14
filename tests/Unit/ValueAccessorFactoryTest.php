@@ -36,7 +36,7 @@ class ValueAccessorFactoryTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createDataProvider(): array
     {
@@ -82,7 +82,7 @@ class ValueAccessorFactoryTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createWithDefaultIfNullDataProvider(): array
     {
@@ -128,7 +128,7 @@ class ValueAccessorFactoryTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @return array[]
+     * @return array<mixed>
      */
     public function createThrowsExceptionDataProvider(): array
     {
