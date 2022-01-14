@@ -254,8 +254,13 @@ class StepMethodFactoryTest extends AbstractResolvableTest
      */
     private function createStepMethodFactory(array $services = []): StepMethodFactory
     {
-        $stepHandler = $services[StepHandler::class] ?? StepHandler::createHandler();
-        $singleQuotedStringEscaper = $services[SingleQuotedStringEscaper::class] ?? SingleQuotedStringEscaper::create();
+        $stepHandler = $services[StepHandler::class] ?? null;
+        $stepHandler = $stepHandler instanceof StepHandler ? $stepHandler : StepHandler::createHandler();
+
+        $singleQuotedStringEscaper = $services[SingleQuotedStringEscaper::class] ?? null;
+        $singleQuotedStringEscaper = $singleQuotedStringEscaper instanceof SingleQuotedStringEscaper
+            ? $singleQuotedStringEscaper
+            : SingleQuotedStringEscaper::create();
 
         return new StepMethodFactory(
             $stepHandler,

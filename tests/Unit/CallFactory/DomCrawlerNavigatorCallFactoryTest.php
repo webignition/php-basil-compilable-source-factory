@@ -117,7 +117,17 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTest
      */
     private function createElementCallDataProvider(string $method): array
     {
-        $testCases = $this->elementCallDataProvider();
+        $testCases = [
+            'literal expression' => [
+                'elementIdentifierExpression' => new LiteralExpression('"literal expression"'),
+                'expectedRenderedSource' => '{{ NAVIGATOR }}->{{ METHOD }}("literal expression")',
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                    ]),
+                ]),
+            ],
+        ];
 
         foreach ($testCases as $testCaseIndex => $testCase) {
             $testCase['expectedRenderedSource'] = str_replace(
@@ -130,23 +140,5 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTest
         }
 
         return $testCases;
-    }
-
-    /**
-     * @return array<mixed>
-     */
-    private function elementCallDataProvider(): array
-    {
-        return [
-            'literal expression' => [
-                'elementIdentifierExpression' => new LiteralExpression('"literal expression"'),
-                'expectedRenderedSource' => '{{ NAVIGATOR }}->{{ METHOD }}("literal expression")',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                ]),
-            ],
-        ];
     }
 }

@@ -10,7 +10,10 @@ use webignition\BasilCompilableSourceFactory\VariableNames;
 trait EqualityAssertionFunctionalDataProviderTrait
 {
     /**
-     * @return array<mixed>
+     * @return array<
+     *     string,
+     *     array{"fixture": string, "assertion": null, "additionalVariableIdentifiers"?: array<string, string>}
+     * >
      */
     public function equalityAssertionFunctionalDataProvider(): array
     {

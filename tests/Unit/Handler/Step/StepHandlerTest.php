@@ -25,6 +25,7 @@ use webignition\BasilModels\Step\StepInterface;
 use webignition\BasilParser\ActionParser;
 use webignition\BasilParser\AssertionParser;
 use webignition\BasilParser\StepParser;
+use webignition\StubbleResolvable\ResolvableInterface;
 
 class StepHandlerTest extends AbstractResolvableTest
 {
@@ -645,7 +646,7 @@ class StepHandlerTest extends AbstractResolvableTest
     }
 
     /**
-     * @param array<mixed> $createCalls
+     * @param array<string, array{"statement": StatementInterface, "return": ResolvableInterface}> $createCalls
      */
     private function createMockStatementBlockFactory(array $createCalls): StatementBlockFactory
     {
@@ -669,7 +670,7 @@ class StepHandlerTest extends AbstractResolvableTest
     }
 
     /**
-     * @param array[] $handleCalls
+     * @param array<string, array{"action": ActionInterface, "return": ResolvableInterface}> $handleCalls
      */
     private function createMockActionHandler(array $handleCalls): ActionHandler
     {
@@ -693,7 +694,7 @@ class StepHandlerTest extends AbstractResolvableTest
     }
 
     /**
-     * @param array[] $handleCalls
+     * @param array<string, array{"assertion": AssertionInterface, "return": ResolvableInterface}> $handleCalls
      */
     private function createMockAssertionHandler(array $handleCalls): AssertionHandler
     {
@@ -721,17 +722,24 @@ class StepHandlerTest extends AbstractResolvableTest
      */
     private function createStepHandler(array $services = []): StepHandler
     {
-        $actionHandler = $services[ActionHandler::class] ?? ActionHandler::createHandler();
-        $assertionHandler = $services[AssertionHandler::class] ?? AssertionHandler::createHandler();
-        $statementBlockFactory = $services[StatementBlockFactory::class] ?? StatementBlockFactory::createFactory();
-        $derivedAssertionFactory =
-            $services[DerivedAssertionFactory::class] ?? DerivedAssertionFactory::createFactory();
+        $actionHandler = $services[ActionHandler::class] ?? null;
+        $actionHandler = $actionHandler instanceof ActionHandler ? $actionHandler : ActionHandler::createHandler();
 
-        return new StepHandler(
-            $actionHandler,
-            $assertionHandler,
-            $statementBlockFactory,
-            $derivedAssertionFactory
-        );
+        $assertionHandler = $services[AssertionHandler::class] ?? null;
+        $assertionHandler = $assertionHandler instanceof AssertionHandler
+            ? $assertionHandler
+            : AssertionHandler::createHandler();
+
+        $statementBlockFactory = $services[StatementBlockFactory::class] ?? null;
+        $statementBlockFactory = $statementBlockFactory instanceof StatementBlockFactory
+            ? $statementBlockFactory
+            : StatementBlockFactory::createFactory();
+
+        $derivedAssertionFactory = $services[DerivedAssertionFactory::class] ?? null;
+        $derivedAssertionFactory = $derivedAssertionFactory instanceof DerivedAssertionFactory
+            ? $derivedAssertionFactory
+            : DerivedAssertionFactory::createFactory();
+
+        return new StepHandler($actionHandler, $assertionHandler, $statementBlockFactory, $derivedAssertionFactory);
     }
 }
