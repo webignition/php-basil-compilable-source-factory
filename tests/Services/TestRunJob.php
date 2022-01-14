@@ -6,18 +6,17 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
 class TestRunJob
 {
-    private string $path = '';
-    private int $exitCode = -1;
-    private int $expectedExitCode = 0;
+    private int $exitCode;
+    private int $expectedExitCode;
 
     /**
      * @var array<string>
      */
-    private array $output = [];
+    private array $output;
 
-    public function __construct(string $path)
-    {
-        $this->path = $path;
+    public function __construct(
+        private string $path
+    ) {
         $this->exitCode = -1;
         $this->expectedExitCode = 0;
         $this->output = [];
