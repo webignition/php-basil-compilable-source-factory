@@ -9,15 +9,11 @@ class UnsupportedContentException extends \Exception
     public const TYPE_IDENTIFIER = 'identifier';
     public const TYPE_VALUE = 'value';
 
-    private string $type;
-    private ?string $content;
-
-    public function __construct(string $type, ?string $content)
-    {
-        parent::__construct(sprintf('Unsupported content "%s": "%s"', $type, (string) $content));
-
-        $this->content = $content;
-        $this->type = $type;
+    public function __construct(
+        private string $type,
+        private ?string $content
+    ) {
+        parent::__construct(sprintf('Unsupported content "%s": "%s"', $type, $content));
     }
 
     public function getType(): string

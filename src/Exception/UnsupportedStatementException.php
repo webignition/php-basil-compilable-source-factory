@@ -12,12 +12,9 @@ class UnsupportedStatementException extends \Exception
     public const CODE_UNSUPPORTED_IDENTIFIER = 2;
     public const CODE_UNSUPPORTED_VALUE = 3;
 
-    private StatementInterface $statement;
-    private ?UnsupportedContentException $unsupportedContentException;
-
     public function __construct(
-        StatementInterface $statement,
-        ?UnsupportedContentException $unsupportedContentException = null
+        private StatementInterface $statement,
+        private ?UnsupportedContentException $unsupportedContentException = null
     ) {
         $code = self::CODE_UNKNOWN;
 
@@ -28,9 +25,6 @@ class UnsupportedStatementException extends \Exception
         }
 
         parent::__construct(sprintf('Unsupported statement "%s"', $statement->getSource()), $code);
-
-        $this->statement = $statement;
-        $this->unsupportedContentException = $unsupportedContentException;
     }
 
     public function getStatement(): StatementInterface
