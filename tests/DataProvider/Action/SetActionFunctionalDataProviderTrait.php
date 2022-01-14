@@ -66,7 +66,7 @@ trait SetActionFunctionalDataProviderTrait
                             $inputPlaceholder
                         ),
                         StatementFactory::createAssertSame(
-                            '"http://127.0.0.1:9080/action1"',
+                            '"/action1"',
                             '$input->getAttribute("value")'
                         ),
                     ]),
