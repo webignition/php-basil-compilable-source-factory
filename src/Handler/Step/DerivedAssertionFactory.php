@@ -36,10 +36,6 @@ class DerivedAssertionFactory
     }
 
     /**
-     * @param ActionInterface $action
-     *
-     * @return UniqueAssertionCollection
-     *
      * @throws UnsupportedContentException
      */
     public function createForAction(ActionInterface $action): UniqueAssertionCollection
@@ -77,10 +73,6 @@ class DerivedAssertionFactory
     }
 
     /**
-     * @param AssertionInterface $assertion
-     *
-     * @return UniqueAssertionCollection
-     *
      * @throws UnsupportedContentException
      */
     public function createForAssertion(AssertionInterface $assertion): UniqueAssertionCollection
@@ -88,14 +80,11 @@ class DerivedAssertionFactory
         $assertions = new UniqueAssertionCollection();
 
         $assertions = $assertions->merge($this->createExistenceAssertionsForElementalComponents($assertion));
+
         return $assertions->merge($this->createRegexValidationAssertions($assertion));
     }
 
     /**
-     * @param AssertionInterface $assertion
-     *
-     * @return UniqueAssertionCollection
-     *
      * @throws UnsupportedContentException
      */
     private function createExistenceAssertionsForElementalComponents(
@@ -145,11 +134,6 @@ class DerivedAssertionFactory
     }
 
     /**
-     * @param string $identifier
-     * @param StatementModelInterface $statement
-     *
-     * @return UniqueAssertionCollection
-     *
      * @throws UnsupportedContentException
      */
     private function createForStatementAndAncestors(
@@ -169,12 +153,7 @@ class DerivedAssertionFactory
     }
 
     /**
-     * @param string $identifier
-     * @param StatementModelInterface $statement
-     *
      * @throws UnsupportedContentException
-     *
-     * @return UniqueAssertionCollection
      */
     private function createForStatementAncestorsOnly(
         string $identifier,
@@ -190,12 +169,6 @@ class DerivedAssertionFactory
     }
 
     /**
-     * @param string $identifier
-     * @param StatementModelInterface $action
-     * @param callable $elementHierarchyCreator
-     *
-     * @return UniqueAssertionCollection
-     *
      * @throws UnsupportedContentException
      */
     private function createForCollection(

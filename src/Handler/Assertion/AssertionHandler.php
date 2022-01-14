@@ -35,10 +35,6 @@ class AssertionHandler
     }
 
     /**
-     * @param AssertionInterface $assertion
-     *
-     * @return BodyInterface
-     *
      * @throws UnsupportedStatementException
      */
     public function handle(AssertionInterface $assertion): BodyInterface

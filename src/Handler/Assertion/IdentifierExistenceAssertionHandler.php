@@ -50,17 +50,17 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
     public const ASSERT_TRUE_METHOD = 'assertTrue';
     public const ASSERT_FALSE_METHOD = 'assertFalse';
 
+    private const OPERATOR_TO_ASSERTION_TEMPLATE_MAP = [
+        'exists' => self::ASSERT_TRUE_METHOD,
+        'not-exists' => self::ASSERT_FALSE_METHOD,
+    ];
+
     private DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory;
     private DomIdentifierFactory $domIdentifierFactory;
     private DomIdentifierHandler $domIdentifierHandler;
     private ElementIdentifierCallFactory $elementIdentifierCallFactory;
     private ElementIdentifierSerializer $elementIdentifierSerializer;
     private ArgumentFactory $argumentFactory;
-
-    private const OPERATOR_TO_ASSERTION_TEMPLATE_MAP = [
-        'exists' => self::ASSERT_TRUE_METHOD,
-        'not-exists' => self::ASSERT_FALSE_METHOD,
-    ];
 
     public function __construct(
         AssertionMethodInvocationFactory $assertionMethodInvocationFactory,
@@ -94,16 +94,7 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
         );
     }
 
-    protected function getOperationToAssertionTemplateMap(): array
-    {
-        return self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP;
-    }
-
     /**
-     * @param AssertionInterface $assertion
-     *
-     * @return BodyInterface
-     *
      * @throws UnsupportedContentException
      */
     public function handle(AssertionInterface $assertion): BodyInterface
@@ -197,6 +188,11 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
             new Statement($attributeSetBooleanExaminedValueInvocation),
             $assertionStatement,
         ]);
+    }
+
+    protected function getOperationToAssertionTemplateMap(): array
+    {
+        return self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP;
     }
 
     private function createSetBooleanExaminedValueInvocation(MethodArgumentsInterface $arguments): ExpressionInterface

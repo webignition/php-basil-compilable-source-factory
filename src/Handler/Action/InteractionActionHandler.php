@@ -43,10 +43,6 @@ class InteractionActionHandler
     }
 
     /**
-     * @param ActionInterface $action
-     *
-     * @return BodyInterface
-     *
      * @throws UnsupportedContentException
      */
     public function handle(ActionInterface $action): BodyInterface

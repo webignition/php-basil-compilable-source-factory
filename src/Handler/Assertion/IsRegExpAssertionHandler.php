@@ -25,15 +25,15 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
 {
     public const ASSERT_FALSE_METHOD = 'assertFalse';
 
+    private const OPERATOR_TO_ASSERTION_TEMPLATE_MAP = [
+        'is-regexp' => self::ASSERT_FALSE_METHOD,
+    ];
+
     private DomIdentifierFactory $domIdentifierFactory;
     private IdentifierTypeAnalyser $identifierTypeAnalyser;
     private ValueTypeIdentifier $valueTypeIdentifier;
     private ValueAccessorFactory $valueAccessorFactory;
     private ArgumentFactory $argumentFactory;
-
-    private const OPERATOR_TO_ASSERTION_TEMPLATE_MAP = [
-        'is-regexp' => self::ASSERT_FALSE_METHOD,
-    ];
 
     public function __construct(
         AssertionMethodInvocationFactory $assertionMethodInvocationFactory,
@@ -64,16 +64,7 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
         );
     }
 
-    protected function getOperationToAssertionTemplateMap(): array
-    {
-        return self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP;
-    }
-
     /**
-     * @param AssertionInterface $assertion
-     *
-     * @return BodyInterface
-     *
      * @throws UnsupportedContentException
      */
     public function handle(AssertionInterface $assertion): BodyInterface
@@ -98,6 +89,11 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
         }
 
         throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
+    }
+
+    protected function getOperationToAssertionTemplateMap(): array
+    {
+        return self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP;
     }
 
     private function createIsRegExpAssertionBody(
