@@ -69,6 +69,10 @@
         "webignition/symfony-panther-webserver-runner": ">=0.5,<1"
     },
     "config": {
-        "sort-packages": true
+        "sort-packages": true,
+        "allow-plugins": {
+            "phpstan/extension-installer": true,
+            "composer/package-versions-deprecated": true
+        }
     }
 }
