@@ -21,8 +21,8 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
         return [
             'exists comparison, page property examined value' => [
                 'assertion' => $assertionParser->parse('$page.url exists'),
-                'expectedRenderedSource' =>
-                    '{{ PHPUNIT }}->setBooleanExaminedValue(({{ CLIENT }}->getCurrentURL() ?? null) !== null);' . "\n" .
+                'expectedRenderedSource' => '{{ PHPUNIT }}->' .
+                    'setBooleanExaminedValue(({{ CLIENT }}->getCurrentURL() ?? null) !== null);' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n" .
                     ');',
@@ -35,8 +35,7 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
             ],
             'exists comparison, data parameter value' => [
                 'assertion' => $assertionParser->parse('$data.key exists'),
-                'expectedRenderedSource' =>
-                    '{{ PHPUNIT }}->setBooleanExaminedValue(($key ?? null) !== null);' . "\n" .
+                'expectedRenderedSource' => '{{ PHPUNIT }}->setBooleanExaminedValue(($key ?? null) !== null);' . "\n" .
                     '{{ PHPUNIT }}->assertTrue(' . "\n" .
                     '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n" .
                     ');',

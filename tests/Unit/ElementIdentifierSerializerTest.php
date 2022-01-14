@@ -32,16 +32,14 @@ class ElementIdentifierSerializerTest extends \PHPUnit\Framework\TestCase
             'selector only, no indent' => [
                 'elementIdentifier' => new ElementIdentifier('.selector'),
                 'indentDepth' => 0,
-                'expectedSerializedIdentifier' =>
-                    '{' . "\n" .
+                'expectedSerializedIdentifier' => '{' . "\n" .
                     '    "locator": ".selector"' . "\n" .
                     '}',
             ],
             'selector, position, no indent' => [
                 'elementIdentifier' => new ElementIdentifier('.selector', 2),
                 'indentDepth' => 0,
-                'expectedSerializedIdentifier' =>
-                    '{' . "\n" .
+                'expectedSerializedIdentifier' => '{' . "\n" .
                     '    "locator": ".selector",' . "\n" .
                     '    "position": 2' . "\n" .
                     '}',
@@ -49,12 +47,11 @@ class ElementIdentifierSerializerTest extends \PHPUnit\Framework\TestCase
             'selector, position, parent, no indent' => [
                 'elementIdentifier' => (
                     new ElementIdentifier('.child', 2))
-                    ->withParentIdentifier(
-                        new ElementIdentifier('.parent', 3)
-                    ),
+                        ->withParentIdentifier(
+                            new ElementIdentifier('.parent', 3)
+                        ),
                 'indentDepth' => 0,
-                'expectedSerializedIdentifier' =>
-                    '{' . "\n" .
+                'expectedSerializedIdentifier' => '{' . "\n" .
                     '    "locator": ".child",' . "\n" .
                     '    "parent": {' . "\n" .
                     '        "locator": ".parent",' . "\n" .
@@ -66,16 +63,14 @@ class ElementIdentifierSerializerTest extends \PHPUnit\Framework\TestCase
             'selector only, indent=1' => [
                 'elementIdentifier' => new ElementIdentifier('.selector'),
                 'indentDepth' => 1,
-                'expectedSerializedIdentifier' =>
-                    '    {' . "\n" .
+                'expectedSerializedIdentifier' => '    {' . "\n" .
                     '        "locator": ".selector"' . "\n" .
                     '    }',
             ],
             'selector, position, indent=1' => [
                 'elementIdentifier' => new ElementIdentifier('.selector', 2),
                 'indentDepth' => 1,
-                'expectedSerializedIdentifier' =>
-                    '    {' . "\n" .
+                'expectedSerializedIdentifier' => '    {' . "\n" .
                     '        "locator": ".selector",' . "\n" .
                     '        "position": 2' . "\n" .
                     '    }',
@@ -87,8 +82,7 @@ class ElementIdentifierSerializerTest extends \PHPUnit\Framework\TestCase
                         new ElementIdentifier('.parent', 3)
                     ),
                 'indentDepth' => 1,
-                'expectedSerializedIdentifier' =>
-                    '    {' . "\n" .
+                'expectedSerializedIdentifier' => '    {' . "\n" .
                     '        "locator": ".child",' . "\n" .
                     '        "parent": {' . "\n" .
                     '            "locator": ".parent",' . "\n" .
@@ -100,8 +94,7 @@ class ElementIdentifierSerializerTest extends \PHPUnit\Framework\TestCase
             'selector only, indent=2' => [
                 'elementIdentifier' => new ElementIdentifier('.selector'),
                 'indentDepth' => 2,
-                'expectedSerializedIdentifier' =>
-                    '        {' . "\n" .
+                'expectedSerializedIdentifier' => '        {' . "\n" .
                     '            "locator": ".selector"' . "\n" .
                     '        }',
             ],

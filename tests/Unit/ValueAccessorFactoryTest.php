@@ -148,7 +148,8 @@ class ValueAccessorFactoryTest extends \PHPUnit\Framework\TestCase
                     $domIdentifierFactory
                         ->shouldReceive('createFromIdentifierString')
                         ->with('$".duration"')
-                        ->andReturnNull();
+                        ->andReturnNull()
+                    ;
 
                     ObjectReflector::setProperty(
                         $factory,

@@ -81,7 +81,8 @@ class IdentifierExistsAssertionHandlerTest extends AbstractResolvableTest
                     $domIdentifierFactory
                         ->shouldReceive('createFromIdentifierString')
                         ->with('$".selector"')
-                        ->andReturnNull();
+                        ->andReturnNull()
+                    ;
 
                     ObjectReflector::setProperty(
                         $handler,

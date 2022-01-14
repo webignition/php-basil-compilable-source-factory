@@ -437,7 +437,7 @@ trait SetActionFunctionalDataProviderTrait
                     StatementFactory::createCrawlerFilterCallForElement('.select-has-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"has-selected-2"', '$select->getAttribute("value")'),
                 ]),
-             ],
+            ],
             'input action, literal value: option group has selected, valid non-empty value' => [
                 'fixture' => '/form.html',
                 'action' => $actionParser->parse('set $".select-has-selected option" to "has-selected-3"'),

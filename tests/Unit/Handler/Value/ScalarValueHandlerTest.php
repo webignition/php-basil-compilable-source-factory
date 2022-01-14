@@ -66,8 +66,7 @@ class ScalarValueHandlerTest extends AbstractResolvableTest
             ],
             'browser property, size' => [
                 'value' => '$browser.size',
-                'expectedRenderedSource' =>
-                    '(function () {' . "\n" .
+                'expectedRenderedSource' => '(function () {' . "\n" .
                     '    $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n" .
                     "\n" .
                     '    return (string) ($webDriverDimension->getWidth()) . \'x\' . ' .

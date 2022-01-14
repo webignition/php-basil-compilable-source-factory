@@ -166,15 +166,15 @@ class ElementIdentifierCallFactoryTest extends \PHPUnit\Framework\TestCase
             ],
             'css selector, escaped single quotes in selector, no ordinal position' => [
                 'serializedElementIdentifier' => $elementIdentifierSerializer->serialize(
-                    new ElementIdentifier("input[value='\'quoted\'']")
+                    new ElementIdentifier("input[value='\\'quoted\\'']")
                 ),
-                'expectedElementIdentifier' => new ElementIdentifier("input[value='\'quoted\'']"),
+                'expectedElementIdentifier' => new ElementIdentifier("input[value='\\'quoted\\'']"),
             ],
             'css selector, escaped single quotes within selector' => [
                 'serializedElementIdentifier' => $elementIdentifierSerializer->serialize(
-                    new ElementIdentifier("input[value='va\'l\'ue']")
+                    new ElementIdentifier("input[value='va\\'l\\'ue']")
                 ),
-                'expectedElementIdentifier' => new ElementIdentifier("input[value='va\'l\'ue']"),
+                'expectedElementIdentifier' => new ElementIdentifier("input[value='va\\'l\\'ue']"),
             ],
             'css selector, escaped double quotes in selector, no ordinal position' => [
                 'serializedElementIdentifier' => $elementIdentifierSerializer->serialize(

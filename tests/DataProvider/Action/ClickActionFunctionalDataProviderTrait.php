@@ -42,10 +42,10 @@ trait ClickActionFunctionalDataProviderTrait
                     StatementFactory::createAssertSame('"false"', '$submitButton->getAttribute(\'data-clicked\')'),
                 ]),
                 'teardownStatements' => new Body([
-                  StatementFactory::createCrawlerFilterCallForElement(
-                      '#form input[type="submit"]',
-                      $submitButtonPlaceholder
-                  ),
+                    StatementFactory::createCrawlerFilterCallForElement(
+                        '#form input[type="submit"]',
+                        $submitButtonPlaceholder
+                    ),
                     StatementFactory::createAssertSame('"true"', '$submitButton->getAttribute(\'data-clicked\')'),
                 ]),
             ],

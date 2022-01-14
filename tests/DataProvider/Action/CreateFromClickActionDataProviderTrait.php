@@ -34,8 +34,7 @@ trait CreateFromClickActionDataProviderTrait
         return [
             'interaction action (click), element identifier' => [
                 'action' => $actionParser->parse('click $".selector"'),
-                'expectedRenderedSource' =>
-                    '(function () {' . "\n" .
+                'expectedRenderedSource' => '(function () {' . "\n" .
                     '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".selector"' . "\n" .
                     '    }\'));' . "\n" .
@@ -46,8 +45,7 @@ trait CreateFromClickActionDataProviderTrait
             ],
             'interaction action (click), parent > child identifier' => [
                 'action' => $actionParser->parse('click $".parent" >> $".child"'),
-                'expectedRenderedSource' =>
-                    '(function () {' . "\n" .
+                'expectedRenderedSource' => '(function () {' . "\n" .
                     '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": ".child",' . "\n" .
                     '        "parent": {' . "\n" .
@@ -61,8 +59,7 @@ trait CreateFromClickActionDataProviderTrait
             ],
             'interaction action (click), single-character CSS selector element identifier' => [
                 'action' => $actionParser->parse('click $"a"'),
-                'expectedRenderedSource' =>
-                    '(function () {' . "\n" .
+                'expectedRenderedSource' => '(function () {' . "\n" .
                     '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
                     '        "locator": "a"' . "\n" .
                     '    }\'));' . "\n" .

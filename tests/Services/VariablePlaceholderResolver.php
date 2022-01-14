@@ -7,10 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 class VariablePlaceholderResolver
 {
     /**
-     * @param string $content
      * @param array<string, string> $variableIdentifiers
-     *
-     * @return string
      */
     public static function resolve(string $content, array $variableIdentifiers): string
     {

@@ -109,8 +109,7 @@ class StepHandlerTest extends AbstractResolvableTest
                         ],
                     ]),
                 ]),
-                'expectedRenderedSource' =>
-                    '// StatementBlockFactory::create($".selector" exists)' . "\n" .
+                'expectedRenderedSource' => '// StatementBlockFactory::create($".selector" exists)' . "\n" .
                     '// AssertionHandler::handle($".selector" exists)' . "\n" .
                     "\n" .
                     '// StatementBlockFactory::create(click $".selector")' . "\n" .
@@ -204,8 +203,7 @@ class StepHandlerTest extends AbstractResolvableTest
                         ],
                     ]),
                 ]),
-                'expectedRenderedSource' =>
-                    '// StatementBlockFactory::create($".selector1" exists)' . "\n" .
+                'expectedRenderedSource' => '// StatementBlockFactory::create($".selector1" exists)' . "\n" .
                     '// AssertionHandler::handle($".selector1" exists)' . "\n" .
                     "\n" .
                     '// StatementBlockFactory::create(click $".selector1")' . "\n" .
@@ -244,8 +242,7 @@ class StepHandlerTest extends AbstractResolvableTest
                         ],
                     ]),
                 ]),
-                'expectedRenderedSource' =>
-                    '// StatementBlockFactory::create($".selector" exists)' . "\n" .
+                'expectedRenderedSource' => '// StatementBlockFactory::create($".selector" exists)' . "\n" .
                     '// AssertionHandler::handle($".selector" exists)' . "\n",
                 'expectedMetadata' => new Metadata(),
             ],
@@ -297,8 +294,7 @@ class StepHandlerTest extends AbstractResolvableTest
                         ],
                     ]),
                 ]),
-                'expectedRenderedSource' =>
-                    '// StatementBlockFactory::create($".parent" exists)' . "\n" .
+                'expectedRenderedSource' => '// StatementBlockFactory::create($".parent" exists)' . "\n" .
                     '// AssertionHandler::handle($".parent" exists)' . "\n" .
                     "\n" .
                     '// StatementBlockFactory::create($".parent" >> $".child" exists)' . "\n" .
@@ -346,8 +342,7 @@ class StepHandlerTest extends AbstractResolvableTest
                         ],
                     ]),
                 ]),
-                'expectedRenderedSource' =>
-                    '// StatementBlockFactory::create($".selector1" exists)' . "\n" .
+                'expectedRenderedSource' => '// StatementBlockFactory::create($".selector1" exists)' . "\n" .
                     '// AssertionHandler::handle($".selector1" exists)' . "\n" .
                     "\n" .
                     '// StatementBlockFactory::create($".selector2" exists)' . "\n" .
@@ -421,8 +416,7 @@ class StepHandlerTest extends AbstractResolvableTest
                         ],
                     ]),
                 ]),
-                'expectedRenderedSource' =>
-                    '// StatementBlockFactory::create($".selector1" exists)' . "\n" .
+                'expectedRenderedSource' => '// StatementBlockFactory::create($".selector1" exists)' . "\n" .
                     '// AssertionHandler::handle($".selector1" exists)' . "\n" .
                     "\n" .
                     '// StatementBlockFactory::create(click $".selector1")' . "\n" .
@@ -495,8 +489,7 @@ class StepHandlerTest extends AbstractResolvableTest
                         ],
                     ]),
                 ]),
-                'expectedRenderedSource' =>
-                    '// StatementBlockFactory::create($".parent" exists)' . "\n" .
+                'expectedRenderedSource' => '// StatementBlockFactory::create($".parent" exists)' . "\n" .
                     '// AssertionHandler::handle($".parent" exists)' . "\n" .
                     "\n" .
                     '// StatementBlockFactory::create($".parent" >> $".child1" exists)' . "\n" .
@@ -556,8 +549,7 @@ class StepHandlerTest extends AbstractResolvableTest
                         ],
                     ]),
                 ]),
-                'expectedRenderedSource' =>
-                    '// StatementBlockFactory::create("/pattern/" is-regexp)' . "\n" .
+                'expectedRenderedSource' => '// StatementBlockFactory::create("/pattern/" is-regexp)' . "\n" .
                     '// AssertionHandler::handle("/pattern/" is-regexp)' . "\n" .
                     "\n" .
                     '// StatementBlockFactory::create($page.title matches "/pattern/")' . "\n" .
@@ -637,7 +629,8 @@ class StepHandlerTest extends AbstractResolvableTest
 
                 return true;
             })
-            ->andThrow($unsupportedContentException);
+            ->andThrow($unsupportedContentException)
+        ;
 
         $handler = $this->createStepHandler([
             DerivedAssertionFactory::class => $derivedAssertionFactory,
@@ -653,8 +646,6 @@ class StepHandlerTest extends AbstractResolvableTest
 
     /**
      * @param array<mixed> $createCalls
-     *
-     * @return StatementBlockFactory
      */
     private function createMockStatementBlockFactory(array $createCalls): StatementBlockFactory
     {
@@ -670,7 +661,8 @@ class StepHandlerTest extends AbstractResolvableTest
                     $this->assertEquals($data['statement'], $statement);
 
                     return $data['return'];
-                });
+                })
+            ;
         }
 
         return $statementBlockFactory;
@@ -678,8 +670,6 @@ class StepHandlerTest extends AbstractResolvableTest
 
     /**
      * @param array[] $handleCalls
-     *
-     * @return ActionHandler
      */
     private function createMockActionHandler(array $handleCalls): ActionHandler
     {
@@ -695,7 +685,8 @@ class StepHandlerTest extends AbstractResolvableTest
                     $this->assertEquals($data['action'], $action);
 
                     return $data['return'];
-                });
+                })
+            ;
         }
 
         return $actionHandler;
@@ -703,8 +694,6 @@ class StepHandlerTest extends AbstractResolvableTest
 
     /**
      * @param array[] $handleCalls
-     *
-     * @return AssertionHandler
      */
     private function createMockAssertionHandler(array $handleCalls): AssertionHandler
     {
@@ -720,7 +709,8 @@ class StepHandlerTest extends AbstractResolvableTest
                     $this->assertEquals($data['assertion'], $assertion);
 
                     return $data['return'];
-                });
+                })
+            ;
         }
 
         return $assertionHandler;
@@ -728,8 +718,6 @@ class StepHandlerTest extends AbstractResolvableTest
 
     /**
      * @param array<mixed> $services
-     *
-     * @return StepHandler
      */
     private function createStepHandler(array $services = []): StepHandler
     {

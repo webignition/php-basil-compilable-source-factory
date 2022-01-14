@@ -48,41 +48,47 @@ class StatementBlockFactoryTest extends AbstractResolvableTest
         $clickAction = \Mockery::mock(ActionInterface::class);
         $clickAction
             ->shouldReceive('getSource')
-            ->andReturn('click $".selector"');
+            ->andReturn('click $".selector"')
+        ;
         $clickAction
             ->shouldReceive('jsonSerialize')
             ->andReturn([
                 'serialised' => 'click action',
-            ]);
+            ])
+        ;
 
         $existsAssertion = \Mockery::mock(AssertionInterface::class);
         $existsAssertion
             ->shouldReceive('getSource')
-            ->andReturn('$".selector" exists');
+            ->andReturn('$".selector" exists')
+        ;
         $existsAssertion
             ->shouldReceive('jsonSerialize')
             ->andReturn([
                 'serialised' => 'exists assertion',
-            ]);
+            ])
+        ;
 
         $derivedElementExistsAssertion = \Mockery::mock(DerivedValueOperationAssertion::class);
         $derivedElementExistsAssertion
             ->shouldReceive('getSource')
-            ->andReturn('$".selector" exists');
+            ->andReturn('$".selector" exists')
+        ;
         $derivedElementExistsAssertion
             ->shouldReceive('getSourceStatement')
-            ->andReturn($clickAction);
+            ->andReturn($clickAction)
+        ;
         $derivedElementExistsAssertion
             ->shouldReceive('jsonSerialize')
             ->andReturn([
                 'serialised' => 'derived exists assertion',
-            ]);
+            ])
+        ;
 
         return [
             'click action' => [
                 'statement' => $clickAction,
-                'expectedRenderedSource' =>
-                    '// click $".selector"' . "\n" .
+                'expectedRenderedSource' => '// click $".selector"' . "\n" .
                     '{{ PHPUNIT }}->handledStatements[] = {{ ACTION_FACTORY }}->createFromJson(\'{' . "\n" .
                     '    "serialised": "click action"' . "\n" .
                     '}\');',
@@ -95,8 +101,7 @@ class StatementBlockFactoryTest extends AbstractResolvableTest
             ],
             'exists assertion' => [
                 'statement' => $existsAssertion,
-                'expectedRenderedSource' =>
-                    '// $".selector" exists' . "\n" .
+                'expectedRenderedSource' => '// $".selector" exists' . "\n" .
                     '{{ PHPUNIT }}->handledStatements[] = {{ ASSERTION_FACTORY }}->createFromJson(\'{' . "\n" .
                     '    "serialised": "exists assertion"' . "\n" .
                     '}\');',
@@ -109,8 +114,7 @@ class StatementBlockFactoryTest extends AbstractResolvableTest
             ],
             'derived exists assertion' => [
                 'statement' => $derivedElementExistsAssertion,
-                'expectedRenderedSource' =>
-                    '// $".selector" exists <- click $".selector"' . "\n" .
+                'expectedRenderedSource' => '// $".selector" exists <- click $".selector"' . "\n" .
                     '{{ PHPUNIT }}->handledStatements[] = {{ ASSERTION_FACTORY }}->createFromJson(\'{' . "\n" .
                     '    "serialised": "derived exists assertion"' . "\n" .
                     '}\');',

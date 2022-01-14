@@ -28,7 +28,8 @@ class ExistenceAssertionHandlerTest extends \PHPUnit\Framework\TestCase
         $scalarHandler
             ->shouldReceive('handle')
             ->with($assertion)
-            ->andReturn($expectedReturnValue);
+            ->andReturn($expectedReturnValue)
+        ;
 
         $handler = new ExistenceAssertionHandler(
             AssertionMethodInvocationFactory::createFactory(),
@@ -52,7 +53,8 @@ class ExistenceAssertionHandlerTest extends \PHPUnit\Framework\TestCase
         $identifierHandler
             ->shouldReceive('handle')
             ->with($assertion)
-            ->andReturn($expectedReturnValue);
+            ->andReturn($expectedReturnValue)
+        ;
 
         $handler = new ExistenceAssertionHandler(
             AssertionMethodInvocationFactory::createFactory(),

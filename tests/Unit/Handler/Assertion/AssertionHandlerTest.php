@@ -27,7 +27,8 @@ class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
         $comparisonHandler
             ->shouldReceive('handle')
             ->with($assertion)
-            ->andReturn($expectedReturnValue);
+            ->andReturn($expectedReturnValue)
+        ;
 
         $handler = new AssertionHandler(
             $comparisonHandler,
@@ -49,7 +50,8 @@ class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
         $existenceHandler
             ->shouldReceive('handle')
             ->with($assertion)
-            ->andReturn($expectedReturnValue);
+            ->andReturn($expectedReturnValue)
+        ;
 
         $handler = new AssertionHandler(
             \Mockery::mock(ComparisonAssertionHandler::class),
@@ -71,7 +73,8 @@ class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
         $isRegExpHandler
             ->shouldReceive('handle')
             ->with($assertion)
-            ->andReturn($expectedReturnValue);
+            ->andReturn($expectedReturnValue)
+        ;
 
         $handler = new AssertionHandler(
             \Mockery::mock(ComparisonAssertionHandler::class),
@@ -96,7 +99,8 @@ class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
         $comparisonHandler
             ->shouldReceive('handle')
             ->with($assertion)
-            ->andThrow($expectedUnsupportedContentException);
+            ->andThrow($expectedUnsupportedContentException)
+        ;
 
         $handler = new AssertionHandler(
             $comparisonHandler,

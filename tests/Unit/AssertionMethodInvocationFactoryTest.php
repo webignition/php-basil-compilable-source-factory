@@ -71,8 +71,7 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTest
                     new LiteralExpression('100'),
                     new LiteralExpression('\'string\''),
                 ]),
-                'expectedRenderedInvocation' =>
-                    '{{ PHPUNIT }}->assertEquals(' . "\n" .
+                'expectedRenderedInvocation' => '{{ PHPUNIT }}->assertEquals(' . "\n" .
                     '    100,' . "\n" .
                     '    \'string\'' . "\n" .
                     ')',
@@ -88,8 +87,7 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTest
                     new LiteralExpression('100'),
                     new LiteralExpression('\'string\''),
                 ]),
-                'expectedRenderedInvocation' =>
-                    '{{ PHPUNIT }}->assertNotEquals(' . "\n" .
+                'expectedRenderedInvocation' => '{{ PHPUNIT }}->assertNotEquals(' . "\n" .
                     '    100,' . "\n" .
                     '    \'string\'' . "\n" .
                     ')',
@@ -105,8 +103,7 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTest
                     new LiteralExpression('100'),
                     new LiteralExpression('\'string\''),
                 ]),
-                'expectedRenderedInvocation' =>
-                    '{{ PHPUNIT }}->assertNotEquals(' . "\n" .
+                'expectedRenderedInvocation' => '{{ PHPUNIT }}->assertNotEquals(' . "\n" .
                     '    100,' . "\n" .
                     '    \'string\'' . "\n" .
                     ')',
