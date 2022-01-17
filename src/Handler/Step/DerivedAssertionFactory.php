@@ -91,11 +91,11 @@ class DerivedAssertionFactory
         $identifier = $assertion->getIdentifier();
 
         if ($isExistenceAssertion) {
-            if ($this->identifierTypeAnalyser->isDescendantDomIdentifier($identifier)) {
+            if (is_string($identifier) && $this->identifierTypeAnalyser->isDescendantDomIdentifier($identifier)) {
                 $assertions = $assertions->merge($this->createForStatementAncestorsOnly($identifier, $assertion));
             }
         } else {
-            if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
+            if (is_string($identifier) && $this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
                 $assertions = $assertions->merge($this->createForStatementAndAncestors($identifier, $assertion));
             }
         }

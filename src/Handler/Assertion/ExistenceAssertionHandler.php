@@ -49,11 +49,11 @@ class ExistenceAssertionHandler extends AbstractAssertionHandler
     {
         $identifier = $assertion->getIdentifier();
 
-        if ($this->valueTypeIdentifier->isScalarValue($identifier)) {
+        if (is_string($identifier) && $this->valueTypeIdentifier->isScalarValue($identifier)) {
             return $this->scalarExistenceAssertionHandler->handle($assertion);
         }
 
-        if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
+        if (is_string($identifier) && $this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
             return $this->identifierExistenceAssertionHandler->handle($assertion);
         }
 

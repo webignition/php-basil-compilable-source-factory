@@ -54,9 +54,9 @@ class StatementFactoryCallFactoryTest extends AbstractResolvableTest
                 'expectedRenderedSource' => '{{ ACTION_FACTORY }}->createFromJson(\'{' . "\n" .
                     '    "statement-type": "action",' . "\n" .
                     '    "source": "click $\\\\".selector\\\\"",' . "\n" .
+                    '    "identifier": "$\\\\".selector\\\\"",' . "\n" .
                     '    "type": "click",' . "\n" .
-                    '    "arguments": "$\\\\".selector\\\\"",' . "\n" .
-                    '    "identifier": "$\\\\".selector\\\\""' . "\n" .
+                    '    "arguments": "$\\\\".selector\\\\""' . "\n" .
                     '}\')',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
@@ -93,9 +93,9 @@ class StatementFactoryCallFactoryTest extends AbstractResolvableTest
                     '    "statement": {' . "\n" .
                     '        "statement-type": "action",' . "\n" .
                     '        "source": "click $\\\\".selector\\\\"",' . "\n" .
+                    '        "identifier": "$\\\\".selector\\\\"",' . "\n" .
                     '        "type": "click",' . "\n" .
-                    '        "arguments": "$\\\\".selector\\\\"",' . "\n" .
-                    '        "identifier": "$\\\\".selector\\\\""' . "\n" .
+                    '        "arguments": "$\\\\".selector\\\\""' . "\n" .
                     '    }' . "\n" .
                     '}\')',
                 'expectedMetadata' => new Metadata([

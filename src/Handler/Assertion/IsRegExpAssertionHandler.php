@@ -59,19 +59,19 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
     {
         $identifier = $assertion->getIdentifier();
 
-        if ($this->valueTypeIdentifier->isScalarValue($identifier)) {
+        if (is_string($identifier) && $this->valueTypeIdentifier->isScalarValue($identifier)) {
             $examinedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull($identifier);
 
             return $this->createIsRegExpAssertionBody($examinedAccessor, $assertion);
         }
 
-        if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
+        if (is_string($identifier) && $this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
             $domIdentifier = $this->domIdentifierFactory->createFromIdentifierString($identifier);
             if (null === $domIdentifier) {
                 throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
             }
 
-            $examinedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull($assertion->getIdentifier());
+            $examinedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull($identifier);
 
             return $this->createIsRegExpAssertionBody($examinedAccessor, $assertion);
         }
