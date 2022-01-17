@@ -94,7 +94,7 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
             ])
         );
 
-        $domIdentifier = $this->domIdentifierFactory->createFromIdentifierString($identifier);
+        $domIdentifier = $this->domIdentifierFactory->createFromIdentifierString((string) $identifier);
         if (null === $domIdentifier) {
             throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }

@@ -47,7 +47,7 @@ class ScalarExistenceAssertionHandler extends AbstractAssertionHandler
     public function handle(AssertionInterface $assertion): BodyInterface
     {
         $nullComparisonExpression = new ComparisonExpression(
-            $this->scalarValueHandler->handle($assertion->getIdentifier()),
+            $this->scalarValueHandler->handle((string) $assertion->getIdentifier()),
             new LiteralExpression('null'),
             '??'
         );
