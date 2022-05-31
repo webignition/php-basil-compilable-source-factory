@@ -64,6 +64,9 @@ class ClassDefinitionFactory
 
         $stepOrdinalIndex = 1;
         foreach ($test->getSteps() as $stepName => $step) {
+            // todo: remove in #600
+            $stepName = is_string($stepName) ? $stepName : '';
+
             if ($step instanceof StepInterface) {
                 $methodDefinitions = array_merge(
                     $methodDefinitions,
