@@ -18,8 +18,8 @@ use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\StepMethodFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilModels\DataSet\DataSet;
-use webignition\BasilModels\Step\StepInterface;
+use webignition\BasilModels\Model\DataSet\DataSet;
+use webignition\BasilModels\Model\Step\StepInterface;
 use webignition\BasilParser\StepParser;
 
 class StepMethodFactoryTest extends AbstractResolvableTest

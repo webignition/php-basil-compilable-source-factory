@@ -26,10 +26,10 @@ use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
-use webignition\BasilModels\DataSet\DataSet;
-use webignition\BasilModels\DataSet\DataSetCollection;
-use webignition\BasilModels\DataSet\DataSetCollectionInterface;
-use webignition\BasilModels\Step\StepInterface;
+use webignition\BasilModels\Model\DataSet\DataSet;
+use webignition\BasilModels\Model\DataSet\DataSetCollection;
+use webignition\BasilModels\Model\DataSet\DataSetCollectionInterface;
+use webignition\BasilModels\Model\Step\StepInterface;
 
 class StepMethodFactory
 {

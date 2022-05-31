@@ -9,8 +9,8 @@ use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTes
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilModels\Assertion\AssertionInterface;
-use webignition\BasilModels\Assertion\DerivedValueOperationAssertion;
+use webignition\BasilModels\Model\Assertion\AssertionInterface;
+use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
 use webignition\BasilParser\AssertionParser;
 
 class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase

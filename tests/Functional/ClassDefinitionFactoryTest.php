@@ -6,7 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Functional;
 
 use webignition\BasilCompilableSourceFactory\ClassDefinitionFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
-use webignition\BasilModels\Test\TestInterface;
+use webignition\BasilModels\Model\Test\TestInterface;
 use webignition\BasilParser\Test\TestParser;
 use webignition\SymfonyPantherWebServerRunner\Options;
 

@@ -23,7 +23,7 @@ use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\StaticObject;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilModels\Test\Configuration;
+use webignition\BasilModels\Model\Test\Configuration;
 use webignition\SymfonyPantherWebServerRunner\Options;
 
 class MethodDefinitionFactory

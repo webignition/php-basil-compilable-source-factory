@@ -11,7 +11,7 @@ use webignition\BasilCompilableSourceFactory\Handler\Assertion\ExistenceAssertio
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\IdentifierExistenceAssertionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\ScalarExistenceAssertionHandler;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
-use webignition\BasilModels\Assertion\Assertion;
+use webignition\BasilModels\Model\Assertion\Assertion;
 use webignition\BasilParser\AssertionParser;
 use webignition\BasilValueTypeIdentifier\ValueTypeIdentifier;
 

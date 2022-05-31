@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
 use webignition\BasilCompilableSourceFactory\ClassNameFactory;
-use webignition\BasilModels\Test\ConfigurationInterface;
-use webignition\BasilModels\Test\TestInterface;
+use webignition\BasilModels\Model\Test\ConfigurationInterface;
+use webignition\BasilModels\Model\Test\TestInterface;
 
 class ClassNameFactoryTest extends \PHPUnit\Framework\TestCase
 {
