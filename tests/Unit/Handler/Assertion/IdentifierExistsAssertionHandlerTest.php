@@ -10,7 +10,7 @@ use webignition\BasilCompilableSourceFactory\Handler\Assertion\IdentifierExisten
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTest;
 use webignition\BasilDomIdentifierFactory\Factory;
-use webignition\BasilModels\Assertion\AssertionInterface;
+use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilParser\AssertionParser;
 use webignition\ObjectReflector\ObjectReflector;
 

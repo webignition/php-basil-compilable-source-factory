@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Action;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\Action\SetActionHandler;
 use webignition\BasilDomIdentifierFactory\Factory;
-use webignition\BasilModels\Action\ActionInterface;
+use webignition\BasilModels\Model\Action\ActionInterface;
 use webignition\BasilParser\ActionParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\ObjectReflector\ObjectReflector;

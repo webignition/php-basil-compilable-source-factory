@@ -10,7 +10,7 @@ use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
-use webignition\BasilModels\Step\StepInterface;
+use webignition\BasilModels\Model\Step\StepInterface;
 use webignition\BasilParser\StepParser;
 
 class StepHandlerTest extends AbstractBrowserTestCase

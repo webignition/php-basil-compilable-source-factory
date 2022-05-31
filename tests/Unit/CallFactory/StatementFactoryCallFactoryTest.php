@@ -10,8 +10,8 @@ use webignition\BasilCompilableSource\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\CallFactory\StatementFactoryCallFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTest;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilModels\Assertion\DerivedValueOperationAssertion;
-use webignition\BasilModels\StatementInterface;
+use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
+use webignition\BasilModels\Model\StatementInterface;
 use webignition\BasilParser\ActionParser;
 use webignition\BasilParser\AssertionParser;
 

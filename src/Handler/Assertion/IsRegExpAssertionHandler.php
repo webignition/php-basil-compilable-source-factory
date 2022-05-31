@@ -18,7 +18,7 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentExcepti
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
-use webignition\BasilModels\Assertion\AssertionInterface;
+use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilValueTypeIdentifier\ValueTypeIdentifier;
 
 class IsRegExpAssertionHandler extends AbstractAssertionHandler

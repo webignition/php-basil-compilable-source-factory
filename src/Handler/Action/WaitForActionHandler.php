@@ -14,7 +14,7 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentExcepti
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
-use webignition\BasilModels\Action\ActionInterface;
+use webignition\BasilModels\Model\Action\ActionInterface;
 use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
 class WaitForActionHandler

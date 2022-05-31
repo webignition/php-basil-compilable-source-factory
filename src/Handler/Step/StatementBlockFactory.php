@@ -14,8 +14,8 @@ use webignition\BasilCompilableSource\Statement\StatementInterface;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSourceFactory\CallFactory\StatementFactoryCallFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilModels\EncapsulatingStatementInterface;
-use webignition\BasilModels\StatementInterface as StatementModelInterface;
+use webignition\BasilModels\Model\EncapsulatingStatementInterface;
+use webignition\BasilModels\Model\StatementInterface as StatementModelInterface;
 
 class StatementBlockFactory
 {

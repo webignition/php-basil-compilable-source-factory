@@ -8,7 +8,7 @@ use webignition\BasilCompilableSource\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\IsRegExpAssertionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTest;
-use webignition\BasilModels\Assertion\AssertionInterface;
+use webignition\BasilModels\Model\Assertion\AssertionInterface;
 
 class IsRegExpAssertionHandlerTest extends AbstractResolvableTest
 {

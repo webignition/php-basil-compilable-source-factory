@@ -11,7 +11,7 @@ use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\ComparisonAssertionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\ExistenceAssertionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\IsRegExpAssertionHandler;
-use webignition\BasilModels\Assertion\Assertion;
+use webignition\BasilModels\Model\Assertion\Assertion;
 use webignition\BasilParser\AssertionParser;
 
 class AssertionHandlerTest extends \PHPUnit\Framework\TestCase

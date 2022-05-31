@@ -17,11 +17,11 @@ use webignition\BasilCompilableSourceFactory\Handler\Step\DerivedAssertionFactor
 use webignition\BasilCompilableSourceFactory\Handler\Step\StatementBlockFactory;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTest;
-use webignition\BasilModels\Action\ActionInterface;
-use webignition\BasilModels\Assertion\AssertionInterface;
-use webignition\BasilModels\Assertion\DerivedValueOperationAssertion;
-use webignition\BasilModels\StatementInterface;
-use webignition\BasilModels\Step\StepInterface;
+use webignition\BasilModels\Model\Action\ActionInterface;
+use webignition\BasilModels\Model\Assertion\AssertionInterface;
+use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
+use webignition\BasilModels\Model\StatementInterface;
+use webignition\BasilModels\Model\Step\StepInterface;
 use webignition\BasilParser\ActionParser;
 use webignition\BasilParser\AssertionParser;
 use webignition\BasilParser\StepParser;

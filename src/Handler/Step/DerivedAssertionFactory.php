@@ -7,11 +7,11 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Step;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
-use webignition\BasilModels\Action\ActionInterface;
-use webignition\BasilModels\Assertion\AssertionInterface;
-use webignition\BasilModels\Assertion\DerivedValueOperationAssertion;
-use webignition\BasilModels\Assertion\UniqueAssertionCollection;
-use webignition\BasilModels\StatementInterface as StatementModelInterface;
+use webignition\BasilModels\Model\Action\ActionInterface;
+use webignition\BasilModels\Model\Assertion\AssertionInterface;
+use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
+use webignition\BasilModels\Model\Assertion\UniqueAssertionCollection;
+use webignition\BasilModels\Model\StatementInterface as StatementModelInterface;
 use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
 class DerivedAssertionFactory

@@ -12,7 +12,7 @@ use webignition\BasilCompilableSource\Statement\StatementInterface;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilModels\Assertion\AssertionInterface;
+use webignition\BasilModels\Model\Assertion\AssertionInterface;
 
 abstract class AbstractAssertionHandler
 {

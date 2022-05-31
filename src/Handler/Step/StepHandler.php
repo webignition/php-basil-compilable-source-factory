@@ -12,8 +12,8 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementExcep
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
-use webignition\BasilModels\Assertion\UniqueAssertionCollection;
-use webignition\BasilModels\Step\StepInterface;
+use webignition\BasilModels\Model\Assertion\UniqueAssertionCollection;
+use webignition\BasilModels\Model\Step\StepInterface;
 
 class StepHandler
 {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory;
 
-use webignition\BasilModels\Test\TestInterface;
+use webignition\BasilModels\Model\Test\TestInterface;
 
 class ClassNameFactory
 {

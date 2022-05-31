@@ -16,7 +16,7 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\WaitActio
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\WaitForActionFunctionalDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
-use webignition\BasilModels\Action\ActionInterface;
+use webignition\BasilModels\Model\Action\ActionInterface;
 
 class ActionHandlerTest extends AbstractBrowserTestCase
 {

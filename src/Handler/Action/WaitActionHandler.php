@@ -16,7 +16,7 @@ use webignition\BasilCompilableSource\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
-use webignition\BasilModels\Action\ActionInterface;
+use webignition\BasilModels\Model\Action\ActionInterface;
 
 class WaitActionHandler
 {

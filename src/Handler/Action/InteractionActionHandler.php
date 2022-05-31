@@ -14,7 +14,7 @@ use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
-use webignition\BasilModels\Action\ActionInterface;
+use webignition\BasilModels\Model\Action\ActionInterface;
 use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
 class InteractionActionHandler

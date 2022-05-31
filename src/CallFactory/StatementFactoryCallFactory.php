@@ -9,8 +9,8 @@ use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilModels\Assertion\AssertionInterface;
-use webignition\BasilModels\StatementInterface;
+use webignition\BasilModels\Model\Assertion\AssertionInterface;
+use webignition\BasilModels\Model\StatementInterface;
 
 class StatementFactoryCallFactory
 {

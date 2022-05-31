@@ -6,11 +6,11 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Step;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\Step\DerivedAssertionFactory;
-use webignition\BasilModels\Action\Action;
-use webignition\BasilModels\Action\ActionInterface;
-use webignition\BasilModels\Assertion\AssertionInterface;
-use webignition\BasilModels\Assertion\DerivedValueOperationAssertion;
-use webignition\BasilModels\Assertion\UniqueAssertionCollection;
+use webignition\BasilModels\Model\Action\Action;
+use webignition\BasilModels\Model\Action\ActionInterface;
+use webignition\BasilModels\Model\Assertion\AssertionInterface;
+use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
+use webignition\BasilModels\Model\Assertion\UniqueAssertionCollection;
 use webignition\BasilParser\ActionParser;
 use webignition\BasilParser\AssertionParser;
 

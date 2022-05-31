@@ -29,9 +29,9 @@ use webignition\BasilCompilableSource\TypeDeclaration\ObjectTypeDeclarationColle
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
-use webignition\BasilModels\Step\StepInterface;
-use webignition\BasilModels\Test\Configuration;
-use webignition\BasilModels\Test\TestInterface;
+use webignition\BasilModels\Model\Step\StepInterface;
+use webignition\BasilModels\Model\Test\Configuration;
+use webignition\BasilModels\Model\Test\TestInterface;
 
 class ClassDefinitionFactory
 {
@@ -64,9 +64,6 @@ class ClassDefinitionFactory
 
         $stepOrdinalIndex = 1;
         foreach ($test->getSteps() as $stepName => $step) {
-            // todo: remove in #600
-            $stepName = is_string($stepName) ? $stepName : '';
-
             if ($step instanceof StepInterface) {
                 $methodDefinitions = array_merge(
                     $methodDefinitions,
