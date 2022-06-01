@@ -15,7 +15,6 @@ use webignition\BasilCompilableSource\ClassDefinitionInterface;
 use webignition\BasilCompilableSource\ClassName;
 use webignition\BasilCompilableSource\ClassSignature;
 use webignition\BasilCompilableSource\Expression\CatchExpression;
-use webignition\BasilCompilableSource\Factory\ArgumentFactory;
 use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\MethodDefinition;
 use webignition\BasilCompilableSource\MethodDefinitionInterface;

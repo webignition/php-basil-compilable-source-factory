@@ -9,7 +9,6 @@ use webignition\BasilCompilableSource\Expression\AssignmentExpression;
 use webignition\BasilCompilableSource\Expression\ClosureExpression;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Expression\ReturnExpression;
-use webignition\BasilCompilableSource\Factory\ArgumentFactory;
 use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Statement\Statement;
@@ -17,6 +16,7 @@ use webignition\BasilCompilableSource\Statement\StatementInterface;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableName;
 use webignition\BasilCompilableSource\VariablePlaceholderInterface;
+use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class StatementFactory

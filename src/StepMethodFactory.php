@@ -13,7 +13,6 @@ use webignition\BasilCompilableSource\EmptyLine;
 use webignition\BasilCompilableSource\Expression\ArrayExpression;
 use webignition\BasilCompilableSource\Expression\LiteralExpression;
 use webignition\BasilCompilableSource\Expression\ReturnExpression;
-use webignition\BasilCompilableSource\Factory\ArgumentFactory;
 use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\MethodDefinition;
 use webignition\BasilCompilableSource\MethodDefinitionInterface;
