@@ -32,11 +32,22 @@ class ArgumentFactory
 
         foreach ($arguments as $argument) {
             if (null === $argument) {
-                $argument = new LiteralExpression('null');
+                $expressionArguments[] = new LiteralExpression('null');
             }
 
-            if (is_scalar($argument)) {
-                $argument = $this->createExpressionFromScalar($argument);
+            if (is_bool($argument)) {
+                $expressionArguments[] = new LiteralExpression($argument ? 'true' : 'false');
+            }
+
+            if (is_float($argument) || is_int($argument)) {
+                $expressionArguments[] = new LiteralExpression((string) $argument);
+            }
+
+            if (is_string($argument)) {
+                $expressionArguments[] = new LiteralExpression(sprintf(
+                    '\'%s\'',
+                    $this->singleQuotedStringEscaper->escape($argument)
+                ));
             }
 
             if ($argument instanceof ExpressionInterface) {
@@ -45,28 +56,5 @@ class ArgumentFactory
         }
 
         return $expressionArguments;
-    }
-
-    /**
-     * @param bool|float|int|string $scalar
-     */
-    private function createExpressionFromScalar($scalar): ExpressionInterface
-    {
-        $expressionValue = '';
-
-        if (is_int($scalar) || is_float($scalar)) {
-            $expressionValue = (string) $scalar;
-        }
-
-        if (is_string($scalar)) {
-            $escapedValue = $this->singleQuotedStringEscaper->escape($scalar);
-            $expressionValue = '\'' . $escapedValue . '\'';
-        }
-
-        if (is_bool($scalar)) {
-            $expressionValue = $scalar ? 'true' : 'false';
-        }
-
-        return new LiteralExpression($expressionValue);
     }
 }
