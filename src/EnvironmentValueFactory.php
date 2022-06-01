@@ -13,7 +13,7 @@ class EnvironmentValueFactory
     private const DEFAULT_DELIMITER = '|';
 
     public function __construct(
-        private QuotedStringValueExtractor $quotedStringValueExtractor
+        private readonly QuotedStringValueExtractor $quotedStringValueExtractor
     ) {
     }
 
