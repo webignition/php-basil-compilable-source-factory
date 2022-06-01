@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
 use webignition\BasilCompilableSource\Expression\ExpressionInterface;
-use webignition\BasilCompilableSource\Factory\ArgumentFactory;
 use webignition\BasilCompilableSource\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSource\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSource\StaticObject;
+use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\DomElementIdentifier\ElementIdentifier;
 
 class ElementIdentifierCallFactory
