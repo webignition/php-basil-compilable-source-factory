@@ -9,11 +9,9 @@ use webignition\BasilCompilableSource\Expression\LiteralExpression;
 
 class ArgumentFactory
 {
-    private SingleQuotedStringEscaper $singleQuotedStringEscaper;
-
-    public function __construct(SingleQuotedStringEscaper $singleQuotedStringEscaper)
-    {
-        $this->singleQuotedStringEscaper = $singleQuotedStringEscaper;
+    public function __construct(
+        private readonly SingleQuotedStringEscaper $singleQuotedStringEscaper
+    ) {
     }
 
     public static function createFactory(): self
