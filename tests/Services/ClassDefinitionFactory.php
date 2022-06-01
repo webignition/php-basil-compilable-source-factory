@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
-use webignition\BasilCompilableSource\Body\BodyInterface;
-use webignition\BasilCompilableSource\ClassBody;
-use webignition\BasilCompilableSource\ClassDefinition;
-use webignition\BasilCompilableSource\ClassDefinitionInterface;
-use webignition\BasilCompilableSource\ClassName;
-use webignition\BasilCompilableSource\ClassSignature;
-use webignition\BasilCompilableSource\MethodDefinition;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
+use webignition\BasilCompilableSourceFactory\Model\ClassBody;
+use webignition\BasilCompilableSourceFactory\Model\ClassDefinition;
+use webignition\BasilCompilableSourceFactory\Model\ClassDefinitionInterface;
+use webignition\BasilCompilableSourceFactory\Model\ClassName;
+use webignition\BasilCompilableSourceFactory\Model\ClassSignature;
+use webignition\BasilCompilableSourceFactory\Model\MethodDefinition;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractGeneratedTestCase;
 
 class ClassDefinitionFactory
