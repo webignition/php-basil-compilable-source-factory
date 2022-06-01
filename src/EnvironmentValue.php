@@ -2,15 +2,15 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSourceFactory\Model;
+namespace webignition\BasilCompilableSourceFactory;
 
 class EnvironmentValue
 {
     private const PREFIX = '$env.';
 
     public function __construct(
-        private string $property,
-        private ?string $default = null
+        private readonly string $property,
+        private readonly ?string $default = null
     ) {
     }
 

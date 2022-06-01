@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\ModelFactory;
 
-use webignition\BasilCompilableSourceFactory\Model\EnvironmentValue;
-use webignition\BasilCompilableSourceFactory\ModelFactory\EnvironmentValueFactory;
+use webignition\BasilCompilableSourceFactory\EnvironmentValue;
+use webignition\BasilCompilableSourceFactory\EnvironmentValueFactory;
 
 class EnvironmentValueFactoryTest extends \PHPUnit\Framework\TestCase
 {

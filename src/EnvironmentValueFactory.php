@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSourceFactory\ModelFactory;
+namespace webignition\BasilCompilableSourceFactory;
 
-use webignition\BasilCompilableSourceFactory\Model\EnvironmentValue;
 use webignition\QuotedStringValueExtractor\QuotedStringValueExtractor;
 
 class EnvironmentValueFactory
@@ -14,7 +13,7 @@ class EnvironmentValueFactory
     private const DEFAULT_DELIMITER = '|';
 
     public function __construct(
-        private QuotedStringValueExtractor $quotedStringValueExtractor
+        private readonly QuotedStringValueExtractor $quotedStringValueExtractor
     ) {
     }
 
