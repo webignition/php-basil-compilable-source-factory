@@ -17,8 +17,8 @@ use webignition\BasilCompilableSource\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSource\Statement\Statement;
 use webignition\BasilCompilableSource\VariableDependency;
 use webignition\BasilCompilableSource\VariableName;
+use webignition\BasilCompilableSourceFactory\EnvironmentValueFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\ModelFactory\EnvironmentValueFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilValueTypeIdentifier\ValueTypeIdentifier;
 

@@ -2,9 +2,8 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSourceFactory\ModelFactory;
+namespace webignition\BasilCompilableSourceFactory;
 
-use webignition\BasilCompilableSourceFactory\Model\EnvironmentValue;
 use webignition\QuotedStringValueExtractor\QuotedStringValueExtractor;
 
 class EnvironmentValueFactory

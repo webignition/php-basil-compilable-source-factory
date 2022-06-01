@@ -4,9 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory;
 
-use webignition\BasilCompilableSourceFactory\Model\EnvironmentValue;
-use webignition\BasilCompilableSourceFactory\ModelFactory\EnvironmentValueFactory;
-
 class AccessorDefaultValueFactory
 {
     public function __construct(

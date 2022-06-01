@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSourceFactory\Model;
+namespace webignition\BasilCompilableSourceFactory;
 
 class EnvironmentValue
 {
