@@ -15,7 +15,8 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\StepMethodFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilModels\Model\Test\Configuration;
+use webignition\BasilModels\Model\Test\NamedTest;
+use webignition\BasilModels\Model\Test\NamedTestInterface;
 use webignition\BasilModels\Model\Test\TestInterface;
 use webignition\BasilParser\Test\TestParser;
 
@@ -27,7 +28,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTest
     public function testCreateClassDefinition(
         ClassDefinitionFactory $factory,
         string $expectedClassName,
-        TestInterface $test,
+        NamedTestInterface $test,
         string $expectedRenderedClassDefinition,
         MetadataInterface $expectedMetadata
     ): void {
@@ -52,36 +53,34 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTest
                     \Mockery::mock(StepMethodFactory::class)
                 ),
                 'expectedClassName' => 'GeneratedClassName',
-                'test' => $testParser->parse([
-                    'config' => [
-                        'browser' => 'chrome',
-                        'url' => 'http://example.com',
-                    ],
-                ])->withPath('test.yml'),
-                'expectedRenderedClassDefinition' => 'use webignition\BaseBasilTestCase\ClientManager;' . "\n" .
-                    'use webignition\BasilModels\Model\Test\Configuration;' . "\n" .
-                    "\n" .
-                    'class GeneratedClassName' . "\n" .
-                    '{' . "\n" .
-                    '    public static function setUpBeforeClass(): void' . "\n" .
-                    '    {' . "\n" .
-                    '        try {' . "\n" .
-                    '            self::setClientManager(new ClientManager(' . "\n" .
-                    '                new Configuration(' . "\n" .
-                    '                    \'chrome\',' . "\n" .
-                    '                    \'http://example.com\'' . "\n" .
-                    '                )' . "\n" .
-                    '            ));' . "\n" .
-                    '            parent::setUpBeforeClass();' . "\n" .
-                    '            {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
-                    '        } catch (\Throwable $exception) {' . "\n" .
-                    '            self::staticSetLastException($exception);' . "\n" .
-                    '        }' . "\n" .
-                    '    }' . "\n" .
-                    '}',
+                'test' => new NamedTest(
+                    $testParser->parse([
+                        'config' => [
+                            'browser' => 'chrome',
+                            'url' => 'http://example.com',
+                        ],
+                    ]),
+                    'test.yml'
+                ),
+                'expectedRenderedClassDefinition' => <<< 'EOF'
+                    use webignition\BaseBasilTestCase\ClientManager;
+                    
+                    class GeneratedClassName
+                    {
+                        public static function setUpBeforeClass(): void
+                        {
+                            try {
+                                self::setClientManager(new ClientManager('chrome'));
+                                parent::setUpBeforeClass();
+                                {{ CLIENT }}->request('GET', 'http://example.com');
+                            } catch (\Throwable $exception) {
+                                self::staticSetLastException($exception);
+                            }
+                        }
+                    }
+                    EOF,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassName(Configuration::class),
                         new ClassName(ClientManager::class),
                         new ClassName(\Throwable::class),
                     ]),
@@ -96,36 +95,34 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTest
                     \Mockery::mock(StepMethodFactory::class)
                 ),
                 'expectedClassName' => 'GeneratedClassName',
-                'test' => $testParser->parse([
-                    'config' => [
-                        'browser' => 'firefox',
-                        'url' => 'http://example.com',
-                    ],
-                ])->withPath('test.yml'),
-                'expectedRenderedClassDefinition' => 'use webignition\BaseBasilTestCase\ClientManager;' . "\n" .
-                    'use webignition\BasilModels\Model\Test\Configuration;' . "\n" .
-                    "\n" .
-                    'class GeneratedClassName' . "\n" .
-                    '{' . "\n" .
-                    '    public static function setUpBeforeClass(): void' . "\n" .
-                    '    {' . "\n" .
-                    '        try {' . "\n" .
-                    '            self::setClientManager(new ClientManager(' . "\n" .
-                    '                new Configuration(' . "\n" .
-                    '                    \'firefox\',' . "\n" .
-                    '                    \'http://example.com\'' . "\n" .
-                    '                )' . "\n" .
-                    '            ));' . "\n" .
-                    '            parent::setUpBeforeClass();' . "\n" .
-                    '            {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
-                    '        } catch (\Throwable $exception) {' . "\n" .
-                    '            self::staticSetLastException($exception);' . "\n" .
-                    '        }' . "\n" .
-                    '    }' . "\n" .
-                    '}',
+                'test' => new NamedTest(
+                    $testParser->parse([
+                        'config' => [
+                            'browser' => 'firefox',
+                            'url' => 'http://example.com',
+                        ],
+                    ]),
+                    'test.yml'
+                ),
+                'expectedRenderedClassDefinition' => <<< 'EOF'
+                    use webignition\BaseBasilTestCase\ClientManager;
+                    
+                    class GeneratedClassName
+                    {
+                        public static function setUpBeforeClass(): void
+                        {
+                            try {
+                                self::setClientManager(new ClientManager('firefox'));
+                                parent::setUpBeforeClass();
+                                {{ CLIENT }}->request('GET', 'http://example.com');
+                            } catch (\Throwable $exception) {
+                                self::staticSetLastException($exception);
+                            }
+                        }
+                    }
+                    EOF,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassName(Configuration::class),
                         new ClassName(ClientManager::class),
                         new ClassName(\Throwable::class),
                     ]),
@@ -140,36 +137,34 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTest
                     \Mockery::mock(StepMethodFactory::class)
                 ),
                 'expectedClassName' => 'GeneratedClassName',
-                'test' => $testParser->parse([
-                    'config' => [
-                        'browser' => 'unknown',
-                        'url' => 'http://example.com',
-                    ],
-                ])->withPath('test.yml'),
-                'expectedRenderedClassDefinition' => 'use webignition\BaseBasilTestCase\ClientManager;' . "\n" .
-                    'use webignition\BasilModels\Model\Test\Configuration;' . "\n" .
-                    "\n" .
-                    'class GeneratedClassName' . "\n" .
-                    '{' . "\n" .
-                    '    public static function setUpBeforeClass(): void' . "\n" .
-                    '    {' . "\n" .
-                    '        try {' . "\n" .
-                    '            self::setClientManager(new ClientManager(' . "\n" .
-                    '                new Configuration(' . "\n" .
-                    '                    \'unknown\',' . "\n" .
-                    '                    \'http://example.com\'' . "\n" .
-                    '                )' . "\n" .
-                    '            ));' . "\n" .
-                    '            parent::setUpBeforeClass();' . "\n" .
-                    '            {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
-                    '        } catch (\Throwable $exception) {' . "\n" .
-                    '            self::staticSetLastException($exception);' . "\n" .
-                    '        }' . "\n" .
-                    '    }' . "\n" .
-                    '}',
+                'test' => new NamedTest(
+                    $testParser->parse([
+                        'config' => [
+                            'browser' => 'unknown',
+                            'url' => 'http://example.com',
+                        ],
+                    ]),
+                    'test.yml'
+                ),
+                'expectedRenderedClassDefinition' => <<< 'EOF'
+                    use webignition\BaseBasilTestCase\ClientManager;
+                    
+                    class GeneratedClassName
+                    {
+                        public static function setUpBeforeClass(): void
+                        {
+                            try {
+                                self::setClientManager(new ClientManager('unknown'));
+                                parent::setUpBeforeClass();
+                                {{ CLIENT }}->request('GET', 'http://example.com');
+                            } catch (\Throwable $exception) {
+                                self::staticSetLastException($exception);
+                            }
+                        }
+                    }
+                    EOF,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassName(Configuration::class),
                         new ClassName(ClientManager::class),
                         new ClassName(\Throwable::class),
                     ]),
@@ -184,46 +179,44 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTest
                     StepMethodFactory::createFactory()
                 ),
                 'expectedClassName' => 'GeneratedClassName',
-                'test' => $testParser->parse([
-                    'config' => [
-                        'browser' => 'chrome',
-                        'url' => 'http://example.com',
-                    ],
-                    'step one' => [],
-                ])->withPath('test.yml'),
-                'expectedRenderedClassDefinition' => 'use webignition\BaseBasilTestCase\ClientManager;' . "\n" .
-                    'use webignition\BasilModels\Model\Test\Configuration;' . "\n" .
-                    "\n" .
-                    'class GeneratedClassName' . "\n" .
-                    '{' . "\n" .
-                    '    public static function setUpBeforeClass(): void' . "\n" .
-                    '    {' . "\n" .
-                    '        try {' . "\n" .
-                    '            self::setClientManager(new ClientManager(' . "\n" .
-                    '                new Configuration(' . "\n" .
-                    '                    \'chrome\',' . "\n" .
-                    '                    \'http://example.com\'' . "\n" .
-                    '                )' . "\n" .
-                    '            ));' . "\n" .
-                    '            parent::setUpBeforeClass();' . "\n" .
-                    '            {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
-                    '        } catch (\Throwable $exception) {' . "\n" .
-                    '            self::staticSetLastException($exception);' . "\n" .
-                    '        }' . "\n" .
-                    '    }' . "\n" .
-                    "\n" .
-                    '    public function test1()' . "\n" .
-                    '    {' . "\n" .
-                    "        if (self::hasException()) {\n" .
-                    "            return;\n" .
-                    "        }\n" .
-                    '        {{ PHPUNIT }}->setBasilStepName(\'step one\');' . "\n" .
-                    '        {{ PHPUNIT }}->setCurrentDataSet(null);' . "\n" .
-                    '    }' . "\n" .
-                    '}',
+                'test' => new NamedTest(
+                    $testParser->parse([
+                        'config' => [
+                            'browser' => 'chrome',
+                            'url' => 'http://example.com',
+                        ],
+                        'step one' => [],
+                    ]),
+                    'test.yml'
+                ),
+                'expectedRenderedClassDefinition' => <<< 'EOF'
+                    use webignition\BaseBasilTestCase\ClientManager;
+                    
+                    class GeneratedClassName
+                    {
+                        public static function setUpBeforeClass(): void
+                        {
+                            try {
+                                self::setClientManager(new ClientManager('chrome'));
+                                parent::setUpBeforeClass();
+                                {{ CLIENT }}->request('GET', 'http://example.com');
+                            } catch (\Throwable $exception) {
+                                self::staticSetLastException($exception);
+                            }
+                        }
+
+                        public function test1()
+                        {
+                            if (self::hasException()) {
+                                return;
+                            }
+                            {{ PHPUNIT }}->setBasilStepName('step one');
+                            {{ PHPUNIT }}->setCurrentDataSet(null);
+                        }
+                    }
+                    EOF,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassName(Configuration::class),
                         new ClassName(ClientManager::class),
                         new ClassName(\Throwable::class),
                     ]),
@@ -239,56 +232,54 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTest
                     StepMethodFactory::createFactory()
                 ),
                 'expectedClassName' => 'GeneratedClassName',
-                'test' => $testParser->parse([
-                    'config' => [
-                        'browser' => 'chrome',
-                        'url' => 'http://example.com',
-                    ],
-                    'step one' => [],
-                    'step two' => [],
-                ])->withPath('test.yml'),
-                'expectedRenderedClassDefinition' => 'use webignition\BaseBasilTestCase\ClientManager;' . "\n" .
-                    'use webignition\BasilModels\Model\Test\Configuration;' . "\n" .
-                    "\n" .
-                    'class GeneratedClassName' . "\n" .
-                    '{' . "\n" .
-                    '    public static function setUpBeforeClass(): void' . "\n" .
-                    '    {' . "\n" .
-                    '        try {' . "\n" .
-                    '            self::setClientManager(new ClientManager(' . "\n" .
-                    '                new Configuration(' . "\n" .
-                    '                    \'chrome\',' . "\n" .
-                    '                    \'http://example.com\'' . "\n" .
-                    '                )' . "\n" .
-                    '            ));' . "\n" .
-                    '            parent::setUpBeforeClass();' . "\n" .
-                    '            {{ CLIENT }}->request(\'GET\', \'http://example.com\');' . "\n" .
-                    '        } catch (\Throwable $exception) {' . "\n" .
-                    '            self::staticSetLastException($exception);' . "\n" .
-                    '        }' . "\n" .
-                    '    }' . "\n" .
-                    "\n" .
-                    '    public function test1()' . "\n" .
-                    '    {' . "\n" .
-                    "        if (self::hasException()) {\n" .
-                    "            return;\n" .
-                    "        }\n" .
-                    '        {{ PHPUNIT }}->setBasilStepName(\'step one\');' . "\n" .
-                    '        {{ PHPUNIT }}->setCurrentDataSet(null);' . "\n" .
-                    '    }' . "\n" .
-                    "\n" .
-                    '    public function test2()' . "\n" .
-                    '    {' . "\n" .
-                    "        if (self::hasException()) {\n" .
-                    "            return;\n" .
-                    "        }\n" .
-                    '        {{ PHPUNIT }}->setBasilStepName(\'step two\');' . "\n" .
-                    '        {{ PHPUNIT }}->setCurrentDataSet(null);' . "\n" .
-                    '    }' . "\n" .
-                    '}',
+                'test' => new NamedTest(
+                    $testParser->parse([
+                        'config' => [
+                            'browser' => 'chrome',
+                            'url' => 'http://example.com',
+                        ],
+                        'step one' => [],
+                        'step two' => [],
+                    ]),
+                    'test.yml'
+                ),
+                'expectedRenderedClassDefinition' => <<< 'EOF'
+                    use webignition\BaseBasilTestCase\ClientManager;
+                    
+                    class GeneratedClassName
+                    {
+                        public static function setUpBeforeClass(): void
+                        {
+                            try {
+                                self::setClientManager(new ClientManager('chrome'));
+                                parent::setUpBeforeClass();
+                                {{ CLIENT }}->request('GET', 'http://example.com');
+                            } catch (\Throwable $exception) {
+                                self::staticSetLastException($exception);
+                            }
+                        }
+
+                        public function test1()
+                        {
+                            if (self::hasException()) {
+                                return;
+                            }
+                            {{ PHPUNIT }}->setBasilStepName('step one');
+                            {{ PHPUNIT }}->setCurrentDataSet(null);
+                        }
+
+                        public function test2()
+                        {
+                            if (self::hasException()) {
+                                return;
+                            }
+                            {{ PHPUNIT }}->setBasilStepName('step two');
+                            {{ PHPUNIT }}->setCurrentDataSet(null);
+                        }
+                    }
+                    EOF,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassName(Configuration::class),
                         new ClassName(ClientManager::class),
                         new ClassName(\Throwable::class),
                     ]),

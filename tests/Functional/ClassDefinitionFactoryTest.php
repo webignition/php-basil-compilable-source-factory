@@ -6,7 +6,8 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Functional;
 
 use webignition\BasilCompilableSourceFactory\ClassDefinitionFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
-use webignition\BasilModels\Model\Test\TestInterface;
+use webignition\BasilModels\Model\Test\NamedTest;
+use webignition\BasilModels\Model\Test\NamedTestInterface;
 use webignition\BasilParser\Test\TestParser;
 use webignition\SymfonyPantherWebServerRunner\Options;
 
@@ -24,7 +25,7 @@ class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
     /**
      * @dataProvider createSourceDataProvider
      */
-    public function testCreateSource(TestInterface $test): void
+    public function testCreateSource(NamedTestInterface $test): void
     {
         $classDefinition = $this->factory->createClassDefinition($test, AbstractGeneratedTestCase::class);
         $classCode = $this->testCodeGenerator->createBrowserTestForClass($classDefinition);
@@ -51,91 +52,100 @@ class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
 
         return [
             'single step with single action and single assertion' => [
-                'test' => $testParser->parse([
-                    'config' => [
-                        'browser' => 'chrome',
-                        'url' => Options::getBaseUri() . '/index.html',
-                    ],
-                    'verify correct page is open' => [
-                        'assertions' => [
-                            '$page.url is "' . Options::getBaseUri() . '/index.html"',
-                            '$page.title is "Test fixture web server default document"',
+                'test' => new NamedTest(
+                    $testParser->parse([
+                        'config' => [
+                            'browser' => 'chrome',
+                            'url' => Options::getBaseUri() . '/index.html',
                         ],
-                    ],
-                ])->withPath('test.yml'),
+                        'verify correct page is open' => [
+                            'assertions' => [
+                                '$page.url is "' . Options::getBaseUri() . '/index.html"',
+                                '$page.title is "Test fixture web server default document"',
+                            ],
+                        ],
+                    ]),
+                    'test.yml'
+                )
             ],
             'multi-step' => [
-                'test' => $testParser->parse([
-                    'config' => [
-                        'browser' => 'chrome',
-                        'url' => Options::getBaseUri() . '/index.html',
-                    ],
-                    'verify starting page is open' => [
-                        'assertions' => [
-                            '$page.url is "' . Options::getBaseUri() . '/index.html"',
-                            '$page.title is "Test fixture web server default document"',
+                'test' => new NamedTest(
+                    $testParser->parse([
+                        'config' => [
+                            'browser' => 'chrome',
+                            'url' => Options::getBaseUri() . '/index.html',
                         ],
-                    ],
-                    'navigate to form' => [
-                        'actions' => [
-                            'click $"#link-to-form"',
+                        'verify starting page is open' => [
+                            'assertions' => [
+                                '$page.url is "' . Options::getBaseUri() . '/index.html"',
+                                '$page.title is "Test fixture web server default document"',
+                            ],
                         ],
-                        'assertions' => [
-                            '$page.url is "' . Options::getBaseUri() . '/form.html"',
-                            '$page.title is "Form"',
+                        'navigate to form' => [
+                            'actions' => [
+                                'click $"#link-to-form"',
+                            ],
+                            'assertions' => [
+                                '$page.url is "' . Options::getBaseUri() . '/form.html"',
+                                '$page.title is "Form"',
+                            ],
                         ],
-                    ],
-                    'verify select menu initial values' => [
-                        'assertions' => [
-                            '$".select-none-selected" is "none-selected-1"',
-                            '$".select-has-selected" is "has-selected-2"',
+                        'verify select menu initial values' => [
+                            'assertions' => [
+                                '$".select-none-selected" is "none-selected-1"',
+                                '$".select-has-selected" is "has-selected-2"',
+                            ],
                         ],
-                    ],
-                    'modify select menu values' => [
-                        'actions' => [
-                            'set $".select-none-selected" to "none-selected-3"',
-                            'set $".select-has-selected" to "has-selected-1"',
+                        'modify select menu values' => [
+                            'actions' => [
+                                'set $".select-none-selected" to "none-selected-3"',
+                                'set $".select-has-selected" to "has-selected-1"',
+                            ],
+                            'assertions' => [
+                                '$".select-none-selected" is "none-selected-3"',
+                                '$".select-has-selected" is "has-selected-1"',
+                            ],
                         ],
-                        'assertions' => [
-                            '$".select-none-selected" is "none-selected-3"',
-                            '$".select-has-selected" is "has-selected-1"',
-                        ],
-                    ],
-                ])->withPath('test.yml'),
+                    ]),
+                    'test.yml'
+                )
             ],
             'with data set collection' => [
-                'test' => $testParser->parse([
-                    'config' => [
-                        'browser' => 'chrome',
-                        'url' => Options::getBaseUri() . '/form.html',
-                    ],
-                    'verify form field values' => [
-                        'assertions' => [
-                            '$"input[name=input-without-value]" is ""',
-                            '$"input[name=input-with-value]" is "test"',
+                'test' => new NamedTest(
+                    $testParser->parse([
+                        'config' => [
+                            'browser' => 'chrome',
+                            'url' => Options::getBaseUri() . '/form.html',
                         ],
-                    ],
-                    'modify form field values' => [
-                        'actions' => [
-                            'set $"input[name=input-without-value]" to $data.field_value',
-                            'set $"input[name=input-with-value]" to $data.field_value',
-                        ],
-                        'assertions' => [
-                            '$"input[name=input-without-value]" is $data.expected_value',
-                            '$"input[name=input-with-value]" is $data.expected_value',
-                        ],
-                        'data' => [
-                            '0' => [
-                                'field_value' => 'value0',
-                                'expected_value' => 'value0',
-                            ],
-                            '1' => [
-                                'field_value' => 'value1',
-                                'expected_value' => 'value1',
+                        'verify form field values' => [
+                            'assertions' => [
+                                '$"input[name=input-without-value]" is ""',
+                                '$"input[name=input-with-value]" is "test"',
                             ],
                         ],
-                    ],
-                ])->withPath('test.yml'),
+                        'modify form field values' => [
+                            'actions' => [
+                                'set $"input[name=input-without-value]" to $data.field_value',
+                                'set $"input[name=input-with-value]" to $data.field_value',
+                            ],
+                            'assertions' => [
+                                '$"input[name=input-without-value]" is $data.expected_value',
+                                '$"input[name=input-with-value]" is $data.expected_value',
+                            ],
+                            'data' => [
+                                '0' => [
+                                    'field_value' => 'value0',
+                                    'expected_value' => 'value0',
+                                ],
+                                '1' => [
+                                    'field_value' => 'value1',
+                                    'expected_value' => 'value1',
+                                ],
+                            ],
+                        ],
+                    ]),
+                    'test.yml'
+                )
             ],
         ];
     }

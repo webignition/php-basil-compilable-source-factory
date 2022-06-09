@@ -4,23 +4,21 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory;
 
-use webignition\BasilModels\Model\Test\TestInterface;
+use webignition\BasilModels\Model\Test\NamedTestInterface;
 
 class ClassNameFactory
 {
-    public function create(TestInterface $test): string
+    public function create(NamedTestInterface $test): string
     {
         return sprintf('Generated%sTest', ucfirst($this->createHash($test)));
     }
 
-    private function createHash(TestInterface $test): string
+    private function createHash(NamedTestInterface $test): string
     {
-        $configuration = $test->getConfiguration();
-
         $hashComponents = [
-            'path' => $test->getPath(),
+            'path' => $test->getName(),
             'config' => [
-                'browser' => $configuration->getBrowser(),
+                'browser' => $test->getBrowser(),
             ],
         ];
 
