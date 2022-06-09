@@ -29,7 +29,7 @@ use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDec
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilModels\Model\Step\StepInterface;
-use webignition\BasilModels\Model\Test\Configuration;
+use webignition\BasilModels\Model\Test\NamedTestInterface;
 use webignition\BasilModels\Model\Test\TestInterface;
 
 class ClassDefinitionFactory
@@ -54,7 +54,7 @@ class ClassDefinitionFactory
      * @throws UnsupportedStepException
      */
     public function createClassDefinition(
-        TestInterface $test,
+        NamedTestInterface $test,
         ?string $fullyQualifiedBaseClass = null
     ): ClassDefinitionInterface {
         $methodDefinitions = [
@@ -85,8 +85,6 @@ class ClassDefinitionFactory
 
     private function createSetupBeforeClassMethod(TestInterface $test): MethodDefinitionInterface
     {
-        $testConfiguration = $test->getConfiguration();
-
         $tryBody = new Body([
             new Statement(
                 new StaticObjectMethodInvocation(
@@ -96,21 +94,7 @@ class ClassDefinitionFactory
                         [
                             new ObjectConstructor(
                                 new ClassName(ClientManager::class),
-                                new MethodArguments(
-                                    [
-                                        new ObjectConstructor(
-                                            new ClassName(Configuration::class),
-                                            new MethodArguments(
-                                                $this->argumentFactory->create(
-                                                    $testConfiguration->getBrowser(),
-                                                    $testConfiguration->getUrl()
-                                                ),
-                                                MethodArguments::FORMAT_STACKED
-                                            )
-                                        ),
-                                    ],
-                                    MethodArguments::FORMAT_STACKED
-                                )
+                                new MethodArguments($this->argumentFactory->create($test->getBrowser()))
                             ),
                         ]
                     ),
@@ -127,7 +111,7 @@ class ClassDefinitionFactory
                     new VariableDependency(VariableNames::PANTHER_CLIENT),
                     'request',
                     new MethodArguments(
-                        $this->argumentFactory->create('GET', $testConfiguration->getUrl())
+                        $this->argumentFactory->create('GET', $test->getUrl())
                     )
                 )
             ),

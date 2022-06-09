@@ -23,7 +23,6 @@ use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilModels\Model\Test\Configuration;
 use webignition\SymfonyPantherWebServerRunner\Options;
 
 class MethodDefinitionFactory
@@ -50,15 +49,7 @@ class MethodDefinitionFactory
                     new MethodArguments([
                         new ObjectConstructor(
                             new ClassName(ClientManager::class),
-                            new MethodArguments(
-                                [
-                                    new ObjectConstructor(
-                                        new ClassName(Configuration::class),
-                                        new MethodArguments($argumentFactory->create('chrome', $requestBaseUri))
-                                    ),
-                                ],
-                                MethodArguments::FORMAT_STACKED
-                            )
+                            new MethodArguments($argumentFactory->create('chrome'))
                         ),
                     ]),
                 )
