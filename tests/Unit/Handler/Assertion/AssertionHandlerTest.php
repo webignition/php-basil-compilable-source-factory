@@ -12,7 +12,7 @@ use webignition\BasilCompilableSourceFactory\Handler\Assertion\ExistenceAssertio
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\IsRegExpAssertionHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilModels\Model\Assertion\Assertion;
-use webignition\BasilParser\AssertionParser;
+use webignition\BasilModels\Parser\AssertionParser;
 
 class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
 {

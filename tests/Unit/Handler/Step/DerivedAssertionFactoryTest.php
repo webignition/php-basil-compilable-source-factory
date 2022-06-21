@@ -11,8 +11,8 @@ use webignition\BasilModels\Model\Action\ActionInterface;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
 use webignition\BasilModels\Model\Assertion\UniqueAssertionCollection;
-use webignition\BasilParser\ActionParser;
-use webignition\BasilParser\AssertionParser;
+use webignition\BasilModels\Parser\ActionParser;
+use webignition\BasilModels\Parser\AssertionParser;
 
 class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
 {

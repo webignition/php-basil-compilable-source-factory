@@ -11,7 +11,7 @@ use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTes
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilModels\Model\Step\StepInterface;
-use webignition\BasilParser\StepParser;
+use webignition\BasilModels\Parser\StepParser;
 
 class StepHandlerTest extends AbstractBrowserTestCase
 {

@@ -12,7 +12,7 @@ use webignition\BasilCompilableSourceFactory\Handler\Assertion\ScalarExistenceAs
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Model\Assertion\Assertion;
-use webignition\BasilParser\AssertionParser;
+use webignition\BasilModels\Parser\AssertionParser;
 use webignition\BasilValueTypeIdentifier\ValueTypeIdentifier;
 
 class ExistenceAssertionHandlerTest extends \PHPUnit\Framework\TestCase

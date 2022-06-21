@@ -15,7 +15,7 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\Create
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromMatchesAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTest;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
-use webignition\BasilParser\AssertionParser;
+use webignition\BasilModels\Parser\AssertionParser;
 
 class ComparisonAssertionHandlerTest extends AbstractResolvableTest
 {

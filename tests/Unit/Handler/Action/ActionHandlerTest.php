@@ -18,7 +18,7 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\CreateFro
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action\CreateFromWaitForActionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTest;
 use webignition\BasilModels\Model\Action\ActionInterface;
-use webignition\BasilParser\ActionParser;
+use webignition\BasilModels\Parser\ActionParser;
 
 class ActionHandlerTest extends AbstractResolvableTest
 {

@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Action;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\Action\InteractionActionHandler;
 use webignition\BasilModels\Model\Action\ActionInterface;
-use webignition\BasilParser\ActionParser;
+use webignition\BasilModels\Parser\ActionParser;
 
 class InteractionActionHandlerTest extends \PHPUnit\Framework\TestCase
 {

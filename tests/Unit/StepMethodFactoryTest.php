@@ -20,7 +20,7 @@ use webignition\BasilCompilableSourceFactory\StepMethodFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Model\DataSet\DataSet;
 use webignition\BasilModels\Model\Step\StepInterface;
-use webignition\BasilParser\StepParser;
+use webignition\BasilModels\Parser\StepParser;
 
 class StepMethodFactoryTest extends AbstractResolvableTest
 {

@@ -9,7 +9,7 @@ use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\BasilParser\ActionParser;
+use webignition\BasilModels\Parser\ActionParser;
 
 trait SetActionFunctionalDataProviderTrait
 {
