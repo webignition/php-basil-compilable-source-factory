@@ -8,7 +8,7 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentExcepti
 use webignition\BasilCompilableSourceFactory\Handler\Action\WaitForActionHandler;
 use webignition\BasilDomIdentifierFactory\Factory;
 use webignition\BasilModels\Model\Action\ActionInterface;
-use webignition\BasilParser\ActionParser;
+use webignition\BasilModels\Parser\ActionParser;
 use webignition\ObjectReflector\ObjectReflector;
 
 class WaitForActionHandlerTest extends \PHPUnit\Framework\TestCase

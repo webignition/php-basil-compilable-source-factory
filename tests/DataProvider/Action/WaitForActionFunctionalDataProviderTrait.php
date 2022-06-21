@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
-use webignition\BasilParser\ActionParser;
+use webignition\BasilModels\Parser\ActionParser;
 
 trait WaitForActionFunctionalDataProviderTrait
 {

@@ -11,7 +11,7 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTest;
 use webignition\BasilDomIdentifierFactory\Factory;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
-use webignition\BasilParser\AssertionParser;
+use webignition\BasilModels\Parser\AssertionParser;
 use webignition\ObjectReflector\ObjectReflector;
 
 class IdentifierExistsAssertionHandlerTest extends AbstractResolvableTest

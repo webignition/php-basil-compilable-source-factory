@@ -22,9 +22,9 @@ use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
 use webignition\BasilModels\Model\StatementInterface;
 use webignition\BasilModels\Model\Step\StepInterface;
-use webignition\BasilParser\ActionParser;
-use webignition\BasilParser\AssertionParser;
-use webignition\BasilParser\StepParser;
+use webignition\BasilModels\Parser\ActionParser;
+use webignition\BasilModels\Parser\AssertionParser;
+use webignition\BasilModels\Parser\StepParser;
 use webignition\StubbleResolvable\ResolvableInterface;
 
 class StepHandlerTest extends AbstractResolvableTest

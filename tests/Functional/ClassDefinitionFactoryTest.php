@@ -8,7 +8,7 @@ use webignition\BasilCompilableSourceFactory\ClassDefinitionFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilModels\Model\Test\NamedTest;
 use webignition\BasilModels\Model\Test\NamedTestInterface;
-use webignition\BasilParser\Test\TestParser;
+use webignition\BasilModels\Parser\Test\TestParser;
 use webignition\SymfonyPantherWebServerRunner\Options;
 
 class ClassDefinitionFactoryTest extends AbstractBrowserTestCase

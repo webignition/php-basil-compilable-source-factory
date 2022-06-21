@@ -18,7 +18,7 @@ use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Model\Test\NamedTest;
 use webignition\BasilModels\Model\Test\NamedTestInterface;
 use webignition\BasilModels\Model\Test\TestInterface;
-use webignition\BasilParser\Test\TestParser;
+use webignition\BasilModels\Parser\Test\TestParser;
 
 class ClassDefinitionFactoryTest extends AbstractResolvableTest
 {
