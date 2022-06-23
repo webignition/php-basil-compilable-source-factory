@@ -11,15 +11,18 @@ class ClassSignature implements ResolvableInterface
     private const RENDER_TEMPLATE_WITHOUT_BASE_CLASS = 'class {{ name }}';
     private const RENDER_TEMPLATE = self::RENDER_TEMPLATE_WITHOUT_BASE_CLASS . ' extends {{ base_class }}';
 
-    private string $name;
-    private ?ClassName $baseClass;
-
-    public function __construct(string $name, ?ClassName $baseClass = null)
-    {
-        $this->name = $name;
-        $this->baseClass = $baseClass;
+    /**
+     * @param non-empty-string $name
+     */
+    public function __construct(
+        private readonly string $name,
+        private readonly ?ClassName $baseClass = null
+    ) {
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function getName(): string
     {
         return $this->name;
