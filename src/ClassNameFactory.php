@@ -8,6 +8,9 @@ use webignition\BasilModels\Model\Test\NamedTestInterface;
 
 class ClassNameFactory
 {
+    /**
+     * @return non-empty-string
+     */
     public function create(NamedTestInterface $test): string
     {
         return sprintf('Generated%sTest', ucfirst($this->createHash($test)));
