@@ -11,9 +11,9 @@ use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\VariablePlaceholderInterface;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTest;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
-class ObjectPropertyAccessExpressionTest extends AbstractResolvableTest
+class ObjectPropertyAccessExpressionTest extends AbstractResolvableTestCase
 {
     /**
      * @dataProvider createDataProvider

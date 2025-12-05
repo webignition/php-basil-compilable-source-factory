@@ -11,9 +11,9 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTest;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
-class CompositeExpressionTest extends AbstractResolvableTest
+class CompositeExpressionTest extends AbstractResolvableTestCase
 {
     /**
      * @dataProvider createDataProvider

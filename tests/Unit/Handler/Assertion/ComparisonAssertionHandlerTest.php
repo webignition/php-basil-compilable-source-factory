@@ -13,11 +13,11 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\Create
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromIsAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromIsNotAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromMatchesAssertionDataProviderTrait;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTest;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTestCase;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Parser\AssertionParser;
 
-class ComparisonAssertionHandlerTest extends AbstractResolvableTest
+class ComparisonAssertionHandlerTest extends AbstractResolvableTestCase
 {
     use CreateFromExcludesAssertionDataProviderTrait;
     use CreateFromIncludesAssertionDataProviderTrait;

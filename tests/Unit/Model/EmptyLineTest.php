@@ -6,7 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 
-class EmptyLineTest extends AbstractResolvableTest
+class EmptyLineTest extends AbstractResolvableTestCase
 {
     public function testRender(): void
     {

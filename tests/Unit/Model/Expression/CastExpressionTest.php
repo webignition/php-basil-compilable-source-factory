@@ -17,9 +17,9 @@ use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethod
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTest;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
-class CastExpressionTest extends AbstractResolvableTest
+class CastExpressionTest extends AbstractResolvableTestCase
 {
     public function testCreate(): void
     {

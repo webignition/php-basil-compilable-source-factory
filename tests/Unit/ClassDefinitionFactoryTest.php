@@ -20,7 +20,7 @@ use webignition\BasilModels\Model\Test\NamedTestInterface;
 use webignition\BasilModels\Model\Test\TestInterface;
 use webignition\BasilModels\Parser\Test\TestParser;
 
-class ClassDefinitionFactoryTest extends AbstractResolvableTest
+class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
 {
     /**
      * @dataProvider createClassDefinitionDataProvider

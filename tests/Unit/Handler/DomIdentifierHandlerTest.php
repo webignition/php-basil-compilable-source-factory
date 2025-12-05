@@ -11,12 +11,12 @@ use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTest;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\DomElementIdentifier\AttributeIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifier;
 
-class DomIdentifierHandlerTest extends AbstractResolvableTest
+class DomIdentifierHandlerTest extends AbstractResolvableTestCase
 {
     private DomIdentifierHandler $handler;
 

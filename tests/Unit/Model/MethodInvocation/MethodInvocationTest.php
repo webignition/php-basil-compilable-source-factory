@@ -12,9 +12,9 @@ use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvoca
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocationInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTest;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
-class MethodInvocationTest extends AbstractResolvableTest
+class MethodInvocationTest extends AbstractResolvableTestCase
 {
     public function testCreateWithNoArguments(): void
     {

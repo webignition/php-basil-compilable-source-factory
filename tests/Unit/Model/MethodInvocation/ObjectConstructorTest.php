@@ -12,9 +12,9 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectConstructor;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTest;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
-class ObjectConstructorTest extends AbstractResolvableTest
+class ObjectConstructorTest extends AbstractResolvableTestCase
 {
     /**
      * @dataProvider createDataProvider

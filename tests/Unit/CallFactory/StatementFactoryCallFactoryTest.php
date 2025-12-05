@@ -8,14 +8,14 @@ use webignition\BasilCompilableSourceFactory\CallFactory\StatementFactoryCallFac
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTest;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
 use webignition\BasilModels\Model\StatementInterface;
 use webignition\BasilModels\Parser\ActionParser;
 use webignition\BasilModels\Parser\AssertionParser;
 
-class StatementFactoryCallFactoryTest extends AbstractResolvableTest
+class StatementFactoryCallFactoryTest extends AbstractResolvableTestCase
 {
     private StatementFactoryCallFactory $factory;
 

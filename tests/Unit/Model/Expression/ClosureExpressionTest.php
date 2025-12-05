@@ -28,9 +28,9 @@ use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDec
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTest;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
-class ClosureExpressionTest extends AbstractResolvableTest
+class ClosureExpressionTest extends AbstractResolvableTestCase
 {
     /**
      * @dataProvider createDataProvider

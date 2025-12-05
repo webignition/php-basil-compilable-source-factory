@@ -7,9 +7,9 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTest;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
-class EncapsulatedExpressionTest extends AbstractResolvableTest
+class EncapsulatedExpressionTest extends AbstractResolvableTestCase
 {
     public function testCreate(): void
     {

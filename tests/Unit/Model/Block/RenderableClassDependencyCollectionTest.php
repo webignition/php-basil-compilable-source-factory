@@ -7,10 +7,10 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Block;
 use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\Block\RenderableClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTest;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\ClassNameTest;
 
-class RenderableClassDependencyCollectionTest extends AbstractResolvableTest
+class RenderableClassDependencyCollectionTest extends AbstractResolvableTestCase
 {
     /**
      * @dataProvider renderDataProvider

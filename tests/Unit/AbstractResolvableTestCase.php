@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvableRenderer;
 use webignition\StubbleResolvable\ResolvableInterface;
 
-abstract class AbstractResolvableTest extends \PHPUnit\Framework\TestCase
+abstract class AbstractResolvableTestCase extends \PHPUnit\Framework\TestCase
 {
     public function assertRenderResolvable(string $expectedString, ResolvableInterface $resolvable): void
     {

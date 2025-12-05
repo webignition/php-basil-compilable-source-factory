@@ -22,7 +22,7 @@ use webignition\BasilModels\Model\DataSet\DataSet;
 use webignition\BasilModels\Model\Step\StepInterface;
 use webignition\BasilModels\Parser\StepParser;
 
-class StepMethodFactoryTest extends AbstractResolvableTest
+class StepMethodFactoryTest extends AbstractResolvableTestCase
 {
     /**
      * @dataProvider createWithoutDataProviderDataProvider

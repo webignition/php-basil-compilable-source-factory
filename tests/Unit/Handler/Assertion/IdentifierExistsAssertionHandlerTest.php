@@ -8,13 +8,13 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentExcepti
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\IdentifierExistenceAssertionHandler;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTest;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTestCase;
 use webignition\BasilDomIdentifierFactory\Factory;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Parser\AssertionParser;
 use webignition\ObjectReflector\ObjectReflector;
 
-class IdentifierExistsAssertionHandlerTest extends AbstractResolvableTest
+class IdentifierExistsAssertionHandlerTest extends AbstractResolvableTestCase
 {
     use Assertion\CreateFromIdentifierExistsAssertionDataProviderTrait;
     use Assertion\CreateFromIdentifierNotExistsAssertionDataProviderTrait;

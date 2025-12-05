@@ -7,10 +7,10 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Assertion;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\IsRegExpAssertionHandler;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTest;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTestCase;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
 
-class IsRegExpAssertionHandlerTest extends AbstractResolvableTest
+class IsRegExpAssertionHandlerTest extends AbstractResolvableTestCase
 {
     use Assertion\CreateFromIsRegExpAssertionDataProviderTrait;
 

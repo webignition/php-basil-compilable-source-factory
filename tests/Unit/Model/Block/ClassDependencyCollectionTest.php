@@ -8,11 +8,11 @@ use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollecti
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTest;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\ClassNameTest;
 use webignition\ObjectReflector\ObjectReflector;
 
-class ClassDependencyCollectionTest extends AbstractResolvableTest
+class ClassDependencyCollectionTest extends AbstractResolvableTestCase
 {
     /**
      * @dataProvider createDataProvider
