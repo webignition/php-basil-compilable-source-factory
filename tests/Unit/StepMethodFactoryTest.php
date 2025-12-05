@@ -40,8 +40,6 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
         self::assertCount(1, $testMethods);
 
         $testMethod = $testMethods[0];
-        self::assertInstanceOf(MethodDefinitionInterface::class, $testMethod);
-
         $this->assertTestMethod($expectedRenderedTestMethod, $expectedTestMethodMetadata, $testMethod);
     }
 
@@ -148,11 +146,9 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
         self::assertCount(2, $testMethods);
 
         $testMethod = $testMethods[0];
-        self::assertInstanceOf(MethodDefinitionInterface::class, $testMethod);
         $this->assertTestMethod($expectedRenderedTestMethod, $expectedTestMethodMetadata, $testMethod);
 
         $dataProvider = $testMethods[1];
-        self::assertInstanceOf(MethodDefinitionInterface::class, $dataProvider);
         $this->assertDataProviderMethod($expectedRenderedDataProvider, $dataProvider);
     }
 
