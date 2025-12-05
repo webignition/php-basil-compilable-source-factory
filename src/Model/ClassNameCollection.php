@@ -26,6 +26,11 @@ class ClassNameCollection implements \IteratorAggregate
         }
     }
 
+    public function merge(ClassNameCollection $collection): ClassNameCollection
+    {
+        return new ClassNameCollection(array_merge($this->classNames, $collection->classNames));
+    }
+
     /**
      * @return \Traversable<string, ClassName>
      */
