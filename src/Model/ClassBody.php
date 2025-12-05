@@ -19,26 +19,14 @@ class ClassBody implements ResolvableInterface, ResolvableCollectionInterface
     /**
      * @var MethodDefinitionInterface[]
      */
-    private array $methods = [];
+    private array $methods;
 
     /**
-     * @param array<mixed> $methods
+     * @param MethodDefinitionInterface[] $methods
      */
     public function __construct(array $methods)
     {
-        foreach ($methods as $method) {
-            if ($method instanceof MethodDefinitionInterface) {
-                $this->methods[$method->getName()] = $method;
-            }
-        }
-    }
-
-    /**
-     * @return MethodDefinitionInterface[]
-     */
-    public function getMethods(): array
-    {
-        return $this->methods;
+        $this->methods = $methods;
     }
 
     public function getMetadata(): MetadataInterface
