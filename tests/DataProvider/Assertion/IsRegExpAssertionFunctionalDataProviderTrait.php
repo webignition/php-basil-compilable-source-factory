@@ -12,12 +12,12 @@ trait IsRegExpAssertionFunctionalDataProviderTrait
     /**
      * @return array<mixed>
      */
-    public function isRegExpAssertionFunctionalDataProvider(): array
+    public static function isRegExpAssertionFunctionalDataProvider(): array
     {
         $assertionParser = AssertionParser::create();
 
         return [
-            'matches comparison, element identifier examined value, scalar expected value' => [
+            'is-regexp matches comparison, element identifier examined value, scalar expected value' => [
                 'fixture' => '/assertions.html',
                 'assertion' => new DerivedValueOperationAssertion(
                     $assertionParser->parse('$".selector" matches "/^\.selector [a-z]+$/"'),
@@ -25,7 +25,7 @@ trait IsRegExpAssertionFunctionalDataProviderTrait
                     'is-regexp'
                 ),
             ],
-            'matches comparison, element identifier examined value, element identifier expected value' => [
+            'is-regexp matches comparison, element identifier examined value, element identifier expected value' => [
                 'fixture' => '/assertions.html',
                 'assertion' => new DerivedValueOperationAssertion(
                     $assertionParser->parse('$".matches-examined" matches $".matches-expected"'),
@@ -33,7 +33,7 @@ trait IsRegExpAssertionFunctionalDataProviderTrait
                     'is-regexp'
                 ),
             ],
-            'matches comparison, element identifier examined value, attribute identifier expected value' => [
+            'is-regexp matches comparison, element identifier examined value, attribute identifier expected value' => [
                 'fixture' => '/assertions.html',
                 'assertion' => new DerivedValueOperationAssertion(
                     $assertionParser->parse('$".selector" matches $".selector".data-matches-content'),

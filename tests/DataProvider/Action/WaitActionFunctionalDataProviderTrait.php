@@ -13,7 +13,7 @@ trait WaitActionFunctionalDataProviderTrait
     /**
      * @return array<mixed>
      */
-    public function waitActionFunctionalDataProvider(): array
+    public static function waitActionFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
         $fixture = '/action-wait.html';
@@ -25,7 +25,6 @@ trait WaitActionFunctionalDataProviderTrait
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [],
-                'expectedDuration' => 10,
             ],
             'wait action, element value' => [
                 'fixture' => $fixture,
@@ -33,7 +32,6 @@ trait WaitActionFunctionalDataProviderTrait
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [],
-                'expectedDuration' => 20,
             ],
             'wait action, attribute value, attribute exists' => [
                 'fixture' => $fixture,
@@ -41,7 +39,6 @@ trait WaitActionFunctionalDataProviderTrait
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [],
-                'expectedDuration' => 30,
             ],
             'wait action, attribute value, attribute does not exist' => [
                 'fixture' => $fixture,
@@ -49,7 +46,6 @@ trait WaitActionFunctionalDataProviderTrait
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [],
-                'expectedDuration' => 0,
             ],
             'wait action, browser property' => [
                 'fixture' => $fixture,
@@ -57,7 +53,6 @@ trait WaitActionFunctionalDataProviderTrait
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [],
-                'expectedDuration' => 1200,
             ],
             'wait action, page property' => [
                 'fixture' => $fixture,
@@ -65,7 +60,6 @@ trait WaitActionFunctionalDataProviderTrait
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [],
-                'expectedDuration' => 5,
             ],
             'wait action, environment value, value exists' => [
                 'fixture' => $fixture,
@@ -75,7 +69,6 @@ trait WaitActionFunctionalDataProviderTrait
                 'additionalVariableIdentifiers' => [
                     VariableNames::ENVIRONMENT_VARIABLE_ARRAY => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
                 ],
-                'expectedDuration' => 5,
             ],
             'wait action, environment value, value does not exist' => [
                 'fixture' => $fixture,
@@ -85,7 +78,6 @@ trait WaitActionFunctionalDataProviderTrait
                 'additionalVariableIdentifiers' => [
                     VariableNames::ENVIRONMENT_VARIABLE_ARRAY => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
                 ],
-                'expectedDuration' => 0,
             ],
         ];
     }

@@ -11,7 +11,7 @@ trait IncludesAssertionFunctionalDataProviderTrait
     /**
      * @return array<mixed>
      */
-    public function includesAssertionFunctionalDataProvider(): array
+    public static function includesAssertionFunctionalDataProvider(): array
     {
         $assertionParser = AssertionParser::create();
 
@@ -56,7 +56,7 @@ trait IncludesAssertionFunctionalDataProviderTrait
 
         $testCases = [];
 
-        foreach ($this->inclusionAssertionFunctionalDataProvider() as $testName => $testData) {
+        foreach (self::inclusionAssertionFunctionalDataProvider() as $testName => $testData) {
             $testData['assertion'] = $assertions[$testName]['assertion'];
             $testCases['includes comparison, ' . $testName] = $testData;
         }

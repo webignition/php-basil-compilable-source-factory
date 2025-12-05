@@ -13,7 +13,7 @@ trait MatchesAssertionFunctionalDataProviderTrait
     /**
      * @return array<mixed>
      */
-    public function matchesAssertionFunctionalDataProvider(): array
+    public static function matchesAssertionFunctionalDataProvider(): array
     {
         $assertionParser = AssertionParser::create();
 
@@ -29,7 +29,7 @@ trait MatchesAssertionFunctionalDataProviderTrait
             'matches comparison, environment examined value, scalar expected value' => [
                 'fixture' => '/empty.html',
                 'assertion' => $assertionParser->parse('$env.TEST1 matches "/^environment/"'),
-                'variableIdentifiers' => [
+                'additionalVariableIdentifiers' => [
                     VariableNames::ENVIRONMENT_VARIABLE_ARRAY => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
                 ],
             ],
@@ -52,7 +52,7 @@ trait MatchesAssertionFunctionalDataProviderTrait
             'matches comparison, attribute identifier examined value, environment expected value' => [
                 'fixture' => '/assertions.html',
                 'assertion' => $assertionParser->parse('$".selector".data-environment-value matches $env.MATCHES'),
-                'variableIdentifiers' => [
+                'additionalVariableIdentifiers' => [
                     VariableNames::ENVIRONMENT_VARIABLE_ARRAY => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
                 ],
             ],

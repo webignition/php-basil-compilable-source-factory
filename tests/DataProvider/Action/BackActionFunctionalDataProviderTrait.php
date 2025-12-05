@@ -13,7 +13,7 @@ trait BackActionFunctionalDataProviderTrait
     /**
      * @return array<mixed>
      */
-    public function backActionFunctionalDataProvider(): array
+    public static function backActionFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
 

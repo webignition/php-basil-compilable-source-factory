@@ -63,7 +63,7 @@ class ScalarValueHandlerTest extends AbstractBrowserTestCase
     /**
      * @return array<mixed>
      */
-    public function createSourceDataProvider(): array
+    public static function createSourceDataProvider(): array
     {
         return [
             'browser property: size' => [

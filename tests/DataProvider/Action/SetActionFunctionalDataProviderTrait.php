@@ -16,17 +16,17 @@ trait SetActionFunctionalDataProviderTrait
     /**
      * @return array<mixed>
      */
-    public function setActionFunctionalDataProvider(): array
+    public static function setActionFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
         $inputPlaceholder = new VariableName('input');
 
         return array_merge(
-            $this->setActionForTextInputFunctionalDataProvider(),
-            $this->setActionForTextareaFunctionalDataProvider(),
-            $this->setActionForSelectFunctionalDataProvider(),
-            $this->setActionForOptionCollectionFunctionalDataProvider(),
-            $this->setActionForRadioGroupFunctionalDataProvider(),
+            self::setActionForTextInputFunctionalDataProvider(),
+            self::setActionForTextareaFunctionalDataProvider(),
+            self::setActionForSelectFunctionalDataProvider(),
+            self::setActionForOptionCollectionFunctionalDataProvider(),
+            self::setActionForRadioGroupFunctionalDataProvider(),
             [
                 'input action, element identifier, element value' => [
                     'fixture' => '/form.html',
@@ -144,7 +144,7 @@ trait SetActionFunctionalDataProviderTrait
     /**
      * @return array<mixed>
      */
-    private function setActionForTextInputFunctionalDataProvider(): array
+    private static function setActionForTextInputFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
         $inputPlaceholder = new VariableName('input');
@@ -228,7 +228,7 @@ trait SetActionFunctionalDataProviderTrait
     /**
      * @return array<mixed>
      */
-    private function setActionForTextareaFunctionalDataProvider(): array
+    private static function setActionForTextareaFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
         $textareaPlaceholder = new VariableName('textarea');
@@ -288,7 +288,7 @@ trait SetActionFunctionalDataProviderTrait
     /**
      * @return array<mixed>
      */
-    private function setActionForSelectFunctionalDataProvider(): array
+    private static function setActionForSelectFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
         $selectPlaceholder = new VariableName('select');
@@ -372,7 +372,7 @@ trait SetActionFunctionalDataProviderTrait
     /**
      * @return array<mixed>
      */
-    private function setActionForOptionCollectionFunctionalDataProvider(): array
+    private static function setActionForOptionCollectionFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
         $selectPlaceholder = new VariableName('select');
@@ -456,7 +456,7 @@ trait SetActionFunctionalDataProviderTrait
     /**
      * @return array<mixed>
      */
-    private function setActionForRadioGroupFunctionalDataProvider(): array
+    private static function setActionForRadioGroupFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
         $radioGroupPlaceholder = new VariableName('radioGroup');

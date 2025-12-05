@@ -14,7 +14,7 @@ trait ClickActionFunctionalDataProviderTrait
     /**
      * @return array<mixed>
      */
-    public function clickActionFunctionalDataProvider(): array
+    public static function clickActionFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
         $submitButtonPlaceholder = new VariableName('submitButton');

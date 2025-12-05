@@ -13,7 +13,7 @@ trait NotExistsAssertionFunctionalDataProviderTrait
     /**
      * @return array<mixed>
      */
-    public function notExistsAssertionFunctionalDataProvider(): array
+    public static function notExistsAssertionFunctionalDataProvider(): array
     {
         $assertionParser = AssertionParser::create();
 
@@ -29,7 +29,7 @@ trait NotExistsAssertionFunctionalDataProviderTrait
             'not-exists comparison, environment examined value' => [
                 'fixture' => '/empty.html',
                 'assertion' => $assertionParser->parse('$env.NON-EXISTENT not-exists'),
-                'variableIdentifiers' => [
+                'additionalVariableIdentifiers' => [
                     VariableNames::ENVIRONMENT_VARIABLE_ARRAY => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
                 ],
             ],
