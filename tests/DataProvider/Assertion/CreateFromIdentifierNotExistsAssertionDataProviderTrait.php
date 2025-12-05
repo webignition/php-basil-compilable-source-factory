@@ -19,14 +19,14 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
     /**
      * @return array<mixed>
      */
-    public function createFromIdentifierNotExistsAssertionDataProvider(): array
+    public static function createFromIdentifierNotExistsAssertionDataProvider(): array
     {
         $assertionParser = AssertionParser::create();
 
         return [
             'not-exists comparison, element identifier examined value' => [
                 'assertion' => $assertionParser->parse('$".selector" not-exists'),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->examinedElementIdentifier = '
+                'expectedRenderedContent' => '{{ PHPUNIT }}->examinedElementIdentifier = '
                     . 'ElementIdentifier::fromJson(\'{' . "\n"
                     . '    "locator": ".selector"' . "\n"
                     . '}\');' . "\n"
@@ -56,7 +56,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
             ],
             'not-exists comparison, attribute identifier examined value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name not-exists'),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->examinedElementIdentifier = '
+                'expectedRenderedContent' => '{{ PHPUNIT }}->examinedElementIdentifier = '
                     . 'ElementIdentifier::fromJson(\'{' . "\n"
                     . '    "locator": ".selector"' . "\n"
                     . '}\');' . "\n"
