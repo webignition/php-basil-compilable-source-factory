@@ -163,6 +163,8 @@ class DerivedAssertionFactory
     }
 
     /**
+     * @param callable(ElementIdentifierInterface): ElementIdentifierInterface[] $elementHierarchyCreator
+     *
      * @throws UnsupportedContentException
      */
     private function createForCollection(
@@ -175,10 +177,9 @@ class DerivedAssertionFactory
             throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }
 
-        $elementHierarchy = $elementHierarchyCreator($domIdentifier);
-
         $assertions = new UniqueAssertionCollection();
 
+        $elementHierarchy = $elementHierarchyCreator($domIdentifier);
         foreach ($elementHierarchy as $elementIdentifier) {
             $assertions->add(new DerivedValueOperationAssertion($action, (string) $elementIdentifier, 'exists'));
         }

@@ -41,13 +41,20 @@ class AccessorDefaultValueFactory
 
     private function create(string $value, callable $defaultValueHandler): int|string|null
     {
-        if (EnvironmentValue::is($value)) {
-            $environmentValue = $this->environmentValueFactory->create($value);
-            $valueDefault = $environmentValue->getDefault();
+        if (false === EnvironmentValue::is($value)) {
+            return null;
+        }
 
-            if (null !== $valueDefault) {
-                return $defaultValueHandler($valueDefault);
-            }
+        $environmentValue = $this->environmentValueFactory->create($value);
+        $valueDefault = $environmentValue->getDefault();
+
+        if (null === $valueDefault) {
+            return null;
+        }
+
+        $valueDefault = $defaultValueHandler($valueDefault);
+        if (is_int($valueDefault) || is_string($valueDefault)) {
+            return $valueDefault;
         }
 
         return null;
