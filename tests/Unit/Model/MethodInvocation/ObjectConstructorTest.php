@@ -35,7 +35,7 @@ class ObjectConstructorTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function createDataProvider(): array
+    public static function createDataProvider(): array
     {
         return [
             'no arguments' => [
@@ -76,7 +76,7 @@ class ObjectConstructorTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function renderDataProvider(): array
+    public static function renderDataProvider(): array
     {
         $classDependency = new ClassName('Acme\Model');
 
