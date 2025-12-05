@@ -172,7 +172,7 @@ EOD;
     }
 
     /**
-     * @param array<string, string> $argumentNames
+     * @param string[] $argumentNames
      */
     private function createSignatureArguments(array $argumentNames): string
     {
