@@ -56,7 +56,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
     /**
      * @return array<mixed>
      */
-    public function createSourceForFailingAssertionsDataProvider(): array
+    public static function createSourceForFailingAssertionsDataProvider(): array
     {
         $assertionParser = AssertionParser::create();
 
@@ -80,9 +80,6 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
                 'fixture' => '/index.html',
                 'assertion' => $assertionParser->parse('$env.FOO exists'),
                 'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
-                'additionalVariableIdentifiers' => [
-                    VariableNames::ENVIRONMENT_VARIABLE_ARRAY => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
-                ],
             ],
             'is-regexp operation, scalar identifier, literal value is not a regular expression' => [
                 'fixture' => '/index.html',

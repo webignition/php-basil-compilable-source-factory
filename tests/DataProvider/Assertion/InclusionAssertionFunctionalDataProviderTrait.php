@@ -15,7 +15,7 @@ trait InclusionAssertionFunctionalDataProviderTrait
      *     array{"fixture": string, "assertion": null, "additionalVariableIdentifiers"?: array<string, string>}
      * >
      */
-    public function inclusionAssertionFunctionalDataProvider(): array
+    public static function inclusionAssertionFunctionalDataProvider(): array
     {
         return [
             'element identifier examined value, scalar expected value' => [
