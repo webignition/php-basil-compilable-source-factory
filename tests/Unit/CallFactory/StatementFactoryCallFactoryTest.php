@@ -43,7 +43,7 @@ class StatementFactoryCallFactoryTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function createStatementFactoryCallDataProvider(): array
+    public static function createStatementFactoryCallDataProvider(): array
     {
         $actionParser = ActionParser::create();
         $assertionParser = AssertionParser::create();
@@ -51,7 +51,7 @@ class StatementFactoryCallFactoryTest extends AbstractResolvableTestCase
         return [
             'click action' => [
                 'statement' => $actionParser->parse('click $".selector"'),
-                'expectedRenderedSource' => '{{ ACTION_FACTORY }}->createFromJson(\'{' . "\n"
+                'expectedRenderedContent' => '{{ ACTION_FACTORY }}->createFromJson(\'{' . "\n"
                     . '    "statement-type": "action",' . "\n"
                     . '    "source": "click $\\\".selector\\\"",' . "\n"
                     . '    "identifier": "$\\\".selector\\\"",' . "\n"
@@ -66,7 +66,7 @@ class StatementFactoryCallFactoryTest extends AbstractResolvableTestCase
             ],
             'exists assertion' => [
                 'statement' => $assertionParser->parse('$".selector" exists'),
-                'expectedRenderedSource' => '{{ ASSERTION_FACTORY }}->createFromJson(\'{' . "\n"
+                'expectedRenderedContent' => '{{ ASSERTION_FACTORY }}->createFromJson(\'{' . "\n"
                     . '    "statement-type": "assertion",' . "\n"
                     . '    "source": "$\\\".selector\\\" exists",' . "\n"
                     . '    "identifier": "$\\\".selector\\\"",' . "\n"
@@ -84,7 +84,7 @@ class StatementFactoryCallFactoryTest extends AbstractResolvableTestCase
                     '$".selector"',
                     'exists'
                 ),
-                'expectedRenderedSource' => '{{ ASSERTION_FACTORY }}->createFromJson(\'{' . "\n"
+                'expectedRenderedContent' => '{{ ASSERTION_FACTORY }}->createFromJson(\'{' . "\n"
                     . '    "container": {' . "\n"
                     . '        "type": "derived-value-operation-assertion",' . "\n"
                     . '        "value": "$\\\".selector\\\"",' . "\n"
