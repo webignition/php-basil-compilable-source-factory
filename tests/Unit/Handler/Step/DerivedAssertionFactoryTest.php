@@ -26,11 +26,6 @@ class DerivedAssertionFactoryTest extends TestCase
         $this->factory = DerivedAssertionFactory::createFactory();
     }
 
-    public function testCreateFactory(): void
-    {
-        $this->assertInstanceOf(DerivedAssertionFactory::class, DerivedAssertionFactory::createFactory());
-    }
-
     /**
      * @dataProvider createForActionDataProvider
      */

@@ -33,8 +33,6 @@ class ScalarValueHandlerTest extends AbstractResolvableTestCase
     ): void {
         $source = $this->handler->handle($value);
 
-        $this->assertTrue(true);
-
         $this->assertRenderResolvable($expectedRenderedSource, $source);
         $this->assertEquals($expectedMetadata, $source->getMetadata());
     }
