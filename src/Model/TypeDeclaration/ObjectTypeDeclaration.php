@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Model\TypeDeclaration;
 
 use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
+use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\ResolvableStringableTrait;
@@ -21,9 +22,9 @@ class ObjectTypeDeclaration implements TypeDeclarationInterface
     {
         $this->type = $type;
         $this->metadata = new Metadata([
-            Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                $this->type,
-            ]),
+            Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
+                new ClassNameCollection([$this->type])
+            ),
         ]);
     }
 

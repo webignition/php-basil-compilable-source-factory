@@ -26,9 +26,9 @@ class ClassDependencyCollection implements
 
     private ClassNameCollection $classNames;
 
-    public function __construct(ClassNameCollection $classNames)
+    public function __construct(?ClassNameCollection $classNames = null)
     {
-        $this->classNames = $classNames;
+        $this->classNames = $classNames ?? new ClassNameCollection([]);
     }
 
     public function merge(ClassDependencyCollection $collection): ClassDependencyCollection

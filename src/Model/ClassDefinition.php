@@ -84,9 +84,9 @@ EOD;
         $baseClass = $this->signature->getBaseClass();
 
         if ($baseClass instanceof ClassName) {
-            $classDependencies = $classDependencies->merge(new ClassDependencyCollection([
-                $baseClass,
-            ]));
+            $classDependencies = $classDependencies->merge(new ClassDependencyCollection(
+                new ClassNameCollection([$baseClass])
+            ));
         }
 
         return $classDependencies;
