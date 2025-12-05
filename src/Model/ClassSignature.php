@@ -17,8 +17,7 @@ class ClassSignature implements ResolvableInterface
     public function __construct(
         private readonly string $name,
         private readonly ?ClassName $baseClass = null
-    ) {
-    }
+    ) {}
 
     /**
      * @return non-empty-string

@@ -38,8 +38,7 @@ class ClassDefinitionFactory
         private ClassNameFactory $classNameFactory,
         private StepMethodFactory $stepMethodFactory,
         private ArgumentFactory $argumentFactory
-    ) {
-    }
+    ) {}
 
     public static function createFactory(): ClassDefinitionFactory
     {

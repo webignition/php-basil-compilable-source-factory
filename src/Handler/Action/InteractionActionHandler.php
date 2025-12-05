@@ -23,8 +23,7 @@ class InteractionActionHandler
         private DomIdentifierHandler $domIdentifierHandler,
         private DomIdentifierFactory $domIdentifierFactory,
         private ElementIdentifierSerializer $elementIdentifierSerializer
-    ) {
-    }
+    ) {}
 
     public static function createHandler(): self
     {

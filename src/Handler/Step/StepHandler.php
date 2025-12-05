@@ -22,8 +22,7 @@ class StepHandler
         private AssertionHandler $assertionHandler,
         private StatementBlockFactory $statementBlockFactory,
         private DerivedAssertionFactory $derivedAssertionFactory
-    ) {
-    }
+    ) {}
 
     public static function createHandler(): StepHandler
     {

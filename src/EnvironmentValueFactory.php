@@ -14,8 +14,7 @@ class EnvironmentValueFactory
 
     public function __construct(
         private readonly QuotedStringValueExtractor $quotedStringValueExtractor
-    ) {
-    }
+    ) {}
 
     public static function createFactory(): EnvironmentValueFactory
     {

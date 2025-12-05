@@ -27,8 +27,7 @@ class ScalarValueHandler
     public function __construct(
         private ValueTypeIdentifier $valueTypeIdentifier,
         private EnvironmentValueFactory $environmentValueFactory
-    ) {
-    }
+    ) {}
 
     public static function createHandler(): ScalarValueHandler
     {

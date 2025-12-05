@@ -15,8 +15,7 @@ class ElementIdentifierCallFactory
 {
     public function __construct(
         private ArgumentFactory $argumentFactory
-    ) {
-    }
+    ) {}
 
     public static function createFactory(): ElementIdentifierCallFactory
     {

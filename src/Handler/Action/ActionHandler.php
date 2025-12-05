@@ -22,8 +22,7 @@ class ActionHandler
         private SetActionHandler $setActionHandler,
         private WaitActionHandler $waitActionHandler,
         private WaitForActionHandler $waitForActionHandler
-    ) {
-    }
+    ) {}
 
     public static function createHandler(): ActionHandler
     {

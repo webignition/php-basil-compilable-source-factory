@@ -17,7 +17,6 @@ return $config->setRules([
     'php_unit_test_class_requires_covers' => false,
     // Below configuration added to allow PR#629 to a pass
     // @todo remove in #631
-    'single_line_empty_body' => false,
     'phpdoc_order' => false,
     'stringable_for_to_string' => false,
     'ordered_types' => false,

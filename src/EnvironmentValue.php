@@ -11,8 +11,7 @@ class EnvironmentValue
     public function __construct(
         private readonly string $property,
         private readonly ?string $default = null
-    ) {
-    }
+    ) {}
 
     public static function is(string $value): bool
     {

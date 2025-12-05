@@ -25,8 +25,7 @@ class WaitActionHandler
     public function __construct(
         private AccessorDefaultValueFactory $accessorDefaultValueFactory,
         private ValueAccessorFactory $valueAccessorFactory
-    ) {
-    }
+    ) {}
 
     public static function createHandler(): WaitActionHandler
     {

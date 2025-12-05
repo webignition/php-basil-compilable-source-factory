@@ -31,8 +31,7 @@ class SetActionHandler
         private DomIdentifierFactory $domIdentifierFactory,
         private IdentifierTypeAnalyser $identifierTypeAnalyser,
         private ElementIdentifierSerializer $elementIdentifierSerializer
-    ) {
-    }
+    ) {}
 
     public static function createHandler(): self
     {

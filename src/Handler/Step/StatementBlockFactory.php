@@ -21,8 +21,7 @@ class StatementBlockFactory
 {
     public function __construct(
         private StatementFactoryCallFactory $statementFactoryCallFactory
-    ) {
-    }
+    ) {}
 
     public static function createFactory(): self
     {

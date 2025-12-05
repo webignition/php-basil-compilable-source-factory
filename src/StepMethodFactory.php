@@ -36,8 +36,7 @@ class StepMethodFactory
         private StepHandler $stepHandler,
         private SingleQuotedStringEscaper $singleQuotedStringEscaper,
         private ArgumentFactory $argumentFactory
-    ) {
-    }
+    ) {}
 
     public static function createFactory(): self
     {

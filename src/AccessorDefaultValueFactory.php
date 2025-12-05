@@ -9,8 +9,7 @@ class AccessorDefaultValueFactory
     public function __construct(
         private SingleQuotedStringEscaper $singleQuotedStringEscaper,
         private EnvironmentValueFactory $environmentValueFactory
-    ) {
-    }
+    ) {}
 
     public static function createFactory(): AccessorDefaultValueFactory
     {
