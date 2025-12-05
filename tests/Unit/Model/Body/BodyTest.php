@@ -47,7 +47,7 @@ class BodyTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function createDataProvider(): array
+    public static function createDataProvider(): array
     {
         return [
             'empty' => [
@@ -153,7 +153,7 @@ class BodyTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function renderDataProvider(): array
+    public static function renderDataProvider(): array
     {
         return [
             'empty' => [
@@ -274,7 +274,7 @@ class BodyTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function createEnclosingBodyDataProvider(): array
+    public static function createEnclosingBodyDataProvider(): array
     {
         return [
             'enclose a code block' => [
@@ -322,7 +322,7 @@ class BodyTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function createFromExpressionsDataProvider(): array
+    public static function createFromExpressionsDataProvider(): array
     {
         return [
             'empty' => [
