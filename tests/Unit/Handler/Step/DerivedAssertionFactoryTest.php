@@ -40,7 +40,7 @@ class DerivedAssertionFactoryTest extends TestCase
     /**
      * @return array<mixed>
      */
-    public function createForActionDataProvider(): array
+    public static function createForActionDataProvider(): array
     {
         $actionParser = ActionParser::create();
 
@@ -149,7 +149,7 @@ class DerivedAssertionFactoryTest extends TestCase
     /**
      * @return array<mixed>
      */
-    public function createForAssertionDataProvider(): array
+    public static function createForAssertionDataProvider(): array
     {
         $assertionParser = AssertionParser::create();
 
