@@ -71,10 +71,10 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
                     new LiteralExpression('100'),
                     new LiteralExpression('\'string\''),
                 ]),
-                'expectedRenderedInvocation' => '{{ PHPUNIT }}->assertEquals(' . "\n" .
-                    '    100,' . "\n" .
-                    '    \'string\'' . "\n" .
-                    ')',
+                'expectedRenderedInvocation' => '{{ PHPUNIT }}->assertEquals(' . "\n"
+                    . '    100,' . "\n"
+                    . '    \'string\'' . "\n"
+                    . ')',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -87,10 +87,10 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
                     new LiteralExpression('100'),
                     new LiteralExpression('\'string\''),
                 ]),
-                'expectedRenderedInvocation' => '{{ PHPUNIT }}->assertNotEquals(' . "\n" .
-                    '    100,' . "\n" .
-                    '    \'string\'' . "\n" .
-                    ')',
+                'expectedRenderedInvocation' => '{{ PHPUNIT }}->assertNotEquals(' . "\n"
+                    . '    100,' . "\n"
+                    . '    \'string\'' . "\n"
+                    . ')',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -103,10 +103,10 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
                     new LiteralExpression('100'),
                     new LiteralExpression('\'string\''),
                 ]),
-                'expectedRenderedInvocation' => '{{ PHPUNIT }}->assertNotEquals(' . "\n" .
-                    '    100,' . "\n" .
-                    '    \'string\'' . "\n" .
-                    ')',
+                'expectedRenderedInvocation' => '{{ PHPUNIT }}->assertNotEquals(' . "\n"
+                    . '    100,' . "\n"
+                    . '    \'string\'' . "\n"
+                    . ')',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,

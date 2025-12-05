@@ -89,9 +89,9 @@ class CatchBlockTest extends AbstractResolvableTestCase
                         new LiteralExpression('"literal"')
                     )
                 ),
-                'expectedString' => 'catch (\Exception $exception) {' . "\n" .
-                    '    "literal";' . "\n" .
-                    '}',
+                'expectedString' => 'catch (\Exception $exception) {' . "\n"
+                    . '    "literal";' . "\n"
+                    . '}',
             ],
             'multi-class expression, all in root namespace' => [
                 'tryBlock' => new CatchBlock(
@@ -105,9 +105,9 @@ class CatchBlockTest extends AbstractResolvableTestCase
                         new LiteralExpression('"literal"')
                     )
                 ),
-                'expectedString' => 'catch (\LogicException | \RuntimeException $exception) {' . "\n" .
-                    '    "literal";' . "\n" .
-                    '}',
+                'expectedString' => 'catch (\LogicException | \RuntimeException $exception) {' . "\n"
+                    . '    "literal";' . "\n"
+                    . '}',
             ],
             'multi-class expression, not all in root namespace' => [
                 'tryBlock' => new CatchBlock(
@@ -122,9 +122,9 @@ class CatchBlockTest extends AbstractResolvableTestCase
                         new LiteralExpression('"literal"')
                     )
                 ),
-                'expectedString' => 'catch (\LogicException | \RuntimeException | TestCase $exception) {' . "\n" .
-                    '    "literal";' . "\n" .
-                    '}',
+                'expectedString' => 'catch (\LogicException | \RuntimeException | TestCase $exception) {' . "\n"
+                    . '    "literal";' . "\n"
+                    . '}',
             ],
             'empty return statement only' => [
                 'tryBlock' => new CatchBlock(
@@ -137,9 +137,9 @@ class CatchBlockTest extends AbstractResolvableTestCase
                         new ReturnExpression()
                     )
                 ),
-                'expectedString' => 'catch (\Exception $exception) {' . "\n" .
-                    '    return;' . "\n" .
-                    '}',
+                'expectedString' => 'catch (\Exception $exception) {' . "\n"
+                    . '    return;' . "\n"
+                    . '}',
             ],
         ];
     }

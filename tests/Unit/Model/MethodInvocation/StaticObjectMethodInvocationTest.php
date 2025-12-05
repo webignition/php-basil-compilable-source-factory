@@ -155,10 +155,10 @@ class StaticObjectMethodInvocationTest extends AbstractResolvableTestCase
                         MethodArguments::FORMAT_STACKED
                     )
                 ),
-                'expectedString' => "ClassName::methodName(\n" .
-                    "    1,\n" .
-                    "    \\'single-quoted value\\'\n" .
-                    ')',
+                'expectedString' => "ClassName::methodName(\n"
+                    . "    1,\n"
+                    . "    \\'single-quoted value\\'\n"
+                    . ')',
             ],
         ];
     }

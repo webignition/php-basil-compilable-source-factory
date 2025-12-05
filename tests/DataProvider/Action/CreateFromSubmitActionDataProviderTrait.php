@@ -25,13 +25,13 @@ trait CreateFromSubmitActionDataProviderTrait
         return [
             'interaction action (submit), element identifier' => [
                 'action' => $actionParser->parse('submit $".selector"'),
-                'expectedRenderedSource' => '(function () {' . "\n" .
-                    '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '        "locator": ".selector"' . "\n" .
-                    '    }\'));' . "\n" .
-                    '    $element->submit();' . "\n" .
-                    '})();' . "\n" .
-                    '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
+                'expectedRenderedSource' => '(function () {' . "\n"
+                    . '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n"
+                    . '        "locator": ".selector"' . "\n"
+                    . '    }\'));' . "\n"
+                    . '    $element->submit();' . "\n"
+                    . '})();' . "\n"
+                    . '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
                         new ClassNameCollection([

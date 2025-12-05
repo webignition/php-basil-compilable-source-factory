@@ -29,21 +29,21 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
         return [
             'exists comparison, element identifier examined value' => [
                 'assertion' => $assertionParser->parse('$".selector" exists'),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->examinedElementIdentifier = ' .
-                    'ElementIdentifier::fromJson(\'{' . "\n" .
-                    '    "locator": ".selector"' . "\n" .
-                    '}\');' . "\n" .
-                    'try {' . "\n" .
-                    '    {{ PHPUNIT }}->setBooleanExaminedValue(' . "\n" .
-                    '        {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier)' . "\n" .
-                    '    );' . "\n" .
-                    '} catch (InvalidLocatorException $exception) {' . "\n" .
-                    '    self::staticSetLastException($exception);' . "\n" .
-                    '    {{ PHPUNIT }}->fail(\'Invalid locator\');' . "\n" .
-                    '}' . "\n" .
-                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
-                    '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n" .
-                    ');',
+                'expectedRenderedSource' => '{{ PHPUNIT }}->examinedElementIdentifier = '
+                    . 'ElementIdentifier::fromJson(\'{' . "\n"
+                    . '    "locator": ".selector"' . "\n"
+                    . '}\');' . "\n"
+                    . 'try {' . "\n"
+                    . '    {{ PHPUNIT }}->setBooleanExaminedValue(' . "\n"
+                    . '        {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier)' . "\n"
+                    . '    );' . "\n"
+                    . '} catch (InvalidLocatorException $exception) {' . "\n"
+                    . '    self::staticSetLastException($exception);' . "\n"
+                    . '    {{ PHPUNIT }}->fail(\'Invalid locator\');' . "\n"
+                    . '}' . "\n"
+                    . '{{ PHPUNIT }}->assertTrue(' . "\n"
+                    . '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n"
+                    . ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
                         new ClassNameCollection([
@@ -59,31 +59,31 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
             ],
             'exists comparison, attribute identifier examined value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name exists'),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->examinedElementIdentifier = ' .
-                    'ElementIdentifier::fromJson(\'{' . "\n" .
-                    '    "locator": ".selector"' . "\n" .
-                    '}\');' . "\n" .
-                    'try {' . "\n" .
-                    '    {{ PHPUNIT }}->setBooleanExaminedValue(' . "\n" .
-                    '        {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier)' . "\n" .
-                    '    );' . "\n" .
-                    '} catch (InvalidLocatorException $exception) {' . "\n" .
-                    '    self::staticSetLastException($exception);' . "\n" .
-                    '    {{ PHPUNIT }}->fail(\'Invalid locator\');' . "\n" .
-                    '}' . "\n" .
-                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
-                    '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n" .
-                    ');' . "\n" .
-                    '{{ PHPUNIT }}->setBooleanExaminedValue(((function () {' . "\n" .
-                    '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '        "locator": ".selector"' . "\n" .
-                    '    }\'));' . "\n" .
-                    "\n" .
-                    '    return $element->getAttribute(\'attribute_name\');' . "\n" .
-                    '})() ?? null) !== null);' . "\n" .
-                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
-                    '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n" .
-                    ');',
+                'expectedRenderedSource' => '{{ PHPUNIT }}->examinedElementIdentifier = '
+                    . 'ElementIdentifier::fromJson(\'{' . "\n"
+                    . '    "locator": ".selector"' . "\n"
+                    . '}\');' . "\n"
+                    . 'try {' . "\n"
+                    . '    {{ PHPUNIT }}->setBooleanExaminedValue(' . "\n"
+                    . '        {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier)' . "\n"
+                    . '    );' . "\n"
+                    . '} catch (InvalidLocatorException $exception) {' . "\n"
+                    . '    self::staticSetLastException($exception);' . "\n"
+                    . '    {{ PHPUNIT }}->fail(\'Invalid locator\');' . "\n"
+                    . '}' . "\n"
+                    . '{{ PHPUNIT }}->assertTrue(' . "\n"
+                    . '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n"
+                    . ');' . "\n"
+                    . '{{ PHPUNIT }}->setBooleanExaminedValue(((function () {' . "\n"
+                    . '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n"
+                    . '        "locator": ".selector"' . "\n"
+                    . '    }\'));' . "\n"
+                    . "\n"
+                    . '    return $element->getAttribute(\'attribute_name\');' . "\n"
+                    . '})() ?? null) !== null);' . "\n"
+                    . '{{ PHPUNIT }}->assertTrue(' . "\n"
+                    . '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n"
+                    . ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
                         new ClassNameCollection([
@@ -99,21 +99,21 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
             ],
             'exists comparison, css attribute selector containing dot' => [
                 'assertion' => $assertionParser->parse('$"a[href=foo.html]" exists'),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->examinedElementIdentifier = ' .
-                    'ElementIdentifier::fromJson(\'{' . "\n" .
-                    '    "locator": "a[href=foo.html]"' . "\n" .
-                    '}\');' . "\n" .
-                    'try {' . "\n" .
-                    '    {{ PHPUNIT }}->setBooleanExaminedValue(' . "\n" .
-                    '        {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier)' . "\n" .
-                    '    );' . "\n" .
-                    '} catch (InvalidLocatorException $exception) {' . "\n" .
-                    '    self::staticSetLastException($exception);' . "\n" .
-                    '    {{ PHPUNIT }}->fail(\'Invalid locator\');' . "\n" .
-                    '}' . "\n" .
-                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
-                    '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n" .
-                    ');',
+                'expectedRenderedSource' => '{{ PHPUNIT }}->examinedElementIdentifier = '
+                    . 'ElementIdentifier::fromJson(\'{' . "\n"
+                    . '    "locator": "a[href=foo.html]"' . "\n"
+                    . '}\');' . "\n"
+                    . 'try {' . "\n"
+                    . '    {{ PHPUNIT }}->setBooleanExaminedValue(' . "\n"
+                    . '        {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier)' . "\n"
+                    . '    );' . "\n"
+                    . '} catch (InvalidLocatorException $exception) {' . "\n"
+                    . '    self::staticSetLastException($exception);' . "\n"
+                    . '    {{ PHPUNIT }}->fail(\'Invalid locator\');' . "\n"
+                    . '}' . "\n"
+                    . '{{ PHPUNIT }}->assertTrue(' . "\n"
+                    . '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n"
+                    . ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
                         new ClassNameCollection([
@@ -129,31 +129,31 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
             ],
             'exists comparison, css attribute selector containing dot with attribute name' => [
                 'assertion' => $assertionParser->parse('$"a[href=foo.html]".attribute_name exists'),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->examinedElementIdentifier = ' .
-                    'ElementIdentifier::fromJson(\'{' . "\n" .
-                    '    "locator": "a[href=foo.html]"' . "\n" .
-                    '}\');' . "\n" .
-                    'try {' . "\n" .
-                    '    {{ PHPUNIT }}->setBooleanExaminedValue(' . "\n" .
-                    '        {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier)' . "\n" .
-                    '    );' . "\n" .
-                    '} catch (InvalidLocatorException $exception) {' . "\n" .
-                    '    self::staticSetLastException($exception);' . "\n" .
-                    '    {{ PHPUNIT }}->fail(\'Invalid locator\');' . "\n" .
-                    '}' . "\n" .
-                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
-                    '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n" .
-                    ');' . "\n" .
-                    '{{ PHPUNIT }}->setBooleanExaminedValue(((function () {' . "\n" .
-                    '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '        "locator": "a[href=foo.html]"' . "\n" .
-                    '    }\'));' . "\n" .
-                    "\n" .
-                    '    return $element->getAttribute(\'attribute_name\');' . "\n" .
-                    '})() ?? null) !== null);' . "\n" .
-                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
-                    '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n" .
-                    ');',
+                'expectedRenderedSource' => '{{ PHPUNIT }}->examinedElementIdentifier = '
+                    . 'ElementIdentifier::fromJson(\'{' . "\n"
+                    . '    "locator": "a[href=foo.html]"' . "\n"
+                    . '}\');' . "\n"
+                    . 'try {' . "\n"
+                    . '    {{ PHPUNIT }}->setBooleanExaminedValue(' . "\n"
+                    . '        {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier)' . "\n"
+                    . '    );' . "\n"
+                    . '} catch (InvalidLocatorException $exception) {' . "\n"
+                    . '    self::staticSetLastException($exception);' . "\n"
+                    . '    {{ PHPUNIT }}->fail(\'Invalid locator\');' . "\n"
+                    . '}' . "\n"
+                    . '{{ PHPUNIT }}->assertTrue(' . "\n"
+                    . '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n"
+                    . ');' . "\n"
+                    . '{{ PHPUNIT }}->setBooleanExaminedValue(((function () {' . "\n"
+                    . '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n"
+                    . '        "locator": "a[href=foo.html]"' . "\n"
+                    . '    }\'));' . "\n"
+                    . "\n"
+                    . '    return $element->getAttribute(\'attribute_name\');' . "\n"
+                    . '})() ?? null) !== null);' . "\n"
+                    . '{{ PHPUNIT }}->assertTrue(' . "\n"
+                    . '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n"
+                    . ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
                         new ClassNameCollection([
@@ -173,21 +173,21 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     '$".selector"',
                     'exists'
                 ),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->examinedElementIdentifier = ' .
-                    'ElementIdentifier::fromJson(\'{' . "\n" .
-                    '    "locator": ".selector"' . "\n" .
-                    '}\');' . "\n" .
-                    'try {' . "\n" .
-                    '    {{ PHPUNIT }}->setBooleanExaminedValue(' . "\n" .
-                    '        {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier)' . "\n" .
-                    '    );' . "\n" .
-                    '} catch (InvalidLocatorException $exception) {' . "\n" .
-                    '    self::staticSetLastException($exception);' . "\n" .
-                    '    {{ PHPUNIT }}->fail(\'Invalid locator\');' . "\n" .
-                    '}' . "\n" .
-                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
-                    '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n" .
-                    ');',
+                'expectedRenderedSource' => '{{ PHPUNIT }}->examinedElementIdentifier = '
+                    . 'ElementIdentifier::fromJson(\'{' . "\n"
+                    . '    "locator": ".selector"' . "\n"
+                    . '}\');' . "\n"
+                    . 'try {' . "\n"
+                    . '    {{ PHPUNIT }}->setBooleanExaminedValue(' . "\n"
+                    . '        {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier)' . "\n"
+                    . '    );' . "\n"
+                    . '} catch (InvalidLocatorException $exception) {' . "\n"
+                    . '    self::staticSetLastException($exception);' . "\n"
+                    . '    {{ PHPUNIT }}->fail(\'Invalid locator\');' . "\n"
+                    . '}' . "\n"
+                    . '{{ PHPUNIT }}->assertTrue(' . "\n"
+                    . '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n"
+                    . ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
                         new ClassNameCollection([
@@ -207,21 +207,21 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     '$".selector"',
                     'exists'
                 ),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->examinedElementIdentifier = ' .
-                    'ElementIdentifier::fromJson(\'{' . "\n" .
-                    '    "locator": ".selector"' . "\n" .
-                    '}\');' . "\n" .
-                    'try {' . "\n" .
-                    '    {{ PHPUNIT }}->setBooleanExaminedValue(' . "\n" .
-                    '        {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier)' . "\n" .
-                    '    );' . "\n" .
-                    '} catch (InvalidLocatorException $exception) {' . "\n" .
-                    '    self::staticSetLastException($exception);' . "\n" .
-                    '    {{ PHPUNIT }}->fail(\'Invalid locator\');' . "\n" .
-                    '}' . "\n" .
-                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
-                    '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n" .
-                    ');',
+                'expectedRenderedSource' => '{{ PHPUNIT }}->examinedElementIdentifier = '
+                    . 'ElementIdentifier::fromJson(\'{' . "\n"
+                    . '    "locator": ".selector"' . "\n"
+                    . '}\');' . "\n"
+                    . 'try {' . "\n"
+                    . '    {{ PHPUNIT }}->setBooleanExaminedValue(' . "\n"
+                    . '        {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier)' . "\n"
+                    . '    );' . "\n"
+                    . '} catch (InvalidLocatorException $exception) {' . "\n"
+                    . '    self::staticSetLastException($exception);' . "\n"
+                    . '    {{ PHPUNIT }}->fail(\'Invalid locator\');' . "\n"
+                    . '}' . "\n"
+                    . '{{ PHPUNIT }}->assertTrue(' . "\n"
+                    . '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n"
+                    . ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
                         new ClassNameCollection([
@@ -241,21 +241,21 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     '$".selector"',
                     'exists'
                 ),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->examinedElementIdentifier = ' .
-                    'ElementIdentifier::fromJson(\'{' . "\n" .
-                    '    "locator": ".selector"' . "\n" .
-                    '}\');' . "\n" .
-                    'try {' . "\n" .
-                    '    {{ PHPUNIT }}->setBooleanExaminedValue(' . "\n" .
-                    '        {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier)' . "\n" .
-                    '    );' . "\n" .
-                    '} catch (InvalidLocatorException $exception) {' . "\n" .
-                    '    self::staticSetLastException($exception);' . "\n" .
-                    '    {{ PHPUNIT }}->fail(\'Invalid locator\');' . "\n" .
-                    '}' . "\n" .
-                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
-                    '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n" .
-                    ');',
+                'expectedRenderedSource' => '{{ PHPUNIT }}->examinedElementIdentifier = '
+                    . 'ElementIdentifier::fromJson(\'{' . "\n"
+                    . '    "locator": ".selector"' . "\n"
+                    . '}\');' . "\n"
+                    . 'try {' . "\n"
+                    . '    {{ PHPUNIT }}->setBooleanExaminedValue(' . "\n"
+                    . '        {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier)' . "\n"
+                    . '    );' . "\n"
+                    . '} catch (InvalidLocatorException $exception) {' . "\n"
+                    . '    self::staticSetLastException($exception);' . "\n"
+                    . '    {{ PHPUNIT }}->fail(\'Invalid locator\');' . "\n"
+                    . '}' . "\n"
+                    . '{{ PHPUNIT }}->assertTrue(' . "\n"
+                    . '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n"
+                    . ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
                         new ClassNameCollection([
@@ -275,21 +275,21 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     '$".duration"',
                     'exists'
                 ),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->examinedElementIdentifier = ' .
-                    'ElementIdentifier::fromJson(\'{' . "\n" .
-                    '    "locator": ".duration"' . "\n" .
-                    '}\');' . "\n" .
-                    'try {' . "\n" .
-                    '    {{ PHPUNIT }}->setBooleanExaminedValue(' . "\n" .
-                    '        {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier)' . "\n" .
-                    '    );' . "\n" .
-                    '} catch (InvalidLocatorException $exception) {' . "\n" .
-                    '    self::staticSetLastException($exception);' . "\n" .
-                    '    {{ PHPUNIT }}->fail(\'Invalid locator\');' . "\n" .
-                    '}' . "\n" .
-                    '{{ PHPUNIT }}->assertTrue(' . "\n" .
-                    '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n" .
-                    ');',
+                'expectedRenderedSource' => '{{ PHPUNIT }}->examinedElementIdentifier = '
+                    . 'ElementIdentifier::fromJson(\'{' . "\n"
+                    . '    "locator": ".duration"' . "\n"
+                    . '}\');' . "\n"
+                    . 'try {' . "\n"
+                    . '    {{ PHPUNIT }}->setBooleanExaminedValue(' . "\n"
+                    . '        {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier)' . "\n"
+                    . '    );' . "\n"
+                    . '} catch (InvalidLocatorException $exception) {' . "\n"
+                    . '    self::staticSetLastException($exception);' . "\n"
+                    . '    {{ PHPUNIT }}->fail(\'Invalid locator\');' . "\n"
+                    . '}' . "\n"
+                    . '{{ PHPUNIT }}->assertTrue(' . "\n"
+                    . '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n"
+                    . ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
                         new ClassNameCollection([

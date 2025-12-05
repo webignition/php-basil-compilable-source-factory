@@ -200,18 +200,18 @@ class BodyTest extends AbstractResolvableTestCase
                         ])
                     ),
                 ]),
-                'expectedString' => '// single line comment' . "\n" .
-                    "\n" .
-                    '"literal from statement";' . "\n" .
-                    '"literal from statement from body";' . "\n" .
-                    'try {' . "\n" .
-                    '    // TryBlock comment' . "\n" .
-                    '} catch (\LogicException $exception) {' . "\n" .
-                    '    // CatchBlock comment' . "\n" .
-                    '}' . "\n" .
-                    'if (true) {' . "\n" .
-                    '    return;' . "\n" .
-                    '}',
+                'expectedString' => '// single line comment' . "\n"
+                    . "\n"
+                    . '"literal from statement";' . "\n"
+                    . '"literal from statement from body";' . "\n"
+                    . 'try {' . "\n"
+                    . '    // TryBlock comment' . "\n"
+                    . '} catch (\LogicException $exception) {' . "\n"
+                    . '    // CatchBlock comment' . "\n"
+                    . '}' . "\n"
+                    . 'if (true) {' . "\n"
+                    . '    return;' . "\n"
+                    . '}',
             ],
             'empty return only' => [
                 'body' => new Body([
@@ -230,8 +230,8 @@ class BodyTest extends AbstractResolvableTestCase
                         new ReturnExpression()
                     )
                 ]),
-                'expectedString' => '"literal from statement";' . "\n" .
-                    'return;',
+                'expectedString' => '"literal from statement";' . "\n"
+                    . 'return;',
             ],
             'explicit trailing empty line' => [
                 'body' => new Body([
@@ -256,9 +256,9 @@ class BodyTest extends AbstractResolvableTestCase
                         ),
                     ]),
                 ]),
-                'expectedString' => '// comment 1' . "\n" .
-                    "\n" .
-                    '// comment 2',
+                'expectedString' => '// comment 1' . "\n"
+                    . "\n"
+                    . '// comment 2',
             ],
         ];
     }

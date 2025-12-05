@@ -73,8 +73,8 @@ class ClassDependencyCollectionTest extends AbstractResolvableTestCase
                         new ClassName(ClassNameTest::class, 'BaseTest'),
                     ])
                 ),
-                'expectedString' => 'use webignition\BasilCompilableSourceFactory\Model\ClassName;' . "\n" .
-                    'use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\ClassNameTest as BaseTest;',
+                'expectedString' => 'use webignition\BasilCompilableSourceFactory\Model\ClassName;' . "\n"
+                    . 'use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\ClassNameTest as BaseTest;',
             ],
             'lines are sorted' => [
                 'collection' => new ClassDependencyCollection(
@@ -84,9 +84,9 @@ class ClassDependencyCollectionTest extends AbstractResolvableTestCase
                         new ClassName('Acme\B'),
                     ])
                 ),
-                'expectedString' => 'use Acme\A;' . "\n" .
-                    'use Acme\B;' . "\n" .
-                    'use Acme\C;',
+                'expectedString' => 'use Acme\A;' . "\n"
+                    . 'use Acme\B;' . "\n"
+                    . 'use Acme\C;',
             ],
         ];
     }

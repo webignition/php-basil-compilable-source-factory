@@ -70,10 +70,10 @@ class DataProviderMethodDefinitionTest extends AbstractResolvableTestCase
         return [
             'empty data' => [
                 'methodDefinition' => new DataProviderMethodDefinition('emptyDataDataProvider', []),
-                'expectedString' => 'public function emptyDataDataProvider(): array' . "\n" .
-                    '{' . "\n" .
-                    '    return [];' . "\n" .
-                    '}'
+                'expectedString' => 'public function emptyDataDataProvider(): array' . "\n"
+                    . '{' . "\n"
+                    . '    return [];' . "\n"
+                    . '}'
             ],
             'non-empty data' => [
                 'methodDefinition' => new DataProviderMethodDefinition('emptyDataDataProvider', [
@@ -86,19 +86,19 @@ class DataProviderMethodDefinitionTest extends AbstractResolvableTestCase
                         'y' => "\\'string2\\'",
                     ],
                 ]),
-                'expectedString' => "public function emptyDataDataProvider(): array\n" .
-                    "{\n" .
-                    "    return [\n" .
-                    "        '0' => [\n" .
-                    "            'x' => '1',\n" .
-                    "            'y' => '\\'string1\\'',\n" .
-                    "        ],\n" .
-                    "        '1' => [\n" .
-                    "            'x' => '2',\n" .
-                    "            'y' => '\\'string2\\'',\n" .
-                    "        ],\n" .
-                    "    ];\n" .
-                    '}'
+                'expectedString' => "public function emptyDataDataProvider(): array\n"
+                    . "{\n"
+                    . "    return [\n"
+                    . "        '0' => [\n"
+                    . "            'x' => '1',\n"
+                    . "            'y' => '\\'string1\\'',\n"
+                    . "        ],\n"
+                    . "        '1' => [\n"
+                    . "            'x' => '2',\n"
+                    . "            'y' => '\\'string2\\'',\n"
+                    . "        ],\n"
+                    . "    ];\n"
+                    . '}'
             ],
         ];
     }

@@ -54,9 +54,9 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                 'serializedElementIdentifier' => $elementIdentifierSerializer->serialize(
                     new ElementIdentifier('.selector')
                 ),
-                'expectedRenderedSource' => '{{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '    "locator": ".selector"' . "\n" .
-                    '}\'))',
+                'expectedRenderedSource' => '{{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n"
+                    . '    "locator": ".selector"' . "\n"
+                    . '}\'))',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
                         new ClassNameCollection([
@@ -73,12 +73,12 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     (new ElementIdentifier('.selector'))
                         ->withParentIdentifier(new ElementIdentifier('.parent'))
                 ),
-                'expectedRenderedSource' => '{{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '    "locator": ".selector",' . "\n" .
-                    '    "parent": {' . "\n" .
-                    '        "locator": ".parent"' . "\n" .
-                    '    }' . "\n" .
-                    '}\'))',
+                'expectedRenderedSource' => '{{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n"
+                    . '    "locator": ".selector",' . "\n"
+                    . '    "parent": {' . "\n"
+                    . '        "locator": ".parent"' . "\n"
+                    . '    }' . "\n"
+                    . '}\'))',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
                         new ClassNameCollection([
@@ -119,9 +119,9 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                 'serializedElementIdentifier' => $elementIdentifierSerializer->serialize(
                     new ElementIdentifier('.selector')
                 ),
-                'expectedRenderedSource' => '{{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '    "locator": ".selector"' . "\n" .
-                    '}\'))',
+                'expectedRenderedSource' => '{{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n"
+                    . '    "locator": ".selector"' . "\n"
+                    . '}\'))',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
                         new ClassNameCollection([
@@ -138,12 +138,12 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     (new ElementIdentifier('.selector'))
                         ->withParentIdentifier(new ElementIdentifier('.parent'))
                 ),
-                'expectedRenderedSource' => '{{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '    "locator": ".selector",' . "\n" .
-                    '    "parent": {' . "\n" .
-                    '        "locator": ".parent"' . "\n" .
-                    '    }' . "\n" .
-                    '}\'))',
+                'expectedRenderedSource' => '{{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n"
+                    . '    "locator": ".selector",' . "\n"
+                    . '    "parent": {' . "\n"
+                    . '        "locator": ".parent"' . "\n"
+                    . '    }' . "\n"
+                    . '}\'))',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
                         new ClassNameCollection([
@@ -186,13 +186,13 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     new AttributeIdentifier('.selector', 'attribute_name')
                 ),
                 'attributeName' => 'attribute_name',
-                'expectedRenderedSource' => '(function () {' . "\n" .
-                    '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '        "locator": ".selector"' . "\n" .
-                    '    }\'));' . "\n" .
-                    "\n" .
-                    '    return $element->getAttribute(\'attribute_name\');' . "\n" .
-                    '})()',
+                'expectedRenderedSource' => '(function () {' . "\n"
+                    . '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n"
+                    . '        "locator": ".selector"' . "\n"
+                    . '    }\'));' . "\n"
+                    . "\n"
+                    . '    return $element->getAttribute(\'attribute_name\');' . "\n"
+                    . '})()',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
                         new ClassNameCollection([
@@ -210,16 +210,16 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                         ->withParentIdentifier(new ElementIdentifier('.parent'))
                 ),
                 'attributeName' => 'attribute_name',
-                'expectedRenderedSource' => '(function () {' . "\n" .
-                    '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '        "locator": ".selector",' . "\n" .
-                    '        "parent": {' . "\n" .
-                    '            "locator": ".parent"' . "\n" .
-                    '        }' . "\n" .
-                    '    }\'));' . "\n" .
-                    "\n" .
-                    '    return $element->getAttribute(\'attribute_name\');' . "\n" .
-                    '})()',
+                'expectedRenderedSource' => '(function () {' . "\n"
+                    . '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n"
+                    . '        "locator": ".selector",' . "\n"
+                    . '        "parent": {' . "\n"
+                    . '            "locator": ".parent"' . "\n"
+                    . '        }' . "\n"
+                    . '    }\'));' . "\n"
+                    . "\n"
+                    . '    return $element->getAttribute(\'attribute_name\');' . "\n"
+                    . '})()',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
                         new ClassNameCollection([
@@ -260,13 +260,13 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                 'serializedElementIdentifier' => $elementIdentifierSerializer->serialize(
                     new ElementIdentifier('.selector')
                 ),
-                'expectedRenderedSource' => '(function () {' . "\n" .
-                    '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '        "locator": ".selector"' . "\n" .
-                    '    }\'));' . "\n" .
-                    "\n" .
-                    '    return {{ INSPECTOR }}->getValue($element);' . "\n" .
-                    '})()',
+                'expectedRenderedSource' => '(function () {' . "\n"
+                    . '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n"
+                    . '        "locator": ".selector"' . "\n"
+                    . '    }\'));' . "\n"
+                    . "\n"
+                    . '    return {{ INSPECTOR }}->getValue($element);' . "\n"
+                    . '})()',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
                         new ClassNameCollection([
@@ -284,16 +284,16 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     (new ElementIdentifier('.selector'))
                         ->withParentIdentifier(new ElementIdentifier('.parent'))
                 ),
-                'expectedRenderedSource' => '(function () {' . "\n" .
-                    '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '        "locator": ".selector",' . "\n" .
-                    '        "parent": {' . "\n" .
-                    '            "locator": ".parent"' . "\n" .
-                    '        }' . "\n" .
-                    '    }\'));' . "\n" .
-                    "\n" .
-                    '    return {{ INSPECTOR }}->getValue($element);' . "\n" .
-                    '})()',
+                'expectedRenderedSource' => '(function () {' . "\n"
+                    . '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n"
+                    . '        "locator": ".selector",' . "\n"
+                    . '        "parent": {' . "\n"
+                    . '            "locator": ".parent"' . "\n"
+                    . '        }' . "\n"
+                    . '    }\'));' . "\n"
+                    . "\n"
+                    . '    return {{ INSPECTOR }}->getValue($element);' . "\n"
+                    . '})()',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
                         new ClassNameCollection([

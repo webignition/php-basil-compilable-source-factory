@@ -89,9 +89,9 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         new LiteralExpression('\'value1\'')
                     ),
                 ]),
-                'expectedString' => "[\n" .
-                    "    'key1' => 'value1',\n" .
-                    ']',
+                'expectedString' => "[\n"
+                    . "    'key1' => 'value1',\n"
+                    . ']',
             ],
             'multiple pairs' => [
                 'expression' => new ArrayExpression([
@@ -111,11 +111,11 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         )
                     ),
                 ]),
-                'expectedString' => "[\n" .
-                    "    'key1' => 'value1',\n" .
-                    "    'key2' => \$variableName,\n" .
-                    "    'key3' => {{ OBJECT }}->methodName(),\n" .
-                    ']',
+                'expectedString' => "[\n"
+                    . "    'key1' => 'value1',\n"
+                    . "    'key2' => \$variableName,\n"
+                    . "    'key3' => {{ OBJECT }}->methodName(),\n"
+                    . ']',
             ],
             'single data set with single key:value numerical name' => [
                 'expression' => new ArrayExpression([
@@ -129,11 +129,11 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         ])
                     ),
                 ]),
-                'expectedString' => "[\n" .
-                    "    '0' => [\n" .
-                    "        'key1' => 'value1',\n" .
-                    "    ],\n" .
-                    ']',
+                'expectedString' => "[\n"
+                    . "    '0' => [\n"
+                    . "        'key1' => 'value1',\n"
+                    . "    ],\n"
+                    . ']',
             ],
             'single data set with single key:value string name' => [
                 'expression' => new ArrayExpression([
@@ -147,11 +147,11 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         ])
                     ),
                 ]),
-                'expectedString' => "[\n" .
-                    "    'data-set-one' => [\n" .
-                    "        'key1' => 'value1',\n" .
-                    "    ],\n" .
-                    ']',
+                'expectedString' => "[\n"
+                    . "    'data-set-one' => [\n"
+                    . "        'key1' => 'value1',\n"
+                    . "    ],\n"
+                    . ']',
             ],
             'single data set with multiple key:value numerical name' => [
                 'expression' => new ArrayExpression([
@@ -169,12 +169,12 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         ])
                     ),
                 ]),
-                'expectedString' => "[\n" .
-                    "    '0' => [\n" .
-                    "        'key1' => 'value1',\n" .
-                    "        'key2' => 'value2',\n" .
-                    "    ],\n" .
-                    ']',
+                'expectedString' => "[\n"
+                    . "    '0' => [\n"
+                    . "        'key1' => 'value1',\n"
+                    . "        'key2' => 'value2',\n"
+                    . "    ],\n"
+                    . ']',
             ],
             'multiple data sets with multiple key:value numerical name' => [
                 'expression' => new ArrayExpression([
@@ -205,16 +205,16 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         ])
                     ),
                 ]),
-                'expectedString' => "[\n" .
-                    "    '0' => [\n" .
-                    "        'key1' => 'value1',\n" .
-                    "        'key2' => 'value2',\n" .
-                    "    ],\n" .
-                    "    '1' => [\n" .
-                    "        'key1' => 'value3',\n" .
-                    "        'key2' => 'value4',\n" .
-                    "    ],\n" .
-                    ']',
+                'expectedString' => "[\n"
+                    . "    '0' => [\n"
+                    . "        'key1' => 'value1',\n"
+                    . "        'key2' => 'value2',\n"
+                    . "    ],\n"
+                    . "    '1' => [\n"
+                    . "        'key1' => 'value3',\n"
+                    . "        'key2' => 'value4',\n"
+                    . "    ],\n"
+                    . ']',
             ],
 
             'single data set with VariableName value' => [
@@ -229,11 +229,11 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         ])
                     ),
                 ]),
-                'expectedString' => "[\n" .
-                    "    'data-set-one' => [\n" .
-                    "        'key1' => \$variableName,\n" .
-                    "    ],\n" .
-                    ']',
+                'expectedString' => "[\n"
+                    . "    'data-set-one' => [\n"
+                    . "        'key1' => \$variableName,\n"
+                    . "    ],\n"
+                    . ']',
             ],
             'single data set with ObjectMethodInvocation value' => [
                 'expression' => new ArrayExpression([
@@ -250,11 +250,11 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         ])
                     ),
                 ]),
-                'expectedString' => "[\n" .
-                    "    'data-set-one' => [\n" .
-                    "        'key1' => {{ OBJECT }}->methodName(),\n" .
-                    "    ],\n" .
-                    ']',
+                'expectedString' => "[\n"
+                    . "    'data-set-one' => [\n"
+                    . "        'key1' => {{ OBJECT }}->methodName(),\n"
+                    . "    ],\n"
+                    . ']',
             ],
         ];
     }

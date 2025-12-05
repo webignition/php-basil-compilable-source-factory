@@ -25,18 +25,18 @@ trait CreateFromIsNotAssertionDataProviderTrait
         return [
             'is-not comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" is-not "value"'),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n" .
-                    '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n" .
-                    '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '        "locator": ".selector"' . "\n" .
-                    '    }\'));' . "\n" .
-                    "\n" .
-                    '    return {{ INSPECTOR }}->getValue($element);' . "\n" .
-                    '})());' . "\n" .
-                    '{{ PHPUNIT }}->assertNotEquals(' . "\n" .
-                    '    {{ PHPUNIT }}->getExpectedValue(),' . "\n" .
-                    '    {{ PHPUNIT }}->getExaminedValue()' . "\n" .
-                    ');',
+                'expectedRenderedSource' => '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n"
+                    . '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n"
+                    . '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n"
+                    . '        "locator": ".selector"' . "\n"
+                    . '    }\'));' . "\n"
+                    . "\n"
+                    . '    return {{ INSPECTOR }}->getValue($element);' . "\n"
+                    . '})());' . "\n"
+                    . '{{ PHPUNIT }}->assertNotEquals(' . "\n"
+                    . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
+                    . '    {{ PHPUNIT }}->getExaminedValue()' . "\n"
+                    . ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
                         new ClassNameCollection([
@@ -52,18 +52,18 @@ trait CreateFromIsNotAssertionDataProviderTrait
             ],
             'is-not comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name is-not "value"'),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n" .
-                    '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n" .
-                    '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '        "locator": ".selector"' . "\n" .
-                    '    }\'));' . "\n" .
-                    "\n" .
-                    '    return $element->getAttribute(\'attribute_name\');' . "\n" .
-                    '})());' . "\n" .
-                    '{{ PHPUNIT }}->assertNotEquals(' . "\n" .
-                    '    {{ PHPUNIT }}->getExpectedValue(),' . "\n" .
-                    '    {{ PHPUNIT }}->getExaminedValue()' . "\n" .
-                    ');',
+                'expectedRenderedSource' => '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n"
+                    . '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n"
+                    . '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n"
+                    . '        "locator": ".selector"' . "\n"
+                    . '    }\'));' . "\n"
+                    . "\n"
+                    . '    return $element->getAttribute(\'attribute_name\');' . "\n"
+                    . '})());' . "\n"
+                    . '{{ PHPUNIT }}->assertNotEquals(' . "\n"
+                    . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
+                    . '    {{ PHPUNIT }}->getExaminedValue()' . "\n"
+                    . ');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
                         new ClassNameCollection([

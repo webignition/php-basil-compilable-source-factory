@@ -190,21 +190,21 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
         return [
             'public, no arguments, no return type, no lines' => [
                 'methodDefinition' => new MethodDefinition('emptyPublicMethod', new Body([])),
-                'expectedString' => 'public function emptyPublicMethod()' . "\n" .
-                    '{' . "\n\n" .
-                    '}'
+                'expectedString' => 'public function emptyPublicMethod()' . "\n"
+                    . '{' . "\n\n"
+                    . '}'
             ],
             'protected, no arguments, no return type, no lines' => [
                 'methodDefinition' => $emptyProtectedMethod,
-                'expectedString' => 'protected function emptyProtectedMethod()' . "\n" .
-                    '{' . "\n\n" .
-                    '}'
+                'expectedString' => 'protected function emptyProtectedMethod()' . "\n"
+                    . '{' . "\n\n"
+                    . '}'
             ],
             'private, no arguments, no return type, no lines' => [
                 'methodDefinition' => $emptyPrivateMethod,
-                'expectedString' => 'private function emptyPrivateMethod()' . "\n" .
-                    '{' . "\n\n" .
-                    '}'
+                'expectedString' => 'private function emptyPrivateMethod()' . "\n"
+                    . '{' . "\n\n"
+                    . '}'
             ],
             'public, has arguments, no return type, no lines' => [
                 'methodDefinition' => new MethodDefinition('emptyPublicMethod', new Body([]), [
@@ -212,20 +212,20 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                     'arg2',
                     'arg3',
                 ]),
-                'expectedString' => '/**' . "\n" .
-                    ' * @param string $arg1' . "\n" .
-                    ' * @param string $arg2' . "\n" .
-                    ' * @param string $arg3' . "\n" .
-                    ' */' . "\n" .
-                    'public function emptyPublicMethod($arg1, $arg2, $arg3)' . "\n" .
-                    '{' . "\n\n" .
-                    '}'
+                'expectedString' => '/**' . "\n"
+                    . ' * @param string $arg1' . "\n"
+                    . ' * @param string $arg2' . "\n"
+                    . ' * @param string $arg3' . "\n"
+                    . ' */' . "\n"
+                    . 'public function emptyPublicMethod($arg1, $arg2, $arg3)' . "\n"
+                    . '{' . "\n\n"
+                    . '}'
             ],
             'public, no arguments, has return type, no lines' => [
                 'methodDefinition' => $emptyMethodWithReturnType,
-                'expectedString' => 'public function emptyPublicMethodWithReturnType(): string' . "\n" .
-                    '{' . "\n\n" .
-                    '}'
+                'expectedString' => 'public function emptyPublicMethodWithReturnType(): string' . "\n"
+                    . '{' . "\n\n"
+                    . '}'
             ],
             'public, has arguments, no return type, has lines' => [
                 'methodDefinition' => new MethodDefinition(
@@ -249,16 +249,16 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                     ]),
                     ['x', 'y']
                 ),
-                'expectedString' => '/**' . "\n" .
-                    ' * @param string $x' . "\n" .
-                    ' * @param string $y' . "\n" .
-                    ' */' . "\n" .
-                    'public function nameOfMethod($x, $y)' . "\n" .
-                    '{' . "\n" .
-                    '    // Assign object method call to $value' . "\n" .
-                    "\n" .
-                    '    $value = {{ OBJECT }}->methodName($x, $y);' . "\n" .
-                    '}'
+                'expectedString' => '/**' . "\n"
+                    . ' * @param string $x' . "\n"
+                    . ' * @param string $y' . "\n"
+                    . ' */' . "\n"
+                    . 'public function nameOfMethod($x, $y)' . "\n"
+                    . '{' . "\n"
+                    . '    // Assign object method call to $value' . "\n"
+                    . "\n"
+                    . '    $value = {{ OBJECT }}->methodName($x, $y);' . "\n"
+                    . '}'
             ],
             'public, has arguments, no return type, has lines with trailing newline' => [
                 'methodDefinition' => new MethodDefinition(
@@ -269,20 +269,20 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                     ]),
                     ['x', 'y']
                 ),
-                'expectedString' => '/**' . "\n" .
-                    ' * @param string $x' . "\n" .
-                    ' * @param string $y' . "\n" .
-                    ' */' . "\n" .
-                    'public function nameOfMethod($x, $y)' . "\n" .
-                    '{' . "\n" .
-                    '    // comment' . "\n" .
-                    '}'
+                'expectedString' => '/**' . "\n"
+                    . ' * @param string $x' . "\n"
+                    . ' * @param string $y' . "\n"
+                    . ' */' . "\n"
+                    . 'public function nameOfMethod($x, $y)' . "\n"
+                    . '{' . "\n"
+                    . '    // comment' . "\n"
+                    . '}'
             ],
             'public static, no arguments, no return type, no lines' => [
                 'methodDefinition' => $emptyPublicStaticMethod,
-                'expectedString' => 'public static function emptyPublicStaticMethod()' . "\n" .
-                    '{' . "\n\n" .
-                    '}'
+                'expectedString' => 'public static function emptyPublicStaticMethod()' . "\n"
+                    . '{' . "\n\n"
+                    . '}'
             ],
             'public, has arguments, no return type, has mutated docblock' => [
                 'methodDefinition' => (function () {
@@ -306,16 +306,16 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
 
                     return $methodDefinition;
                 })(),
-                'expectedString' => '/**' . "\n" .
-                    ' * @dataProvider dataProviderMethodName' . "\n" .
-                    ' *' . "\n" .
-                    ' * @param string $x' . "\n" .
-                    ' * @param string $y' . "\n" .
-                    ' */' . "\n" .
-                    'public function nameOfMethod($x, $y)' . "\n" .
-                    '{' . "\n" .
-                    '    // comment' . "\n" .
-                    '}'
+                'expectedString' => '/**' . "\n"
+                    . ' * @dataProvider dataProviderMethodName' . "\n"
+                    . ' *' . "\n"
+                    . ' * @param string $x' . "\n"
+                    . ' * @param string $y' . "\n"
+                    . ' */' . "\n"
+                    . 'public function nameOfMethod($x, $y)' . "\n"
+                    . '{' . "\n"
+                    . '    // comment' . "\n"
+                    . '}'
             ],
         ];
     }

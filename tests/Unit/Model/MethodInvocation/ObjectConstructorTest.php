@@ -112,10 +112,10 @@ class ObjectConstructorTest extends AbstractResolvableTestCase
                         MethodArguments::FORMAT_STACKED
                     )
                 ),
-                'expectedString' => "new Model(\n" .
-                    "    1,\n" .
-                    "    \\'single-quoted value\\'\n" .
-                    ')',
+                'expectedString' => "new Model(\n"
+                    . "    1,\n"
+                    . "    \\'single-quoted value\\'\n"
+                    . ')',
             ],
         ];
     }

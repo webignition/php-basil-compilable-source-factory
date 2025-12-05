@@ -30,13 +30,13 @@ trait CreateFromWaitActionDataProviderTrait
             ],
             'wait action, element value' => [
                 'action' => $actionParser->parse('wait $".duration-selector"'),
-                'expectedRenderedSource' => 'usleep(((int) ((function () {' . "\n" .
-                    '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '        "locator": ".duration-selector"' . "\n" .
-                    '    }\'));' . "\n" .
-                    "\n" .
-                    '    return {{ INSPECTOR }}->getValue($element);' . "\n" .
-                    '})() ?? 0)) * 1000);',
+                'expectedRenderedSource' => 'usleep(((int) ((function () {' . "\n"
+                    . '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n"
+                    . '        "locator": ".duration-selector"' . "\n"
+                    . '    }\'));' . "\n"
+                    . "\n"
+                    . '    return {{ INSPECTOR }}->getValue($element);' . "\n"
+                    . '})() ?? 0)) * 1000);',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
                         new ClassNameCollection([
@@ -51,16 +51,16 @@ trait CreateFromWaitActionDataProviderTrait
             ],
             'wait action, descendant element value' => [
                 'action' => $actionParser->parse('wait $".parent" >> $".child"'),
-                'expectedRenderedSource' => 'usleep(((int) ((function () {' . "\n" .
-                    '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '        "locator": ".child",' . "\n" .
-                    '        "parent": {' . "\n" .
-                    '            "locator": ".parent"' . "\n" .
-                    '        }' . "\n" .
-                    '    }\'));' . "\n" .
-                    "\n" .
-                    '    return {{ INSPECTOR }}->getValue($element);' . "\n" .
-                    '})() ?? 0)) * 1000);',
+                'expectedRenderedSource' => 'usleep(((int) ((function () {' . "\n"
+                    . '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n"
+                    . '        "locator": ".child",' . "\n"
+                    . '        "parent": {' . "\n"
+                    . '            "locator": ".parent"' . "\n"
+                    . '        }' . "\n"
+                    . '    }\'));' . "\n"
+                    . "\n"
+                    . '    return {{ INSPECTOR }}->getValue($element);' . "\n"
+                    . '})() ?? 0)) * 1000);',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
                         new ClassNameCollection([
@@ -75,13 +75,13 @@ trait CreateFromWaitActionDataProviderTrait
             ],
             'wait action, single-character CSS selector element value' => [
                 'action' => $actionParser->parse('wait $"a"'),
-                'expectedRenderedSource' => 'usleep(((int) ((function () {' . "\n" .
-                    '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '        "locator": "a"' . "\n" .
-                    '    }\'));' . "\n" .
-                    "\n" .
-                    '    return {{ INSPECTOR }}->getValue($element);' . "\n" .
-                    '})() ?? 0)) * 1000);',
+                'expectedRenderedSource' => 'usleep(((int) ((function () {' . "\n"
+                    . '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n"
+                    . '        "locator": "a"' . "\n"
+                    . '    }\'));' . "\n"
+                    . "\n"
+                    . '    return {{ INSPECTOR }}->getValue($element);' . "\n"
+                    . '})() ?? 0)) * 1000);',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
                         new ClassNameCollection([
@@ -96,13 +96,13 @@ trait CreateFromWaitActionDataProviderTrait
             ],
             'wait action, attribute value' => [
                 'action' => $actionParser->parse('wait $".duration-selector".attribute_name'),
-                'expectedRenderedSource' => 'usleep(((int) ((function () {' . "\n" .
-                    '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n" .
-                    '        "locator": ".duration-selector"' . "\n" .
-                    '    }\'));' . "\n" .
-                    "\n" .
-                    '    return $element->getAttribute(\'attribute_name\');' . "\n" .
-                    '})() ?? 0)) * 1000);',
+                'expectedRenderedSource' => 'usleep(((int) ((function () {' . "\n"
+                    . '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n"
+                    . '        "locator": ".duration-selector"' . "\n"
+                    . '    }\'));' . "\n"
+                    . "\n"
+                    . '    return $element->getAttribute(\'attribute_name\');' . "\n"
+                    . '})() ?? 0)) * 1000);',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
                         new ClassNameCollection([
@@ -116,13 +116,13 @@ trait CreateFromWaitActionDataProviderTrait
             ],
             'wait action, browser property' => [
                 'action' => $actionParser->parse('wait $browser.size'),
-                'expectedRenderedSource' => 'usleep(((int) ((function () {' . "\n" .
-                    '    $webDriverDimension = ' .
-                    '{{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n" .
-                    "\n" .
-                    '    return (string) ($webDriverDimension->getWidth()) . \'x\' . ' .
-                    '(string) ($webDriverDimension->getHeight());' . "\n" .
-                    '})() ?? 0)) * 1000);',
+                'expectedRenderedSource' => 'usleep(((int) ((function () {' . "\n"
+                    . '    $webDriverDimension = '
+                    . '{{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n"
+                    . "\n"
+                    . '    return (string) ($webDriverDimension->getWidth()) . \'x\' . '
+                    . '(string) ($webDriverDimension->getHeight());' . "\n"
+                    . '})() ?? 0)) * 1000);',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PANTHER_CLIENT,

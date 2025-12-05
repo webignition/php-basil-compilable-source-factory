@@ -202,8 +202,8 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
         if ($assertion instanceof DerivedValueOperationAssertion) {
             $sourceStatement = $assertion->getSourceStatement();
 
-            $isDerivedFromInteractionAction =
-                $sourceStatement instanceof ActionInterface && $sourceStatement->isInteraction();
+            $isDerivedFromInteractionAction
+                = $sourceStatement instanceof ActionInterface && $sourceStatement->isInteraction();
         }
 
         return $isAttributeIdentifier || $isDerivedFromInteractionAction

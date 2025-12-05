@@ -80,10 +80,10 @@ class MethodInvocationTest extends AbstractResolvableTestCase
                         MethodArguments::FORMAT_STACKED
                     )
                 ),
-                'expectedString' => "methodName(\n" .
-                    "    1,\n" .
-                    "    \\'single-quoted value\\'\n" .
-                    ')',
+                'expectedString' => "methodName(\n"
+                    . "    1,\n"
+                    . "    \\'single-quoted value\\'\n"
+                    . ')',
             ],
         ];
     }

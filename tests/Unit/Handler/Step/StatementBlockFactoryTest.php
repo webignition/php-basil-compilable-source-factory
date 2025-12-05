@@ -88,10 +88,10 @@ class StatementBlockFactoryTest extends AbstractResolvableTestCase
         return [
             'click action' => [
                 'statement' => $clickAction,
-                'expectedRenderedSource' => '// click $".selector"' . "\n" .
-                    '{{ PHPUNIT }}->handledStatements[] = {{ ACTION_FACTORY }}->createFromJson(\'{' . "\n" .
-                    '    "serialised": "click action"' . "\n" .
-                    '}\');',
+                'expectedRenderedSource' => '// click $".selector"' . "\n"
+                    . '{{ PHPUNIT }}->handledStatements[] = {{ ACTION_FACTORY }}->createFromJson(\'{' . "\n"
+                    . '    "serialised": "click action"' . "\n"
+                    . '}\');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::ACTION_FACTORY,
@@ -101,10 +101,10 @@ class StatementBlockFactoryTest extends AbstractResolvableTestCase
             ],
             'exists assertion' => [
                 'statement' => $existsAssertion,
-                'expectedRenderedSource' => '// $".selector" exists' . "\n" .
-                    '{{ PHPUNIT }}->handledStatements[] = {{ ASSERTION_FACTORY }}->createFromJson(\'{' . "\n" .
-                    '    "serialised": "exists assertion"' . "\n" .
-                    '}\');',
+                'expectedRenderedSource' => '// $".selector" exists' . "\n"
+                    . '{{ PHPUNIT }}->handledStatements[] = {{ ASSERTION_FACTORY }}->createFromJson(\'{' . "\n"
+                    . '    "serialised": "exists assertion"' . "\n"
+                    . '}\');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::ASSERTION_FACTORY,
@@ -114,10 +114,10 @@ class StatementBlockFactoryTest extends AbstractResolvableTestCase
             ],
             'derived exists assertion' => [
                 'statement' => $derivedElementExistsAssertion,
-                'expectedRenderedSource' => '// $".selector" exists <- click $".selector"' . "\n" .
-                    '{{ PHPUNIT }}->handledStatements[] = {{ ASSERTION_FACTORY }}->createFromJson(\'{' . "\n" .
-                    '    "serialised": "derived exists assertion"' . "\n" .
-                    '}\');',
+                'expectedRenderedSource' => '// $".selector" exists <- click $".selector"' . "\n"
+                    . '{{ PHPUNIT }}->handledStatements[] = {{ ASSERTION_FACTORY }}->createFromJson(\'{' . "\n"
+                    . '    "serialised": "derived exists assertion"' . "\n"
+                    . '}\');',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::ASSERTION_FACTORY,
