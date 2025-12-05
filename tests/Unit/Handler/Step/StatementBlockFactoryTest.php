@@ -88,7 +88,7 @@ class StatementBlockFactoryTest extends AbstractResolvableTestCase
         return [
             'click action' => [
                 'statement' => $clickAction,
-                'expectedRenderedSource' => '// click $".selector"' . "\n"
+                'expectedRenderedContent' => '// click $".selector"' . "\n"
                     . '{{ PHPUNIT }}->handledStatements[] = {{ ACTION_FACTORY }}->createFromJson(\'{' . "\n"
                     . '    "serialised": "click action"' . "\n"
                     . '}\');',
@@ -101,7 +101,7 @@ class StatementBlockFactoryTest extends AbstractResolvableTestCase
             ],
             'exists assertion' => [
                 'statement' => $existsAssertion,
-                'expectedRenderedSource' => '// $".selector" exists' . "\n"
+                'expectedRenderedContent' => '// $".selector" exists' . "\n"
                     . '{{ PHPUNIT }}->handledStatements[] = {{ ASSERTION_FACTORY }}->createFromJson(\'{' . "\n"
                     . '    "serialised": "exists assertion"' . "\n"
                     . '}\');',
@@ -114,7 +114,7 @@ class StatementBlockFactoryTest extends AbstractResolvableTestCase
             ],
             'derived exists assertion' => [
                 'statement' => $derivedElementExistsAssertion,
-                'expectedRenderedSource' => '// $".selector" exists <- click $".selector"' . "\n"
+                'expectedRenderedContent' => '// $".selector" exists <- click $".selector"' . "\n"
                     . '{{ PHPUNIT }}->handledStatements[] = {{ ASSERTION_FACTORY }}->createFromJson(\'{' . "\n"
                     . '    "serialised": "derived exists assertion"' . "\n"
                     . '}\');',

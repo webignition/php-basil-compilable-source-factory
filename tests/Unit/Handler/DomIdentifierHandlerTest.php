@@ -45,7 +45,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function handleElementDataProvider(): array
+    public static function handleElementDataProvider(): array
     {
         $elementIdentifierSerializer = ElementIdentifierSerializer::createSerializer();
 
@@ -110,7 +110,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function handleElementCollectionDataProvider(): array
+    public static function handleElementCollectionDataProvider(): array
     {
         $elementIdentifierSerializer = ElementIdentifierSerializer::createSerializer();
 
@@ -176,7 +176,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function handleAttributeValueDataProvider(): array
+    public static function handleAttributeValueDataProvider(): array
     {
         $elementIdentifierSerializer = ElementIdentifierSerializer::createSerializer();
 
@@ -251,7 +251,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function handleElementValueDataProvider(): array
+    public static function handleElementValueDataProvider(): array
     {
         $elementIdentifierSerializer = ElementIdentifierSerializer::createSerializer();
 
