@@ -14,6 +14,8 @@ class TestRunner
 
         $classMatches = [];
         preg_match('/Generated[a-z0-9]{32}Test/i', $content, $classMatches);
+        \assert(count($classMatches) > 0);
+
         $name = $classMatches[0] . '.php';
 
         $path = (string) self::PATH . $name;
