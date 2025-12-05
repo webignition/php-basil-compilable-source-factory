@@ -36,7 +36,7 @@ class WaitForActionHandlerTest extends TestCase
     /**
      * @return array<mixed>
      */
-    public function handleThrowsExceptionDataProvider(): array
+    public static function handleThrowsExceptionDataProvider(): array
     {
         $actionParser = ActionParser::create();
 
