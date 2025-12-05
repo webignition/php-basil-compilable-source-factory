@@ -27,7 +27,7 @@ class ElementIdentifierSerializerTest extends TestCase
     /**
      * @return array<mixed>
      */
-    public function serializeDataProvider(): array
+    public static function serializeDataProvider(): array
     {
         return [
             'selector only, no indent' => [
