@@ -18,7 +18,7 @@ trait CreateFromClickActionDataProviderTrait
     /**
      * @return array<mixed>
      */
-    public function createFromClickActionDataProvider(): array
+    public static function createFromClickActionDataProvider(): array
     {
         $actionParser = ActionParser::create();
 

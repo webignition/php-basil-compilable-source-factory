@@ -18,7 +18,7 @@ trait CreateFromWaitActionDataProviderTrait
     /**
      * @return array<mixed>
      */
-    public function createFromWaitActionDataProvider(): array
+    public static function createFromWaitActionDataProvider(): array
     {
         $actionParser = ActionParser::create();
 

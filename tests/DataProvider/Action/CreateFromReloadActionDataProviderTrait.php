@@ -14,7 +14,7 @@ trait CreateFromReloadActionDataProviderTrait
     /**
      * @return array<mixed>
      */
-    public function createFromReloadActionDataProvider(): array
+    public static function createFromReloadActionDataProvider(): array
     {
         $actionParser = ActionParser::create();
 

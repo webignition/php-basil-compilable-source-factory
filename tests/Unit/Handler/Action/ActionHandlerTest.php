@@ -69,7 +69,7 @@ class ActionHandlerTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function handleThrowsExceptionDataProvider(): array
+    public static function handleThrowsExceptionDataProvider(): array
     {
         $actionParser = ActionParser::create();
 
