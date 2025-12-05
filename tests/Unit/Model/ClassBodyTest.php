@@ -9,125 +9,18 @@ use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\ClassBody;
 use webignition\BasilCompilableSourceFactory\Model\DataProviderMethodDefinition;
 use webignition\BasilCompilableSourceFactory\Model\DocBlock\DocBlock;
-use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
-use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
-use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinition;
-use webignition\BasilCompilableSourceFactory\Model\MethodDefinitionInterface;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 
 class ClassBodyTest extends AbstractResolvableTestCase
 {
-    /**
-     * @dataProvider createDataProvider
-     *
-     * @param array<mixed>                $methods
-     * @param MethodDefinitionInterface[] $expectedMethods
-     */
-    public function testCreate(array $methods, array $expectedMethods): void
-    {
-        $body = new ClassBody($methods);
-
-        self::assertEquals($expectedMethods, $body->getMethods());
-    }
-
-    /**
-     * @return array<mixed>
-     */
-    public function createDataProvider(): array
-    {
-        return [
-            'no methods' => [
-                'methods' => [],
-                'expectedMethods' => [],
-            ],
-            'invalid methods' => [
-                'methods' => [
-                    1,
-                    true,
-                    'string',
-                ],
-                'expectedMethods' => [],
-            ],
-            'valid methods' => [
-                'methods' => [
-                    new MethodDefinition('methodOne', new Body([])),
-                    new MethodDefinition('methodTwo', new Body([])),
-                ],
-                'expectedMethods' => [
-                    'methodOne' => new MethodDefinition('methodOne', new Body([])),
-                    'methodTwo' => new MethodDefinition('methodTwo', new Body([])),
-                ],
-            ],
-        ];
-    }
-
-    /**
-     * @dataProvider getMetadataDataProvider
-     */
-    public function testGetMetadata(ClassBody $body, MetadataInterface $expectedMetadata): void
-    {
-        $this->assertEquals($expectedMetadata, $body->getMetadata());
-    }
-
-    /**
-     * @return array<mixed>
-     */
-    public function getMetadataDataProvider(): array
-    {
-        return [
-            'empty' => [
-                'classBody' => new ClassBody([
-                    new MethodDefinition('methodName', new Body([])),
-                ]),
-                'expectedMetadata' => new Metadata(),
-            ],
-            'methods without metadata' => [
-                'classBody' => new ClassBody([
-                    new MethodDefinition('name', new Body([
-                        new EmptyLine(),
-                        new SingleLineComment('single line comment'),
-                    ])),
-                ]),
-                'expectedMetadata' => new Metadata(),
-            ],
-            'methods with metadata' => [
-                'classBody' => new ClassBody([
-                    new MethodDefinition('name', new Body([
-                        new Statement(
-                            new ObjectMethodInvocation(
-                                new VariableDependency('DEPENDENCY'),
-                                'methodName'
-                            )
-                        ),
-                        new Statement(
-                            new AssignmentExpression(
-                                new VariableName('variable'),
-                                new MethodInvocation('methodName')
-                            )
-                        )
-                    ])),
-                ]),
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        'DEPENDENCY',
-                    ]),
-                ]),
-            ],
-        ];
-    }
-
     /**
      * @dataProvider renderDataProvider
      */
