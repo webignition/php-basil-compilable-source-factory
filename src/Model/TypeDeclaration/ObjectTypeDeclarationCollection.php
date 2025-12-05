@@ -40,9 +40,7 @@ class ObjectTypeDeclarationCollection implements
         $metadata = new Metadata();
 
         foreach ($this->declarations as $declaration) {
-            if ($declaration instanceof TypeDeclarationInterface) {
-                $metadata = $metadata->merge($declaration->getMetadata());
-            }
+            $metadata = $metadata->merge($declaration->getMetadata());
         }
 
         return $metadata;
