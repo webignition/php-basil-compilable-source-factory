@@ -133,9 +133,9 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                     ],
                     MethodArguments::FORMAT_STACKED
                 ),
-                'expectedString' => "\n" .
-                    "    1,\n" .
-                    "    \\'single-quoted value\\'\n",
+                'expectedString' => "\n"
+                    . "    1,\n"
+                    . "    \\'single-quoted value\\'\n",
             ],
             'indent stacked multi-line arguments' => [
                 'arguments' => new MethodArguments(
@@ -174,15 +174,15 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                     ],
                     MethodArguments::FORMAT_STACKED
                 ),
-                'expectedString' => "\n" .
-                    '    {{ NAVIGATOR }}->find(ObjectMethodInvocation::fromJson({' . "\n" .
-                    '        "locator": ".selector"' . "\n" .
-                    '    })),' . "\n" .
-                    '    (function () {' . "\n" .
-                    '        $variable = 100;' . "\n" .
-                    "\n" .
-                    '        return $variable;' . "\n" .
-                    '    })()' . "\n",
+                'expectedString' => "\n"
+                    . '    {{ NAVIGATOR }}->find(ObjectMethodInvocation::fromJson({' . "\n"
+                    . '        "locator": ".selector"' . "\n"
+                    . '    })),' . "\n"
+                    . '    (function () {' . "\n"
+                    . '        $variable = 100;' . "\n"
+                    . "\n"
+                    . '        return $variable;' . "\n"
+                    . '    })()' . "\n",
             ],
             'single array expression, pair contains inner array' => [
                 'arguments' => new MethodArguments(
@@ -199,13 +199,13 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                         ])
                     ]
                 ),
-                'expectedString' => "[\n" .
-                    "    'name' => {{ DEPENDENCY }}->dataName(),\n" .
-                    "    'data' => [\n" .
-                    "        'key1' => 'value1',\n" .
-                    "        'key2' => 'value2',\n" .
-                    "    ],\n" .
-                    ']',
+                'expectedString' => "[\n"
+                    . "    'name' => {{ DEPENDENCY }}->dataName(),\n"
+                    . "    'data' => [\n"
+                    . "        'key1' => 'value1',\n"
+                    . "        'key2' => 'value2',\n"
+                    . "    ],\n"
+                    . ']',
             ],
         ];
     }

@@ -78,7 +78,7 @@ class ObjectConstructorTest extends AbstractResolvableTestCase
      */
     public function renderDataProvider(): array
     {
-        $classDependency = new ClassName('Acme\\Model');
+        $classDependency = new ClassName('Acme\Model');
 
         return [
             'no arguments' => [
@@ -112,10 +112,10 @@ class ObjectConstructorTest extends AbstractResolvableTestCase
                         MethodArguments::FORMAT_STACKED
                     )
                 ),
-                'expectedString' => "new Model(\n" .
-                    "    1,\n" .
-                    "    \\'single-quoted value\\'\n" .
-                    ')',
+                'expectedString' => "new Model(\n"
+                    . "    1,\n"
+                    . "    \\'single-quoted value\\'\n"
+                    . ')',
             ],
         ];
     }

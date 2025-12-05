@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
+use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 
-class AccessorDefaultValueFactoryTest extends \PHPUnit\Framework\TestCase
+class AccessorDefaultValueFactoryTest extends TestCase
 {
     private AccessorDefaultValueFactory $accessorDefaultValueFactory;
 

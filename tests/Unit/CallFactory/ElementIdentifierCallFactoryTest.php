@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 
+use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\CallFactory\ElementIdentifierCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
@@ -17,7 +18,7 @@ use webignition\DomElementIdentifier\AttributeIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
-class ElementIdentifierCallFactoryTest extends \PHPUnit\Framework\TestCase
+class ElementIdentifierCallFactoryTest extends TestCase
 {
     private ElementIdentifierCallFactory $factory;
 

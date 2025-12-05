@@ -9,7 +9,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterfac
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 
-class StaticObject implements ExpressionInterface
+class StaticObject implements \Stringable, ExpressionInterface
 {
     use ResolvableStringableTrait;
 

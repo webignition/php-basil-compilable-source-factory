@@ -150,9 +150,9 @@ class ClassBodyTest extends AbstractResolvableTestCase
                 'classBody' => new ClassBody([
                     new MethodDefinition('methodName', new Body([])),
                 ]),
-                'expectedString' => 'public function methodName()' . "\n" .
-                    '{' . "\n\n" .
-                    '}'
+                'expectedString' => 'public function methodName()' . "\n"
+                    . '{' . "\n\n"
+                    . '}'
             ],
             'many methods' => [
                 'classBody' => new ClassBody([
@@ -162,7 +162,7 @@ class ClassBodyTest extends AbstractResolvableTestCase
                             new AssignmentExpression(
                                 new VariableName('statement'),
                                 new StaticObjectMethodInvocation(
-                                    new StaticObject('Acme\\Statement'),
+                                    new StaticObject('Acme\Statement'),
                                     'createAction',
                                     new MethodArguments([
                                         new LiteralExpression('\'$"a" exists\''),
@@ -183,7 +183,7 @@ class ClassBodyTest extends AbstractResolvableTestCase
                             new AssignmentExpression(
                                 new VariableName('statement'),
                                 new StaticObjectMethodInvocation(
-                                    new StaticObject('Acme\\Statement'),
+                                    new StaticObject('Acme\Statement'),
                                     'createAction',
                                     new MethodArguments([
                                         new LiteralExpression('\'$"b" exists\''),
@@ -199,19 +199,19 @@ class ClassBodyTest extends AbstractResolvableTestCase
                         ),
                     ])),
                 ]),
-                'expectedString' => 'public function stepOne()' . "\n" .
-                    '{' . "\n" .
-                    '    // click $"a"' . "\n" .
-                    '    $statement = Statement::createAction(\'$"a" exists\');' . "\n" .
-                    '    $currentStatement = $statement;' . "\n" .
-                    '}' . "\n" .
-                    "\n" .
-                    'public function stepTwo()' . "\n" .
-                    '{' . "\n" .
-                    '    // click $"b"' . "\n" .
-                    '    $statement = Statement::createAction(\'$"b" exists\');' . "\n" .
-                    '    $currentStatement = $statement;' . "\n" .
-                    '}'
+                'expectedString' => 'public function stepOne()' . "\n"
+                    . '{' . "\n"
+                    . '    // click $"a"' . "\n"
+                    . '    $statement = Statement::createAction(\'$"a" exists\');' . "\n"
+                    . '    $currentStatement = $statement;' . "\n"
+                    . '}' . "\n"
+                    . "\n"
+                    . 'public function stepTwo()' . "\n"
+                    . '{' . "\n"
+                    . '    // click $"b"' . "\n"
+                    . '    $statement = Statement::createAction(\'$"b" exists\');' . "\n"
+                    . '    $currentStatement = $statement;' . "\n"
+                    . '}'
             ],
             'many methods, with data provider' => [
                 'classBody' => new ClassBody([
@@ -224,7 +224,7 @@ class ClassBodyTest extends AbstractResolvableTestCase
                                     new AssignmentExpression(
                                         new VariableName('statement'),
                                         new StaticObjectMethodInvocation(
-                                            new StaticObject('Acme\\Statement'),
+                                            new StaticObject('Acme\Statement'),
                                             'createAction',
                                             new MethodArguments([
                                                 new LiteralExpression('\'$"a" exists\''),
@@ -272,7 +272,7 @@ class ClassBodyTest extends AbstractResolvableTestCase
                             new AssignmentExpression(
                                 new VariableName('statement'),
                                 new StaticObjectMethodInvocation(
-                                    new StaticObject('Acme\\Statement'),
+                                    new StaticObject('Acme\Statement'),
                                     'createAction',
                                     new MethodArguments([
                                         new LiteralExpression('\'$"b" exists\''),
@@ -288,39 +288,39 @@ class ClassBodyTest extends AbstractResolvableTestCase
                         ),
                     ])),
                 ]),
-                'expectedString' => '/**' . "\n" .
-                    ' * @dataProvider stepOneDataProvider' . "\n" .
-                    ' *' . "\n" .
-                    ' * @param string $x' . "\n" .
-                    ' * @param string $y' . "\n" .
-                    ' */' . "\n" .
-                    'public function stepOne($x, $y)' . "\n" .
-                    '{' . "\n" .
-                    '    // click $"a"' . "\n" .
-                    '    $statement = Statement::createAction(\'$"a" exists\');' . "\n" .
-                    '    $currentStatement = $statement;' . "\n" .
-                    '}' . "\n" .
-                    "\n" .
-                    'public function stepOneDataProvider(): array' . "\n" .
-                    '{' . "\n" .
-                    '    return [' . "\n" .
-                    '        \'0\' => [' . "\n" .
-                    '            \'x\' => \'1\',' . "\n" .
-                    '            \'y\' => \'2\',' . "\n" .
-                    '        ],' . "\n" .
-                    '        \'1\' => [' . "\n" .
-                    '            \'x\' => \'3\',' . "\n" .
-                    '            \'y\' => \'4\',' . "\n" .
-                    '        ],' . "\n" .
-                    '    ];' . "\n" .
-                    '}' . "\n" .
-                    "\n" .
-                    'public function stepTwo()' . "\n" .
-                    '{' . "\n" .
-                    '    // click $"b"' . "\n" .
-                    '    $statement = Statement::createAction(\'$"b" exists\');' . "\n" .
-                    '    $currentStatement = $statement;' . "\n" .
-                    '}'
+                'expectedString' => '/**' . "\n"
+                    . ' * @dataProvider stepOneDataProvider' . "\n"
+                    . ' *' . "\n"
+                    . ' * @param string $x' . "\n"
+                    . ' * @param string $y' . "\n"
+                    . ' */' . "\n"
+                    . 'public function stepOne($x, $y)' . "\n"
+                    . '{' . "\n"
+                    . '    // click $"a"' . "\n"
+                    . '    $statement = Statement::createAction(\'$"a" exists\');' . "\n"
+                    . '    $currentStatement = $statement;' . "\n"
+                    . '}' . "\n"
+                    . "\n"
+                    . 'public function stepOneDataProvider(): array' . "\n"
+                    . '{' . "\n"
+                    . '    return [' . "\n"
+                    . '        \'0\' => [' . "\n"
+                    . '            \'x\' => \'1\',' . "\n"
+                    . '            \'y\' => \'2\',' . "\n"
+                    . '        ],' . "\n"
+                    . '        \'1\' => [' . "\n"
+                    . '            \'x\' => \'3\',' . "\n"
+                    . '            \'y\' => \'4\',' . "\n"
+                    . '        ],' . "\n"
+                    . '    ];' . "\n"
+                    . '}' . "\n"
+                    . "\n"
+                    . 'public function stepTwo()' . "\n"
+                    . '{' . "\n"
+                    . '    // click $"b"' . "\n"
+                    . '    $statement = Statement::createAction(\'$"b" exists\');' . "\n"
+                    . '    $currentStatement = $statement;' . "\n"
+                    . '}'
             ],
         ];
     }

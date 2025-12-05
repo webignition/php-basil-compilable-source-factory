@@ -117,9 +117,9 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
         return [
             'empty' => [
                 'expression' => new ClosureExpression(new Body([])),
-                'expectedString' => '(function () {' . "\n" .
-                    '' . "\n" .
-                    '})()',
+                'expectedString' => '(function () {' . "\n"
+                    . '' . "\n"
+                    . '})()',
             ],
             'single literal statement' => [
                 'expression' => new ClosureExpression(
@@ -129,9 +129,9 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                         ),
                     ])
                 ),
-                'expectedString' => '(function () {' . "\n" .
-                    '    return 5;' . "\n" .
-                    '})()',
+                'expectedString' => '(function () {' . "\n"
+                    . '    return 5;' . "\n"
+                    . '})()',
             ],
             'single literal statement, with return statement expression cast to string' => [
                 'expression' => new ClosureExpression(
@@ -146,9 +146,9 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                         ),
                     ])
                 ),
-                'expectedString' => '(function () {' . "\n" .
-                    '    return (string) (5);' . "\n" .
-                    '})()',
+                'expectedString' => '(function () {' . "\n"
+                    . '    return (string) (5);' . "\n"
+                    . '})()',
             ],
             'multiple literal statements' => [
                 'expression' => new ClosureExpression(
@@ -161,12 +161,12 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                         ),
                     ])
                 ),
-                'expectedString' => '(function () {' . "\n" .
-                    '    3;' . "\n" .
-                    '    4;' . "\n" .
-                    "\n" .
-                    '    return 5;' . "\n" .
-                    '})()',
+                'expectedString' => '(function () {' . "\n"
+                    . '    3;' . "\n"
+                    . '    4;' . "\n"
+                    . "\n"
+                    . '    return 5;' . "\n"
+                    . '})()',
             ],
             'non-empty, has metadata' => [
                 'expression' => new ClosureExpression(
@@ -204,11 +204,11 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                         ),
                     ])
                 ),
-                '(function () {' . "\n" .
-                '    $variable = {{ DEPENDENCY }}->dependencyMethodName();' . "\n" .
-                "\n" .
-                '    return (string) ($variable->getWidth()) . \'x\' . (string) ($variable->getHeight());' . "\n" .
-                '})()',
+                '(function () {' . "\n"
+                . '    $variable = {{ DEPENDENCY }}->dependencyMethodName();' . "\n"
+                . "\n"
+                . '    return (string) ($variable->getWidth()) . \'x\' . (string) ($variable->getHeight());' . "\n"
+                . '})()',
             ],
             'try/catch block' => [
                 'expression' => new ClosureExpression(
@@ -230,13 +230,13 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                         )
                     )
                 ),
-                'expectedString' => '(function () {' . "\n" .
-                    '    try {' . "\n" .
-                    '        // TryBlock comment' . "\n" .
-                    '    } catch (\RuntimeException $exception) {' . "\n" .
-                    '        // CatchBlock comment' . "\n" .
-                    '    }' . "\n" .
-                    '})()',
+                'expectedString' => '(function () {' . "\n"
+                    . '    try {' . "\n"
+                    . '        // TryBlock comment' . "\n"
+                    . '    } catch (\RuntimeException $exception) {' . "\n"
+                    . '        // CatchBlock comment' . "\n"
+                    . '    }' . "\n"
+                    . '})()',
             ],
             'with resolving placeholder' => [
                 'expression' => new ClosureExpression(
@@ -255,11 +255,11 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                         ),
                     ])
                 ),
-                'expectedString' => '(function () {' . "\n" .
-                    '    $variableName = "literal value";' . "\n" .
-                    "\n" .
-                    '    return $variableName;' . "\n" .
-                    '})()',
+                'expectedString' => '(function () {' . "\n"
+                    . '    $variableName = "literal value";' . "\n"
+                    . "\n"
+                    . '    return $variableName;' . "\n"
+                    . '})()',
             ],
         ];
     }

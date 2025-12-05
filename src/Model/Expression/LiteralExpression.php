@@ -8,7 +8,7 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\ResolvableStringableTrait;
 
-class LiteralExpression implements ExpressionInterface
+class LiteralExpression implements \Stringable, ExpressionInterface
 {
     use ResolvableStringableTrait;
 

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Action;
 
+use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\Action\SetActionHandler;
 use webignition\BasilDomIdentifierFactory\Factory;
@@ -12,7 +13,7 @@ use webignition\BasilModels\Parser\ActionParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\ObjectReflector\ObjectReflector;
 
-class SetActionHandlerTest extends \PHPUnit\Framework\TestCase
+class SetActionHandlerTest extends TestCase
 {
     /**
      * @dataProvider handleThrowsExceptionDataProvider

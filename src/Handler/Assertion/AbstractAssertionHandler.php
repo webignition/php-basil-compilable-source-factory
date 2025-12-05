@@ -18,8 +18,7 @@ abstract class AbstractAssertionHandler
 {
     public function __construct(
         private AssertionMethodInvocationFactory $assertionMethodInvocationFactory
-    ) {
-    }
+    ) {}
 
     /**
      * @return array<string, string>

@@ -6,6 +6,4 @@ namespace webignition\BasilCompilableSourceFactory\Model\Annotation;
 
 use webignition\StubbleResolvable\ResolvableInterface;
 
-interface AnnotationInterface extends ResolvableInterface
-{
-}
+interface AnnotationInterface extends ResolvableInterface {}

@@ -53,27 +53,6 @@ class DocBlockTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function prependDataProvider(): array
-    {
-        return [
-            'prepend: non-empty, non-empty' => [
-                'docBlock' => new DocBlock([
-                    'docBlock line',
-                ]),
-                'merge' => new DocBlock([
-                    'merge line',
-                ]),
-                'expectedDocBlock' => new DocBlock([
-                    'merge line',
-                    'docBlock line',
-                ]),
-            ],
-        ];
-    }
-
-    /**
-     * @return array<mixed>
-     */
     public function mergeDataProvider(): array
     {
         return [
@@ -104,6 +83,27 @@ class DocBlockTest extends AbstractResolvableTestCase
     }
 
     /**
+     * @return array<mixed>
+     */
+    public function prependDataProvider(): array
+    {
+        return [
+            'prepend: non-empty, non-empty' => [
+                'docBlock' => new DocBlock([
+                    'docBlock line',
+                ]),
+                'merge' => new DocBlock([
+                    'merge line',
+                ]),
+                'expectedDocBlock' => new DocBlock([
+                    'merge line',
+                    'docBlock line',
+                ]),
+            ],
+        ];
+    }
+
+    /**
      * @dataProvider renderDataProvider
      */
     public function testRender(DocBlock $docBlock, string $expectedString): void
@@ -119,8 +119,8 @@ class DocBlockTest extends AbstractResolvableTestCase
         return [
             'empty' => [
                 'docBlock' => new DocBlock([]),
-                'expectedString' => '/**' . "\n" .
-                    ' */',
+                'expectedString' => '/**' . "\n"
+                    . ' */',
             ],
             'non-empty' => [
                 'docBlock' => new DocBlock([
@@ -128,11 +128,11 @@ class DocBlockTest extends AbstractResolvableTestCase
                     'single line comment',
                     new ParameterAnnotation('string', new VariableName('name'))
                 ]),
-                'expectedString' => '/**' . "\n" .
-                    ' *' . "\n" .
-                    ' * single line comment' . "\n" .
-                    ' * @param string $name' . "\n" .
-                    ' */',
+                'expectedString' => '/**' . "\n"
+                    . ' *' . "\n"
+                    . ' * single line comment' . "\n"
+                    . ' * @param string $name' . "\n"
+                    . ' */',
             ],
         ];
     }

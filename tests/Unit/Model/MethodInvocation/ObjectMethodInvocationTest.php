@@ -141,10 +141,10 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
                         MethodArguments::FORMAT_STACKED
                     )
                 ),
-                'expectedString' => "{{ OBJECT }}->methodName(\n" .
-                    "    1,\n" .
-                    "    \\'single-quoted value\\'\n" .
-                    ')',
+                'expectedString' => "{{ OBJECT }}->methodName(\n"
+                    . "    1,\n"
+                    . "    \\'single-quoted value\\'\n"
+                    . ')',
             ],
             'object and method name only, resolving placeholder' => [
                 'invocation' => new ObjectMethodInvocation(

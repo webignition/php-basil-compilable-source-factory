@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\ObjectReflector\ObjectReflector;
 
-class ClassNameTest extends \PHPUnit\Framework\TestCase
+class ClassNameTest extends TestCase
 {
     /**
      * @dataProvider createDataProvider
@@ -32,7 +32,7 @@ class ClassNameTest extends \PHPUnit\Framework\TestCase
                 'alias' => null,
             ],
             'has alias' => [
-                'className' => \PHPUnit\Framework\TestCase::class,
+                'className' => TestCase::class,
                 'alias' => 'ClassNameAlias',
             ],
         ];

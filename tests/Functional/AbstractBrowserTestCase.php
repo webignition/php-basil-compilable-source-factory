@@ -2,10 +2,11 @@
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional;
 
+use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestCodeGenerator;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunner;
 
-abstract class AbstractBrowserTestCase extends \PHPUnit\Framework\TestCase
+abstract class AbstractBrowserTestCase extends TestCase
 {
     protected TestRunner $testRunner;
     protected TestCodeGenerator $testCodeGenerator;

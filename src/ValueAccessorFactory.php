@@ -24,8 +24,7 @@ class ValueAccessorFactory
         private ElementIdentifierSerializer $elementIdentifierSerializer,
         private ScalarValueHandler $scalarValueHandler,
         private AccessorDefaultValueFactory $accessorDefaultValueFactory
-    ) {
-    }
+    ) {}
 
     public static function createFactory(): self
     {

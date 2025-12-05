@@ -110,11 +110,11 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         ],
                     ]),
                 ]),
-                'expectedRenderedSource' => '// StatementBlockFactory::create($".selector" exists)' . "\n" .
-                    '// AssertionHandler::handle($".selector" exists)' . "\n" .
-                    "\n" .
-                    '// StatementBlockFactory::create(click $".selector")' . "\n" .
-                    '// ActionHandler::handle(click $".selector")' . "\n",
+                'expectedRenderedSource' => '// StatementBlockFactory::create($".selector" exists)' . "\n"
+                    . '// AssertionHandler::handle($".selector" exists)' . "\n"
+                    . "\n"
+                    . '// StatementBlockFactory::create(click $".selector")' . "\n"
+                    . '// ActionHandler::handle(click $".selector")' . "\n",
                 'expectedMetadata' => new Metadata(),
             ],
             'two click actions' => [
@@ -204,17 +204,17 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         ],
                     ]),
                 ]),
-                'expectedRenderedSource' => '// StatementBlockFactory::create($".selector1" exists)' . "\n" .
-                    '// AssertionHandler::handle($".selector1" exists)' . "\n" .
-                    "\n" .
-                    '// StatementBlockFactory::create(click $".selector1")' . "\n" .
-                    '// ActionHandler::handle(click $".selector1")' . "\n" .
-                    "\n" .
-                    '// StatementBlockFactory::create($".selector2" exists)' . "\n" .
-                    '// AssertionHandler::handle($".selector2" exists)' . "\n" .
-                    "\n" .
-                    '// StatementBlockFactory::create(click $".selector2")' . "\n" .
-                    '// ActionHandler::handle(click $".selector2")' . "\n",
+                'expectedRenderedSource' => '// StatementBlockFactory::create($".selector1" exists)' . "\n"
+                    . '// AssertionHandler::handle($".selector1" exists)' . "\n"
+                    . "\n"
+                    . '// StatementBlockFactory::create(click $".selector1")' . "\n"
+                    . '// ActionHandler::handle(click $".selector1")' . "\n"
+                    . "\n"
+                    . '// StatementBlockFactory::create($".selector2" exists)' . "\n"
+                    . '// AssertionHandler::handle($".selector2" exists)' . "\n"
+                    . "\n"
+                    . '// StatementBlockFactory::create(click $".selector2")' . "\n"
+                    . '// ActionHandler::handle(click $".selector2")' . "\n",
                 'expectedMetadata' => new Metadata(),
             ],
             'single exists assertion' => [
@@ -243,8 +243,8 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         ],
                     ]),
                 ]),
-                'expectedRenderedSource' => '// StatementBlockFactory::create($".selector" exists)' . "\n" .
-                    '// AssertionHandler::handle($".selector" exists)' . "\n",
+                'expectedRenderedSource' => '// StatementBlockFactory::create($".selector" exists)' . "\n"
+                    . '// AssertionHandler::handle($".selector" exists)' . "\n",
                 'expectedMetadata' => new Metadata(),
             ],
             'single exists assertion, descendant identifier' => [
@@ -295,11 +295,11 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         ],
                     ]),
                 ]),
-                'expectedRenderedSource' => '// StatementBlockFactory::create($".parent" exists)' . "\n" .
-                    '// AssertionHandler::handle($".parent" exists)' . "\n" .
-                    "\n" .
-                    '// StatementBlockFactory::create($".parent" >> $".child" exists)' . "\n" .
-                    '// AssertionHandler::handle($".parent" >> $".child" exists)' . "\n",
+                'expectedRenderedSource' => '// StatementBlockFactory::create($".parent" exists)' . "\n"
+                    . '// AssertionHandler::handle($".parent" exists)' . "\n"
+                    . "\n"
+                    . '// StatementBlockFactory::create($".parent" >> $".child" exists)' . "\n"
+                    . '// AssertionHandler::handle($".parent" >> $".child" exists)' . "\n",
                 'expectedMetadata' => new Metadata(),
             ],
             'two exists assertions' => [
@@ -343,11 +343,11 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         ],
                     ]),
                 ]),
-                'expectedRenderedSource' => '// StatementBlockFactory::create($".selector1" exists)' . "\n" .
-                    '// AssertionHandler::handle($".selector1" exists)' . "\n" .
-                    "\n" .
-                    '// StatementBlockFactory::create($".selector2" exists)' . "\n" .
-                    '// AssertionHandler::handle($".selector2" exists)' . "\n",
+                'expectedRenderedSource' => '// StatementBlockFactory::create($".selector1" exists)' . "\n"
+                    . '// AssertionHandler::handle($".selector1" exists)' . "\n"
+                    . "\n"
+                    . '// StatementBlockFactory::create($".selector2" exists)' . "\n"
+                    . '// AssertionHandler::handle($".selector2" exists)' . "\n",
                 'expectedMetadata' => new Metadata(),
             ],
             'single click action, single exists assertion' => [
@@ -417,14 +417,14 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         ],
                     ]),
                 ]),
-                'expectedRenderedSource' => '// StatementBlockFactory::create($".selector1" exists)' . "\n" .
-                    '// AssertionHandler::handle($".selector1" exists)' . "\n" .
-                    "\n" .
-                    '// StatementBlockFactory::create(click $".selector1")' . "\n" .
-                    '// ActionHandler::handle(click $".selector1")' . "\n" .
-                    "\n" .
-                    '// StatementBlockFactory::create($".selector2" exists)' . "\n" .
-                    '// AssertionHandler::handle($".selector2" exists)' . "\n",
+                'expectedRenderedSource' => '// StatementBlockFactory::create($".selector1" exists)' . "\n"
+                    . '// AssertionHandler::handle($".selector1" exists)' . "\n"
+                    . "\n"
+                    . '// StatementBlockFactory::create(click $".selector1")' . "\n"
+                    . '// ActionHandler::handle(click $".selector1")' . "\n"
+                    . "\n"
+                    . '// StatementBlockFactory::create($".selector2" exists)' . "\n"
+                    . '// AssertionHandler::handle($".selector2" exists)' . "\n",
                 'expectedMetadata' => new Metadata(),
             ],
             'two descendant exists assertions with common parent' => [
@@ -490,14 +490,14 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         ],
                     ]),
                 ]),
-                'expectedRenderedSource' => '// StatementBlockFactory::create($".parent" exists)' . "\n" .
-                    '// AssertionHandler::handle($".parent" exists)' . "\n" .
-                    "\n" .
-                    '// StatementBlockFactory::create($".parent" >> $".child1" exists)' . "\n" .
-                    '// AssertionHandler::handle($".parent" >> $".child1" exists)' . "\n" .
-                    "\n" .
-                    '// StatementBlockFactory::create($".parent" >> $".child2" exists)' . "\n" .
-                    '// AssertionHandler::handle($".parent" >> $".child2" exists)' . "\n",
+                'expectedRenderedSource' => '// StatementBlockFactory::create($".parent" exists)' . "\n"
+                    . '// AssertionHandler::handle($".parent" exists)' . "\n"
+                    . "\n"
+                    . '// StatementBlockFactory::create($".parent" >> $".child1" exists)' . "\n"
+                    . '// AssertionHandler::handle($".parent" >> $".child1" exists)' . "\n"
+                    . "\n"
+                    . '// StatementBlockFactory::create($".parent" >> $".child2" exists)' . "\n"
+                    . '// AssertionHandler::handle($".parent" >> $".child2" exists)' . "\n",
                 'expectedMetadata' => new Metadata(),
             ],
             'derived is-regexp' => [
@@ -550,11 +550,11 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         ],
                     ]),
                 ]),
-                'expectedRenderedSource' => '// StatementBlockFactory::create("/pattern/" is-regexp)' . "\n" .
-                    '// AssertionHandler::handle("/pattern/" is-regexp)' . "\n" .
-                    "\n" .
-                    '// StatementBlockFactory::create($page.title matches "/pattern/")' . "\n" .
-                    '// AssertionHandler::handle($page.title matches "/pattern/")' . "\n",
+                'expectedRenderedSource' => '// StatementBlockFactory::create("/pattern/" is-regexp)' . "\n"
+                    . '// AssertionHandler::handle("/pattern/" is-regexp)' . "\n"
+                    . "\n"
+                    . '// StatementBlockFactory::create($page.title matches "/pattern/")' . "\n"
+                    . '// AssertionHandler::handle($page.title matches "/pattern/")' . "\n",
                 'expectedMetadata' => new Metadata(),
             ],
         ];

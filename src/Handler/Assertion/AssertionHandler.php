@@ -15,8 +15,7 @@ class AssertionHandler
         private ComparisonAssertionHandler $comparisonAssertionHandler,
         private ExistenceAssertionHandler $existenceAssertionHandler,
         private IsRegExpAssertionHandler $isRegExpAssertionHandler
-    ) {
-    }
+    ) {}
 
     public static function createHandler(): AssertionHandler
     {

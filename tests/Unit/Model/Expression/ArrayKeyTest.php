@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression;
 
+use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayKey;
 
-class ArrayKeyTest extends \PHPUnit\Framework\TestCase
+class ArrayKeyTest extends TestCase
 {
     /**
      * @dataProvider toStringDataProvider

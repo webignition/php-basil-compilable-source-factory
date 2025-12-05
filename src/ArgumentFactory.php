@@ -11,8 +11,7 @@ class ArgumentFactory
 {
     public function __construct(
         private readonly SingleQuotedStringEscaper $singleQuotedStringEscaper
-    ) {
-    }
+    ) {}
 
     public static function createFactory(): self
     {

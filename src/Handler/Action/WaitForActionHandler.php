@@ -23,8 +23,7 @@ class WaitForActionHandler
         private DomIdentifierFactory $domIdentifierFactory,
         private IdentifierTypeAnalyser $identifierTypeAnalyser,
         private ArgumentFactory $argumentFactory
-    ) {
-    }
+    ) {}
 
     public static function createHandler(): WaitForActionHandler
     {

@@ -91,9 +91,9 @@ class IfBlockTest extends AbstractResolvableTestCase
                         )
                     )
                 ),
-                'expectedString' => 'if ("value" !== "another value") {' . "\n" .
-                    '    return "return value";' . "\n" .
-                    '}',
+                'expectedString' => 'if ("value" !== "another value") {' . "\n"
+                    . '    return "return value";' . "\n"
+                    . '}',
             ],
         ];
     }

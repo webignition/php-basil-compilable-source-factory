@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
+use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\ClassNameFactory;
 use webignition\BasilModels\Model\Test\NamedTestInterface;
 
-class ClassNameFactoryTest extends \PHPUnit\Framework\TestCase
+class ClassNameFactoryTest extends TestCase
 {
     /**
      * @dataProvider createDataProvider

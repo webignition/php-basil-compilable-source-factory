@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 
-class ArrayKey
+class ArrayKey implements \Stringable
 {
     private string $key;
 

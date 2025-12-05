@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Construct;
 
-class ReturnConstruct
+class ReturnConstruct implements \Stringable
 {
     public function __toString(): string
     {

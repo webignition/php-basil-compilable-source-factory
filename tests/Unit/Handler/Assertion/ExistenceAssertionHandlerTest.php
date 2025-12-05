@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Assertion;
 
+use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\ExistenceAssertionHandler;
@@ -15,7 +16,7 @@ use webignition\BasilModels\Model\Assertion\Assertion;
 use webignition\BasilModels\Parser\AssertionParser;
 use webignition\BasilValueTypeIdentifier\ValueTypeIdentifier;
 
-class ExistenceAssertionHandlerTest extends \PHPUnit\Framework\TestCase
+class ExistenceAssertionHandlerTest extends TestCase
 {
     public function testHandleScalar(): void
     {

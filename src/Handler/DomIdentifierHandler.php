@@ -26,8 +26,7 @@ class DomIdentifierHandler
         private DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory,
         private ElementIdentifierCallFactory $elementIdentifierCallFactory,
         private ArgumentFactory $argumentFactory
-    ) {
-    }
+    ) {}
 
     public static function createHandler(): DomIdentifierHandler
     {

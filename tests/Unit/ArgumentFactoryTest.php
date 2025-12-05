@@ -4,12 +4,13 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
+use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
 
-class ArgumentFactoryTest extends \PHPUnit\Framework\TestCase
+class ArgumentFactoryTest extends TestCase
 {
     private ArgumentFactory $factory;
 

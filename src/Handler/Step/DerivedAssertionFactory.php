@@ -19,8 +19,7 @@ class DerivedAssertionFactory
     public function __construct(
         private DomIdentifierFactory $domIdentifierFactory,
         private IdentifierTypeAnalyser $identifierTypeAnalyser
-    ) {
-    }
+    ) {}
 
     public static function createFactory(): self
     {

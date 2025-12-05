@@ -36,8 +36,7 @@ class StepMethodFactory
         private StepHandler $stepHandler,
         private SingleQuotedStringEscaper $singleQuotedStringEscaper,
         private ArgumentFactory $argumentFactory
-    ) {
-    }
+    ) {}
 
     public static function createFactory(): self
     {
@@ -49,9 +48,9 @@ class StepMethodFactory
     }
 
     /**
-     * @throws UnsupportedStepException
-     *
      * @return MethodDefinitionInterface[]
+     *
+     * @throws UnsupportedStepException
      */
     public function create(int $index, string $stepName, StepInterface $step): array
     {
