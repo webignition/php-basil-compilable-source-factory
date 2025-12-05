@@ -18,14 +18,14 @@ trait CreateFromIsNotAssertionDataProviderTrait
     /**
      * @return array<mixed>
      */
-    public function createFromIsNotAssertionDataProvider(): array
+    public static function createFromIsNotAssertionDataProvider(): array
     {
         $assertionParser = AssertionParser::create();
 
         return [
             'is-not comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" is-not "value"'),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n"
+                'expectedRenderedContent' => '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n"
                     . '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n"
                     . '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n"
                     . '        "locator": ".selector"' . "\n"
@@ -52,7 +52,7 @@ trait CreateFromIsNotAssertionDataProviderTrait
             ],
             'is-not comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name is-not "value"'),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n"
+                'expectedRenderedContent' => '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n"
                     . '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n"
                     . '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n"
                     . '        "locator": ".selector"' . "\n"

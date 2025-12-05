@@ -18,14 +18,14 @@ trait CreateFromMatchesAssertionDataProviderTrait
     /**
      * @return array<mixed>
      */
-    public function createFromMatchesAssertionDataProvider(): array
+    public static function createFromMatchesAssertionDataProvider(): array
     {
         $assertionParser = AssertionParser::create();
 
         return [
             'matches comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" matches "/^value/"'),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->setExpectedValue("/^value/" ?? null);' . "\n"
+                'expectedRenderedContent' => '{{ PHPUNIT }}->setExpectedValue("/^value/" ?? null);' . "\n"
                     . '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n"
                     . '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n"
                     . '        "locator": ".selector"' . "\n"
@@ -52,7 +52,7 @@ trait CreateFromMatchesAssertionDataProviderTrait
             ],
             'matches comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name matches "/^value/"'),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->setExpectedValue("/^value/" ?? null);' . "\n"
+                'expectedRenderedContent' => '{{ PHPUNIT }}->setExpectedValue("/^value/" ?? null);' . "\n"
                     . '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n"
                     . '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n"
                     . '        "locator": ".selector"' . "\n"

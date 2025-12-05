@@ -18,14 +18,14 @@ trait CreateFromIsAssertionDataProviderTrait
     /**
      * @return array<mixed>
      */
-    public function createFromIsAssertionDataProvider(): array
+    public static function createFromIsAssertionDataProvider(): array
     {
         $assertionParser = AssertionParser::create();
 
         return [
             'is comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" is "value"'),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n"
+                'expectedRenderedContent' => '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n"
                     . '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n"
                     . '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n"
                     . '        "locator": ".selector"' . "\n"
@@ -52,7 +52,7 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, descendant identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".parent" >> $".child" is "value"'),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n"
+                'expectedRenderedContent' => '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n"
                     . '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n"
                     . '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n"
                     . '        "locator": ".child",' . "\n"
@@ -82,7 +82,7 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name is "value"'),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n"
+                'expectedRenderedContent' => '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n"
                     . '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n"
                     . '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n"
                     . '        "locator": ".selector"' . "\n"
@@ -108,7 +108,7 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, browser object examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is "value"'),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n"
+                'expectedRenderedContent' => '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n"
                     . '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n"
                     . '    $webDriverDimension = '
                     . '{{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n"
@@ -129,7 +129,7 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, environment examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$env.KEY is "value"'),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n"
+                'expectedRenderedContent' => '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n"
                     . '{{ PHPUNIT }}->setExaminedValue({{ ENV }}[\'KEY\'] ?? null);' . "\n"
                     . '{{ PHPUNIT }}->assertEquals(' . "\n"
                     . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
@@ -144,7 +144,7 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, environment examined value with default, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$env.KEY|"default value" is "value"'),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n"
+                'expectedRenderedContent' => '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n"
                     . '{{ PHPUNIT }}->setExaminedValue({{ ENV }}[\'KEY\'] ?? \'default value\');' . "\n"
                     . '{{ PHPUNIT }}->assertEquals(' . "\n"
                     . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
@@ -159,7 +159,7 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, environment examined value with default, environment examined value with default' => [
                 'assertion' => $assertionParser->parse('$env.KEY1|"default value 1" is $env.KEY2|"default value 2"'),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->'
+                'expectedRenderedContent' => '{{ PHPUNIT }}->'
                     . 'setExpectedValue({{ ENV }}[\'KEY2\'] ?? \'default value 2\');' . "\n"
                     . '{{ PHPUNIT }}->setExaminedValue({{ ENV }}[\'KEY1\'] ?? \'default value 1\');' . "\n"
                     . '{{ PHPUNIT }}->assertEquals(' . "\n"
@@ -175,7 +175,7 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, page object examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$page.title is "value"'),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n"
+                'expectedRenderedContent' => '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n"
                     . '{{ PHPUNIT }}->setExaminedValue({{ CLIENT }}->getTitle() ?? null);' . "\n"
                     . '{{ PHPUNIT }}->assertEquals(' . "\n"
                     . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
@@ -190,7 +190,7 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, browser object examined value, descendant identifier expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $".parent" >> $".child"'),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->setExpectedValue((function () {' . "\n"
+                'expectedRenderedContent' => '{{ PHPUNIT }}->setExpectedValue((function () {' . "\n"
                     . '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n"
                     . '        "locator": ".child",' . "\n"
                     . '        "parent": {' . "\n"
@@ -227,7 +227,7 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, browser object examined value, element identifier expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $".selector"'),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->setExpectedValue((function () {' . "\n"
+                'expectedRenderedContent' => '{{ PHPUNIT }}->setExpectedValue((function () {' . "\n"
                     . '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n"
                     . '        "locator": ".selector"' . "\n"
                     . '    }\'));' . "\n"
@@ -261,7 +261,7 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, browser object examined value, attribute identifier expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $".selector".attribute_name'),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->setExpectedValue((function () {' . "\n"
+                'expectedRenderedContent' => '{{ PHPUNIT }}->setExpectedValue((function () {' . "\n"
                     . '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n"
                     . '        "locator": ".selector"' . "\n"
                     . '    }\'));' . "\n"
@@ -294,7 +294,7 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, browser object examined value, environment expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $env.KEY'),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->setExpectedValue({{ ENV }}[\'KEY\'] ?? null);' . "\n"
+                'expectedRenderedContent' => '{{ PHPUNIT }}->setExpectedValue({{ ENV }}[\'KEY\'] ?? null);' . "\n"
                     . '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n"
                     . '    $webDriverDimension = '
                     . '{{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n"
@@ -316,7 +316,7 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, browser object examined value, environment expected value with default' => [
                 'assertion' => $assertionParser->parse('$browser.size is $env.KEY|"default value"'),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->'
+                'expectedRenderedContent' => '{{ PHPUNIT }}->'
                     . 'setExpectedValue({{ ENV }}[\'KEY\'] ?? \'default value\');' . "\n"
                     . '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n"
                     . '    $webDriverDimension = '
@@ -339,7 +339,7 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, browser object examined value, page object expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $page.url'),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->'
+                'expectedRenderedContent' => '{{ PHPUNIT }}->'
                     . 'setExpectedValue({{ CLIENT }}->getCurrentURL() ?? null);' . "\n"
                     . '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n"
                     . '    $webDriverDimension = '
@@ -361,7 +361,7 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, literal string examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('"examined" is "expected"'),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->setExpectedValue("expected" ?? null);' . "\n"
+                'expectedRenderedContent' => '{{ PHPUNIT }}->setExpectedValue("expected" ?? null);' . "\n"
                     . '{{ PHPUNIT }}->setExaminedValue("examined" ?? null);' . "\n"
                     . '{{ PHPUNIT }}->assertEquals(' . "\n"
                     . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
