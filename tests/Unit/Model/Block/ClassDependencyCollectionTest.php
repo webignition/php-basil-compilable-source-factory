@@ -11,7 +11,6 @@ use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\ClassNameTest;
-use webignition\ObjectReflector\ObjectReflector;
 
 class ClassDependencyCollectionTest extends AbstractResolvableTestCase
 {
