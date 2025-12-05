@@ -69,7 +69,7 @@ class ElementIdentifierCallFactoryTest extends TestCase
     /**
      * @return array<mixed>
      */
-    public function createConstructorCallDataProvider(): array
+    public static function createConstructorCallDataProvider(): array
     {
         $elementIdentifierSerializer = ElementIdentifierSerializer::createSerializer();
 
