@@ -28,7 +28,7 @@ class ArrayPairTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function getMetadataDataProvider(): array
+    public static function getMetadataDataProvider(): array
     {
         return [
             'no metadata' => [
@@ -66,7 +66,7 @@ class ArrayPairTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function renderDataProvider(): array
+    public static function renderDataProvider(): array
     {
         return [
             'empty key, empty string value' => [

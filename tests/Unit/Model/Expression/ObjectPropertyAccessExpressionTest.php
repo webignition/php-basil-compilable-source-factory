@@ -33,7 +33,7 @@ class ObjectPropertyAccessExpressionTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function createDataProvider(): array
+    public static function createDataProvider(): array
     {
         return [
             'has resolvable placeholder' => [
@@ -64,7 +64,7 @@ class ObjectPropertyAccessExpressionTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function renderDataProvider(): array
+    public static function renderDataProvider(): array
     {
         return [
             'has resolvable placeholder' => [
