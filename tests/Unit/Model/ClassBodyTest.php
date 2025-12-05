@@ -32,15 +32,15 @@ class ClassBodyTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function renderDataProvider(): array
+    public static function renderDataProvider(): array
     {
         return [
             'no methods' => [
-                'classBody' => new ClassBody([]),
+                'body' => new ClassBody([]),
                 'expectedString' => '',
             ],
             'single empty method' => [
-                'classBody' => new ClassBody([
+                'body' => new ClassBody([
                     new MethodDefinition('methodName', new Body([])),
                 ]),
                 'expectedString' => 'public function methodName()' . "\n"
@@ -48,7 +48,7 @@ class ClassBodyTest extends AbstractResolvableTestCase
                     . '}'
             ],
             'many methods' => [
-                'classBody' => new ClassBody([
+                'body' => new ClassBody([
                     new MethodDefinition('stepOne', new Body([
                         new SingleLineComment('click $"a"'),
                         new Statement(
@@ -107,7 +107,7 @@ class ClassBodyTest extends AbstractResolvableTestCase
                     . '}'
             ],
             'many methods, with data provider' => [
-                'classBody' => new ClassBody([
+                'body' => new ClassBody([
                     (function () {
                         $methodDefinition = new MethodDefinition(
                             'stepOne',
