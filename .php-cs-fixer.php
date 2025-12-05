@@ -15,14 +15,4 @@ return $config->setRules([
     'trailing_comma_in_multiline' => false,
     'php_unit_internal_class' => false,
     'php_unit_test_class_requires_covers' => false,
-    // Below configuration added to allow PR#629 to a pass
-    // @todo remove in #631
-    'phpdoc_order' => false,
-    'stringable_for_to_string' => false,
-    'ordered_types' => false,
-    'fully_qualified_strict_types' => false,
-    'ordered_imports' => false,
-    'no_useless_concat_operator' => false,
-    'string_implicit_backslashes' => false,
-    'php_unit_data_provider_method_order' => false,
 ])->setFinder($finder);

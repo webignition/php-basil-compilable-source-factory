@@ -162,7 +162,7 @@ class ClassBodyTest extends AbstractResolvableTestCase
                             new AssignmentExpression(
                                 new VariableName('statement'),
                                 new StaticObjectMethodInvocation(
-                                    new StaticObject('Acme\\Statement'),
+                                    new StaticObject('Acme\Statement'),
                                     'createAction',
                                     new MethodArguments([
                                         new LiteralExpression('\'$"a" exists\''),
@@ -183,7 +183,7 @@ class ClassBodyTest extends AbstractResolvableTestCase
                             new AssignmentExpression(
                                 new VariableName('statement'),
                                 new StaticObjectMethodInvocation(
-                                    new StaticObject('Acme\\Statement'),
+                                    new StaticObject('Acme\Statement'),
                                     'createAction',
                                     new MethodArguments([
                                         new LiteralExpression('\'$"b" exists\''),
@@ -224,7 +224,7 @@ class ClassBodyTest extends AbstractResolvableTestCase
                                     new AssignmentExpression(
                                         new VariableName('statement'),
                                         new StaticObjectMethodInvocation(
-                                            new StaticObject('Acme\\Statement'),
+                                            new StaticObject('Acme\Statement'),
                                             'createAction',
                                             new MethodArguments([
                                                 new LiteralExpression('\'$"a" exists\''),
@@ -272,7 +272,7 @@ class ClassBodyTest extends AbstractResolvableTestCase
                             new AssignmentExpression(
                                 new VariableName('statement'),
                                 new StaticObjectMethodInvocation(
-                                    new StaticObject('Acme\\Statement'),
+                                    new StaticObject('Acme\Statement'),
                                     'createAction',
                                     new MethodArguments([
                                         new LiteralExpression('\'$"b" exists\''),

@@ -39,7 +39,7 @@ class AccessorDefaultValueFactory
         return null === $value ? $value : (string) $value;
     }
 
-    private function create(string $value, callable $defaultValueHandler): string|int|null
+    private function create(string $value, callable $defaultValueHandler): int|string|null
     {
         if (EnvironmentValue::is($value)) {
             $environmentValue = $this->environmentValueFactory->create($value);

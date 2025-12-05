@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Step;
 
+use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\Step\DerivedAssertionFactory;
 use webignition\BasilModels\Model\Action\Action;
@@ -14,7 +15,7 @@ use webignition\BasilModels\Model\Assertion\UniqueAssertionCollection;
 use webignition\BasilModels\Parser\ActionParser;
 use webignition\BasilModels\Parser\AssertionParser;
 
-class DerivedAssertionFactoryTest extends \PHPUnit\Framework\TestCase
+class DerivedAssertionFactoryTest extends TestCase
 {
     private DerivedAssertionFactory $factory;
 

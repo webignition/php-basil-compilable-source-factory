@@ -11,7 +11,7 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\ResolvableStringableTrait;
 
-class ObjectTypeDeclaration implements TypeDeclarationInterface
+class ObjectTypeDeclaration implements \Stringable, TypeDeclarationInterface
 {
     use ResolvableStringableTrait;
 

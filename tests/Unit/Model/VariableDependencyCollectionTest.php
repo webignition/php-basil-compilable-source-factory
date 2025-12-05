@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 
+use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 
-class VariableDependencyCollectionTest extends \PHPUnit\Framework\TestCase
+class VariableDependencyCollectionTest extends TestCase
 {
     /**
      * @dataProvider createDataProvider

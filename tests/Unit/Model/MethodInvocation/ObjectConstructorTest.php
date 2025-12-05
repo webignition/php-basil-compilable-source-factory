@@ -78,7 +78,7 @@ class ObjectConstructorTest extends AbstractResolvableTestCase
      */
     public function renderDataProvider(): array
     {
-        $classDependency = new ClassName('Acme\\Model');
+        $classDependency = new ClassName('Acme\Model');
 
         return [
             'no arguments' => [

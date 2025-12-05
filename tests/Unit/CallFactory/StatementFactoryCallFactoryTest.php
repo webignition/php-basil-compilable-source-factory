@@ -53,10 +53,10 @@ class StatementFactoryCallFactoryTest extends AbstractResolvableTestCase
                 'statement' => $actionParser->parse('click $".selector"'),
                 'expectedRenderedSource' => '{{ ACTION_FACTORY }}->createFromJson(\'{' . "\n"
                     . '    "statement-type": "action",' . "\n"
-                    . '    "source": "click $\\\\".selector\\\\"",' . "\n"
-                    . '    "identifier": "$\\\\".selector\\\\"",' . "\n"
+                    . '    "source": "click $\\\".selector\\\"",' . "\n"
+                    . '    "identifier": "$\\\".selector\\\"",' . "\n"
                     . '    "type": "click",' . "\n"
-                    . '    "arguments": "$\\\\".selector\\\\""' . "\n"
+                    . '    "arguments": "$\\\".selector\\\""' . "\n"
                     . '}\')',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
@@ -68,8 +68,8 @@ class StatementFactoryCallFactoryTest extends AbstractResolvableTestCase
                 'statement' => $assertionParser->parse('$".selector" exists'),
                 'expectedRenderedSource' => '{{ ASSERTION_FACTORY }}->createFromJson(\'{' . "\n"
                     . '    "statement-type": "assertion",' . "\n"
-                    . '    "source": "$\\\\".selector\\\\" exists",' . "\n"
-                    . '    "identifier": "$\\\\".selector\\\\"",' . "\n"
+                    . '    "source": "$\\\".selector\\\" exists",' . "\n"
+                    . '    "identifier": "$\\\".selector\\\"",' . "\n"
                     . '    "operator": "exists"' . "\n"
                     . '}\')',
                 'expectedMetadata' => new Metadata([
@@ -87,15 +87,15 @@ class StatementFactoryCallFactoryTest extends AbstractResolvableTestCase
                 'expectedRenderedSource' => '{{ ASSERTION_FACTORY }}->createFromJson(\'{' . "\n"
                     . '    "container": {' . "\n"
                     . '        "type": "derived-value-operation-assertion",' . "\n"
-                    . '        "value": "$\\\\".selector\\\\"",' . "\n"
+                    . '        "value": "$\\\".selector\\\"",' . "\n"
                     . '        "operator": "exists"' . "\n"
                     . '    },' . "\n"
                     . '    "statement": {' . "\n"
                     . '        "statement-type": "action",' . "\n"
-                    . '        "source": "click $\\\\".selector\\\\"",' . "\n"
-                    . '        "identifier": "$\\\\".selector\\\\"",' . "\n"
+                    . '        "source": "click $\\\".selector\\\"",' . "\n"
+                    . '        "identifier": "$\\\".selector\\\"",' . "\n"
                     . '        "type": "click",' . "\n"
-                    . '        "arguments": "$\\\\".selector\\\\""' . "\n"
+                    . '        "arguments": "$\\\".selector\\\""' . "\n"
                     . '    }' . "\n"
                     . '}\')',
                 'expectedMetadata' => new Metadata([

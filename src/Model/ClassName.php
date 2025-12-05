@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model;
 
-class ClassName
+class ClassName implements \Stringable
 {
     private const FQCN_PART_DELIMITER = '\\';
 

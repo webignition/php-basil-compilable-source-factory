@@ -53,27 +53,6 @@ class DocBlockTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function prependDataProvider(): array
-    {
-        return [
-            'prepend: non-empty, non-empty' => [
-                'docBlock' => new DocBlock([
-                    'docBlock line',
-                ]),
-                'merge' => new DocBlock([
-                    'merge line',
-                ]),
-                'expectedDocBlock' => new DocBlock([
-                    'merge line',
-                    'docBlock line',
-                ]),
-            ],
-        ];
-    }
-
-    /**
-     * @return array<mixed>
-     */
     public function mergeDataProvider(): array
     {
         return [
@@ -98,6 +77,27 @@ class DocBlockTest extends AbstractResolvableTestCase
                 ]),
                 'expectedDocBlock' => new DocBlock([
                     'merge line',
+                ]),
+            ],
+        ];
+    }
+
+    /**
+     * @return array<mixed>
+     */
+    public function prependDataProvider(): array
+    {
+        return [
+            'prepend: non-empty, non-empty' => [
+                'docBlock' => new DocBlock([
+                    'docBlock line',
+                ]),
+                'merge' => new DocBlock([
+                    'merge line',
+                ]),
+                'expectedDocBlock' => new DocBlock([
+                    'merge line',
+                    'docBlock line',
                 ]),
             ],
         ];

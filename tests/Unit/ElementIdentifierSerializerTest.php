@@ -4,11 +4,12 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
+use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
-class ElementIdentifierSerializerTest extends \PHPUnit\Framework\TestCase
+class ElementIdentifierSerializerTest extends TestCase
 {
     /**
      * @dataProvider serializeDataProvider

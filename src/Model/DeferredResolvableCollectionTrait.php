@@ -20,7 +20,7 @@ trait DeferredResolvableCollectionTrait
             : 1;
     }
 
-    public function getIndexForItem(string|\Stringable|ResolvableInterface $item): ?int
+    public function getIndexForItem(ResolvableInterface|string|\Stringable $item): ?int
     {
         $resolvable = $this->getResolvable();
 

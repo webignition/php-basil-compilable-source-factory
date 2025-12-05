@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
+use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvableRenderer;
 use webignition\StubbleResolvable\ResolvableInterface;
 
-abstract class AbstractResolvableTestCase extends \PHPUnit\Framework\TestCase
+abstract class AbstractResolvableTestCase extends TestCase
 {
     public function assertRenderResolvable(string $expectedString, ResolvableInterface $resolvable): void
     {

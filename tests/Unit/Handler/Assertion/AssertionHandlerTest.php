@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Assertion;
 
+use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
@@ -14,7 +15,7 @@ use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilModels\Model\Assertion\Assertion;
 use webignition\BasilModels\Parser\AssertionParser;
 
-class AssertionHandlerTest extends \PHPUnit\Framework\TestCase
+class AssertionHandlerTest extends TestCase
 {
     public function testHandleComparison(): void
     {

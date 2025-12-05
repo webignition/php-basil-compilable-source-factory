@@ -48,9 +48,9 @@ class StepMethodFactory
     }
 
     /**
-     * @throws UnsupportedStepException
-     *
      * @return MethodDefinitionInterface[]
+     *
+     * @throws UnsupportedStepException
      */
     public function create(int $index, string $stepName, StepInterface $step): array
     {

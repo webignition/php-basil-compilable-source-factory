@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
+use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 
-class SingleQuotedStringEscaperTest extends \PHPUnit\Framework\TestCase
+class SingleQuotedStringEscaperTest extends TestCase
 {
     private SingleQuotedStringEscaper $escaper;
 

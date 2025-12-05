@@ -112,9 +112,9 @@ class ScalarValueHandler
     }
 
     /**
-     * @throws UnsupportedContentException
-     *
      * @return ObjectMethodInvocation
+     *
+     * @throws UnsupportedContentException
      */
     private function handlePageProperty(string $value): ExpressionInterface
     {

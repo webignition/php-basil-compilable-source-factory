@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
+use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
@@ -16,7 +17,7 @@ use webignition\BasilDomIdentifierFactory\Factory;
 use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\ObjectReflector\ObjectReflector;
 
-class ValueAccessorFactoryTest extends \PHPUnit\Framework\TestCase
+class ValueAccessorFactoryTest extends TestCase
 {
     private ValueAccessorFactory $factory;
 

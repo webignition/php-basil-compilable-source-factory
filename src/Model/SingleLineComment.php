@@ -6,7 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Model;
 
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentInterface;
 
-class SingleLineComment implements BodyContentInterface
+class SingleLineComment implements \Stringable, BodyContentInterface
 {
     use ResolvableStringableTrait;
 
