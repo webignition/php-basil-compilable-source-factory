@@ -29,7 +29,7 @@ class ObjectTypeDeclarationCollectionTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function getMetadataDataProvider(): array
+    public static function getMetadataDataProvider(): array
     {
         return [
             'empty' => [
@@ -64,33 +64,33 @@ class ObjectTypeDeclarationCollectionTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function renderDataProvider(): array
+    public static function renderDataProvider(): array
     {
         return [
             'empty' => [
-                'declaration' => new ObjectTypeDeclarationCollection([]),
+                'collection' => new ObjectTypeDeclarationCollection([]),
                 'expectedString' => '',
             ],
             'single, root namespace' => [
-                'declaration' => new ObjectTypeDeclarationCollection([
+                'collection' => new ObjectTypeDeclarationCollection([
                     new ObjectTypeDeclaration(new ClassName(\Exception::class)),
                 ]),
                 'expectedString' => '\Exception',
             ],
             'single, non-root namespace' => [
-                'declaration' => new ObjectTypeDeclarationCollection([
+                'collection' => new ObjectTypeDeclarationCollection([
                     new ObjectTypeDeclaration(new ClassName(TestCase::class)),
                 ]),
                 'expectedString' => 'TestCase',
             ],
             'single with alias' => [
-                'declaration' => new ObjectTypeDeclarationCollection([
+                'collection' => new ObjectTypeDeclarationCollection([
                     new ObjectTypeDeclaration(new ClassName(\Exception::class, 'AliasName')),
                 ]),
                 'expectedString' => 'AliasName',
             ],
             'multiple' => [
-                'declaration' => new ObjectTypeDeclarationCollection([
+                'collection' => new ObjectTypeDeclarationCollection([
                     new ObjectTypeDeclaration(new ClassName(\Exception::class)),
                     new ObjectTypeDeclaration(new ClassName(TestCase::class)),
                     new ObjectTypeDeclaration(new ClassName(\Traversable::class)),
@@ -98,7 +98,7 @@ class ObjectTypeDeclarationCollectionTest extends AbstractResolvableTestCase
                 'expectedString' => '\Exception | TestCase | \Traversable',
             ],
             'class names are sorted ignoring leading namespace separator' => [
-                'declaration' => new ObjectTypeDeclarationCollection([
+                'collection' => new ObjectTypeDeclarationCollection([
                     new ObjectTypeDeclaration(new ClassName(\Exception::class, 'Charlie')),
                     new ObjectTypeDeclaration(new ClassName(\Traversable::class, 'Alpha')),
                     new ObjectTypeDeclaration(new ClassName(\Exception::class)),
