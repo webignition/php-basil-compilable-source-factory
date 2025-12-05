@@ -41,7 +41,7 @@ class ObjectTypeDeclarationTest extends TestCase
     /**
      * @return array<mixed>
      */
-    public function toStringDataProvider(): array
+    public static function toStringDataProvider(): array
     {
         return [
             'class in root namespace' => [
