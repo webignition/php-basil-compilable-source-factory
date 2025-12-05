@@ -16,7 +16,7 @@ use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTest;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTestCase;
 use webignition\BasilModels\Model\Action\ActionInterface;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
@@ -27,7 +27,7 @@ use webignition\BasilModels\Parser\AssertionParser;
 use webignition\BasilModels\Parser\StepParser;
 use webignition\StubbleResolvable\ResolvableInterface;
 
-class StepHandlerTest extends AbstractResolvableTest
+class StepHandlerTest extends AbstractResolvableTestCase
 {
     /**
      * @dataProvider handleSuccessDataProvider

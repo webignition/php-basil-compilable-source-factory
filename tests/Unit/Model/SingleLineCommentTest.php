@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\ObjectReflector\ObjectReflector;
 
-class SingleLineCommentTest extends AbstractResolvableTest
+class SingleLineCommentTest extends AbstractResolvableTestCase
 {
     public function testCreate(): void
     {

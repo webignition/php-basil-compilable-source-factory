@@ -8,7 +8,7 @@ use webignition\BasilCompilableSourceFactory\Model\DataProviderMethodDefinition;
 use webignition\BasilCompilableSourceFactory\Model\DataProviderMethodDefinitionInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinition;
 
-class DataProviderMethodDefinitionTest extends AbstractResolvableTest
+class DataProviderMethodDefinitionTest extends AbstractResolvableTestCase
 {
     /**
      * @dataProvider createDataProvider

@@ -8,7 +8,7 @@ use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\ClassSignature;
 
-class ClassSignatureTest extends AbstractResolvableTest
+class ClassSignatureTest extends AbstractResolvableTestCase
 {
     public function testGetName(): void
     {

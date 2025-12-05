@@ -7,9 +7,9 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\DocBlock;
 use webignition\BasilCompilableSourceFactory\Model\Annotation\ParameterAnnotation;
 use webignition\BasilCompilableSourceFactory\Model\DocBlock\DocBlock;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTest;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
-class DocBlockTest extends AbstractResolvableTest
+class DocBlockTest extends AbstractResolvableTestCase
 {
     /**
      * @dataProvider mergeDataProvider

@@ -13,7 +13,7 @@ use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumen
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 
-class AssertionMethodInvocationFactoryTest extends AbstractResolvableTest
+class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
 {
     private AssertionMethodInvocationFactory $assertionMethodInvocationFactory;
 

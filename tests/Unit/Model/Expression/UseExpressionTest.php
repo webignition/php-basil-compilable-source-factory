@@ -8,9 +8,9 @@ use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\UseExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTest;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
-class UseExpressionTest extends AbstractResolvableTest
+class UseExpressionTest extends AbstractResolvableTestCase
 {
     public function testCreate(): void
     {

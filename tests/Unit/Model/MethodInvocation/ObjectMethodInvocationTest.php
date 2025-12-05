@@ -19,9 +19,9 @@ use webignition\BasilCompilableSourceFactory\Model\StaticObject;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTest;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
-class ObjectMethodInvocationTest extends AbstractResolvableTest
+class ObjectMethodInvocationTest extends AbstractResolvableTestCase
 {
     /**
      * @dataProvider createDataProvider

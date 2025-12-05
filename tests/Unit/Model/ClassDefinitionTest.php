@@ -24,7 +24,7 @@ use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 
-class ClassDefinitionTest extends AbstractResolvableTest
+class ClassDefinitionTest extends AbstractResolvableTestCase
 {
     public function testCreate(): void
     {

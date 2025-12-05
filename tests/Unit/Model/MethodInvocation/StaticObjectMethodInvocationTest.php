@@ -14,9 +14,9 @@ use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumen
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\StaticObjectMethodInvocationInterface;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTest;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
-class StaticObjectMethodInvocationTest extends AbstractResolvableTest
+class StaticObjectMethodInvocationTest extends AbstractResolvableTestCase
 {
     /**
      * @dataProvider createDataProvider

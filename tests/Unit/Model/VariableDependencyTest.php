@@ -9,7 +9,7 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 
-class VariableDependencyTest extends AbstractResolvableTest
+class VariableDependencyTest extends AbstractResolvableTestCase
 {
     /**
      * @dataProvider constructDataProvider

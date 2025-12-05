@@ -27,7 +27,7 @@ use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 
-class ClassBodyTest extends AbstractResolvableTest
+class ClassBodyTest extends AbstractResolvableTestCase
 {
     /**
      * @dataProvider createDataProvider

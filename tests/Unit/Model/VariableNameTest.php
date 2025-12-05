@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 
-class VariableNameTest extends AbstractResolvableTest
+class VariableNameTest extends AbstractResolvableTestCase
 {
     public function testGetMetadata(): void
     {

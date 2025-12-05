@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Annotation;
 
 use webignition\BasilCompilableSourceFactory\Model\Annotation\DataProviderAnnotation;
-use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTest;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
-class DataProviderAnnotationTest extends AbstractResolvableTest
+class DataProviderAnnotationTest extends AbstractResolvableTestCase
 {
     /**
      * @dataProvider renderDataProvider
