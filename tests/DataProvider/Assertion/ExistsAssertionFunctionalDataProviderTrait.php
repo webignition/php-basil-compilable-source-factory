@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
-use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Parser\AssertionParser;
 
 trait ExistsAssertionFunctionalDataProviderTrait
