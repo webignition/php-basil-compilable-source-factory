@@ -4,7 +4,10 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model;
 
-class ClassNameCollection
+/**
+ * @implements \IteratorAggregate<string, ClassName>
+ */
+class ClassNameCollection implements \IteratorAggregate
 {
     /**
      * @var ClassName[]
@@ -21,6 +24,14 @@ class ClassNameCollection
                 $this->classNames[] = $className;
             }
         }
+    }
+
+    /**
+     * @return \Traversable<string, ClassName>
+     */
+    public function getIterator(): \Traversable
+    {
+        return new \ArrayIterator($this->classNames);
     }
 
     private function contains(ClassName $className): bool
