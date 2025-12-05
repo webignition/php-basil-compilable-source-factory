@@ -39,7 +39,7 @@ class StaticObjectMethodInvocationTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function createDataProvider(): array
+    public static function createDataProvider(): array
     {
         return [
             'no arguments, string reference' => [
@@ -98,7 +98,7 @@ class StaticObjectMethodInvocationTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function renderDataProvider(): array
+    public static function renderDataProvider(): array
     {
         return [
             'object and method name only, string reference' => [
