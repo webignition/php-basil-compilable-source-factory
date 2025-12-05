@@ -46,7 +46,7 @@ class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
     /**
      * @return array<mixed>
      */
-    public function createSourceDataProvider(): array
+    public static function createSourceDataProvider(): array
     {
         $testParser = TestParser::create();
 
