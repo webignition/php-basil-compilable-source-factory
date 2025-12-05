@@ -10,6 +10,7 @@ use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollecti
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
+use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinitionInterface;
@@ -238,9 +239,11 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                     "    ];\n" .
                     '}',
                 'expectedTestMethodMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassName(DataSet::class),
-                    ]),
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
+                        new ClassNameCollection([
+                            new ClassName(DataSet::class),
+                        ])
+                    ),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
                     ]),
