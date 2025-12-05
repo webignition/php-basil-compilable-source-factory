@@ -46,7 +46,7 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function createWithoutDataProviderDataProvider(): array
+    public static function createWithoutDataProviderDataProvider(): array
     {
         $stepParser = StepParser::create();
 
@@ -65,7 +65,7 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                 'index' => 1,
                 'stepName' => 'Step Name',
                 'step' => $emptyStep,
-                'stepMethodFactory' => StepMethodFactory::createFactory(),
+                'factory' => StepMethodFactory::createFactory(),
                 'expectedRenderedTestMethod' => "public function test1()\n"
                     . "{\n"
                     . "    if (self::hasException()) {\n"
@@ -84,7 +84,7 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                 'index' => 2,
                 'stepName' => 'step name \'contains\' single quotes',
                 'step' => $emptyStep,
-                'stepMethodFactory' => StepMethodFactory::createFactory(),
+                'factory' => StepMethodFactory::createFactory(),
                 'expectedRenderedTestMethod' => "public function test2()\n"
                     . "{\n"
                     . "    if (self::hasException()) {\n"
@@ -103,8 +103,8 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                 'index' => 3,
                 'stepName' => 'Step Name',
                 'step' => $nonEmptyStep,
-                'stepMethodFactory' => $this->createStepMethodFactory([
-                    StepHandler::class => $this->createStepHandler(
+                'factory' => self::createStepMethodFactory([
+                    StepHandler::class => self::createStepHandler(
                         $nonEmptyStep,
                         new Body([
                             new SingleLineComment('mocked step handler response'),
@@ -155,7 +155,7 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function createWithDataProviderDataProvider(): array
+    public static function createWithDataProviderDataProvider(): array
     {
         $stepParser = StepParser::create();
 
@@ -187,8 +187,8 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                 'index' => 4,
                 'stepName' => 'Step Name',
                 'step' => $nonEmptyStepWithDataProvider,
-                'stepMethodFactory' => $this->createStepMethodFactory([
-                    StepHandler::class => $this->createStepHandler(
+                'factory' => self::createStepMethodFactory([
+                    StepHandler::class => self::createStepHandler(
                         $nonEmptyStepWithDataProvider,
                         new Body([
                             new SingleLineComment('mocked step handler response'),
@@ -251,7 +251,7 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
     /**
      * @param array<string, mixed> $services
      */
-    private function createStepMethodFactory(array $services = []): StepMethodFactory
+    private static function createStepMethodFactory(array $services = []): StepMethodFactory
     {
         $stepHandler = $services[StepHandler::class] ?? null;
         $stepHandler = $stepHandler instanceof StepHandler ? $stepHandler : StepHandler::createHandler();
@@ -268,14 +268,14 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
         );
     }
 
-    private function createStepHandler(StepInterface $expectedStep, BodyInterface $return): StepHandler
+    private static function createStepHandler(StepInterface $expectedStep, BodyInterface $return): StepHandler
     {
         $stepHandler = \Mockery::mock(StepHandler::class);
 
         $stepHandler
             ->shouldReceive('handle')
             ->withArgs(function (StepInterface $step) use ($expectedStep) {
-                $this->assertEquals($expectedStep, $step);
+                self::assertEquals($expectedStep, $step);
 
                 return true;
             })
