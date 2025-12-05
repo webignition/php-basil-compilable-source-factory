@@ -62,13 +62,11 @@ class ClassDefinitionFactory
 
         $stepOrdinalIndex = 1;
         foreach ($test->getSteps() as $stepName => $step) {
-            if ($step instanceof StepInterface) {
-                $methodDefinitions = array_merge(
-                    $methodDefinitions,
-                    $this->stepMethodFactory->create($stepOrdinalIndex, $stepName, $step)
-                );
-                ++$stepOrdinalIndex;
-            }
+            $methodDefinitions = array_merge(
+                $methodDefinitions,
+                $this->stepMethodFactory->create($stepOrdinalIndex, $stepName, $step)
+            );
+            ++$stepOrdinalIndex;
         }
 
         $baseClass = is_string($fullyQualifiedBaseClass) ? new ClassName($fullyQualifiedBaseClass) : null;
