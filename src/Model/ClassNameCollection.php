@@ -37,6 +37,14 @@ class ClassNameCollection implements \IteratorAggregate, \Countable
     }
 
     /**
+     * @param callable(ClassName): bool $callback
+     */
+    public function filter(callable $callback): ClassNameCollection
+    {
+        return new ClassNameCollection(array_filter($this->classNames, $callback));
+    }
+
+    /**
      * @return \Traversable<string, ClassName>
      */
     public function getIterator(): \Traversable
