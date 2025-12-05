@@ -65,7 +65,7 @@ class StatementFactoryCallFactoryTest extends AbstractBrowserTestCase
     /**
      * @return array<mixed>
      */
-    public function createDataProvider(): array
+    public static function createDataProvider(): array
     {
         $assertionParser = AssertionParser::create();
         $singleQuotedStringEscaper = SingleQuotedStringEscaper::create();
