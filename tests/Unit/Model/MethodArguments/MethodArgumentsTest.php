@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\MethodArgume
 use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
+use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
@@ -85,9 +86,11 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                 ],
                 'format' => MethodArguments::FORMAT_INLINE,
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassName(ClassName::class),
-                    ])
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
+                        new ClassNameCollection([
+                            new ClassName(ClassName::class),
+                        ])
+                    )
                 ]),
             ],
         ];

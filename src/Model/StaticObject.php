@@ -35,9 +35,9 @@ class StaticObject implements ExpressionInterface
     {
         if (ClassName::isFullyQualifiedClassName($this->object)) {
             return new Metadata([
-                Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                    new ClassName($this->object),
-                ]),
+                Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
+                    new ClassNameCollection([new ClassName($this->object)])
+                ),
             ]);
         }
 

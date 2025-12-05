@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\MethodInvoca
 
 use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
+use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
@@ -56,9 +57,11 @@ class StaticObjectMethodInvocationTest extends AbstractResolvableTestCase
                 'methodName' => 'method',
                 'arguments' => new MethodArguments(),
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassName(ClassName::class),
-                    ]),
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
+                        new ClassNameCollection([
+                            new ClassName(ClassName::class),
+                        ])
+                    )
                 ]),
             ],
             'argument expressions contain additional metadata' => [
@@ -73,10 +76,12 @@ class StaticObjectMethodInvocationTest extends AbstractResolvableTestCase
                     )
                 ]),
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassName(StaticObject::class),
-                        new ClassName(ClassName::class),
-                    ]),
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
+                        new ClassNameCollection([
+                            new ClassName(StaticObject::class),
+                            new ClassName(ClassName::class),
+                        ])
+                    )
                 ]),
             ],
         ];

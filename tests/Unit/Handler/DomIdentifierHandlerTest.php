@@ -8,6 +8,7 @@ use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
+use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
@@ -57,9 +58,11 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     '    "locator": ".selector"' . "\n" .
                     '}\'))',
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassName(ElementIdentifier::class),
-                    ]),
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
+                        new ClassNameCollection([
+                            new ClassName(ElementIdentifier::class),
+                        ])
+                    ),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                     ]),
@@ -77,9 +80,11 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     '    }' . "\n" .
                     '}\'))',
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassName(ElementIdentifier::class),
-                    ]),
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
+                        new ClassNameCollection([
+                            new ClassName(ElementIdentifier::class),
+                        ])
+                    ),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                     ]),
@@ -118,9 +123,11 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     '    "locator": ".selector"' . "\n" .
                     '}\'))',
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassName(ElementIdentifier::class),
-                    ]),
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
+                        new ClassNameCollection([
+                            new ClassName(ElementIdentifier::class),
+                        ])
+                    ),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                     ]),
@@ -138,9 +145,11 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     '    }' . "\n" .
                     '}\'))',
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassName(ElementIdentifier::class),
-                    ]),
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
+                        new ClassNameCollection([
+                            new ClassName(ElementIdentifier::class),
+                        ])
+                    ),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                     ]),
@@ -185,9 +194,11 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     '    return $element->getAttribute(\'attribute_name\');' . "\n" .
                     '})()',
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassName(ElementIdentifier::class),
-                    ]),
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
+                        new ClassNameCollection([
+                            new ClassName(ElementIdentifier::class),
+                        ])
+                    ),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                     ]),
@@ -210,9 +221,11 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     '    return $element->getAttribute(\'attribute_name\');' . "\n" .
                     '})()',
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassName(ElementIdentifier::class),
-                    ]),
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
+                        new ClassNameCollection([
+                            new ClassName(ElementIdentifier::class),
+                        ])
+                    ),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                     ]),
@@ -255,9 +268,11 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     '    return {{ INSPECTOR }}->getValue($element);' . "\n" .
                     '})()',
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassName(ElementIdentifier::class),
-                    ]),
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
+                        new ClassNameCollection([
+                            new ClassName(ElementIdentifier::class),
+                        ])
+                    ),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
@@ -280,9 +295,11 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     '    return {{ INSPECTOR }}->getValue($element);' . "\n" .
                     '})()',
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassName(ElementIdentifier::class),
-                    ]),
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
+                        new ClassNameCollection([
+                            new ClassName(ElementIdentifier::class),
+                        ])
+                    ),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,

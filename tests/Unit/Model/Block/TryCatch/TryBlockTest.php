@@ -8,6 +8,7 @@ use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollecti
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryBlock;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
+use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ReturnExpression;
@@ -38,9 +39,11 @@ class TryBlockTest extends AbstractResolvableTestCase
         $tryBlock = new TryBlock($body);
 
         $expectedMetadata = new Metadata([
-            Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                new ClassName(\RuntimeException::class),
-            ]),
+            Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
+                new ClassNameCollection([
+                    new ClassName(\RuntimeException::class),
+                ])
+            ),
             Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                 'DEPENDENCY',
             ]),

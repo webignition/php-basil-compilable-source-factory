@@ -6,25 +6,22 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Block;
 
 use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
+use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\ClassNameTest;
-use webignition\ObjectReflector\ObjectReflector;
 
 class ClassDependencyCollectionTest extends AbstractResolvableTestCase
 {
     /**
      * @dataProvider createDataProvider
-     *
-     * @param ClassName[] $dependencies
-     * @param ClassName[] $expectedDependencies
      */
-    public function testCreate(array $dependencies, array $expectedDependencies): void
+    public function testCreate(ClassNameCollection $dependencies, ClassNameCollection $expectedDependencies): void
     {
         $collection = new ClassDependencyCollection($dependencies);
 
-        $this->assertEquals($expectedDependencies, ObjectReflector::getProperty($collection, 'classNames'));
+        $this->assertEquals($expectedDependencies, $collection->getClassNames());
     }
 
     /**
@@ -34,28 +31,19 @@ class ClassDependencyCollectionTest extends AbstractResolvableTestCase
     {
         return [
             'empty' => [
-                'classNames' => [],
-                'expectedClassNames' => [],
+                'classNames' => new ClassNameCollection([]),
+                'expectedClassNames' => new ClassNameCollection([]),
             ],
-            'no class dependency lines' => [
-                'classNames' => [
-                    new EmptyLine(),
-                    new SingleLineComment(''),
-                ],
-                'expectedClassNames' => [],
-            ],
-            'has class dependency lines' => [
-                'classNames' => [
-                    new EmptyLine(),
-                    new SingleLineComment(''),
+            'non-empty, duplicates are removed' => [
+                'classNames' => new ClassNameCollection([
                     new ClassName(EmptyLine::class),
                     new ClassName(SingleLineComment::class),
                     new ClassName(EmptyLine::class),
-                ],
-                'expectedClassNames' => [
+                ]),
+                'expectedClassNames' => new ClassNameCollection([
                     new ClassName(EmptyLine::class),
                     new ClassName(SingleLineComment::class),
-                ],
+                ]),
             ],
         ];
     }
@@ -75,23 +63,27 @@ class ClassDependencyCollectionTest extends AbstractResolvableTestCase
     {
         return [
             'empty' => [
-                'collection' => new ClassDependencyCollection([]),
+                'collection' => new ClassDependencyCollection(),
                 'expectedString' => '',
             ],
             'non-empty' => [
-                'collection' => new ClassDependencyCollection([
-                    new ClassName(ClassName::class),
-                    new ClassName(ClassNameTest::class, 'BaseTest'),
-                ]),
+                'collection' => new ClassDependencyCollection(
+                    new ClassNameCollection([
+                        new ClassName(ClassName::class),
+                        new ClassName(ClassNameTest::class, 'BaseTest'),
+                    ])
+                ),
                 'expectedString' => 'use webignition\BasilCompilableSourceFactory\Model\ClassName;' . "\n" .
                     'use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\ClassNameTest as BaseTest;',
             ],
             'lines are sorted' => [
-                'collection' => new ClassDependencyCollection([
-                    new ClassName('Acme\C'),
-                    new ClassName('Acme\A'),
-                    new ClassName('Acme\B'),
-                ]),
+                'collection' => new ClassDependencyCollection(
+                    new ClassNameCollection([
+                        new ClassName('Acme\C'),
+                        new ClassName('Acme\A'),
+                        new ClassName('Acme\B'),
+                    ])
+                ),
                 'expectedString' => 'use Acme\A;' . "\n" .
                     'use Acme\B;' . "\n" .
                     'use Acme\C;',
@@ -126,24 +118,30 @@ class ClassDependencyCollectionTest extends AbstractResolvableTestCase
                 'expectedCount' => 0,
             ],
             'one' => [
-                'collection' => new ClassDependencyCollection([
-                    new ClassName('Acme\A'),
-                ]),
+                'collection' => new ClassDependencyCollection(
+                    new ClassNameCollection([
+                        new ClassName('Acme\A'),
+                    ])
+                ),
                 'expectedCount' => 1,
             ],
             'two' => [
-                'collection' => new ClassDependencyCollection([
-                    new ClassName('Acme\A'),
-                    new ClassName('Acme\B'),
-                ]),
+                'collection' => new ClassDependencyCollection(
+                    new ClassNameCollection([
+                        new ClassName('Acme\A'),
+                        new ClassName('Acme\B'),
+                    ])
+                ),
                 'expectedCount' => 2,
             ],
             'three' => [
-                'collection' => new ClassDependencyCollection([
-                    new ClassName('Acme\A'),
-                    new ClassName('Acme\B'),
-                    new ClassName('Acme\C'),
-                ]),
+                'collection' => new ClassDependencyCollection(
+                    new ClassNameCollection([
+                        new ClassName('Acme\A'),
+                        new ClassName('Acme\B'),
+                        new ClassName('Acme\C'),
+                    ])
+                ),
                 'expectedCount' => 3,
             ],
         ];
@@ -168,9 +166,11 @@ class ClassDependencyCollectionTest extends AbstractResolvableTestCase
                 'expectedIsEmpty' => true,
             ],
             'not empty' => [
-                'collection' => new ClassDependencyCollection([
-                    new ClassName('Acme\A'),
-                ]),
+                'collection' => new ClassDependencyCollection(
+                    new ClassNameCollection([
+                        new ClassName('Acme\A'),
+                    ])
+                ),
                 'expectedIsEmpty' => false,
             ],
         ];

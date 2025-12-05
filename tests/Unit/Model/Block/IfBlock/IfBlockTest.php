@@ -8,6 +8,7 @@ use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollecti
 use webignition\BasilCompilableSourceFactory\Model\Block\IfBlock\IfBlock;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
+use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
@@ -49,9 +50,11 @@ class IfBlockTest extends AbstractResolvableTestCase
         $ifBlock = new IfBlock($expression, $body);
 
         $expectedMetadata = new Metadata([
-            Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                new ClassName(\RuntimeException::class),
-            ]),
+            Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
+                new ClassNameCollection([
+                    new ClassName(\RuntimeException::class),
+                ])
+            ),
             Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                 'BODY_DEPENDENCY',
                 'IF_EXPRESSION_OBJECT',

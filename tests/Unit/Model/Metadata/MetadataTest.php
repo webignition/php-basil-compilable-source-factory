@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Metadata;
 
 use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
+use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 
@@ -48,16 +49,20 @@ class MetadataTest extends \PHPUnit\Framework\TestCase
             ],
             'components set, correct types' => [
                 'components' => [
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassName(ClassName::class),
-                    ]),
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
+                        new ClassNameCollection([
+                            new ClassName(ClassName::class),
+                        ])
+                    ),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         'VARIABLE_DEPENDENCY',
                     ]),
                 ],
-                'expectedClassDependencies' => new ClassDependencyCollection([
-                    new ClassName(ClassName::class),
-                ]),
+                'expectedClassDependencies' => new ClassDependencyCollection(
+                    new ClassNameCollection([
+                        new ClassName(ClassName::class),
+                    ])
+                ),
                 'expectedVariableDependencies' => new VariableDependencyCollection([
                     'VARIABLE_DEPENDENCY',
                 ]),
@@ -68,9 +73,11 @@ class MetadataTest extends \PHPUnit\Framework\TestCase
     public function testMerge(): void
     {
         $metadata1 = new Metadata([
-            Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                new ClassName(ClassName::class),
-            ]),
+            Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
+                new ClassNameCollection([
+                    new ClassName(ClassName::class),
+                ])
+            ),
             Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                 'VARIABLE_DEPENDENCY_1',
                 'VARIABLE_DEPENDENCY_2',
@@ -78,10 +85,12 @@ class MetadataTest extends \PHPUnit\Framework\TestCase
         ]);
 
         $metadata2 = new Metadata([
-            Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                new ClassName(ClassName::class),
-                new ClassName(Metadata::class),
-            ]),
+            Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
+                new ClassNameCollection([
+                    new ClassName(ClassName::class),
+                    new ClassName(Metadata::class),
+                ])
+            ),
             Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                 'VARIABLE_DEPENDENCY_2',
                 'VARIABLE_DEPENDENCY_3',
@@ -93,10 +102,12 @@ class MetadataTest extends \PHPUnit\Framework\TestCase
         $this->assertEquals(
             $metadata,
             new Metadata([
-                Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                    new ClassName(ClassName::class),
-                    new ClassName(Metadata::class),
-                ]),
+                Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
+                    new ClassNameCollection([
+                        new ClassName(ClassName::class),
+                        new ClassName(Metadata::class),
+                    ])
+                ),
                 Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                     'VARIABLE_DEPENDENCY_1',
                     'VARIABLE_DEPENDENCY_2',

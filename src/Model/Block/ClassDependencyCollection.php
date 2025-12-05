@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Block;
 
-use webignition\BasilCompilableSourceFactory\Model\ClassName;
+use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\DeferredResolvableCollectionTrait;
 use webignition\BasilCompilableSourceFactory\Model\Expression\UseExpression;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
@@ -23,26 +23,16 @@ class ClassDependencyCollection implements
 {
     use DeferredResolvableCollectionTrait;
 
-    /**
-     * @var ClassName[]
-     */
-    private array $classNames = [];
+    private ClassNameCollection $classNames;
 
-    /**
-     * @param ClassName[] $classNames
-     */
-    public function __construct(array $classNames = [])
+    public function __construct(?ClassNameCollection $classNames = null)
     {
-        foreach ($classNames as $className) {
-            if ($className instanceof ClassName && false === $this->containsClassName($className)) {
-                $this->classNames[] = $className;
-            }
-        }
+        $this->classNames = $classNames ?? new ClassNameCollection([]);
     }
 
     public function merge(ClassDependencyCollection $collection): ClassDependencyCollection
     {
-        return new ClassDependencyCollection(array_merge($this->classNames, $collection->classNames));
+        return new ClassDependencyCollection($this->classNames->merge($collection->classNames));
     }
 
     public function count(): int
@@ -70,10 +60,7 @@ class ClassDependencyCollection implements
         ];
     }
 
-    /**
-     * @return ClassName[]
-     */
-    public function getClassNames(): array
+    public function getClassNames(): ClassNameCollection
     {
         return $this->classNames;
     }
@@ -93,19 +80,6 @@ class ClassDependencyCollection implements
         }
 
         return ResolvableCollection::create($useStatementResolvables);
-    }
-
-    private function containsClassName(ClassName $className): bool
-    {
-        $renderedClassName = (string) $className;
-
-        foreach ($this->classNames as $className) {
-            if ((string) $className === $renderedClassName) {
-                return true;
-            }
-        }
-
-        return false;
     }
 
     private function useStatementResolvedTemplateMutator(
