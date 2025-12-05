@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\MethodInvoca
 
 use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
+use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
@@ -77,9 +78,11 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
                     )
                 ]),
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassName(ClassName::class),
-                    ]),
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
+                        new ClassNameCollection([
+                            new ClassName(ClassName::class),
+                        ])
+                    ),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         'OBJECT',
                     ]),

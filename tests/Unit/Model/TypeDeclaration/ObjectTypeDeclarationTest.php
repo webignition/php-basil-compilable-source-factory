@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\TypeDeclarat
 use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
+use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclaration;
 use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\TypeDeclarationInterface;
@@ -19,9 +20,11 @@ class ObjectTypeDeclarationTest extends TestCase
         $declaration = new ObjectTypeDeclaration($type);
 
         $expectedMetadata = new Metadata([
-            Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                $type,
-            ]),
+            Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
+                new ClassNameCollection([
+                    $type,
+                ])
+            ),
         ]);
 
         $this->assertEquals($expectedMetadata, $declaration->getMetadata());

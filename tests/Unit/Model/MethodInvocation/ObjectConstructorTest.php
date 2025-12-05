@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\MethodInvoca
 
 use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
+use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
@@ -41,9 +42,11 @@ class ObjectConstructorTest extends AbstractResolvableTestCase
                 'class' => new ClassName(ObjectConstructor::class),
                 'arguments' => new MethodArguments(),
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassName(ObjectConstructor::class)
-                    ]),
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
+                        new ClassNameCollection([
+                            new ClassName(ObjectConstructor::class)
+                        ])
+                    ),
                 ]),
             ],
             'single argument' => [
@@ -52,9 +55,11 @@ class ObjectConstructorTest extends AbstractResolvableTestCase
                     new LiteralExpression('1'),
                 ]),
                 'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                        new ClassName(ObjectConstructor::class)
-                    ]),
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
+                        new ClassNameCollection([
+                            new ClassName(ObjectConstructor::class)
+                        ])
+                    ),
                 ]),
             ],
         ];
