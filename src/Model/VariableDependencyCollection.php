@@ -20,9 +20,7 @@ class VariableDependencyCollection implements \IteratorAggregate
     public function __construct(array $names = [])
     {
         foreach ($names as $name) {
-            if (is_string($name)) {
-                $this->add(new VariableDependency($name));
-            }
+            $this->add(new VariableDependency($name));
         }
     }
 
