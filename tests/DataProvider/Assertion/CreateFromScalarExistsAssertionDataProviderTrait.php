@@ -14,14 +14,14 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
     /**
      * @return array<mixed>
      */
-    public function createFromScalarExistsAssertionDataProvider(): array
+    public static function createFromScalarExistsAssertionDataProvider(): array
     {
         $assertionParser = AssertionParser::create();
 
         return [
             'exists comparison, page property examined value' => [
                 'assertion' => $assertionParser->parse('$page.url exists'),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->'
+                'expectedRenderedContent' => '{{ PHPUNIT }}->'
                     . 'setBooleanExaminedValue(({{ CLIENT }}->getCurrentURL() ?? null) !== null);' . "\n"
                     . '{{ PHPUNIT }}->assertTrue(' . "\n"
                     . '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n"
@@ -35,7 +35,7 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
             ],
             'exists comparison, data parameter value' => [
                 'assertion' => $assertionParser->parse('$data.key exists'),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->setBooleanExaminedValue(($key ?? null) !== null);' . "\n"
+                'expectedRenderedContent' => '{{ PHPUNIT }}->setBooleanExaminedValue(($key ?? null) !== null);' . "\n"
                     . '{{ PHPUNIT }}->assertTrue(' . "\n"
                     . '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n"
                     . ');',

@@ -40,7 +40,7 @@ class ScalarValueHandlerTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function createFromValueDataProvider(): array
+    public static function createFromValueDataProvider(): array
     {
         return [
             'literal string value: string' => [
@@ -115,7 +115,7 @@ class ScalarValueHandlerTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function handleThrowsExceptionDataProvider(): array
+    public static function handleThrowsExceptionDataProvider(): array
     {
         return [
             'unhandled type' => [

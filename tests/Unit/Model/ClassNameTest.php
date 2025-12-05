@@ -24,7 +24,7 @@ class ClassNameTest extends TestCase
     /**
      * @return array<mixed>
      */
-    public function createDataProvider(): array
+    public static function createDataProvider(): array
     {
         return [
             'no alias' => [
@@ -41,15 +41,15 @@ class ClassNameTest extends TestCase
     /**
      * @dataProvider getClassDataProvider
      */
-    public function testGetClass(ClassName $classDependency, string $expectedClass): void
+    public function testGetClass(ClassName $className, string $expectedClass): void
     {
-        $this->assertSame($expectedClass, $classDependency->getClass());
+        $this->assertSame($expectedClass, $className->getClass());
     }
 
     /**
      * @return array<mixed>
      */
-    public function getClassDataProvider(): array
+    public static function getClassDataProvider(): array
     {
         return [
             'global namespace' => [
@@ -66,15 +66,15 @@ class ClassNameTest extends TestCase
     /**
      * @dataProvider toStringDataProvider
      */
-    public function testToString(ClassName $classDependency, string $expectedString): void
+    public function testToString(ClassName $className, string $expectedString): void
     {
-        $this->assertSame($expectedString, (string) $classDependency);
+        $this->assertSame($expectedString, (string) $className);
     }
 
     /**
      * @return array<mixed>
      */
-    public function toStringDataProvider(): array
+    public static function toStringDataProvider(): array
     {
         return [
             'no alias' => [
@@ -99,15 +99,15 @@ class ClassNameTest extends TestCase
     /**
      * @dataProvider isInRootNamespaceDataProvider
      */
-    public function testIsInRootNamespace(ClassName $classDependency, bool $expectedIsInRootNamespace): void
+    public function testIsInRootNamespace(ClassName $className, bool $expectedIsInRootNamespace): void
     {
-        $this->assertSame($expectedIsInRootNamespace, $classDependency->isInRootNamespace());
+        $this->assertSame($expectedIsInRootNamespace, $className->isInRootNamespace());
     }
 
     /**
      * @return array<mixed>
      */
-    public function isInRootNamespaceDataProvider(): array
+    public static function isInRootNamespaceDataProvider(): array
     {
         return [
             'not in root namespace, no alias' => [
@@ -132,15 +132,15 @@ class ClassNameTest extends TestCase
     /**
      * @dataProvider renderClassNameDataProvider
      */
-    public function testRenderClassName(ClassName $classDependency, string $expectedString): void
+    public function testRenderClassName(ClassName $className, string $expectedString): void
     {
-        $this->assertSame($expectedString, $classDependency->renderClassName());
+        $this->assertSame($expectedString, $className->renderClassName());
     }
 
     /**
      * @return array<mixed>
      */
-    public function renderClassNameDataProvider(): array
+    public static function renderClassNameDataProvider(): array
     {
         return [
             'no alias' => [
@@ -173,7 +173,7 @@ class ClassNameTest extends TestCase
     /**
      * @return array<mixed>
      */
-    public function isFullyQualifiedClassNameDataProvider(): array
+    public static function isFullyQualifiedClassNameDataProvider(): array
     {
         return [
             'namespaced class name' => [

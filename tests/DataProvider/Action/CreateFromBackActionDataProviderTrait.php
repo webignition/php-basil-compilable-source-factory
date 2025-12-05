@@ -14,7 +14,7 @@ trait CreateFromBackActionDataProviderTrait
     /**
      * @return array<mixed>
      */
-    public function createFromBackActionDataProvider(): array
+    public static function createFromBackActionDataProvider(): array
     {
         $actionParser = ActionParser::create();
 

@@ -13,7 +13,7 @@ trait ExistsAssertionFunctionalDataProviderTrait
     /**
      * @return array<mixed>
      */
-    public function existsAssertionFunctionalDataProvider(): array
+    public static function existsAssertionFunctionalDataProvider(): array
     {
         $assertionParser = AssertionParser::create();
 
@@ -29,7 +29,7 @@ trait ExistsAssertionFunctionalDataProviderTrait
             'exists comparison, environment examined value' => [
                 'fixture' => '/empty.html',
                 'assertion' => $assertionParser->parse('$env.TEST1 exists'),
-                'variableIdentifiers' => [
+                'additionalVariableIdentifiers' => [
                     VariableNames::ENVIRONMENT_VARIABLE_ARRAY => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
                 ],
             ],

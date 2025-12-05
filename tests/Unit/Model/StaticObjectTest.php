@@ -27,7 +27,7 @@ class StaticObjectTest extends TestCase
     /**
      * @return array<mixed>
      */
-    public function getMetadataDataProvider(): array
+    public static function getMetadataDataProvider(): array
     {
         return [
             'string reference' => [
@@ -60,15 +60,15 @@ class StaticObjectTest extends TestCase
     /**
      * @dataProvider toStringDataProvider
      */
-    public function testToString(StaticObject $staticObject, string $expectedString): void
+    public function testToString(StaticObject $object, string $expectedString): void
     {
-        $this->assertSame($expectedString, (string) $staticObject);
+        $this->assertSame($expectedString, (string) $object);
     }
 
     /**
      * @return array<mixed>
      */
-    public function toStringDataProvider(): array
+    public static function toStringDataProvider(): array
     {
         return [
             'string reference' => [

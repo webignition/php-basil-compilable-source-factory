@@ -57,7 +57,7 @@ class StepHandlerTest extends AbstractBrowserTestCase
     /**
      * @return array<mixed>
      */
-    public function handleDataProvider(): array
+    public static function handleDataProvider(): array
     {
         $stepParser = StepParser::create();
 
@@ -168,7 +168,7 @@ class StepHandlerTest extends AbstractBrowserTestCase
     /**
      * @return array<mixed>
      */
-    public function handleForFailingActionsDataProvider(): array
+    public static function handleForFailingActionsDataProvider(): array
     {
         $stepParser = StepParser::create();
 

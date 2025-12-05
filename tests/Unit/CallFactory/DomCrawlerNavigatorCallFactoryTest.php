@@ -41,9 +41,9 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function createFindCallDataProvider(): array
+    public static function createFindCallDataProvider(): array
     {
-        return $this->createElementCallDataProvider('find');
+        return self::createElementCallDataProvider('find');
     }
 
     /**
@@ -63,9 +63,9 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function createFindOneCallDataProvider(): array
+    public static function createFindOneCallDataProvider(): array
     {
-        return $this->createElementCallDataProvider('findOne');
+        return self::createElementCallDataProvider('findOne');
     }
 
     /**
@@ -85,9 +85,9 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function createHasCallDataProvider(): array
+    public static function createHasCallDataProvider(): array
     {
-        return $this->createElementCallDataProvider('has');
+        return self::createElementCallDataProvider('has');
     }
 
     /**
@@ -107,20 +107,20 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function createHasOneCallDataProvider(): array
+    public static function createHasOneCallDataProvider(): array
     {
-        return $this->createElementCallDataProvider('hasOne');
+        return self::createElementCallDataProvider('hasOne');
     }
 
     /**
      * @return array<mixed>
      */
-    private function createElementCallDataProvider(string $method): array
+    private static function createElementCallDataProvider(string $method): array
     {
         $testCases = [
             'literal expression' => [
                 'elementIdentifierExpression' => new LiteralExpression('"literal expression"'),
-                'expectedRenderedSource' => '{{ NAVIGATOR }}->{{ METHOD }}("literal expression")',
+                'expectedRenderedExpression' => '{{ NAVIGATOR }}->{{ METHOD }}("literal expression")',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -130,10 +130,10 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTestCase
         ];
 
         foreach ($testCases as $testCaseIndex => $testCase) {
-            $testCase['expectedRenderedSource'] = str_replace(
+            $testCase['expectedRenderedExpression'] = str_replace(
                 '{{ METHOD }}',
                 $method,
-                $testCase['expectedRenderedSource']
+                $testCase['expectedRenderedExpression']
             );
 
             $testCases[$testCaseIndex] = $testCase;

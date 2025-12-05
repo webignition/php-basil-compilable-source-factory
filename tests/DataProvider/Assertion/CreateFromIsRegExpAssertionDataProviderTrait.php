@@ -19,7 +19,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
     /**
      * @return array<mixed>
      */
-    public function createFromIsRegExpAssertionDataProvider(): array
+    public static function createFromIsRegExpAssertionDataProvider(): array
     {
         $assertionParser = AssertionParser::create();
 
@@ -30,7 +30,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     '"/^value/"',
                     'is-regexp'
                 ),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->setExaminedValue("/^value/" ?? null);' . "\n"
+                'expectedRenderedContent' => '{{ PHPUNIT }}->setExaminedValue("/^value/" ?? null);' . "\n"
                     . '{{ PHPUNIT }}->setBooleanExpectedValue(' . "\n"
                     . '    @preg_match({{ PHPUNIT }}->getExaminedValue(), null) === false' . "\n"
                     . ');' . "\n"
@@ -49,7 +49,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     '$".pattern-container"',
                     'is-regexp'
                 ),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n"
+                'expectedRenderedContent' => '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n"
                     . '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n"
                     . '        "locator": ".pattern-container"' . "\n"
                     . '    }\'));' . "\n"
@@ -81,7 +81,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     '$".pattern-container".attribute_name',
                     'is-regexp'
                 ),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n"
+                'expectedRenderedContent' => '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n"
                     . '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n"
                     . '        "locator": ".pattern-container"' . "\n"
                     . '    }\'));' . "\n"
@@ -112,7 +112,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     '$data.pattern',
                     'is-regexp'
                 ),
-                'expectedRenderedSource' => '{{ PHPUNIT }}->setExaminedValue($pattern ?? null);' . "\n"
+                'expectedRenderedContent' => '{{ PHPUNIT }}->setExaminedValue($pattern ?? null);' . "\n"
                     . '{{ PHPUNIT }}->setBooleanExpectedValue(' . "\n"
                     . '    @preg_match({{ PHPUNIT }}->getExaminedValue(), null) === false' . "\n"
                     . ');' . "\n"

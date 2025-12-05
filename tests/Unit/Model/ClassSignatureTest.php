@@ -29,7 +29,7 @@ class ClassSignatureTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function getBaseClassDataProvider(): array
+    public static function getBaseClassDataProvider(): array
     {
         $baseClass = new ClassName(TestCase::class);
 
@@ -56,7 +56,7 @@ class ClassSignatureTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function renderDataProvider(): array
+    public static function renderDataProvider(): array
     {
         return [
             'no base class' => [

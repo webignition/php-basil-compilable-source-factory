@@ -11,7 +11,7 @@ trait IsAssertionFunctionalDataProviderTrait
     /**
      * @return array<mixed>
      */
-    public function isAssertionFunctionalDataProvider(): array
+    public static function isAssertionFunctionalDataProvider(): array
     {
         $assertionParser = AssertionParser::create();
 
@@ -68,7 +68,7 @@ trait IsAssertionFunctionalDataProviderTrait
 
         $testCases = [];
 
-        foreach ($this->equalityAssertionFunctionalDataProvider() as $testName => $testData) {
+        foreach (self::equalityAssertionFunctionalDataProvider() as $testName => $testData) {
             $testData['assertion'] = $assertions[$testName]['assertion'];
             $testCases['is comparison, ' . $testName] = $testData;
         }

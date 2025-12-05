@@ -11,7 +11,7 @@ trait ExcludesAssertionFunctionalDataProviderTrait
     /**
      * @return array<mixed>
      */
-    public function excludesAssertionFunctionalDataProvider(): array
+    public static function excludesAssertionFunctionalDataProvider(): array
     {
         $assertionParser = AssertionParser::create();
 
@@ -50,7 +50,7 @@ trait ExcludesAssertionFunctionalDataProviderTrait
 
         $testCases = [];
 
-        foreach ($this->inclusionAssertionFunctionalDataProvider() as $testName => $testData) {
+        foreach (self::inclusionAssertionFunctionalDataProvider() as $testName => $testData) {
             $testData['assertion'] = $assertions[$testName]['assertion'];
             $testCases['excludes comparison, ' . $testName] = $testData;
         }

@@ -43,14 +43,14 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function createClassDefinitionDataProvider(): array
+    public static function createClassDefinitionDataProvider(): array
     {
         $testParser = TestParser::create();
 
         return [
             'empty test, browser=chrome' => [
-                'classDefinitionFactory' => $this->createClassDefinitionFactory(
-                    $this->createClassNameFactory('GeneratedClassName'),
+                'factory' => self::createClassDefinitionFactory(
+                    self::createClassNameFactory('GeneratedClassName'),
                     \Mockery::mock(StepMethodFactory::class)
                 ),
                 'expectedClassName' => 'GeneratedClassName',
@@ -93,8 +93,8 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                 ]),
             ],
             'empty test, browser=firefox' => [
-                'classDefinitionFactory' => $this->createClassDefinitionFactory(
-                    $this->createClassNameFactory('GeneratedClassName'),
+                'factory' => self::createClassDefinitionFactory(
+                    self::createClassNameFactory('GeneratedClassName'),
                     \Mockery::mock(StepMethodFactory::class)
                 ),
                 'expectedClassName' => 'GeneratedClassName',
@@ -137,8 +137,8 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                 ]),
             ],
             'empty test, browser=unknown' => [
-                'classDefinitionFactory' => $this->createClassDefinitionFactory(
-                    $this->createClassNameFactory('GeneratedClassName'),
+                'factory' => self::createClassDefinitionFactory(
+                    self::createClassNameFactory('GeneratedClassName'),
                     \Mockery::mock(StepMethodFactory::class)
                 ),
                 'expectedClassName' => 'GeneratedClassName',
@@ -181,8 +181,8 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                 ]),
             ],
             'single empty step' => [
-                'classDefinitionFactory' => $this->createClassDefinitionFactory(
-                    $this->createClassNameFactory('GeneratedClassName'),
+                'factory' => self::createClassDefinitionFactory(
+                    self::createClassNameFactory('GeneratedClassName'),
                     StepMethodFactory::createFactory()
                 ),
                 'expectedClassName' => 'GeneratedClassName',
@@ -236,8 +236,8 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                 ]),
             ],
             'two empty steps' => [
-                'classDefinitionFactory' => $this->createClassDefinitionFactory(
-                    $this->createClassNameFactory('GeneratedClassName'),
+                'factory' => self::createClassDefinitionFactory(
+                    self::createClassNameFactory('GeneratedClassName'),
                     StepMethodFactory::createFactory()
                 ),
                 'expectedClassName' => 'GeneratedClassName',
@@ -303,7 +303,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
         ];
     }
 
-    private function createClassDefinitionFactory(
+    private static function createClassDefinitionFactory(
         ClassNameFactory $classNameFactory,
         StepMethodFactory $stepMethodFactory
     ): ClassDefinitionFactory {
@@ -314,13 +314,13 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
         );
     }
 
-    private function createClassNameFactory(string $className): ClassNameFactory
+    private static function createClassNameFactory(string $className): ClassNameFactory
     {
         $classNameFactory = \Mockery::mock(ClassNameFactory::class);
         $classNameFactory
             ->shouldReceive('create')
             ->withArgs(function ($test) {
-                $this->assertInstanceOf(TestInterface::class, $test);
+                self::assertInstanceOf(TestInterface::class, $test);
 
                 return true;
             })

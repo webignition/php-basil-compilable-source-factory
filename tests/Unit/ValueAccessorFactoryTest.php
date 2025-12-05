@@ -39,7 +39,7 @@ class ValueAccessorFactoryTest extends TestCase
     /**
      * @return array<mixed>
      */
-    public function createDataProvider(): array
+    public static function createDataProvider(): array
     {
         $scalarValueHandler = ScalarValueHandler::createHandler();
         $domIdentifierHandler = DomIdentifierHandler::createHandler();
@@ -85,7 +85,7 @@ class ValueAccessorFactoryTest extends TestCase
     /**
      * @return array<mixed>
      */
-    public function createWithDefaultIfNullDataProvider(): array
+    public static function createWithDefaultIfNullDataProvider(): array
     {
         $scalarValueHandler = ScalarValueHandler::createHandler();
         $domIdentifierHandler = DomIdentifierHandler::createHandler();
@@ -131,7 +131,7 @@ class ValueAccessorFactoryTest extends TestCase
     /**
      * @return array<mixed>
      */
-    public function createThrowsExceptionDataProvider(): array
+    public static function createThrowsExceptionDataProvider(): array
     {
         return [
             'value is null' => [
