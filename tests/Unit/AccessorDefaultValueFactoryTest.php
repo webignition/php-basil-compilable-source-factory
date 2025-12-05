@@ -29,7 +29,7 @@ class AccessorDefaultValueFactoryTest extends TestCase
     /**
      * @return array<mixed>
      */
-    public function createIntegerDataProvider(): array
+    public static function createIntegerDataProvider(): array
     {
         return [
             'not environment value' => [
@@ -62,7 +62,7 @@ class AccessorDefaultValueFactoryTest extends TestCase
     /**
      * @return array<mixed>
      */
-    public function createStringDataProvider(): array
+    public static function createStringDataProvider(): array
     {
         return [
             'not environment value' => [
