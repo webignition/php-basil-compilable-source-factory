@@ -120,7 +120,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTestCase
         $testCases = [
             'literal expression' => [
                 'elementIdentifierExpression' => new LiteralExpression('"literal expression"'),
-                'expectedRenderedSource' => '{{ NAVIGATOR }}->{{ METHOD }}("literal expression")',
+                'expectedRenderedExpression' => '{{ NAVIGATOR }}->{{ METHOD }}("literal expression")',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
@@ -130,10 +130,10 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTestCase
         ];
 
         foreach ($testCases as $testCaseIndex => $testCase) {
-            $testCase['expectedRenderedSource'] = str_replace(
+            $testCase['expectedRenderedExpression'] = str_replace(
                 '{{ METHOD }}',
                 $method,
-                $testCase['expectedRenderedSource']
+                $testCase['expectedRenderedExpression']
             );
 
             $testCases[$testCaseIndex] = $testCase;
