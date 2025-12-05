@@ -32,9 +32,7 @@ class ObjectTypeDeclarationCollection implements
      */
     public function __construct(array $declarations)
     {
-        $this->declarations = array_filter($declarations, function ($item) {
-            return $item instanceof ObjectTypeDeclaration;
-        });
+        $this->declarations = $declarations;
     }
 
     public function getMetadata(): MetadataInterface
@@ -42,9 +40,7 @@ class ObjectTypeDeclarationCollection implements
         $metadata = new Metadata();
 
         foreach ($this->declarations as $declaration) {
-            if ($declaration instanceof TypeDeclarationInterface) {
-                $metadata = $metadata->merge($declaration->getMetadata());
-            }
+            $metadata = $metadata->merge($declaration->getMetadata());
         }
 
         return $metadata;

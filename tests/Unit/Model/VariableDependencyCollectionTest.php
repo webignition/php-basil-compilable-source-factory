@@ -86,7 +86,7 @@ class VariableDependencyCollectionTest extends TestCase
     }
 
     /**
-     * @return VariableDependency[]
+     * @return array<mixed>
      */
     private function getCollectionVariablePlaceholders(VariableDependencyCollection $collection): array
     {

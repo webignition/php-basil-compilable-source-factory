@@ -28,10 +28,6 @@ class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationIn
      */
     public function __construct(array $pairs)
     {
-        $pairs = array_filter($pairs, function ($item) {
-            return $item instanceof ArrayPair;
-        });
-
         $this->pairs = $pairs;
     }
 

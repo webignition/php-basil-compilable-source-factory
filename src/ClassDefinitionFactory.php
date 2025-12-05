@@ -28,7 +28,6 @@ use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDec
 use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclarationCollection;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
-use webignition\BasilModels\Model\Step\StepInterface;
 use webignition\BasilModels\Model\Test\NamedTestInterface;
 use webignition\BasilModels\Model\Test\TestInterface;
 
@@ -62,13 +61,11 @@ class ClassDefinitionFactory
 
         $stepOrdinalIndex = 1;
         foreach ($test->getSteps() as $stepName => $step) {
-            if ($step instanceof StepInterface) {
-                $methodDefinitions = array_merge(
-                    $methodDefinitions,
-                    $this->stepMethodFactory->create($stepOrdinalIndex, $stepName, $step)
-                );
-                ++$stepOrdinalIndex;
-            }
+            $methodDefinitions = array_merge(
+                $methodDefinitions,
+                $this->stepMethodFactory->create($stepOrdinalIndex, $stepName, $step)
+            );
+            ++$stepOrdinalIndex;
         }
 
         $baseClass = is_string($fullyQualifiedBaseClass) ? new ClassName($fullyQualifiedBaseClass) : null;

@@ -34,9 +34,7 @@ class ClassBody implements ResolvableInterface, ResolvableCollectionInterface
         $metadata = new Metadata();
 
         foreach ($this->methods as $method) {
-            if ($method instanceof MethodDefinitionInterface) {
-                $metadata = $metadata->merge($method->getMetadata());
-            }
+            $metadata = $metadata->merge($method->getMetadata());
         }
 
         return $metadata;

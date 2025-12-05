@@ -53,15 +53,13 @@ class StatementFactoryCallFactoryTest extends AbstractBrowserTestCase
         $testRunJob = $this->testRunner->createTestRunJob($classCode);
         self::assertInstanceOf(TestRunJob::class, $testRunJob);
 
-        if ($testRunJob instanceof TestRunJob) {
-            $this->testRunner->run($testRunJob);
+        $this->testRunner->run($testRunJob);
 
-            $this->assertSame(
-                $testRunJob->getExpectedExitCode(),
-                $testRunJob->getExitCode(),
-                $testRunJob->getOutputAsString()
-            );
-        }
+        $this->assertSame(
+            $testRunJob->getExpectedExitCode(),
+            $testRunJob->getExitCode(),
+            $testRunJob->getOutputAsString()
+        );
     }
 
     /**
