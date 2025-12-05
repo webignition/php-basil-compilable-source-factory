@@ -9,6 +9,7 @@ use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollecti
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\CatchBlock;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
+use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CatchExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
@@ -49,10 +50,12 @@ class CatchBlockTest extends AbstractResolvableTestCase
         );
 
         $expectedMetadata = new Metadata([
-            Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection([
-                new ClassName(\RuntimeException::class),
-                new ClassName(\Exception::class),
-            ]),
+            Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
+                new ClassNameCollection([
+                    new ClassName(\RuntimeException::class),
+                    new ClassName(\Exception::class),
+                ])
+            ),
             Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                 'DEPENDENCY',
             ]),
