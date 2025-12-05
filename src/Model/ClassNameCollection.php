@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Model;
 /**
  * @implements \IteratorAggregate<string, ClassName>
  */
-class ClassNameCollection implements \IteratorAggregate
+class ClassNameCollection implements \IteratorAggregate, \Countable
 {
     /**
      * @var ClassName[]
@@ -29,6 +29,11 @@ class ClassNameCollection implements \IteratorAggregate
     public function merge(ClassNameCollection $collection): ClassNameCollection
     {
         return new ClassNameCollection(array_merge($this->classNames, $collection->classNames));
+    }
+
+    public function count(): int
+    {
+        return count($this->classNames);
     }
 
     /**
