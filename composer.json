@@ -59,7 +59,7 @@
     "require": {
         "php": "^8.4",
         "ext-json": "*",
-        "webignition/base-basil-test-case": "^5.1",
+        "webignition/base-basil-test-case": "^6.0",
         "webignition/basil-dom-identifier-factory": "^1.1",
         "webignition/basil-identifier-analyser": "^2.0",
         "webignition/basil-models": "^9.0",
@@ -78,7 +78,7 @@
         "phpstan/phpstan": "^2.1",
         "phpstan/phpstan-mockery": "^2.0",
         "phpstan/phpstan-phpunit": "^2.0",
-        "phpunit/phpunit": "^9.5",
+        "phpunit/phpunit": "^10",
         "squizlabs/php_codesniffer": "^4.0",
         "webignition/object-reflector": ">=0.2,<1",
         "webignition/symfony-panther-webserver-runner": ">=0.6,<1"

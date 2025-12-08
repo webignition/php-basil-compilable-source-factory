@@ -43,7 +43,7 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function createDataProvider(): array
+    public static function createDataProvider(): array
     {
         return [
             'no arguments' => [
@@ -108,7 +108,7 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function renderDataProvider(): array
+    public static function renderDataProvider(): array
     {
         return [
             'object and method name only' => [

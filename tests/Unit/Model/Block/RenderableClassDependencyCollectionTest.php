@@ -24,7 +24,7 @@ class RenderableClassDependencyCollectionTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function renderDataProvider(): array
+    public static function renderDataProvider(): array
     {
         return [
             'empty' => [
@@ -102,7 +102,7 @@ class RenderableClassDependencyCollectionTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function countDataProvider(): array
+    public static function countDataProvider(): array
     {
         return [
             'empty' => [
@@ -150,7 +150,7 @@ class RenderableClassDependencyCollectionTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function isEmptyDataProvider(): array
+    public static function isEmptyDataProvider(): array
     {
         return [
             'empty' => [

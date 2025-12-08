@@ -6,9 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\Asse
 
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
-use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
 use webignition\BasilModels\Parser\AssertionParser;
@@ -56,7 +54,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
     /**
      * @return array<mixed>
      */
-    public function createSourceForFailingAssertionsDataProvider(): array
+    public static function createSourceForFailingAssertionsDataProvider(): array
     {
         $assertionParser = AssertionParser::create();
 
@@ -80,9 +78,6 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
                 'fixture' => '/index.html',
                 'assertion' => $assertionParser->parse('$env.FOO exists'),
                 'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
-                'additionalVariableIdentifiers' => [
-                    VariableNames::ENVIRONMENT_VARIABLE_ARRAY => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
-                ],
             ],
             'is-regexp operation, scalar identifier, literal value is not a regular expression' => [
                 'fixture' => '/index.html',

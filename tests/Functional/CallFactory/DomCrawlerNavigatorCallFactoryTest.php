@@ -72,7 +72,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
     /**
      * @return array<mixed>
      */
-    public function createFindCallDataProvider(): array
+    public static function createFindCallDataProvider(): array
     {
         $elementIdentifierCallFactory = ElementIdentifierCallFactory::createFactory();
         $elementIdentifierSerializer = ElementIdentifierSerializer::createSerializer();

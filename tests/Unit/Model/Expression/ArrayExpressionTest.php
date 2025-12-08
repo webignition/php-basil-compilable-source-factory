@@ -29,7 +29,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function getMetadataDataProvider(): array
+    public static function getMetadataDataProvider(): array
     {
         return [
             'empty' => [
@@ -75,7 +75,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function renderDataProvider(): array
+    public static function renderDataProvider(): array
     {
         return [
             'empty' => [
@@ -270,7 +270,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function fromArrayDataProvider(): array
+    public static function fromArrayDataProvider(): array
     {
         return [
             'empty' => [

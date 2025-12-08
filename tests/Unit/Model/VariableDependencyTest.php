@@ -24,7 +24,7 @@ class VariableDependencyTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function constructDataProvider(): array
+    public static function constructDataProvider(): array
     {
         return [
             'default' => [
@@ -44,7 +44,7 @@ class VariableDependencyTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function getMetadataDataProvider(): array
+    public static function getMetadataDataProvider(): array
     {
         return [
             'variable dependency' => [
@@ -69,7 +69,7 @@ class VariableDependencyTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function renderDataProvider(): array
+    public static function renderDataProvider(): array
     {
         return [
             'empty' => [

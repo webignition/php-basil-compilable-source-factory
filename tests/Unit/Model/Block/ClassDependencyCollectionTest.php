@@ -17,17 +17,17 @@ class ClassDependencyCollectionTest extends AbstractResolvableTestCase
     /**
      * @dataProvider createDataProvider
      */
-    public function testCreate(ClassNameCollection $dependencies, ClassNameCollection $expectedDependencies): void
+    public function testCreate(ClassNameCollection $classNames, ClassNameCollection $expectedClassNames): void
     {
-        $collection = new ClassDependencyCollection($dependencies);
+        $collection = new ClassDependencyCollection($classNames);
 
-        $this->assertEquals($expectedDependencies, $collection->getClassNames());
+        $this->assertEquals($expectedClassNames, $collection->getClassNames());
     }
 
     /**
      * @return array<mixed>
      */
-    public function createDataProvider(): array
+    public static function createDataProvider(): array
     {
         return [
             'empty' => [
@@ -59,7 +59,7 @@ class ClassDependencyCollectionTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function renderDataProvider(): array
+    public static function renderDataProvider(): array
     {
         return [
             'empty' => [
@@ -110,7 +110,7 @@ class ClassDependencyCollectionTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function countDataProvider(): array
+    public static function countDataProvider(): array
     {
         return [
             'empty' => [
@@ -158,7 +158,7 @@ class ClassDependencyCollectionTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function isEmptyDataProvider(): array
+    public static function isEmptyDataProvider(): array
     {
         return [
             'empty' => [

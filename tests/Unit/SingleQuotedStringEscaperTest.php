@@ -29,7 +29,7 @@ class SingleQuotedStringEscaperTest extends TestCase
     /**
      * @return array<mixed>
      */
-    public function escapeDataProvider(): array
+    public static function escapeDataProvider(): array
     {
         return [
             'no single quotes' => [

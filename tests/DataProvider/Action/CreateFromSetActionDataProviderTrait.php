@@ -18,7 +18,7 @@ trait CreateFromSetActionDataProviderTrait
     /**
      * @return array<mixed>
      */
-    public function createFromSetActionDataProvider(): array
+    public static function createFromSetActionDataProvider(): array
     {
         $actionParser = ActionParser::create();
 

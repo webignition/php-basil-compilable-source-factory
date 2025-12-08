@@ -13,7 +13,7 @@ trait SubmitActionFunctionalDataProviderTrait
     /**
      * @return array<mixed>
      */
-    public function submitActionFunctionalDataProvider(): array
+    public static function submitActionFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
 

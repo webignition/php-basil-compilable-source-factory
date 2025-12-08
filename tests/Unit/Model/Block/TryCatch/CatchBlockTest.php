@@ -75,7 +75,7 @@ class CatchBlockTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function renderDataProvider(): array
+    public static function renderDataProvider(): array
     {
         return [
             'single-class expression, all in root namespace' => [

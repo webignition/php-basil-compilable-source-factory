@@ -15,7 +15,7 @@ trait EqualityAssertionFunctionalDataProviderTrait
      *     array{"fixture": string, "assertion": null, "additionalVariableIdentifiers"?: array<string, string>}
      * >
      */
-    public function equalityAssertionFunctionalDataProvider(): array
+    public static function equalityAssertionFunctionalDataProvider(): array
     {
         return [
             'element identifier examined value, scalar expected value' => [
@@ -29,7 +29,7 @@ trait EqualityAssertionFunctionalDataProviderTrait
             'environment examined value, scalar expected value' => [
                 'fixture' => '/empty.html',
                 'assertion' => null,
-                'variableIdentifiers' => [
+                'additionalVariableIdentifiers' => [
                     VariableNames::ENVIRONMENT_VARIABLE_ARRAY => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
                 ],
             ],
@@ -52,7 +52,7 @@ trait EqualityAssertionFunctionalDataProviderTrait
             'attribute identifier examined value, environment expected value' => [
                 'fixture' => '/assertions.html',
                 'assertion' => null,
-                'variableIdentifiers' => [
+                'additionalVariableIdentifiers' => [
                     VariableNames::ENVIRONMENT_VARIABLE_ARRAY => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
                 ],
             ],

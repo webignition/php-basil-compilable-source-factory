@@ -50,7 +50,7 @@ class ClassDefinitionTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function getMetadataDataProvider(): array
+    public static function getMetadataDataProvider(): array
     {
         return [
             'empty' => [
@@ -112,7 +112,7 @@ class ClassDefinitionTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function renderDataProvider(): array
+    public static function renderDataProvider(): array
     {
         return [
             'no methods, no base class' => [

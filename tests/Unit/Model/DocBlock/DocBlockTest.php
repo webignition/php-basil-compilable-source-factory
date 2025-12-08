@@ -23,7 +23,7 @@ class DocBlockTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function appendDataProvider(): array
+    public static function appendDataProvider(): array
     {
         return [
             'append: non-empty, non-empty' => [
@@ -53,7 +53,7 @@ class DocBlockTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function mergeDataProvider(): array
+    public static function mergeDataProvider(): array
     {
         return [
             'merge: empty, empty' => [
@@ -85,7 +85,7 @@ class DocBlockTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function prependDataProvider(): array
+    public static function prependDataProvider(): array
     {
         return [
             'prepend: non-empty, non-empty' => [
@@ -114,7 +114,7 @@ class DocBlockTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function renderDataProvider(): array
+    public static function renderDataProvider(): array
     {
         return [
             'empty' => [

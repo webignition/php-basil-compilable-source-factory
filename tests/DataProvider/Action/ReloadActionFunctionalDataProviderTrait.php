@@ -19,7 +19,7 @@ trait ReloadActionFunctionalDataProviderTrait
     /**
      * @return array<mixed>
      */
-    public function reloadActionFunctionalDataProvider(): array
+    public static function reloadActionFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
         $argumentFactory = ArgumentFactory::createFactory();

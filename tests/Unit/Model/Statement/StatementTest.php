@@ -31,7 +31,7 @@ class StatementTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function createDataProvider(): array
+    public static function createDataProvider(): array
     {
         return [
             'variable dependency' => [
@@ -71,7 +71,7 @@ class StatementTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function renderDataProvider(): array
+    public static function renderDataProvider(): array
     {
         return [
             'statement encapsulating variable dependency' => [

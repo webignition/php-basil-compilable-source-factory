@@ -32,12 +32,12 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
      *
      * @param string[] $arguments
      */
-    public function testCreate(string $name, BodyInterface $codeBlock, array $arguments = []): void
+    public function testCreate(string $name, BodyInterface $body, array $arguments = []): void
     {
-        $methodDefinition = new MethodDefinition($name, $codeBlock, $arguments);
+        $methodDefinition = new MethodDefinition($name, $body, $arguments);
 
         $this->assertSame($name, $methodDefinition->getName());
-        $this->assertEquals($codeBlock->getMetadata(), $methodDefinition->getMetadata());
+        $this->assertEquals($body->getMetadata(), $methodDefinition->getMetadata());
         $this->assertSame($arguments, $methodDefinition->getArguments());
         $this->assertsame(MethodDefinition::VISIBILITY_PUBLIC, $methodDefinition->getVisibility());
         $this->assertNull($methodDefinition->getReturnType());
@@ -47,7 +47,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function createDataProvider(): array
+    public static function createDataProvider(): array
     {
         $body = new Body([]);
 
@@ -85,7 +85,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function getMetadataDataProvider(): array
+    public static function getMetadataDataProvider(): array
     {
         return [
             'empty' => [
@@ -173,7 +173,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function renderDataProvider(): array
+    public static function renderDataProvider(): array
     {
         $emptyProtectedMethod = new MethodDefinition('emptyProtectedMethod', new Body([]));
         $emptyProtectedMethod->setProtected();
@@ -331,7 +331,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
     /**
      * @return array<mixed>
      */
-    public function getDocBlockDataProvider(): array
+    public static function getDocBlockDataProvider(): array
     {
         return [
             'no arguments' => [
