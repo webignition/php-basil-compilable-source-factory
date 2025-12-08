@@ -57,7 +57,7 @@
         ]
     },
     "require": {
-        "php": "^8",
+        "php": "^8.4",
         "ext-json": "*",
         "webignition/base-basil-test-case": "^4.0",
         "webignition/basil-dom-identifier-factory": "^1.1",
