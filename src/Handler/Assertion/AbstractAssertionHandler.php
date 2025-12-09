@@ -27,7 +27,7 @@ abstract class AbstractAssertionHandler
 
     protected function createAssertionStatement(
         AssertionInterface $assertion,
-        ?MethodArgumentsInterface $arguments = null
+        MethodArgumentsInterface $arguments,
     ): StatementInterface {
         return new Statement(
             $this->assertionMethodInvocationFactory->create(
