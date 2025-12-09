@@ -19,16 +19,12 @@ class AssertionMethodInvocationFactory
 
     public function create(
         string $assertionMethod,
-        ?MethodArgumentsInterface $arguments = null
+        MethodArgumentsInterface $arguments,
     ): MethodInvocationInterface {
-        if ($arguments instanceof MethodArgumentsInterface) {
-            $arguments = new MethodArguments($arguments->getArguments(), MethodArguments::FORMAT_STACKED);
-        }
-
         return new ObjectMethodInvocation(
             new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
             $assertionMethod,
-            $arguments
+            new MethodArguments($arguments->getArguments(), MethodArguments::FORMAT_STACKED)
         );
     }
 }
