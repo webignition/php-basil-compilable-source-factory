@@ -31,7 +31,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
         return [
             'exists comparison, element identifier examined value' => [
                 'assertion' => $assertionParser->parse('$".selector" exists'),
-                'metadata' => new TestMetaData(
+                'metadata' => new TestMetadata(
                     'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
@@ -78,7 +78,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
             ],
             'exists comparison, attribute identifier examined value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name exists'),
-                'metadata' => new TestMetaData(
+                'metadata' => new TestMetadata(
                     'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
@@ -139,7 +139,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
             ],
             'exists comparison, css attribute selector containing dot' => [
                 'assertion' => $assertionParser->parse('$"a[href=foo.html]" exists'),
-                'metadata' => new TestMetaData(
+                'metadata' => new TestMetadata(
                     'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
@@ -186,7 +186,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
             ],
             'exists comparison, css attribute selector containing dot with attribute name' => [
                 'assertion' => $assertionParser->parse('$"a[href=foo.html]".attribute_name exists'),
-                'metadata' => new TestMetaData(
+                'metadata' => new TestMetadata(
                     'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
@@ -251,7 +251,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     '$".selector"',
                     'exists'
                 ),
-                'metadata' => new TestMetaData(
+                'metadata' => new TestMetadata(
                     'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
@@ -302,7 +302,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     '$".selector"',
                     'exists'
                 ),
-                'metadata' => new TestMetaData(
+                'metadata' => new TestMetadata(
                     'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
@@ -353,7 +353,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     '$".selector"',
                     'exists'
                 ),
-                'metadata' => new TestMetaData(
+                'metadata' => new TestMetadata(
                     'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
@@ -404,7 +404,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     '$".duration"',
                     'exists'
                 ),
-                'metadata' => new TestMetaData(
+                'metadata' => new TestMetadata(
                     'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);

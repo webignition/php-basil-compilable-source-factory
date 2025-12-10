@@ -27,7 +27,7 @@ trait CreateFromIsNotAssertionDataProviderTrait
         return [
             'is-not comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" is-not "value"'),
-                'metadata' => new TestMetaData(
+                'metadata' => new TestMetadata(
                     'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
@@ -72,7 +72,7 @@ trait CreateFromIsNotAssertionDataProviderTrait
             ],
             'is-not comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name is-not "value"'),
-                'metadata' => new TestMetaData(
+                'metadata' => new TestMetadata(
                     'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);

@@ -32,7 +32,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     '"/^value/"',
                     'is-regexp'
                 ),
-                'metadata' => new TestMetaData(
+                'metadata' => new TestMetadata(
                     'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
@@ -69,7 +69,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     '$".pattern-container"',
                     'is-regexp'
                 ),
-                'metadata' => new TestMetaData(
+                'metadata' => new TestMetadata(
                     'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
@@ -119,7 +119,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     '$".pattern-container".attribute_name',
                     'is-regexp'
                 ),
-                'metadata' => new TestMetaData(
+                'metadata' => new TestMetadata(
                     'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
@@ -168,7 +168,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     '$data.pattern',
                     'is-regexp'
                 ),
-                'metadata' => new TestMetaData(
+                'metadata' => new TestMetadata(
                     'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);

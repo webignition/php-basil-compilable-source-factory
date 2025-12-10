@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
+use webignition\BasilCompilableSourceFactory\Metadata\Metadata as TestMetadata;
 use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
@@ -13,7 +14,6 @@ use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Parser\AssertionParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
-use webignition\BasilCompilableSourceFactory\Metadata\Metadata as TestMetadata;
 
 trait CreateFromExcludesAssertionDataProviderTrait
 {
@@ -27,7 +27,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
         return [
             'excludes comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" excludes "value"'),
-                'metadata' => new TestMetaData(
+                'metadata' => new TestMetadata(
                     'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
@@ -72,7 +72,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
             ],
             'excludes comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name excludes "value"'),
-                'metadata' => new TestMetaData(
+                'metadata' => new TestMetadata(
                     'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);

@@ -28,7 +28,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
         return [
             'not-exists comparison, element identifier examined value' => [
                 'assertion' => $assertionParser->parse('$".selector" not-exists'),
-                'metadata' => new TestMetaData(
+                'metadata' => new TestMetadata(
                     'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
@@ -75,7 +75,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
             ],
             'not-exists comparison, attribute identifier examined value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name not-exists'),
-                'metadata' => new TestMetaData(
+                'metadata' => new TestMetadata(
                     'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);

@@ -23,7 +23,7 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
         return [
             'exists comparison, page property examined value' => [
                 'assertion' => $assertionParser->parse('$page.url exists'),
-                'metadata' => new TestMetaData(
+                'metadata' => new TestMetadata(
                     'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
@@ -54,7 +54,7 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
             ],
             'exists comparison, data parameter value' => [
                 'assertion' => $assertionParser->parse('$data.key exists'),
-                'metadata' => new TestMetaData(
+                'metadata' => new TestMetadata(
                     'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);

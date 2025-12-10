@@ -27,7 +27,7 @@ trait CreateFromIsAssertionDataProviderTrait
         return [
             'is comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" is "value"'),
-                'metadata' => new TestMetaData(
+                'metadata' => new TestMetadata(
                     'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
@@ -72,7 +72,7 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, descendant identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".parent" >> $".child" is "value"'),
-                'metadata' => new TestMetaData(
+                'metadata' => new TestMetadata(
                     'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
@@ -120,7 +120,7 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name is "value"'),
-                'metadata' => new TestMetaData(
+                'metadata' => new TestMetadata(
                     'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
@@ -164,7 +164,7 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, browser object examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is "value"'),
-                'metadata' => new TestMetaData(
+                'metadata' => new TestMetadata(
                     'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
@@ -177,21 +177,21 @@ trait CreateFromIsAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->setExpectedValue("value" ?? null);
-                    {{ PHPUNIT }}->setExaminedValue((function () {
-                        $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
-                    
-                        return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
-                    })());
-                    {{ PHPUNIT }}->assertEquals(
-                        {{ PHPUNIT }}->getExpectedValue(),
-                        {{ PHPUNIT }}->getExaminedValue(),
-                        '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$browser.size is \\\"value\\\"\"
-                        }'
-                    );
-                    EOD,
+            {{ PHPUNIT }}->setExpectedValue("value" ?? null);
+            {{ PHPUNIT }}->setExaminedValue((function () {
+                $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
+            
+                return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
+            })());
+            {{ PHPUNIT }}->assertEquals(
+                {{ PHPUNIT }}->getExpectedValue(),
+                {{ PHPUNIT }}->getExaminedValue(),
+                '{
+                    \"step\": \"step name\",
+                    \"statement\": \"$browser.size is \\\"value\\\"\"
+                }'
+            );
+            EOD,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PANTHER_CLIENT,
@@ -201,7 +201,7 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, environment examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$env.KEY is "value"'),
-                'metadata' => new TestMetaData(
+                'metadata' => new TestMetadata(
                     'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
@@ -234,7 +234,7 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, environment examined value with default, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$env.KEY|"default value" is "value"'),
-                'metadata' => new TestMetaData(
+                'metadata' => new TestMetadata(
                     'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
@@ -267,7 +267,7 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, environment examined value with default, environment examined value with default' => [
                 'assertion' => $assertionParser->parse('$env.KEY1|"default value 1" is $env.KEY2|"default value 2"'),
-                'metadata' => new TestMetaData(
+                'metadata' => new TestMetadata(
                     'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
@@ -300,7 +300,7 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, page object examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$page.title is "value"'),
-                'metadata' => new TestMetaData(
+                'metadata' => new TestMetadata(
                     'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
@@ -333,7 +333,7 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, browser object examined value, descendant identifier expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $".parent" >> $".child"'),
-                'metadata' => new TestMetaData(
+                'metadata' => new TestMetadata(
                     'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
@@ -346,30 +346,30 @@ trait CreateFromIsAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->setExpectedValue((function () {
-                        $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson('{
-                            "locator": ".child",
-                            "parent": {
-                                "locator": ".parent"
-                            }
-                        }'));
-                    
-                        return {{ INSPECTOR }}->getValue($element);
-                    })());
-                    {{ PHPUNIT }}->setExaminedValue((function () {
-                        $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
-                    
-                        return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
-                    })());
-                    {{ PHPUNIT }}->assertEquals(
-                        {{ PHPUNIT }}->getExpectedValue(),
-                        {{ PHPUNIT }}->getExaminedValue(),
-                        '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$browser.size is $\\\".parent\\\" >> $\\\".child\\\"\"
-                        }'
-                    );
-                    EOD,
+            {{ PHPUNIT }}->setExpectedValue((function () {
+                $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson('{
+                    "locator": ".child",
+                    "parent": {
+                        "locator": ".parent"
+                    }
+                }'));
+            
+                return {{ INSPECTOR }}->getValue($element);
+            })());
+            {{ PHPUNIT }}->setExaminedValue((function () {
+                $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
+            
+                return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
+            })());
+            {{ PHPUNIT }}->assertEquals(
+                {{ PHPUNIT }}->getExpectedValue(),
+                {{ PHPUNIT }}->getExaminedValue(),
+                '{
+                    \"step\": \"step name\",
+                    \"statement\": \"$browser.size is $\\\".parent\\\" >> $\\\".child\\\"\"
+                }'
+            );
+            EOD,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
                         new ClassNameCollection([
@@ -386,7 +386,7 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, browser object examined value, element identifier expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $".selector"'),
-                'metadata' => new TestMetaData(
+                'metadata' => new TestMetadata(
                     'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
@@ -399,27 +399,27 @@ trait CreateFromIsAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->setExpectedValue((function () {
-                        $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson('{
-                            "locator": ".selector"
-                        }'));
-                    
-                        return {{ INSPECTOR }}->getValue($element);
-                    })());
-                    {{ PHPUNIT }}->setExaminedValue((function () {
-                        $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
-                    
-                        return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
-                    })());
-                    {{ PHPUNIT }}->assertEquals(
-                        {{ PHPUNIT }}->getExpectedValue(),
-                        {{ PHPUNIT }}->getExaminedValue(),
-                        '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$browser.size is $\\\".selector\\\"\"
-                        }'
-                    );
-                    EOD,
+            {{ PHPUNIT }}->setExpectedValue((function () {
+                $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson('{
+                    "locator": ".selector"
+                }'));
+            
+                return {{ INSPECTOR }}->getValue($element);
+            })());
+            {{ PHPUNIT }}->setExaminedValue((function () {
+                $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
+            
+                return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
+            })());
+            {{ PHPUNIT }}->assertEquals(
+                {{ PHPUNIT }}->getExpectedValue(),
+                {{ PHPUNIT }}->getExaminedValue(),
+                '{
+                    \"step\": \"step name\",
+                    \"statement\": \"$browser.size is $\\\".selector\\\"\"
+                }'
+            );
+            EOD,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
                         new ClassNameCollection([
@@ -436,7 +436,7 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, browser object examined value, attribute identifier expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $".selector".attribute_name'),
-                'metadata' => new TestMetaData(
+                'metadata' => new TestMetadata(
                     'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
@@ -449,27 +449,27 @@ trait CreateFromIsAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->setExpectedValue((function () {
-                        $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson('{
-                            "locator": ".selector"
-                        }'));
-                    
-                        return $element->getAttribute('attribute_name');
-                    })());
-                    {{ PHPUNIT }}->setExaminedValue((function () {
-                        $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
-                    
-                        return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
-                    })());
-                    {{ PHPUNIT }}->assertEquals(
-                        {{ PHPUNIT }}->getExpectedValue(),
-                        {{ PHPUNIT }}->getExaminedValue(),
-                        '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$browser.size is $\\\".selector\\\".attribute_name\"
-                        }'
-                    );
-                    EOD,
+            {{ PHPUNIT }}->setExpectedValue((function () {
+                $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson('{
+                    "locator": ".selector"
+                }'));
+            
+                return $element->getAttribute('attribute_name');
+            })());
+            {{ PHPUNIT }}->setExaminedValue((function () {
+                $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
+            
+                return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
+            })());
+            {{ PHPUNIT }}->assertEquals(
+                {{ PHPUNIT }}->getExpectedValue(),
+                {{ PHPUNIT }}->getExaminedValue(),
+                '{
+                    \"step\": \"step name\",
+                    \"statement\": \"$browser.size is $\\\".selector\\\".attribute_name\"
+                }'
+            );
+            EOD,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
                         new ClassNameCollection([
@@ -485,7 +485,7 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, browser object examined value, environment expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $env.KEY'),
-                'metadata' => new TestMetaData(
+                'metadata' => new TestMetadata(
                     'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
@@ -498,21 +498,21 @@ trait CreateFromIsAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->setExpectedValue({{ ENV }}['KEY'] ?? null);
-                    {{ PHPUNIT }}->setExaminedValue((function () {
-                        $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
-                    
-                        return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
-                    })());
-                    {{ PHPUNIT }}->assertEquals(
-                        {{ PHPUNIT }}->getExpectedValue(),
-                        {{ PHPUNIT }}->getExaminedValue(),
-                        '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$browser.size is $env.KEY\"
-                        }'
-                    );
-                    EOD,
+            {{ PHPUNIT }}->setExpectedValue({{ ENV }}['KEY'] ?? null);
+            {{ PHPUNIT }}->setExaminedValue((function () {
+                $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
+            
+                return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
+            })());
+            {{ PHPUNIT }}->assertEquals(
+                {{ PHPUNIT }}->getExpectedValue(),
+                {{ PHPUNIT }}->getExaminedValue(),
+                '{
+                    \"step\": \"step name\",
+                    \"statement\": \"$browser.size is $env.KEY\"
+                }'
+            );
+            EOD,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -523,7 +523,7 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, browser object examined value, environment expected value with default' => [
                 'assertion' => $assertionParser->parse('$browser.size is $env.KEY|"default value"'),
-                'metadata' => new TestMetaData(
+                'metadata' => new TestMetadata(
                     'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
@@ -536,21 +536,21 @@ trait CreateFromIsAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->setExpectedValue({{ ENV }}['KEY'] ?? 'default value');
-                    {{ PHPUNIT }}->setExaminedValue((function () {
-                        $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
-                    
-                        return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
-                    })());
-                    {{ PHPUNIT }}->assertEquals(
-                        {{ PHPUNIT }}->getExpectedValue(),
-                        {{ PHPUNIT }}->getExaminedValue(),
-                        '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$browser.size is $env.KEY|\\\"default value\\\"\"
-                        }'
-                    );
-                    EOD,
+            {{ PHPUNIT }}->setExpectedValue({{ ENV }}['KEY'] ?? 'default value');
+            {{ PHPUNIT }}->setExaminedValue((function () {
+                $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
+            
+                return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
+            })());
+            {{ PHPUNIT }}->assertEquals(
+                {{ PHPUNIT }}->getExpectedValue(),
+                {{ PHPUNIT }}->getExaminedValue(),
+                '{
+                    \"step\": \"step name\",
+                    \"statement\": \"$browser.size is $env.KEY|\\\"default value\\\"\"
+                }'
+            );
+            EOD,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -561,7 +561,7 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, browser object examined value, page object expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $page.url'),
-                'metadata' => new TestMetaData(
+                'metadata' => new TestMetadata(
                     'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
@@ -574,21 +574,21 @@ trait CreateFromIsAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->setExpectedValue({{ CLIENT }}->getCurrentURL() ?? null);
-                    {{ PHPUNIT }}->setExaminedValue((function () {
-                        $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
-                    
-                        return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
-                    })());
-                    {{ PHPUNIT }}->assertEquals(
-                        {{ PHPUNIT }}->getExpectedValue(),
-                        {{ PHPUNIT }}->getExaminedValue(),
-                        '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$browser.size is $env.KEY|\\\"default value\\\"\"
-                        }'
-                    );
-                    EOD,
+            {{ PHPUNIT }}->setExpectedValue({{ CLIENT }}->getCurrentURL() ?? null);
+            {{ PHPUNIT }}->setExaminedValue((function () {
+                $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
+            
+                return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
+            })());
+            {{ PHPUNIT }}->assertEquals(
+                {{ PHPUNIT }}->getExpectedValue(),
+                {{ PHPUNIT }}->getExaminedValue(),
+                '{
+                    \"step\": \"step name\",
+                    \"statement\": \"$browser.size is $env.KEY|\\\"default value\\\"\"
+                }'
+            );
+            EOD,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -598,7 +598,7 @@ trait CreateFromIsAssertionDataProviderTrait
             ],
             'is comparison, literal string examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('"examined" is "expected"'),
-                'metadata' => new TestMetaData(
+                'metadata' => new TestMetadata(
                     'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
