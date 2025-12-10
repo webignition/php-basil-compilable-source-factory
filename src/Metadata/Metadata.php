@@ -13,16 +13,12 @@ readonly class Metadata implements \JsonSerializable
     public function __construct(
         private string $stepName,
         private string $statement,
-        private bool|string $examinedValue,
-        private bool|string $expectedValue,
     ) {}
 
     /**
      * @return array{
      *   step: non-empty-string,
-     *   statement: non-empty-string,
-     *   examined: bool|string,
-     *   expected: bool|string
+     *   statement: non-empty-string
      * }
      */
     public function jsonSerialize(): array
@@ -30,8 +26,6 @@ readonly class Metadata implements \JsonSerializable
         return [
             'step' => $this->stepName,
             'statement' => $this->statement,
-            'examined' => $this->examinedValue,
-            'expected' => $this->expectedValue,
         ];
     }
 }
