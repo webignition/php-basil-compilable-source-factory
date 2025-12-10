@@ -10,8 +10,10 @@ use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Parser\AssertionParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
+use webignition\BasilCompilableSourceFactory\Metadata\Metadata as TestMetadata;
 
 trait CreateFromExcludesAssertionDataProviderTrait
 {
@@ -25,18 +27,36 @@ trait CreateFromExcludesAssertionDataProviderTrait
         return [
             'excludes comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" excludes "value"'),
-                'expectedRenderedContent' => '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n"
-                    . '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n"
-                    . '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n"
-                    . '        "locator": ".selector"' . "\n"
-                    . '    }\'));' . "\n"
-                    . "\n"
-                    . '    return {{ INSPECTOR }}->getValue($element);' . "\n"
-                    . '})());' . "\n"
-                    . '{{ PHPUNIT }}->assertStringNotContainsString(' . "\n"
-                    . '    (string) ({{ PHPUNIT }}->getExpectedValue()),' . "\n"
-                    . '    (string) ({{ PHPUNIT }}->getExaminedValue())' . "\n"
-                    . ');',
+                'metadata' => new TestMetaData(
+                    'step name',
+                    (function () {
+                        $assertion = \Mockery::mock(AssertionInterface::class);
+                        $assertion
+                            ->shouldReceive('__toString')
+                            ->andReturn('$".selector" excludes "value"')
+                        ;
+
+                        return $assertion;
+                    })(),
+                ),
+                'expectedRenderedContent' => <<<'EOD'
+                    {{ PHPUNIT }}->setExpectedValue("value" ?? null);
+                    {{ PHPUNIT }}->setExaminedValue((function () {
+                        $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson('{
+                            "locator": ".selector"
+                        }'));
+                    
+                        return {{ INSPECTOR }}->getValue($element);
+                    })());
+                    {{ PHPUNIT }}->assertStringNotContainsString(
+                        (string) ({{ PHPUNIT }}->getExpectedValue()),
+                        (string) ({{ PHPUNIT }}->getExaminedValue()),
+                        '{
+                            \"step\": \"step name\",
+                            \"statement\": \"$\\\".selector\\\" excludes \\\"value\\\"\"
+                        }'
+                    );
+                    EOD,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
                         new ClassNameCollection([
@@ -52,18 +72,36 @@ trait CreateFromExcludesAssertionDataProviderTrait
             ],
             'excludes comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name excludes "value"'),
-                'expectedRenderedContent' => '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n"
-                    . '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n"
-                    . '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n"
-                    . '        "locator": ".selector"' . "\n"
-                    . '    }\'));' . "\n"
-                    . "\n"
-                    . '    return $element->getAttribute(\'attribute_name\');' . "\n"
-                    . '})());' . "\n"
-                    . '{{ PHPUNIT }}->assertStringNotContainsString(' . "\n"
-                    . '    (string) ({{ PHPUNIT }}->getExpectedValue()),' . "\n"
-                    . '    (string) ({{ PHPUNIT }}->getExaminedValue())' . "\n"
-                    . ');',
+                'metadata' => new TestMetaData(
+                    'step name',
+                    (function () {
+                        $assertion = \Mockery::mock(AssertionInterface::class);
+                        $assertion
+                            ->shouldReceive('__toString')
+                            ->andReturn('$".selector".attribute_name excludes "value"')
+                        ;
+
+                        return $assertion;
+                    })(),
+                ),
+                'expectedRenderedContent' => <<<'EOD'
+                    {{ PHPUNIT }}->setExpectedValue("value" ?? null);
+                    {{ PHPUNIT }}->setExaminedValue((function () {
+                        $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson('{
+                            "locator": ".selector"
+                        }'));
+                    
+                        return $element->getAttribute('attribute_name');
+                    })());
+                    {{ PHPUNIT }}->assertStringNotContainsString(
+                        (string) ({{ PHPUNIT }}->getExpectedValue()),
+                        (string) ({{ PHPUNIT }}->getExaminedValue()),
+                        '{
+                            \"step\": \"step name\",
+                            \"statement\": \"$\\\".selector\\\".attribute_name excludes \\\"value\\\"\"
+                        }'
+                    );
+                    EOD,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
                         new ClassNameCollection([
