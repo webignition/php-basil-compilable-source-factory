@@ -48,7 +48,7 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
     public static function createDataProvider(): array
     {
         return [
-            'no arguments, no failure message, assertTrue, assertion contains no quotes' => [
+            'no arguments, assertTrue, assertion contains no quotes' => [
                 'assertionMethod' => 'assertTrue',
                 'metadata' => new TestMetaData(
                     'step name',
@@ -65,7 +65,10 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
                 'arguments' => new MethodArguments(),
                 'expectedRenderedInvocation' => <<<'EOD'
                     {{ PHPUNIT }}->assertTrue(
-                        '{\"step\":\"step name\",\"statement\":\"assertion as string\"}'
+                        '{
+                            \"step\": \"step name\",
+                            \"statement\": \"assertion as string\"
+                        }'
                     )
                     EOD,
                 'expectedMetadata' => new Metadata([
@@ -74,7 +77,7 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
                     ]),
                 ]),
             ],
-            'no arguments, no failure message, assertTrue, assertion contains quotes' => [
+            'no arguments, ssertTrue, assertion contains quotes' => [
                 'assertionMethod' => 'assertTrue',
                 'metadata' => new TestMetaData(
                     'step name',
@@ -91,7 +94,10 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
                 'arguments' => new MethodArguments(),
                 'expectedRenderedInvocation' => <<<'EOD'
                     {{ PHPUNIT }}->assertTrue(
-                        '{\"step\":\"step name\",\"statement\":\"\'assertion\' \\\"as\\\" string\"}'
+                        '{
+                            \"step\": \"step name\",
+                            \"statement\": \"\'assertion\' \\\"as\\\" string\"
+                        }'
                     )
                     EOD,
                 'expectedMetadata' => new Metadata([
@@ -100,7 +106,7 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
                     ]),
                 ]),
             ],
-            'no arguments, no failure message, assertFalse' => [
+            'no arguments, assertFalse' => [
                 'assertionMethod' => 'assertFalse',
                 'metadata' => new TestMetaData(
                     'step name',
@@ -117,7 +123,10 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
                 'arguments' => new MethodArguments(),
                 'expectedRenderedInvocation' => <<<'EOD'
                     {{ PHPUNIT }}->assertFalse(
-                        '{\"step\":\"step name\",\"statement\":\"assertion as string\"}'
+                        '{
+                            \"step\": \"step name\",
+                            \"statement\": \"assertion as string\"
+                        }'
                     )
                     EOD,
                 'expectedMetadata' => new Metadata([
@@ -126,7 +135,7 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
                     ]),
                 ]),
             ],
-            'has arguments, no failure message, assertEquals' => [
+            'has arguments, assertEquals' => [
                 'assertionMethod' => 'assertEquals',
                 'metadata' => new TestMetaData(
                     'step name',
@@ -148,7 +157,10 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
                     {{ PHPUNIT }}->assertEquals(
                         100,
                         'string',
-                        '{\"step\":\"step name\",\"statement\":\"assertion as string\"}'
+                        '{
+                            \"step\": \"step name\",
+                            \"statement\": \"assertion as string\"
+                        }'
                     )
                     EOD,
                 'expectedMetadata' => new Metadata([
@@ -157,7 +169,7 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
                     ]),
                 ]),
             ],
-            'has arguments, no failure message, assertNotEquals' => [
+            'has arguments, assertNotEquals' => [
                 'assertionMethod' => 'assertNotEquals',
                 'metadata' => new TestMetaData(
                     'step name',
@@ -179,7 +191,10 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
                     {{ PHPUNIT }}->assertNotEquals(
                         100,
                         'string',
-                        '{\"step\":\"step name\",\"statement\":\"assertion as string\"}'
+                        '{
+                            \"step\": \"step name\",
+                            \"statement\": \"assertion as string\"
+                        }'
                     )
                     EOD,
                 'expectedMetadata' => new Metadata([

@@ -23,7 +23,7 @@ class AssertionMethodInvocationFactory
         Metadata $metadata,
         MethodArgumentsInterface $arguments,
     ): MethodInvocationInterface {
-        $serializedMetadata = (string) json_encode($metadata);
+        $serializedMetadata = (string) json_encode($metadata, JSON_PRETTY_PRINT);
         $quotedSerializedMetadata = addslashes($serializedMetadata);
 
         $arguments = $arguments->withArgument(new LiteralExpression("'" . $quotedSerializedMetadata . "'"));
