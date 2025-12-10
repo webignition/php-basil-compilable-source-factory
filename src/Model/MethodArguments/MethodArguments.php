@@ -45,7 +45,7 @@ class MethodArguments implements MethodArgumentsInterface, ResolvedTemplateMutat
         $this->format = $format;
     }
 
-    public function add(ExpressionInterface $expression): MethodArgumentsInterface
+    public function withArgument(ExpressionInterface $expression): MethodArgumentsInterface
     {
         $new = clone $this;
         $new->arguments[] = $expression;
