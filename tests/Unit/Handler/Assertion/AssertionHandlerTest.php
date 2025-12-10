@@ -11,8 +11,10 @@ use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\ComparisonAssertionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\ExistenceAssertionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\IsRegExpAssertionHandler;
+use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilModels\Model\Assertion\Assertion;
+use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Parser\AssertionParser;
 
 class AssertionHandlerTest extends TestCase
@@ -24,10 +26,24 @@ class AssertionHandlerTest extends TestCase
 
         $expectedReturnValue = \Mockery::mock(BodyInterface::class);
 
+        $stepName = md5((string) rand());
+        $metadata = new Metadata($stepName, $assertion);
+
         $comparisonHandler = \Mockery::mock(ComparisonAssertionHandler::class);
         $comparisonHandler
             ->shouldReceive('handle')
-            ->with($assertion)
+            ->withArgs(function (
+                AssertionInterface $passedAssertion,
+                Metadata $passedMetadata
+            ) use (
+                $assertion,
+                $metadata
+            ) {
+                self::assertSame($assertion, $passedAssertion);
+                self::assertEquals($metadata, $passedMetadata);
+
+                return true;
+            })
             ->andReturn($expectedReturnValue)
         ;
 
@@ -37,7 +53,6 @@ class AssertionHandlerTest extends TestCase
             \Mockery::mock(IsRegExpAssertionHandler::class)
         );
 
-        $stepName = md5((string) rand());
         $this->assertSame($expectedReturnValue, $handler->handle($assertion, $stepName));
     }
 
