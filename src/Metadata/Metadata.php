@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Metadata;
 
+use webignition\BasilModels\Model\Assertion\AssertionInterface;
+
 readonly class Metadata implements \JsonSerializable
 {
     /**
      * @param non-empty-string $stepName
-     * @param non-empty-string $statement
      */
     public function __construct(
         private string $stepName,
-        private string $statement,
+        private AssertionInterface $assertion,
     ) {}
 
     /**
@@ -25,7 +26,7 @@ readonly class Metadata implements \JsonSerializable
     {
         return [
             'step' => $this->stepName,
-            'statement' => $this->statement,
+            'statement' => $this->assertion->__toString(),
         ];
     }
 }
