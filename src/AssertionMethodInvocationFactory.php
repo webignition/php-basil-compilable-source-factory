@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory;
 
 use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
+use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocationInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
@@ -22,9 +23,10 @@ class AssertionMethodInvocationFactory
         Metadata $metadata,
         MethodArgumentsInterface $arguments,
     ): MethodInvocationInterface {
-        var_dump($arguments);
+        $serializedMetadata = (string) json_encode($metadata);
+        $quotedSerializedMetadata = addslashes($serializedMetadata);
 
-//        $fooArguments = new MethodArguments($arguments->get);
+        $arguments = $arguments->withArgument(new LiteralExpression("'" . $quotedSerializedMetadata . "'"));
 
         return new ObjectMethodInvocation(
             new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
