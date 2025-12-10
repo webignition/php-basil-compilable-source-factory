@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Metadata\Metadata as TestMetaData;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
@@ -29,15 +30,11 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
      */
     public function testCreate(
         string $assertionMethod,
+        TestMetaData $metadata,
         MethodArgumentsInterface $arguments,
         string $expectedRenderedInvocation,
         MetadataInterface $expectedMetadata
     ): void {
-        $assertion = \Mockery::mock(AssertionInterface::class);
-
-        $stepName = md5((string) rand());
-        $metadata = new \webignition\BasilCompilableSourceFactory\Metadata\Metadata($stepName, $assertion);
-
         $invocation = $this->assertionMethodInvocationFactory->create($assertionMethod, $metadata, $arguments);
 
         $this->assertRenderResolvable($expectedRenderedInvocation, $invocation);
@@ -56,52 +53,114 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
         );
 
         return [
-            'no arguments, no failure message, assertTrue' => [
+            'no arguments, assertTrue, assertion contains no quotes' => [
                 'assertionMethod' => 'assertTrue',
+                'metadata' => new TestMetaData(
+                    'step name',
+                    (function () {
+                        $assertion = \Mockery::mock(AssertionInterface::class);
+                        $assertion
+                            ->shouldReceive('__toString')
+                            ->andReturn('assertion as string')
+                        ;
+
+                        return $assertion;
+                    })(),
+                ),
                 'arguments' => new MethodArguments(),
-                'expectedRenderedInvocation' => '{{ PHPUNIT }}->assertTrue()',
+                'expectedRenderedInvocation' => <<<'EOD'
+                    {{ PHPUNIT }}->assertTrue(
+                        '{
+                            \"step\": \"step name\",
+                            \"statement\": \"assertion as string\"
+                        }'
+                    )
+                    EOD,
                 'expectedMetadata' => $expectedMetadata,
             ],
-            'no arguments, no failure message, assertFalse' => [
-                'assertionMethod' => 'assertFalse',
+            'no arguments, assertTrue, assertion contains quotes' => [
+                'assertionMethod' => 'assertTrue',
+                'metadata' => new TestMetaData(
+                    'step name',
+                    (function () {
+                        $assertion = \Mockery::mock(AssertionInterface::class);
+                        $assertion
+                            ->shouldReceive('__toString')
+                            ->andReturn('\'assertion\' "as" string')
+                        ;
+
+                        return $assertion;
+                    })(),
+                ),
                 'arguments' => new MethodArguments(),
-                'expectedRenderedInvocation' => '{{ PHPUNIT }}->assertFalse()',
+                'expectedRenderedInvocation' => <<<'EOD'
+                    {{ PHPUNIT }}->assertTrue(
+                        '{
+                            \"step\": \"step name\",
+                            \"statement\": \"\'assertion\' \\\"as\\\" string\"
+                        }'
+                    )
+                    EOD,
                 'expectedMetadata' => $expectedMetadata,
             ],
-            'has arguments, no failure message, assertEquals' => [
+            'has arguments, assertEquals' => [
                 'assertionMethod' => 'assertEquals',
+                'metadata' => new TestMetaData(
+                    'step name',
+                    (function () {
+                        $assertion = \Mockery::mock(AssertionInterface::class);
+                        $assertion
+                            ->shouldReceive('__toString')
+                            ->andReturn('assertion as string')
+                        ;
+
+                        return $assertion;
+                    })(),
+                ),
                 'arguments' => new MethodArguments([
                     new LiteralExpression('100'),
                     new LiteralExpression('\'string\''),
                 ]),
-                'expectedRenderedInvocation' => '{{ PHPUNIT }}->assertEquals(' . "\n"
-                    . '    100,' . "\n"
-                    . '    \'string\'' . "\n"
-                    . ')',
+                'expectedRenderedInvocation' => <<<'EOD'
+                    {{ PHPUNIT }}->assertEquals(
+                        100,
+                        'string',
+                        '{
+                            \"step\": \"step name\",
+                            \"statement\": \"assertion as string\"
+                        }'
+                    )
+                    EOD,
                 'expectedMetadata' => $expectedMetadata,
             ],
-            'has arguments, has failure message, assertNotEquals' => [
+            'has arguments, assertNotEquals' => [
                 'assertionMethod' => 'assertNotEquals',
+                'metadata' => new TestMetaData(
+                    'step name',
+                    (function () {
+                        $assertion = \Mockery::mock(AssertionInterface::class);
+                        $assertion
+                            ->shouldReceive('__toString')
+                            ->andReturn('assertion as string')
+                        ;
+
+                        return $assertion;
+                    })(),
+                ),
                 'arguments' => new MethodArguments([
                     new LiteralExpression('100'),
                     new LiteralExpression('\'string\''),
                 ]),
-                'expectedRenderedInvocation' => '{{ PHPUNIT }}->assertNotEquals(' . "\n"
-                    . '    100,' . "\n"
-                    . '    \'string\'' . "\n"
-                    . ')',
-                'expectedMetadata' => $expectedMetadata,
-            ],
-            'has arguments, has failure message containing quotes, assertNotEquals' => [
-                'assertionMethod' => 'assertNotEquals',
-                'arguments' => new MethodArguments([
-                    new LiteralExpression('100'),
-                    new LiteralExpression('\'string\''),
-                ]),
-                'expectedRenderedInvocation' => '{{ PHPUNIT }}->assertNotEquals(' . "\n"
-                    . '    100,' . "\n"
-                    . '    \'string\'' . "\n"
-                    . ')',
+                'expectedRenderedInvocation' => <<<'EOD'
+                    {{ PHPUNIT }}->assertNotEquals(
+                        100,
+                        'string',
+                        '{
+                            \"step\": \"step name\",
+                            \"statement\": \"assertion as string\"
+                        }'
+                    )
+                    EOD,
                 'expectedMetadata' => $expectedMetadata,
             ],
         ];

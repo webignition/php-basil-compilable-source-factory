@@ -35,13 +35,11 @@ class ComparisonAssertionHandlerTest extends AbstractResolvableTestCase
      */
     public function testHandle(
         AssertionInterface $assertion,
+        Metadata $metadata,
         string $expectedRenderedContent,
         MetadataInterface $expectedMetadata
     ): void {
         $handler = ComparisonAssertionHandler::createHandler();
-
-        $stepName = md5((string) rand());
-        $metadata = new Metadata($stepName, $assertion);
 
         $source = $handler->handle($assertion, $metadata);
 

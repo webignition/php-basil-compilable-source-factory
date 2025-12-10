@@ -20,13 +20,11 @@ class IsRegExpAssertionHandlerTest extends AbstractResolvableTestCase
      */
     public function testHandle(
         AssertionInterface $assertion,
+        Metadata $metadata,
         string $expectedRenderedContent,
         MetadataInterface $expectedMetadata
     ): void {
         $handler = IsRegExpAssertionHandler::createHandler();
-
-        $stepName = md5((string) rand());
-        $metadata = new Metadata($stepName, $assertion);
 
         $source = $handler->handle($assertion, $metadata);
 

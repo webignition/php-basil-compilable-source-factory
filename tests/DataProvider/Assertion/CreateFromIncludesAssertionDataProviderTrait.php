@@ -5,7 +5,13 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Metadata\Metadata as TestMetadata;
+use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
+use webignition\BasilCompilableSourceFactory\Model\ClassName;
+use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
+use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
+use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Parser\AssertionParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
 
@@ -21,18 +27,36 @@ trait CreateFromIncludesAssertionDataProviderTrait
         return [
             'includes comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" includes "value"'),
-                'expectedRenderedContent' => '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n"
-                    . '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n"
-                    . '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n"
-                    . '        "locator": ".selector"' . "\n"
-                    . '    }\'));' . "\n"
-                    . "\n"
-                    . '    return {{ INSPECTOR }}->getValue($element);' . "\n"
-                    . '})());' . "\n"
-                    . '{{ PHPUNIT }}->assertStringContainsString(' . "\n"
-                    . '    (string) ({{ PHPUNIT }}->getExpectedValue()),' . "\n"
-                    . '    (string) ({{ PHPUNIT }}->getExaminedValue())' . "\n"
-                    . ');',
+                'metadata' => new TestMetadata(
+                    'step name',
+                    (function () {
+                        $assertion = \Mockery::mock(AssertionInterface::class);
+                        $assertion
+                            ->shouldReceive('__toString')
+                            ->andReturn('$".selector" includes "value"')
+                        ;
+
+                        return $assertion;
+                    })(),
+                ),
+                'expectedRenderedContent' => <<<'EOD'
+                    {{ PHPUNIT }}->setExpectedValue("value" ?? null);
+                    {{ PHPUNIT }}->setExaminedValue((function () {
+                        $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson('{
+                            "locator": ".selector"
+                        }'));
+                    
+                        return {{ INSPECTOR }}->getValue($element);
+                    })());
+                    {{ PHPUNIT }}->assertStringContainsString(
+                        (string) ({{ PHPUNIT }}->getExpectedValue()),
+                        (string) ({{ PHPUNIT }}->getExaminedValue()),
+                        '{
+                            \"step\": \"step name\",
+                            \"statement\": \"$\\\".selector\\\" includes \\\"value\\\"\"
+                        }'
+                    );
+                    EOD,
                 'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
@@ -46,18 +70,36 @@ trait CreateFromIncludesAssertionDataProviderTrait
             ],
             'includes comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name includes "value"'),
-                'expectedRenderedContent' => '{{ PHPUNIT }}->setExpectedValue("value" ?? null);' . "\n"
-                    . '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n"
-                    . '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n"
-                    . '        "locator": ".selector"' . "\n"
-                    . '    }\'));' . "\n"
-                    . "\n"
-                    . '    return $element->getAttribute(\'attribute_name\');' . "\n"
-                    . '})());' . "\n"
-                    . '{{ PHPUNIT }}->assertStringContainsString(' . "\n"
-                    . '    (string) ({{ PHPUNIT }}->getExpectedValue()),' . "\n"
-                    . '    (string) ({{ PHPUNIT }}->getExaminedValue())' . "\n"
-                    . ');',
+                'metadata' => new TestMetadata(
+                    'step name',
+                    (function () {
+                        $assertion = \Mockery::mock(AssertionInterface::class);
+                        $assertion
+                            ->shouldReceive('__toString')
+                            ->andReturn('$".selector".attribute_name includes "value"')
+                        ;
+
+                        return $assertion;
+                    })(),
+                ),
+                'expectedRenderedContent' => <<<'EOD'
+                    {{ PHPUNIT }}->setExpectedValue("value" ?? null);
+                    {{ PHPUNIT }}->setExaminedValue((function () {
+                        $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson('{
+                            "locator": ".selector"
+                        }'));
+                    
+                        return $element->getAttribute('attribute_name');
+                    })());
+                    {{ PHPUNIT }}->assertStringContainsString(
+                        (string) ({{ PHPUNIT }}->getExpectedValue()),
+                        (string) ({{ PHPUNIT }}->getExaminedValue()),
+                        '{
+                            \"step\": \"step name\",
+                            \"statement\": \"$\\\".selector\\\".attribute_name includes \\\"value\\\"\"
+                        }'
+                    );
+                    EOD,
                 'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,

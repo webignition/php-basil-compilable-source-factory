@@ -5,7 +5,13 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Metadata\Metadata as TestMetadata;
+use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
+use webignition\BasilCompilableSourceFactory\Model\ClassName;
+use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
+use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
+use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
 use webignition\BasilModels\Parser\AssertionParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
@@ -26,13 +32,31 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     '"/^value/"',
                     'is-regexp'
                 ),
-                'expectedRenderedContent' => '{{ PHPUNIT }}->setExaminedValue("/^value/" ?? null);' . "\n"
-                    . '{{ PHPUNIT }}->setBooleanExpectedValue(' . "\n"
-                    . '    @preg_match({{ PHPUNIT }}->getExaminedValue(), null) === false' . "\n"
-                    . ');' . "\n"
-                    . '{{ PHPUNIT }}->assertFalse(' . "\n"
-                    . '    {{ PHPUNIT }}->getBooleanExpectedValue()' . "\n"
-                    . ');',
+                'metadata' => new TestMetadata(
+                    'step name',
+                    (function () {
+                        $assertion = \Mockery::mock(AssertionInterface::class);
+                        $assertion
+                            ->shouldReceive('__toString')
+                            ->andReturn('$".selector" matches "/^value/"')
+                        ;
+
+                        return $assertion;
+                    })(),
+                ),
+                'expectedRenderedContent' => <<<'EOD'
+                    {{ PHPUNIT }}->setExaminedValue("/^value/" ?? null);
+                    {{ PHPUNIT }}->setBooleanExpectedValue(
+                        @preg_match({{ PHPUNIT }}->getExaminedValue(), null) === false
+                    );
+                    {{ PHPUNIT }}->assertFalse(
+                        {{ PHPUNIT }}->getBooleanExpectedValue(),
+                        '{
+                            \"step\": \"step name\",
+                            \"statement\": \"$\\\".selector\\\" matches \\\"\\/^value\\/\\\"\"
+                        }'
+                    );
+                    EOD,
                 'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
@@ -45,19 +69,37 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     '$".pattern-container"',
                     'is-regexp'
                 ),
-                'expectedRenderedContent' => '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n"
-                    . '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n"
-                    . '        "locator": ".pattern-container"' . "\n"
-                    . '    }\'));' . "\n"
-                    . "\n"
-                    . '    return {{ INSPECTOR }}->getValue($element);' . "\n"
-                    . '})());' . "\n"
-                    . '{{ PHPUNIT }}->setBooleanExpectedValue(' . "\n"
-                    . '    @preg_match({{ PHPUNIT }}->getExaminedValue(), null) === false' . "\n"
-                    . ');' . "\n"
-                    . '{{ PHPUNIT }}->assertFalse(' . "\n"
-                    . '    {{ PHPUNIT }}->getBooleanExpectedValue()' . "\n"
-                    . ');',
+                'metadata' => new TestMetadata(
+                    'step name',
+                    (function () {
+                        $assertion = \Mockery::mock(AssertionInterface::class);
+                        $assertion
+                            ->shouldReceive('__toString')
+                            ->andReturn('$".selector" matches $".pattern-container"')
+                        ;
+
+                        return $assertion;
+                    })(),
+                ),
+                'expectedRenderedContent' => <<<'EOD'
+                    {{ PHPUNIT }}->setExaminedValue((function () {
+                        $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson('{
+                            "locator": ".pattern-container"
+                        }'));
+                    
+                        return {{ INSPECTOR }}->getValue($element);
+                    })());
+                    {{ PHPUNIT }}->setBooleanExpectedValue(
+                        @preg_match({{ PHPUNIT }}->getExaminedValue(), null) === false
+                    );
+                    {{ PHPUNIT }}->assertFalse(
+                        {{ PHPUNIT }}->getBooleanExpectedValue(),
+                        '{
+                            \"step\": \"step name\",
+                            \"statement\": \"$\\\".selector\\\" matches $\\\".pattern-container\\\"\"
+                        }'
+                    );
+                    EOD,
                 'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
@@ -75,19 +117,37 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     '$".pattern-container".attribute_name',
                     'is-regexp'
                 ),
-                'expectedRenderedContent' => '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n"
-                    . '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n"
-                    . '        "locator": ".pattern-container"' . "\n"
-                    . '    }\'));' . "\n"
-                    . "\n"
-                    . '    return $element->getAttribute(\'attribute_name\');' . "\n"
-                    . '})());' . "\n"
-                    . '{{ PHPUNIT }}->setBooleanExpectedValue(' . "\n"
-                    . '    @preg_match({{ PHPUNIT }}->getExaminedValue(), null) === false' . "\n"
-                    . ');' . "\n"
-                    . '{{ PHPUNIT }}->assertFalse(' . "\n"
-                    . '    {{ PHPUNIT }}->getBooleanExpectedValue()' . "\n"
-                    . ');',
+                'metadata' => new TestMetadata(
+                    'step name',
+                    (function () {
+                        $assertion = \Mockery::mock(AssertionInterface::class);
+                        $assertion
+                            ->shouldReceive('__toString')
+                            ->andReturn('$".selector" matches $".pattern-container".attribute_name')
+                        ;
+
+                        return $assertion;
+                    })(),
+                ),
+                'expectedRenderedContent' => <<<'EOD'
+                    {{ PHPUNIT }}->setExaminedValue((function () {
+                        $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson('{
+                            "locator": ".pattern-container"
+                        }'));
+                    
+                        return $element->getAttribute('attribute_name');
+                    })());
+                    {{ PHPUNIT }}->setBooleanExpectedValue(
+                        @preg_match({{ PHPUNIT }}->getExaminedValue(), null) === false
+                    );
+                    {{ PHPUNIT }}->assertFalse(
+                        {{ PHPUNIT }}->getBooleanExpectedValue(),
+                        '{
+                            \"step\": \"step name\",
+                            \"statement\": \"$\\\".selector\\\" matches $\\\".pattern-container\\\".attribute_name\"
+                        }'
+                    );
+                    EOD,
                 'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
@@ -104,13 +164,31 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     '$data.pattern',
                     'is-regexp'
                 ),
-                'expectedRenderedContent' => '{{ PHPUNIT }}->setExaminedValue($pattern ?? null);' . "\n"
-                    . '{{ PHPUNIT }}->setBooleanExpectedValue(' . "\n"
-                    . '    @preg_match({{ PHPUNIT }}->getExaminedValue(), null) === false' . "\n"
-                    . ');' . "\n"
-                    . '{{ PHPUNIT }}->assertFalse(' . "\n"
-                    . '    {{ PHPUNIT }}->getBooleanExpectedValue()' . "\n"
-                    . ');',
+                'metadata' => new TestMetadata(
+                    'step name',
+                    (function () {
+                        $assertion = \Mockery::mock(AssertionInterface::class);
+                        $assertion
+                            ->shouldReceive('__toString')
+                            ->andReturn('$page.title matches $data.pattern')
+                        ;
+
+                        return $assertion;
+                    })(),
+                ),
+                'expectedRenderedContent' => <<<'EOD'
+                    {{ PHPUNIT }}->setExaminedValue($pattern ?? null);
+                    {{ PHPUNIT }}->setBooleanExpectedValue(
+                        @preg_match({{ PHPUNIT }}->getExaminedValue(), null) === false
+                    );
+                    {{ PHPUNIT }}->assertFalse(
+                        {{ PHPUNIT }}->getBooleanExpectedValue(),
+                        '{
+                            \"step\": \"step name\",
+                            \"statement\": \"$page.title matches $data.pattern\"
+                        }'
+                    );
+                    EOD,
                 'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
