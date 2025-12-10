@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
@@ -27,11 +28,13 @@ abstract class AbstractAssertionHandler
 
     protected function createAssertionStatement(
         AssertionInterface $assertion,
+        Metadata $metadata,
         MethodArgumentsInterface $arguments,
     ): StatementInterface {
         return new Statement(
             $this->assertionMethodInvocationFactory->create(
                 $this->getOperationToAssertionTemplateMap()[$assertion->getOperator()],
+                $metadata,
                 $arguments
             )
         );

@@ -8,9 +8,6 @@ use webignition\BasilModels\Model\Assertion\AssertionInterface;
 
 readonly class Metadata implements \JsonSerializable
 {
-    /**
-     * @param non-empty-string $stepName
-     */
     public function __construct(
         private string $stepName,
         private AssertionInterface $assertion,
@@ -18,7 +15,7 @@ readonly class Metadata implements \JsonSerializable
 
     /**
      * @return array{
-     *   step: non-empty-string,
+     *   step: string,
      *   statement: string
      * }
      */
