@@ -10,6 +10,9 @@ use webignition\StubbleResolvable\ResolvableInterface;
 
 interface MethodArgumentsInterface extends HasMetadataInterface, ResolvableInterface
 {
+    public const string FORMAT_INLINE = 'inline';
+    public const string FORMAT_STACKED = 'stacked';
+
     /**
      * @return ExpressionInterface[]
      */

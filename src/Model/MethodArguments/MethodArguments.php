@@ -19,9 +19,6 @@ class MethodArguments implements MethodArgumentsInterface, ResolvedTemplateMutat
     use DeferredResolvableCreationTrait;
     use HasMetadataTrait;
 
-    public const FORMAT_INLINE = 'inline';
-    public const FORMAT_STACKED = 'stacked';
-
     private const INDENT = '    ';
 
     private string $format;

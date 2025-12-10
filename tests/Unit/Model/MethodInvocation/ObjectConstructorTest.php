@@ -109,7 +109,7 @@ class ObjectConstructorTest extends AbstractResolvableTestCase
                             new LiteralExpression('1'),
                             new LiteralExpression("\\'single-quoted value\\'"),
                         ],
-                        MethodArguments::FORMAT_STACKED
+                        MethodArgumentsInterface::FORMAT_STACKED
                     )
                 ),
                 'expectedString' => "new Model(\n"

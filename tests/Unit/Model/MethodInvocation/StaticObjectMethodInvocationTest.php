@@ -152,7 +152,7 @@ class StaticObjectMethodInvocationTest extends AbstractResolvableTestCase
                             new LiteralExpression('1'),
                             new LiteralExpression("\\'single-quoted value\\'"),
                         ],
-                        MethodArguments::FORMAT_STACKED
+                        MethodArgumentsInterface::FORMAT_STACKED
                     )
                 ),
                 'expectedString' => "ClassName::methodName(\n"
