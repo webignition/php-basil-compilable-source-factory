@@ -16,4 +16,6 @@ interface MethodArgumentsInterface extends HasMetadataInterface, ResolvableInter
     public function getArguments(): array;
 
     public function getFormat(): string;
+
+    public function add(ExpressionInterface $expression): MethodArgumentsInterface;
 }
