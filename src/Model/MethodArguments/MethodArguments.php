@@ -53,6 +53,14 @@ class MethodArguments implements MethodArgumentsInterface, ResolvedTemplateMutat
         return $new;
     }
 
+    public function withFormat(string $format): MethodArgumentsInterface
+    {
+        $new = clone $this;
+        $new->format = $format;
+
+        return $new;
+    }
+
     public function getMetadata(): MetadataInterface
     {
         return $this->metadata;

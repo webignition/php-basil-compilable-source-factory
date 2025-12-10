@@ -18,4 +18,6 @@ interface MethodArgumentsInterface extends HasMetadataInterface, ResolvableInter
     public function getFormat(): string;
 
     public function add(ExpressionInterface $expression): MethodArgumentsInterface;
+
+    public function withFormat(string $format): MethodArgumentsInterface;
 }
