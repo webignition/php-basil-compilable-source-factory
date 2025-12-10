@@ -19,14 +19,14 @@ readonly class Metadata implements \JsonSerializable
     /**
      * @return array{
      *   step: non-empty-string,
-     *   statement: non-empty-string
+     *   statement: string
      * }
      */
     public function jsonSerialize(): array
     {
         return [
             'step' => $this->stepName,
-            'statement' => $this->assertion->__toString(),
+            'statement' => (string) $this->assertion,
         ];
     }
 }
