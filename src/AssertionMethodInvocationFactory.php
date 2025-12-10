@@ -22,6 +22,10 @@ class AssertionMethodInvocationFactory
         Metadata $metadata,
         MethodArgumentsInterface $arguments,
     ): MethodInvocationInterface {
+        var_dump($arguments);
+
+//        $fooArguments = new MethodArguments($arguments->get);
+
         return new ObjectMethodInvocation(
             new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
             $assertionMethod,

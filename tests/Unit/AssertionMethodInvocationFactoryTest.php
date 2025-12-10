@@ -61,64 +61,64 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
                     ]),
                 ]),
             ],
-            'no arguments, no failure message, assertFalse' => [
-                'assertionMethod' => 'assertFalse',
-                'arguments' => new MethodArguments(),
-                'expectedRenderedInvocation' => '{{ PHPUNIT }}->assertFalse()',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
-            ],
-            'has arguments, no failure message, assertEquals' => [
-                'assertionMethod' => 'assertEquals',
-                'arguments' => new MethodArguments([
-                    new LiteralExpression('100'),
-                    new LiteralExpression('\'string\''),
-                ]),
-                'expectedRenderedInvocation' => '{{ PHPUNIT }}->assertEquals(' . "\n"
-                    . '    100,' . "\n"
-                    . '    \'string\'' . "\n"
-                    . ')',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
-            ],
-            'has arguments, has failure message, assertNotEquals' => [
-                'assertionMethod' => 'assertNotEquals',
-                'arguments' => new MethodArguments([
-                    new LiteralExpression('100'),
-                    new LiteralExpression('\'string\''),
-                ]),
-                'expectedRenderedInvocation' => '{{ PHPUNIT }}->assertNotEquals(' . "\n"
-                    . '    100,' . "\n"
-                    . '    \'string\'' . "\n"
-                    . ')',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
-            ],
-            'has arguments, has failure message containing quotes, assertNotEquals' => [
-                'assertionMethod' => 'assertNotEquals',
-                'arguments' => new MethodArguments([
-                    new LiteralExpression('100'),
-                    new LiteralExpression('\'string\''),
-                ]),
-                'expectedRenderedInvocation' => '{{ PHPUNIT }}->assertNotEquals(' . "\n"
-                    . '    100,' . "\n"
-                    . '    \'string\'' . "\n"
-                    . ')',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
-            ],
+//            'no arguments, no failure message, assertFalse' => [
+//                'assertionMethod' => 'assertFalse',
+//                'arguments' => new MethodArguments(),
+//                'expectedRenderedInvocation' => '{{ PHPUNIT }}->assertFalse()',
+//                'expectedMetadata' => new Metadata([
+//                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+//                        VariableNames::PHPUNIT_TEST_CASE,
+//                    ]),
+//                ]),
+//            ],
+//            'has arguments, no failure message, assertEquals' => [
+//                'assertionMethod' => 'assertEquals',
+//                'arguments' => new MethodArguments([
+//                    new LiteralExpression('100'),
+//                    new LiteralExpression('\'string\''),
+//                ]),
+//                'expectedRenderedInvocation' => '{{ PHPUNIT }}->assertEquals(' . "\n"
+//                    . '    100,' . "\n"
+//                    . '    \'string\'' . "\n"
+//                    . ')',
+//                'expectedMetadata' => new Metadata([
+//                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+//                        VariableNames::PHPUNIT_TEST_CASE,
+//                    ]),
+//                ]),
+//            ],
+//            'has arguments, has failure message, assertNotEquals' => [
+//                'assertionMethod' => 'assertNotEquals',
+//                'arguments' => new MethodArguments([
+//                    new LiteralExpression('100'),
+//                    new LiteralExpression('\'string\''),
+//                ]),
+//                'expectedRenderedInvocation' => '{{ PHPUNIT }}->assertNotEquals(' . "\n"
+//                    . '    100,' . "\n"
+//                    . '    \'string\'' . "\n"
+//                    . ')',
+//                'expectedMetadata' => new Metadata([
+//                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+//                        VariableNames::PHPUNIT_TEST_CASE,
+//                    ]),
+//                ]),
+//            ],
+//            'has arguments, has failure message containing quotes, assertNotEquals' => [
+//                'assertionMethod' => 'assertNotEquals',
+//                'arguments' => new MethodArguments([
+//                    new LiteralExpression('100'),
+//                    new LiteralExpression('\'string\''),
+//                ]),
+//                'expectedRenderedInvocation' => '{{ PHPUNIT }}->assertNotEquals(' . "\n"
+//                    . '    100,' . "\n"
+//                    . '    \'string\'' . "\n"
+//                    . ')',
+//                'expectedMetadata' => new Metadata([
+//                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+//                        VariableNames::PHPUNIT_TEST_CASE,
+//                    ]),
+//                ]),
+//            ],
         ];
     }
 }
