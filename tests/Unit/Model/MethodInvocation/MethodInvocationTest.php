@@ -8,6 +8,7 @@ use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
+use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocationInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\StaticObjectMethodInvocation;
@@ -77,7 +78,7 @@ class MethodInvocationTest extends AbstractResolvableTestCase
                             new LiteralExpression('1'),
                             new LiteralExpression("\\'single-quoted value\\'"),
                         ],
-                        MethodArguments::FORMAT_STACKED
+                        MethodArgumentsInterface::FORMAT_STACKED
                     )
                 ),
                 'expectedString' => "methodName(\n"

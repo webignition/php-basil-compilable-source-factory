@@ -13,6 +13,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpressi
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
+use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ErrorSuppressedMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
@@ -118,7 +119,7 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
                         [
                             $identityComparison
                         ],
-                        MethodArguments::FORMAT_STACKED
+                        MethodArgumentsInterface::FORMAT_STACKED
                     )
                 ),
             ]),

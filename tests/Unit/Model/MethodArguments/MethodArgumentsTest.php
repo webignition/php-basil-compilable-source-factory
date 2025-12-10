@@ -18,6 +18,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ReturnExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
+use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
@@ -53,19 +54,19 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
         return [
             'empty, inline' => [
                 'arguments' => [],
-                'format' => MethodArguments::FORMAT_INLINE,
+                'format' => MethodArgumentsInterface::FORMAT_INLINE,
                 'expectedMetadata' => new Metadata(),
             ],
             'empty, stacked' => [
                 'arguments' => [],
-                'format' => MethodArguments::FORMAT_STACKED,
+                'format' => MethodArgumentsInterface::FORMAT_STACKED,
                 'expectedMetadata' => new Metadata(),
             ],
             'single argument' => [
                 'arguments' => [
                     new LiteralExpression('1'),
                 ],
-                'format' => MethodArguments::FORMAT_INLINE,
+                'format' => MethodArgumentsInterface::FORMAT_INLINE,
                 'expectedMetadata' => new Metadata(),
             ],
             'multiple arguments' => [
@@ -74,7 +75,7 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                     new LiteralExpression("\\'single-quoted value\\'"),
                     new LiteralExpression('"double-quoted value"'),
                 ],
-                'format' => MethodArguments::FORMAT_INLINE,
+                'format' => MethodArgumentsInterface::FORMAT_INLINE,
                 'expectedMetadata' => new Metadata(),
             ],
             'has metadata' => [
@@ -84,7 +85,7 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                         'staticMethodName'
                     )
                 ],
-                'format' => MethodArguments::FORMAT_INLINE,
+                'format' => MethodArgumentsInterface::FORMAT_INLINE,
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
                         new ClassNameCollection([
@@ -115,7 +116,7 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                 'expectedString' => '',
             ],
             'empty, stacked' => [
-                'arguments' => new MethodArguments([], MethodArguments::FORMAT_STACKED),
+                'arguments' => new MethodArguments([], MethodArgumentsInterface::FORMAT_STACKED),
                 'expectedString' => '',
             ],
             'has arguments, inline' => [
@@ -131,7 +132,7 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                         new LiteralExpression('1'),
                         new LiteralExpression("\\'single-quoted value\\'"),
                     ],
-                    MethodArguments::FORMAT_STACKED
+                    MethodArgumentsInterface::FORMAT_STACKED
                 ),
                 'expectedString' => "\n"
                     . "    1,\n"
@@ -172,7 +173,7 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                             ])
                         ),
                     ],
-                    MethodArguments::FORMAT_STACKED
+                    MethodArgumentsInterface::FORMAT_STACKED
                 ),
                 'expectedString' => "\n"
                     . '    {{ NAVIGATOR }}->find(ObjectMethodInvocation::fromJson({' . "\n"

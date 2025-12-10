@@ -120,7 +120,7 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
                 [
                     $domNavigatorCrawlerCall
                 ],
-                MethodArguments::FORMAT_STACKED
+                MethodArgumentsInterface::FORMAT_STACKED
             )
         );
 
