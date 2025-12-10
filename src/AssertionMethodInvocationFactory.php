@@ -24,7 +24,7 @@ class AssertionMethodInvocationFactory
         return new ObjectMethodInvocation(
             new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
             $assertionMethod,
-            new MethodArguments($arguments->getArguments(), MethodArguments::FORMAT_STACKED)
+            $arguments->withFormat(MethodArguments::FORMAT_STACKED)
         );
     }
 }
