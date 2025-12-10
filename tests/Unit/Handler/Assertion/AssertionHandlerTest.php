@@ -37,7 +37,8 @@ class AssertionHandlerTest extends TestCase
             \Mockery::mock(IsRegExpAssertionHandler::class)
         );
 
-        $this->assertSame($expectedReturnValue, $handler->handle($assertion));
+        $stepName = md5((string) rand());
+        $this->assertSame($expectedReturnValue, $handler->handle($assertion, $stepName));
     }
 
     public function testHandleExistence(): void
@@ -60,7 +61,8 @@ class AssertionHandlerTest extends TestCase
             \Mockery::mock(IsRegExpAssertionHandler::class)
         );
 
-        $this->assertSame($expectedReturnValue, $handler->handle($assertion));
+        $stepName = md5((string) rand());
+        $this->assertSame($expectedReturnValue, $handler->handle($assertion, $stepName));
     }
 
     public function testHandleIsRegExp(): void
@@ -83,7 +85,8 @@ class AssertionHandlerTest extends TestCase
             $isRegExpHandler
         );
 
-        $this->assertSame($expectedReturnValue, $handler->handle($assertion));
+        $stepName = md5((string) rand());
+        $this->assertSame($expectedReturnValue, $handler->handle($assertion, $stepName));
     }
 
     public function testHandleWrapsUnsupportedContentException(): void
@@ -114,7 +117,8 @@ class AssertionHandlerTest extends TestCase
             $expectedUnsupportedContentException
         ));
 
-        $handler->handle($assertion);
+        $stepName = md5((string) rand());
+        $handler->handle($assertion, $stepName);
     }
 
     public function testHandleThrowsUnsupportedStatementException(): void
@@ -134,6 +138,7 @@ class AssertionHandlerTest extends TestCase
 
         $this->expectExceptionObject(new UnsupportedStatementException($assertion));
 
-        $handler->handle($assertion);
+        $stepName = md5((string) rand());
+        $handler->handle($assertion, $stepName);
     }
 }

@@ -12,6 +12,7 @@ use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumen
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilModels\Model\Assertion\AssertionInterface;
 
 class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
 {
@@ -33,7 +34,12 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
         string $expectedRenderedInvocation,
         MetadataInterface $expectedMetadata
     ): void {
-        $invocation = $this->assertionMethodInvocationFactory->create($assertionMethod, $arguments);
+        $assertion = \Mockery::mock(AssertionInterface::class);
+
+        $stepName = md5((string) rand());
+        $metadata = new \webignition\BasilCompilableSourceFactory\Metadata\Metadata($stepName, $assertion);
+
+        $invocation = $this->assertionMethodInvocationFactory->create($assertionMethod, $metadata, $arguments);
 
         $this->assertRenderResolvable($expectedRenderedInvocation, $invocation);
         $this->assertEquals($expectedMetadata, $invocation->getMetadata());

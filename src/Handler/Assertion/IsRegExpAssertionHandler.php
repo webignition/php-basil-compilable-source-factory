@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
+use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
@@ -55,14 +56,14 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
     /**
      * @throws UnsupportedContentException
      */
-    public function handle(AssertionInterface $assertion): BodyInterface
+    public function handle(AssertionInterface $assertion, Metadata $metadata): BodyInterface
     {
         $identifier = $assertion->getIdentifier();
 
         if (is_string($identifier) && $this->valueTypeIdentifier->isScalarValue($identifier)) {
             $examinedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull($identifier);
 
-            return $this->createIsRegExpAssertionBody($examinedAccessor, $assertion);
+            return $this->createIsRegExpAssertionBody($examinedAccessor, $assertion, $metadata);
         }
 
         if (is_string($identifier) && $this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
@@ -73,7 +74,7 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
 
             $examinedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull($identifier);
 
-            return $this->createIsRegExpAssertionBody($examinedAccessor, $assertion);
+            return $this->createIsRegExpAssertionBody($examinedAccessor, $assertion, $metadata);
         }
 
         throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
@@ -86,7 +87,8 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
 
     private function createIsRegExpAssertionBody(
         ExpressionInterface $examinedAccessor,
-        AssertionInterface $assertion
+        AssertionInterface $assertion,
+        Metadata $metadata,
     ): BodyInterface {
         $pregMatchInvocation = new ErrorSuppressedMethodInvocation(
             new MethodInvocation(
@@ -124,6 +126,7 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
             ]),
             $this->createAssertionStatement(
                 $assertion,
+                $metadata,
                 new MethodArguments([
                     $this->createPhpUnitTestCaseObjectMethodInvocation('getBooleanExpectedValue')
                 ])
