@@ -14,6 +14,7 @@ use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Model\Assertion\Assertion;
+use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Parser\AssertionParser;
 use webignition\BasilValueTypeIdentifier\ValueTypeIdentifier;
 
@@ -25,11 +26,25 @@ class ExistenceAssertionHandlerTest extends TestCase
 
         $expectedReturnValue = \Mockery::mock(BodyInterface::class);
 
+        $stepName = md5((string) rand());
         $assertion = $assertionParser->parse('$page.title exists');
+        $metadata = new Metadata($stepName, $assertion);
+
         $scalarHandler = \Mockery::mock(ScalarExistenceAssertionHandler::class);
         $scalarHandler
             ->shouldReceive('handle')
-            ->with($assertion)
+            ->withArgs(function (
+                AssertionInterface $passedAssertion,
+                Metadata $passedMetadata
+            ) use (
+                $assertion,
+                $stepName
+            ) {
+                self::assertSame($assertion, $passedAssertion);
+                self::assertEquals(new Metadata($stepName, $assertion), $passedMetadata);
+
+                return true;
+            })
             ->andReturn($expectedReturnValue)
         ;
 
@@ -41,9 +56,6 @@ class ExistenceAssertionHandlerTest extends TestCase
             \Mockery::mock(IdentifierExistenceAssertionHandler::class)
         );
 
-        $stepName = md5((string) rand());
-        $metadata = new Metadata($stepName, $assertion);
-
         $this->assertSame($expectedReturnValue, $handler->handle($assertion, $metadata));
     }
 
@@ -53,11 +65,25 @@ class ExistenceAssertionHandlerTest extends TestCase
 
         $expectedReturnValue = \Mockery::mock(BodyInterface::class);
 
+        $stepName = md5((string) rand());
         $assertion = $assertionParser->parse('$".selector" exists');
+        $metadata = new Metadata($stepName, $assertion);
+
         $identifierHandler = \Mockery::mock(IdentifierExistenceAssertionHandler::class);
         $identifierHandler
             ->shouldReceive('handle')
-            ->with($assertion)
+            ->withArgs(function (
+                AssertionInterface $passedAssertion,
+                Metadata $passedMetadata
+            ) use (
+                $assertion,
+                $stepName
+            ) {
+                self::assertSame($assertion, $passedAssertion);
+                self::assertEquals(new Metadata($stepName, $assertion), $passedMetadata);
+
+                return true;
+            })
             ->andReturn($expectedReturnValue)
         ;
 
@@ -68,9 +94,6 @@ class ExistenceAssertionHandlerTest extends TestCase
             \Mockery::mock(ScalarExistenceAssertionHandler::class),
             $identifierHandler
         );
-
-        $stepName = md5((string) rand());
-        $metadata = new Metadata($stepName, $assertion);
 
         $this->assertSame($expectedReturnValue, $handler->handle($assertion, $metadata));
     }
