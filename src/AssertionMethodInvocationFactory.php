@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory;
 
+use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocationInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
@@ -18,6 +19,7 @@ class AssertionMethodInvocationFactory
 
     public function create(
         string $assertionMethod,
+        Metadata $metadata,
         MethodArgumentsInterface $arguments,
     ): MethodInvocationInterface {
         return new ObjectMethodInvocation(
