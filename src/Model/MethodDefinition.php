@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Model;
 
 use webignition\BasilCompilableSourceFactory\Model\Annotation\ParameterAnnotation;
+use webignition\BasilCompilableSourceFactory\Model\Attribute\AttributeCollection;
+use webignition\BasilCompilableSourceFactory\Model\Attribute\AttributeInterface;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\DocBlock\DocBlock;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
@@ -46,6 +48,8 @@ EOD;
     private bool $isStatic;
     private ?DocBlock $docblock;
 
+    private AttributeCollection $attributes;
+
     /**
      * @param string[] $arguments
      */
@@ -58,6 +62,7 @@ EOD;
         $this->arguments = $arguments;
         $this->isStatic = false;
         $this->docblock = $this->createDocBlock($arguments);
+        $this->attributes = new AttributeCollection();
     }
 
     public function getName(): string
@@ -120,10 +125,18 @@ EOD;
         return $this->docblock;
     }
 
-    public function withDocBlock(DocBlock $docBlock): self
+    public function withDocBlock(DocBlock $docBlock): static
     {
         $new = clone $this;
         $new->docblock = $docBlock;
+
+        return $new;
+    }
+
+    public function withAttribute(AttributeInterface $attribute): static
+    {
+        $new = clone $this;
+        $new->attributes = $this->attributes->add($attribute);
 
         return $new;
     }
