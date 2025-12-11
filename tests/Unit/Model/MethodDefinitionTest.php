@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Model\Annotation\DataProviderAnnotation;
 use webignition\BasilCompilableSourceFactory\Model\Annotation\ParameterAnnotation;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
@@ -28,10 +29,9 @@ use webignition\BasilCompilableSourceFactory\Model\VariableName;
 class MethodDefinitionTest extends AbstractResolvableTestCase
 {
     /**
-     * @dataProvider createDataProvider
-     *
      * @param string[] $arguments
      */
+    #[DataProvider('createDataProvider')]
     public function testCreate(string $name, BodyInterface $body, array $arguments = []): void
     {
         $methodDefinition = new MethodDefinition($name, $body, $arguments);
@@ -72,9 +72,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
         ];
     }
 
-    /**
-     * @dataProvider getMetadataDataProvider
-     */
+    #[DataProvider('getMetadataDataProvider')]
     public function testGetMetadata(
         MethodDefinitionInterface $methodDefinition,
         MetadataInterface $expectedMetadata
@@ -162,9 +160,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
         $this->assertTrue($methodDefinition->isStatic());
     }
 
-    /**
-     * @dataProvider renderDataProvider
-     */
+    #[DataProvider('renderDataProvider')]
     public function testRender(MethodDefinitionInterface $methodDefinition, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $methodDefinition);
@@ -344,9 +340,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
         ];
     }
 
-    /**
-     * @dataProvider getDocBlockDataProvider
-     */
+    #[DataProvider('getDocBlockDataProvider')]
     public function testGetDocBlock(MethodDefinition $methodDefinition, ?DocBlock $expectedDocBlock): void
     {
         $this->assertEquals($expectedDocBlock, $methodDefinition->getDocBlock());
