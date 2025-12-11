@@ -7,8 +7,8 @@ namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 use webignition\BasilCompilableSourceFactory\Model\DeferredResolvableCreationTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
-use webignition\StubbleResolvable\ResolvableCollection;
-use webignition\StubbleResolvable\ResolvableInterface;
+use webignition\Stubble\Resolvable\ResolvableCollection;
+use webignition\Stubble\Resolvable\ResolvableInterface;
 
 class CompositeExpression implements ExpressionInterface
 {

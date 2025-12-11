@@ -6,7 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 
 use webignition\BasilCompilableSourceFactory\Model\HasMetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
-use webignition\StubbleResolvable\ResolvableInterface;
+use webignition\Stubble\Resolvable\ResolvableInterface;
 
 class ArrayPair implements ResolvableInterface, HasMetadataInterface
 {

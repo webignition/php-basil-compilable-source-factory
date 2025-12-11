@@ -5,9 +5,9 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
 use webignition\Stubble\DeciderFactory;
+use webignition\Stubble\Resolvable\ResolvableInterface;
 use webignition\Stubble\UnresolvedVariableFinder;
 use webignition\Stubble\VariableResolver;
-use webignition\StubbleResolvable\ResolvableInterface;
 
 class ResolvableRenderer
 {

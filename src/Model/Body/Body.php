@@ -13,10 +13,10 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\Stubble\CollectionItemContext;
-use webignition\StubbleResolvable\ResolvableCollection;
-use webignition\StubbleResolvable\ResolvableCollectionInterface;
-use webignition\StubbleResolvable\ResolvableInterface;
-use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
+use webignition\Stubble\Resolvable\ResolvableCollection;
+use webignition\Stubble\Resolvable\ResolvableCollectionInterface;
+use webignition\Stubble\Resolvable\ResolvableInterface;
+use webignition\Stubble\Resolvable\ResolvedTemplateMutatorResolvable;
 
 class Body implements BodyInterface, ResolvableCollectionInterface
 {

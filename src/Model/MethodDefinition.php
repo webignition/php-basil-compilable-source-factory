@@ -8,7 +8,7 @@ use webignition\BasilCompilableSourceFactory\Model\Annotation\ParameterAnnotatio
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\DocBlock\DocBlock;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
-use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
+use webignition\Stubble\Resolvable\ResolvedTemplateMutatorResolvable;
 
 class MethodDefinition implements MethodDefinitionInterface
 {

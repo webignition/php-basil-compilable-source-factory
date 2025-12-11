@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Model;
 
 use webignition\BasilCompilableSourceFactory\Model\DocBlock\DocBlock;
-use webignition\StubbleResolvable\ResolvableInterface;
+use webignition\Stubble\Resolvable\ResolvableInterface;
 
 interface MethodDefinitionInterface extends HasMetadataInterface, ResolvableInterface
 {

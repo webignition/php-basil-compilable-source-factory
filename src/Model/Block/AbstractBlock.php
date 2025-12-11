@@ -8,8 +8,8 @@ use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\HasMetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\IndentTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
-use webignition\StubbleResolvable\ResolvableInterface;
-use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
+use webignition\Stubble\Resolvable\ResolvableInterface;
+use webignition\Stubble\Resolvable\ResolvedTemplateMutatorResolvable;
 
 abstract class AbstractBlock implements HasMetadataInterface, ResolvableInterface
 {

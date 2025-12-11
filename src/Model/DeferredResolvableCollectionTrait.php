@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model;
 
-use webignition\StubbleResolvable\ResolvableCollectionInterface;
-use webignition\StubbleResolvable\ResolvableInterface;
+use webignition\Stubble\Resolvable\ResolvableCollectionInterface;
+use webignition\Stubble\Resolvable\ResolvableInterface;
 
 trait DeferredResolvableCollectionTrait
 {
