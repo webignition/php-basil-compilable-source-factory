@@ -20,20 +20,18 @@ class MethodDefinition implements MethodDefinitionInterface
     public const VISIBILITY_PROTECTED = 'protected';
     public const VISIBILITY_PRIVATE = 'private';
 
-    private const RENDER_TEMPLATE_WITHOUT_DOCBLOCK = <<<'EOD'
-{{ signature }}
-{
-{{ body }}
-}
-EOD;
+    private const string RENDER_TEMPLATE_DOCBLOCK_COMPONENT = '{{ docblock }}';
 
-    private const RENDER_TEMPLATE_WITH_DOCBLOCK = <<<'EOD'
-{{ docblock }}
-{{ signature }}
-{
-{{ body }}
-}
-EOD;
+    private const RENDER_TEMPLATE_WITHOUT_DOCBLOCK = <<<'EOD'
+        {{ signature }}
+        {
+        {{ body }}
+        }
+        EOD;
+
+    private const RENDER_TEMPLATE_WITH_DOCBLOCK
+        = self::RENDER_TEMPLATE_DOCBLOCK_COMPONENT . "\n"
+        . self::RENDER_TEMPLATE_WITHOUT_DOCBLOCK;
 
     private string $visibility;
 
