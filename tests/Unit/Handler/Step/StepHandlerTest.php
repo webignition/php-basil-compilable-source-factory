@@ -25,7 +25,7 @@ use webignition\BasilModels\Model\Step\StepInterface;
 use webignition\BasilModels\Parser\ActionParser;
 use webignition\BasilModels\Parser\AssertionParser;
 use webignition\BasilModels\Parser\StepParser;
-use webignition\StubbleResolvable\ResolvableInterface;
+use webignition\Stubble\Resolvable\ResolvableInterface;
 
 class StepHandlerTest extends AbstractResolvableTestCase
 {

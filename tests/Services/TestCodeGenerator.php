@@ -9,7 +9,7 @@ use webignition\BasilCompilableSourceFactory\Model\ClassDefinitionInterface;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\StubbleResolvable\Resolvable;
+use webignition\Stubble\Resolvable\Resolvable;
 
 class TestCodeGenerator
 {

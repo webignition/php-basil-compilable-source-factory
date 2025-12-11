@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Annotation;
 
-use webignition\StubbleResolvable\Resolvable;
-use webignition\StubbleResolvable\ResolvableInterface;
+use webignition\Stubble\Resolvable\Resolvable;
+use webignition\Stubble\Resolvable\ResolvableInterface;
 
 abstract class AbstractAnnotation implements AnnotationInterface
 {

@@ -7,12 +7,12 @@ namespace webignition\BasilCompilableSourceFactory\Model\DocBlock;
 use webignition\BasilCompilableSourceFactory\Model\Annotation\AnnotationInterface;
 use webignition\BasilCompilableSourceFactory\Model\DeferredResolvableCollectionTrait;
 use webignition\Stubble\CollectionItemContext;
-use webignition\StubbleResolvable\ResolvableCollection;
-use webignition\StubbleResolvable\ResolvableCollectionInterface;
-use webignition\StubbleResolvable\ResolvableInterface;
-use webignition\StubbleResolvable\ResolvableWithoutContext;
-use webignition\StubbleResolvable\ResolvedTemplateMutationInterface;
-use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
+use webignition\Stubble\Resolvable\ResolvableCollection;
+use webignition\Stubble\Resolvable\ResolvableCollectionInterface;
+use webignition\Stubble\Resolvable\ResolvableInterface;
+use webignition\Stubble\Resolvable\ResolvableWithoutContext;
+use webignition\Stubble\Resolvable\ResolvedTemplateMutationInterface;
+use webignition\Stubble\Resolvable\ResolvedTemplateMutatorResolvable;
 
 class DocBlock implements ResolvableInterface, ResolvedTemplateMutationInterface, ResolvableCollectionInterface
 {

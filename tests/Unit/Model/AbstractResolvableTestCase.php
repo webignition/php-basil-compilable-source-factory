@@ -6,9 +6,9 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 
 use PHPUnit\Framework\TestCase;
 use webignition\Stubble\DeciderFactory;
+use webignition\Stubble\Resolvable\ResolvableInterface;
 use webignition\Stubble\UnresolvedVariableFinder;
 use webignition\Stubble\VariableResolver;
-use webignition\StubbleResolvable\ResolvableInterface;
 
 abstract class AbstractResolvableTestCase extends TestCase
 {

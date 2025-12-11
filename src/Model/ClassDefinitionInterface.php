@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model;
 
-use webignition\StubbleResolvable\ResolvableInterface;
+use webignition\Stubble\Resolvable\ResolvableInterface;
 
 interface ClassDefinitionInterface extends HasMetadataInterface, ResolvableInterface
 {

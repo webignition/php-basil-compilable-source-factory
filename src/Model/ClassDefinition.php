@@ -7,9 +7,9 @@ namespace webignition\BasilCompilableSourceFactory\Model;
 use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\Block\RenderableClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
-use webignition\StubbleResolvable\Resolvable;
-use webignition\StubbleResolvable\ResolvableInterface;
-use webignition\StubbleResolvable\ResolvedTemplateMutatorResolvable;
+use webignition\Stubble\Resolvable\Resolvable;
+use webignition\Stubble\Resolvable\ResolvableInterface;
+use webignition\Stubble\Resolvable\ResolvedTemplateMutatorResolvable;
 
 class ClassDefinition implements ClassDefinitionInterface
 {
