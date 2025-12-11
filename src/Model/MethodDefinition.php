@@ -154,6 +154,7 @@ class MethodDefinition implements MethodDefinitionInterface
     {
         return [
             'docblock' => $this->docblock instanceof DocBlock ? $this->docblock : '',
+            'attributes' => count($this->attributes) > 0 ? $this->attributes : '',
             'signature' => $this->createSignature(),
             'body' => new ResolvedTemplateMutatorResolvable(
                 $this->body,

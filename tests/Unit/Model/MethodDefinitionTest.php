@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Model\Annotation\DataProviderAnnotation;
 use webignition\BasilCompilableSourceFactory\Model\Annotation\ParameterAnnotation;
+use webignition\BasilCompilableSourceFactory\Model\Attribute\DataProviderAttribute;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\DocBlock\DocBlock;
@@ -331,6 +332,63 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                      * @param string $x
                      * @param string $y
                      */
+                    public function nameOfMethod($x, $y)
+                    {
+                        // comment
+                    }
+                    EOD,
+            ],
+            'public, has arguments, no return type, single data provider attribute' => [
+                'methodDefinition' => (function () {
+                    $methodDefinition = new MethodDefinition(
+                        'nameOfMethod',
+                        new Body([
+                            new SingleLineComment('comment'),
+                        ]),
+                        ['x', 'y']
+                    );
+
+                    return $methodDefinition->withAttribute(
+                        new DataProviderAttribute('dataProviderMethodName')
+                    );
+                })(),
+                'expectedString' => <<<'EOD'
+                    /**
+                     * @param string $x
+                     * @param string $y
+                     */
+                    #[DataProvider('dataProviderMethodName')]
+                    public function nameOfMethod($x, $y)
+                    {
+                        // comment
+                    }
+                    EOD,
+            ],
+            'public, has arguments, no return type, two data provider attributes' => [
+                'methodDefinition' => (function () {
+                    $methodDefinition = new MethodDefinition(
+                        'nameOfMethod',
+                        new Body([
+                            new SingleLineComment('comment'),
+                        ]),
+                        ['x', 'y']
+                    );
+
+                    $methodDefinition = $methodDefinition->withAttribute(
+                        new DataProviderAttribute('dataProviderMethodName1')
+                    );
+
+                    return $methodDefinition->withAttribute(
+                        new DataProviderAttribute('dataProviderMethodName2')
+                    );
+                })(),
+                'expectedString' => <<<'EOD'
+                    /**
+                     * @param string $x
+                     * @param string $y
+                     */
+                    #[DataProvider('dataProviderMethodName1')]
+                    #[DataProvider('dataProviderMethodName2')]
                     public function nameOfMethod($x, $y)
                     {
                         // comment
