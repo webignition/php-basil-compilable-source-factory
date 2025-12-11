@@ -21,17 +21,13 @@ class MethodDefinition implements MethodDefinitionInterface
     public const VISIBILITY_PRIVATE = 'private';
 
     private const string RENDER_TEMPLATE_DOCBLOCK_COMPONENT = '{{ docblock }}';
-
-    private const RENDER_TEMPLATE_WITHOUT_DOCBLOCK = <<<'EOD'
+    private const string RENDER_TEMPLATE_ATTRIBUTE_COLLECTION_COMPONENT = '{{ attributes }}';
+    private const string RENDER_TEMPLATE_SIGNATURE_AND_BODY_COMPONENT = <<<'EOD'
         {{ signature }}
         {
         {{ body }}
         }
         EOD;
-
-    private const RENDER_TEMPLATE_WITH_DOCBLOCK
-        = self::RENDER_TEMPLATE_DOCBLOCK_COMPONENT . "\n"
-        . self::RENDER_TEMPLATE_WITHOUT_DOCBLOCK;
 
     private string $visibility;
 
@@ -141,11 +137,17 @@ class MethodDefinition implements MethodDefinitionInterface
 
     public function getTemplate(): string
     {
-        if (null === $this->docblock) {
-            return self::RENDER_TEMPLATE_WITHOUT_DOCBLOCK;
+        $template = self::RENDER_TEMPLATE_SIGNATURE_AND_BODY_COMPONENT;
+
+        if (0 !== count($this->attributes)) {
+            $template = self::RENDER_TEMPLATE_ATTRIBUTE_COLLECTION_COMPONENT . "\n" . $template;
         }
 
-        return self::RENDER_TEMPLATE_WITH_DOCBLOCK;
+        if (null !== $this->docblock) {
+            $template = self::RENDER_TEMPLATE_DOCBLOCK_COMPONENT . "\n" . $template;
+        }
+
+        return $template;
     }
 
     public function getContext(): array
