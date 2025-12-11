@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use webignition\BasilCompilableSourceFactory\Model\Annotation\DataProviderAnnotation;
 use webignition\BasilCompilableSourceFactory\Model\Annotation\ParameterAnnotation;
 use webignition\BasilCompilableSourceFactory\Model\Attribute\DataProviderAttribute;
 use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
@@ -355,25 +354,16 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                         ['x', 'y']
                     );
 
-                    $docblock = $methodDefinition->getDocBlock();
-                    if ($docblock instanceof DocBlock) {
-                        $docblock = $docblock->prepend(new DocBlock([
-                            new DataProviderAnnotation('dataProviderMethodName'),
-                            "\n",
-                        ]));
-
-                        $methodDefinition = $methodDefinition->withDocBlock($docblock);
-                    }
-
-                    return $methodDefinition;
+                    return $methodDefinition->withAttribute(
+                        new DataProviderAttribute('dataProviderMethodName')
+                    );
                 })(),
                 'expectedString' => <<<'EOD'
                     /**
-                     * @dataProvider dataProviderMethodName
-                     *
                      * @param string $x
                      * @param string $y
                      */
+                    #[DataProvider('dataProviderMethodName')]
                     public function nameOfMethod($x, $y)
                     {
                         // comment
