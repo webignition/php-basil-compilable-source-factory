@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
 use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
@@ -195,48 +196,52 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                         ])
                     ),
                 ]),
-                'expectedRenderedTestMethod' => "/**\n"
-                    . " * @dataProvider dataProvider4\n"
-                    . " *\n"
-                    . ' * @param string $expected_value' . "\n"
-                    . ' * @param string $field_value' . "\n"
-                    . " */\n"
-                    . 'public function test4($expected_value, $field_value)' . "\n"
-                    . "{\n"
-                    . "    if (self::hasException()) {\n"
-                    . "        return;\n"
-                    . "    }\n"
-                    . "    {{ PHPUNIT }}->setBasilStepName('Step Name');\n"
-                    . "    {{ PHPUNIT }}->setCurrentDataSet(DataSet::fromArray([\n"
-                    . "        'name' => {{ PHPUNIT }}->dataName(),\n"
-                    . "        'data' => [\n"
-                    . "            'expected_value' => \$expected_value,\n"
-                    . "            'field_value' => \$field_value,\n"
-                    . "        ],\n"
-                    . "    ]));\n"
-                    . "\n"
-                    . "    // mocked step handler response\n"
-                    . '}',
-                'expectedRenderedDataProvider' => "public function dataProvider4(): array\n"
-                    . "{\n"
-                    . "    return [\n"
-                    . "        '0' => [\n"
-                    . "            'expected_value' => 'value2',\n"
-                    . "            'field_value' => 'value1',\n"
-                    . "        ],\n"
-                    . "        '1' => [\n"
-                    . "            'expected_value' => '\"value4\"',\n"
-                    . "            'field_value' => '\"value3\"',\n"
-                    . "        ],\n"
-                    . "        '2' => [\n"
-                    . "            'expected_value' => '\\'value6\\'',\n"
-                    . "            'field_value' => '\\'value5\\'',\n"
-                    . "        ],\n"
-                    . "    ];\n"
-                    . '}',
+                'expectedRenderedTestMethod' => <<<'EOD'
+                    /**
+                     * @param string $expected_value
+                     * @param string $field_value
+                     */
+                    #[DataProvider('dataProvider4')]
+                    public function test4($expected_value, $field_value)
+                    {
+                        if (self::hasException()) {
+                            return;
+                        }
+                        {{ PHPUNIT }}->setBasilStepName('Step Name');
+                        {{ PHPUNIT }}->setCurrentDataSet(DataSet::fromArray([
+                            'name' => {{ PHPUNIT }}->dataName(),
+                            'data' => [
+                                'expected_value' => $expected_value,
+                                'field_value' => $field_value,
+                            ],
+                        ]));
+                    
+                        // mocked step handler response
+                    }
+                    EOD,
+                'expectedRenderedDataProvider' => <<<'EOD'
+                    public function dataProvider4(): array
+                    {
+                        return [
+                            '0' => [
+                                'expected_value' => 'value2',
+                                'field_value' => 'value1',
+                            ],
+                            '1' => [
+                                'expected_value' => '"value4"',
+                                'field_value' => '"value3"',
+                            ],
+                            '2' => [
+                                'expected_value' => '\'value6\'',
+                                'field_value' => '\'value5\'',
+                            ],
+                        ];
+                    }
+                    EOD,
                 'expectedTestMethodMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
                         new ClassNameCollection([
+                            new ClassName(DataProvider::class),
                             new ClassName(DataSet::class),
                         ])
                     ),

@@ -4,11 +4,10 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 
-use webignition\BasilCompilableSourceFactory\Model\Annotation\DataProviderAnnotation;
+use webignition\BasilCompilableSourceFactory\Model\Attribute\DataProviderAttribute;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\ClassBody;
 use webignition\BasilCompilableSourceFactory\Model\DataProviderMethodDefinition;
-use webignition\BasilCompilableSourceFactory\Model\DocBlock\DocBlock;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
@@ -137,17 +136,9 @@ class ClassBodyTest extends AbstractResolvableTestCase
                             ]
                         );
 
-                        $docblock = $methodDefinition->getDocBlock();
-                        if ($docblock instanceof DocBlock) {
-                            $docblock = $docblock->prepend(new DocBlock([
-                                new DataProviderAnnotation('stepOneDataProvider'),
-                                "\n",
-                            ]));
-
-                            $methodDefinition = $methodDefinition->withDocBlock($docblock);
-                        }
-
-                        return $methodDefinition;
+                        return $methodDefinition->withAttribute(
+                            new DataProviderAttribute('stepOneDataProvider')
+                        );
                     })(),
                     new DataProviderMethodDefinition('stepOneDataProvider', [
                         0 => [
@@ -181,39 +172,40 @@ class ClassBodyTest extends AbstractResolvableTestCase
                         ),
                     ])),
                 ]),
-                'expectedString' => '/**' . "\n"
-                    . ' * @dataProvider stepOneDataProvider' . "\n"
-                    . ' *' . "\n"
-                    . ' * @param string $x' . "\n"
-                    . ' * @param string $y' . "\n"
-                    . ' */' . "\n"
-                    . 'public function stepOne($x, $y)' . "\n"
-                    . '{' . "\n"
-                    . '    // click $"a"' . "\n"
-                    . '    $statement = Statement::createAction(\'$"a" exists\');' . "\n"
-                    . '    $currentStatement = $statement;' . "\n"
-                    . '}' . "\n"
-                    . "\n"
-                    . 'public function stepOneDataProvider(): array' . "\n"
-                    . '{' . "\n"
-                    . '    return [' . "\n"
-                    . '        \'0\' => [' . "\n"
-                    . '            \'x\' => \'1\',' . "\n"
-                    . '            \'y\' => \'2\',' . "\n"
-                    . '        ],' . "\n"
-                    . '        \'1\' => [' . "\n"
-                    . '            \'x\' => \'3\',' . "\n"
-                    . '            \'y\' => \'4\',' . "\n"
-                    . '        ],' . "\n"
-                    . '    ];' . "\n"
-                    . '}' . "\n"
-                    . "\n"
-                    . 'public function stepTwo()' . "\n"
-                    . '{' . "\n"
-                    . '    // click $"b"' . "\n"
-                    . '    $statement = Statement::createAction(\'$"b" exists\');' . "\n"
-                    . '    $currentStatement = $statement;' . "\n"
-                    . '}'
+                'expectedString' => <<<'EOD'
+                    /**
+                     * @param string $x
+                     * @param string $y
+                     */
+                    #[DataProvider('stepOneDataProvider')]
+                    public function stepOne($x, $y)
+                    {
+                        // click $"a"
+                        $statement = Statement::createAction('$"a" exists');
+                        $currentStatement = $statement;
+                    }
+                    
+                    public function stepOneDataProvider(): array
+                    {
+                        return [
+                            '0' => [
+                                'x' => '1',
+                                'y' => '2',
+                            ],
+                            '1' => [
+                                'x' => '3',
+                                'y' => '4',
+                            ],
+                        ];
+                    }
+                    
+                    public function stepTwo()
+                    {
+                        // click $"b"
+                        $statement = Statement::createAction('$"b" exists');
+                        $currentStatement = $statement;
+                    }
+                    EOD,
             ],
         ];
     }

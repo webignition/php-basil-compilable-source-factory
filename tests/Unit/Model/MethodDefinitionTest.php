@@ -4,10 +4,14 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 
-use webignition\BasilCompilableSourceFactory\Model\Annotation\DataProviderAnnotation;
+use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Model\Annotation\ParameterAnnotation;
+use webignition\BasilCompilableSourceFactory\Model\Attribute\DataProviderAttribute;
+use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
+use webignition\BasilCompilableSourceFactory\Model\ClassName;
+use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\DocBlock\DocBlock;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
@@ -28,10 +32,9 @@ use webignition\BasilCompilableSourceFactory\Model\VariableName;
 class MethodDefinitionTest extends AbstractResolvableTestCase
 {
     /**
-     * @dataProvider createDataProvider
-     *
      * @param string[] $arguments
      */
+    #[DataProvider('createDataProvider')]
     public function testCreate(string $name, BodyInterface $body, array $arguments = []): void
     {
         $methodDefinition = new MethodDefinition($name, $body, $arguments);
@@ -72,9 +75,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
         ];
     }
 
-    /**
-     * @dataProvider getMetadataDataProvider
-     */
+    #[DataProvider('getMetadataDataProvider')]
     public function testGetMetadata(
         MethodDefinitionInterface $methodDefinition,
         MetadataInterface $expectedMetadata
@@ -99,7 +100,20 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                 ])),
                 'expectedMetadata' => new Metadata(),
             ],
-            'lines with metadata' => [
+            'lines without metadata with data provider attribute' => [
+                'methodDefinition' => new MethodDefinition('name', new Body([
+                    new EmptyLine(),
+                    new SingleLineComment('single line comment'),
+                ]))->withAttribute(new DataProviderAttribute('dataProviderMethod')),
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
+                        new ClassNameCollection([
+                            new ClassName(DataProvider::class)
+                        ])
+                    ),
+                ]),
+            ],
+            'lines with metadata without data provider attribute' => [
                 'methodDefinition' => new MethodDefinition('name', new Body([
                     new Statement(
                         new ObjectMethodInvocation(
@@ -115,6 +129,32 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                     ),
                 ])),
                 'expectedMetadata' => new Metadata([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                        'DEPENDENCY',
+                    ]),
+                ]),
+            ],
+            'lines with metadata with data provider attribute' => [
+                'methodDefinition' => new MethodDefinition('name', new Body([
+                    new Statement(
+                        new ObjectMethodInvocation(
+                            new VariableDependency('DEPENDENCY'),
+                            'methodName'
+                        )
+                    ),
+                    new Statement(
+                        new AssignmentExpression(
+                            new VariableName('variable'),
+                            new MethodInvocation('methodName')
+                        )
+                    ),
+                ]))->withAttribute(new DataProviderAttribute('dataProviderMethod')),
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
+                        new ClassNameCollection([
+                            new ClassName(DataProvider::class)
+                        ])
+                    ),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         'DEPENDENCY',
                     ]),
@@ -162,9 +202,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
         $this->assertTrue($methodDefinition->isStatic());
     }
 
-    /**
-     * @dataProvider renderDataProvider
-     */
+    #[DataProvider('renderDataProvider')]
     public function testRender(MethodDefinitionInterface $methodDefinition, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $methodDefinition);
@@ -190,21 +228,30 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
         return [
             'public, no arguments, no return type, no lines' => [
                 'methodDefinition' => new MethodDefinition('emptyPublicMethod', new Body([])),
-                'expectedString' => 'public function emptyPublicMethod()' . "\n"
-                    . '{' . "\n\n"
-                    . '}'
+                'expectedString' => <<<'EOD'
+                    public function emptyPublicMethod()
+                    {
+                    
+                    }
+                    EOD,
             ],
             'protected, no arguments, no return type, no lines' => [
                 'methodDefinition' => $emptyProtectedMethod,
-                'expectedString' => 'protected function emptyProtectedMethod()' . "\n"
-                    . '{' . "\n\n"
-                    . '}'
+                'expectedString' => <<<'EOD'
+                    protected function emptyProtectedMethod()
+                    {
+                    
+                    }
+                    EOD,
             ],
             'private, no arguments, no return type, no lines' => [
                 'methodDefinition' => $emptyPrivateMethod,
-                'expectedString' => 'private function emptyPrivateMethod()' . "\n"
-                    . '{' . "\n\n"
-                    . '}'
+                'expectedString' => <<<'EOD'
+                    private function emptyPrivateMethod()
+                    {
+
+                    }
+                    EOD,
             ],
             'public, has arguments, no return type, no lines' => [
                 'methodDefinition' => new MethodDefinition('emptyPublicMethod', new Body([]), [
@@ -212,20 +259,26 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                     'arg2',
                     'arg3',
                 ]),
-                'expectedString' => '/**' . "\n"
-                    . ' * @param string $arg1' . "\n"
-                    . ' * @param string $arg2' . "\n"
-                    . ' * @param string $arg3' . "\n"
-                    . ' */' . "\n"
-                    . 'public function emptyPublicMethod($arg1, $arg2, $arg3)' . "\n"
-                    . '{' . "\n\n"
-                    . '}'
+                'expectedString' => <<<'EOD'
+                    /**
+                     * @param string $arg1
+                     * @param string $arg2
+                     * @param string $arg3
+                     */
+                    public function emptyPublicMethod($arg1, $arg2, $arg3)
+                    {
+                    
+                    }
+                    EOD,
             ],
             'public, no arguments, has return type, no lines' => [
                 'methodDefinition' => $emptyMethodWithReturnType,
-                'expectedString' => 'public function emptyPublicMethodWithReturnType(): string' . "\n"
-                    . '{' . "\n\n"
-                    . '}'
+                'expectedString' => <<<'EOD'
+                    public function emptyPublicMethodWithReturnType(): string
+                    {
+                    
+                    }
+                    EOD,
             ],
             'public, has arguments, no return type, has lines' => [
                 'methodDefinition' => new MethodDefinition(
@@ -249,16 +302,18 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                     ]),
                     ['x', 'y']
                 ),
-                'expectedString' => '/**' . "\n"
-                    . ' * @param string $x' . "\n"
-                    . ' * @param string $y' . "\n"
-                    . ' */' . "\n"
-                    . 'public function nameOfMethod($x, $y)' . "\n"
-                    . '{' . "\n"
-                    . '    // Assign object method call to $value' . "\n"
-                    . "\n"
-                    . '    $value = {{ OBJECT }}->methodName($x, $y);' . "\n"
-                    . '}'
+                'expectedString' => <<<'EOD'
+                    /**
+                     * @param string $x
+                     * @param string $y
+                     */
+                    public function nameOfMethod($x, $y)
+                    {
+                        // Assign object method call to $value
+                    
+                        $value = {{ OBJECT }}->methodName($x, $y);
+                    }
+                    EOD,
             ],
             'public, has arguments, no return type, has lines with trailing newline' => [
                 'methodDefinition' => new MethodDefinition(
@@ -269,20 +324,25 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                     ]),
                     ['x', 'y']
                 ),
-                'expectedString' => '/**' . "\n"
-                    . ' * @param string $x' . "\n"
-                    . ' * @param string $y' . "\n"
-                    . ' */' . "\n"
-                    . 'public function nameOfMethod($x, $y)' . "\n"
-                    . '{' . "\n"
-                    . '    // comment' . "\n"
-                    . '}'
+                'expectedString' => <<<'EOD'
+                    /**
+                     * @param string $x
+                     * @param string $y
+                     */
+                    public function nameOfMethod($x, $y)
+                    {
+                        // comment
+                    }
+                    EOD,
             ],
             'public static, no arguments, no return type, no lines' => [
                 'methodDefinition' => $emptyPublicStaticMethod,
-                'expectedString' => 'public static function emptyPublicStaticMethod()' . "\n"
-                    . '{' . "\n\n"
-                    . '}'
+                'expectedString' => <<<'EOD'
+                    public static function emptyPublicStaticMethod()
+                    {
+                    
+                    }
+                    EOD,
             ],
             'public, has arguments, no return type, has mutated docblock' => [
                 'methodDefinition' => (function () {
@@ -294,35 +354,83 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                         ['x', 'y']
                     );
 
-                    $docblock = $methodDefinition->getDocBlock();
-                    if ($docblock instanceof DocBlock) {
-                        $docblock = $docblock->prepend(new DocBlock([
-                            new DataProviderAnnotation('dataProviderMethodName'),
-                            "\n",
-                        ]));
-
-                        $methodDefinition = $methodDefinition->withDocBlock($docblock);
-                    }
-
-                    return $methodDefinition;
+                    return $methodDefinition->withAttribute(
+                        new DataProviderAttribute('dataProviderMethodName')
+                    );
                 })(),
-                'expectedString' => '/**' . "\n"
-                    . ' * @dataProvider dataProviderMethodName' . "\n"
-                    . ' *' . "\n"
-                    . ' * @param string $x' . "\n"
-                    . ' * @param string $y' . "\n"
-                    . ' */' . "\n"
-                    . 'public function nameOfMethod($x, $y)' . "\n"
-                    . '{' . "\n"
-                    . '    // comment' . "\n"
-                    . '}'
+                'expectedString' => <<<'EOD'
+                    /**
+                     * @param string $x
+                     * @param string $y
+                     */
+                    #[DataProvider('dataProviderMethodName')]
+                    public function nameOfMethod($x, $y)
+                    {
+                        // comment
+                    }
+                    EOD,
+            ],
+            'public, has arguments, no return type, single data provider attribute' => [
+                'methodDefinition' => (function () {
+                    $methodDefinition = new MethodDefinition(
+                        'nameOfMethod',
+                        new Body([
+                            new SingleLineComment('comment'),
+                        ]),
+                        ['x', 'y']
+                    );
+
+                    return $methodDefinition->withAttribute(
+                        new DataProviderAttribute('dataProviderMethodName')
+                    );
+                })(),
+                'expectedString' => <<<'EOD'
+                    /**
+                     * @param string $x
+                     * @param string $y
+                     */
+                    #[DataProvider('dataProviderMethodName')]
+                    public function nameOfMethod($x, $y)
+                    {
+                        // comment
+                    }
+                    EOD,
+            ],
+            'public, has arguments, no return type, two data provider attributes' => [
+                'methodDefinition' => (function () {
+                    $methodDefinition = new MethodDefinition(
+                        'nameOfMethod',
+                        new Body([
+                            new SingleLineComment('comment'),
+                        ]),
+                        ['x', 'y']
+                    );
+
+                    $methodDefinition = $methodDefinition->withAttribute(
+                        new DataProviderAttribute('dataProviderMethodName1')
+                    );
+
+                    return $methodDefinition->withAttribute(
+                        new DataProviderAttribute('dataProviderMethodName2')
+                    );
+                })(),
+                'expectedString' => <<<'EOD'
+                    /**
+                     * @param string $x
+                     * @param string $y
+                     */
+                    #[DataProvider('dataProviderMethodName1')]
+                    #[DataProvider('dataProviderMethodName2')]
+                    public function nameOfMethod($x, $y)
+                    {
+                        // comment
+                    }
+                    EOD,
             ],
         ];
     }
 
-    /**
-     * @dataProvider getDocBlockDataProvider
-     */
+    #[DataProvider('getDocBlockDataProvider')]
     public function testGetDocBlock(MethodDefinition $methodDefinition, ?DocBlock $expectedDocBlock): void
     {
         $this->assertEquals($expectedDocBlock, $methodDefinition->getDocBlock());

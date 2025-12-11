@@ -5,8 +5,11 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Model;
 
 use webignition\BasilCompilableSourceFactory\Model\Annotation\ParameterAnnotation;
+use webignition\BasilCompilableSourceFactory\Model\Attribute\AttributeCollection;
+use webignition\BasilCompilableSourceFactory\Model\Attribute\AttributeInterface;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\DocBlock\DocBlock;
+use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\Stubble\Resolvable\ResolvedTemplateMutatorResolvable;
 
@@ -18,20 +21,14 @@ class MethodDefinition implements MethodDefinitionInterface
     public const VISIBILITY_PROTECTED = 'protected';
     public const VISIBILITY_PRIVATE = 'private';
 
-    private const RENDER_TEMPLATE_WITHOUT_DOCBLOCK = <<<'EOD'
-{{ signature }}
-{
-{{ body }}
-}
-EOD;
-
-    private const RENDER_TEMPLATE_WITH_DOCBLOCK = <<<'EOD'
-{{ docblock }}
-{{ signature }}
-{
-{{ body }}
-}
-EOD;
+    private const string RENDER_TEMPLATE_DOCBLOCK_COMPONENT = '{{ docblock }}';
+    private const string RENDER_TEMPLATE_ATTRIBUTE_COLLECTION_COMPONENT = '{{ attributes }}';
+    private const string RENDER_TEMPLATE_SIGNATURE_AND_BODY_COMPONENT = <<<'EOD'
+        {{ signature }}
+        {
+        {{ body }}
+        }
+        EOD;
 
     private string $visibility;
 
@@ -46,6 +43,8 @@ EOD;
     private bool $isStatic;
     private ?DocBlock $docblock;
 
+    private AttributeCollection $attributes;
+
     /**
      * @param string[] $arguments
      */
@@ -58,6 +57,7 @@ EOD;
         $this->arguments = $arguments;
         $this->isStatic = false;
         $this->docblock = $this->createDocBlock($arguments);
+        $this->attributes = new AttributeCollection();
     }
 
     public function getName(): string
@@ -67,7 +67,10 @@ EOD;
 
     public function getMetadata(): MetadataInterface
     {
-        return $this->body->getMetadata();
+        return new Metadata()
+            ->merge($this->attributes->getMetadata())
+            ->merge($this->body->getMetadata())
+        ;
     }
 
     public function getArguments(): array
@@ -120,7 +123,7 @@ EOD;
         return $this->docblock;
     }
 
-    public function withDocBlock(DocBlock $docBlock): self
+    public function withDocBlock(DocBlock $docBlock): static
     {
         $new = clone $this;
         $new->docblock = $docBlock;
@@ -128,19 +131,34 @@ EOD;
         return $new;
     }
 
+    public function withAttribute(AttributeInterface $attribute): static
+    {
+        $new = clone $this;
+        $new->attributes = $this->attributes->add($attribute);
+
+        return $new;
+    }
+
     public function getTemplate(): string
     {
-        if (null === $this->docblock) {
-            return self::RENDER_TEMPLATE_WITHOUT_DOCBLOCK;
+        $template = self::RENDER_TEMPLATE_SIGNATURE_AND_BODY_COMPONENT;
+
+        if (0 !== count($this->attributes)) {
+            $template = self::RENDER_TEMPLATE_ATTRIBUTE_COLLECTION_COMPONENT . "\n" . $template;
         }
 
-        return self::RENDER_TEMPLATE_WITH_DOCBLOCK;
+        if (null !== $this->docblock) {
+            $template = self::RENDER_TEMPLATE_DOCBLOCK_COMPONENT . "\n" . $template;
+        }
+
+        return $template;
     }
 
     public function getContext(): array
     {
         return [
             'docblock' => $this->docblock instanceof DocBlock ? $this->docblock : '',
+            'attributes' => count($this->attributes) > 0 ? $this->attributes : '',
             'signature' => $this->createSignature(),
             'body' => new ResolvedTemplateMutatorResolvable(
                 $this->body,

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model;
 
+use webignition\BasilCompilableSourceFactory\Model\Attribute\AttributeInterface;
 use webignition\BasilCompilableSourceFactory\Model\DocBlock\DocBlock;
 use webignition\Stubble\Resolvable\ResolvableInterface;
 
@@ -24,5 +25,7 @@ interface MethodDefinitionInterface extends HasMetadataInterface, ResolvableInte
 
     public function getDocBlock(): ?DocBlock;
 
-    public function withDocBlock(DocBlock $docBlock): MethodDefinitionInterface;
+    public function withDocBlock(DocBlock $docBlock): static;
+
+    public function withAttribute(AttributeInterface $attribute): static;
 }
