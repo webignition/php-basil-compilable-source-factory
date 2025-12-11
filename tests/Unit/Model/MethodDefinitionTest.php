@@ -8,8 +8,11 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Model\Annotation\DataProviderAnnotation;
 use webignition\BasilCompilableSourceFactory\Model\Annotation\ParameterAnnotation;
 use webignition\BasilCompilableSourceFactory\Model\Attribute\DataProviderAttribute;
+use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
+use webignition\BasilCompilableSourceFactory\Model\ClassName;
+use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\DocBlock\DocBlock;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
@@ -98,7 +101,20 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                 ])),
                 'expectedMetadata' => new Metadata(),
             ],
-            'lines with metadata' => [
+            'lines without metadata with data provider attribute' => [
+                'methodDefinition' => new MethodDefinition('name', new Body([
+                    new EmptyLine(),
+                    new SingleLineComment('single line comment'),
+                ]))->withAttribute(new DataProviderAttribute('dataProviderMethod')),
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
+                        new ClassNameCollection([
+                            new ClassName(DataProvider::class)
+                        ])
+                    ),
+                ]),
+            ],
+            'lines with metadata without data provider attribute' => [
                 'methodDefinition' => new MethodDefinition('name', new Body([
                     new Statement(
                         new ObjectMethodInvocation(
@@ -114,6 +130,32 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                     ),
                 ])),
                 'expectedMetadata' => new Metadata([
+                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                        'DEPENDENCY',
+                    ]),
+                ]),
+            ],
+            'lines with metadata with data provider attribute' => [
+                'methodDefinition' => new MethodDefinition('name', new Body([
+                    new Statement(
+                        new ObjectMethodInvocation(
+                            new VariableDependency('DEPENDENCY'),
+                            'methodName'
+                        )
+                    ),
+                    new Statement(
+                        new AssignmentExpression(
+                            new VariableName('variable'),
+                            new MethodInvocation('methodName')
+                        )
+                    ),
+                ]))->withAttribute(new DataProviderAttribute('dataProviderMethod')),
+                'expectedMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
+                        new ClassNameCollection([
+                            new ClassName(DataProvider::class)
+                        ])
+                    ),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         'DEPENDENCY',
                     ]),

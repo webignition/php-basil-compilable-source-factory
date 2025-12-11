@@ -9,6 +9,7 @@ use webignition\BasilCompilableSourceFactory\Model\Attribute\AttributeCollection
 use webignition\BasilCompilableSourceFactory\Model\Attribute\AttributeInterface;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\DocBlock\DocBlock;
+use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\Stubble\Resolvable\ResolvedTemplateMutatorResolvable;
 
@@ -66,7 +67,10 @@ class MethodDefinition implements MethodDefinitionInterface
 
     public function getMetadata(): MetadataInterface
     {
-        return $this->body->getMetadata();
+        return new Metadata()
+            ->merge($this->attributes->getMetadata())
+            ->merge($this->body->getMetadata())
+        ;
     }
 
     public function getArguments(): array
