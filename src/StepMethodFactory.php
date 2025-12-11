@@ -6,11 +6,10 @@ namespace webignition\BasilCompilableSourceFactory;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
-use webignition\BasilCompilableSourceFactory\Model\Annotation\DataProviderAnnotation;
+use webignition\BasilCompilableSourceFactory\Model\Attribute\DataProviderAttribute;
 use webignition\BasilCompilableSourceFactory\Model\Block\IfBlock\IfBlock;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\DataProviderMethodDefinition;
-use webignition\BasilCompilableSourceFactory\Model\DocBlock\DocBlock;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
@@ -79,14 +78,7 @@ class StepMethodFactory
             $this->createEscapedDataProviderData($dataSetCollection)
         );
 
-        $testMethodDocBlock = $testMethod->getDocBlock();
-        if ($testMethodDocBlock instanceof DocBlock) {
-            $testMethodDocBlock = $testMethodDocBlock->prepend(new DocBlock([
-                new DataProviderAnnotation($dataProviderMethod->getName()),
-                "\n",
-            ]));
-            $testMethod = $testMethod->withDocBlock($testMethodDocBlock);
-        }
+        $testMethod = $testMethod->withAttribute(new DataProviderAttribute($dataProviderMethod->getName()));
 
         return [
             $testMethod,
