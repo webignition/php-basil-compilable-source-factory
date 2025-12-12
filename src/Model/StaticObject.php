@@ -13,12 +13,12 @@ class StaticObject implements \Stringable, ExpressionInterface
 {
     use ResolvableStringableTrait;
 
-    private string $object;
-
-    public function __construct(string $object)
-    {
-        $this->object = $object;
-    }
+    /**
+     * @param non-empty-string $object
+     */
+    public function __construct(
+        private readonly string $object
+    ) {}
 
     public function __toString(): string
     {
