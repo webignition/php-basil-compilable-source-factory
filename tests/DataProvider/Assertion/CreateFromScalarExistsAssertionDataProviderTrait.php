@@ -7,7 +7,6 @@ namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Metadata\Metadata as TestMetadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Parser\AssertionParser;
 
