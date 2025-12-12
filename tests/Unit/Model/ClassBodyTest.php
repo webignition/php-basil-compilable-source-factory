@@ -173,10 +173,6 @@ class ClassBodyTest extends AbstractResolvableTestCase
                     ])),
                 ]),
                 'expectedString' => <<<'EOD'
-                    /**
-                     * @param string $x
-                     * @param string $y
-                     */
                     #[DataProvider('stepOneDataProvider')]
                     public function stepOne($x, $y)
                     {

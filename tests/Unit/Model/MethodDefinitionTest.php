@@ -5,14 +5,12 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use webignition\BasilCompilableSourceFactory\Model\Annotation\ParameterAnnotation;
 use webignition\BasilCompilableSourceFactory\Model\Attribute\DataProviderAttribute;
 use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
-use webignition\BasilCompilableSourceFactory\Model\DocBlock\DocBlock;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
@@ -260,11 +258,6 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                     'arg3',
                 ]),
                 'expectedString' => <<<'EOD'
-                    /**
-                     * @param string $arg1
-                     * @param string $arg2
-                     * @param string $arg3
-                     */
                     public function emptyPublicMethod($arg1, $arg2, $arg3)
                     {
                     
@@ -303,10 +296,6 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                     ['x', 'y']
                 ),
                 'expectedString' => <<<'EOD'
-                    /**
-                     * @param string $x
-                     * @param string $y
-                     */
                     public function nameOfMethod($x, $y)
                     {
                         // Assign object method call to $value
@@ -325,10 +314,6 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                     ['x', 'y']
                 ),
                 'expectedString' => <<<'EOD'
-                    /**
-                     * @param string $x
-                     * @param string $y
-                     */
                     public function nameOfMethod($x, $y)
                     {
                         // comment
@@ -359,10 +344,6 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                     );
                 })(),
                 'expectedString' => <<<'EOD'
-                    /**
-                     * @param string $x
-                     * @param string $y
-                     */
                     #[DataProvider('dataProviderMethodName')]
                     public function nameOfMethod($x, $y)
                     {
@@ -385,10 +366,6 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                     );
                 })(),
                 'expectedString' => <<<'EOD'
-                    /**
-                     * @param string $x
-                     * @param string $y
-                     */
                     #[DataProvider('dataProviderMethodName')]
                     public function nameOfMethod($x, $y)
                     {
@@ -415,10 +392,6 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                     );
                 })(),
                 'expectedString' => <<<'EOD'
-                    /**
-                     * @param string $x
-                     * @param string $y
-                     */
                     #[DataProvider('dataProviderMethodName1')]
                     #[DataProvider('dataProviderMethodName2')]
                     public function nameOfMethod($x, $y)
@@ -426,45 +399,6 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                         // comment
                     }
                     EOD,
-            ],
-        ];
-    }
-
-    #[DataProvider('getDocBlockDataProvider')]
-    public function testGetDocBlock(MethodDefinition $methodDefinition, ?DocBlock $expectedDocBlock): void
-    {
-        $this->assertEquals($expectedDocBlock, $methodDefinition->getDocBlock());
-    }
-
-    /**
-     * @return array<mixed>
-     */
-    public static function getDocBlockDataProvider(): array
-    {
-        return [
-            'no arguments' => [
-                'methodDefinition' => new MethodDefinition(
-                    'methodName',
-                    new Body([]),
-                    []
-                ),
-                'expectedDocBlock' => null,
-            ],
-            'has arguments' => [
-                'methodDefinition' => new MethodDefinition(
-                    'methodName',
-                    new Body([]),
-                    [
-                        'zulu',
-                        'alpha',
-                        'charlie',
-                    ]
-                ),
-                'expectedDocBlock' => new DocBlock([
-                    new ParameterAnnotation('string', new VariableName('zulu')),
-                    new ParameterAnnotation('string', new VariableName('alpha')),
-                    new ParameterAnnotation('string', new VariableName('charlie')),
-                ]),
             ],
         ];
     }
