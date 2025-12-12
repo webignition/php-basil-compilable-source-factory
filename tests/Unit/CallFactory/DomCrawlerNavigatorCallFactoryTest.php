@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTestCase;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTestCase
 {
@@ -122,7 +122,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTestCase
                 'expectedRenderedExpression' => '{{ NAVIGATOR }}->{{ METHOD }}("literal expression")',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
                     ],
                 ),
             ],
