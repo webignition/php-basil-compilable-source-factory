@@ -9,12 +9,8 @@ use webignition\BaseBasilTestCase\ClientManager;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\ClassDefinitionFactory;
 use webignition\BasilCompilableSourceFactory\ClassNameFactory;
-use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSourceFactory\Model\ClassName;
-use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\StepMethodFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Model\Test\NamedTest;
@@ -81,17 +77,15 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                         }
                     }
                     EOF,
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ClientManager::class),
-                            new ClassName(\Throwable::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        ClientManager::class,
+                        \Throwable::class,
+                    ],
+                    variableNames: [
                         VariableNames::PANTHER_CLIENT,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'empty test, browser=firefox' => [
                 'factory' => self::createClassDefinitionFactory(
@@ -125,17 +119,15 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                         }
                     }
                     EOF,
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ClientManager::class),
-                            new ClassName(\Throwable::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        ClientManager::class,
+                        \Throwable::class,
+                    ],
+                    variableNames: [
                         VariableNames::PANTHER_CLIENT,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'empty test, browser=unknown' => [
                 'factory' => self::createClassDefinitionFactory(
@@ -169,17 +161,15 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                         }
                     }
                     EOF,
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ClientManager::class),
-                            new ClassName(\Throwable::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        ClientManager::class,
+                        \Throwable::class,
+                    ],
+                    variableNames: [
                         VariableNames::PANTHER_CLIENT,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'single empty step' => [
                 'factory' => self::createClassDefinitionFactory(
@@ -225,19 +215,17 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                         }
                     }
                     EOF,
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ClientManager::class),
-                            new ClassName(\Throwable::class),
-                            new ClassName(StepName::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        ClientManager::class,
+                        \Throwable::class,
+                        StepName::class,
+                    ],
+                    variableNames: [
                         VariableNames::PANTHER_CLIENT,
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'two empty steps' => [
                 'factory' => self::createClassDefinitionFactory(
@@ -294,19 +282,17 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                         }
                     }
                     EOF,
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ClientManager::class),
-                            new ClassName(\Throwable::class),
-                            new ClassName(StepName::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        ClientManager::class,
+                        \Throwable::class,
+                        StepName::class,
+                    ],
+                    variableNames: [
                         VariableNames::PANTHER_CLIENT,
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
         ];
     }

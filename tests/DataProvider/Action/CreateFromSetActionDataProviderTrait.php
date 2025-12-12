@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
-use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSourceFactory\Model\ClassName;
-use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Parser\ActionParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
@@ -32,18 +28,16 @@ trait CreateFromSetActionDataProviderTrait
                     . '    "value"' . "\n"
                     . ');' . "\n"
                     . '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ElementIdentifier::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        ElementIdentifier::class,
+                    ],
+                    variableNames: [
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
-                        VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
+                        VariableNames::PHPUNIT_TEST_CASE
+                    ],
+                ),
             ],
             'input action, element identifier, element value' => [
                 'action' => $actionParser->parse('set $".selector" to $".source"'),
@@ -60,19 +54,17 @@ trait CreateFromSetActionDataProviderTrait
                     . '    })()' . "\n"
                     . ');' . "\n"
                     . '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ElementIdentifier::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        ElementIdentifier::class,
+                    ],
+                    variableNames: [
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
-                        VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
+                        VariableNames::PHPUNIT_TEST_CASE
+                    ],
+                ),
             ],
             'input action, element identifier, attribute value' => [
                 'action' => $actionParser->parse('set $".selector" to $".source".attribute_name'),
@@ -89,18 +81,16 @@ trait CreateFromSetActionDataProviderTrait
                     . '    })()' . "\n"
                     . ');' . "\n"
                     . '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ElementIdentifier::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        ElementIdentifier::class,
+                    ],
+                    variableNames: [
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
-                        VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
+                        VariableNames::PHPUNIT_TEST_CASE
+                    ],
+                ),
             ],
             'input action, browser property' => [
                 'action' => $actionParser->parse('set $".selector" to $browser.size'),
@@ -117,19 +107,17 @@ trait CreateFromSetActionDataProviderTrait
                     . '    })()' . "\n"
                     . ');' . "\n"
                     . '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ElementIdentifier::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        ElementIdentifier::class,
+                    ],
+                    variableNames: [
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
                         VariableNames::PANTHER_CLIENT,
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'input action, page property' => [
                 'action' => $actionParser->parse('set $".selector" to $page.url'),
@@ -140,19 +128,17 @@ trait CreateFromSetActionDataProviderTrait
                     . '    {{ CLIENT }}->getCurrentURL()' . "\n"
                     . ');' . "\n"
                     . '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ElementIdentifier::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        ElementIdentifier::class,
+                    ],
+                    variableNames: [
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
                         VariableNames::PANTHER_CLIENT,
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'input action, environment value' => [
                 'action' => $actionParser->parse('set $".selector" to $env.KEY'),
@@ -163,19 +149,17 @@ trait CreateFromSetActionDataProviderTrait
                     . '    {{ ENV }}[\'KEY\']' . "\n"
                     . ');' . "\n"
                     . '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ElementIdentifier::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        ElementIdentifier::class,
+                    ],
+                    variableNames: [
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'input action, environment value with default' => [
                 'action' => $actionParser->parse('set $".selector" to $env.KEY|"default"'),
@@ -186,19 +170,17 @@ trait CreateFromSetActionDataProviderTrait
                     . '    {{ ENV }}[\'KEY\'] ?? \'default\'' . "\n"
                     . ');' . "\n"
                     . '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ElementIdentifier::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        ElementIdentifier::class,
+                    ],
+                    variableNames: [
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'input action, environment value with default with whitespace' => [
                 'action' => $actionParser->parse('set $".selector" to $env.KEY|"default value"'),
@@ -209,19 +191,17 @@ trait CreateFromSetActionDataProviderTrait
                     . '    {{ ENV }}[\'KEY\'] ?? \'default value\'' . "\n"
                     . ');' . "\n"
                     . '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ElementIdentifier::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        ElementIdentifier::class,
+                    ],
+                    variableNames: [
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'input action, parent > child element identifier, literal value' => [
                 'action' => $actionParser->parse('set $".parent" >> $".child" to "value"'),
@@ -235,18 +215,16 @@ trait CreateFromSetActionDataProviderTrait
                     . '    "value"' . "\n"
                     . ');' . "\n"
                     . '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ElementIdentifier::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        ElementIdentifier::class,
+                    ],
+                    variableNames: [
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
-                        VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
+                        VariableNames::PHPUNIT_TEST_CASE
+                    ],
+                ),
             ],
             'input action, element identifier, data parameter value' => [
                 'action' => $actionParser->parse('set $".selector" to $data.key'),
@@ -257,18 +235,16 @@ trait CreateFromSetActionDataProviderTrait
                     . '    $key' . "\n"
                     . ');' . "\n"
                     . '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ElementIdentifier::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        ElementIdentifier::class,
+                    ],
+                    variableNames: [
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
-                        VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
+                        VariableNames::PHPUNIT_TEST_CASE
+                    ],
+                ),
             ],
         ];
     }

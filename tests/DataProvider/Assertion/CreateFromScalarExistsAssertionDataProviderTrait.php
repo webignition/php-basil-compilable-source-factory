@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Parser\AssertionParser;
 
@@ -26,12 +25,12 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
                     . '{{ PHPUNIT }}->assertTrue(' . "\n"
                     . '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    variableNames: [
                         VariableNames::PANTHER_CLIENT,
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'exists comparison, data parameter value' => [
                 'assertion' => $assertionParser->parse('$data.key exists'),
@@ -39,11 +38,11 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
                     . '{{ PHPUNIT }}->assertTrue(' . "\n"
                     . '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    variableNames: [
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
         ];
     }

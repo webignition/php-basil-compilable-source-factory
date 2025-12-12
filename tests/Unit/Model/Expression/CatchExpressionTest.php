@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression;
 
-use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
-use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CatchExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclaration;
@@ -24,14 +22,12 @@ class CatchExpressionTest extends AbstractResolvableTestCase
 
         $expression = new CatchExpression($typeDeclarationCollection);
 
-        $expectedMetadata = new Metadata([
-            Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                new ClassNameCollection([
-                    new ClassName(\LogicException::class),
-                    new ClassName(\RuntimeException::class),
-                ])
-            ),
-        ]);
+        $expectedMetadata = new Metadata(
+            classNames: [
+                \LogicException::class,
+                \RuntimeException::class,
+            ]
+        );
 
         $this->assertEquals($expectedMetadata, $expression->getMetadata());
     }

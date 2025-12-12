@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\TypeDeclaration;
 
 use PHPUnit\Framework\TestCase;
-use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
-use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclaration;
 use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\TypeDeclarationInterface;
@@ -19,13 +17,9 @@ class ObjectTypeDeclarationTest extends TestCase
         $type = new ClassName(\Exception::class);
         $declaration = new ObjectTypeDeclaration($type);
 
-        $expectedMetadata = new Metadata([
-            Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                new ClassNameCollection([
-                    $type,
-                ])
-            ),
-        ]);
+        $expectedMetadata = new Metadata(
+            classNames: [$type->getClassName()],
+        );
 
         $this->assertEquals($expectedMetadata, $declaration->getMetadata());
     }

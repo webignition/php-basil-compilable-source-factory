@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\MethodInvocation;
 
-use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
-use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
@@ -56,13 +54,11 @@ class StaticObjectMethodInvocationTest extends AbstractResolvableTestCase
                 ),
                 'methodName' => 'method',
                 'arguments' => new MethodArguments(),
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ClassName::class),
-                        ])
-                    )
-                ]),
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        ClassName::class,
+                    ],
+                ),
             ],
             'argument expressions contain additional metadata' => [
                 'staticObject' => new StaticObject(
@@ -75,14 +71,12 @@ class StaticObjectMethodInvocationTest extends AbstractResolvableTestCase
                         'staticMethodName'
                     )
                 ]),
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(StaticObject::class),
-                            new ClassName(ClassName::class),
-                        ])
-                    )
-                ]),
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        StaticObject::class,
+                        ClassName::class,
+                    ],
+                ),
             ],
         ];
     }

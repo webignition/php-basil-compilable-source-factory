@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
-use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSourceFactory\Model\ClassName;
-use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Parser\AssertionParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
@@ -37,18 +33,16 @@ trait CreateFromIsAssertionDataProviderTrait
                     . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
                     . '    {{ PHPUNIT }}->getExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ElementIdentifier::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        ElementIdentifier::class,
+                    ],
+                    variableNames: [
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'is comparison, descendant identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".parent" >> $".child" is "value"'),
@@ -67,18 +61,16 @@ trait CreateFromIsAssertionDataProviderTrait
                     . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
                     . '    {{ PHPUNIT }}->getExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ElementIdentifier::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        ElementIdentifier::class,
+                    ],
+                    variableNames: [
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'is comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name is "value"'),
@@ -94,17 +86,15 @@ trait CreateFromIsAssertionDataProviderTrait
                     . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
                     . '    {{ PHPUNIT }}->getExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ElementIdentifier::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        ElementIdentifier::class,
+                    ],
+                    variableNames: [
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'is comparison, browser object examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is "value"'),
@@ -120,12 +110,12 @@ trait CreateFromIsAssertionDataProviderTrait
                     . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
                     . '    {{ PHPUNIT }}->getExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        VariableNames::PANTHER_CLIENT,
+                'expectedMetadata' => new Metadata(
+                    variableNames: [
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
+                        VariableNames::PANTHER_CLIENT,
+                    ],
+                ),
             ],
             'is comparison, environment examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$env.KEY is "value"'),
@@ -135,12 +125,12 @@ trait CreateFromIsAssertionDataProviderTrait
                     . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
                     . '    {{ PHPUNIT }}->getExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    variableNames: [
                         VariableNames::PHPUNIT_TEST_CASE,
-                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
-                    ]),
-                ]),
+                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY
+                    ],
+                ),
             ],
             'is comparison, environment examined value with default, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$env.KEY|"default value" is "value"'),
@@ -150,12 +140,12 @@ trait CreateFromIsAssertionDataProviderTrait
                     . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
                     . '    {{ PHPUNIT }}->getExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    variableNames: [
                         VariableNames::PHPUNIT_TEST_CASE,
-                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
-                    ]),
-                ]),
+                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY
+                    ],
+                ),
             ],
             'is comparison, environment examined value with default, environment examined value with default' => [
                 'assertion' => $assertionParser->parse('$env.KEY1|"default value 1" is $env.KEY2|"default value 2"'),
@@ -166,12 +156,12 @@ trait CreateFromIsAssertionDataProviderTrait
                     . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
                     . '    {{ PHPUNIT }}->getExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    variableNames: [
                         VariableNames::PHPUNIT_TEST_CASE,
-                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
-                    ]),
-                ]),
+                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY
+                    ],
+                ),
             ],
             'is comparison, page object examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$page.title is "value"'),
@@ -181,12 +171,12 @@ trait CreateFromIsAssertionDataProviderTrait
                     . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
                     . '    {{ PHPUNIT }}->getExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    variableNames: [
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::PANTHER_CLIENT,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'is comparison, browser object examined value, descendant identifier expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $".parent" >> $".child"'),
@@ -211,19 +201,17 @@ trait CreateFromIsAssertionDataProviderTrait
                     . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
                     . '    {{ PHPUNIT }}->getExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ElementIdentifier::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        ElementIdentifier::class,
+                    ],
+                    variableNames: [
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::PANTHER_CLIENT,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'is comparison, browser object examined value, element identifier expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $".selector"'),
@@ -245,19 +233,17 @@ trait CreateFromIsAssertionDataProviderTrait
                     . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
                     . '    {{ PHPUNIT }}->getExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ElementIdentifier::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        ElementIdentifier::class,
+                    ],
+                    variableNames: [
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::PANTHER_CLIENT,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'is comparison, browser object examined value, attribute identifier expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $".selector".attribute_name'),
@@ -279,18 +265,16 @@ trait CreateFromIsAssertionDataProviderTrait
                     . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
                     . '    {{ PHPUNIT }}->getExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ElementIdentifier::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        ElementIdentifier::class,
+                    ],
+                    variableNames: [
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::PANTHER_CLIENT,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'is comparison, browser object examined value, environment expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $env.KEY'),
@@ -306,13 +290,13 @@ trait CreateFromIsAssertionDataProviderTrait
                     . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
                     . '    {{ PHPUNIT }}->getExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    variableNames: [
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::PANTHER_CLIENT,
-                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
-                    ]),
-                ]),
+                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY
+                    ],
+                ),
             ],
             'is comparison, browser object examined value, environment expected value with default' => [
                 'assertion' => $assertionParser->parse('$browser.size is $env.KEY|"default value"'),
@@ -329,13 +313,13 @@ trait CreateFromIsAssertionDataProviderTrait
                     . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
                     . '    {{ PHPUNIT }}->getExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    variableNames: [
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::PANTHER_CLIENT,
-                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
-                    ]),
-                ]),
+                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY
+                    ],
+                ),
             ],
             'is comparison, browser object examined value, page object expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $page.url'),
@@ -352,12 +336,12 @@ trait CreateFromIsAssertionDataProviderTrait
                     . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
                     . '    {{ PHPUNIT }}->getExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    variableNames: [
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::PANTHER_CLIENT,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'is comparison, literal string examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('"examined" is "expected"'),
@@ -367,11 +351,11 @@ trait CreateFromIsAssertionDataProviderTrait
                     . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
                     . '    {{ PHPUNIT }}->getExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    variableNames: [
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
         ];
     }

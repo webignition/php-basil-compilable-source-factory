@@ -12,7 +12,6 @@ use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethod
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 
@@ -37,11 +36,11 @@ class StatementTest extends AbstractResolvableTestCase
         return [
             'variable dependency' => [
                 'expression' => new VariableDependency(VariableNames::ACTION_FACTORY),
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    variableNames: [
                         VariableNames::ACTION_FACTORY,
-                    ])
-                ]),
+                    ],
+                ),
             ],
             'method invocation' => [
                 'expression' => new MethodInvocation('methodName'),
@@ -52,11 +51,11 @@ class StatementTest extends AbstractResolvableTestCase
                     new VariableDependency(VariableNames::ASSERTION_FACTORY),
                     'methodName'
                 ),
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    variableNames: [
                         VariableNames::ASSERTION_FACTORY,
-                    ])
-                ]),
+                    ],
+                ),
             ],
         ];
     }

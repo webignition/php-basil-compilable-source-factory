@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Attribute;
 
-use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
-use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 
@@ -22,7 +20,7 @@ class Attribute implements AttributeInterface
      */
     private array $arguments;
 
-    private Metadata $metadata;
+    private MetadataInterface $metadata;
 
     /**
      * @param string[] $arguments
@@ -32,11 +30,7 @@ class Attribute implements AttributeInterface
         $this->className = $className;
         $this->arguments = $arguments;
 
-        $this->metadata = new Metadata([
-            Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                new ClassNameCollection([$this->className]),
-            ),
-        ]);
+        $this->metadata = new Metadata(classNames: [$this->className->getClassName()]);
     }
 
     public function getTemplate(): string

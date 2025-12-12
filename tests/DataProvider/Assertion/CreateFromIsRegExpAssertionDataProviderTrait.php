@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
-use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSourceFactory\Model\ClassName;
-use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
 use webignition\BasilModels\Parser\AssertionParser;
@@ -37,11 +33,11 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     . '{{ PHPUNIT }}->assertFalse(' . "\n"
                     . '    {{ PHPUNIT }}->getBooleanExpectedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    variableNames: [
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'derived is-regexp, matches assertion with elemental value' => [
                 'assertion' => new DerivedValueOperationAssertion(
@@ -62,18 +58,16 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     . '{{ PHPUNIT }}->assertFalse(' . "\n"
                     . '    {{ PHPUNIT }}->getBooleanExpectedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ElementIdentifier::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        ElementIdentifier::class,
+                    ],
+                    variableNames: [
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'derived is-regexp, matches assertion with attribute value' => [
                 'assertion' => new DerivedValueOperationAssertion(
@@ -94,17 +88,15 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     . '{{ PHPUNIT }}->assertFalse(' . "\n"
                     . '    {{ PHPUNIT }}->getBooleanExpectedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ElementIdentifier::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        ElementIdentifier::class,
+                    ],
+                    variableNames: [
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'derived is-regexp, matches assertion with data parameter scalar value' => [
                 'assertion' => new DerivedValueOperationAssertion(
@@ -119,11 +111,11 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     . '{{ PHPUNIT }}->assertFalse(' . "\n"
                     . '    {{ PHPUNIT }}->getBooleanExpectedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    variableNames: [
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
         ];
     }

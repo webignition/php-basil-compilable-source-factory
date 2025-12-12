@@ -5,34 +5,29 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Model\Metadata;
 
 use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
+use webignition\BasilCompilableSourceFactory\Model\ClassName;
+use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
+use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class Metadata implements MetadataInterface
 {
-    public const KEY_CLASS_DEPENDENCIES = 'class-dependencies';
-    public const KEY_VARIABLE_DEPENDENCIES = 'variable-dependencies';
-
     private ClassDependencyCollection $classDependencies;
     private VariableDependencyCollection $variableDependencies;
 
     /**
-     * @param array<mixed> $components
+     * @param non-empty-string[] $classNames
+     * @param VariableNames::*[] $variableNames
      */
-    public function __construct(array $components = [])
+    public function __construct(array $classNames = [], array $variableNames = [])
     {
-        $classDependencies = $components[self::KEY_CLASS_DEPENDENCIES] ?? new ClassDependencyCollection();
-        $classDependencies = $classDependencies instanceof ClassDependencyCollection
-            ? $classDependencies
-            : new ClassDependencyCollection();
+        $classNameObjects = [];
+        foreach ($classNames as $className) {
+            $classNameObjects[] = new ClassName($className);
+        }
 
-        $emptyVariableDependencies = new VariableDependencyCollection();
-        $variableDependencies = $components[self::KEY_VARIABLE_DEPENDENCIES] ?? $emptyVariableDependencies;
-        $variableDependencies = $variableDependencies instanceof VariableDependencyCollection
-            ? $variableDependencies
-            : $emptyVariableDependencies;
-
-        $this->classDependencies = $classDependencies;
-        $this->variableDependencies = $variableDependencies;
+        $this->classDependencies = new ClassDependencyCollection(new ClassNameCollection($classNameObjects));
+        $this->variableDependencies = new VariableDependencyCollection($variableNames);
     }
 
     public function getClassDependencies(): ClassDependencyCollection

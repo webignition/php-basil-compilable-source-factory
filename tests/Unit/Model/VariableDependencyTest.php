@@ -4,10 +4,10 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class VariableDependencyTest extends AbstractResolvableTestCase
@@ -52,11 +52,11 @@ class VariableDependencyTest extends AbstractResolvableTestCase
         return [
             'variable dependency' => [
                 'dependency' => new VariableDependency(VariableNames::ACTION_FACTORY),
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    variableNames: [
                         VariableNames::ACTION_FACTORY,
-                    ]),
-                ]),
+                    ]
+                ),
             ],
         ];
     }

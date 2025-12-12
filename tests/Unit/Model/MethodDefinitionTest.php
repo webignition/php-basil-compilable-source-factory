@@ -6,11 +6,8 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Model\Attribute\DataProviderAttribute;
-use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
-use webignition\BasilCompilableSourceFactory\Model\ClassName;
-use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
@@ -24,7 +21,6 @@ use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethod
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 
@@ -104,13 +100,11 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                     new EmptyLine(),
                     new SingleLineComment('single line comment'),
                 ]))->withAttribute(new DataProviderAttribute('dataProviderMethod')),
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(DataProvider::class)
-                        ])
-                    ),
-                ]),
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        DataProvider::class,
+                    ],
+                ),
             ],
             'lines with metadata without data provider attribute' => [
                 'methodDefinition' => new MethodDefinition('name', new Body([
@@ -127,11 +121,11 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                         )
                     ),
                 ])),
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    variableNames: [
                         VariableNames::ACTION_FACTORY,
-                    ]),
-                ]),
+                    ]
+                ),
             ],
             'lines with metadata with data provider attribute' => [
                 'methodDefinition' => new MethodDefinition('name', new Body([
@@ -148,16 +142,14 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                         )
                     ),
                 ]))->withAttribute(new DataProviderAttribute('dataProviderMethod')),
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(DataProvider::class)
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        DataProvider::class,
+                    ],
+                    variableNames: [
                         VariableNames::ACTION_FACTORY,
-                    ]),
-                ]),
+                    ]
+                ),
             ],
         ];
     }

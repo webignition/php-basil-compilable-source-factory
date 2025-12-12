@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
-use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSourceFactory\Model\ClassName;
-use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Parser\AssertionParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
@@ -37,18 +33,16 @@ trait CreateFromExcludesAssertionDataProviderTrait
                     . '    (string) ({{ PHPUNIT }}->getExpectedValue()),' . "\n"
                     . '    (string) ({{ PHPUNIT }}->getExaminedValue())' . "\n"
                     . ');',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ElementIdentifier::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        ElementIdentifier::class,
+                    ],
+                    variableNames: [
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'excludes comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name excludes "value"'),
@@ -64,17 +58,15 @@ trait CreateFromExcludesAssertionDataProviderTrait
                     . '    (string) ({{ PHPUNIT }}->getExpectedValue()),' . "\n"
                     . '    (string) ({{ PHPUNIT }}->getExaminedValue())' . "\n"
                     . ');',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ElementIdentifier::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        ElementIdentifier::class,
+                    ],
+                    variableNames: [
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
         ];
     }

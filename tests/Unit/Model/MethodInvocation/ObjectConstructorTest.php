@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\MethodInvocation;
 
-use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
-use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
@@ -41,26 +39,22 @@ class ObjectConstructorTest extends AbstractResolvableTestCase
             'no arguments' => [
                 'class' => new ClassName(ObjectConstructor::class),
                 'arguments' => new MethodArguments(),
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ObjectConstructor::class)
-                        ])
-                    ),
-                ]),
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        ObjectConstructor::class,
+                    ],
+                ),
             ],
             'single argument' => [
                 'class' => new ClassName(ObjectConstructor::class),
                 'arguments' => new MethodArguments([
                     new LiteralExpression('1'),
                 ]),
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ObjectConstructor::class)
-                        ])
-                    ),
-                ]),
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        ObjectConstructor::class,
+                    ],
+                ),
             ],
         ];
     }

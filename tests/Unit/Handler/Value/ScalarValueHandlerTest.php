@@ -8,7 +8,6 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentExcepti
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 
@@ -56,11 +55,11 @@ class ScalarValueHandlerTest extends AbstractResolvableTestCase
             'environment parameter value' => [
                 'value' => '$env.KEY',
                 'expectedRenderedSource' => '{{ ENV }}[\'KEY\']',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        'ENV',
-                    ])
-                ]),
+                'expectedMetadata' => new Metadata(
+                    variableNames: [
+                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
+                    ],
+                ),
             ],
             'browser property, size' => [
                 'value' => '$browser.size',
@@ -70,29 +69,29 @@ class ScalarValueHandlerTest extends AbstractResolvableTestCase
                     . '    return (string) ($webDriverDimension->getWidth()) . \'x\' . '
                     . '(string) ($webDriverDimension->getHeight());' . "\n"
                     . '})()',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    variableNames: [
                         VariableNames::PANTHER_CLIENT,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'page property, url' => [
                 'value' => '$page.url',
                 'expectedRenderedSource' => '{{ CLIENT }}->getCurrentURL()',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    variableNames: [
                         VariableNames::PANTHER_CLIENT,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'page property, title' => [
                 'value' => '$page.title',
                 'expectedRenderedSource' => '{{ CLIENT }}->getTitle()',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    variableNames: [
                         VariableNames::PANTHER_CLIENT,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'data parameter' => [
                 'value' => '$data.key',

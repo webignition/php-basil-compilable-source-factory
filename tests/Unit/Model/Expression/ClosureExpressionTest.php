@@ -26,7 +26,6 @@ use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclaration;
 use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclarationCollection;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
@@ -93,11 +92,11 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                         )
                     ),
                 ]),
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    variableNames: [
                         VariableNames::ACTION_FACTORY,
-                    ]),
-                ]),
+                    ]
+                ),
             ],
         ];
     }

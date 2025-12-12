@@ -9,7 +9,6 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterfac
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 
@@ -121,11 +120,11 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTestCase
             'literal expression' => [
                 'elementIdentifierExpression' => new LiteralExpression('"literal expression"'),
                 'expectedRenderedExpression' => '{{ NAVIGATOR }}->{{ METHOD }}("literal expression")',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => new Metadata(
+                    variableNames: [
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
         ];
 

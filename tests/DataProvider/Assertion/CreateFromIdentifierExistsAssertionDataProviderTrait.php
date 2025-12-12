@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
-use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSourceFactory\Model\ClassName;
-use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
 use webignition\BasilModels\Parser\ActionParser;
@@ -25,6 +21,17 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
     {
         $actionParser = ActionParser::create();
         $assertionParser = AssertionParser::create();
+
+        $expectedMetadata = new Metadata(
+            classNames: [
+                ElementIdentifier::class,
+                InvalidLocatorException::class,
+            ],
+            variableNames: [
+                VariableNames::DOM_CRAWLER_NAVIGATOR,
+                VariableNames::PHPUNIT_TEST_CASE,
+            ],
+        );
 
         return [
             'exists comparison, element identifier examined value' => [
@@ -44,18 +51,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     . '{{ PHPUNIT }}->assertTrue(' . "\n"
                     . '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ElementIdentifier::class),
-                            new ClassName(InvalidLocatorException::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                ]),
+                'expectedMetadata' => $expectedMetadata,
             ],
             'exists comparison, attribute identifier examined value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name exists'),
@@ -84,18 +80,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     . '{{ PHPUNIT }}->assertTrue(' . "\n"
                     . '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ElementIdentifier::class),
-                            new ClassName(InvalidLocatorException::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                ]),
+                'expectedMetadata' => $expectedMetadata,
             ],
             'exists comparison, css attribute selector containing dot' => [
                 'assertion' => $assertionParser->parse('$"a[href=foo.html]" exists'),
@@ -114,18 +99,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     . '{{ PHPUNIT }}->assertTrue(' . "\n"
                     . '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ElementIdentifier::class),
-                            new ClassName(InvalidLocatorException::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                ]),
+                'expectedMetadata' => $expectedMetadata,
             ],
             'exists comparison, css attribute selector containing dot with attribute name' => [
                 'assertion' => $assertionParser->parse('$"a[href=foo.html]".attribute_name exists'),
@@ -154,18 +128,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     . '{{ PHPUNIT }}->assertTrue(' . "\n"
                     . '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ElementIdentifier::class),
-                            new ClassName(InvalidLocatorException::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                ]),
+                'expectedMetadata' => $expectedMetadata,
             ],
             'derived exists comparison, click action source' => [
                 'assertion' => new DerivedValueOperationAssertion(
@@ -188,18 +151,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     . '{{ PHPUNIT }}->assertTrue(' . "\n"
                     . '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ElementIdentifier::class),
-                            new ClassName(InvalidLocatorException::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                ]),
+                'expectedMetadata' => $expectedMetadata,
             ],
             'derived exists comparison, submit action source' => [
                 'assertion' => new DerivedValueOperationAssertion(
@@ -222,18 +174,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     . '{{ PHPUNIT }}->assertTrue(' . "\n"
                     . '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ElementIdentifier::class),
-                            new ClassName(InvalidLocatorException::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                ]),
+                'expectedMetadata' => $expectedMetadata,
             ],
             'derived exists comparison, set action source' => [
                 'assertion' => new DerivedValueOperationAssertion(
@@ -256,18 +197,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     . '{{ PHPUNIT }}->assertTrue(' . "\n"
                     . '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ElementIdentifier::class),
-                            new ClassName(InvalidLocatorException::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                ]),
+                'expectedMetadata' => $expectedMetadata,
             ],
             'derived exists comparison, wait action source' => [
                 'assertion' => new DerivedValueOperationAssertion(
@@ -290,18 +220,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     . '{{ PHPUNIT }}->assertTrue(' . "\n"
                     . '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ElementIdentifier::class),
-                            new ClassName(InvalidLocatorException::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                ]),
+                'expectedMetadata' => $expectedMetadata,
             ],
         ];
     }

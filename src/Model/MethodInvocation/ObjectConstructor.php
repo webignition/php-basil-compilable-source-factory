@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\MethodInvocation;
 
-use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
-use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
@@ -38,10 +36,6 @@ class ObjectConstructor extends AbstractMethodInvocationEncapsulator
 
     protected function getAdditionalMetadata(): MetadataInterface
     {
-        return new Metadata([
-            Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                new ClassNameCollection([$this->class])
-            ),
-        ]);
+        return new Metadata(classNames: [$this->class->getClassName()]);
     }
 }
