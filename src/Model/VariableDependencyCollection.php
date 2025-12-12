@@ -15,7 +15,7 @@ class VariableDependencyCollection implements \IteratorAggregate
     private array $dependencies = [];
 
     /**
-     * @param string[] $names
+     * @param non-empty-string[] $names
      */
     public function __construct(array $names = [])
     {

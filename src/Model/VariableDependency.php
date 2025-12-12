@@ -12,13 +12,16 @@ class VariableDependency implements ExpressionInterface, VariableDependencyInter
 {
     private const RENDER_TEMPLATE = '{{ {{ name }} }}';
 
-    private string $name;
+    /**
+     * @param non-empty-string $name
+     */
+    public function __construct(
+        private readonly string $name
+    ) {}
 
-    public function __construct(string $name)
-    {
-        $this->name = $name;
-    }
-
+    /**
+     * @return non-empty-string
+     */
     public function getName(): string
     {
         return $this->name;

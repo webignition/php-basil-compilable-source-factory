@@ -13,7 +13,7 @@ class VariableDependencyCollectionTest extends TestCase
     /**
      * @dataProvider createDataProvider
      *
-     * @param string[]             $names
+     * @param non-empty-string[]   $names
      * @param VariableDependency[] $expectedPlaceholders
      */
     public function testCreate(array $names, array $expectedPlaceholders): void
