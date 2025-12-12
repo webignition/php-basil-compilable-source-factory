@@ -5,7 +5,11 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Model\Metadata;
 
 use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
+use webignition\BasilCompilableSourceFactory\Model\ClassName;
+use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
+use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\DomElementIdentifier\ElementIdentifier;
 
 class Metadata implements MetadataInterface
 {
@@ -33,6 +37,27 @@ class Metadata implements MetadataInterface
 
         $this->classDependencies = $classDependencies;
         $this->variableDependencies = $variableDependencies;
+    }
+
+    /**
+     *
+     * @param non-empty-string[] $classNames
+     * @param VariableNames::*[] $variableNames
+     */
+    public static function create(array $classNames = [], array $variableNames = []): MetadataInterface
+    {
+        $classNameObjects = [];
+        foreach ($classNames as $className) {
+            $classNameObjects[] = new ClassName($className);
+        }
+        $classDependencies = new ClassDependencyCollection(new ClassNameCollection($classNameObjects));
+        $variableDependencies = new VariableDependencyCollection($variableNames);
+
+        $metadata = new Metadata();
+        $metadata->classDependencies = $classDependencies;
+        $metadata->variableDependencies = $variableDependencies;
+
+        return $metadata;
     }
 
     public function getClassDependencies(): ClassDependencyCollection
