@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Step;
 
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StatementBlockFactory;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTestCase;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Model\Action\ActionInterface;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
@@ -93,8 +93,8 @@ class StatementBlockFactoryTest extends AbstractResolvableTestCase
                     . '}\');',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::ACTION_FACTORY,
-                        VariableNames::PHPUNIT_TEST_CASE,
+                        VariableName::ACTION_FACTORY,
+                        VariableName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],
@@ -106,8 +106,8 @@ class StatementBlockFactoryTest extends AbstractResolvableTestCase
                     . '}\');',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::ASSERTION_FACTORY,
-                        VariableNames::PHPUNIT_TEST_CASE,
+                        VariableName::ASSERTION_FACTORY,
+                        VariableName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],
@@ -119,8 +119,8 @@ class StatementBlockFactoryTest extends AbstractResolvableTestCase
                     . '}\');',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::ASSERTION_FACTORY,
-                        VariableNames::PHPUNIT_TEST_CASE,
+                        VariableName::ASSERTION_FACTORY,
+                        VariableName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],
