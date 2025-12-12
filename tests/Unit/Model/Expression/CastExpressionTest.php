@@ -18,6 +18,7 @@ use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\StaticObject
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
+use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class CastExpressionTest extends AbstractResolvableTestCase
 {
@@ -91,12 +92,12 @@ class CastExpressionTest extends AbstractResolvableTestCase
             'object property access expression as string' => [
                 'expression' => new CastExpression(
                     new ObjectPropertyAccessExpression(
-                        new VariableDependency('OBJECT'),
+                        new VariableDependency(VariableNames::ACTION_FACTORY),
                         'property'
                     ),
                     'string'
                 ),
-                'expectedString' => '(string) ({{ OBJECT }}->property)',
+                'expectedString' => '(string) ({{ ACTION_FACTORY }}->property)',
             ],
             'method invocation as string' => [
                 'expression' => new CastExpression(
@@ -108,12 +109,12 @@ class CastExpressionTest extends AbstractResolvableTestCase
             'object method invocation as string' => [
                 'expression' => new CastExpression(
                     new ObjectMethodInvocation(
-                        new VariableDependency('OBJECT'),
+                        new VariableDependency(VariableNames::ACTION_FACTORY),
                         'methodName'
                     ),
                     'string'
                 ),
-                'expectedString' => '(string) ({{ OBJECT }}->methodName())',
+                'expectedString' => '(string) ({{ ACTION_FACTORY }}->methodName())',
             ],
             'static object method invocation as string, class in root namespace' => [
                 'expression' => new CastExpression(

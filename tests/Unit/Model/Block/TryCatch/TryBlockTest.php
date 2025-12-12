@@ -19,6 +19,7 @@ use webignition\BasilCompilableSourceFactory\Model\StaticObject;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
+use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class TryBlockTest extends AbstractResolvableTestCase
 {
@@ -27,7 +28,7 @@ class TryBlockTest extends AbstractResolvableTestCase
         $body = new Body([
             new Statement(
                 new AssignmentExpression(
-                    new VariableDependency('DEPENDENCY'),
+                    new VariableDependency(VariableNames::ACTION_FACTORY),
                     new StaticObjectMethodInvocation(
                         new StaticObject(\RuntimeException::class),
                         'staticMethodName'
@@ -45,7 +46,7 @@ class TryBlockTest extends AbstractResolvableTestCase
                 ])
             ),
             Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                'DEPENDENCY',
+                VariableNames::ACTION_FACTORY,
             ]),
         ]);
 

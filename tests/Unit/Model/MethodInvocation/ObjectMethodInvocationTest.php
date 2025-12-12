@@ -21,6 +21,7 @@ use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
+use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class ObjectMethodInvocationTest extends AbstractResolvableTestCase
 {
@@ -47,29 +48,29 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
     {
         return [
             'no arguments' => [
-                'object' => new VariableDependency('OBJECT'),
+                'object' => new VariableDependency(VariableNames::ACTION_FACTORY),
                 'methodName' => 'method',
                 'arguments' => new MethodArguments(),
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        'OBJECT',
+                        VariableNames::ACTION_FACTORY,
                     ]),
                 ]),
             ],
             'has arguments' => [
-                'object' => new VariableDependency('OBJECT'),
+                'object' => new VariableDependency(VariableNames::ACTION_FACTORY),
                 'methodName' => 'method',
                 'arguments' => new MethodArguments([
                     new LiteralExpression('1'),
                 ]),
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        'OBJECT',
+                        VariableNames::ACTION_FACTORY,
                     ]),
                 ]),
             ],
             'argument expressions contain additional metadata' => [
-                'object' => new VariableDependency('OBJECT'),
+                'object' => new VariableDependency(VariableNames::ACTION_FACTORY),
                 'methodName' => 'method',
                 'arguments' => new MethodArguments([
                     new StaticObjectMethodInvocation(
@@ -84,7 +85,7 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
                         ])
                     ),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        'OBJECT',
+                        VariableNames::ACTION_FACTORY,
                     ]),
                 ]),
             ],
@@ -113,25 +114,25 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
         return [
             'object and method name only' => [
                 'invocation' => new ObjectMethodInvocation(
-                    new VariableDependency('OBJECT'),
+                    new VariableDependency(VariableNames::ACTION_FACTORY),
                     'methodName'
                 ),
-                'expectedString' => '{{ OBJECT }}->methodName()',
+                'expectedString' => '{{ ACTION_FACTORY }}->methodName()',
             ],
             'has arguments, inline' => [
                 'invocation' => new ObjectMethodInvocation(
-                    new VariableDependency('OBJECT'),
+                    new VariableDependency(VariableNames::ACTION_FACTORY),
                     'methodName',
                     new MethodArguments([
                         new LiteralExpression('1'),
                         new LiteralExpression("\\'single-quoted value\\'"),
                     ])
                 ),
-                'expectedString' => "{{ OBJECT }}->methodName(1, \\'single-quoted value\\')",
+                'expectedString' => "{{ ACTION_FACTORY }}->methodName(1, \\'single-quoted value\\')",
             ],
             'has arguments, stacked' => [
                 'invocation' => new ObjectMethodInvocation(
-                    new VariableDependency('OBJECT'),
+                    new VariableDependency(VariableNames::ACTION_FACTORY),
                     'methodName',
                     new MethodArguments(
                         [
@@ -141,7 +142,7 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
                         MethodArgumentsInterface::FORMAT_STACKED
                     )
                 ),
-                'expectedString' => "{{ OBJECT }}->methodName(\n"
+                'expectedString' => "{{ ACTION_FACTORY }}->methodName(\n"
                     . "    1,\n"
                     . "    \\'single-quoted value\\'\n"
                     . ')',
@@ -165,12 +166,12 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
             'object returned from object method call' => [
                 'invocation' => new ObjectMethodInvocation(
                     new ObjectMethodInvocation(
-                        new VariableDependency('OBJECT'),
+                        new VariableDependency(VariableNames::ACTION_FACTORY),
                         'innerMethodName'
                     ),
                     'outerMethodName'
                 ),
-                'expectedString' => '{{ OBJECT }}->innerMethodName()->outerMethodName()',
+                'expectedString' => '{{ ACTION_FACTORY }}->innerMethodName()->outerMethodName()',
             ],
         ];
     }

@@ -106,13 +106,7 @@ class TestCodeGenerator
         foreach ($variableDependencies as $variableDependency) {
             /** @var VariableDependency $variableDependency */
             $name = $variableDependency->getName();
-            $externalVariable = $externalVariables[$name] ?? null;
-
-            if (null === $externalVariable) {
-                throw new \RuntimeException(sprintf('Undefined dependent variable "%s"', $name));
-            }
-
-            $variableIdentifiers[$variableDependency->getName()] = $externalVariable;
+            $variableIdentifiers[$variableDependency->getName()] = $externalVariables[$name];
         }
 
         return $variableIdentifiers;

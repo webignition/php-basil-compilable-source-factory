@@ -14,6 +14,7 @@ use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethod
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
+use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class AssignmentExpressionTest extends AbstractResolvableTestCase
 {
@@ -48,14 +49,14 @@ class AssignmentExpressionTest extends AbstractResolvableTestCase
             ],
             'has metadata' => [
                 'variable' => new ObjectMethodInvocation(
-                    new VariableDependency('DEPENDENCY'),
+                    new VariableDependency(VariableNames::ACTION_FACTORY),
                     'methodName'
                 ),
                 'value' => new LiteralExpression('literal'),
                 'operator' => '!==',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        'DEPENDENCY',
+                        VariableNames::ACTION_FACTORY,
                     ])
                 ]),
             ],
@@ -86,12 +87,12 @@ class AssignmentExpressionTest extends AbstractResolvableTestCase
             'object property access and literal, assignment' => [
                 'expression' => new AssignmentExpression(
                     new ObjectPropertyAccessExpression(
-                        new VariableDependency('DEPENDENCY'),
+                        new VariableDependency(VariableNames::ACTION_FACTORY),
                         'propertyName'
                     ),
                     new LiteralExpression('value')
                 ),
-                'expectedString' => '{{ DEPENDENCY }}->propertyName = value',
+                'expectedString' => '{{ ACTION_FACTORY }}->propertyName = value',
             ],
         ];
     }

@@ -26,6 +26,7 @@ use webignition\BasilCompilableSourceFactory\Model\StaticObject;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
+use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class MethodArgumentsTest extends AbstractResolvableTestCase
 {
@@ -190,7 +191,7 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                     [
                         ArrayExpression::fromArray([
                             'name' => new ObjectMethodInvocation(
-                                new VariableDependency('DEPENDENCY'),
+                                new VariableDependency(VariableNames::ACTION_FACTORY),
                                 'dataName'
                             ),
                             'data' => [
@@ -201,7 +202,7 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                     ]
                 ),
                 'expectedString' => "[\n"
-                    . "    'name' => {{ DEPENDENCY }}->dataName(),\n"
+                    . "    'name' => {{ ACTION_FACTORY }}->dataName(),\n"
                     . "    'data' => [\n"
                     . "        'key1' => 'value1',\n"
                     . "        'key2' => 'value2',\n"

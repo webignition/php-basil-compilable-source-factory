@@ -12,6 +12,7 @@ use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\VariablePlaceholderInterface;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
+use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class ObjectPropertyAccessExpressionTest extends AbstractResolvableTestCase
 {
@@ -37,11 +38,11 @@ class ObjectPropertyAccessExpressionTest extends AbstractResolvableTestCase
     {
         return [
             'has resolvable placeholder' => [
-                'objectPlaceholder' => new VariableDependency('OBJECT'),
+                'objectPlaceholder' => new VariableDependency(VariableNames::ACTION_FACTORY),
                 'property' => 'propertyName',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        'OBJECT',
+                        VariableNames::ACTION_FACTORY,
                     ]),
                 ]),
             ],
@@ -69,10 +70,10 @@ class ObjectPropertyAccessExpressionTest extends AbstractResolvableTestCase
         return [
             'has resolvable placeholder' => [
                 'expression' => new ObjectPropertyAccessExpression(
-                    new VariableDependency('OBJECT'),
+                    new VariableDependency(VariableNames::ACTION_FACTORY),
                     'propertyName'
                 ),
-                'expectedString' => '{{ OBJECT }}->propertyName',
+                'expectedString' => '{{ ACTION_FACTORY }}->propertyName',
             ],
             'has resolving placeholder' => [
                 'expression' => new ObjectPropertyAccessExpression(

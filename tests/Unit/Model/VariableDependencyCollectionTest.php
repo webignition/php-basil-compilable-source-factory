@@ -7,13 +7,14 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
+use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class VariableDependencyCollectionTest extends TestCase
 {
     /**
      * @dataProvider createDataProvider
      *
-     * @param non-empty-string[]   $names
+     * @param VariableNames::*[]   $names
      * @param VariableDependency[] $expectedPlaceholders
      */
     public function testCreate(array $names, array $expectedPlaceholders): void
@@ -32,15 +33,15 @@ class VariableDependencyCollectionTest extends TestCase
         return [
             'default' => [
                 'names' => [
-                    'DEPENDENCY_1',
-                    'DEPENDENCY_2',
-                    'DEPENDENCY_2',
-                    'DEPENDENCY_3',
+                    VariableNames::DOM_CRAWLER_NAVIGATOR,
+                    VariableNames::PANTHER_CRAWLER,
+                    VariableNames::PHPUNIT_TEST_CASE,
+                    VariableNames::PHPUNIT_TEST_CASE,
                 ],
                 'expectedPlaceholders' => [
-                    'DEPENDENCY_1' => new VariableDependency('DEPENDENCY_1'),
-                    'DEPENDENCY_2' => new VariableDependency('DEPENDENCY_2'),
-                    'DEPENDENCY_3' => new VariableDependency('DEPENDENCY_3'),
+                    'NAVIGATOR' => new VariableDependency('NAVIGATOR'),
+                    'CRAWLER' => new VariableDependency('CRAWLER'),
+                    'PHPUNIT' => new VariableDependency('PHPUNIT'),
                 ],
             ],
         ];
@@ -48,21 +49,27 @@ class VariableDependencyCollectionTest extends TestCase
 
     public function testMerge(): void
     {
-        $collection = new VariableDependencyCollection(['ONE']);
+        $collection = new VariableDependencyCollection([VariableNames::ACTION_FACTORY]);
 
-        $collection = $collection->merge(new VariableDependencyCollection(['TWO', 'THREE']));
+        $collection = $collection->merge(new VariableDependencyCollection([
+            VariableNames::PANTHER_CRAWLER,
+            VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
+        ]));
         $collection = $collection->merge(
-            new VariableDependencyCollection(['THREE', 'FOUR'])
+            new VariableDependencyCollection([
+                VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
+                VariableNames::DOM_CRAWLER_NAVIGATOR,
+            ])
         );
 
         $this->assertCount(4, $collection);
 
         $this->assertEquals(
             [
-                'ONE' => new VariableDependency('ONE'),
-                'TWO' => new VariableDependency('TWO'),
-                'THREE' => new VariableDependency('THREE'),
-                'FOUR' => new VariableDependency('FOUR'),
+                'ACTION_FACTORY' => new VariableDependency(VariableNames::ACTION_FACTORY),
+                'CRAWLER' => new VariableDependency(VariableNames::PANTHER_CRAWLER),
+                'ENV' => new VariableDependency(VariableNames::ENVIRONMENT_VARIABLE_ARRAY),
+                'NAVIGATOR' => new VariableDependency(VariableNames::DOM_CRAWLER_NAVIGATOR),
             ],
             $this->getCollectionVariablePlaceholders($collection)
         );
@@ -71,9 +78,9 @@ class VariableDependencyCollectionTest extends TestCase
     public function testIterator(): void
     {
         $collectionValues = [
-            'ONE' => 'ONE',
-            'TWO' => 'TWO',
-            'THREE' => 'THREE',
+            'CRAWLER' => VariableNames::PANTHER_CRAWLER,
+            'ENV' => VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
+            'NAVIGATOR' => VariableNames::DOM_CRAWLER_NAVIGATOR,
         ];
 
         $collection = new VariableDependencyCollection(array_values($collectionValues));

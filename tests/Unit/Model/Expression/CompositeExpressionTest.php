@@ -12,6 +12,7 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
+use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class CompositeExpressionTest extends AbstractResolvableTestCase
 {
@@ -39,22 +40,22 @@ class CompositeExpressionTest extends AbstractResolvableTestCase
             ],
             'variable dependency' => [
                 'expressions' => [
-                    new VariableDependency('DEPENDENCY'),
+                    new VariableDependency(VariableNames::ACTION_FACTORY),
                 ],
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        'DEPENDENCY',
+                        VariableNames::ACTION_FACTORY,
                     ]),
                 ]),
             ],
             'variable dependency and array access' => [
                 'expressions' => [
-                    new VariableDependency('ENV'),
+                    new VariableDependency(VariableNames::ENVIRONMENT_VARIABLE_ARRAY),
                     new LiteralExpression('[\'KEY\']')
                 ],
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        'ENV',
+                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
                     ]),
                 ]),
             ],
@@ -95,9 +96,9 @@ class CompositeExpressionTest extends AbstractResolvableTestCase
             ],
             'variable dependency' => [
                 'expression' => new CompositeExpression([
-                    new VariableDependency('DEPENDENCY'),
+                    new VariableDependency(VariableNames::ACTION_FACTORY),
                 ]),
-                'expectedString' => '{{ DEPENDENCY }}',
+                'expectedString' => '{{ ACTION_FACTORY }}',
             ],
             'variable dependency and array access' => [
                 'expression' => new CompositeExpression([

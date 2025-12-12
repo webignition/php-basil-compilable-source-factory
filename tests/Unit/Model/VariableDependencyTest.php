@@ -8,11 +8,12 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
+use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class VariableDependencyTest extends AbstractResolvableTestCase
 {
     /**
-     * @param non-empty-string $name
+     * @param VariableNames::* $name
      *
      * @dataProvider constructDataProvider
      */
@@ -50,10 +51,10 @@ class VariableDependencyTest extends AbstractResolvableTestCase
     {
         return [
             'variable dependency' => [
-                'dependency' => new VariableDependency('DEPENDENCY'),
+                'dependency' => new VariableDependency(VariableNames::ACTION_FACTORY),
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        'DEPENDENCY',
+                        VariableNames::ACTION_FACTORY,
                     ]),
                 ]),
             ],
@@ -75,8 +76,8 @@ class VariableDependencyTest extends AbstractResolvableTestCase
     {
         return [
             'non-empty' => [
-                'dependency' => new VariableDependency('NAME'),
-                'expectedString' => '{{ NAME }}',
+                'dependency' => new VariableDependency(VariableNames::ENVIRONMENT_VARIABLE_ARRAY),
+                'expectedString' => '{{ ENV }}',
             ],
         ];
     }
