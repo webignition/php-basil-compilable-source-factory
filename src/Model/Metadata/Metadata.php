@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Metadata;
 
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class Metadata implements MetadataInterface
 {
@@ -17,7 +17,7 @@ class Metadata implements MetadataInterface
 
     /**
      * @param non-empty-string[] $classNames
-     * @param VariableNames::*[] $variableNames
+     * @param VariableName[] $variableNames
      */
     public function __construct(array $classNames = [], array $variableNames = [])
     {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model;
 
-use webignition\BasilCompilableSourceFactory\VariableNames;
+use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 
 /**
  * @implements \IteratorAggregate<string, VariableDependencyInterface>
@@ -17,7 +17,7 @@ class VariableDependencyCollection implements \IteratorAggregate
     private array $dependencies = [];
 
     /**
-     * @param VariableNames::*[] $names
+     * @param VariableNameEnum[] $names
      */
     public function __construct(array $names = [])
     {
@@ -41,8 +41,8 @@ class VariableDependencyCollection implements \IteratorAggregate
     {
         $name = $dependency->getName();
 
-        if (!array_key_exists($name, $this->dependencies)) {
-            $this->dependencies[$name] = $dependency;
+        if (!array_key_exists($name->value, $this->dependencies)) {
+            $this->dependencies[$name->value] = $dependency;
         }
     }
 
