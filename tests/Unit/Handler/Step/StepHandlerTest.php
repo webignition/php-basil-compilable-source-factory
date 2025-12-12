@@ -34,11 +34,12 @@ class StepHandlerTest extends AbstractResolvableTestCase
      */
     public function testHandleSuccess(
         StepInterface $step,
+        string $stepName,
         StepHandler $handler,
         string $expectedRenderedContent,
         MetadataInterface $expectedMetadata
     ): void {
-        $source = $handler->handle($step);
+        $source = $handler->handle($step, $stepName);
 
         $this->assertRenderResolvable($expectedRenderedContent, $source);
         self::assertEquals($expectedMetadata, $source->getMetadata());
@@ -56,6 +57,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
         return [
             'empty step' => [
                 'step' => $stepParser->parse([]),
+                'stepName' => 'empty step',
                 'handler' => self::createStepHandler(),
                 'expectedRenderedContent' => '',
                 'expectedMetadata' => new Metadata(),
@@ -66,6 +68,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         'click $".selector"',
                     ],
                 ]),
+                'stepName' => 'single click action step',
                 'handler' => self::createStepHandler([
                     StatementBlockFactory::class => self::createMockStatementBlockFactory([
                         '$".selector" exists' => [
@@ -124,6 +127,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         'click $".selector2"',
                     ],
                 ]),
+                'stepName' => 'two click actions step',
                 'handler' => self::createStepHandler([
                     StatementBlockFactory::class => self::createMockStatementBlockFactory([
                         '$".selector1" exists' => [
@@ -223,6 +227,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         '$".selector" exists',
                     ],
                 ]),
+                'stepName' => 'single exists assertion step',
                 'handler' => self::createStepHandler([
                     StatementBlockFactory::class => self::createMockStatementBlockFactory([
                         '$".selector" exists' => [
@@ -253,6 +258,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         '$".parent" >> $".child" exists',
                     ],
                 ]),
+                'stepName' => 'single exists assertion, descendant identifier step',
                 'handler' => self::createStepHandler([
                     StatementBlockFactory::class => self::createMockStatementBlockFactory([
                         '$".parent" exists' => [
@@ -309,6 +315,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         '$".selector2" exists',
                     ],
                 ]),
+                'stepName' => 'two exists assertions step',
                 'handler' => self::createStepHandler([
                     StatementBlockFactory::class => self::createMockStatementBlockFactory([
                         '$".selector1" exists' => [
@@ -359,6 +366,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         '$".selector2" exists',
                     ],
                 ]),
+                'stepName' => 'single click action, single exists assertion step',
                 'handler' => self::createStepHandler([
                     StatementBlockFactory::class => self::createMockStatementBlockFactory([
                         '$".selector1" exists' => [
@@ -434,6 +442,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         '$".parent" >> $".child2" exists',
                     ],
                 ]),
+                'stepName' => 'two descendant exists assertions with common parent step',
                 'handler' => self::createStepHandler([
                     StatementBlockFactory::class => self::createMockStatementBlockFactory([
                         '$".parent" exists' => [
@@ -506,6 +515,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         '$page.title matches "/pattern/"',
                     ],
                 ]),
+                'stepName' => 'derived is-regexp step',
                 'handler' => self::createStepHandler([
                     StatementBlockFactory::class => self::createMockStatementBlockFactory([
                         '"/pattern/" is-regexp' => [
@@ -568,7 +578,8 @@ class StepHandlerTest extends AbstractResolvableTestCase
         $handler = StepHandler::createHandler();
         $this->expectExceptionObject($expectedException);
 
-        $handler->handle($step);
+        $stepName = md5((string) rand());
+        $handler->handle($step, $stepName);
     }
 
     /**
@@ -642,7 +653,8 @@ class StepHandlerTest extends AbstractResolvableTestCase
             new UnsupportedStatementException($assertion, $unsupportedContentException)
         ));
 
-        $handler->handle($step);
+        $stepName = md5((string) rand());
+        $handler->handle($step, $stepName);
     }
 
     /**

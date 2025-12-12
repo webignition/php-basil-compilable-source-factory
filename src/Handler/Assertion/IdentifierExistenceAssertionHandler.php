@@ -12,6 +12,7 @@ use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
+use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\CatchBlock;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryBlock;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryCatchBlock;
@@ -83,12 +84,13 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
     /**
      * @throws UnsupportedContentException
      */
-    public function handle(AssertionInterface $assertion): BodyInterface
+    public function handle(AssertionInterface $assertion, Metadata $metadata): BodyInterface
     {
         $identifier = $assertion->getIdentifier();
 
         $assertionStatement = $this->createAssertionStatement(
             $assertion,
+            $metadata,
             new MethodArguments([
                 $this->createGetBooleanExaminedValueInvocation()
             ])
@@ -167,6 +169,7 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
             $this->createNavigatorHasCallTryCatchBlock($elementSetBooleanExaminedValueInvocation),
             $this->createAssertionStatement(
                 $elementExistsAssertion,
+                $metadata,
                 new MethodArguments([
                     $this->createGetBooleanExaminedValueInvocation()
                 ])

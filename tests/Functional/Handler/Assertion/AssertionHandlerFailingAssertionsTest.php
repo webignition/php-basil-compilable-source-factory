@@ -30,7 +30,9 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
         AssertionInterface $assertion,
         string $expectedExpectationFailedExceptionMessage
     ): void {
-        $source = $this->handler->handle($assertion);
+        $stepName = md5((string) rand());
+
+        $source = $this->handler->handle($assertion, $stepName);
         $classCode = $this->testCodeGenerator->createBrowserTestForBlock($source, $fixture);
 
         $testRunJob = $this->testRunner->createTestRunJob($classCode, 1);

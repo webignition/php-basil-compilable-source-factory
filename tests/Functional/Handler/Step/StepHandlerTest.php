@@ -32,7 +32,9 @@ class StepHandlerTest extends AbstractBrowserTestCase
         StepInterface $step,
         ?BodyInterface $teardownStatements = null
     ): void {
-        $source = $this->handler->handle($step);
+        $stepName = md5((string) rand());
+
+        $source = $this->handler->handle($step, $stepName);
 
         $classCode = $this->testCodeGenerator->createBrowserTestForBlock(
             $source,
@@ -138,7 +140,9 @@ class StepHandlerTest extends AbstractBrowserTestCase
         ?BodyInterface $additionalSetupStatements = null,
         ?BodyInterface $teardownStatements = null
     ): void {
-        $source = $this->handler->handle($step);
+        $stepName = md5((string) rand());
+
+        $source = $this->handler->handle($step, $stepName);
 
         $classCode = $this->testCodeGenerator->createBrowserTestForBlock(
             $source,

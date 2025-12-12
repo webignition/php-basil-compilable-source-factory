@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
+use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
@@ -45,16 +46,16 @@ class ExistenceAssertionHandler extends AbstractAssertionHandler
     /**
      * @throws UnsupportedContentException
      */
-    public function handle(AssertionInterface $assertion): BodyInterface
+    public function handle(AssertionInterface $assertion, Metadata $metadata): BodyInterface
     {
         $identifier = $assertion->getIdentifier();
 
         if (is_string($identifier) && $this->valueTypeIdentifier->isScalarValue($identifier)) {
-            return $this->scalarExistenceAssertionHandler->handle($assertion);
+            return $this->scalarExistenceAssertionHandler->handle($assertion, $metadata);
         }
 
         if (is_string($identifier) && $this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
-            return $this->identifierExistenceAssertionHandler->handle($assertion);
+            return $this->identifierExistenceAssertionHandler->handle($assertion, $metadata);
         }
 
         throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);

@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
+use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CastExpression;
@@ -59,7 +60,7 @@ class ComparisonAssertionHandler extends AbstractAssertionHandler
      * @throws UnsupportedContentException
      * @throws UnsupportedStatementException
      */
-    public function handle(AssertionInterface $assertion): BodyInterface
+    public function handle(AssertionInterface $assertion, Metadata $metadata): BodyInterface
     {
         if (!$assertion->isComparison()) {
             throw new UnsupportedStatementException($assertion);
@@ -95,7 +96,7 @@ class ComparisonAssertionHandler extends AbstractAssertionHandler
                     new MethodArguments([$examinedAccessor])
                 )
             ),
-            $this->createAssertionStatement($assertion, new MethodArguments($assertionArguments)),
+            $this->createAssertionStatement($assertion, $metadata, new MethodArguments($assertionArguments)),
         ]);
     }
 
