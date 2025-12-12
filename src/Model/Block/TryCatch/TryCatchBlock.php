@@ -57,7 +57,7 @@ class TryCatchBlock implements BodyInterface
 
     private function buildMetadata(): MetadataInterface
     {
-        $metadata = Metadata::create();
+        $metadata = new Metadata();
         $metadata = $metadata->merge($this->tryBlock->getMetadata());
 
         foreach ($this->catchBlocks as $catchBlock) {

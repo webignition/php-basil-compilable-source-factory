@@ -50,7 +50,7 @@ class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationIn
 
     public function getMetadata(): MetadataInterface
     {
-        $metadata = Metadata::create();
+        $metadata = new Metadata();
         array_walk($this->pairs, function (ArrayPair $pair) use (&$metadata) {
             $metadata = $metadata->merge($pair->getMetadata());
         });

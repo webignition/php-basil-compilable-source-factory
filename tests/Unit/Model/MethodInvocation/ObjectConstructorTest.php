@@ -39,7 +39,7 @@ class ObjectConstructorTest extends AbstractResolvableTestCase
             'no arguments' => [
                 'class' => new ClassName(ObjectConstructor::class),
                 'arguments' => new MethodArguments(),
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ObjectConstructor::class,
                     ],
@@ -50,7 +50,7 @@ class ObjectConstructorTest extends AbstractResolvableTestCase
                 'arguments' => new MethodArguments([
                     new LiteralExpression('1'),
                 ]),
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ObjectConstructor::class,
                     ],

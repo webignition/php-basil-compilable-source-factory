@@ -52,7 +52,7 @@ class VariableDependencyTest extends AbstractResolvableTestCase
         return [
             'variable dependency' => [
                 'dependency' => new VariableDependency(VariableNames::ACTION_FACTORY),
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::ACTION_FACTORY,
                     ]

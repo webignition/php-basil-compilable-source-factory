@@ -43,7 +43,7 @@ class ComparisonExpressionTest extends AbstractResolvableTestCase
                 'leftHandSide' => new LiteralExpression('5'),
                 'rightHandSide' => new LiteralExpression('6'),
                 'comparison' => '===',
-                'expectedMetadata' => Metadata::create(),
+                'expectedMetadata' => new Metadata(),
             ],
             'has metadata' => [
                 'leftHandSide' => new ObjectMethodInvocation(
@@ -52,7 +52,7 @@ class ComparisonExpressionTest extends AbstractResolvableTestCase
                 ),
                 'rightHandSide' => new LiteralExpression('literal'),
                 'comparison' => '!==',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::ACTION_FACTORY,
                     ]

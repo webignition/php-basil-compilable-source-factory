@@ -62,7 +62,7 @@ class MethodDefinition implements MethodDefinitionInterface
 
     public function getMetadata(): MetadataInterface
     {
-        return Metadata::create()
+        return new Metadata()
             ->merge($this->attributes->getMetadata())
             ->merge($this->body->getMetadata())
         ;

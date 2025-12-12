@@ -38,7 +38,7 @@ class ElementIdentifierCallFactoryTest extends TestCase
         );
 
         $this->assertEquals(
-            Metadata::create(classNames: [ElementIdentifier::class]),
+            new Metadata(classNames: [ElementIdentifier::class]),
             $constructorExpression->getMetadata()
         );
 

@@ -26,7 +26,7 @@ class AttributeTest extends AbstractResolvableTestCase
         return [
             'root attribute' => [
                 'attribute' => new Attribute(new ClassName('Attribute')),
-                'expected' => Metadata::create(
+                'expected' => new Metadata(
                     classNames: [
                         \Attribute::class,
                     ],
@@ -34,7 +34,7 @@ class AttributeTest extends AbstractResolvableTestCase
             ],
             'non-root attribute' => [
                 'attribute' => new Attribute(new ClassName(self::class)),
-                'expected' => Metadata::create(
+                'expected' => new Metadata(
                     classNames: [
                         self::class,
                     ],

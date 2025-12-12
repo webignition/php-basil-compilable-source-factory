@@ -22,7 +22,7 @@ class CatchExpressionTest extends AbstractResolvableTestCase
 
         $expression = new CatchExpression($typeDeclarationCollection);
 
-        $expectedMetadata = Metadata::create(
+        $expectedMetadata = new Metadata(
             classNames: [
                 \LogicException::class,
                 \RuntimeException::class,

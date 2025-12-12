@@ -53,7 +53,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                 'expectedRenderedSource' => '{{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n"
                     . '    "locator": ".selector"' . "\n"
                     . '}\'))',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
                     ],
@@ -73,7 +73,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     . '        "locator": ".parent"' . "\n"
                     . '    }' . "\n"
                     . '}\'))',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
                     ],
@@ -114,7 +114,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                 'expectedRenderedSource' => '{{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n"
                     . '    "locator": ".selector"' . "\n"
                     . '}\'))',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
                     ],
@@ -134,7 +134,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     . '        "locator": ".parent"' . "\n"
                     . '    }' . "\n"
                     . '}\'))',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
                     ],
@@ -181,7 +181,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     . "\n"
                     . '    return $element->getAttribute(\'attribute_name\');' . "\n"
                     . '})()',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
                     ],
@@ -206,7 +206,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     . "\n"
                     . '    return $element->getAttribute(\'attribute_name\');' . "\n"
                     . '})()',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
                     ],
@@ -251,7 +251,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     . "\n"
                     . '    return {{ INSPECTOR }}->getValue($element);' . "\n"
                     . '})()',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
                     ],
@@ -276,7 +276,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     . "\n"
                     . '    return {{ INSPECTOR }}->getValue($element);' . "\n"
                     . '})()',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
                     ],

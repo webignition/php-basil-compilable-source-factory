@@ -22,7 +22,7 @@ trait CreateFromBackActionDataProviderTrait
                 'action' => $actionParser->parse('back'),
                 'expectedRenderedSource' => '{{ CRAWLER }} = {{ CLIENT }}->back();' . "\n"
                     . '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
-                'expectedMetadata' => Metadata::create(variableNames: [
+                'expectedMetadata' => new Metadata(variableNames: [
                     VariableNames::PANTHER_CRAWLER,
                     VariableNames::PANTHER_CLIENT,
                     VariableNames::PHPUNIT_TEST_CASE,

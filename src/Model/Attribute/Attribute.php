@@ -30,7 +30,7 @@ class Attribute implements AttributeInterface
         $this->className = $className;
         $this->arguments = $arguments;
 
-        $this->metadata = Metadata::create(classNames: [$this->className->getClassName()]);
+        $this->metadata = new Metadata(classNames: [$this->className->getClassName()]);
     }
 
     public function getTemplate(): string

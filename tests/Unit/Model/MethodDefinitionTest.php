@@ -86,21 +86,21 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
         return [
             'empty' => [
                 'methodDefinition' => new MethodDefinition('name', new Body([])),
-                'expectedMetadata' => Metadata::create(),
+                'expectedMetadata' => new Metadata(),
             ],
             'lines without metadata' => [
                 'methodDefinition' => new MethodDefinition('name', new Body([
                     new EmptyLine(),
                     new SingleLineComment('single line comment'),
                 ])),
-                'expectedMetadata' => Metadata::create(),
+                'expectedMetadata' => new Metadata(),
             ],
             'lines without metadata with data provider attribute' => [
                 'methodDefinition' => new MethodDefinition('name', new Body([
                     new EmptyLine(),
                     new SingleLineComment('single line comment'),
                 ]))->withAttribute(new DataProviderAttribute('dataProviderMethod')),
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         DataProvider::class,
                     ],
@@ -121,7 +121,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                         )
                     ),
                 ])),
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::ACTION_FACTORY,
                     ]
@@ -142,7 +142,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                         )
                     ),
                 ]))->withAttribute(new DataProviderAttribute('dataProviderMethod')),
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         DataProvider::class,
                     ],

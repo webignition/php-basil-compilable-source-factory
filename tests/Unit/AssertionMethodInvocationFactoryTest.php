@@ -43,7 +43,7 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
      */
     public static function createDataProvider(): array
     {
-        $expectedMetadata = Metadata::create(
+        $expectedMetadata = new Metadata(
             variableNames: [
                 VariableNames::PHPUNIT_TEST_CASE,
             ],

@@ -35,13 +35,13 @@ class CompositeExpressionTest extends AbstractResolvableTestCase
         return [
             'empty' => [
                 'expressions' => [],
-                'expectedMetadata' => Metadata::create(),
+                'expectedMetadata' => new Metadata(),
             ],
             'variable dependency' => [
                 'expressions' => [
                     new VariableDependency(VariableNames::ACTION_FACTORY),
                 ],
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::ACTION_FACTORY,
                     ]
@@ -52,7 +52,7 @@ class CompositeExpressionTest extends AbstractResolvableTestCase
                     new VariableDependency(VariableNames::ENVIRONMENT_VARIABLE_ARRAY),
                     new LiteralExpression('[\'KEY\']')
                 ],
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
                     ]

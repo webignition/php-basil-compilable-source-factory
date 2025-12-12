@@ -44,7 +44,7 @@ class AssignmentExpressionTest extends AbstractResolvableTestCase
                 'variable' => new LiteralExpression('5'),
                 'value' => new LiteralExpression('6'),
                 'operator' => '===',
-                'expectedMetadata' => Metadata::create(),
+                'expectedMetadata' => new Metadata(),
             ],
             'has metadata' => [
                 'variable' => new ObjectMethodInvocation(
@@ -53,7 +53,7 @@ class AssignmentExpressionTest extends AbstractResolvableTestCase
                 ),
                 'value' => new LiteralExpression('literal'),
                 'operator' => '!==',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::ACTION_FACTORY,
                     ]

@@ -11,7 +11,7 @@ class VariableNameTest extends AbstractResolvableTestCase
 {
     public function testGetMetadata(): void
     {
-        $this->assertEquals(Metadata::create(), (new VariableName('name'))->getMetadata());
+        $this->assertEquals(new Metadata(), (new VariableName('name'))->getMetadata());
     }
 
     /**

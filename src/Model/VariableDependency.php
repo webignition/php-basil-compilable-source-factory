@@ -30,7 +30,7 @@ class VariableDependency implements ExpressionInterface, VariableDependencyInter
 
     public function getMetadata(): MetadataInterface
     {
-        return Metadata::create(variableNames: [$this->name]);
+        return new Metadata(variableNames: [$this->name]);
     }
 
     public function getTemplate(): string

@@ -33,26 +33,6 @@ class Metadata implements MetadataInterface
         $this->variableDependencies = new VariableDependencyCollection($variableNames);
     }
 
-    /**
-     * @param non-empty-string[] $classNames
-     * @param VariableNames::*[] $variableNames
-     */
-    public static function create(array $classNames = [], array $variableNames = []): MetadataInterface
-    {
-        $classNameObjects = [];
-        foreach ($classNames as $className) {
-            $classNameObjects[] = new ClassName($className);
-        }
-        $classDependencies = new ClassDependencyCollection(new ClassNameCollection($classNameObjects));
-        $variableDependencies = new VariableDependencyCollection($variableNames);
-
-        $metadata = new Metadata();
-        $metadata->classDependencies = $classDependencies;
-        $metadata->variableDependencies = $variableDependencies;
-
-        return $metadata;
-    }
-
     public function getClassDependencies(): ClassDependencyCollection
     {
         return $this->classDependencies;

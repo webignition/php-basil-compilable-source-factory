@@ -50,14 +50,14 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
         return [
             'empty' => [
                 'body' => new Body([]),
-                'expectedMetadata' => Metadata::create(),
+                'expectedMetadata' => new Metadata(),
             ],
             'non-empty, no metadata' => [
                 'body' => new Body([
                     new Statement(new LiteralExpression('5')),
                     new Statement(new LiteralExpression('"string"')),
                 ]),
-                'expectedMetadata' => Metadata::create(),
+                'expectedMetadata' => new Metadata(),
             ],
             'non-empty, has metadata' => [
                 'body' => new Body([
@@ -92,7 +92,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                         )
                     ),
                 ]),
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::ACTION_FACTORY,
                     ]

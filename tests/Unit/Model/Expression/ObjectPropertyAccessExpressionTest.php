@@ -39,7 +39,7 @@ class ObjectPropertyAccessExpressionTest extends AbstractResolvableTestCase
             'has resolvable placeholder' => [
                 'objectPlaceholder' => new VariableDependency(VariableNames::ACTION_FACTORY),
                 'property' => 'propertyName',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::ACTION_FACTORY,
                     ]
@@ -48,7 +48,7 @@ class ObjectPropertyAccessExpressionTest extends AbstractResolvableTestCase
             'has resolving placeholder' => [
                 'objectPlaceholder' => new VariableName('object'),
                 'property' => 'propertyName',
-                'expectedMetadata' => Metadata::create(),
+                'expectedMetadata' => new Metadata(),
             ],
         ];
     }

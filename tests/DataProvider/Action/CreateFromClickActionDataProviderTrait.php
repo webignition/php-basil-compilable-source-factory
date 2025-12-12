@@ -18,7 +18,7 @@ trait CreateFromClickActionDataProviderTrait
     {
         $actionParser = ActionParser::create();
 
-        $expectedMetadata = Metadata::create(
+        $expectedMetadata = new Metadata(
             classNames: [
                 ElementIdentifier::class
             ],

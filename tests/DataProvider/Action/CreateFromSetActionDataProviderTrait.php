@@ -28,7 +28,7 @@ trait CreateFromSetActionDataProviderTrait
                     . '    "value"' . "\n"
                     . ');' . "\n"
                     . '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
                     ],
@@ -54,7 +54,7 @@ trait CreateFromSetActionDataProviderTrait
                     . '    })()' . "\n"
                     . ');' . "\n"
                     . '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
                     ],
@@ -81,7 +81,7 @@ trait CreateFromSetActionDataProviderTrait
                     . '    })()' . "\n"
                     . ');' . "\n"
                     . '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
                     ],
@@ -107,7 +107,7 @@ trait CreateFromSetActionDataProviderTrait
                     . '    })()' . "\n"
                     . ');' . "\n"
                     . '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
                     ],
@@ -128,7 +128,7 @@ trait CreateFromSetActionDataProviderTrait
                     . '    {{ CLIENT }}->getCurrentURL()' . "\n"
                     . ');' . "\n"
                     . '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
                     ],
@@ -149,7 +149,7 @@ trait CreateFromSetActionDataProviderTrait
                     . '    {{ ENV }}[\'KEY\']' . "\n"
                     . ');' . "\n"
                     . '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
                     ],
@@ -170,7 +170,7 @@ trait CreateFromSetActionDataProviderTrait
                     . '    {{ ENV }}[\'KEY\'] ?? \'default\'' . "\n"
                     . ');' . "\n"
                     . '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
                     ],
@@ -191,7 +191,7 @@ trait CreateFromSetActionDataProviderTrait
                     . '    {{ ENV }}[\'KEY\'] ?? \'default value\'' . "\n"
                     . ');' . "\n"
                     . '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
                     ],
@@ -215,7 +215,7 @@ trait CreateFromSetActionDataProviderTrait
                     . '    "value"' . "\n"
                     . ');' . "\n"
                     . '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
                     ],
@@ -235,7 +235,7 @@ trait CreateFromSetActionDataProviderTrait
                     . '    $key' . "\n"
                     . ');' . "\n"
                     . '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
                     ],

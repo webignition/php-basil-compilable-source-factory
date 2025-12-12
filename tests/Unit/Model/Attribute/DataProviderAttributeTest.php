@@ -26,7 +26,7 @@ class DataProviderAttributeTest extends AbstractResolvableTestCase
         return [
             'default' => [
                 'attribute' => new DataProviderAttribute('dataProviderMethodName'),
-                'expected' => Metadata::create(
+                'expected' => new Metadata(
                     classNames: [
                         DataProvider::class,
                     ],

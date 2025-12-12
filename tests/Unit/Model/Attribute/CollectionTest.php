@@ -27,12 +27,12 @@ class CollectionTest extends AbstractResolvableTestCase
         return [
             'empty collection' => [
                 'collection' => new AttributeCollection(),
-                'expected' => Metadata::create(),
+                'expected' => new Metadata(),
             ],
             'single item' => [
                 'collection' => new AttributeCollection()
                     ->add(new Attribute(new ClassName(self::class))),
-                'expected' => Metadata::create(
+                'expected' => new Metadata(
                     classNames: [
                         self::class,
                     ],
@@ -42,7 +42,7 @@ class CollectionTest extends AbstractResolvableTestCase
                 'collection' => new AttributeCollection()
                     ->add(new Attribute(new ClassName(self::class)))
                     ->add(new Attribute(new ClassName(AttributeCollection::class))),
-                'expected' => Metadata::create(
+                'expected' => new Metadata(
                     classNames: [
                         self::class,
                         AttributeCollection::class,

@@ -28,7 +28,7 @@ class CompositeExpression implements ExpressionInterface
             return $item instanceof ExpressionInterface;
         });
 
-        $metadata = Metadata::create();
+        $metadata = new Metadata();
         foreach ($this->expressions as $expression) {
             $metadata = $metadata->merge($expression->getMetadata());
         }
@@ -36,7 +36,7 @@ class CompositeExpression implements ExpressionInterface
 
     public function getMetadata(): MetadataInterface
     {
-        $metadata = Metadata::create();
+        $metadata = new Metadata();
         foreach ($this->expressions as $expression) {
             $metadata = $metadata->merge($expression->getMetadata());
         }

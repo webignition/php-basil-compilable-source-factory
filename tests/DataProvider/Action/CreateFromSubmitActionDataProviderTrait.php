@@ -28,7 +28,7 @@ trait CreateFromSubmitActionDataProviderTrait
                     . '    $element->submit();' . "\n"
                     . '})();' . "\n"
                     . '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
                     ],

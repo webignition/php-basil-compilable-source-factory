@@ -35,7 +35,7 @@ class TryBlockTest extends AbstractResolvableTestCase
 
         $tryBlock = new TryBlock($body);
 
-        $expectedMetadata = Metadata::create(
+        $expectedMetadata = new Metadata(
             classNames: [
                 \RuntimeException::class,
             ],

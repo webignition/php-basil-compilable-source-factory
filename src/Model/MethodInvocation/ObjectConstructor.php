@@ -36,6 +36,6 @@ class ObjectConstructor extends AbstractMethodInvocationEncapsulator
 
     protected function getAdditionalMetadata(): MetadataInterface
     {
-        return Metadata::create(classNames: [$this->class->getClassName()]);
+        return new Metadata(classNames: [$this->class->getClassName()]);
     }
 }

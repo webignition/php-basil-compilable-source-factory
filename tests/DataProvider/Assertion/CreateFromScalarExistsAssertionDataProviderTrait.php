@@ -25,7 +25,7 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
                     . '{{ PHPUNIT }}->assertTrue(' . "\n"
                     . '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::PANTHER_CLIENT,
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -38,7 +38,7 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
                     . '{{ PHPUNIT }}->assertTrue(' . "\n"
                     . '    {{ PHPUNIT }}->getBooleanExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::PHPUNIT_TEST_CASE,
                     ],

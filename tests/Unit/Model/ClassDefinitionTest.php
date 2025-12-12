@@ -58,7 +58,7 @@ class ClassDefinitionTest extends AbstractResolvableTestCase
                     new ClassSignature('className'),
                     new ClassBody([])
                 ),
-                'expectedMetadata' => Metadata::create(),
+                'expectedMetadata' => new Metadata(),
             ],
             'methods without metadata' => [
                 'classDefinition' => new ClassDefinition(
@@ -70,7 +70,7 @@ class ClassDefinitionTest extends AbstractResolvableTestCase
                         ])),
                     ])
                 ),
-                'expectedMetadata' => Metadata::create(),
+                'expectedMetadata' => new Metadata(),
             ],
             'methods with metadata' => [
                 'classDefinition' => new ClassDefinition(
@@ -92,7 +92,7 @@ class ClassDefinitionTest extends AbstractResolvableTestCase
                         ])),
                     ])
                 ),
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::ACTION_FACTORY,
                     ],

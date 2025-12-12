@@ -34,7 +34,7 @@ class DataProviderMethodDefinition extends MethodDefinition implements DataProvi
             ),
         ]));
 
-        $this->metadata = Metadata::create();
+        $this->metadata = new Metadata();
     }
 
     public function getData(): array

@@ -75,7 +75,7 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                         {{ PHPUNIT }}->setCurrentDataSet(null);
                     }
                     EOD,
-                'expectedTestMethodMetadata' => Metadata::create(
+                'expectedTestMethodMetadata' => new Metadata(
                     classNames: [
                         StepName::class,
                     ],
@@ -100,7 +100,7 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                         {{ PHPUNIT }}->setCurrentDataSet(null);
                     }
                     EOD,
-                'expectedTestMethodMetadata' => Metadata::create(
+                'expectedTestMethodMetadata' => new Metadata(
                     classNames: [
                         StepName::class,
                     ],
@@ -134,7 +134,7 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                         // mocked step handler response
                     }
                     EOD,
-                'expectedTestMethodMetadata' => Metadata::create(
+                'expectedTestMethodMetadata' => new Metadata(
                     classNames: [
                         StepName::class,
                     ],
@@ -250,7 +250,7 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                         ];
                     }
                     EOD,
-                'expectedTestMethodMetadata' => Metadata::create(
+                'expectedTestMethodMetadata' => new Metadata(
                     classNames: [
                         StepName::class,
                         DataProvider::class,
@@ -323,6 +323,6 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
         $this->assertSame('array', $testMethod->getReturnType());
         $this->assertFalse($testMethod->isStatic());
         $this->assertSame('public', $testMethod->getVisibility());
-        $this->assertEquals(Metadata::create(), $testMethod->getMetadata());
+        $this->assertEquals(new Metadata(), $testMethod->getMetadata());
     }
 }

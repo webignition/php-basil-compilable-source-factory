@@ -19,7 +19,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
     {
         $assertionParser = AssertionParser::create();
 
-        $expectedMetadata = Metadata::create(
+        $expectedMetadata = new Metadata(
             classNames: [
                 ElementIdentifier::class,
                 InvalidLocatorException::class,

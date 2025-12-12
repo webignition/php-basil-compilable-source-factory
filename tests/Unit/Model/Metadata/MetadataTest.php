@@ -61,7 +61,7 @@ class MetadataTest extends TestCase
 
     public function testMerge(): void
     {
-        $metadata1 = Metadata::create(
+        $metadata1 = new Metadata(
             classNames: [
                 ClassName::class,
             ],
@@ -71,7 +71,7 @@ class MetadataTest extends TestCase
             ],
         );
 
-        $metadata2 = Metadata::create(
+        $metadata2 = new Metadata(
             classNames: [
                 ClassName::class,
                 Metadata::class
@@ -84,7 +84,7 @@ class MetadataTest extends TestCase
 
         $metadata = $metadata1->merge($metadata2);
 
-        $expectedMetadata = Metadata::create(
+        $expectedMetadata = new Metadata(
             classNames: [
                 ClassName::class,
                 Metadata::class,

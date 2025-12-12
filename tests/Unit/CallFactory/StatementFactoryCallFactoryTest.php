@@ -57,7 +57,7 @@ class StatementFactoryCallFactoryTest extends AbstractResolvableTestCase
                     . '    "type": "click",' . "\n"
                     . '    "arguments": "$\\\".selector\\\""' . "\n"
                     . '}\')',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::ACTION_FACTORY,
                     ],
@@ -71,7 +71,7 @@ class StatementFactoryCallFactoryTest extends AbstractResolvableTestCase
                     . '    "identifier": "$\\\".selector\\\"",' . "\n"
                     . '    "operator": "exists"' . "\n"
                     . '}\')',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::ASSERTION_FACTORY,
                     ],
@@ -97,7 +97,7 @@ class StatementFactoryCallFactoryTest extends AbstractResolvableTestCase
                     . '        "arguments": "$\\\".selector\\\""' . "\n"
                     . '    }' . "\n"
                     . '}\')',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::ASSERTION_FACTORY,
                     ],

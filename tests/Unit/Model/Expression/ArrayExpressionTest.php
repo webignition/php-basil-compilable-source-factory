@@ -34,7 +34,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
         return [
             'empty' => [
                 'expression' => new ArrayExpression([]),
-                'expectedMetadata' => Metadata::create(),
+                'expectedMetadata' => new Metadata(),
             ],
             'no metadata' => [
                 'expression' => new ArrayExpression([
@@ -43,7 +43,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         new LiteralExpression('\'value1\'')
                     ),
                 ]),
-                'expectedMetadata' => Metadata::create(),
+                'expectedMetadata' => new Metadata(),
             ],
             'has metadata' => [
                 'expression' => new ArrayExpression([
@@ -55,7 +55,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         )
                     ),
                 ]),
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::ACTION_FACTORY,
                     ]

@@ -36,7 +36,7 @@ class ArrayPairTest extends AbstractResolvableTestCase
                     new ArrayKey(''),
                     new LiteralExpression('\'\'')
                 ),
-                'expectedMetadata' => Metadata::create(),
+                'expectedMetadata' => new Metadata(),
             ],
             'has metadata' => [
                 'pair' => new ArrayPair(
@@ -46,7 +46,7 @@ class ArrayPairTest extends AbstractResolvableTestCase
                         'methodName'
                     )
                 ),
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::ACTION_FACTORY,
                     ]

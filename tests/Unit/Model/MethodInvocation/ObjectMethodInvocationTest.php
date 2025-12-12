@@ -48,7 +48,7 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
                 'object' => new VariableDependency(VariableNames::ACTION_FACTORY),
                 'methodName' => 'method',
                 'arguments' => new MethodArguments(),
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::ACTION_FACTORY,
                     ],
@@ -60,7 +60,7 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
                 'arguments' => new MethodArguments([
                     new LiteralExpression('1'),
                 ]),
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::ACTION_FACTORY,
                     ],
@@ -75,7 +75,7 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
                         'staticMethodName'
                     )
                 ]),
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ClassName::class,
                     ],
@@ -88,7 +88,7 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
                 'object' => new VariableName('object'),
                 'methodName' => 'method',
                 'arguments' => new MethodArguments(),
-                'expectedMetadata' => Metadata::create(),
+                'expectedMetadata' => new Metadata(),
             ],
         ];
     }

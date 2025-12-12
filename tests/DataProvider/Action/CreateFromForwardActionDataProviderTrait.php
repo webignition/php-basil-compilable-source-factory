@@ -22,7 +22,7 @@ trait CreateFromForwardActionDataProviderTrait
                 'action' => $actionParser->parse('forward'),
                 'expectedRenderedSource' => '{{ CRAWLER }} = {{ CLIENT }}->forward();' . "\n"
                     . '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::PANTHER_CRAWLER,
                         VariableNames::PANTHER_CLIENT,

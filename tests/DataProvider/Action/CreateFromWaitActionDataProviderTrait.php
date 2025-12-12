@@ -22,7 +22,7 @@ trait CreateFromWaitActionDataProviderTrait
             'wait action, literal' => [
                 'action' => $actionParser->parse('wait 30'),
                 'expectedRenderedSource' => 'usleep(((int) ("30" ?? 0)) * 1000);',
-                'expectedMetadata' => Metadata::create(),
+                'expectedMetadata' => new Metadata(),
             ],
             'wait action, element value' => [
                 'action' => $actionParser->parse('wait $".duration-selector"'),
@@ -33,7 +33,7 @@ trait CreateFromWaitActionDataProviderTrait
                     . "\n"
                     . '    return {{ INSPECTOR }}->getValue($element);' . "\n"
                     . '})() ?? 0)) * 1000);',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
                     ],
@@ -55,7 +55,7 @@ trait CreateFromWaitActionDataProviderTrait
                     . "\n"
                     . '    return {{ INSPECTOR }}->getValue($element);' . "\n"
                     . '})() ?? 0)) * 1000);',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
                     ],
@@ -74,7 +74,7 @@ trait CreateFromWaitActionDataProviderTrait
                     . "\n"
                     . '    return {{ INSPECTOR }}->getValue($element);' . "\n"
                     . '})() ?? 0)) * 1000);',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
                     ],
@@ -93,7 +93,7 @@ trait CreateFromWaitActionDataProviderTrait
                     . "\n"
                     . '    return $element->getAttribute(\'attribute_name\');' . "\n"
                     . '})() ?? 0)) * 1000);',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
                     ],
@@ -111,7 +111,7 @@ trait CreateFromWaitActionDataProviderTrait
                     . '    return (string) ($webDriverDimension->getWidth()) . \'x\' . '
                     . '(string) ($webDriverDimension->getHeight());' . "\n"
                     . '})() ?? 0)) * 1000);',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::PANTHER_CLIENT,
                     ],
@@ -120,7 +120,7 @@ trait CreateFromWaitActionDataProviderTrait
             'wait action, page property' => [
                 'action' => $actionParser->parse('wait $page.title'),
                 'expectedRenderedSource' => 'usleep(((int) ({{ CLIENT }}->getTitle() ?? 0)) * 1000);',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::PANTHER_CLIENT,
                     ],
@@ -129,7 +129,7 @@ trait CreateFromWaitActionDataProviderTrait
             'wait action, environment value' => [
                 'action' => $actionParser->parse('wait $env.DURATION'),
                 'expectedRenderedSource' => 'usleep(((int) ({{ ENV }}[\'DURATION\'] ?? 0)) * 1000);',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
                     ],
@@ -138,7 +138,7 @@ trait CreateFromWaitActionDataProviderTrait
             'wait action, environment value with default' => [
                 'action' => $actionParser->parse('wait $env.DURATION|"3"'),
                 'expectedRenderedSource' => 'usleep(((int) ({{ ENV }}[\'DURATION\'] ?? 3)) * 1000);',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
                     ],
@@ -147,7 +147,7 @@ trait CreateFromWaitActionDataProviderTrait
             'wait action, data parameter' => [
                 'action' => $actionParser->parse('wait $data.key'),
                 'expectedRenderedSource' => 'usleep(((int) ($key ?? 0)) * 1000);',
-                'expectedMetadata' => Metadata::create(),
+                'expectedMetadata' => new Metadata(),
             ],
         ];
     }

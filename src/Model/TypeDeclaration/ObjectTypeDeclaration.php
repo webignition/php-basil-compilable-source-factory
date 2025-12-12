@@ -20,7 +20,7 @@ class ObjectTypeDeclaration implements \Stringable, TypeDeclarationInterface
     {
         $this->type = $type;
 
-        $this->metadata = Metadata::create(classNames: [$type->getClassName()]);
+        $this->metadata = new Metadata(classNames: [$type->getClassName()]);
     }
 
     public function __toString(): string

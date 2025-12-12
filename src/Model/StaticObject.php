@@ -33,9 +33,9 @@ class StaticObject implements \Stringable, ExpressionInterface
     public function getMetadata(): MetadataInterface
     {
         if (ClassName::isFullyQualifiedClassName($this->object)) {
-            return Metadata::create(classNames: [$this->object]);
+            return new Metadata(classNames: [$this->object]);
         }
 
-        return Metadata::create();
+        return new Metadata();
     }
 }

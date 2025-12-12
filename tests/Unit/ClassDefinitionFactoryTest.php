@@ -77,7 +77,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                         }
                     }
                     EOF,
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ClientManager::class,
                         \Throwable::class,
@@ -119,7 +119,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                         }
                     }
                     EOF,
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ClientManager::class,
                         \Throwable::class,
@@ -161,7 +161,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                         }
                     }
                     EOF,
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ClientManager::class,
                         \Throwable::class,
@@ -215,7 +215,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                         }
                     }
                     EOF,
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ClientManager::class,
                         \Throwable::class,
@@ -282,7 +282,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                         }
                     }
                     EOF,
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ClientManager::class,
                         \Throwable::class,

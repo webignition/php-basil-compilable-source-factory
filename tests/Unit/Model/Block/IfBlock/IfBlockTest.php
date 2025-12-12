@@ -46,7 +46,7 @@ class IfBlockTest extends AbstractResolvableTestCase
 
         $ifBlock = new IfBlock($expression, $body);
 
-        $expectedMetadata = Metadata::create(
+        $expectedMetadata = new Metadata(
             classNames: [
                 \RuntimeException::class,
             ],

@@ -33,7 +33,7 @@ trait CreateFromIncludesAssertionDataProviderTrait
                     . '    (string) ({{ PHPUNIT }}->getExpectedValue()),' . "\n"
                     . '    (string) ({{ PHPUNIT }}->getExaminedValue())' . "\n"
                     . ');',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
                     ],
@@ -58,7 +58,7 @@ trait CreateFromIncludesAssertionDataProviderTrait
                     . '    (string) ({{ PHPUNIT }}->getExpectedValue()),' . "\n"
                     . '    (string) ({{ PHPUNIT }}->getExaminedValue())' . "\n"
                     . ');',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
                     ],

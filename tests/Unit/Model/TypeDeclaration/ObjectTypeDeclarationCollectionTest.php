@@ -32,14 +32,14 @@ class ObjectTypeDeclarationCollectionTest extends AbstractResolvableTestCase
         return [
             'empty' => [
                 'collection' => new ObjectTypeDeclarationCollection([]),
-                'expectedMetadata' => Metadata::create(),
+                'expectedMetadata' => new Metadata(),
             ],
             'non-empty' => [
                 'collection' => new ObjectTypeDeclarationCollection([
                     new ObjectTypeDeclaration(new ClassName(\Exception::class)),
                     new ObjectTypeDeclaration(new ClassName(\Traversable::class)),
                 ]),
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         \Exception::class,
                         \Traversable::class,

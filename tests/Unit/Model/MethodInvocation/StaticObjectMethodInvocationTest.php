@@ -46,7 +46,7 @@ class StaticObjectMethodInvocationTest extends AbstractResolvableTestCase
                 ),
                 'methodName' => 'method',
                 'arguments' => new MethodArguments(),
-                'expectedMetadata' => Metadata::create(),
+                'expectedMetadata' => new Metadata(),
             ],
             'no arguments, object reference' => [
                 'staticObject' => new StaticObject(
@@ -54,7 +54,7 @@ class StaticObjectMethodInvocationTest extends AbstractResolvableTestCase
                 ),
                 'methodName' => 'method',
                 'arguments' => new MethodArguments(),
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ClassName::class,
                     ],
@@ -71,7 +71,7 @@ class StaticObjectMethodInvocationTest extends AbstractResolvableTestCase
                         'staticMethodName'
                     )
                 ]),
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         StaticObject::class,
                         ClassName::class,

@@ -22,7 +22,7 @@ trait CreateFromReloadActionDataProviderTrait
                 'action' => $actionParser->parse('reload'),
                 'expectedRenderedSource' => '{{ CRAWLER }} = {{ CLIENT }}->reload();' . "\n"
                     . '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::PANTHER_CRAWLER,
                         VariableNames::PANTHER_CLIENT,

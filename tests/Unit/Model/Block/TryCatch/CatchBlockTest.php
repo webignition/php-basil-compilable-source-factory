@@ -47,7 +47,7 @@ class CatchBlockTest extends AbstractResolvableTestCase
             $body
         );
 
-        $expectedMetadata = Metadata::create(
+        $expectedMetadata = new Metadata(
             classNames: [
                 \RuntimeException::class,
                 \Exception::class,

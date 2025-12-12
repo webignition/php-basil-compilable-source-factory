@@ -45,17 +45,17 @@ class ScalarValueHandlerTest extends AbstractResolvableTestCase
             'literal string value: string' => [
                 'value' => '"value"',
                 'expectedRenderedSource' => '"value"',
-                'expectedMetadata' => Metadata::create(),
+                'expectedMetadata' => new Metadata(),
             ],
             'literal string value: integer' => [
                 'value' => '"100"',
                 'expectedRenderedSource' => '"100"',
-                'expectedMetadata' => Metadata::create(),
+                'expectedMetadata' => new Metadata(),
             ],
             'environment parameter value' => [
                 'value' => '$env.KEY',
                 'expectedRenderedSource' => '{{ ENV }}[\'KEY\']',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
                     ],
@@ -69,7 +69,7 @@ class ScalarValueHandlerTest extends AbstractResolvableTestCase
                     . '    return (string) ($webDriverDimension->getWidth()) . \'x\' . '
                     . '(string) ($webDriverDimension->getHeight());' . "\n"
                     . '})()',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::PANTHER_CLIENT,
                     ],
@@ -78,7 +78,7 @@ class ScalarValueHandlerTest extends AbstractResolvableTestCase
             'page property, url' => [
                 'value' => '$page.url',
                 'expectedRenderedSource' => '{{ CLIENT }}->getCurrentURL()',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::PANTHER_CLIENT,
                     ],
@@ -87,7 +87,7 @@ class ScalarValueHandlerTest extends AbstractResolvableTestCase
             'page property, title' => [
                 'value' => '$page.title',
                 'expectedRenderedSource' => '{{ CLIENT }}->getTitle()',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::PANTHER_CLIENT,
                     ],
@@ -96,7 +96,7 @@ class ScalarValueHandlerTest extends AbstractResolvableTestCase
             'data parameter' => [
                 'value' => '$data.key',
                 'expectedRenderedSource' => '$key',
-                'expectedMetadata' => Metadata::create(),
+                'expectedMetadata' => new Metadata(),
             ],
         ];
     }

@@ -36,7 +36,7 @@ class StatementTest extends AbstractResolvableTestCase
         return [
             'variable dependency' => [
                 'expression' => new VariableDependency(VariableNames::ACTION_FACTORY),
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::ACTION_FACTORY,
                     ],
@@ -44,14 +44,14 @@ class StatementTest extends AbstractResolvableTestCase
             ],
             'method invocation' => [
                 'expression' => new MethodInvocation('methodName'),
-                'expectedMetadata' => Metadata::create(),
+                'expectedMetadata' => new Metadata(),
             ],
             'object method invocation' => [
                 'expression' => new ObjectMethodInvocation(
                     new VariableDependency(VariableNames::ASSERTION_FACTORY),
                     'methodName'
                 ),
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::ASSERTION_FACTORY,
                     ],

@@ -17,7 +17,7 @@ class LiteralExpressionTest extends AbstractResolvableTestCase
     {
         $expression = new LiteralExpression($content);
 
-        $this->assertEquals(Metadata::create(), $expression->getMetadata());
+        $this->assertEquals(new Metadata(), $expression->getMetadata());
     }
 
     /**

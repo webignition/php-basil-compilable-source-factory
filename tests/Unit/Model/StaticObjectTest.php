@@ -33,11 +33,11 @@ class StaticObjectTest extends TestCase
         return [
             'string reference' => [
                 'object' => 'parent',
-                'expectedMetadata' => Metadata::create(),
+                'expectedMetadata' => new Metadata(),
             ],
             'global classname' => [
                 'object' => \stdClass::class,
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         \stdClass::class,
                     ],
@@ -45,7 +45,7 @@ class StaticObjectTest extends TestCase
             ],
             'namespaced classname' => [
                 'object' => ClassName::class,
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ClassName::class,
                     ],

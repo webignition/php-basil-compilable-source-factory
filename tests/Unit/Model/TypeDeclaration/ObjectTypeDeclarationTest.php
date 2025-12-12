@@ -17,7 +17,7 @@ class ObjectTypeDeclarationTest extends TestCase
         $type = new ClassName(\Exception::class);
         $declaration = new ObjectTypeDeclaration($type);
 
-        $expectedMetadata = Metadata::create(
+        $expectedMetadata = new Metadata(
             classNames: [$type->getClassName()],
         );
 

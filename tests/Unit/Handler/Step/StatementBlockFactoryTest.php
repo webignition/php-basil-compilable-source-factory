@@ -91,7 +91,7 @@ class StatementBlockFactoryTest extends AbstractResolvableTestCase
                     . '{{ PHPUNIT }}->handledStatements[] = {{ ACTION_FACTORY }}->createFromJson(\'{' . "\n"
                     . '    "serialised": "click action"' . "\n"
                     . '}\');',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::ACTION_FACTORY,
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -104,7 +104,7 @@ class StatementBlockFactoryTest extends AbstractResolvableTestCase
                     . '{{ PHPUNIT }}->handledStatements[] = {{ ASSERTION_FACTORY }}->createFromJson(\'{' . "\n"
                     . '    "serialised": "exists assertion"' . "\n"
                     . '}\');',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::ASSERTION_FACTORY,
                         VariableNames::PHPUNIT_TEST_CASE,
@@ -117,7 +117,7 @@ class StatementBlockFactoryTest extends AbstractResolvableTestCase
                     . '{{ PHPUNIT }}->handledStatements[] = {{ ASSERTION_FACTORY }}->createFromJson(\'{' . "\n"
                     . '    "serialised": "derived exists assertion"' . "\n"
                     . '}\');',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::ASSERTION_FACTORY,
                         VariableNames::PHPUNIT_TEST_CASE,

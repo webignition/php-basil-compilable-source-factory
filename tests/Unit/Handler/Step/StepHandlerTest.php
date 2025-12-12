@@ -58,7 +58,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                 'step' => $stepParser->parse([]),
                 'handler' => self::createStepHandler(),
                 'expectedRenderedContent' => '',
-                'expectedMetadata' => Metadata::create(),
+                'expectedMetadata' => new Metadata(),
             ],
             'single click action' => [
                 'step' => $stepParser->parse([
@@ -115,7 +115,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     . "\n"
                     . '// StatementBlockFactory::create(click $".selector")' . "\n"
                     . '// ActionHandler::handle(click $".selector")' . "\n",
-                'expectedMetadata' => Metadata::create(),
+                'expectedMetadata' => new Metadata(),
             ],
             'two click actions' => [
                 'step' => $stepParser->parse([
@@ -215,7 +215,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     . "\n"
                     . '// StatementBlockFactory::create(click $".selector2")' . "\n"
                     . '// ActionHandler::handle(click $".selector2")' . "\n",
-                'expectedMetadata' => Metadata::create(),
+                'expectedMetadata' => new Metadata(),
             ],
             'single exists assertion' => [
                 'step' => $stepParser->parse([
@@ -245,7 +245,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                 ]),
                 'expectedRenderedContent' => '// StatementBlockFactory::create($".selector" exists)' . "\n"
                     . '// AssertionHandler::handle($".selector" exists)' . "\n",
-                'expectedMetadata' => Metadata::create(),
+                'expectedMetadata' => new Metadata(),
             ],
             'single exists assertion, descendant identifier' => [
                 'step' => $stepParser->parse([
@@ -300,7 +300,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     . "\n"
                     . '// StatementBlockFactory::create($".parent" >> $".child" exists)' . "\n"
                     . '// AssertionHandler::handle($".parent" >> $".child" exists)' . "\n",
-                'expectedMetadata' => Metadata::create(),
+                'expectedMetadata' => new Metadata(),
             ],
             'two exists assertions' => [
                 'step' => $stepParser->parse([
@@ -348,7 +348,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     . "\n"
                     . '// StatementBlockFactory::create($".selector2" exists)' . "\n"
                     . '// AssertionHandler::handle($".selector2" exists)' . "\n",
-                'expectedMetadata' => Metadata::create(),
+                'expectedMetadata' => new Metadata(),
             ],
             'single click action, single exists assertion' => [
                 'step' => $stepParser->parse([
@@ -425,7 +425,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     . "\n"
                     . '// StatementBlockFactory::create($".selector2" exists)' . "\n"
                     . '// AssertionHandler::handle($".selector2" exists)' . "\n",
-                'expectedMetadata' => Metadata::create(),
+                'expectedMetadata' => new Metadata(),
             ],
             'two descendant exists assertions with common parent' => [
                 'step' => $stepParser->parse([
@@ -498,7 +498,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     . "\n"
                     . '// StatementBlockFactory::create($".parent" >> $".child2" exists)' . "\n"
                     . '// AssertionHandler::handle($".parent" >> $".child2" exists)' . "\n",
-                'expectedMetadata' => Metadata::create(),
+                'expectedMetadata' => new Metadata(),
             ],
             'derived is-regexp' => [
                 'step' => $stepParser->parse([
@@ -555,7 +555,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     . "\n"
                     . '// StatementBlockFactory::create($page.title matches "/pattern/")' . "\n"
                     . '// AssertionHandler::handle($page.title matches "/pattern/")' . "\n",
-                'expectedMetadata' => Metadata::create(),
+                'expectedMetadata' => new Metadata(),
             ],
         ];
     }

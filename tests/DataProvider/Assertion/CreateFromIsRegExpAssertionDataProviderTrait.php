@@ -33,7 +33,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     . '{{ PHPUNIT }}->assertFalse(' . "\n"
                     . '    {{ PHPUNIT }}->getBooleanExpectedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::PHPUNIT_TEST_CASE,
                     ],
@@ -58,7 +58,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     . '{{ PHPUNIT }}->assertFalse(' . "\n"
                     . '    {{ PHPUNIT }}->getBooleanExpectedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
                     ],
@@ -88,7 +88,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     . '{{ PHPUNIT }}->assertFalse(' . "\n"
                     . '    {{ PHPUNIT }}->getBooleanExpectedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
                     ],
@@ -111,7 +111,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     . '{{ PHPUNIT }}->assertFalse(' . "\n"
                     . '    {{ PHPUNIT }}->getBooleanExpectedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::PHPUNIT_TEST_CASE,
                     ],

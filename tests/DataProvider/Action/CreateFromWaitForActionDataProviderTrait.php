@@ -16,7 +16,7 @@ trait CreateFromWaitForActionDataProviderTrait
     public static function createFromWaitForActionDataProvider(): array
     {
         $actionParser = ActionParser::create();
-        $expectedMetadata = Metadata::create(
+        $expectedMetadata = new Metadata(
             variableNames: [
                 VariableNames::PANTHER_CRAWLER,
                 VariableNames::PANTHER_CLIENT,

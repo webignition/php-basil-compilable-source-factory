@@ -33,7 +33,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
                     . '    {{ PHPUNIT }}->getExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
                     ],
@@ -61,7 +61,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
                     . '    {{ PHPUNIT }}->getExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
                     ],
@@ -86,7 +86,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
                     . '    {{ PHPUNIT }}->getExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
                     ],
@@ -110,7 +110,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
                     . '    {{ PHPUNIT }}->getExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::PANTHER_CLIENT,
@@ -125,7 +125,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
                     . '    {{ PHPUNIT }}->getExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY
@@ -140,7 +140,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
                     . '    {{ PHPUNIT }}->getExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY
@@ -156,7 +156,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
                     . '    {{ PHPUNIT }}->getExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY
@@ -171,7 +171,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
                     . '    {{ PHPUNIT }}->getExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::PANTHER_CLIENT,
@@ -201,7 +201,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
                     . '    {{ PHPUNIT }}->getExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
                     ],
@@ -233,7 +233,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
                     . '    {{ PHPUNIT }}->getExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
                     ],
@@ -265,7 +265,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
                     . '    {{ PHPUNIT }}->getExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
                     ],
@@ -290,7 +290,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
                     . '    {{ PHPUNIT }}->getExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::PANTHER_CLIENT,
@@ -313,7 +313,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
                     . '    {{ PHPUNIT }}->getExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::PANTHER_CLIENT,
@@ -336,7 +336,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
                     . '    {{ PHPUNIT }}->getExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::PHPUNIT_TEST_CASE,
                         VariableNames::PANTHER_CLIENT,
@@ -351,7 +351,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
                     . '    {{ PHPUNIT }}->getExaminedValue()' . "\n"
                     . ');',
-                'expectedMetadata' => Metadata::create(
+                'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableNames::PHPUNIT_TEST_CASE,
                     ],
