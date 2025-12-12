@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\StatementInterface;
 
@@ -28,8 +28,8 @@ class StatementFactoryCallFactory
     public function create(StatementInterface $statement): ObjectMethodInvocation
     {
         $objectPlaceholderName = $statement instanceof AssertionInterface
-            ? VariableNames::ASSERTION_FACTORY
-            : VariableNames::ACTION_FACTORY;
+            ? VariableName::ASSERTION_FACTORY
+            : VariableName::ACTION_FACTORY;
 
         $serializedStatementSource = (string) json_encode($statement, JSON_PRETTY_PRINT);
 

@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Model\Action\ActionInterface;
@@ -55,9 +55,9 @@ class WaitForActionHandler
         }
 
         return Body::createForSingleAssignmentStatement(
-            new VariableDependency(VariableNames::PANTHER_CRAWLER),
+            new VariableDependency(VariableName::PANTHER_CRAWLER),
             new ObjectMethodInvocation(
-                new VariableDependency(VariableNames::PANTHER_CLIENT),
+                new VariableDependency(VariableName::PANTHER_CLIENT),
                 'waitFor',
                 new MethodArguments(
                     $this->argumentFactory->create($domIdentifier->getLocator())

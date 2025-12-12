@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
 use webignition\BasilModels\Parser\AssertionParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
@@ -35,7 +35,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     . ');',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::PHPUNIT_TEST_CASE,
+                        VariableName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],
@@ -63,9 +63,9 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                         ElementIdentifier::class,
                     ],
                     variableNames: [
-                        VariableNames::PHPUNIT_TEST_CASE,
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
+                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
                     ],
                 ),
             ],
@@ -93,8 +93,8 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                         ElementIdentifier::class,
                     ],
                     variableNames: [
-                        VariableNames::PHPUNIT_TEST_CASE,
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
                     ],
                 ),
             ],
@@ -113,7 +113,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     . ');',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::PHPUNIT_TEST_CASE,
+                        VariableName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],

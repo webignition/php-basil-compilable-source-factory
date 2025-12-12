@@ -5,10 +5,10 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\StatementFactoryCallFactory;
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTestCase;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
 use webignition\BasilModels\Model\StatementInterface;
 use webignition\BasilModels\Parser\ActionParser;
@@ -59,7 +59,7 @@ class StatementFactoryCallFactoryTest extends AbstractResolvableTestCase
                     . '}\')',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::ACTION_FACTORY,
+                        VariableName::ACTION_FACTORY,
                     ],
                 ),
             ],
@@ -73,7 +73,7 @@ class StatementFactoryCallFactoryTest extends AbstractResolvableTestCase
                     . '}\')',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::ASSERTION_FACTORY,
+                        VariableName::ASSERTION_FACTORY,
                     ],
                 ),
             ],
@@ -99,7 +99,7 @@ class StatementFactoryCallFactoryTest extends AbstractResolvableTestCase
                     . '}\')',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::ASSERTION_FACTORY,
+                        VariableName::ASSERTION_FACTORY,
                     ],
                 ),
             ],

@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Parser\ActionParser;
 
 trait CreateFromBackActionDataProviderTrait
@@ -23,9 +23,9 @@ trait CreateFromBackActionDataProviderTrait
                 'expectedRenderedSource' => '{{ CRAWLER }} = {{ CLIENT }}->back();' . "\n"
                     . '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
                 'expectedMetadata' => new Metadata(variableNames: [
-                    VariableNames::PANTHER_CRAWLER,
-                    VariableNames::PANTHER_CLIENT,
-                    VariableNames::PHPUNIT_TEST_CASE,
+                    VariableName::PANTHER_CRAWLER,
+                    VariableName::PANTHER_CLIENT,
+                    VariableName::PHPUNIT_TEST_CASE,
                 ]),
             ],
         ];

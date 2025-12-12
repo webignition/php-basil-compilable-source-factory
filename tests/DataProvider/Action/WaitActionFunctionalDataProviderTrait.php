@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Parser\ActionParser;
 
 trait WaitActionFunctionalDataProviderTrait
@@ -67,7 +67,7 @@ trait WaitActionFunctionalDataProviderTrait
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [
-                    VariableNames::ENVIRONMENT_VARIABLE_ARRAY => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
+                    VariableName::ENVIRONMENT_VARIABLE_ARRAY->value => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
                 ],
             ],
             'wait action, environment value, value does not exist' => [
@@ -76,7 +76,7 @@ trait WaitActionFunctionalDataProviderTrait
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
                 'additionalVariableIdentifiers' => [
-                    VariableNames::ENVIRONMENT_VARIABLE_ARRAY => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
+                    VariableName::ENVIRONMENT_VARIABLE_ARRAY->value => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
                 ],
             ],
         ];

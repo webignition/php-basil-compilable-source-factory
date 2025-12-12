@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression;
 
+use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\CatchBlock;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryBlock;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryCatchBlock;
@@ -28,7 +29,6 @@ use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDec
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class ClosureExpressionTest extends AbstractResolvableTestCase
 {
@@ -65,7 +65,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                         new AssignmentExpression(
                             new VariableName('variable'),
                             new ObjectMethodInvocation(
-                                new VariableDependency(VariableNames::ACTION_FACTORY),
+                                new VariableDependency(VariableNameEnum::ACTION_FACTORY),
                                 'dependencyMethodName'
                             )
                         )
@@ -94,7 +94,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                 ]),
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::ACTION_FACTORY,
+                        VariableNameEnum::ACTION_FACTORY,
                     ]
                 ),
             ],
@@ -175,7 +175,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                             new AssignmentExpression(
                                 new VariableName('variable'),
                                 new ObjectMethodInvocation(
-                                    new VariableDependency(VariableNames::ACTION_FACTORY),
+                                    new VariableDependency(VariableNameEnum::ACTION_FACTORY),
                                     'dependencyMethodName'
                                 )
                             )

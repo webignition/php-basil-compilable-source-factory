@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
+use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ClosureExpression;
@@ -17,7 +18,6 @@ use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\VariablePlaceholderInterface;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class StatementFactory
 {
@@ -27,13 +27,13 @@ class StatementFactory
 
         return new Statement(
             new ObjectMethodInvocation(
-                new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
+                new VariableDependency(VariableNameEnum::PHPUNIT_TEST_CASE),
                 'assertSame',
                 new MethodArguments(
                     $argumentFactory->create(
                         $expectedTitle,
                         new ObjectMethodInvocation(
-                            new VariableDependency(VariableNames::PANTHER_CLIENT),
+                            new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                             'getTitle'
                         ),
                     )
@@ -57,7 +57,7 @@ class StatementFactory
                         new AssignmentExpression(
                             $elementPlaceholder,
                             new ObjectMethodInvocation(
-                                new VariableDependency(VariableNames::PANTHER_CRAWLER),
+                                new VariableDependency(VariableNameEnum::PANTHER_CRAWLER),
                                 'filter',
                                 new MethodArguments($argumentFactory->create($selector))
                             )
@@ -98,7 +98,7 @@ class StatementFactory
                     new AssignmentExpression(
                         $elementPlaceholder,
                         new ObjectMethodInvocation(
-                            new VariableDependency(VariableNames::PANTHER_CRAWLER),
+                            new VariableDependency(VariableNameEnum::PANTHER_CRAWLER),
                             'filter',
                             new MethodArguments($argumentFactory->create($selector))
                         )
@@ -128,7 +128,7 @@ class StatementFactory
     {
         return new Statement(
             new ObjectMethodInvocation(
-                new VariableDependency(VariableNames::PANTHER_CLIENT),
+                new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                 $action
             )
         );
@@ -144,7 +144,7 @@ class StatementFactory
             new AssignmentExpression(
                 $placeholder,
                 new ObjectMethodInvocation(
-                    new VariableDependency(VariableNames::PANTHER_CRAWLER),
+                    new VariableDependency(VariableNameEnum::PANTHER_CRAWLER),
                     'filter',
                     new MethodArguments($argumentFactory->create($selector))
                 )
@@ -156,7 +156,7 @@ class StatementFactory
     {
         return new Statement(
             new ObjectMethodInvocation(
-                new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
+                new VariableDependency(VariableNameEnum::PHPUNIT_TEST_CASE),
                 'assertFalse',
                 new MethodArguments([
                     new LiteralExpression($actual)
@@ -169,7 +169,7 @@ class StatementFactory
     {
         return new Statement(
             new ObjectMethodInvocation(
-                new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
+                new VariableDependency(VariableNameEnum::PHPUNIT_TEST_CASE),
                 'assertTrue',
                 new MethodArguments([
                     new LiteralExpression($actual)
@@ -195,7 +195,7 @@ class StatementFactory
     ): StatementInterface {
         return new Statement(
             new ObjectMethodInvocation(
-                new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
+                new VariableDependency(VariableNameEnum::PHPUNIT_TEST_CASE),
                 $methodName,
                 new MethodArguments([
                     new LiteralExpression($expected),

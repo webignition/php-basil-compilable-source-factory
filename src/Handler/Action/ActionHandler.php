@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
@@ -11,7 +12,6 @@ use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Model\Action\ActionInterface;
 
 class ActionHandler
@@ -79,7 +79,7 @@ class ActionHandler
             $body,
             new Statement(
                 new ObjectMethodInvocation(
-                    new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
+                    new VariableDependency(VariableName::PHPUNIT_TEST_CASE),
                     'refreshCrawlerAndNavigator'
                 )
             ),

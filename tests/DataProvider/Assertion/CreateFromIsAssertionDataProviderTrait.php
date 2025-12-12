@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Parser\AssertionParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
 
@@ -38,9 +38,9 @@ trait CreateFromIsAssertionDataProviderTrait
                         ElementIdentifier::class,
                     ],
                     variableNames: [
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::PHPUNIT_TEST_CASE,
-                        VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
                     ],
                 ),
             ],
@@ -66,9 +66,9 @@ trait CreateFromIsAssertionDataProviderTrait
                         ElementIdentifier::class,
                     ],
                     variableNames: [
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::PHPUNIT_TEST_CASE,
-                        VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
                     ],
                 ),
             ],
@@ -91,8 +91,8 @@ trait CreateFromIsAssertionDataProviderTrait
                         ElementIdentifier::class,
                     ],
                     variableNames: [
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::PHPUNIT_TEST_CASE,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],
@@ -112,8 +112,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     . ');',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::PHPUNIT_TEST_CASE,
-                        VariableNames::PANTHER_CLIENT,
+                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::PANTHER_CLIENT,
                     ],
                 ),
             ],
@@ -127,8 +127,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     . ');',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::PHPUNIT_TEST_CASE,
-                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY
+                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::ENVIRONMENT_VARIABLE_ARRAY
                     ],
                 ),
             ],
@@ -142,8 +142,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     . ');',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::PHPUNIT_TEST_CASE,
-                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY
+                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::ENVIRONMENT_VARIABLE_ARRAY
                     ],
                 ),
             ],
@@ -158,8 +158,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     . ');',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::PHPUNIT_TEST_CASE,
-                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY
+                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::ENVIRONMENT_VARIABLE_ARRAY
                     ],
                 ),
             ],
@@ -173,8 +173,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     . ');',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::PHPUNIT_TEST_CASE,
-                        VariableNames::PANTHER_CLIENT,
+                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::PANTHER_CLIENT,
                     ],
                 ),
             ],
@@ -206,10 +206,10 @@ trait CreateFromIsAssertionDataProviderTrait
                         ElementIdentifier::class,
                     ],
                     variableNames: [
-                        VariableNames::PHPUNIT_TEST_CASE,
-                        VariableNames::PANTHER_CLIENT,
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
+                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::PANTHER_CLIENT,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
                     ],
                 ),
             ],
@@ -238,10 +238,10 @@ trait CreateFromIsAssertionDataProviderTrait
                         ElementIdentifier::class,
                     ],
                     variableNames: [
-                        VariableNames::PHPUNIT_TEST_CASE,
-                        VariableNames::PANTHER_CLIENT,
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
+                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::PANTHER_CLIENT,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
                     ],
                 ),
             ],
@@ -270,9 +270,9 @@ trait CreateFromIsAssertionDataProviderTrait
                         ElementIdentifier::class,
                     ],
                     variableNames: [
-                        VariableNames::PHPUNIT_TEST_CASE,
-                        VariableNames::PANTHER_CLIENT,
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::PANTHER_CLIENT,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
                     ],
                 ),
             ],
@@ -292,9 +292,9 @@ trait CreateFromIsAssertionDataProviderTrait
                     . ');',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::PHPUNIT_TEST_CASE,
-                        VariableNames::PANTHER_CLIENT,
-                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY
+                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::PANTHER_CLIENT,
+                        VariableName::ENVIRONMENT_VARIABLE_ARRAY
                     ],
                 ),
             ],
@@ -315,9 +315,9 @@ trait CreateFromIsAssertionDataProviderTrait
                     . ');',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::PHPUNIT_TEST_CASE,
-                        VariableNames::PANTHER_CLIENT,
-                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY
+                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::PANTHER_CLIENT,
+                        VariableName::ENVIRONMENT_VARIABLE_ARRAY
                     ],
                 ),
             ],
@@ -338,8 +338,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     . ');',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::PHPUNIT_TEST_CASE,
-                        VariableNames::PANTHER_CLIENT,
+                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::PANTHER_CLIENT,
                     ],
                 ),
             ],
@@ -353,7 +353,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     . ');',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::PHPUNIT_TEST_CASE,
+                        VariableName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],

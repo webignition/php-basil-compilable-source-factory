@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Value;
 
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTestCase;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class ScalarValueHandlerTest extends AbstractResolvableTestCase
 {
@@ -57,7 +57,7 @@ class ScalarValueHandlerTest extends AbstractResolvableTestCase
                 'expectedRenderedSource' => '{{ ENV }}[\'KEY\']',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
+                        VariableName::ENVIRONMENT_VARIABLE_ARRAY,
                     ],
                 ),
             ],
@@ -71,7 +71,7 @@ class ScalarValueHandlerTest extends AbstractResolvableTestCase
                     . '})()',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::PANTHER_CLIENT,
+                        VariableName::PANTHER_CLIENT,
                     ],
                 ),
             ],
@@ -80,7 +80,7 @@ class ScalarValueHandlerTest extends AbstractResolvableTestCase
                 'expectedRenderedSource' => '{{ CLIENT }}->getCurrentURL()',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::PANTHER_CLIENT,
+                        VariableName::PANTHER_CLIENT,
                     ],
                 ),
             ],
@@ -89,7 +89,7 @@ class ScalarValueHandlerTest extends AbstractResolvableTestCase
                 'expectedRenderedSource' => '{{ CLIENT }}->getTitle()',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::PANTHER_CLIENT,
+                        VariableName::PANTHER_CLIENT,
                     ],
                 ),
             ],

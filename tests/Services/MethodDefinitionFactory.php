@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
 use webignition\BaseBasilTestCase\ClientManager;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
@@ -22,7 +23,6 @@ use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\SymfonyPantherWebServerRunner\Options;
 
 class MethodDefinitionFactory
@@ -58,7 +58,7 @@ class MethodDefinitionFactory
             new Statement(new LiteralExpression('parent::setUpBeforeClass()')),
             new Statement(
                 new ObjectMethodInvocation(
-                    new VariableDependency(VariableNames::PANTHER_CLIENT),
+                    new VariableDependency(VariableName::PANTHER_CLIENT),
                     'request',
                     new MethodArguments($argumentFactory->create('GET', $requestUriExpression))
                 )

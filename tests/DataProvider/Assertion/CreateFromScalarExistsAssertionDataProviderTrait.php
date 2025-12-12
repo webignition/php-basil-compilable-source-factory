@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Parser\AssertionParser;
 
 trait CreateFromScalarExistsAssertionDataProviderTrait
@@ -27,8 +27,8 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
                     . ');',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::PANTHER_CLIENT,
-                        VariableNames::PHPUNIT_TEST_CASE,
+                        VariableName::PANTHER_CLIENT,
+                        VariableName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],
@@ -40,7 +40,7 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
                     . ');',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::PHPUNIT_TEST_CASE,
+                        VariableName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],

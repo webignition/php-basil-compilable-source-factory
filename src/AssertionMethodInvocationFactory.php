@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory;
 
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocationInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
@@ -21,7 +22,7 @@ class AssertionMethodInvocationFactory
         MethodArgumentsInterface $arguments,
     ): MethodInvocationInterface {
         return new ObjectMethodInvocation(
-            new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
+            new VariableDependency(VariableName::PHPUNIT_TEST_CASE),
             $assertionMethod,
             $arguments->withFormat(MethodArgumentsInterface::FORMAT_STACKED)
         );

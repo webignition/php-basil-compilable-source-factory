@@ -5,37 +5,13 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class VariableDependencyTest extends AbstractResolvableTestCase
 {
-    /**
-     * @param VariableNames::* $name
-     *
-     * @dataProvider constructDataProvider
-     */
-    public function testConstruct(string $name): void
-    {
-        $dependency = new VariableDependency($name);
-
-        $this->assertSame($name, $dependency->getName());
-    }
-
-    /**
-     * @return array<mixed>
-     */
-    public static function constructDataProvider(): array
-    {
-        return [
-            'default' => [
-                'name' => 'DEPENDENCY',
-            ],
-        ];
-    }
-
     /**
      * @dataProvider getMetadataDataProvider
      */
@@ -51,10 +27,10 @@ class VariableDependencyTest extends AbstractResolvableTestCase
     {
         return [
             'variable dependency' => [
-                'dependency' => new VariableDependency(VariableNames::ACTION_FACTORY),
+                'dependency' => new VariableDependency(VariableName::ACTION_FACTORY),
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::ACTION_FACTORY,
+                        VariableName::ACTION_FACTORY,
                     ]
                 ),
             ],
@@ -76,7 +52,7 @@ class VariableDependencyTest extends AbstractResolvableTestCase
     {
         return [
             'non-empty' => [
-                'dependency' => new VariableDependency(VariableNames::ENVIRONMENT_VARIABLE_ARRAY),
+                'dependency' => new VariableDependency(VariableName::ENVIRONMENT_VARIABLE_ARRAY),
                 'expectedString' => '{{ ENV }}',
             ],
         ];

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Model\Attribute\DataProviderAttribute;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
@@ -22,7 +23,6 @@ use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class MethodDefinitionTest extends AbstractResolvableTestCase
 {
@@ -110,7 +110,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                 'methodDefinition' => new MethodDefinition('name', new Body([
                     new Statement(
                         new ObjectMethodInvocation(
-                            new VariableDependency(VariableNames::ACTION_FACTORY),
+                            new VariableDependency(VariableNameEnum::ACTION_FACTORY),
                             'methodName'
                         )
                     ),
@@ -123,7 +123,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                 ])),
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::ACTION_FACTORY,
+                        VariableNameEnum::ACTION_FACTORY,
                     ]
                 ),
             ],
@@ -131,7 +131,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                 'methodDefinition' => new MethodDefinition('name', new Body([
                     new Statement(
                         new ObjectMethodInvocation(
-                            new VariableDependency(VariableNames::ACTION_FACTORY),
+                            new VariableDependency(VariableNameEnum::ACTION_FACTORY),
                             'methodName'
                         )
                     ),
@@ -147,7 +147,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                         DataProvider::class,
                     ],
                     variableNames: [
-                        VariableNames::ACTION_FACTORY,
+                        VariableNameEnum::ACTION_FACTORY,
                     ]
                 ),
             ],
@@ -276,7 +276,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                             new AssignmentExpression(
                                 new VariableName('value'),
                                 new ObjectMethodInvocation(
-                                    new VariableDependency(VariableNames::ACTION_FACTORY),
+                                    new VariableDependency(VariableNameEnum::ACTION_FACTORY),
                                     'methodName',
                                     new MethodArguments([
                                         new LiteralExpression('$x'),

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Statement;
 
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
@@ -13,7 +14,6 @@ use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class StatementTest extends AbstractResolvableTestCase
 {
@@ -35,10 +35,10 @@ class StatementTest extends AbstractResolvableTestCase
     {
         return [
             'variable dependency' => [
-                'expression' => new VariableDependency(VariableNames::ACTION_FACTORY),
+                'expression' => new VariableDependency(VariableName::ACTION_FACTORY),
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::ACTION_FACTORY,
+                        VariableName::ACTION_FACTORY,
                     ],
                 ),
             ],
@@ -48,12 +48,12 @@ class StatementTest extends AbstractResolvableTestCase
             ],
             'object method invocation' => [
                 'expression' => new ObjectMethodInvocation(
-                    new VariableDependency(VariableNames::ASSERTION_FACTORY),
+                    new VariableDependency(VariableName::ASSERTION_FACTORY),
                     'methodName'
                 ),
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::ASSERTION_FACTORY,
+                        VariableName::ASSERTION_FACTORY,
                     ],
                 ),
             ],
@@ -76,7 +76,7 @@ class StatementTest extends AbstractResolvableTestCase
         return [
             'statement encapsulating variable dependency' => [
                 'statement' => new Statement(
-                    new VariableDependency(VariableNames::ACTION_FACTORY)
+                    new VariableDependency(VariableName::ACTION_FACTORY)
                 ),
                 'expectedString' => '{{ ACTION_FACTORY }};',
             ],
@@ -89,7 +89,7 @@ class StatementTest extends AbstractResolvableTestCase
             'statement encapsulating object method invocation' => [
                 'statement' => new Statement(
                     new ObjectMethodInvocation(
-                        new VariableDependency(VariableNames::ASSERTION_FACTORY),
+                        new VariableDependency(VariableName::ASSERTION_FACTORY),
                         'methodName'
                     )
                 ),

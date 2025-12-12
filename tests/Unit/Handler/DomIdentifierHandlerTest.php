@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler;
 
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTestCase;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\DomElementIdentifier\AttributeIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifier;
 
@@ -58,7 +58,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                         ElementIdentifier::class,
                     ],
                     variableNames: [
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
                     ],
                 ),
             ],
@@ -78,7 +78,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                         ElementIdentifier::class,
                     ],
                     variableNames: [
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
                     ],
                 ),
             ],
@@ -119,7 +119,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                         ElementIdentifier::class,
                     ],
                     variableNames: [
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
                     ],
                 ),
             ],
@@ -139,7 +139,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                         ElementIdentifier::class,
                     ],
                     variableNames: [
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
                     ],
                 ),
             ],
@@ -186,7 +186,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                         ElementIdentifier::class,
                     ],
                     variableNames: [
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
                     ],
                 ),
             ],
@@ -211,7 +211,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                         ElementIdentifier::class,
                     ],
                     variableNames: [
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
                     ],
                 ),
             ],
@@ -256,8 +256,8 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                         ElementIdentifier::class,
                     ],
                     variableNames: [
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
                     ],
                 ),
             ],
@@ -281,8 +281,8 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                         ElementIdentifier::class,
                     ],
                     variableNames: [
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
                     ],
                 ),
             ],

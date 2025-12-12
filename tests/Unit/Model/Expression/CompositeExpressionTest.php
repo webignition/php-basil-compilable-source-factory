@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression;
 
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CompositeExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
@@ -11,7 +12,6 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class CompositeExpressionTest extends AbstractResolvableTestCase
 {
@@ -39,22 +39,22 @@ class CompositeExpressionTest extends AbstractResolvableTestCase
             ],
             'variable dependency' => [
                 'expressions' => [
-                    new VariableDependency(VariableNames::ACTION_FACTORY),
+                    new VariableDependency(VariableName::ACTION_FACTORY),
                 ],
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::ACTION_FACTORY,
+                        VariableName::ACTION_FACTORY,
                     ]
                 ),
             ],
             'variable dependency and array access' => [
                 'expressions' => [
-                    new VariableDependency(VariableNames::ENVIRONMENT_VARIABLE_ARRAY),
+                    new VariableDependency(VariableName::ENVIRONMENT_VARIABLE_ARRAY),
                     new LiteralExpression('[\'KEY\']')
                 ],
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
+                        VariableName::ENVIRONMENT_VARIABLE_ARRAY,
                     ]
                 ),
             ],
@@ -95,13 +95,13 @@ class CompositeExpressionTest extends AbstractResolvableTestCase
             ],
             'variable dependency' => [
                 'expression' => new CompositeExpression([
-                    new VariableDependency(VariableNames::ACTION_FACTORY),
+                    new VariableDependency(VariableName::ACTION_FACTORY),
                 ]),
                 'expectedString' => '{{ ACTION_FACTORY }}',
             ],
             'variable dependency and array access' => [
                 'expression' => new CompositeExpression([
-                    new VariableDependency('ENV'),
+                    new VariableDependency(VariableName::ENVIRONMENT_VARIABLE_ARRAY),
                     new LiteralExpression('[\'KEY\']')
                 ]),
                 'expectedString' => '{{ ENV }}[\'KEY\']',

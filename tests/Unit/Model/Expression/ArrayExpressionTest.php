@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression;
 
+use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayKey;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayPair;
@@ -14,7 +15,6 @@ use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethod
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class ArrayExpressionTest extends AbstractResolvableTestCase
 {
@@ -50,14 +50,14 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                     new ArrayPair(
                         new ArrayKey('key3'),
                         new ObjectMethodInvocation(
-                            new VariableDependency(VariableNames::ACTION_FACTORY),
+                            new VariableDependency(VariableNameEnum::ACTION_FACTORY),
                             'methodName'
                         )
                     ),
                 ]),
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::ACTION_FACTORY,
+                        VariableNameEnum::ACTION_FACTORY,
                     ]
                 ),
             ],
@@ -106,7 +106,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                     new ArrayPair(
                         new ArrayKey('key3'),
                         new ObjectMethodInvocation(
-                            new VariableDependency(VariableNames::ACTION_FACTORY),
+                            new VariableDependency(VariableNameEnum::ACTION_FACTORY),
                             'methodName'
                         )
                     ),
@@ -243,7 +243,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                             new ArrayPair(
                                 new ArrayKey('key1'),
                                 new ObjectMethodInvocation(
-                                    new VariableDependency(VariableNames::ACTION_FACTORY),
+                                    new VariableDependency(VariableNameEnum::ACTION_FACTORY),
                                     'methodName'
                                 )
                             ),
@@ -398,7 +398,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                 'expression' => ArrayExpression::fromArray([
                     'data-set-one' => [
                         'key1' => new ObjectMethodInvocation(
-                            new VariableDependency(VariableNames::ACTION_FACTORY),
+                            new VariableDependency(VariableNameEnum::ACTION_FACTORY),
                             'methodName'
                         ),
                     ],
@@ -410,7 +410,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                             new ArrayPair(
                                 new ArrayKey('key1'),
                                 new ObjectMethodInvocation(
-                                    new VariableDependency(VariableNames::ACTION_FACTORY),
+                                    new VariableDependency(VariableNameEnum::ACTION_FACTORY),
                                     'methodName'
                                 )
                             ),
@@ -438,7 +438,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
             'array with nested array' => [
                 'expression' => ArrayExpression::fromArray([
                     'name' => new ObjectMethodInvocation(
-                        new VariableDependency(VariableNames::ACTION_FACTORY),
+                        new VariableDependency(VariableNameEnum::ACTION_FACTORY),
                         'dataName'
                     ),
                     'data' => [
@@ -450,7 +450,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                     new ArrayPair(
                         new ArrayKey('name'),
                         new ObjectMethodInvocation(
-                            new VariableDependency(VariableNames::ACTION_FACTORY),
+                            new VariableDependency(VariableNameEnum::ACTION_FACTORY),
                             'dataName'
                         )
                     ),
