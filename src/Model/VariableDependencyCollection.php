@@ -41,8 +41,8 @@ class VariableDependencyCollection implements \IteratorAggregate
     {
         $name = $dependency->getName();
 
-        if (!array_key_exists($name->value, $this->dependencies)) {
-            $this->dependencies[$name->value] = $dependency;
+        if (!array_key_exists($name, $this->dependencies)) {
+            $this->dependencies[$name] = $dependency;
         }
     }
 

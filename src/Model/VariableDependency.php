@@ -17,9 +17,9 @@ class VariableDependency implements ExpressionInterface, VariableDependencyInter
         private readonly VariableNameEnum $name
     ) {}
 
-    public function getName(): VariableNameEnum
+    public function getName(): string
     {
-        return $this->name;
+        return $this->name->value;
     }
 
     public function getMetadata(): MetadataInterface
@@ -35,7 +35,7 @@ class VariableDependency implements ExpressionInterface, VariableDependencyInter
     public function getContext(): array
     {
         return [
-            'name' => $this->name->value,
+            'name' => $this->getName(),
         ];
     }
 }
