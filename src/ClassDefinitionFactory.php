@@ -49,6 +49,8 @@ class ClassDefinitionFactory
     }
 
     /**
+     * @param null|non-empty-string $fullyQualifiedBaseClass
+     *
      * @throws UnsupportedStepException
      */
     public function createClassDefinition(

@@ -8,9 +8,6 @@ class ClassName implements \Stringable
 {
     private const FQCN_PART_DELIMITER = '\\';
 
-    private string $className;
-    private ?string $alias;
-
     /**
      * @var string[]
      */
@@ -20,11 +17,14 @@ class ClassName implements \Stringable
         'parent',
     ];
 
-    public function __construct(string $className, ?string $alias = null)
-    {
-        $this->className = $className;
-        $this->alias = $alias;
-    }
+    /**
+     * @param non-empty-string      $className
+     * @param null|non-empty-string $alias
+     */
+    public function __construct(
+        private readonly string $className,
+        private readonly ?string $alias = null
+    ) {}
 
     public function __toString(): string
     {
@@ -47,11 +47,17 @@ class ClassName implements \Stringable
         return array_pop($classNameParts);
     }
 
+    /**
+     * @return non-empty-string
+     */
     public function getClassName(): string
     {
         return $this->className;
     }
 
+    /**
+     * @return null|non-empty-string
+     */
     public function getAlias(): ?string
     {
         return $this->alias;

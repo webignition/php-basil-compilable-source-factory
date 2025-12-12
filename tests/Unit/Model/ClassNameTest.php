@@ -11,6 +11,9 @@ use webignition\ObjectReflector\ObjectReflector;
 class ClassNameTest extends TestCase
 {
     /**
+     * @param non-empty-string      $className
+     * @param null|non-empty-string $alias
+     *
      * @dataProvider createDataProvider
      */
     public function testCreate(string $className, ?string $alias): void
