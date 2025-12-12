@@ -14,6 +14,7 @@ use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethod
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
+use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class ArrayPairTest extends AbstractResolvableTestCase
 {
@@ -42,13 +43,13 @@ class ArrayPairTest extends AbstractResolvableTestCase
                 'pair' => new ArrayPair(
                     new ArrayKey(''),
                     new ObjectMethodInvocation(
-                        new VariableDependency('OBJECT'),
+                        new VariableDependency(VariableNames::ACTION_FACTORY),
                         'methodName'
                     )
                 ),
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        'OBJECT',
+                        VariableNames::ACTION_FACTORY,
                     ]),
                 ]),
             ],

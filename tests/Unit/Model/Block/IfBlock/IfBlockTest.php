@@ -21,6 +21,7 @@ use webignition\BasilCompilableSourceFactory\Model\StaticObject;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
+use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class IfBlockTest extends AbstractResolvableTestCase
 {
@@ -28,7 +29,7 @@ class IfBlockTest extends AbstractResolvableTestCase
     {
         $expression = new ComparisonExpression(
             new ObjectMethodInvocation(
-                new VariableDependency('IF_EXPRESSION_OBJECT'),
+                new VariableDependency(VariableNames::ACTION_FACTORY),
                 'methodName'
             ),
             new LiteralExpression('value'),
@@ -38,7 +39,7 @@ class IfBlockTest extends AbstractResolvableTestCase
         $body = new Body([
             new Statement(
                 new AssignmentExpression(
-                    new VariableDependency('BODY_DEPENDENCY'),
+                    new VariableDependency(VariableNames::ASSERTION_FACTORY),
                     new StaticObjectMethodInvocation(
                         new StaticObject(\RuntimeException::class),
                         'staticMethodName'
@@ -56,8 +57,8 @@ class IfBlockTest extends AbstractResolvableTestCase
                 ])
             ),
             Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                'BODY_DEPENDENCY',
-                'IF_EXPRESSION_OBJECT',
+                VariableNames::ACTION_FACTORY,
+                VariableNames::ASSERTION_FACTORY,
             ]),
         ]);
 

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model;
 
+use webignition\BasilCompilableSourceFactory\VariableNames;
+
 /**
  * @implements \IteratorAggregate<string, VariableDependencyInterface>
  */
@@ -15,7 +17,7 @@ class VariableDependencyCollection implements \IteratorAggregate
     private array $dependencies = [];
 
     /**
-     * @param non-empty-string[] $names
+     * @param VariableNames::*[] $names
      */
     public function __construct(array $names = [])
     {

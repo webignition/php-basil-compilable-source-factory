@@ -7,20 +7,21 @@ namespace webignition\BasilCompilableSourceFactory\Model;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
+use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class VariableDependency implements ExpressionInterface, VariableDependencyInterface
 {
     private const RENDER_TEMPLATE = '{{ {{ name }} }}';
 
     /**
-     * @param non-empty-string $name
+     * @param VariableNames::* $name
      */
     public function __construct(
         private readonly string $name
     ) {}
 
     /**
-     * @return non-empty-string
+     * @return VariableNames::*
      */
     public function getName(): string
     {

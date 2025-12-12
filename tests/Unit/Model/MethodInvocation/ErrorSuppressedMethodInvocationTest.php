@@ -11,6 +11,7 @@ use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\StaticObject
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
+use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class ErrorSuppressedMethodInvocationTest extends AbstractResolvableTestCase
 {
@@ -37,11 +38,11 @@ class ErrorSuppressedMethodInvocationTest extends AbstractResolvableTestCase
             'ObjectMethodInvocation' => [
                 'invocation' => new ErrorSuppressedMethodInvocation(
                     new ObjectMethodInvocation(
-                        new VariableDependency('OBJECT'),
+                        new VariableDependency(VariableNames::ACTION_FACTORY),
                         'methodName'
                     )
                 ),
-                'expectedString' => '@{{ OBJECT }}->methodName()',
+                'expectedString' => '@{{ ACTION_FACTORY }}->methodName()',
             ],
             'StaticObjectMethodInvocation' => [
                 'invocation' => new ErrorSuppressedMethodInvocation(

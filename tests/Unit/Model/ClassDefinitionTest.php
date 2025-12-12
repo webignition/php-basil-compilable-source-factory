@@ -23,6 +23,7 @@ use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
+use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class ClassDefinitionTest extends AbstractResolvableTestCase
 {
@@ -79,7 +80,7 @@ class ClassDefinitionTest extends AbstractResolvableTestCase
                         new MethodDefinition('name', new Body([
                             new Statement(
                                 new ObjectMethodInvocation(
-                                    new VariableDependency('DEPENDENCY'),
+                                    new VariableDependency(VariableNames::ACTION_FACTORY),
                                     'methodName'
                                 )
                             ),
@@ -94,7 +95,7 @@ class ClassDefinitionTest extends AbstractResolvableTestCase
                 ),
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        'DEPENDENCY',
+                        VariableNames::ACTION_FACTORY,
                     ]),
                 ]),
             ],

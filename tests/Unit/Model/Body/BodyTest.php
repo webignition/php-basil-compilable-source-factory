@@ -24,6 +24,7 @@ use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDec
 use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclarationCollection;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
+use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\ObjectReflector\ObjectReflector;
 
 class BodyTest extends AbstractResolvableTestCase
@@ -348,7 +349,7 @@ class BodyTest extends AbstractResolvableTestCase
 
     public function testCreateForSingleAssignmentStatement(): void
     {
-        $variable = new VariableDependency('LHS');
+        $variable = new VariableDependency(VariableNames::ACTION_FACTORY);
         $value = new LiteralExpression('"value"');
 
         $expectedBody = new Body([

@@ -15,6 +15,7 @@ use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
+use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class ArrayExpressionTest extends AbstractResolvableTestCase
 {
@@ -50,14 +51,14 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                     new ArrayPair(
                         new ArrayKey('key3'),
                         new ObjectMethodInvocation(
-                            new VariableDependency('OBJECT'),
+                            new VariableDependency(VariableNames::ACTION_FACTORY),
                             'methodName'
                         )
                     ),
                 ]),
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        'OBJECT',
+                        VariableNames::ACTION_FACTORY,
                     ])
                 ]),
             ],
@@ -106,7 +107,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                     new ArrayPair(
                         new ArrayKey('key3'),
                         new ObjectMethodInvocation(
-                            new VariableDependency('OBJECT'),
+                            new VariableDependency(VariableNames::ACTION_FACTORY),
                             'methodName'
                         )
                     ),
@@ -114,7 +115,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                 'expectedString' => "[\n"
                     . "    'key1' => 'value1',\n"
                     . "    'key2' => \$variableName,\n"
-                    . "    'key3' => {{ OBJECT }}->methodName(),\n"
+                    . "    'key3' => {{ ACTION_FACTORY }}->methodName(),\n"
                     . ']',
             ],
             'single data set with single key:value numerical name' => [
@@ -243,7 +244,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                             new ArrayPair(
                                 new ArrayKey('key1'),
                                 new ObjectMethodInvocation(
-                                    new VariableDependency('OBJECT'),
+                                    new VariableDependency(VariableNames::ACTION_FACTORY),
                                     'methodName'
                                 )
                             ),
@@ -252,7 +253,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                 ]),
                 'expectedString' => "[\n"
                     . "    'data-set-one' => [\n"
-                    . "        'key1' => {{ OBJECT }}->methodName(),\n"
+                    . "        'key1' => {{ ACTION_FACTORY }}->methodName(),\n"
                     . "    ],\n"
                     . ']',
             ],
@@ -398,7 +399,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                 'expression' => ArrayExpression::fromArray([
                     'data-set-one' => [
                         'key1' => new ObjectMethodInvocation(
-                            new VariableDependency('OBJECT'),
+                            new VariableDependency(VariableNames::ACTION_FACTORY),
                             'methodName'
                         ),
                     ],
@@ -410,7 +411,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                             new ArrayPair(
                                 new ArrayKey('key1'),
                                 new ObjectMethodInvocation(
-                                    new VariableDependency('OBJECT'),
+                                    new VariableDependency(VariableNames::ACTION_FACTORY),
                                     'methodName'
                                 )
                             ),
@@ -438,7 +439,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
             'array with nested array' => [
                 'expression' => ArrayExpression::fromArray([
                     'name' => new ObjectMethodInvocation(
-                        new VariableDependency('DEPENDENCY'),
+                        new VariableDependency(VariableNames::ACTION_FACTORY),
                         'dataName'
                     ),
                     'data' => [
@@ -450,7 +451,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                     new ArrayPair(
                         new ArrayKey('name'),
                         new ObjectMethodInvocation(
-                            new VariableDependency('DEPENDENCY'),
+                            new VariableDependency(VariableNames::ACTION_FACTORY),
                             'dataName'
                         )
                     ),

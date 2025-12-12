@@ -10,6 +10,7 @@ use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
+use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class MetadataTest extends TestCase
 {
@@ -56,7 +57,7 @@ class MetadataTest extends TestCase
                         ])
                     ),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        'VARIABLE_DEPENDENCY',
+                        VariableNames::ACTION_FACTORY,
                     ]),
                 ],
                 'expectedClassDependencies' => new ClassDependencyCollection(
@@ -65,7 +66,7 @@ class MetadataTest extends TestCase
                     ])
                 ),
                 'expectedVariableDependencies' => new VariableDependencyCollection([
-                    'VARIABLE_DEPENDENCY',
+                    VariableNames::ACTION_FACTORY,
                 ]),
             ],
         ];
@@ -80,8 +81,8 @@ class MetadataTest extends TestCase
                 ])
             ),
             Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                'VARIABLE_DEPENDENCY_1',
-                'VARIABLE_DEPENDENCY_2',
+                VariableNames::ACTION_FACTORY,
+                VariableNames::ASSERTION_FACTORY,
             ]),
         ]);
 
@@ -93,8 +94,8 @@ class MetadataTest extends TestCase
                 ])
             ),
             Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                'VARIABLE_DEPENDENCY_2',
-                'VARIABLE_DEPENDENCY_3',
+                VariableNames::ASSERTION_FACTORY,
+                VariableNames::DOM_CRAWLER_NAVIGATOR,
             ]),
         ]);
 
@@ -110,9 +111,9 @@ class MetadataTest extends TestCase
                     ])
                 ),
                 Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                    'VARIABLE_DEPENDENCY_1',
-                    'VARIABLE_DEPENDENCY_2',
-                    'VARIABLE_DEPENDENCY_3',
+                    VariableNames::ACTION_FACTORY,
+                    VariableNames::ASSERTION_FACTORY,
+                    VariableNames::DOM_CRAWLER_NAVIGATOR,
                 ]),
             ])
         );

@@ -26,6 +26,7 @@ use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
+use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class MethodDefinitionTest extends AbstractResolvableTestCase
 {
@@ -115,7 +116,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                 'methodDefinition' => new MethodDefinition('name', new Body([
                     new Statement(
                         new ObjectMethodInvocation(
-                            new VariableDependency('DEPENDENCY'),
+                            new VariableDependency(VariableNames::ACTION_FACTORY),
                             'methodName'
                         )
                     ),
@@ -128,7 +129,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                 ])),
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        'DEPENDENCY',
+                        VariableNames::ACTION_FACTORY,
                     ]),
                 ]),
             ],
@@ -136,7 +137,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                 'methodDefinition' => new MethodDefinition('name', new Body([
                     new Statement(
                         new ObjectMethodInvocation(
-                            new VariableDependency('DEPENDENCY'),
+                            new VariableDependency(VariableNames::ACTION_FACTORY),
                             'methodName'
                         )
                     ),
@@ -154,7 +155,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                         ])
                     ),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        'DEPENDENCY',
+                        VariableNames::ACTION_FACTORY,
                     ]),
                 ]),
             ],
@@ -283,7 +284,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                             new AssignmentExpression(
                                 new VariableName('value'),
                                 new ObjectMethodInvocation(
-                                    new VariableDependency('OBJECT'),
+                                    new VariableDependency(VariableNames::ACTION_FACTORY),
                                     'methodName',
                                     new MethodArguments([
                                         new LiteralExpression('$x'),
@@ -300,7 +301,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                     {
                         // Assign object method call to $value
                     
-                        $value = {{ OBJECT }}->methodName($x, $y);
+                        $value = {{ ACTION_FACTORY }}->methodName($x, $y);
                     }
                     EOD,
             ],

@@ -29,6 +29,7 @@ use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
+use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class ClosureExpressionTest extends AbstractResolvableTestCase
 {
@@ -65,7 +66,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                         new AssignmentExpression(
                             new VariableName('variable'),
                             new ObjectMethodInvocation(
-                                new VariableDependency('DEPENDENCY'),
+                                new VariableDependency(VariableNames::ACTION_FACTORY),
                                 'dependencyMethodName'
                             )
                         )
@@ -94,7 +95,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                 ]),
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        'DEPENDENCY',
+                        VariableNames::ACTION_FACTORY,
                     ]),
                 ]),
             ],
@@ -175,7 +176,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                             new AssignmentExpression(
                                 new VariableName('variable'),
                                 new ObjectMethodInvocation(
-                                    new VariableDependency('DEPENDENCY'),
+                                    new VariableDependency(VariableNames::ACTION_FACTORY),
                                     'dependencyMethodName'
                                 )
                             )
@@ -205,7 +206,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                     ])
                 ),
                 '(function () {' . "\n"
-                . '    $variable = {{ DEPENDENCY }}->dependencyMethodName();' . "\n"
+                . '    $variable = {{ ACTION_FACTORY }}->dependencyMethodName();' . "\n"
                 . "\n"
                 . '    return (string) ($variable->getWidth()) . \'x\' . (string) ($variable->getHeight());' . "\n"
                 . '})()',

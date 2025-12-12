@@ -13,6 +13,7 @@ use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethod
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
+use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class ComparisonExpressionTest extends AbstractResolvableTestCase
 {
@@ -47,14 +48,14 @@ class ComparisonExpressionTest extends AbstractResolvableTestCase
             ],
             'has metadata' => [
                 'leftHandSide' => new ObjectMethodInvocation(
-                    new VariableDependency('DEPENDENCY'),
+                    new VariableDependency(VariableNames::ACTION_FACTORY),
                     'methodName'
                 ),
                 'rightHandSide' => new LiteralExpression('literal'),
                 'comparison' => '!==',
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        'DEPENDENCY',
+                        'ACTION_FACTORY',
                     ])
                 ]),
             ],
@@ -86,13 +87,13 @@ class ComparisonExpressionTest extends AbstractResolvableTestCase
             'object method invocation and literal, null coalesce' => [
                 'expression' => new ComparisonExpression(
                     new ObjectMethodInvocation(
-                        new VariableDependency('DEPENDENCY'),
+                        new VariableDependency(VariableNames::ACTION_FACTORY),
                         'methodName'
                     ),
                     new LiteralExpression('value'),
                     '??'
                 ),
-                'expectedString' => '{{ DEPENDENCY }}->methodName() ?? value',
+                'expectedString' => '{{ ACTION_FACTORY }}->methodName() ?? value',
             ],
         ];
     }

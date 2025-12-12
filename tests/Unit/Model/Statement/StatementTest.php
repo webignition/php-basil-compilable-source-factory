@@ -14,6 +14,7 @@ use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
+use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class StatementTest extends AbstractResolvableTestCase
 {
@@ -35,10 +36,10 @@ class StatementTest extends AbstractResolvableTestCase
     {
         return [
             'variable dependency' => [
-                'expression' => new VariableDependency('DEPENDENCY'),
+                'expression' => new VariableDependency(VariableNames::ACTION_FACTORY),
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        'DEPENDENCY',
+                        VariableNames::ACTION_FACTORY,
                     ])
                 ]),
             ],
@@ -48,12 +49,12 @@ class StatementTest extends AbstractResolvableTestCase
             ],
             'object method invocation' => [
                 'expression' => new ObjectMethodInvocation(
-                    new VariableDependency('OBJECT'),
+                    new VariableDependency(VariableNames::ASSERTION_FACTORY),
                     'methodName'
                 ),
                 'expectedMetadata' => new Metadata([
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        'OBJECT',
+                        VariableNames::ASSERTION_FACTORY,
                     ])
                 ]),
             ],
@@ -76,9 +77,9 @@ class StatementTest extends AbstractResolvableTestCase
         return [
             'statement encapsulating variable dependency' => [
                 'statement' => new Statement(
-                    new VariableDependency('DEPENDENCY')
+                    new VariableDependency(VariableNames::ACTION_FACTORY)
                 ),
-                'expectedString' => '{{ DEPENDENCY }};',
+                'expectedString' => '{{ ACTION_FACTORY }};',
             ],
             'statement encapsulating method invocation' => [
                 'statement' => new Statement(
@@ -89,11 +90,11 @@ class StatementTest extends AbstractResolvableTestCase
             'statement encapsulating object method invocation' => [
                 'statement' => new Statement(
                     new ObjectMethodInvocation(
-                        new VariableDependency('OBJECT'),
+                        new VariableDependency(VariableNames::ASSERTION_FACTORY),
                         'methodName'
                     )
                 ),
-                'expectedString' => '{{ OBJECT }}->methodName();',
+                'expectedString' => '{{ ASSERTION_FACTORY }}->methodName();',
             ],
         ];
     }
