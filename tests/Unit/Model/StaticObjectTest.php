@@ -15,6 +15,8 @@ use webignition\BasilCompilableSourceFactory\Model\StaticObject;
 class StaticObjectTest extends TestCase
 {
     /**
+     * @param non-empty-string $object
+     *
      * @dataProvider getMetadataDataProvider
      */
     public function testGetMetadata(string $object, MetadataInterface $expectedMetadata): void
