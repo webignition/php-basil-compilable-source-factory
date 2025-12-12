@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use webignition\BaseBasilTestCase\Attribute\StepName;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
 use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
@@ -67,15 +68,23 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                 'stepName' => 'Step Name',
                 'step' => $emptyStep,
                 'factory' => StepMethodFactory::createFactory(),
-                'expectedRenderedTestMethod' => "public function test1()\n"
-                    . "{\n"
-                    . "    if (self::hasException()) {\n"
-                    . "        return;\n"
-                    . "    }\n"
-                    . "    {{ PHPUNIT }}->setBasilStepName('Step Name');\n"
-                    . "    {{ PHPUNIT }}->setCurrentDataSet(null);\n"
-                    . '}',
+                'expectedRenderedTestMethod' => <<<'EOD'
+                    #[StepName('Step Name')]
+                    public function test1()
+                    {
+                        if (self::hasException()) {
+                            return;
+                        }
+                        {{ PHPUNIT }}->setBasilStepName('Step Name');
+                        {{ PHPUNIT }}->setCurrentDataSet(null);
+                    }
+                    EOD,
                 'expectedTestMethodMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
+                        new ClassNameCollection([
+                            new ClassName(StepName::class),
+                        ])
+                    ),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
                     ]),
@@ -86,15 +95,23 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                 'stepName' => 'step name \'contains\' single quotes',
                 'step' => $emptyStep,
                 'factory' => StepMethodFactory::createFactory(),
-                'expectedRenderedTestMethod' => "public function test2()\n"
-                    . "{\n"
-                    . "    if (self::hasException()) {\n"
-                    . "        return;\n"
-                    . "    }\n"
-                    . "    {{ PHPUNIT }}->setBasilStepName('step name \\'contains\\' single quotes');\n"
-                    . "    {{ PHPUNIT }}->setCurrentDataSet(null);\n"
-                    . '}',
+                'expectedRenderedTestMethod' => <<<'EOD'
+                    #[StepName('step name \'contains\' single quotes')]
+                    public function test2()
+                    {
+                        if (self::hasException()) {
+                            return;
+                        }
+                        {{ PHPUNIT }}->setBasilStepName('step name \'contains\' single quotes');
+                        {{ PHPUNIT }}->setCurrentDataSet(null);
+                    }
+                    EOD,
                 'expectedTestMethodMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
+                        new ClassNameCollection([
+                            new ClassName(StepName::class),
+                        ])
+                    ),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
                     ]),
@@ -112,17 +129,25 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                         ])
                     ),
                 ]),
-                'expectedRenderedTestMethod' => "public function test3()\n"
-                    . "{\n"
-                    . "    if (self::hasException()) {\n"
-                    . "        return;\n"
-                    . "    }\n"
-                    . "    {{ PHPUNIT }}->setBasilStepName('Step Name');\n"
-                    . "    {{ PHPUNIT }}->setCurrentDataSet(null);\n"
-                    . "\n"
-                    . "    // mocked step handler response\n"
-                    . '}',
+                'expectedRenderedTestMethod' => <<<'EOD'
+                    #[StepName('Step Name')]
+                    public function test3()
+                    {
+                        if (self::hasException()) {
+                            return;
+                        }
+                        {{ PHPUNIT }}->setBasilStepName('Step Name');
+                        {{ PHPUNIT }}->setCurrentDataSet(null);
+
+                        // mocked step handler response
+                    }
+                    EOD,
                 'expectedTestMethodMetadata' => new Metadata([
+                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
+                        new ClassNameCollection([
+                            new ClassName(StepName::class),
+                        ])
+                    ),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
                         VariableNames::PHPUNIT_TEST_CASE,
                     ]),
@@ -197,6 +222,7 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                     ),
                 ]),
                 'expectedRenderedTestMethod' => <<<'EOD'
+                    #[StepName('Step Name')]
                     #[DataProvider('dataProvider4')]
                     public function test4($expected_value, $field_value)
                     {
@@ -237,6 +263,7 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                 'expectedTestMethodMetadata' => new Metadata([
                     Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
                         new ClassNameCollection([
+                            new ClassName(StepName::class),
                             new ClassName(DataProvider::class),
                             new ClassName(DataSet::class),
                         ])

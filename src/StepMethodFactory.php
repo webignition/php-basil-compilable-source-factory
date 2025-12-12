@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
 use webignition\BasilCompilableSourceFactory\Model\Attribute\DataProviderAttribute;
+use webignition\BasilCompilableSourceFactory\Model\Attribute\StepNameAttribute;
 use webignition\BasilCompilableSourceFactory\Model\Block\IfBlock\IfBlock;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\DataProviderMethodDefinition;
@@ -66,6 +67,10 @@ class StepMethodFactory
                 $this->stepHandler->handle($step),
             ]),
             $parameterNames
+        );
+
+        $testMethod = $testMethod->withAttribute(
+            new StepNameAttribute($this->singleQuotedStringEscaper->escape($stepName))
         );
 
         $hasDataProvider = count($parameterNames) > 0;

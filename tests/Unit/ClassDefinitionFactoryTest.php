@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
+use webignition\BaseBasilTestCase\Attribute\StepName;
 use webignition\BaseBasilTestCase\ClientManager;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\ClassDefinitionFactory;
@@ -197,6 +198,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                     'test.yml'
                 ),
                 'expectedRenderedClassDefinition' => <<< 'EOF'
+                    use webignition\BaseBasilTestCase\Attribute\StepName;
                     use webignition\BaseBasilTestCase\ClientManager;
                     
                     class GeneratedClassName
@@ -212,6 +214,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                             }
                         }
 
+                        #[StepName('step one')]
                         public function test1()
                         {
                             if (self::hasException()) {
@@ -227,6 +230,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                         new ClassNameCollection([
                             new ClassName(ClientManager::class),
                             new ClassName(\Throwable::class),
+                            new ClassName(StepName::class),
                         ])
                     ),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
@@ -253,6 +257,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                     'test.yml'
                 ),
                 'expectedRenderedClassDefinition' => <<< 'EOF'
+                    use webignition\BaseBasilTestCase\Attribute\StepName;
                     use webignition\BaseBasilTestCase\ClientManager;
                     
                     class GeneratedClassName
@@ -268,6 +273,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                             }
                         }
 
+                        #[StepName('step one')]
                         public function test1()
                         {
                             if (self::hasException()) {
@@ -277,6 +283,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                             {{ PHPUNIT }}->setCurrentDataSet(null);
                         }
 
+                        #[StepName('step two')]
                         public function test2()
                         {
                             if (self::hasException()) {
@@ -292,6 +299,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                         new ClassNameCollection([
                             new ClassName(ClientManager::class),
                             new ClassName(\Throwable::class),
+                            new ClassName(StepName::class),
                         ])
                     ),
                     Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
