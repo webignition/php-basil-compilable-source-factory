@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Parser\AssertionParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\SymfonyDomCrawlerNavigator\Exception\InvalidLocatorException;
@@ -25,8 +25,8 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                 InvalidLocatorException::class,
             ],
             variableNames: [
-                VariableNames::PHPUNIT_TEST_CASE,
-                VariableNames::DOM_CRAWLER_NAVIGATOR,
+                VariableName::PHPUNIT_TEST_CASE,
+                VariableName::DOM_CRAWLER_NAVIGATOR,
             ],
         );
 
