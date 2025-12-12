@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Parser\ActionParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
 
@@ -33,8 +33,8 @@ trait CreateFromSubmitActionDataProviderTrait
                         ElementIdentifier::class,
                     ],
                     variableNames: [
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::PHPUNIT_TEST_CASE,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],

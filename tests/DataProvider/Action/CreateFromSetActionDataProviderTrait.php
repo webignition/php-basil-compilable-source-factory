@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Parser\ActionParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
 
@@ -33,9 +33,9 @@ trait CreateFromSetActionDataProviderTrait
                         ElementIdentifier::class,
                     ],
                     variableNames: [
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
-                        VariableNames::PHPUNIT_TEST_CASE
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::WEBDRIVER_ELEMENT_MUTATOR,
+                        VariableName::PHPUNIT_TEST_CASE
                     ],
                 ),
             ],
@@ -59,10 +59,10 @@ trait CreateFromSetActionDataProviderTrait
                         ElementIdentifier::class,
                     ],
                     variableNames: [
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
-                        VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
-                        VariableNames::PHPUNIT_TEST_CASE
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::WEBDRIVER_ELEMENT_MUTATOR,
+                        VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
+                        VariableName::PHPUNIT_TEST_CASE
                     ],
                 ),
             ],
@@ -86,9 +86,9 @@ trait CreateFromSetActionDataProviderTrait
                         ElementIdentifier::class,
                     ],
                     variableNames: [
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
-                        VariableNames::PHPUNIT_TEST_CASE
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::WEBDRIVER_ELEMENT_MUTATOR,
+                        VariableName::PHPUNIT_TEST_CASE
                     ],
                 ),
             ],
@@ -112,10 +112,10 @@ trait CreateFromSetActionDataProviderTrait
                         ElementIdentifier::class,
                     ],
                     variableNames: [
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
-                        VariableNames::PANTHER_CLIENT,
-                        VariableNames::PHPUNIT_TEST_CASE,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::WEBDRIVER_ELEMENT_MUTATOR,
+                        VariableName::PANTHER_CLIENT,
+                        VariableName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],
@@ -133,10 +133,10 @@ trait CreateFromSetActionDataProviderTrait
                         ElementIdentifier::class,
                     ],
                     variableNames: [
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
-                        VariableNames::PANTHER_CLIENT,
-                        VariableNames::PHPUNIT_TEST_CASE,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::WEBDRIVER_ELEMENT_MUTATOR,
+                        VariableName::PANTHER_CLIENT,
+                        VariableName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],
@@ -154,10 +154,10 @@ trait CreateFromSetActionDataProviderTrait
                         ElementIdentifier::class,
                     ],
                     variableNames: [
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
-                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
-                        VariableNames::PHPUNIT_TEST_CASE,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::WEBDRIVER_ELEMENT_MUTATOR,
+                        VariableName::ENVIRONMENT_VARIABLE_ARRAY,
+                        VariableName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],
@@ -175,10 +175,10 @@ trait CreateFromSetActionDataProviderTrait
                         ElementIdentifier::class,
                     ],
                     variableNames: [
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
-                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
-                        VariableNames::PHPUNIT_TEST_CASE,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::WEBDRIVER_ELEMENT_MUTATOR,
+                        VariableName::ENVIRONMENT_VARIABLE_ARRAY,
+                        VariableName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],
@@ -196,10 +196,10 @@ trait CreateFromSetActionDataProviderTrait
                         ElementIdentifier::class,
                     ],
                     variableNames: [
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
-                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
-                        VariableNames::PHPUNIT_TEST_CASE,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::WEBDRIVER_ELEMENT_MUTATOR,
+                        VariableName::ENVIRONMENT_VARIABLE_ARRAY,
+                        VariableName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],
@@ -220,9 +220,9 @@ trait CreateFromSetActionDataProviderTrait
                         ElementIdentifier::class,
                     ],
                     variableNames: [
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
-                        VariableNames::PHPUNIT_TEST_CASE
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::WEBDRIVER_ELEMENT_MUTATOR,
+                        VariableName::PHPUNIT_TEST_CASE
                     ],
                 ),
             ],
@@ -240,9 +240,9 @@ trait CreateFromSetActionDataProviderTrait
                         ElementIdentifier::class,
                     ],
                     variableNames: [
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::WEBDRIVER_ELEMENT_MUTATOR,
-                        VariableNames::PHPUNIT_TEST_CASE
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::WEBDRIVER_ELEMENT_MUTATOR,
+                        VariableName::PHPUNIT_TEST_CASE
                     ],
                 ),
             ],

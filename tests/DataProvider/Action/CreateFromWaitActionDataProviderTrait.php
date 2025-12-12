@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Parser\ActionParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
 
@@ -38,8 +38,8 @@ trait CreateFromWaitActionDataProviderTrait
                         ElementIdentifier::class,
                     ],
                     variableNames: [
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
                     ],
                 ),
             ],
@@ -60,8 +60,8 @@ trait CreateFromWaitActionDataProviderTrait
                         ElementIdentifier::class,
                     ],
                     variableNames: [
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
                     ],
                 ),
             ],
@@ -79,8 +79,8 @@ trait CreateFromWaitActionDataProviderTrait
                         ElementIdentifier::class,
                     ],
                     variableNames: [
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
-                        VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
                     ],
                 ),
             ],
@@ -98,7 +98,7 @@ trait CreateFromWaitActionDataProviderTrait
                         ElementIdentifier::class,
                     ],
                     variableNames: [
-                        VariableNames::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
                     ],
                 ),
             ],
@@ -113,7 +113,7 @@ trait CreateFromWaitActionDataProviderTrait
                     . '})() ?? 0)) * 1000);',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::PANTHER_CLIENT,
+                        VariableName::PANTHER_CLIENT,
                     ],
                 ),
             ],
@@ -122,7 +122,7 @@ trait CreateFromWaitActionDataProviderTrait
                 'expectedRenderedSource' => 'usleep(((int) ({{ CLIENT }}->getTitle() ?? 0)) * 1000);',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::PANTHER_CLIENT,
+                        VariableName::PANTHER_CLIENT,
                     ],
                 ),
             ],
@@ -131,7 +131,7 @@ trait CreateFromWaitActionDataProviderTrait
                 'expectedRenderedSource' => 'usleep(((int) ({{ ENV }}[\'DURATION\'] ?? 0)) * 1000);',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
+                        VariableName::ENVIRONMENT_VARIABLE_ARRAY,
                     ],
                 ),
             ],
@@ -140,7 +140,7 @@ trait CreateFromWaitActionDataProviderTrait
                 'expectedRenderedSource' => 'usleep(((int) ({{ ENV }}[\'DURATION\'] ?? 3)) * 1000);',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
+                        VariableName::ENVIRONMENT_VARIABLE_ARRAY,
                     ],
                 ),
             ],
