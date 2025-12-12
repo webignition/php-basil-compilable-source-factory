@@ -197,10 +197,6 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                     ),
                 ]),
                 'expectedRenderedTestMethod' => <<<'EOD'
-                    /**
-                     * @param string $expected_value
-                     * @param string $field_value
-                     */
                     #[DataProvider('dataProvider4')]
                     public function test4($expected_value, $field_value)
                     {

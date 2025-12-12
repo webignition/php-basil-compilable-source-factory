@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Model;
 
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
-use webignition\BasilCompilableSourceFactory\Model\DocBlock\DocBlock;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ReturnExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
@@ -56,11 +55,6 @@ class DataProviderMethodDefinition extends MethodDefinition implements DataProvi
     public function getVisibility(): string
     {
         return 'public';
-    }
-
-    public function getDocBlock(): ?DocBlock
-    {
-        return null;
     }
 
     public function isStatic(): bool

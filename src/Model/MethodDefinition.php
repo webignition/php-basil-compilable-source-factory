@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model;
 
-use webignition\BasilCompilableSourceFactory\Model\Annotation\ParameterAnnotation;
 use webignition\BasilCompilableSourceFactory\Model\Attribute\AttributeCollection;
 use webignition\BasilCompilableSourceFactory\Model\Attribute\AttributeInterface;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
-use webignition\BasilCompilableSourceFactory\Model\DocBlock\DocBlock;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\Stubble\Resolvable\ResolvedTemplateMutatorResolvable;
@@ -20,8 +18,6 @@ class MethodDefinition implements MethodDefinitionInterface
     public const VISIBILITY_PUBLIC = 'public';
     public const VISIBILITY_PROTECTED = 'protected';
     public const VISIBILITY_PRIVATE = 'private';
-
-    private const string RENDER_TEMPLATE_DOCBLOCK_COMPONENT = '{{ docblock }}';
     private const string RENDER_TEMPLATE_ATTRIBUTE_COLLECTION_COMPONENT = '{{ attributes }}';
     private const string RENDER_TEMPLATE_SIGNATURE_AND_BODY_COMPONENT = <<<'EOD'
         {{ signature }}
@@ -40,8 +36,8 @@ class MethodDefinition implements MethodDefinitionInterface
      * @var string[]
      */
     private array $arguments;
+
     private bool $isStatic;
-    private ?DocBlock $docblock;
 
     private AttributeCollection $attributes;
 
@@ -56,7 +52,6 @@ class MethodDefinition implements MethodDefinitionInterface
         $this->body = $body;
         $this->arguments = $arguments;
         $this->isStatic = false;
-        $this->docblock = $this->createDocBlock($arguments);
         $this->attributes = new AttributeCollection();
     }
 
@@ -118,19 +113,6 @@ class MethodDefinition implements MethodDefinitionInterface
         return $this->visibility;
     }
 
-    public function getDocBlock(): ?DocBlock
-    {
-        return $this->docblock;
-    }
-
-    public function withDocBlock(DocBlock $docBlock): static
-    {
-        $new = clone $this;
-        $new->docblock = $docBlock;
-
-        return $new;
-    }
-
     public function withAttribute(AttributeInterface $attribute): static
     {
         $new = clone $this;
@@ -147,17 +129,12 @@ class MethodDefinition implements MethodDefinitionInterface
             $template = self::RENDER_TEMPLATE_ATTRIBUTE_COLLECTION_COMPONENT . "\n" . $template;
         }
 
-        if (null !== $this->docblock) {
-            $template = self::RENDER_TEMPLATE_DOCBLOCK_COMPONENT . "\n" . $template;
-        }
-
         return $template;
     }
 
     public function getContext(): array
     {
         return [
-            'docblock' => $this->docblock instanceof DocBlock ? $this->docblock : '',
             'attributes' => count($this->attributes) > 0 ? $this->attributes : '',
             'signature' => $this->createSignature(),
             'body' => new ResolvedTemplateMutatorResolvable(
@@ -201,22 +178,5 @@ class MethodDefinition implements MethodDefinitionInterface
         });
 
         return implode(', ', $arguments);
-    }
-
-    /**
-     * @param string[] $arguments
-     */
-    private function createDocBlock(array $arguments): ?DocBlock
-    {
-        if (0 === count($arguments)) {
-            return null;
-        }
-
-        $lines = [];
-        foreach ($arguments as $argument) {
-            $lines[] = new ParameterAnnotation('string', new VariableName($argument));
-        }
-
-        return new DocBlock($lines);
     }
 }
