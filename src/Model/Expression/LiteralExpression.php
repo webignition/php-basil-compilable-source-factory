@@ -26,6 +26,6 @@ class LiteralExpression implements \Stringable, ExpressionInterface
 
     public function getMetadata(): MetadataInterface
     {
-        return new Metadata();
+        return Metadata::create();
     }
 }

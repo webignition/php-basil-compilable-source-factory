@@ -9,7 +9,6 @@ use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\VariableNames;
-use webignition\DomElementIdentifier\ElementIdentifier;
 
 class Metadata implements MetadataInterface
 {
@@ -40,7 +39,6 @@ class Metadata implements MetadataInterface
     }
 
     /**
-     *
      * @param non-empty-string[] $classNames
      * @param VariableNames::*[] $variableNames
      */

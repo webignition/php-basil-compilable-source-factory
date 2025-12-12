@@ -33,7 +33,7 @@ class MethodArguments implements MethodArgumentsInterface, ResolvedTemplateMutat
      */
     public function __construct(array $arguments = [], string $format = self::FORMAT_INLINE)
     {
-        $this->metadata = new Metadata();
+        $this->metadata = Metadata::create();
         foreach ($arguments as $expression) {
             $this->metadata = $this->metadata->merge($expression->getMetadata());
         }

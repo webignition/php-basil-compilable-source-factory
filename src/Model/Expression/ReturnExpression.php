@@ -24,7 +24,7 @@ class ReturnExpression implements ExpressionInterface
     {
         return $this->expression instanceof ExpressionInterface
             ? $this->expression->getMetadata()
-            : new Metadata();
+            : Metadata::create();
     }
 
     public function getTemplate(): string

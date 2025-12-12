@@ -18,7 +18,7 @@ class VariableName implements \Stringable, ExpressionInterface, VariablePlacehol
     public function __construct(string $name)
     {
         $this->name = $name;
-        $this->metadata = new Metadata();
+        $this->metadata = Metadata::create();
     }
 
     public function __toString(): string

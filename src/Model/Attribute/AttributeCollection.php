@@ -33,7 +33,7 @@ class AttributeCollection implements HasMetadataInterface, ResolvableCollectionI
 
     public function getMetadata(): MetadataInterface
     {
-        $metadata = new Metadata();
+        $metadata = Metadata::create();
 
         foreach ($this->attributes as $attribute) {
             $metadata = $metadata->merge($attribute->getMetadata());

@@ -145,7 +145,7 @@ class Body implements BodyInterface, ResolvableCollectionInterface
 
     private function buildMetadata(): MetadataInterface
     {
-        $metadata = new Metadata();
+        $metadata = Metadata::create();
 
         foreach ($this->content as $item) {
             if ($item instanceof HasMetadataInterface) {

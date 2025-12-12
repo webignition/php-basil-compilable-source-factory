@@ -56,7 +56,7 @@ class ComparisonExpression implements ExpressionInterface
 
     public function getMetadata(): MetadataInterface
     {
-        $metadata = new Metadata();
+        $metadata = Metadata::create();
         $metadata = $metadata->merge($this->leftHandSide->getMetadata());
 
         return $metadata->merge($this->rightHandSide->getMetadata());

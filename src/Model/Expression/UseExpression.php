@@ -33,7 +33,7 @@ class UseExpression implements ExpressionInterface
 
     public function getMetadata(): MetadataInterface
     {
-        return new Metadata();
+        return Metadata::create();
     }
 
     private function renderClassName(): string

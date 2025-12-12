@@ -37,7 +37,7 @@ class ObjectTypeDeclarationCollection implements
 
     public function getMetadata(): MetadataInterface
     {
-        $metadata = new Metadata();
+        $metadata = Metadata::create();
 
         foreach ($this->declarations as $declaration) {
             $metadata = $metadata->merge($declaration->getMetadata());
