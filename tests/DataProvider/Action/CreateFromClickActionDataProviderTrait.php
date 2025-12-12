@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
-use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSourceFactory\Model\ClassName;
-use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Parser\ActionParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
@@ -22,17 +18,15 @@ trait CreateFromClickActionDataProviderTrait
     {
         $actionParser = ActionParser::create();
 
-        $expectedMetadata = new Metadata([
-            Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                new ClassNameCollection([
-                    new ClassName(ElementIdentifier::class),
-                ])
-            ),
-            Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+        $expectedMetadata = Metadata::create(
+            classNames: [
+                ElementIdentifier::class
+            ],
+            variableNames: [
                 VariableNames::DOM_CRAWLER_NAVIGATOR,
                 VariableNames::PHPUNIT_TEST_CASE,
-            ]),
-        ]);
+            ],
+        );
 
         return [
             'interaction action (click), element identifier' => [

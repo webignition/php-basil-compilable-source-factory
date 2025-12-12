@@ -23,7 +23,7 @@ class MethodInvocationTest extends AbstractResolvableTestCase
 
         $invocation = new MethodInvocation($methodName);
         self::assertSame($methodName, $invocation->getCall());
-        self::assertEquals(new Metadata(), $invocation->getMetadata());
+        self::assertEquals(Metadata::create(), $invocation->getMetadata());
     }
 
     public function testCreateWithArgumentsWithMetadata(): void

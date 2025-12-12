@@ -10,7 +10,6 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
@@ -44,26 +43,24 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
      */
     public static function createDataProvider(): array
     {
+        $expectedMetadata = Metadata::create(
+            variableNames: [
+                VariableNames::PHPUNIT_TEST_CASE,
+            ],
+        );
+
         return [
             'no arguments, no failure message, assertTrue' => [
                 'assertionMethod' => 'assertTrue',
                 'arguments' => new MethodArguments(),
                 'expectedRenderedInvocation' => '{{ PHPUNIT }}->assertTrue()',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
+                'expectedMetadata' => $expectedMetadata,
             ],
             'no arguments, no failure message, assertFalse' => [
                 'assertionMethod' => 'assertFalse',
                 'arguments' => new MethodArguments(),
                 'expectedRenderedInvocation' => '{{ PHPUNIT }}->assertFalse()',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
+                'expectedMetadata' => $expectedMetadata,
             ],
             'has arguments, no failure message, assertEquals' => [
                 'assertionMethod' => 'assertEquals',
@@ -75,11 +72,7 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
                     . '    100,' . "\n"
                     . '    \'string\'' . "\n"
                     . ')',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
+                'expectedMetadata' => $expectedMetadata,
             ],
             'has arguments, has failure message, assertNotEquals' => [
                 'assertionMethod' => 'assertNotEquals',
@@ -91,11 +84,7 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
                     . '    100,' . "\n"
                     . '    \'string\'' . "\n"
                     . ')',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
+                'expectedMetadata' => $expectedMetadata,
             ],
             'has arguments, has failure message containing quotes, assertNotEquals' => [
                 'assertionMethod' => 'assertNotEquals',
@@ -107,11 +96,7 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
                     . '    100,' . "\n"
                     . '    \'string\'' . "\n"
                     . ')',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
+                'expectedMetadata' => $expectedMetadata,
             ],
         ];
     }

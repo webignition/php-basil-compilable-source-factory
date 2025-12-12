@@ -4,11 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
-use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSourceFactory\Model\ClassName;
-use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Parser\ActionParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
@@ -26,7 +22,7 @@ trait CreateFromWaitActionDataProviderTrait
             'wait action, literal' => [
                 'action' => $actionParser->parse('wait 30'),
                 'expectedRenderedSource' => 'usleep(((int) ("30" ?? 0)) * 1000);',
-                'expectedMetadata' => new Metadata(),
+                'expectedMetadata' => Metadata::create(),
             ],
             'wait action, element value' => [
                 'action' => $actionParser->parse('wait $".duration-selector"'),
@@ -37,17 +33,15 @@ trait CreateFromWaitActionDataProviderTrait
                     . "\n"
                     . '    return {{ INSPECTOR }}->getValue($element);' . "\n"
                     . '})() ?? 0)) * 1000);',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ElementIdentifier::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => Metadata::create(
+                    classNames: [
+                        ElementIdentifier::class,
+                    ],
+                    variableNames: [
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'wait action, descendant element value' => [
                 'action' => $actionParser->parse('wait $".parent" >> $".child"'),
@@ -61,17 +55,15 @@ trait CreateFromWaitActionDataProviderTrait
                     . "\n"
                     . '    return {{ INSPECTOR }}->getValue($element);' . "\n"
                     . '})() ?? 0)) * 1000);',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ElementIdentifier::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => Metadata::create(
+                    classNames: [
+                        ElementIdentifier::class,
+                    ],
+                    variableNames: [
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'wait action, single-character CSS selector element value' => [
                 'action' => $actionParser->parse('wait $"a"'),
@@ -82,17 +74,15 @@ trait CreateFromWaitActionDataProviderTrait
                     . "\n"
                     . '    return {{ INSPECTOR }}->getValue($element);' . "\n"
                     . '})() ?? 0)) * 1000);',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ElementIdentifier::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => Metadata::create(
+                    classNames: [
+                        ElementIdentifier::class,
+                    ],
+                    variableNames: [
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
                         VariableNames::WEBDRIVER_ELEMENT_INSPECTOR,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'wait action, attribute value' => [
                 'action' => $actionParser->parse('wait $".duration-selector".attribute_name'),
@@ -103,16 +93,14 @@ trait CreateFromWaitActionDataProviderTrait
                     . "\n"
                     . '    return $element->getAttribute(\'attribute_name\');' . "\n"
                     . '})() ?? 0)) * 1000);',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ElementIdentifier::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => Metadata::create(
+                    classNames: [
+                        ElementIdentifier::class,
+                    ],
+                    variableNames: [
                         VariableNames::DOM_CRAWLER_NAVIGATOR,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'wait action, browser property' => [
                 'action' => $actionParser->parse('wait $browser.size'),
@@ -123,43 +111,43 @@ trait CreateFromWaitActionDataProviderTrait
                     . '    return (string) ($webDriverDimension->getWidth()) . \'x\' . '
                     . '(string) ($webDriverDimension->getHeight());' . "\n"
                     . '})() ?? 0)) * 1000);',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => Metadata::create(
+                    variableNames: [
                         VariableNames::PANTHER_CLIENT,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'wait action, page property' => [
                 'action' => $actionParser->parse('wait $page.title'),
                 'expectedRenderedSource' => 'usleep(((int) ({{ CLIENT }}->getTitle() ?? 0)) * 1000);',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => Metadata::create(
+                    variableNames: [
                         VariableNames::PANTHER_CLIENT,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'wait action, environment value' => [
                 'action' => $actionParser->parse('wait $env.DURATION'),
                 'expectedRenderedSource' => 'usleep(((int) ({{ ENV }}[\'DURATION\'] ?? 0)) * 1000);',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => Metadata::create(
+                    variableNames: [
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'wait action, environment value with default' => [
                 'action' => $actionParser->parse('wait $env.DURATION|"3"'),
                 'expectedRenderedSource' => 'usleep(((int) ({{ ENV }}[\'DURATION\'] ?? 3)) * 1000);',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => Metadata::create(
+                    variableNames: [
                         VariableNames::ENVIRONMENT_VARIABLE_ARRAY,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'wait action, data parameter' => [
                 'action' => $actionParser->parse('wait $data.key'),
                 'expectedRenderedSource' => 'usleep(((int) ($key ?? 0)) * 1000);',
-                'expectedMetadata' => new Metadata(),
+                'expectedMetadata' => Metadata::create(),
             ],
         ];
     }

@@ -7,7 +7,6 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Step;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StatementBlockFactory;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Model\Action\ActionInterface;
@@ -92,12 +91,12 @@ class StatementBlockFactoryTest extends AbstractResolvableTestCase
                     . '{{ PHPUNIT }}->handledStatements[] = {{ ACTION_FACTORY }}->createFromJson(\'{' . "\n"
                     . '    "serialised": "click action"' . "\n"
                     . '}\');',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => Metadata::create(
+                    variableNames: [
                         VariableNames::ACTION_FACTORY,
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'exists assertion' => [
                 'statement' => $existsAssertion,
@@ -105,12 +104,12 @@ class StatementBlockFactoryTest extends AbstractResolvableTestCase
                     . '{{ PHPUNIT }}->handledStatements[] = {{ ASSERTION_FACTORY }}->createFromJson(\'{' . "\n"
                     . '    "serialised": "exists assertion"' . "\n"
                     . '}\');',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => Metadata::create(
+                    variableNames: [
                         VariableNames::ASSERTION_FACTORY,
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'derived exists assertion' => [
                 'statement' => $derivedElementExistsAssertion,
@@ -118,12 +117,12 @@ class StatementBlockFactoryTest extends AbstractResolvableTestCase
                     . '{{ PHPUNIT }}->handledStatements[] = {{ ASSERTION_FACTORY }}->createFromJson(\'{' . "\n"
                     . '    "serialised": "derived exists assertion"' . "\n"
                     . '}\');',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => Metadata::create(
+                    variableNames: [
                         VariableNames::ASSERTION_FACTORY,
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
         ];
     }

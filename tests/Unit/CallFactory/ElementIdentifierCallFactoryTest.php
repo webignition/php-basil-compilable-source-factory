@@ -7,9 +7,6 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\CallFactory\ElementIdentifierCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
-use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
-use webignition\BasilCompilableSourceFactory\Model\ClassName;
-use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ReturnExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
@@ -41,13 +38,7 @@ class ElementIdentifierCallFactoryTest extends TestCase
         );
 
         $this->assertEquals(
-            new Metadata([
-                Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                    new ClassNameCollection([
-                        new ClassName(ElementIdentifier::class),
-                    ])
-                )
-            ]),
+            Metadata::create(classNames: [ElementIdentifier::class]),
             $constructorExpression->getMetadata()
         );
 

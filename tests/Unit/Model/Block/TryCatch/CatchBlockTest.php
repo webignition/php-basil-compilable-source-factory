@@ -5,11 +5,9 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Block\TryCatch;
 
 use PHPUnit\Framework\TestCase;
-use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\CatchBlock;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
-use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CatchExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
@@ -21,7 +19,6 @@ use webignition\BasilCompilableSourceFactory\Model\StaticObject;
 use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclaration;
 use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclarationCollection;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 
@@ -50,17 +47,15 @@ class CatchBlockTest extends AbstractResolvableTestCase
             $body
         );
 
-        $expectedMetadata = new Metadata([
-            Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                new ClassNameCollection([
-                    new ClassName(\RuntimeException::class),
-                    new ClassName(\Exception::class),
-                ])
-            ),
-            Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+        $expectedMetadata = Metadata::create(
+            classNames: [
+                \RuntimeException::class,
+                \Exception::class,
+            ],
+            variableNames: [
                 VariableNames::ACTION_FACTORY,
-            ]),
-        ]);
+            ]
+        );
 
         $this->assertEquals($expectedMetadata, $catchBlock->getMetadata());
     }

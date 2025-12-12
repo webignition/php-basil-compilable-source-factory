@@ -56,19 +56,19 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
             'empty, inline' => [
                 'arguments' => [],
                 'format' => MethodArgumentsInterface::FORMAT_INLINE,
-                'expectedMetadata' => new Metadata(),
+                'expectedMetadata' => Metadata::create(),
             ],
             'empty, stacked' => [
                 'arguments' => [],
                 'format' => MethodArgumentsInterface::FORMAT_STACKED,
-                'expectedMetadata' => new Metadata(),
+                'expectedMetadata' => Metadata::create(),
             ],
             'single argument' => [
                 'arguments' => [
                     new LiteralExpression('1'),
                 ],
                 'format' => MethodArgumentsInterface::FORMAT_INLINE,
-                'expectedMetadata' => new Metadata(),
+                'expectedMetadata' => Metadata::create(),
             ],
             'multiple arguments' => [
                 'arguments' => [
@@ -77,7 +77,7 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                     new LiteralExpression('"double-quoted value"'),
                 ],
                 'format' => MethodArgumentsInterface::FORMAT_INLINE,
-                'expectedMetadata' => new Metadata(),
+                'expectedMetadata' => Metadata::create(),
             ],
             'has metadata' => [
                 'arguments' => [

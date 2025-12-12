@@ -8,16 +8,12 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BaseBasilTestCase\Attribute\StepName;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
-use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
-use webignition\BasilCompilableSourceFactory\Model\ClassName;
-use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinitionInterface;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\StepMethodFactory;
 use webignition\BasilCompilableSourceFactory\VariableNames;
@@ -79,16 +75,14 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                         {{ PHPUNIT }}->setCurrentDataSet(null);
                     }
                     EOD,
-                'expectedTestMethodMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(StepName::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedTestMethodMetadata' => Metadata::create(
+                    classNames: [
+                        StepName::class,
+                    ],
+                    variableNames: [
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'empty test, step name contains single quotes' => [
                 'index' => 2,
@@ -106,16 +100,14 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                         {{ PHPUNIT }}->setCurrentDataSet(null);
                     }
                     EOD,
-                'expectedTestMethodMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(StepName::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedTestMethodMetadata' => Metadata::create(
+                    classNames: [
+                        StepName::class,
+                    ],
+                    variableNames: [
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'non-empty step' => [
                 'index' => 3,
@@ -142,16 +134,14 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                         // mocked step handler response
                     }
                     EOD,
-                'expectedTestMethodMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(StepName::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedTestMethodMetadata' => Metadata::create(
+                    classNames: [
+                        StepName::class,
+                    ],
+                    variableNames: [
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
         ];
     }
@@ -260,18 +250,16 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                         ];
                     }
                     EOD,
-                'expectedTestMethodMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(StepName::class),
-                            new ClassName(DataProvider::class),
-                            new ClassName(DataSet::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedTestMethodMetadata' => Metadata::create(
+                    classNames: [
+                        StepName::class,
+                        DataProvider::class,
+                        DataSet::class,
+                    ],
+                    variableNames: [
                         VariableNames::PHPUNIT_TEST_CASE,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
         ];
     }
@@ -335,6 +323,6 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
         $this->assertSame('array', $testMethod->getReturnType());
         $this->assertFalse($testMethod->isStatic());
         $this->assertSame('public', $testMethod->getVisibility());
-        $this->assertEquals(new Metadata(), $testMethod->getMetadata());
+        $this->assertEquals(Metadata::create(), $testMethod->getMetadata());
     }
 }

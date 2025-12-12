@@ -11,7 +11,6 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 
@@ -44,7 +43,7 @@ class ComparisonExpressionTest extends AbstractResolvableTestCase
                 'leftHandSide' => new LiteralExpression('5'),
                 'rightHandSide' => new LiteralExpression('6'),
                 'comparison' => '===',
-                'expectedMetadata' => new Metadata(),
+                'expectedMetadata' => Metadata::create(),
             ],
             'has metadata' => [
                 'leftHandSide' => new ObjectMethodInvocation(
@@ -53,11 +52,11 @@ class ComparisonExpressionTest extends AbstractResolvableTestCase
                 ),
                 'rightHandSide' => new LiteralExpression('literal'),
                 'comparison' => '!==',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        'ACTION_FACTORY',
-                    ])
-                ]),
+                'expectedMetadata' => Metadata::create(
+                    variableNames: [
+                        VariableNames::ACTION_FACTORY,
+                    ]
+                ),
             ],
         ];
     }

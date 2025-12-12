@@ -34,7 +34,7 @@ class ObjectTypeDeclarationCollectionTest extends AbstractResolvableTestCase
         return [
             'empty' => [
                 'collection' => new ObjectTypeDeclarationCollection([]),
-                'expectedMetadata' => new Metadata(),
+                'expectedMetadata' => Metadata::create(),
             ],
             'non-empty' => [
                 'collection' => new ObjectTypeDeclarationCollection([

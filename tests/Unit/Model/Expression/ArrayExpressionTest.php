@@ -12,7 +12,6 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
@@ -35,7 +34,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
         return [
             'empty' => [
                 'expression' => new ArrayExpression([]),
-                'expectedMetadata' => new Metadata(),
+                'expectedMetadata' => Metadata::create(),
             ],
             'no metadata' => [
                 'expression' => new ArrayExpression([
@@ -44,7 +43,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         new LiteralExpression('\'value1\'')
                     ),
                 ]),
-                'expectedMetadata' => new Metadata(),
+                'expectedMetadata' => Metadata::create(),
             ],
             'has metadata' => [
                 'expression' => new ArrayExpression([
@@ -56,11 +55,11 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         )
                     ),
                 ]),
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => Metadata::create(
+                    variableNames: [
                         VariableNames::ACTION_FACTORY,
-                    ])
-                ]),
+                    ]
+                ),
             ],
         ];
     }

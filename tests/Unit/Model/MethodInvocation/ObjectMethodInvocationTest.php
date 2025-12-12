@@ -93,7 +93,7 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
                 'object' => new VariableName('object'),
                 'methodName' => 'method',
                 'arguments' => new MethodArguments(),
-                'expectedMetadata' => new Metadata(),
+                'expectedMetadata' => Metadata::create(),
             ],
         ];
     }

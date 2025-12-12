@@ -16,7 +16,7 @@ class UseExpressionTest extends AbstractResolvableTestCase
     {
         $expression = new UseExpression(new ClassName(UseExpressionTest::class));
 
-        $this->assertEquals(new Metadata(), $expression->getMetadata());
+        $this->assertEquals(Metadata::create(), $expression->getMetadata());
     }
 
     /**

@@ -7,7 +7,6 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\StatementFactoryCallFactory;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
@@ -58,11 +57,11 @@ class StatementFactoryCallFactoryTest extends AbstractResolvableTestCase
                     . '    "type": "click",' . "\n"
                     . '    "arguments": "$\\\".selector\\\""' . "\n"
                     . '}\')',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => Metadata::create(
+                    variableNames: [
                         VariableNames::ACTION_FACTORY,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'exists assertion' => [
                 'statement' => $assertionParser->parse('$".selector" exists'),
@@ -72,11 +71,11 @@ class StatementFactoryCallFactoryTest extends AbstractResolvableTestCase
                     . '    "identifier": "$\\\".selector\\\"",' . "\n"
                     . '    "operator": "exists"' . "\n"
                     . '}\')',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => Metadata::create(
+                    variableNames: [
                         VariableNames::ASSERTION_FACTORY,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'derived exists assertion' => [
                 'statement' => new DerivedValueOperationAssertion(
@@ -98,11 +97,11 @@ class StatementFactoryCallFactoryTest extends AbstractResolvableTestCase
                     . '        "arguments": "$\\\".selector\\\""' . "\n"
                     . '    }' . "\n"
                     . '}\')',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => Metadata::create(
+                    variableNames: [
                         VariableNames::ASSERTION_FACTORY,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
         ];
     }

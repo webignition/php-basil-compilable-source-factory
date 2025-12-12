@@ -21,7 +21,6 @@ use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethod
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 
@@ -59,7 +58,7 @@ class ClassDefinitionTest extends AbstractResolvableTestCase
                     new ClassSignature('className'),
                     new ClassBody([])
                 ),
-                'expectedMetadata' => new Metadata(),
+                'expectedMetadata' => Metadata::create(),
             ],
             'methods without metadata' => [
                 'classDefinition' => new ClassDefinition(
@@ -71,7 +70,7 @@ class ClassDefinitionTest extends AbstractResolvableTestCase
                         ])),
                     ])
                 ),
-                'expectedMetadata' => new Metadata(),
+                'expectedMetadata' => Metadata::create(),
             ],
             'methods with metadata' => [
                 'classDefinition' => new ClassDefinition(
@@ -93,11 +92,11 @@ class ClassDefinitionTest extends AbstractResolvableTestCase
                         ])),
                     ])
                 ),
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => Metadata::create(
+                    variableNames: [
                         VariableNames::ACTION_FACTORY,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
         ];
     }

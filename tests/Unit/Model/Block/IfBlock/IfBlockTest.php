@@ -4,11 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Block\IfBlock;
 
-use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\Block\IfBlock\IfBlock;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
-use webignition\BasilCompilableSourceFactory\Model\ClassName;
-use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
@@ -19,7 +16,6 @@ use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\StaticObject
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
 
@@ -50,17 +46,15 @@ class IfBlockTest extends AbstractResolvableTestCase
 
         $ifBlock = new IfBlock($expression, $body);
 
-        $expectedMetadata = new Metadata([
-            Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                new ClassNameCollection([
-                    new ClassName(\RuntimeException::class),
-                ])
-            ),
-            Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+        $expectedMetadata = Metadata::create(
+            classNames: [
+                \RuntimeException::class,
+            ],
+            variableNames: [
                 VariableNames::ACTION_FACTORY,
                 VariableNames::ASSERTION_FACTORY,
-            ]),
-        ]);
+            ]
+        );
 
         $this->assertEquals($expectedMetadata, $ifBlock->getMetadata());
     }

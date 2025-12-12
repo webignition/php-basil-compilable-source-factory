@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
-use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
@@ -34,27 +33,23 @@ class StaticObjectTest extends TestCase
         return [
             'string reference' => [
                 'object' => 'parent',
-                'expectedMetadata' => new Metadata(),
+                'expectedMetadata' => Metadata::create(),
             ],
             'global classname' => [
                 'object' => \stdClass::class,
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(\stdClass::class),
-                        ])
-                    ),
-                ]),
+                'expectedMetadata' => Metadata::create(
+                    classNames: [
+                        \stdClass::class,
+                    ],
+                ),
             ],
             'namespaced classname' => [
                 'object' => ClassName::class,
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ClassName::class),
-                        ])
-                    ),
-                ]),
+                'expectedMetadata' => Metadata::create(
+                    classNames: [
+                        ClassName::class,
+                    ],
+                ),
             ],
         ];
     }

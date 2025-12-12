@@ -45,7 +45,7 @@ class StatementTest extends AbstractResolvableTestCase
             ],
             'method invocation' => [
                 'expression' => new MethodInvocation('methodName'),
-                'expectedMetadata' => new Metadata(),
+                'expectedMetadata' => Metadata::create(),
             ],
             'object method invocation' => [
                 'expression' => new ObjectMethodInvocation(

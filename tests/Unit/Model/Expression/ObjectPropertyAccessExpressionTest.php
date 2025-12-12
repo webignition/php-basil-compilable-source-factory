@@ -8,7 +8,6 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ObjectPropertyAcce
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\VariablePlaceholderInterface;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
@@ -40,16 +39,16 @@ class ObjectPropertyAccessExpressionTest extends AbstractResolvableTestCase
             'has resolvable placeholder' => [
                 'objectPlaceholder' => new VariableDependency(VariableNames::ACTION_FACTORY),
                 'property' => 'propertyName',
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => Metadata::create(
+                    variableNames: [
                         VariableNames::ACTION_FACTORY,
-                    ]),
-                ]),
+                    ]
+                ),
             ],
             'has resolving placeholder' => [
                 'objectPlaceholder' => new VariableName('object'),
                 'property' => 'propertyName',
-                'expectedMetadata' => new Metadata(),
+                'expectedMetadata' => Metadata::create(),
             ],
         ];
     }

@@ -7,9 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Attribute;
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Model\Attribute\Attribute;
 use webignition\BasilCompilableSourceFactory\Model\Attribute\AttributeCollection;
-use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
-use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
@@ -29,29 +27,27 @@ class CollectionTest extends AbstractResolvableTestCase
         return [
             'empty collection' => [
                 'collection' => new AttributeCollection(),
-                'expected' => new Metadata(),
+                'expected' => Metadata::create(),
             ],
             'single item' => [
                 'collection' => new AttributeCollection()
                     ->add(new Attribute(new ClassName(self::class))),
-                'expected' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([new ClassName(self::class)]),
-                    ),
-                ]),
+                'expected' => Metadata::create(
+                    classNames: [
+                        self::class,
+                    ],
+                ),
             ],
             'two items' => [
                 'collection' => new AttributeCollection()
                     ->add(new Attribute(new ClassName(self::class)))
                     ->add(new Attribute(new ClassName(AttributeCollection::class))),
-                'expected' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(self::class),
-                            new ClassName(AttributeCollection::class),
-                        ]),
-                    ),
-                ]),
+                'expected' => Metadata::create(
+                    classNames: [
+                        self::class,
+                        AttributeCollection::class,
+                    ],
+                ),
             ],
         ];
     }
