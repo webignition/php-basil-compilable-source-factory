@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression;
 
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
@@ -13,7 +14,6 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class AssignmentExpressionTest extends AbstractResolvableTestCase
 {
@@ -48,14 +48,14 @@ class AssignmentExpressionTest extends AbstractResolvableTestCase
             ],
             'has metadata' => [
                 'variable' => new ObjectMethodInvocation(
-                    new VariableDependency(VariableNames::ACTION_FACTORY),
+                    new VariableDependency(VariableName::ACTION_FACTORY),
                     'methodName'
                 ),
                 'value' => new LiteralExpression('literal'),
                 'operator' => '!==',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::ACTION_FACTORY,
+                        VariableName::ACTION_FACTORY,
                     ]
                 ),
             ],
@@ -86,7 +86,7 @@ class AssignmentExpressionTest extends AbstractResolvableTestCase
             'object property access and literal, assignment' => [
                 'expression' => new AssignmentExpression(
                     new ObjectPropertyAccessExpression(
-                        new VariableDependency(VariableNames::ACTION_FACTORY),
+                        new VariableDependency(VariableName::ACTION_FACTORY),
                         'propertyName'
                     ),
                     new LiteralExpression('value')

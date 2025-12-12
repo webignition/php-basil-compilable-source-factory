@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Metadata;
 
 use PHPUnit\Framework\TestCase;
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class MetadataTest extends TestCase
 {
@@ -18,7 +18,7 @@ class MetadataTest extends TestCase
      * @dataProvider createDataProvider
      *
      * @param non-empty-string[] $classNames
-     * @param VariableNames::*[] $variableNames
+     * @param VariableName::*[]  $variableNames
      */
     public function testCreate(
         array $classNames,
@@ -46,14 +46,14 @@ class MetadataTest extends TestCase
             ],
             'components set, correct types' => [
                 'classNames' => [ClassName::class],
-                'variableNames' => [VariableNames::ACTION_FACTORY],
+                'variableNames' => [VariableName::ACTION_FACTORY],
                 'expectedClassDependencies' => new ClassDependencyCollection(
                     new ClassNameCollection([
                         new ClassName(ClassName::class),
                     ])
                 ),
                 'expectedVariableDependencies' => new VariableDependencyCollection([
-                    VariableNames::ACTION_FACTORY,
+                    VariableName::ACTION_FACTORY,
                 ]),
             ],
         ];
@@ -66,8 +66,8 @@ class MetadataTest extends TestCase
                 ClassName::class,
             ],
             variableNames: [
-                VariableNames::ACTION_FACTORY,
-                VariableNames::ASSERTION_FACTORY,
+                VariableName::ACTION_FACTORY,
+                VariableName::ASSERTION_FACTORY,
             ],
         );
 
@@ -77,8 +77,8 @@ class MetadataTest extends TestCase
                 Metadata::class
             ],
             variableNames: [
-                VariableNames::ASSERTION_FACTORY,
-                VariableNames::DOM_CRAWLER_NAVIGATOR,
+                VariableName::ASSERTION_FACTORY,
+                VariableName::DOM_CRAWLER_NAVIGATOR,
             ],
         );
 
@@ -90,9 +90,9 @@ class MetadataTest extends TestCase
                 Metadata::class,
             ],
             variableNames: [
-                VariableNames::ACTION_FACTORY,
-                VariableNames::ASSERTION_FACTORY,
-                VariableNames::DOM_CRAWLER_NAVIGATOR,
+                VariableName::ACTION_FACTORY,
+                VariableName::ASSERTION_FACTORY,
+                VariableName::DOM_CRAWLER_NAVIGATOR,
             ],
         );
 

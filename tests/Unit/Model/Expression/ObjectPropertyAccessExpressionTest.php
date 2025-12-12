@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression;
 
+use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ObjectPropertyAccessExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
@@ -11,7 +12,6 @@ use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\VariablePlaceholderInterface;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class ObjectPropertyAccessExpressionTest extends AbstractResolvableTestCase
 {
@@ -37,11 +37,11 @@ class ObjectPropertyAccessExpressionTest extends AbstractResolvableTestCase
     {
         return [
             'has resolvable placeholder' => [
-                'objectPlaceholder' => new VariableDependency(VariableNames::ACTION_FACTORY),
+                'objectPlaceholder' => new VariableDependency(VariableNameEnum::ACTION_FACTORY),
                 'property' => 'propertyName',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::ACTION_FACTORY,
+                        VariableNameEnum::ACTION_FACTORY,
                     ]
                 ),
             ],
@@ -69,7 +69,7 @@ class ObjectPropertyAccessExpressionTest extends AbstractResolvableTestCase
         return [
             'has resolvable placeholder' => [
                 'expression' => new ObjectPropertyAccessExpression(
-                    new VariableDependency(VariableNames::ACTION_FACTORY),
+                    new VariableDependency(VariableNameEnum::ACTION_FACTORY),
                     'propertyName'
                 ),
                 'expectedString' => '{{ ACTION_FACTORY }}->propertyName',

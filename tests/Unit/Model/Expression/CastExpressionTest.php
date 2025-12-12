@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression;
 
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CastExpression;
@@ -18,7 +19,6 @@ use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\StaticObject
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class CastExpressionTest extends AbstractResolvableTestCase
 {
@@ -92,7 +92,7 @@ class CastExpressionTest extends AbstractResolvableTestCase
             'object property access expression as string' => [
                 'expression' => new CastExpression(
                     new ObjectPropertyAccessExpression(
-                        new VariableDependency(VariableNames::ACTION_FACTORY),
+                        new VariableDependency(VariableName::ACTION_FACTORY),
                         'property'
                     ),
                     'string'
@@ -109,7 +109,7 @@ class CastExpressionTest extends AbstractResolvableTestCase
             'object method invocation as string' => [
                 'expression' => new CastExpression(
                     new ObjectMethodInvocation(
-                        new VariableDependency(VariableNames::ACTION_FACTORY),
+                        new VariableDependency(VariableName::ACTION_FACTORY),
                         'methodName'
                     ),
                     'string'

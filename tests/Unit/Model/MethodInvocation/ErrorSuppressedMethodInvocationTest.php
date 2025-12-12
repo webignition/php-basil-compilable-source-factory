@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\MethodInvocation;
 
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ErrorSuppressedMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
@@ -11,7 +12,6 @@ use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\StaticObject
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class ErrorSuppressedMethodInvocationTest extends AbstractResolvableTestCase
 {
@@ -38,7 +38,7 @@ class ErrorSuppressedMethodInvocationTest extends AbstractResolvableTestCase
             'ObjectMethodInvocation' => [
                 'invocation' => new ErrorSuppressedMethodInvocation(
                     new ObjectMethodInvocation(
-                        new VariableDependency(VariableNames::ACTION_FACTORY),
+                        new VariableDependency(VariableName::ACTION_FACTORY),
                         'methodName'
                     )
                 ),

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression;
 
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayKey;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayPair;
@@ -13,7 +14,6 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class ArrayPairTest extends AbstractResolvableTestCase
 {
@@ -42,13 +42,13 @@ class ArrayPairTest extends AbstractResolvableTestCase
                 'pair' => new ArrayPair(
                     new ArrayKey(''),
                     new ObjectMethodInvocation(
-                        new VariableDependency(VariableNames::ACTION_FACTORY),
+                        new VariableDependency(VariableName::ACTION_FACTORY),
                         'methodName'
                     )
                 ),
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::ACTION_FACTORY,
+                        VariableName::ACTION_FACTORY,
                     ]
                 ),
             ],

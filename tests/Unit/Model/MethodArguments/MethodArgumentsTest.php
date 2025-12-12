@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\MethodArguments;
 
+use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
@@ -24,7 +25,6 @@ use webignition\BasilCompilableSourceFactory\Model\StaticObject;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class MethodArgumentsTest extends AbstractResolvableTestCase
 {
@@ -139,7 +139,7 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                 'arguments' => new MethodArguments(
                     [
                         new ObjectMethodInvocation(
-                            new VariableDependency('NAVIGATOR'),
+                            new VariableDependency(VariableNameEnum::DOM_CRAWLER_NAVIGATOR),
                             'find',
                             new MethodArguments([
                                 new StaticObjectMethodInvocation(
@@ -187,7 +187,7 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                     [
                         ArrayExpression::fromArray([
                             'name' => new ObjectMethodInvocation(
-                                new VariableDependency(VariableNames::ACTION_FACTORY),
+                                new VariableDependency(VariableNameEnum::ACTION_FACTORY),
                                 'dataName'
                             ),
                             'data' => [

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 
 use PHPUnit\Framework\TestCase;
+use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\ClassBody;
 use webignition\BasilCompilableSourceFactory\Model\ClassDefinition;
@@ -22,7 +23,6 @@ use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class ClassDefinitionTest extends AbstractResolvableTestCase
 {
@@ -79,7 +79,7 @@ class ClassDefinitionTest extends AbstractResolvableTestCase
                         new MethodDefinition('name', new Body([
                             new Statement(
                                 new ObjectMethodInvocation(
-                                    new VariableDependency(VariableNames::ACTION_FACTORY),
+                                    new VariableDependency(VariableNameEnum::ACTION_FACTORY),
                                     'methodName'
                                 )
                             ),
@@ -94,7 +94,7 @@ class ClassDefinitionTest extends AbstractResolvableTestCase
                 ),
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::ACTION_FACTORY,
+                        VariableNameEnum::ACTION_FACTORY,
                     ],
                 ),
             ],

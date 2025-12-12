@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Block\TryCatch;
 
 use PHPUnit\Framework\TestCase;
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\CatchBlock;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
@@ -20,7 +21,6 @@ use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDec
 use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclarationCollection;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class CatchBlockTest extends AbstractResolvableTestCase
 {
@@ -29,7 +29,7 @@ class CatchBlockTest extends AbstractResolvableTestCase
         $body = new Body([
             new Statement(
                 new AssignmentExpression(
-                    new VariableDependency(VariableNames::ACTION_FACTORY),
+                    new VariableDependency(VariableName::ACTION_FACTORY),
                     new StaticObjectMethodInvocation(
                         new StaticObject(\RuntimeException::class),
                         'staticMethodName'
@@ -53,7 +53,7 @@ class CatchBlockTest extends AbstractResolvableTestCase
                 \Exception::class,
             ],
             variableNames: [
-                VariableNames::ACTION_FACTORY,
+                VariableName::ACTION_FACTORY,
             ]
         );
 

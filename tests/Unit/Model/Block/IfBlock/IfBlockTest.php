@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Block\IfBlock;
 
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Block\IfBlock\IfBlock;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
@@ -17,7 +18,6 @@ use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class IfBlockTest extends AbstractResolvableTestCase
 {
@@ -25,7 +25,7 @@ class IfBlockTest extends AbstractResolvableTestCase
     {
         $expression = new ComparisonExpression(
             new ObjectMethodInvocation(
-                new VariableDependency(VariableNames::ACTION_FACTORY),
+                new VariableDependency(VariableName::ACTION_FACTORY),
                 'methodName'
             ),
             new LiteralExpression('value'),
@@ -35,7 +35,7 @@ class IfBlockTest extends AbstractResolvableTestCase
         $body = new Body([
             new Statement(
                 new AssignmentExpression(
-                    new VariableDependency(VariableNames::ASSERTION_FACTORY),
+                    new VariableDependency(VariableName::ASSERTION_FACTORY),
                     new StaticObjectMethodInvocation(
                         new StaticObject(\RuntimeException::class),
                         'staticMethodName'
@@ -51,8 +51,8 @@ class IfBlockTest extends AbstractResolvableTestCase
                 \RuntimeException::class,
             ],
             variableNames: [
-                VariableNames::ACTION_FACTORY,
-                VariableNames::ASSERTION_FACTORY,
+                VariableName::ACTION_FACTORY,
+                VariableName::ASSERTION_FACTORY,
             ]
         );
 

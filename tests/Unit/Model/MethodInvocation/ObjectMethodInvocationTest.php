@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\MethodInvocation;
 
+use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
@@ -18,7 +19,6 @@ use webignition\BasilCompilableSourceFactory\Model\StaticObject;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class ObjectMethodInvocationTest extends AbstractResolvableTestCase
 {
@@ -45,29 +45,29 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
     {
         return [
             'no arguments' => [
-                'object' => new VariableDependency(VariableNames::ACTION_FACTORY),
+                'object' => new VariableDependency(VariableNameEnum::ACTION_FACTORY),
                 'methodName' => 'method',
                 'arguments' => new MethodArguments(),
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::ACTION_FACTORY,
+                        VariableNameEnum::ACTION_FACTORY,
                     ],
                 ),
             ],
             'has arguments' => [
-                'object' => new VariableDependency(VariableNames::ACTION_FACTORY),
+                'object' => new VariableDependency(VariableNameEnum::ACTION_FACTORY),
                 'methodName' => 'method',
                 'arguments' => new MethodArguments([
                     new LiteralExpression('1'),
                 ]),
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNames::ACTION_FACTORY,
+                        VariableNameEnum::ACTION_FACTORY,
                     ],
                 ),
             ],
             'argument expressions contain additional metadata' => [
-                'object' => new VariableDependency(VariableNames::ACTION_FACTORY),
+                'object' => new VariableDependency(VariableNameEnum::ACTION_FACTORY),
                 'methodName' => 'method',
                 'arguments' => new MethodArguments([
                     new StaticObjectMethodInvocation(
@@ -80,7 +80,7 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
                         ClassName::class,
                     ],
                     variableNames: [
-                        VariableNames::ACTION_FACTORY,
+                        VariableNameEnum::ACTION_FACTORY,
                     ],
                 ),
             ],
@@ -109,14 +109,14 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
         return [
             'object and method name only' => [
                 'invocation' => new ObjectMethodInvocation(
-                    new VariableDependency(VariableNames::ACTION_FACTORY),
+                    new VariableDependency(VariableNameEnum::ACTION_FACTORY),
                     'methodName'
                 ),
                 'expectedString' => '{{ ACTION_FACTORY }}->methodName()',
             ],
             'has arguments, inline' => [
                 'invocation' => new ObjectMethodInvocation(
-                    new VariableDependency(VariableNames::ACTION_FACTORY),
+                    new VariableDependency(VariableNameEnum::ACTION_FACTORY),
                     'methodName',
                     new MethodArguments([
                         new LiteralExpression('1'),
@@ -127,7 +127,7 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
             ],
             'has arguments, stacked' => [
                 'invocation' => new ObjectMethodInvocation(
-                    new VariableDependency(VariableNames::ACTION_FACTORY),
+                    new VariableDependency(VariableNameEnum::ACTION_FACTORY),
                     'methodName',
                     new MethodArguments(
                         [
@@ -161,7 +161,7 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
             'object returned from object method call' => [
                 'invocation' => new ObjectMethodInvocation(
                     new ObjectMethodInvocation(
-                        new VariableDependency(VariableNames::ACTION_FACTORY),
+                        new VariableDependency(VariableNameEnum::ACTION_FACTORY),
                         'innerMethodName'
                     ),
                     'outerMethodName'

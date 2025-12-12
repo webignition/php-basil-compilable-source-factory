@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Body;
 
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Block\IfBlock\IfBlock;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\CatchBlock;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryBlock;
@@ -24,7 +25,6 @@ use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDec
 use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclarationCollection;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\ObjectReflector\ObjectReflector;
 
 class BodyTest extends AbstractResolvableTestCase
@@ -349,7 +349,7 @@ class BodyTest extends AbstractResolvableTestCase
 
     public function testCreateForSingleAssignmentStatement(): void
     {
-        $variable = new VariableDependency(VariableNames::ACTION_FACTORY);
+        $variable = new VariableDependency(VariableName::ACTION_FACTORY);
         $value = new LiteralExpression('"value"');
 
         $expectedBody = new Body([
