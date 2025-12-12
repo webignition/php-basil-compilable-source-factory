@@ -19,23 +19,18 @@ class Metadata implements MetadataInterface
     private VariableDependencyCollection $variableDependencies;
 
     /**
-     * @param array<mixed> $components
+     * @param non-empty-string[] $classNames
+     * @param VariableNames::*[] $variableNames
      */
-    public function __construct(array $components = [])
+    public function __construct(array $classNames = [], array $variableNames = [])
     {
-        $classDependencies = $components[self::KEY_CLASS_DEPENDENCIES] ?? new ClassDependencyCollection();
-        $classDependencies = $classDependencies instanceof ClassDependencyCollection
-            ? $classDependencies
-            : new ClassDependencyCollection();
+        $classNameObjects = [];
+        foreach ($classNames as $className) {
+            $classNameObjects[] = new ClassName($className);
+        }
 
-        $emptyVariableDependencies = new VariableDependencyCollection();
-        $variableDependencies = $components[self::KEY_VARIABLE_DEPENDENCIES] ?? $emptyVariableDependencies;
-        $variableDependencies = $variableDependencies instanceof VariableDependencyCollection
-            ? $variableDependencies
-            : $emptyVariableDependencies;
-
-        $this->classDependencies = $classDependencies;
-        $this->variableDependencies = $variableDependencies;
+        $this->classDependencies = new ClassDependencyCollection(new ClassNameCollection($classNameObjects));
+        $this->variableDependencies = new VariableDependencyCollection($variableNames);
     }
 
     /**

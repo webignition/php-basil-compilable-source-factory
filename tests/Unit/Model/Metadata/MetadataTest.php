@@ -17,14 +17,16 @@ class MetadataTest extends TestCase
     /**
      * @dataProvider createDataProvider
      *
-     * @param array<mixed> $components
+     * @param non-empty-string[] $classNames
+     * @param VariableNames::*[] $variableNames
      */
     public function testCreate(
-        array $components,
+        array $classNames,
+        array $variableNames,
         ClassDependencyCollection $expectedClassDependencies,
         VariableDependencyCollection $expectedVariableDependencies
     ): void {
-        $metadata = new Metadata($components);
+        $metadata = new Metadata($classNames, $variableNames);
 
         $this->assertEquals($expectedClassDependencies, $metadata->getClassDependencies());
         $this->assertEquals($expectedVariableDependencies, $metadata->getVariableDependencies());
@@ -37,29 +39,14 @@ class MetadataTest extends TestCase
     {
         return [
             'empty' => [
-                'components' => [],
-                'expectedClassDependencies' => new ClassDependencyCollection(),
-                'expectedVariableDependencies' => new VariableDependencyCollection(),
-            ],
-            'components set, incorrect types' => [
-                'components' => [
-                    Metadata::KEY_CLASS_DEPENDENCIES => 'string',
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => 'string',
-                ],
+                'classNames' => [],
+                'variableNames' => [],
                 'expectedClassDependencies' => new ClassDependencyCollection(),
                 'expectedVariableDependencies' => new VariableDependencyCollection(),
             ],
             'components set, correct types' => [
-                'components' => [
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ClassName::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                        VariableNames::ACTION_FACTORY,
-                    ]),
-                ],
+                'classNames' => [ClassName::class],
+                'variableNames' => [VariableNames::ACTION_FACTORY],
                 'expectedClassDependencies' => new ClassDependencyCollection(
                     new ClassNameCollection([
                         new ClassName(ClassName::class),
