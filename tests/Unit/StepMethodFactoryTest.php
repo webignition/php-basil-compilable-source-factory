@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BaseBasilTestCase\Attribute\StepName;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
@@ -16,7 +17,6 @@ use webignition\BasilCompilableSourceFactory\Model\MethodDefinitionInterface;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\StepMethodFactory;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Model\DataSet\DataSet;
 use webignition\BasilModels\Model\Step\StepInterface;
 use webignition\BasilModels\Parser\StepParser;
@@ -80,7 +80,7 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                         StepName::class,
                     ],
                     variableNames: [
-                        VariableNames::PHPUNIT_TEST_CASE,
+                        VariableName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],
@@ -105,7 +105,7 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                         StepName::class,
                     ],
                     variableNames: [
-                        VariableNames::PHPUNIT_TEST_CASE,
+                        VariableName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],
@@ -139,7 +139,7 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                         StepName::class,
                     ],
                     variableNames: [
-                        VariableNames::PHPUNIT_TEST_CASE,
+                        VariableName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],
@@ -257,7 +257,7 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                         DataSet::class,
                     ],
                     variableNames: [
-                        VariableNames::PHPUNIT_TEST_CASE,
+                        VariableName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],

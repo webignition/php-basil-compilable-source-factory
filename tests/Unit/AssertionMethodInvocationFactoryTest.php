@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
 {
@@ -45,7 +45,7 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
     {
         $expectedMetadata = new Metadata(
             variableNames: [
-                VariableNames::PHPUNIT_TEST_CASE,
+                VariableName::PHPUNIT_TEST_CASE,
             ],
         );
 
