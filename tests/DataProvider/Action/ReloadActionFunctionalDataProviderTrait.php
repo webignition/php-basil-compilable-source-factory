@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Parser\ActionParser;
 
 trait ReloadActionFunctionalDataProviderTrait
@@ -27,13 +27,13 @@ trait ReloadActionFunctionalDataProviderTrait
         $setupTeardownStatements = new Body([
             new Statement(
                 new ObjectMethodInvocation(
-                    new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
+                    new VariableDependency(VariableName::PHPUNIT_TEST_CASE),
                     'assertCount',
                     new MethodArguments(
                         $argumentFactory->create(
                             0,
                             new ObjectMethodInvocation(
-                                new VariableDependency(VariableNames::PANTHER_CRAWLER),
+                                new VariableDependency(VariableName::PANTHER_CRAWLER),
                                 'filter',
                                 new MethodArguments($argumentFactory->create('#hello'))
                             ),
@@ -49,13 +49,13 @@ trait ReloadActionFunctionalDataProviderTrait
             ),
             new Statement(
                 new ObjectMethodInvocation(
-                    new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
+                    new VariableDependency(VariableName::PHPUNIT_TEST_CASE),
                     'assertCount',
                     new MethodArguments(
                         $argumentFactory->create(
                             1,
                             new ObjectMethodInvocation(
-                                new VariableDependency(VariableNames::PANTHER_CRAWLER),
+                                new VariableDependency(VariableName::PANTHER_CRAWLER),
                                 'filter',
                                 new MethodArguments($argumentFactory->create('#hello'))
                             )
