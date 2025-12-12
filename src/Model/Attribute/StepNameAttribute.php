@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Attribute;
 
-use PHPUnit\Framework\Attributes\DataProvider;
+use webignition\BaseBasilTestCase\Attribute\StepName;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 
-class DataProviderAttribute extends Attribute implements AttributeInterface
+class StepNameAttribute extends Attribute implements AttributeInterface
 {
     public function __construct(string $stepName)
     {
-        parent::__construct(new ClassName(DataProvider::class), ["'" . $stepName . "'"]);
+        parent::__construct(new ClassName(StepName::class), ["'" . $stepName . "'"]);
     }
 }
