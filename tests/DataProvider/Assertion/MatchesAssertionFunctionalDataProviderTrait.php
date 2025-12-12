@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Parser\AssertionParser;
 
 trait MatchesAssertionFunctionalDataProviderTrait
@@ -30,7 +30,7 @@ trait MatchesAssertionFunctionalDataProviderTrait
                 'fixture' => '/empty.html',
                 'assertion' => $assertionParser->parse('$env.TEST1 matches "/^environment/"'),
                 'additionalVariableIdentifiers' => [
-                    VariableNames::ENVIRONMENT_VARIABLE_ARRAY => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
+                    VariableName::ENVIRONMENT_VARIABLE_ARRAY->value => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
                 ],
             ],
             'matches comparison, browser object examined value, scalar expected value' => [
@@ -53,7 +53,7 @@ trait MatchesAssertionFunctionalDataProviderTrait
                 'fixture' => '/assertions.html',
                 'assertion' => $assertionParser->parse('$".selector".data-environment-value matches $env.MATCHES'),
                 'additionalVariableIdentifiers' => [
-                    VariableNames::ENVIRONMENT_VARIABLE_ARRAY => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
+                    VariableName::ENVIRONMENT_VARIABLE_ARRAY->value => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
                 ],
             ],
         ];

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
+use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
-use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
+use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames as ResolvedNames;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Parser\ActionParser;
 
 trait SetActionFunctionalDataProviderTrait
@@ -134,7 +134,7 @@ trait SetActionFunctionalDataProviderTrait
                         ),
                     ]),
                     'additionalVariableIdentifiers' => [
-                        VariableNames::ENVIRONMENT_VARIABLE_ARRAY => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
+                        VariableNameEnum::ENVIRONMENT_VARIABLE_ARRAY->value => ResolvedNames::ENV_ARRAY_VARIABLE_NAME,
                     ],
                 ],
             ]

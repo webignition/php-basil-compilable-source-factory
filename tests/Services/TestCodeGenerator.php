@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\ClassDefinitionInterface;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\Stubble\Resolvable\Resolvable;
 
 class TestCodeGenerator
@@ -90,15 +90,15 @@ class TestCodeGenerator
         VariableDependencyCollection $variableDependencies
     ): array {
         $externalVariables = [
-            VariableNames::DOM_CRAWLER_NAVIGATOR => self::DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME,
-            VariableNames::ENVIRONMENT_VARIABLE_ARRAY => self::ENVIRONMENT_VARIABLE_ARRAY_VARIABLE_NAME,
-            VariableNames::PANTHER_CLIENT => self::PANTHER_CLIENT_VARIABLE_NAME,
-            VariableNames::PANTHER_CRAWLER => self::PANTHER_CRAWLER_VARIABLE_NAME,
-            VariableNames::PHPUNIT_TEST_CASE => self::PHPUNIT_TEST_CASE_VARIABLE_NAME,
-            VariableNames::WEBDRIVER_ELEMENT_INSPECTOR => self::WEBDRIVER_ELEMENT_INSPECTOR_VARIABLE_NAME,
-            VariableNames::WEBDRIVER_ELEMENT_MUTATOR => self::WEBDRIVER_ELEMENT_MUTATOR_VARIABLE_NAME,
-            VariableNames::ASSERTION_FACTORY => self::WEBDRIVER_ASSERTION_FACTORY_VARIABLE_NAME,
-            VariableNames::ACTION_FACTORY => self::WEBDRIVER_ACTION_FACTORY_VARIABLE_NAME,
+            VariableName::DOM_CRAWLER_NAVIGATOR->value => self::DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME,
+            VariableName::ENVIRONMENT_VARIABLE_ARRAY->value => self::ENVIRONMENT_VARIABLE_ARRAY_VARIABLE_NAME,
+            VariableName::PANTHER_CLIENT->value => self::PANTHER_CLIENT_VARIABLE_NAME,
+            VariableName::PANTHER_CRAWLER->value => self::PANTHER_CRAWLER_VARIABLE_NAME,
+            VariableName::PHPUNIT_TEST_CASE->value => self::PHPUNIT_TEST_CASE_VARIABLE_NAME,
+            VariableName::WEBDRIVER_ELEMENT_INSPECTOR->value => self::WEBDRIVER_ELEMENT_INSPECTOR_VARIABLE_NAME,
+            VariableName::WEBDRIVER_ELEMENT_MUTATOR->value => self::WEBDRIVER_ELEMENT_MUTATOR_VARIABLE_NAME,
+            VariableName::ASSERTION_FACTORY->value => self::WEBDRIVER_ASSERTION_FACTORY_VARIABLE_NAME,
+            VariableName::ACTION_FACTORY->value => self::WEBDRIVER_ACTION_FACTORY_VARIABLE_NAME,
         ];
 
         $variableIdentifiers = [];

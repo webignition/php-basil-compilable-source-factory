@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Parser\AssertionParser;
 
 trait ExistsAssertionFunctionalDataProviderTrait
@@ -30,7 +30,7 @@ trait ExistsAssertionFunctionalDataProviderTrait
                 'fixture' => '/empty.html',
                 'assertion' => $assertionParser->parse('$env.TEST1 exists'),
                 'additionalVariableIdentifiers' => [
-                    VariableNames::ENVIRONMENT_VARIABLE_ARRAY => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
+                    VariableName::ENVIRONMENT_VARIABLE_ARRAY->value => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
                 ],
             ],
             'exists comparison, browser object value' => [
