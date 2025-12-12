@@ -4,10 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\MethodArguments;
 
-use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
-use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
@@ -87,13 +85,11 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                     )
                 ],
                 'format' => MethodArgumentsInterface::FORMAT_INLINE,
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ClassName::class),
-                        ])
-                    )
-                ]),
+                'expectedMetadata' => Metadata::create(
+                    classNames: [
+                        ClassName::class,
+                    ],
+                ),
             ],
         ];
     }

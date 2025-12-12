@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\MethodInvocation;
 
-use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
-use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
@@ -18,7 +16,6 @@ use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethod
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 use webignition\BasilCompilableSourceFactory\VariableNames;
@@ -51,11 +48,11 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
                 'object' => new VariableDependency(VariableNames::ACTION_FACTORY),
                 'methodName' => 'method',
                 'arguments' => new MethodArguments(),
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => Metadata::create(
+                    variableNames: [
                         VariableNames::ACTION_FACTORY,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'has arguments' => [
                 'object' => new VariableDependency(VariableNames::ACTION_FACTORY),
@@ -63,11 +60,11 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
                 'arguments' => new MethodArguments([
                     new LiteralExpression('1'),
                 ]),
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => Metadata::create(
+                    variableNames: [
                         VariableNames::ACTION_FACTORY,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'argument expressions contain additional metadata' => [
                 'object' => new VariableDependency(VariableNames::ACTION_FACTORY),
@@ -78,16 +75,14 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
                         'staticMethodName'
                     )
                 ]),
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(ClassName::class),
-                        ])
-                    ),
-                    Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+                'expectedMetadata' => Metadata::create(
+                    classNames: [
+                        ClassName::class,
+                    ],
+                    variableNames: [
                         VariableNames::ACTION_FACTORY,
-                    ]),
-                ]),
+                    ],
+                ),
             ],
             'no arguments, resolving placeholder' => [
                 'object' => new VariableName('object'),

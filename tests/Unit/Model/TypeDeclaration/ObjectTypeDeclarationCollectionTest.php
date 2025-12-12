@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\TypeDeclaration;
 
 use PHPUnit\Framework\TestCase;
-use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
-use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclaration;
@@ -41,14 +39,12 @@ class ObjectTypeDeclarationCollectionTest extends AbstractResolvableTestCase
                     new ObjectTypeDeclaration(new ClassName(\Exception::class)),
                     new ObjectTypeDeclaration(new ClassName(\Traversable::class)),
                 ]),
-                'expectedMetadata' => new Metadata([
-                    Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                        new ClassNameCollection([
-                            new ClassName(\Exception::class),
-                            new ClassName(\Traversable::class),
-                        ])
-                    ),
-                ]),
+                'expectedMetadata' => Metadata::create(
+                    classNames: [
+                        \Exception::class,
+                        \Traversable::class,
+                    ],
+                ),
             ],
         ];
     }

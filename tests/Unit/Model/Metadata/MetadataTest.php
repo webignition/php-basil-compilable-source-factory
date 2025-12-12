@@ -74,48 +74,41 @@ class MetadataTest extends TestCase
 
     public function testMerge(): void
     {
-        $metadata1 = new Metadata([
-            Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                new ClassNameCollection([
-                    new ClassName(ClassName::class),
-                ])
-            ),
-            Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+        $metadata1 = Metadata::create(
+            classNames: [
+                ClassName::class,
+            ],
+            variableNames: [
                 VariableNames::ACTION_FACTORY,
                 VariableNames::ASSERTION_FACTORY,
-            ]),
-        ]);
+            ],
+        );
 
-        $metadata2 = new Metadata([
-            Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                new ClassNameCollection([
-                    new ClassName(ClassName::class),
-                    new ClassName(Metadata::class),
-                ])
-            ),
-            Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
+        $metadata2 = Metadata::create(
+            classNames: [
+                ClassName::class,
+                Metadata::class
+            ],
+            variableNames: [
                 VariableNames::ASSERTION_FACTORY,
                 VariableNames::DOM_CRAWLER_NAVIGATOR,
-            ]),
-        ]);
+            ],
+        );
 
         $metadata = $metadata1->merge($metadata2);
 
-        $this->assertEquals(
-            $metadata,
-            new Metadata([
-                Metadata::KEY_CLASS_DEPENDENCIES => new ClassDependencyCollection(
-                    new ClassNameCollection([
-                        new ClassName(ClassName::class),
-                        new ClassName(Metadata::class),
-                    ])
-                ),
-                Metadata::KEY_VARIABLE_DEPENDENCIES => new VariableDependencyCollection([
-                    VariableNames::ACTION_FACTORY,
-                    VariableNames::ASSERTION_FACTORY,
-                    VariableNames::DOM_CRAWLER_NAVIGATOR,
-                ]),
-            ])
+        $expectedMetadata = Metadata::create(
+            classNames: [
+                ClassName::class,
+                Metadata::class,
+            ],
+            variableNames: [
+                VariableNames::ACTION_FACTORY,
+                VariableNames::ASSERTION_FACTORY,
+                VariableNames::DOM_CRAWLER_NAVIGATOR,
+            ],
         );
+
+        $this->assertEquals($metadata, $expectedMetadata);
     }
 }
