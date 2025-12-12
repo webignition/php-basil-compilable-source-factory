@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Value;
 
+use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\EnvironmentValueFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
@@ -19,7 +20,6 @@ use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethod
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilValueTypeIdentifier\ValueTypeIdentifier;
 
 class ScalarValueHandler
@@ -76,7 +76,7 @@ class ScalarValueHandler
                 new AssignmentExpression(
                     $webDriverDimensionPlaceholder,
                     new ObjectMethodInvocation(
-                        new VariableDependency(VariableNames::PANTHER_CLIENT),
+                        new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                         'getWebDriver()->manage()->window()->getSize'
                     )
                 )
@@ -106,7 +106,7 @@ class ScalarValueHandler
         $property = $environmentValue->getProperty();
 
         return new CompositeExpression([
-            new VariableDependency('ENV'),
+            new VariableDependency(VariableNameEnum::ENVIRONMENT_VARIABLE_ARRAY),
             new LiteralExpression(sprintf('[\'%s\']', $property)),
         ]);
     }
@@ -129,7 +129,7 @@ class ScalarValueHandler
 
         if (is_string($methodName)) {
             return new ObjectMethodInvocation(
-                new VariableDependency(VariableNames::PANTHER_CLIENT),
+                new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                 $methodName
             );
         }

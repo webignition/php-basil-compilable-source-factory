@@ -17,7 +17,7 @@ class Metadata implements MetadataInterface
 
     /**
      * @param non-empty-string[] $classNames
-     * @param VariableName[] $variableNames
+     * @param VariableName[]     $variableNames
      */
     public function __construct(array $classNames = [], array $variableNames = [])
     {

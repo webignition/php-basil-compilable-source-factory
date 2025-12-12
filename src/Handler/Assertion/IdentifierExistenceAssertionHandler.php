@@ -9,6 +9,7 @@ use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\ElementIdentifierCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
+use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\CatchBlock;
@@ -34,7 +35,6 @@ use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDec
 use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclarationCollection;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilModels\Model\Action\ActionInterface;
 use webignition\BasilModels\Model\Assertion\Assertion;
@@ -105,7 +105,7 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
         );
 
         $examinedElementIdentifierPlaceholder = new ObjectPropertyAccessExpression(
-            new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
+            new VariableDependency(VariableNameEnum::PHPUNIT_TEST_CASE),
             'examinedElementIdentifier'
         );
 
@@ -233,7 +233,7 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
                         ])
                     ),
                     new ObjectMethodInvocation(
-                        new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
+                        new VariableDependency(VariableNameEnum::PHPUNIT_TEST_CASE),
                         'fail',
                         new MethodArguments($this->argumentFactory->create('Invalid locator'))
                     )

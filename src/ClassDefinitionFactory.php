@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory;
 
 use webignition\BaseBasilTestCase\ClientManager;
+use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\CatchBlock;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryBlock;
@@ -106,7 +107,7 @@ class ClassDefinitionFactory
             ),
             new Statement(
                 new ObjectMethodInvocation(
-                    new VariableDependency(VariableNames::PANTHER_CLIENT),
+                    new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                     'request',
                     new MethodArguments(
                         $this->argumentFactory->create('GET', $test->getUrl())

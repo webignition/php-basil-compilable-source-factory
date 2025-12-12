@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\ElementIdentifierCallFactory;
+use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
@@ -18,7 +19,6 @@ use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethod
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class DomIdentifierHandler
 {
@@ -100,7 +100,7 @@ class DomIdentifierHandler
             new Statement(
                 new ReturnExpression(
                     new ObjectMethodInvocation(
-                        new VariableDependency(VariableNames::WEBDRIVER_ELEMENT_INSPECTOR),
+                        new VariableDependency(VariableNameEnum::WEBDRIVER_ELEMENT_INSPECTOR),
                         'getValue',
                         new MethodArguments([
                             $elementPlaceholder,

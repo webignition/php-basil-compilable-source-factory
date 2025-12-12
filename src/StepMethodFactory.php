@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory;
 
+use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
 use webignition\BasilCompilableSourceFactory\Model\Attribute\DataProviderAttribute;
@@ -128,7 +129,7 @@ class StepMethodFactory
     {
         return new Statement(
             new ObjectMethodInvocation(
-                new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
+                new VariableDependency(VariableNameEnum::PHPUNIT_TEST_CASE),
                 'setBasilStepName',
                 new MethodArguments($this->argumentFactory->create($stepName))
             )
@@ -173,7 +174,7 @@ class StepMethodFactory
                     new MethodArguments([
                         ArrayExpression::fromArray([
                             'name' => new ObjectMethodInvocation(
-                                new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
+                                new VariableDependency(VariableNameEnum::PHPUNIT_TEST_CASE),
                                 'dataName'
                             ),
                             'data' => $dataSetData,
@@ -185,7 +186,7 @@ class StepMethodFactory
 
         return new Statement(
             new ObjectMethodInvocation(
-                new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
+                new VariableDependency(VariableNameEnum::PHPUNIT_TEST_CASE),
                 'setCurrentDataSet',
                 new MethodArguments($arguments)
             )

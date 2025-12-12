@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\VariableNames;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
 
 abstract class AbstractAssertionHandler
@@ -42,7 +42,7 @@ abstract class AbstractAssertionHandler
         ?MethodArgumentsInterface $arguments = null
     ): ExpressionInterface {
         return new ObjectMethodInvocation(
-            new VariableDependency(VariableNames::PHPUNIT_TEST_CASE),
+            new VariableDependency(VariableName::PHPUNIT_TEST_CASE),
             $methodName,
             $arguments
         );
