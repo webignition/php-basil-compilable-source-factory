@@ -12,9 +12,6 @@ use webignition\BasilCompilableSourceFactory\VariableNames;
 
 class Metadata implements MetadataInterface
 {
-    public const KEY_CLASS_DEPENDENCIES = 'class-dependencies';
-    public const KEY_VARIABLE_DEPENDENCIES = 'variable-dependencies';
-
     private ClassDependencyCollection $classDependencies;
     private VariableDependencyCollection $variableDependencies;
 
