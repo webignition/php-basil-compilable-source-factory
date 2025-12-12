@@ -12,6 +12,8 @@ use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 class VariableDependencyTest extends AbstractResolvableTestCase
 {
     /**
+     * @param non-empty-string $name
+     *
      * @dataProvider constructDataProvider
      */
     public function testConstruct(string $name): void
@@ -72,10 +74,6 @@ class VariableDependencyTest extends AbstractResolvableTestCase
     public static function renderDataProvider(): array
     {
         return [
-            'empty' => [
-                'dependency' => new VariableDependency(''),
-                'expectedString' => '{{  }}',
-            ],
             'non-empty' => [
                 'dependency' => new VariableDependency('NAME'),
                 'expectedString' => '{{ NAME }}',
