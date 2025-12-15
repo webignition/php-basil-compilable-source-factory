@@ -6,7 +6,6 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BaseBasilTestCase\Attribute\StepName;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
@@ -16,7 +15,6 @@ use webignition\BasilCompilableSourceFactory\Model\MethodDefinitionInterface;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\StepMethodFactory;
-use webignition\BasilModels\Model\DataSet\DataSet;
 use webignition\BasilModels\Model\Step\StepInterface;
 use webignition\BasilModels\Parser\StepParser;
 
@@ -70,16 +68,12 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                         if (self::hasException()) {
                             return;
                         }
-                        {{ PHPUNIT }}->setCurrentDataSet(null);
                     }
                     EOD,
                 'expectedTestMethodMetadata' => new Metadata(
                     classNames: [
                         StepName::class,
-                    ],
-                    variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE,
-                    ],
+                    ]
                 ),
             ],
             'empty test, step name contains single quotes' => [
@@ -94,16 +88,12 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                         if (self::hasException()) {
                             return;
                         }
-                        {{ PHPUNIT }}->setCurrentDataSet(null);
                     }
                     EOD,
                 'expectedTestMethodMetadata' => new Metadata(
                     classNames: [
                         StepName::class,
-                    ],
-                    variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE,
-                    ],
+                    ]
                 ),
             ],
             'non-empty step' => [
@@ -125,7 +115,6 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                         if (self::hasException()) {
                             return;
                         }
-                        {{ PHPUNIT }}->setCurrentDataSet(null);
 
                         // mocked step handler response
                     }
@@ -133,10 +122,7 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                 'expectedTestMethodMetadata' => new Metadata(
                     classNames: [
                         StepName::class,
-                    ],
-                    variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE,
-                    ],
+                    ]
                 ),
             ],
         ];
@@ -215,13 +201,6 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                         if (self::hasException()) {
                             return;
                         }
-                        {{ PHPUNIT }}->setCurrentDataSet(DataSet::fromArray([
-                            'name' => {{ PHPUNIT }}->dataName(),
-                            'data' => [
-                                'expected_value' => $expected_value,
-                                'field_value' => $field_value,
-                            ],
-                        ]));
                     
                         // mocked step handler response
                     }
@@ -249,10 +228,6 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                     classNames: [
                         StepName::class,
                         DataProvider::class,
-                        DataSet::class,
-                    ],
-                    variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],
