@@ -6,7 +6,6 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BaseBasilTestCase\Attribute\StepName;
-use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
@@ -71,7 +70,6 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                         if (self::hasException()) {
                             return;
                         }
-                        {{ PHPUNIT }}->setBasilStepName('Step Name');
                         {{ PHPUNIT }}->setCurrentDataSet(null);
                     }
                     EOD,
@@ -96,7 +94,6 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                         if (self::hasException()) {
                             return;
                         }
-                        {{ PHPUNIT }}->setBasilStepName('step name \'contains\' single quotes');
                         {{ PHPUNIT }}->setCurrentDataSet(null);
                     }
                     EOD,
@@ -128,7 +125,6 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                         if (self::hasException()) {
                             return;
                         }
-                        {{ PHPUNIT }}->setBasilStepName('Step Name');
                         {{ PHPUNIT }}->setCurrentDataSet(null);
 
                         // mocked step handler response
@@ -219,7 +215,6 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                         if (self::hasException()) {
                             return;
                         }
-                        {{ PHPUNIT }}->setBasilStepName('Step Name');
                         {{ PHPUNIT }}->setCurrentDataSet(DataSet::fromArray([
                             'name' => {{ PHPUNIT }}->dataName(),
                             'data' => [
@@ -280,7 +275,6 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
         return new StepMethodFactory(
             $stepHandler,
             $singleQuotedStringEscaper,
-            ArgumentFactory::createFactory()
         );
     }
 

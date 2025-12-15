@@ -210,7 +210,6 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                             if (self::hasException()) {
                                 return;
                             }
-                            {{ PHPUNIT }}->setBasilStepName('step one');
                             {{ PHPUNIT }}->setCurrentDataSet(null);
                         }
                     }
@@ -267,7 +266,6 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                             if (self::hasException()) {
                                 return;
                             }
-                            {{ PHPUNIT }}->setBasilStepName('step one');
                             {{ PHPUNIT }}->setCurrentDataSet(null);
                         }
 
@@ -277,7 +275,6 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                             if (self::hasException()) {
                                 return;
                             }
-                            {{ PHPUNIT }}->setBasilStepName('step two');
                             {{ PHPUNIT }}->setCurrentDataSet(null);
                         }
                     }

@@ -36,7 +36,6 @@ class StepMethodFactory
     public function __construct(
         private StepHandler $stepHandler,
         private SingleQuotedStringEscaper $singleQuotedStringEscaper,
-        private ArgumentFactory $argumentFactory
     ) {}
 
     public static function createFactory(): self
@@ -44,7 +43,6 @@ class StepMethodFactory
         return new StepMethodFactory(
             StepHandler::createHandler(),
             SingleQuotedStringEscaper::create(),
-            ArgumentFactory::createFactory()
         );
     }
 
@@ -62,7 +60,6 @@ class StepMethodFactory
             'test' . (string) $index,
             new Body([
                 $this->createIfHasExpressionBlock(),
-                $this->createSetBasilStepNameStatement($stepName),
                 $this->createSetCurrentDataSetStatement($parameterNames),
                 new EmptyLine(),
                 $this->stepHandler->handle($step),
@@ -123,17 +120,6 @@ class StepMethodFactory
         }
 
         return $preparedDataSet;
-    }
-
-    private function createSetBasilStepNameStatement(string $stepName): StatementInterface
-    {
-        return new Statement(
-            new ObjectMethodInvocation(
-                new VariableDependency(VariableNameEnum::PHPUNIT_TEST_CASE),
-                'setBasilStepName',
-                new MethodArguments($this->argumentFactory->create($stepName))
-            )
-        );
     }
 
     private function createIfHasExpressionBlock(): IfBlock
