@@ -160,7 +160,6 @@ class AssertionHandlerTest extends TestCase
 
         $this->expectExceptionObject(new UnsupportedStatementException($assertion));
 
-        $stepName = md5((string) rand());
-        $handler->handle($assertion, $stepName);
+        $handler->handle($assertion);
     }
 }
