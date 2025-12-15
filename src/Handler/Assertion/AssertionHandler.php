@@ -33,12 +33,7 @@ class AssertionHandler
      */
     public function handle(AssertionInterface $assertion): BodyInterface
     {
-        $sourceStatement = null;
-        if ($assertion instanceof DerivedValueOperationAssertion) {
-            $sourceStatement = $assertion->getSourceStatement();
-        }
-
-        $metadata = new Metadata($assertion, $sourceStatement);
+        $metadata = new Metadata($assertion);
 
         try {
             if ($assertion->isComparison()) {

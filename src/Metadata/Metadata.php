@@ -5,13 +5,12 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Metadata;
 
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
-use webignition\BasilModels\Model\StatementInterface;
+use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
 
 readonly class Metadata implements \JsonSerializable
 {
     public function __construct(
-        private AssertionInterface $assertion,
-        private ?StatementInterface $source = null,
+        private AssertionInterface $assertion
     ) {}
 
     /**
@@ -26,8 +25,8 @@ readonly class Metadata implements \JsonSerializable
             'assertion' => (string) $this->assertion,
         ];
 
-        if (null !== $this->source) {
-            $data['source'] = (string) $this->source;
+        if ($this->assertion instanceof DerivedValueOperationAssertion) {
+            $data['source'] = (string) $this->assertion->getSourceStatement();
         }
 
         return $data;
