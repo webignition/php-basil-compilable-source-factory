@@ -187,7 +187,7 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                     [
                         ArrayExpression::fromArray([
                             'name' => new ObjectMethodInvocation(
-                                new VariableDependency(VariableNameEnum::ACTION_FACTORY),
+                                new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                                 'dataName'
                             ),
                             'data' => [
@@ -198,7 +198,7 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                     ]
                 ),
                 'expectedString' => "[\n"
-                    . "    'name' => {{ ACTION_FACTORY }}->dataName(),\n"
+                    . "    'name' => {{ CLIENT }}->dataName(),\n"
                     . "    'data' => [\n"
                     . "        'key1' => 'value1',\n"
                     . "        'key2' => 'value2',\n"

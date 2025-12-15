@@ -35,10 +35,10 @@ class StatementTest extends AbstractResolvableTestCase
     {
         return [
             'variable dependency' => [
-                'expression' => new VariableDependency(VariableName::ACTION_FACTORY),
+                'expression' => new VariableDependency(VariableName::PANTHER_CLIENT),
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::ACTION_FACTORY,
+                        VariableName::PANTHER_CLIENT,
                     ],
                 ),
             ],
@@ -76,9 +76,9 @@ class StatementTest extends AbstractResolvableTestCase
         return [
             'statement encapsulating variable dependency' => [
                 'statement' => new Statement(
-                    new VariableDependency(VariableName::ACTION_FACTORY)
+                    new VariableDependency(VariableName::PANTHER_CLIENT)
                 ),
-                'expectedString' => '{{ ACTION_FACTORY }};',
+                'expectedString' => '{{ CLIENT }};',
             ],
             'statement encapsulating method invocation' => [
                 'statement' => new Statement(

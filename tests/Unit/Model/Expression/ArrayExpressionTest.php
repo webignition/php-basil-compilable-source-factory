@@ -50,14 +50,14 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                     new ArrayPair(
                         new ArrayKey('key3'),
                         new ObjectMethodInvocation(
-                            new VariableDependency(VariableNameEnum::ACTION_FACTORY),
+                            new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                             'methodName'
                         )
                     ),
                 ]),
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNameEnum::ACTION_FACTORY,
+                        VariableNameEnum::PANTHER_CLIENT,
                     ]
                 ),
             ],
@@ -106,7 +106,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                     new ArrayPair(
                         new ArrayKey('key3'),
                         new ObjectMethodInvocation(
-                            new VariableDependency(VariableNameEnum::ACTION_FACTORY),
+                            new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                             'methodName'
                         )
                     ),
@@ -114,7 +114,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                 'expectedString' => "[\n"
                     . "    'key1' => 'value1',\n"
                     . "    'key2' => \$variableName,\n"
-                    . "    'key3' => {{ ACTION_FACTORY }}->methodName(),\n"
+                    . "    'key3' => {{ CLIENT }}->methodName(),\n"
                     . ']',
             ],
             'single data set with single key:value numerical name' => [
@@ -243,7 +243,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                             new ArrayPair(
                                 new ArrayKey('key1'),
                                 new ObjectMethodInvocation(
-                                    new VariableDependency(VariableNameEnum::ACTION_FACTORY),
+                                    new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                                     'methodName'
                                 )
                             ),
@@ -252,7 +252,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                 ]),
                 'expectedString' => "[\n"
                     . "    'data-set-one' => [\n"
-                    . "        'key1' => {{ ACTION_FACTORY }}->methodName(),\n"
+                    . "        'key1' => {{ CLIENT }}->methodName(),\n"
                     . "    ],\n"
                     . ']',
             ],
@@ -398,7 +398,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                 'expression' => ArrayExpression::fromArray([
                     'data-set-one' => [
                         'key1' => new ObjectMethodInvocation(
-                            new VariableDependency(VariableNameEnum::ACTION_FACTORY),
+                            new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                             'methodName'
                         ),
                     ],
@@ -410,7 +410,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                             new ArrayPair(
                                 new ArrayKey('key1'),
                                 new ObjectMethodInvocation(
-                                    new VariableDependency(VariableNameEnum::ACTION_FACTORY),
+                                    new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                                     'methodName'
                                 )
                             ),
@@ -438,7 +438,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
             'array with nested array' => [
                 'expression' => ArrayExpression::fromArray([
                     'name' => new ObjectMethodInvocation(
-                        new VariableDependency(VariableNameEnum::ACTION_FACTORY),
+                        new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                         'dataName'
                     ),
                     'data' => [
@@ -450,7 +450,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                     new ArrayPair(
                         new ArrayKey('name'),
                         new ObjectMethodInvocation(
-                            new VariableDependency(VariableNameEnum::ACTION_FACTORY),
+                            new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                             'dataName'
                         )
                     ),

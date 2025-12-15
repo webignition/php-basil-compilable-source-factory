@@ -25,7 +25,7 @@ class IfBlockTest extends AbstractResolvableTestCase
     {
         $expression = new ComparisonExpression(
             new ObjectMethodInvocation(
-                new VariableDependency(VariableName::ACTION_FACTORY),
+                new VariableDependency(VariableName::PANTHER_CLIENT),
                 'methodName'
             ),
             new LiteralExpression('value'),
@@ -51,7 +51,7 @@ class IfBlockTest extends AbstractResolvableTestCase
                 \RuntimeException::class,
             ],
             variableNames: [
-                VariableName::ACTION_FACTORY,
+                VariableName::PANTHER_CLIENT,
                 VariableName::ASSERTION_FACTORY,
             ]
         );

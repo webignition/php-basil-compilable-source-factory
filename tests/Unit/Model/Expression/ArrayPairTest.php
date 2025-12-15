@@ -42,13 +42,13 @@ class ArrayPairTest extends AbstractResolvableTestCase
                 'pair' => new ArrayPair(
                     new ArrayKey(''),
                     new ObjectMethodInvocation(
-                        new VariableDependency(VariableName::ACTION_FACTORY),
+                        new VariableDependency(VariableName::PANTHER_CLIENT),
                         'methodName'
                     )
                 ),
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::ACTION_FACTORY,
+                        VariableName::PANTHER_CLIENT,
                     ]
                 ),
             ],

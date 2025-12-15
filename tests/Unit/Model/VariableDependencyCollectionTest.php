@@ -49,7 +49,7 @@ class VariableDependencyCollectionTest extends TestCase
 
     public function testMerge(): void
     {
-        $collection = new VariableDependencyCollection([VariableName::ACTION_FACTORY]);
+        $collection = new VariableDependencyCollection([VariableName::PANTHER_CLIENT]);
 
         $collection = $collection->merge(new VariableDependencyCollection([
             VariableName::PANTHER_CRAWLER,
@@ -66,7 +66,7 @@ class VariableDependencyCollectionTest extends TestCase
 
         $this->assertEquals(
             [
-                'ACTION_FACTORY' => new VariableDependency(VariableName::ACTION_FACTORY),
+                'CLIENT' => new VariableDependency(VariableName::PANTHER_CLIENT),
                 'CRAWLER' => new VariableDependency(VariableName::PANTHER_CRAWLER),
                 'ENV' => new VariableDependency(VariableName::ENVIRONMENT_VARIABLE_ARRAY),
                 'NAVIGATOR' => new VariableDependency(VariableName::DOM_CRAWLER_NAVIGATOR),

@@ -110,7 +110,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                 'methodDefinition' => new MethodDefinition('name', new Body([
                     new Statement(
                         new ObjectMethodInvocation(
-                            new VariableDependency(VariableNameEnum::ACTION_FACTORY),
+                            new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                             'methodName'
                         )
                     ),
@@ -123,7 +123,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                 ])),
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNameEnum::ACTION_FACTORY,
+                        VariableNameEnum::PANTHER_CLIENT,
                     ]
                 ),
             ],
@@ -131,7 +131,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                 'methodDefinition' => new MethodDefinition('name', new Body([
                     new Statement(
                         new ObjectMethodInvocation(
-                            new VariableDependency(VariableNameEnum::ACTION_FACTORY),
+                            new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                             'methodName'
                         )
                     ),
@@ -147,7 +147,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                         DataProvider::class,
                     ],
                     variableNames: [
-                        VariableNameEnum::ACTION_FACTORY,
+                        VariableNameEnum::PANTHER_CLIENT,
                     ]
                 ),
             ],
@@ -276,7 +276,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                             new AssignmentExpression(
                                 new VariableName('value'),
                                 new ObjectMethodInvocation(
-                                    new VariableDependency(VariableNameEnum::ACTION_FACTORY),
+                                    new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                                     'methodName',
                                     new MethodArguments([
                                         new LiteralExpression('$x'),
@@ -293,7 +293,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                     {
                         // Assign object method call to $value
                     
-                        $value = {{ ACTION_FACTORY }}->methodName($x, $y);
+                        $value = {{ CLIENT }}->methodName($x, $y);
                     }
                     EOD,
             ],

@@ -349,7 +349,7 @@ class BodyTest extends AbstractResolvableTestCase
 
     public function testCreateForSingleAssignmentStatement(): void
     {
-        $variable = new VariableDependency(VariableName::ACTION_FACTORY);
+        $variable = new VariableDependency(VariableName::PANTHER_CLIENT);
         $value = new LiteralExpression('"value"');
 
         $expectedBody = new Body([

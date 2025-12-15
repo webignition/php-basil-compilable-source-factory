@@ -45,29 +45,29 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
     {
         return [
             'no arguments' => [
-                'object' => new VariableDependency(VariableNameEnum::ACTION_FACTORY),
+                'object' => new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                 'methodName' => 'method',
                 'arguments' => new MethodArguments(),
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNameEnum::ACTION_FACTORY,
+                        VariableNameEnum::PANTHER_CLIENT,
                     ],
                 ),
             ],
             'has arguments' => [
-                'object' => new VariableDependency(VariableNameEnum::ACTION_FACTORY),
+                'object' => new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                 'methodName' => 'method',
                 'arguments' => new MethodArguments([
                     new LiteralExpression('1'),
                 ]),
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNameEnum::ACTION_FACTORY,
+                        VariableNameEnum::PANTHER_CLIENT,
                     ],
                 ),
             ],
             'argument expressions contain additional metadata' => [
-                'object' => new VariableDependency(VariableNameEnum::ACTION_FACTORY),
+                'object' => new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                 'methodName' => 'method',
                 'arguments' => new MethodArguments([
                     new StaticObjectMethodInvocation(
@@ -80,7 +80,7 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
                         ClassName::class,
                     ],
                     variableNames: [
-                        VariableNameEnum::ACTION_FACTORY,
+                        VariableNameEnum::PANTHER_CLIENT,
                     ],
                 ),
             ],
@@ -109,25 +109,25 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
         return [
             'object and method name only' => [
                 'invocation' => new ObjectMethodInvocation(
-                    new VariableDependency(VariableNameEnum::ACTION_FACTORY),
+                    new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                     'methodName'
                 ),
-                'expectedString' => '{{ ACTION_FACTORY }}->methodName()',
+                'expectedString' => '{{ CLIENT }}->methodName()',
             ],
             'has arguments, inline' => [
                 'invocation' => new ObjectMethodInvocation(
-                    new VariableDependency(VariableNameEnum::ACTION_FACTORY),
+                    new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                     'methodName',
                     new MethodArguments([
                         new LiteralExpression('1'),
                         new LiteralExpression("\\'single-quoted value\\'"),
                     ])
                 ),
-                'expectedString' => "{{ ACTION_FACTORY }}->methodName(1, \\'single-quoted value\\')",
+                'expectedString' => "{{ CLIENT }}->methodName(1, \\'single-quoted value\\')",
             ],
             'has arguments, stacked' => [
                 'invocation' => new ObjectMethodInvocation(
-                    new VariableDependency(VariableNameEnum::ACTION_FACTORY),
+                    new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                     'methodName',
                     new MethodArguments(
                         [
@@ -137,7 +137,7 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
                         MethodArgumentsInterface::FORMAT_STACKED
                     )
                 ),
-                'expectedString' => "{{ ACTION_FACTORY }}->methodName(\n"
+                'expectedString' => "{{ CLIENT }}->methodName(\n"
                     . "    1,\n"
                     . "    \\'single-quoted value\\'\n"
                     . ')',
@@ -161,12 +161,12 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
             'object returned from object method call' => [
                 'invocation' => new ObjectMethodInvocation(
                     new ObjectMethodInvocation(
-                        new VariableDependency(VariableNameEnum::ACTION_FACTORY),
+                        new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                         'innerMethodName'
                     ),
                     'outerMethodName'
                 ),
-                'expectedString' => '{{ ACTION_FACTORY }}->innerMethodName()->outerMethodName()',
+                'expectedString' => '{{ CLIENT }}->innerMethodName()->outerMethodName()',
             ],
         ];
     }
