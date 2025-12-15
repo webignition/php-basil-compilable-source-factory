@@ -36,16 +36,16 @@ trait CreateFromExcludesAssertionDataProviderTrait
                 ),
                 'expectedRenderedContent' => <<<'EOD'
                     $expectedValue = "value" ?? null;
-                    {{ PHPUNIT }}->setExaminedValue((function () {
+                    $examinedValue = (function () {
                         $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson('{
                             "locator": ".selector"
                         }'));
                     
                         return {{ INSPECTOR }}->getValue($element);
-                    })());
+                    })();
                     {{ PHPUNIT }}->assertStringNotContainsString(
                         (string) ($expectedValue),
-                        (string) ({{ PHPUNIT }}->getExaminedValue()),
+                        (string) ($examinedValue),
                         '{
                             \"assertion\": \"$\\\".selector\\\" excludes \\\"value\\\"\"
                         }'
@@ -77,16 +77,16 @@ trait CreateFromExcludesAssertionDataProviderTrait
                 ),
                 'expectedRenderedContent' => <<<'EOD'
                     $expectedValue = "value" ?? null;
-                    {{ PHPUNIT }}->setExaminedValue((function () {
+                    $examinedValue = (function () {
                         $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson('{
                             "locator": ".selector"
                         }'));
 
                         return $element->getAttribute('attribute_name');
-                    })());
+                    })();
                     {{ PHPUNIT }}->assertStringNotContainsString(
                         (string) ($expectedValue),
-                        (string) ({{ PHPUNIT }}->getExaminedValue()),
+                        (string) ($examinedValue),
                         '{
                             \"assertion\": \"$\\\".selector\\\".attribute_name excludes \\\"value\\\"\"
                         }'

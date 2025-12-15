@@ -40,9 +40,9 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->setExaminedValue("/^value/" ?? null);
+                    $examinedValue = "/^value/" ?? null;
                     {{ PHPUNIT }}->setBooleanExpectedValue(
-                        @preg_match({{ PHPUNIT }}->getExaminedValue(), null) === false
+                        @preg_match($examinedValue, null) === false
                     );
                     {{ PHPUNIT }}->assertFalse(
                         {{ PHPUNIT }}->getBooleanExpectedValue(),
@@ -75,15 +75,15 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->setExaminedValue((function () {
+                    $examinedValue = (function () {
                         $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson('{
                             "locator": ".pattern-container"
                         }'));
                     
                         return {{ INSPECTOR }}->getValue($element);
-                    })());
+                    })();
                     {{ PHPUNIT }}->setBooleanExpectedValue(
-                        @preg_match({{ PHPUNIT }}->getExaminedValue(), null) === false
+                        @preg_match($examinedValue, null) === false
                     );
                     {{ PHPUNIT }}->assertFalse(
                         {{ PHPUNIT }}->getBooleanExpectedValue(),
@@ -121,15 +121,15 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->setExaminedValue((function () {
+                    $examinedValue = (function () {
                         $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson('{
                             "locator": ".pattern-container"
                         }'));
                     
                         return $element->getAttribute('attribute_name');
-                    })());
+                    })();
                     {{ PHPUNIT }}->setBooleanExpectedValue(
-                        @preg_match({{ PHPUNIT }}->getExaminedValue(), null) === false
+                        @preg_match($examinedValue, null) === false
                     );
                     {{ PHPUNIT }}->assertFalse(
                         {{ PHPUNIT }}->getBooleanExpectedValue(),
@@ -166,9 +166,9 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->setExaminedValue($pattern ?? null);
+                    $examinedValue = $pattern ?? null;
                     {{ PHPUNIT }}->setBooleanExpectedValue(
-                        @preg_match({{ PHPUNIT }}->getExaminedValue(), null) === false
+                        @preg_match($examinedValue, null) === false
                     );
                     {{ PHPUNIT }}->assertFalse(
                         {{ PHPUNIT }}->getBooleanExpectedValue(),
