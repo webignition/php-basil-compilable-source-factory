@@ -65,7 +65,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                         new AssignmentExpression(
                             new VariableName('variable'),
                             new ObjectMethodInvocation(
-                                new VariableDependency(VariableNameEnum::ACTION_FACTORY),
+                                new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                                 'dependencyMethodName'
                             )
                         )
@@ -94,7 +94,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                 ]),
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNameEnum::ACTION_FACTORY,
+                        VariableNameEnum::PANTHER_CLIENT,
                     ]
                 ),
             ],
@@ -175,7 +175,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                             new AssignmentExpression(
                                 new VariableName('variable'),
                                 new ObjectMethodInvocation(
-                                    new VariableDependency(VariableNameEnum::ACTION_FACTORY),
+                                    new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                                     'dependencyMethodName'
                                 )
                             )
@@ -205,7 +205,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                     ])
                 ),
                 '(function () {' . "\n"
-                . '    $variable = {{ ACTION_FACTORY }}->dependencyMethodName();' . "\n"
+                . '    $variable = {{ CLIENT }}->dependencyMethodName();' . "\n"
                 . "\n"
                 . '    return (string) ($variable->getWidth()) . \'x\' . (string) ($variable->getHeight());' . "\n"
                 . '})()',

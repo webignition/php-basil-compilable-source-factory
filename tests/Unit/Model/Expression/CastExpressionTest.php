@@ -92,12 +92,12 @@ class CastExpressionTest extends AbstractResolvableTestCase
             'object property access expression as string' => [
                 'expression' => new CastExpression(
                     new ObjectPropertyAccessExpression(
-                        new VariableDependency(VariableName::ACTION_FACTORY),
+                        new VariableDependency(VariableName::PANTHER_CLIENT),
                         'property'
                     ),
                     'string'
                 ),
-                'expectedString' => '(string) ({{ ACTION_FACTORY }}->property)',
+                'expectedString' => '(string) ({{ CLIENT }}->property)',
             ],
             'method invocation as string' => [
                 'expression' => new CastExpression(
@@ -109,12 +109,12 @@ class CastExpressionTest extends AbstractResolvableTestCase
             'object method invocation as string' => [
                 'expression' => new CastExpression(
                     new ObjectMethodInvocation(
-                        new VariableDependency(VariableName::ACTION_FACTORY),
+                        new VariableDependency(VariableName::PANTHER_CLIENT),
                         'methodName'
                     ),
                     'string'
                 ),
-                'expectedString' => '(string) ({{ ACTION_FACTORY }}->methodName())',
+                'expectedString' => '(string) ({{ CLIENT }}->methodName())',
             ],
             'static object method invocation as string, class in root namespace' => [
                 'expression' => new CastExpression(

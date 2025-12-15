@@ -46,14 +46,14 @@ class MetadataTest extends TestCase
             ],
             'components set, correct types' => [
                 'classNames' => [ClassName::class],
-                'variableNames' => [VariableName::ACTION_FACTORY],
+                'variableNames' => [VariableName::PANTHER_CLIENT],
                 'expectedClassDependencies' => new ClassDependencyCollection(
                     new ClassNameCollection([
                         new ClassName(ClassName::class),
                     ])
                 ),
                 'expectedVariableDependencies' => new VariableDependencyCollection([
-                    VariableName::ACTION_FACTORY,
+                    VariableName::PANTHER_CLIENT,
                 ]),
             ],
         ];
@@ -66,7 +66,7 @@ class MetadataTest extends TestCase
                 ClassName::class,
             ],
             variableNames: [
-                VariableName::ACTION_FACTORY,
+                VariableName::PANTHER_CLIENT,
                 VariableName::ASSERTION_FACTORY,
             ],
         );
@@ -90,7 +90,7 @@ class MetadataTest extends TestCase
                 Metadata::class,
             ],
             variableNames: [
-                VariableName::ACTION_FACTORY,
+                VariableName::PANTHER_CLIENT,
                 VariableName::ASSERTION_FACTORY,
                 VariableName::DOM_CRAWLER_NAVIGATOR,
             ],

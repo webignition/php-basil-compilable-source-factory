@@ -38,11 +38,11 @@ class ErrorSuppressedMethodInvocationTest extends AbstractResolvableTestCase
             'ObjectMethodInvocation' => [
                 'invocation' => new ErrorSuppressedMethodInvocation(
                     new ObjectMethodInvocation(
-                        new VariableDependency(VariableName::ACTION_FACTORY),
+                        new VariableDependency(VariableName::PANTHER_CLIENT),
                         'methodName'
                     )
                 ),
-                'expectedString' => '@{{ ACTION_FACTORY }}->methodName()',
+                'expectedString' => '@{{ CLIENT }}->methodName()',
             ],
             'StaticObjectMethodInvocation' => [
                 'invocation' => new ErrorSuppressedMethodInvocation(

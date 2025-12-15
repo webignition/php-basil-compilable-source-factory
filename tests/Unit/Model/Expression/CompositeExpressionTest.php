@@ -39,11 +39,11 @@ class CompositeExpressionTest extends AbstractResolvableTestCase
             ],
             'variable dependency' => [
                 'expressions' => [
-                    new VariableDependency(VariableName::ACTION_FACTORY),
+                    new VariableDependency(VariableName::PANTHER_CLIENT),
                 ],
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::ACTION_FACTORY,
+                        VariableName::PANTHER_CLIENT,
                     ]
                 ),
             ],
@@ -95,9 +95,9 @@ class CompositeExpressionTest extends AbstractResolvableTestCase
             ],
             'variable dependency' => [
                 'expression' => new CompositeExpression([
-                    new VariableDependency(VariableName::ACTION_FACTORY),
+                    new VariableDependency(VariableName::PANTHER_CLIENT),
                 ]),
-                'expectedString' => '{{ ACTION_FACTORY }}',
+                'expectedString' => '{{ CLIENT }}',
             ],
             'variable dependency and array access' => [
                 'expression' => new CompositeExpression([

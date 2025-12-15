@@ -37,11 +37,11 @@ class ObjectPropertyAccessExpressionTest extends AbstractResolvableTestCase
     {
         return [
             'has resolvable placeholder' => [
-                'objectPlaceholder' => new VariableDependency(VariableNameEnum::ACTION_FACTORY),
+                'objectPlaceholder' => new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                 'property' => 'propertyName',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNameEnum::ACTION_FACTORY,
+                        VariableNameEnum::PANTHER_CLIENT,
                     ]
                 ),
             ],
@@ -69,10 +69,10 @@ class ObjectPropertyAccessExpressionTest extends AbstractResolvableTestCase
         return [
             'has resolvable placeholder' => [
                 'expression' => new ObjectPropertyAccessExpression(
-                    new VariableDependency(VariableNameEnum::ACTION_FACTORY),
+                    new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                     'propertyName'
                 ),
-                'expectedString' => '{{ ACTION_FACTORY }}->propertyName',
+                'expectedString' => '{{ CLIENT }}->propertyName',
             ],
             'has resolving placeholder' => [
                 'expression' => new ObjectPropertyAccessExpression(

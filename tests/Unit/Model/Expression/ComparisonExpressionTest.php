@@ -47,14 +47,14 @@ class ComparisonExpressionTest extends AbstractResolvableTestCase
             ],
             'has metadata' => [
                 'leftHandSide' => new ObjectMethodInvocation(
-                    new VariableDependency(VariableName::ACTION_FACTORY),
+                    new VariableDependency(VariableName::PANTHER_CLIENT),
                     'methodName'
                 ),
                 'rightHandSide' => new LiteralExpression('literal'),
                 'comparison' => '!==',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::ACTION_FACTORY,
+                        VariableName::PANTHER_CLIENT,
                     ]
                 ),
             ],
@@ -86,13 +86,13 @@ class ComparisonExpressionTest extends AbstractResolvableTestCase
             'object method invocation and literal, null coalesce' => [
                 'expression' => new ComparisonExpression(
                     new ObjectMethodInvocation(
-                        new VariableDependency(VariableName::ACTION_FACTORY),
+                        new VariableDependency(VariableName::PANTHER_CLIENT),
                         'methodName'
                     ),
                     new LiteralExpression('value'),
                     '??'
                 ),
-                'expectedString' => '{{ ACTION_FACTORY }}->methodName() ?? value',
+                'expectedString' => '{{ CLIENT }}->methodName() ?? value',
             ],
         ];
     }

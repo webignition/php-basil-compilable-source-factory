@@ -27,10 +27,10 @@ class VariableDependencyTest extends AbstractResolvableTestCase
     {
         return [
             'variable dependency' => [
-                'dependency' => new VariableDependency(VariableName::ACTION_FACTORY),
+                'dependency' => new VariableDependency(VariableName::PANTHER_CLIENT),
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::ACTION_FACTORY,
+                        VariableName::PANTHER_CLIENT,
                     ]
                 ),
             ],

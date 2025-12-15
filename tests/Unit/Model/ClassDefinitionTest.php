@@ -79,7 +79,7 @@ class ClassDefinitionTest extends AbstractResolvableTestCase
                         new MethodDefinition('name', new Body([
                             new Statement(
                                 new ObjectMethodInvocation(
-                                    new VariableDependency(VariableNameEnum::ACTION_FACTORY),
+                                    new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                                     'methodName'
                                 )
                             ),
@@ -94,7 +94,7 @@ class ClassDefinitionTest extends AbstractResolvableTestCase
                 ),
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNameEnum::ACTION_FACTORY,
+                        VariableNameEnum::PANTHER_CLIENT,
                     ],
                 ),
             ],

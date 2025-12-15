@@ -48,14 +48,14 @@ class AssignmentExpressionTest extends AbstractResolvableTestCase
             ],
             'has metadata' => [
                 'variable' => new ObjectMethodInvocation(
-                    new VariableDependency(VariableName::ACTION_FACTORY),
+                    new VariableDependency(VariableName::PANTHER_CLIENT),
                     'methodName'
                 ),
                 'value' => new LiteralExpression('literal'),
                 'operator' => '!==',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::ACTION_FACTORY,
+                        VariableName::PANTHER_CLIENT,
                     ]
                 ),
             ],
@@ -86,12 +86,12 @@ class AssignmentExpressionTest extends AbstractResolvableTestCase
             'object property access and literal, assignment' => [
                 'expression' => new AssignmentExpression(
                     new ObjectPropertyAccessExpression(
-                        new VariableDependency(VariableName::ACTION_FACTORY),
+                        new VariableDependency(VariableName::PANTHER_CLIENT),
                         'propertyName'
                     ),
                     new LiteralExpression('value')
                 ),
-                'expectedString' => '{{ ACTION_FACTORY }}->propertyName = value',
+                'expectedString' => '{{ CLIENT }}->propertyName = value',
             ],
         ];
     }
