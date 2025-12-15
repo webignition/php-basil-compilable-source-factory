@@ -44,7 +44,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
                         return {{ INSPECTOR }}->getValue($element);
                     })());
                     {{ PHPUNIT }}->assertStringNotContainsString(
-                        (string) ({{ PHPUNIT }}->getExpectedValue()),
+                        (string) ($expectedValue),
                         (string) ({{ PHPUNIT }}->getExaminedValue()),
                         '{
                             \"assertion\": \"$\\\".selector\\\" excludes \\\"value\\\"\"
@@ -85,7 +85,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
                         return $element->getAttribute('attribute_name');
                     })());
                     {{ PHPUNIT }}->assertStringNotContainsString(
-                        (string) ({{ PHPUNIT }}->getExpectedValue()),
+                        (string) ($expectedValue),
                         (string) ({{ PHPUNIT }}->getExaminedValue()),
                         '{
                             \"assertion\": \"$\\\".selector\\\".attribute_name excludes \\\"value\\\"\"

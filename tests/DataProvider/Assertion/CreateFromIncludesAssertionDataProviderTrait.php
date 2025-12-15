@@ -44,7 +44,7 @@ trait CreateFromIncludesAssertionDataProviderTrait
                         return {{ INSPECTOR }}->getValue($element);
                     })());
                     {{ PHPUNIT }}->assertStringContainsString(
-                        (string) ({{ PHPUNIT }}->getExpectedValue()),
+                        (string) ($expectedValue),
                         (string) ({{ PHPUNIT }}->getExaminedValue()),
                         '{
                             \"assertion\": \"$\\\".selector\\\" includes \\\"value\\\"\"
@@ -85,7 +85,7 @@ trait CreateFromIncludesAssertionDataProviderTrait
                         return $element->getAttribute('attribute_name');
                     })());
                     {{ PHPUNIT }}->assertStringContainsString(
-                        (string) ({{ PHPUNIT }}->getExpectedValue()),
+                        (string) ($expectedValue),
                         (string) ({{ PHPUNIT }}->getExaminedValue()),
                         '{
                             \"assertion\": \"$\\\".selector\\\".attribute_name includes \\\"value\\\"\"

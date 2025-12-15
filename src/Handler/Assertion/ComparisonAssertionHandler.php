@@ -14,7 +14,6 @@ use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
-use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
@@ -75,19 +74,20 @@ class ComparisonAssertionHandler extends AbstractAssertionHandler
         $examinedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull((string) $assertion->getIdentifier());
         $expectedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull((string) $assertion->getValue());
 
+        $expectedValuePlaceholder = new VariableName(VariableNameEnum::EXPECTED_VALUE->value);
+
         $assertionArguments = [
-            $this->createPhpUnitTestCaseObjectMethodInvocation('getExpectedValue'),
+            $expectedValuePlaceholder,
             $this->createPhpUnitTestCaseObjectMethodInvocation('getExaminedValue'),
         ];
 
         $isStringArgumentAssertionMethod = in_array($assertionMethod, $this->methodsWithStringArguments);
+
         if ($isStringArgumentAssertionMethod) {
             array_walk($assertionArguments, function (ExpressionInterface &$expression) {
                 $expression = new CastExpression($expression, 'string');
             });
         }
-
-        $expectedValuePlaceholder = new VariableName(VariableNameEnum::EXPECTED_VALUE->value);
 
         return new Body([
             new Statement(

@@ -44,7 +44,7 @@ trait CreateFromIsNotAssertionDataProviderTrait
                         return {{ INSPECTOR }}->getValue($element);
                     })());
                     {{ PHPUNIT }}->assertNotEquals(
-                        {{ PHPUNIT }}->getExpectedValue(),
+                        $expectedValue,
                         {{ PHPUNIT }}->getExaminedValue(),
                         '{
                             \"assertion\": \"$\\\".selector\\\" is-not \\\"value\\\"\"
@@ -85,7 +85,7 @@ trait CreateFromIsNotAssertionDataProviderTrait
                         return $element->getAttribute('attribute_name');
                     })());
                     {{ PHPUNIT }}->assertNotEquals(
-                        {{ PHPUNIT }}->getExpectedValue(),
+                        $expectedValue,
                         {{ PHPUNIT }}->getExaminedValue(),
                         '{
                             \"assertion\": \"$\\\".selector\\\".attribute_name is-not \\\"value\\\"\"

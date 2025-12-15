@@ -44,7 +44,7 @@ trait CreateFromIsAssertionDataProviderTrait
                         return {{ INSPECTOR }}->getValue($element);
                     })());
                     {{ PHPUNIT }}->assertEquals(
-                        {{ PHPUNIT }}->getExpectedValue(),
+                        $expectedValue,
                         {{ PHPUNIT }}->getExaminedValue(),
                         '{
                             \"assertion\": \"$\\\".selector\\\" is \\\"value\\\"\"
@@ -88,7 +88,7 @@ trait CreateFromIsAssertionDataProviderTrait
                         return {{ INSPECTOR }}->getValue($element);
                     })());
                     {{ PHPUNIT }}->assertEquals(
-                        {{ PHPUNIT }}->getExpectedValue(),
+                        $expectedValue,
                         {{ PHPUNIT }}->getExaminedValue(),
                         '{
                             \"assertion\": \"$\\\".parent\\\" >> $\\\".child\\\" is \\\"value\\\"\"
@@ -129,7 +129,7 @@ trait CreateFromIsAssertionDataProviderTrait
                         return $element->getAttribute('attribute_name');
                     })());
                     {{ PHPUNIT }}->assertEquals(
-                        {{ PHPUNIT }}->getExpectedValue(),
+                        $expectedValue,
                         {{ PHPUNIT }}->getExaminedValue(),
                         '{
                             \"assertion\": \"$\\\".selector\\\".attribute_name is \\\"value\\\"\"
@@ -167,7 +167,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
             })());
             {{ PHPUNIT }}->assertEquals(
-                {{ PHPUNIT }}->getExpectedValue(),
+                $expectedValue,
                 {{ PHPUNIT }}->getExaminedValue(),
                 '{
                     \"assertion\": \"$browser.size is \\\"value\\\"\"
@@ -198,7 +198,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     $expectedValue = "value" ?? null;
                     {{ PHPUNIT }}->setExaminedValue({{ ENV }}['KEY'] ?? null);
                     {{ PHPUNIT }}->assertEquals(
-                        {{ PHPUNIT }}->getExpectedValue(),
+                        $expectedValue,
                         {{ PHPUNIT }}->getExaminedValue(),
                         '{
                             \"assertion\": \"$env.KEY is \\\"value\\\"\"
@@ -229,7 +229,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     $expectedValue = "value" ?? null;
                     {{ PHPUNIT }}->setExaminedValue({{ ENV }}['KEY'] ?? 'default value');
                     {{ PHPUNIT }}->assertEquals(
-                        {{ PHPUNIT }}->getExpectedValue(),
+                        $expectedValue,
                         {{ PHPUNIT }}->getExaminedValue(),
                         '{
                             \"assertion\": \"$env.KEY|\\\"default value\\\" is \\\"value\\\"\"
@@ -260,7 +260,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     $expectedValue = {{ ENV }}['KEY2'] ?? 'default value 2';
                     {{ PHPUNIT }}->setExaminedValue({{ ENV }}['KEY1'] ?? 'default value 1');
                     {{ PHPUNIT }}->assertEquals(
-                        {{ PHPUNIT }}->getExpectedValue(),
+                        $expectedValue,
                         {{ PHPUNIT }}->getExaminedValue(),
                         '{
                             \"assertion\": \"$env.KEY1|\\\"default value 1\\\" is $env.KEY2|\\\"default value 2\\\"\"
@@ -291,7 +291,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     $expectedValue = "value" ?? null;
                     {{ PHPUNIT }}->setExaminedValue({{ CLIENT }}->getTitle() ?? null);
                     {{ PHPUNIT }}->assertEquals(
-                        {{ PHPUNIT }}->getExpectedValue(),
+                        $expectedValue,
                         {{ PHPUNIT }}->getExaminedValue(),
                         '{
                             \"assertion\": \"$page.title is \\\"value\\\"\"
@@ -335,7 +335,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
             })());
             {{ PHPUNIT }}->assertEquals(
-                {{ PHPUNIT }}->getExpectedValue(),
+                $expectedValue,
                 {{ PHPUNIT }}->getExaminedValue(),
                 '{
                     \"assertion\": \"$browser.size is $\\\".parent\\\" >> $\\\".child\\\"\"
@@ -381,7 +381,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
             })());
             {{ PHPUNIT }}->assertEquals(
-                {{ PHPUNIT }}->getExpectedValue(),
+                $expectedValue,
                 {{ PHPUNIT }}->getExaminedValue(),
                 '{
                     \"assertion\": \"$browser.size is $\\\".selector\\\"\"
@@ -427,7 +427,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
             })());
             {{ PHPUNIT }}->assertEquals(
-                {{ PHPUNIT }}->getExpectedValue(),
+                $expectedValue,
                 {{ PHPUNIT }}->getExaminedValue(),
                 '{
                     \"assertion\": \"$browser.size is $\\\".selector\\\".attribute_name\"
@@ -466,7 +466,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
             })());
             {{ PHPUNIT }}->assertEquals(
-                {{ PHPUNIT }}->getExpectedValue(),
+                $expectedValue,
                 {{ PHPUNIT }}->getExaminedValue(),
                 '{
                     \"assertion\": \"$browser.size is $env.KEY\"
@@ -502,7 +502,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
             })());
             {{ PHPUNIT }}->assertEquals(
-                {{ PHPUNIT }}->getExpectedValue(),
+                $expectedValue,
                 {{ PHPUNIT }}->getExaminedValue(),
                 '{
                     \"assertion\": \"$browser.size is $env.KEY|\\\"default value\\\"\"
@@ -538,7 +538,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
             })());
             {{ PHPUNIT }}->assertEquals(
-                {{ PHPUNIT }}->getExpectedValue(),
+                $expectedValue,
                 {{ PHPUNIT }}->getExaminedValue(),
                 '{
                     \"assertion\": \"$browser.size is $env.KEY|\\\"default value\\\"\"
@@ -569,7 +569,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     $expectedValue = "expected" ?? null;
                     {{ PHPUNIT }}->setExaminedValue("examined" ?? null);
                     {{ PHPUNIT }}->assertEquals(
-                        {{ PHPUNIT }}->getExpectedValue(),
+                        $expectedValue,
                         {{ PHPUNIT }}->getExaminedValue(),
                         '{
                             \"assertion\": \"\\\"examined\\\" is \\\"expected\\\"\"
