@@ -63,8 +63,7 @@ class ComparisonAssertionHandlerTest extends AbstractResolvableTestCase
 
         $this->expectExceptionObject($expectedException);
 
-        $stepName = md5((string) rand());
-        $metadata = new Metadata($stepName, $assertion);
+        $metadata = new Metadata($assertion);
 
         $handler->handle($assertion, $metadata);
     }

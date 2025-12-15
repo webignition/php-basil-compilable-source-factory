@@ -24,7 +24,6 @@ trait CreateFromIsNotAssertionDataProviderTrait
             'is-not comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" is-not "value"'),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -48,8 +47,7 @@ trait CreateFromIsNotAssertionDataProviderTrait
                         {{ PHPUNIT }}->getExpectedValue(),
                         {{ PHPUNIT }}->getExaminedValue(),
                         '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$\\\".selector\\\" is-not \\\"value\\\"\"
+                            \"assertion\": \"$\\\".selector\\\" is-not \\\"value\\\"\"
                         }'
                     );
                     EOD,
@@ -67,7 +65,6 @@ trait CreateFromIsNotAssertionDataProviderTrait
             'is-not comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name is-not "value"'),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -91,8 +88,7 @@ trait CreateFromIsNotAssertionDataProviderTrait
                         {{ PHPUNIT }}->getExpectedValue(),
                         {{ PHPUNIT }}->getExaminedValue(),
                         '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$\\\".selector\\\".attribute_name is-not \\\"value\\\"\"
+                            \"assertion\": \"$\\\".selector\\\".attribute_name is-not \\\"value\\\"\"
                         }'
                     );
                     EOD,

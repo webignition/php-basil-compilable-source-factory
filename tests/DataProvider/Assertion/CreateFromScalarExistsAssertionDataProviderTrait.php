@@ -40,7 +40,7 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
                         {{ PHPUNIT }}->getBooleanExaminedValue(),
                         '{
                             \"step\": \"step name\",
-                            \"statement\": \"$page.url exists\"
+                            \"assertion\": \"$page.url exists\"
                         }'
                     );
                     EOD,
@@ -71,7 +71,7 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
                         {{ PHPUNIT }}->getBooleanExaminedValue(),
                         '{
                             \"step\": \"step name\",
-                            \"statement\": \"$data.key exists\"
+                            \"assertion\": \"$data.key exists\"
                         }'
                     );
                     EOD,

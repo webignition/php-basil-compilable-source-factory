@@ -36,7 +36,6 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
             'not-exists comparison, element identifier examined value' => [
                 'assertion' => $assertionParser->parse('$".selector" not-exists'),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -62,8 +61,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertFalse(
                         {{ PHPUNIT }}->getBooleanExaminedValue(),
                         '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$\\\".selector\\\" not-exists\"
+                            \"assertion\": \"$\\\".selector\\\" not-exists\"
                         }'
                     );
                     EOD,
@@ -72,7 +70,6 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
             'not-exists comparison, attribute identifier examined value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name not-exists'),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -98,8 +95,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertTrue(
                         {{ PHPUNIT }}->getBooleanExaminedValue(),
                         '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$\\\".selector\\\".attribute_name not-exists\"
+                            \"assertion\": \"$\\\".selector\\\".attribute_name not-exists\"
                         }'
                     );
                     {{ PHPUNIT }}->setBooleanExaminedValue(((function () {
@@ -112,8 +108,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertFalse(
                         {{ PHPUNIT }}->getBooleanExaminedValue(),
                         '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$\\\".selector\\\".attribute_name not-exists\"
+                            \"assertion\": \"$\\\".selector\\\".attribute_name not-exists\"
                         }'
                     );
                     EOD,

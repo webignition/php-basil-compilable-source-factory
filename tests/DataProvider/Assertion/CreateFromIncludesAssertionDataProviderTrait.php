@@ -24,7 +24,6 @@ trait CreateFromIncludesAssertionDataProviderTrait
             'includes comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" includes "value"'),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -48,8 +47,7 @@ trait CreateFromIncludesAssertionDataProviderTrait
                         (string) ({{ PHPUNIT }}->getExpectedValue()),
                         (string) ({{ PHPUNIT }}->getExaminedValue()),
                         '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$\\\".selector\\\" includes \\\"value\\\"\"
+                            \"assertion\": \"$\\\".selector\\\" includes \\\"value\\\"\"
                         }'
                     );
                     EOD,
@@ -67,7 +65,6 @@ trait CreateFromIncludesAssertionDataProviderTrait
             'includes comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name includes "value"'),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -91,8 +88,7 @@ trait CreateFromIncludesAssertionDataProviderTrait
                         (string) ({{ PHPUNIT }}->getExpectedValue()),
                         (string) ({{ PHPUNIT }}->getExaminedValue()),
                         '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$\\\".selector\\\".attribute_name includes \\\"value\\\"\"
+                            \"assertion\": \"$\\\".selector\\\".attribute_name includes \\\"value\\\"\"
                         }'
                     );
                     EOD,
