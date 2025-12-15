@@ -58,9 +58,7 @@ class AssertionHandlerPassingAssertionsTest extends AbstractBrowserTestCase
         AssertionInterface $assertion,
         array $additionalVariableIdentifiers = []
     ): void {
-        $stepName = md5((string) rand());
-
-        $source = $this->handler->handle($assertion, $stepName);
+        $source = $this->handler->handle($assertion);
 
         $classCode = $this->testCodeGenerator->createBrowserTestForBlock(
             $source,
