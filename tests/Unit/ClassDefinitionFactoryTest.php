@@ -67,20 +67,15 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                     {
                         public static function setUpBeforeClass(): void
                         {
-                            try {
-                                self::setClientManager(new ClientManager('chrome'));
-                                parent::setUpBeforeClass();
-                                {{ CLIENT }}->request('GET', 'http://example.com');
-                            } catch (\Throwable $exception) {
-                                self::staticSetLastException($exception);
-                            }
+                            self::setClientManager(new ClientManager('chrome'));
+                            parent::setUpBeforeClass();
+                            {{ CLIENT }}->request('GET', 'http://example.com');
                         }
                     }
                     EOF,
                 'expectedMetadata' => new Metadata(
                     classNames: [
                         ClientManager::class,
-                        \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::PANTHER_CLIENT,
@@ -109,20 +104,15 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                     {
                         public static function setUpBeforeClass(): void
                         {
-                            try {
-                                self::setClientManager(new ClientManager('firefox'));
-                                parent::setUpBeforeClass();
-                                {{ CLIENT }}->request('GET', 'http://example.com');
-                            } catch (\Throwable $exception) {
-                                self::staticSetLastException($exception);
-                            }
+                            self::setClientManager(new ClientManager('firefox'));
+                            parent::setUpBeforeClass();
+                            {{ CLIENT }}->request('GET', 'http://example.com');
                         }
                     }
                     EOF,
                 'expectedMetadata' => new Metadata(
                     classNames: [
                         ClientManager::class,
-                        \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::PANTHER_CLIENT,
@@ -151,20 +141,15 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                     {
                         public static function setUpBeforeClass(): void
                         {
-                            try {
-                                self::setClientManager(new ClientManager('unknown'));
-                                parent::setUpBeforeClass();
-                                {{ CLIENT }}->request('GET', 'http://example.com');
-                            } catch (\Throwable $exception) {
-                                self::staticSetLastException($exception);
-                            }
+                            self::setClientManager(new ClientManager('unknown'));
+                            parent::setUpBeforeClass();
+                            {{ CLIENT }}->request('GET', 'http://example.com');
                         }
                     }
                     EOF,
                 'expectedMetadata' => new Metadata(
                     classNames: [
                         ClientManager::class,
-                        \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::PANTHER_CLIENT,
@@ -195,13 +180,9 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                     {
                         public static function setUpBeforeClass(): void
                         {
-                            try {
-                                self::setClientManager(new ClientManager('chrome'));
-                                parent::setUpBeforeClass();
-                                {{ CLIENT }}->request('GET', 'http://example.com');
-                            } catch (\Throwable $exception) {
-                                self::staticSetLastException($exception);
-                            }
+                            self::setClientManager(new ClientManager('chrome'));
+                            parent::setUpBeforeClass();
+                            {{ CLIENT }}->request('GET', 'http://example.com');
                         }
 
                         #[StepName('step one')]
@@ -217,7 +198,6 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                 'expectedMetadata' => new Metadata(
                     classNames: [
                         ClientManager::class,
-                        \Throwable::class,
                         StepName::class,
                     ],
                     variableNames: [
@@ -251,13 +231,9 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                     {
                         public static function setUpBeforeClass(): void
                         {
-                            try {
-                                self::setClientManager(new ClientManager('chrome'));
-                                parent::setUpBeforeClass();
-                                {{ CLIENT }}->request('GET', 'http://example.com');
-                            } catch (\Throwable $exception) {
-                                self::staticSetLastException($exception);
-                            }
+                            self::setClientManager(new ClientManager('chrome'));
+                            parent::setUpBeforeClass();
+                            {{ CLIENT }}->request('GET', 'http://example.com');
                         }
 
                         #[StepName('step one')]
@@ -282,7 +258,6 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                 'expectedMetadata' => new Metadata(
                     classNames: [
                         ClientManager::class,
-                        \Throwable::class,
                         StepName::class,
                     ],
                     variableNames: [

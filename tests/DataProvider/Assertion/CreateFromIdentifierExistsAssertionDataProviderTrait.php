@@ -59,7 +59,6 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier)
                         );
                     } catch (InvalidLocatorException $exception) {
-                        self::staticSetLastException($exception);
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
                     {{ PHPUNIT }}->assertTrue(
@@ -93,7 +92,6 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier)
                         );
                     } catch (InvalidLocatorException $exception) {
-                        self::staticSetLastException($exception);
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
                     {{ PHPUNIT }}->assertTrue(
@@ -140,7 +138,6 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier)
                         );
                     } catch (InvalidLocatorException $exception) {
-                        self::staticSetLastException($exception);
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
                     {{ PHPUNIT }}->assertTrue(
@@ -174,7 +171,6 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier)
                         );
                     } catch (InvalidLocatorException $exception) {
-                        self::staticSetLastException($exception);
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
                     {{ PHPUNIT }}->assertTrue(
@@ -236,7 +232,6 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier)
                         );
                     } catch (InvalidLocatorException $exception) {
-                        self::staticSetLastException($exception);
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
                     {{ PHPUNIT }}->assertTrue(
@@ -286,7 +281,6 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier)
                         );
                     } catch (InvalidLocatorException $exception) {
-                        self::staticSetLastException($exception);
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
                     {{ PHPUNIT }}->assertTrue(
@@ -336,7 +330,6 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier)
                         );
                     } catch (InvalidLocatorException $exception) {
-                        self::staticSetLastException($exception);
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
                     {{ PHPUNIT }}->assertTrue(
@@ -386,7 +379,6 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier)
                         );
                     } catch (InvalidLocatorException $exception) {
-                        self::staticSetLastException($exception);
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
                     {{ PHPUNIT }}->assertTrue(

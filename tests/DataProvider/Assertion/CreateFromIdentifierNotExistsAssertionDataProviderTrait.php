@@ -55,7 +55,6 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                             {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier)
                         );
                     } catch (InvalidLocatorException $exception) {
-                        self::staticSetLastException($exception);
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
                     {{ PHPUNIT }}->assertFalse(
@@ -89,7 +88,6 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                             {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier)
                         );
                     } catch (InvalidLocatorException $exception) {
-                        self::staticSetLastException($exception);
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
                     {{ PHPUNIT }}->assertTrue(

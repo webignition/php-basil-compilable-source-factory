@@ -7,16 +7,12 @@ namespace webignition\BasilCompilableSourceFactory;
 use webignition\BaseBasilTestCase\ClientManager;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
-use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\CatchBlock;
-use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryBlock;
-use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryCatchBlock;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\ClassBody;
 use webignition\BasilCompilableSourceFactory\Model\ClassDefinition;
 use webignition\BasilCompilableSourceFactory\Model\ClassDefinitionInterface;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\ClassSignature;
-use webignition\BasilCompilableSourceFactory\Model\Expression\CatchExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinition;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinitionInterface;
@@ -25,10 +21,7 @@ use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethod
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
-use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclaration;
-use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclarationCollection;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilModels\Model\Test\NamedTestInterface;
 use webignition\BasilModels\Model\Test\TestInterface;
 
@@ -84,7 +77,7 @@ class ClassDefinitionFactory
 
     private function createSetupBeforeClassMethod(TestInterface $test): MethodDefinitionInterface
     {
-        $tryBody = new Body([
+        $setupBeforeClassBody = new Body([
             new Statement(
                 new StaticObjectMethodInvocation(
                     new StaticObject('self'),
@@ -116,31 +109,7 @@ class ClassDefinitionFactory
             ),
         ]);
 
-        $catchBody = new Body([
-            new Statement(
-                new StaticObjectMethodInvocation(
-                    new StaticObject('self'),
-                    'staticSetLastException',
-                    new MethodArguments([
-                        new VariableName('exception')
-                    ])
-                ),
-            ),
-        ]);
-
-        $tryCatchBlock = new TryCatchBlock(
-            new TryBlock($tryBody),
-            new CatchBlock(
-                new CatchExpression(
-                    new ObjectTypeDeclarationCollection([
-                        new ObjectTypeDeclaration(new ClassName(\Throwable::class))
-                    ])
-                ),
-                $catchBody
-            )
-        );
-
-        $method = new MethodDefinition('setUpBeforeClass', $tryCatchBlock);
+        $method = new MethodDefinition('setUpBeforeClass', $setupBeforeClassBody);
 
         $method->setStatic();
         $method->setReturnType('void');

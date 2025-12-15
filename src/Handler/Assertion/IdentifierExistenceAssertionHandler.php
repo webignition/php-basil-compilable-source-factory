@@ -29,13 +29,10 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ObjectPropertyAcce
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
-use webignition\BasilCompilableSourceFactory\Model\StaticObject;
 use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclaration;
 use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclarationCollection;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilModels\Model\Action\ActionInterface;
 use webignition\BasilModels\Model\Assertion\Assertion;
@@ -228,13 +225,6 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
                     ])
                 ),
                 Body::createFromExpressions([
-                    new StaticObjectMethodInvocation(
-                        new StaticObject('self'),
-                        'staticSetLastException',
-                        new MethodArguments([
-                            new VariableName('exception')
-                        ])
-                    ),
                     new ObjectMethodInvocation(
                         new VariableDependency(VariableNameEnum::PHPUNIT_TEST_CASE),
                         'fail',
