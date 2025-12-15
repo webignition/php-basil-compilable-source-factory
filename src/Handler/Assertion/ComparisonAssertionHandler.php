@@ -75,11 +75,9 @@ class ComparisonAssertionHandler extends AbstractAssertionHandler
         $expectedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull((string) $assertion->getValue());
 
         $expectedValuePlaceholder = new VariableName(VariableNameEnum::EXPECTED_VALUE->value);
+        $examinedValuePlaceholder = new VariableName(VariableNameEnum::EXAMINED_VALUE->value);
 
-        $assertionArguments = [
-            $expectedValuePlaceholder,
-            $this->createPhpUnitTestCaseObjectMethodInvocation('getExaminedValue'),
-        ];
+        $assertionArguments = [$expectedValuePlaceholder, $examinedValuePlaceholder];
 
         $isStringArgumentAssertionMethod = in_array($assertionMethod, $this->methodsWithStringArguments);
 
@@ -94,10 +92,7 @@ class ComparisonAssertionHandler extends AbstractAssertionHandler
                 new AssignmentExpression($expectedValuePlaceholder, $expectedAccessor),
             ),
             new Statement(
-                $this->createPhpUnitTestCaseObjectMethodInvocation(
-                    'setExaminedValue',
-                    new MethodArguments([$examinedAccessor])
-                )
+                new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
             ),
             $this->createAssertionStatement($assertion, $metadata, new MethodArguments($assertionArguments)),
         ]);

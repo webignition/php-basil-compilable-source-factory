@@ -15,4 +15,5 @@ enum VariableName: string
     case PANTHER_CRAWLER = 'CRAWLER';
     case ASSERTION_FACTORY = 'ASSERTION_FACTORY';
     case EXPECTED_VALUE = 'expectedValue';
+    case EXAMINED_VALUE = 'examinedValue';
 }

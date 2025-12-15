@@ -36,16 +36,16 @@ trait CreateFromMatchesAssertionDataProviderTrait
                 ),
                 'expectedRenderedContent' => <<<'EOD'
                     $expectedValue = "/^value/" ?? null;
-                    {{ PHPUNIT }}->setExaminedValue((function () {
+                    $examinedValue = (function () {
                         $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson('{
                             "locator": ".selector"
                         }'));
                     
                         return {{ INSPECTOR }}->getValue($element);
-                    })());
+                    })();
                     {{ PHPUNIT }}->assertMatchesRegularExpression(
                         $expectedValue,
-                        {{ PHPUNIT }}->getExaminedValue(),
+                        $examinedValue,
                         '{
                             \"assertion\": \"$\\\".selector\\\" matches \\\"\\/^value\\/\\\"\"
                         }'
@@ -77,16 +77,16 @@ trait CreateFromMatchesAssertionDataProviderTrait
                 ),
                 'expectedRenderedContent' => <<<'EOD'
                     $expectedValue = "/^value/" ?? null;
-                    {{ PHPUNIT }}->setExaminedValue((function () {
+                    $examinedValue = (function () {
                         $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson('{
                             "locator": ".selector"
                         }'));
                     
                         return $element->getAttribute('attribute_name');
-                    })());
+                    })();
                     {{ PHPUNIT }}->assertMatchesRegularExpression(
                         $expectedValue,
-                        {{ PHPUNIT }}->getExaminedValue(),
+                        $examinedValue,
                         '{
                             \"assertion\": \"$\\\".selector\\\".attribute_name matches \\\"\\/^value\\/\\\"\"
                         }'

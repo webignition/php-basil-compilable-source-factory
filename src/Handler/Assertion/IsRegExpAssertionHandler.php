@@ -6,10 +6,12 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
+use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
+use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
@@ -17,6 +19,7 @@ use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumen
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ErrorSuppressedMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
@@ -91,12 +94,14 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
         AssertionInterface $assertion,
         Metadata $metadata,
     ): BodyInterface {
+        $examinedValuePlaceholder = new VariableName(VariableNameEnum::EXAMINED_VALUE->value);
+
         $pregMatchInvocation = new ErrorSuppressedMethodInvocation(
             new MethodInvocation(
                 'preg_match',
                 new MethodArguments(
                     $this->argumentFactory->create(
-                        $this->createPhpUnitTestCaseObjectMethodInvocation('getExaminedValue'),
+                        $examinedValuePlaceholder,
                         null,
                     )
                 )
@@ -111,10 +116,7 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
 
         return new Body([
             Body::createFromExpressions([
-                $this->createPhpUnitTestCaseObjectMethodInvocation(
-                    'setExaminedValue',
-                    new MethodArguments([$examinedAccessor])
-                ),
+                new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
                 $this->createPhpUnitTestCaseObjectMethodInvocation(
                     'setBooleanExpectedValue',
                     new MethodArguments(
