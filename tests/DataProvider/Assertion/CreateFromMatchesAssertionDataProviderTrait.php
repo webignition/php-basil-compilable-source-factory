@@ -5,7 +5,9 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Metadata\Metadata as TestMetadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
+use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Parser\AssertionParser;
 use webignition\DomElementIdentifier\ElementIdentifier;
 
@@ -21,18 +23,34 @@ trait CreateFromMatchesAssertionDataProviderTrait
         return [
             'matches comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" matches "/^value/"'),
-                'expectedRenderedContent' => '{{ PHPUNIT }}->setExpectedValue("/^value/" ?? null);' . "\n"
-                    . '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n"
-                    . '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n"
-                    . '        "locator": ".selector"' . "\n"
-                    . '    }\'));' . "\n"
-                    . "\n"
-                    . '    return {{ INSPECTOR }}->getValue($element);' . "\n"
-                    . '})());' . "\n"
-                    . '{{ PHPUNIT }}->assertMatchesRegularExpression(' . "\n"
-                    . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
-                    . '    {{ PHPUNIT }}->getExaminedValue()' . "\n"
-                    . ');',
+                'metadata' => new TestMetadata(
+                    (function () {
+                        $assertion = \Mockery::mock(AssertionInterface::class);
+                        $assertion
+                            ->shouldReceive('__toString')
+                            ->andReturn('$".selector" matches "/^value/"')
+                        ;
+
+                        return $assertion;
+                    })(),
+                ),
+                'expectedRenderedContent' => <<<'EOD'
+                    {{ PHPUNIT }}->setExpectedValue("/^value/" ?? null);
+                    {{ PHPUNIT }}->setExaminedValue((function () {
+                        $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson('{
+                            "locator": ".selector"
+                        }'));
+                    
+                        return {{ INSPECTOR }}->getValue($element);
+                    })());
+                    {{ PHPUNIT }}->assertMatchesRegularExpression(
+                        {{ PHPUNIT }}->getExpectedValue(),
+                        {{ PHPUNIT }}->getExaminedValue(),
+                        '{
+                            \"assertion\": \"$\\\".selector\\\" matches \\\"\\/^value\\/\\\"\"
+                        }'
+                    );
+                    EOD,
                 'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,
@@ -46,18 +64,34 @@ trait CreateFromMatchesAssertionDataProviderTrait
             ],
             'matches comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name matches "/^value/"'),
-                'expectedRenderedContent' => '{{ PHPUNIT }}->setExpectedValue("/^value/" ?? null);' . "\n"
-                    . '{{ PHPUNIT }}->setExaminedValue((function () {' . "\n"
-                    . '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n"
-                    . '        "locator": ".selector"' . "\n"
-                    . '    }\'));' . "\n"
-                    . "\n"
-                    . '    return $element->getAttribute(\'attribute_name\');' . "\n"
-                    . '})());' . "\n"
-                    . '{{ PHPUNIT }}->assertMatchesRegularExpression(' . "\n"
-                    . '    {{ PHPUNIT }}->getExpectedValue(),' . "\n"
-                    . '    {{ PHPUNIT }}->getExaminedValue()' . "\n"
-                    . ');',
+                'metadata' => new TestMetadata(
+                    (function () {
+                        $assertion = \Mockery::mock(AssertionInterface::class);
+                        $assertion
+                            ->shouldReceive('__toString')
+                            ->andReturn('$".selector".attribute_name matches "/^value/"')
+                        ;
+
+                        return $assertion;
+                    })(),
+                ),
+                'expectedRenderedContent' => <<<'EOD'
+                    {{ PHPUNIT }}->setExpectedValue("/^value/" ?? null);
+                    {{ PHPUNIT }}->setExaminedValue((function () {
+                        $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson('{
+                            "locator": ".selector"
+                        }'));
+                    
+                        return $element->getAttribute('attribute_name');
+                    })());
+                    {{ PHPUNIT }}->assertMatchesRegularExpression(
+                        {{ PHPUNIT }}->getExpectedValue(),
+                        {{ PHPUNIT }}->getExaminedValue(),
+                        '{
+                            \"assertion\": \"$\\\".selector\\\".attribute_name matches \\\"\\/^value\\/\\\"\"
+                        }'
+                    );
+                    EOD,
                 'expectedMetadata' => new Metadata(
                     classNames: [
                         ElementIdentifier::class,

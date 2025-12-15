@@ -10,9 +10,11 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentExcepti
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\ExistenceAssertionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\IdentifierExistenceAssertionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\ScalarExistenceAssertionHandler;
+use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Model\Assertion\Assertion;
+use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Parser\AssertionParser;
 use webignition\BasilValueTypeIdentifier\ValueTypeIdentifier;
 
@@ -25,10 +27,17 @@ class ExistenceAssertionHandlerTest extends TestCase
         $expectedReturnValue = \Mockery::mock(BodyInterface::class);
 
         $assertion = $assertionParser->parse('$page.title exists');
+        $metadata = new Metadata($assertion);
+
         $scalarHandler = \Mockery::mock(ScalarExistenceAssertionHandler::class);
         $scalarHandler
             ->shouldReceive('handle')
-            ->with($assertion)
+            ->withArgs(function (AssertionInterface $passedAssertion, Metadata $passedMetadata) use ($assertion) {
+                self::assertSame($assertion, $passedAssertion);
+                self::assertEquals(new Metadata($assertion), $passedMetadata);
+
+                return true;
+            })
             ->andReturn($expectedReturnValue)
         ;
 
@@ -40,7 +49,7 @@ class ExistenceAssertionHandlerTest extends TestCase
             \Mockery::mock(IdentifierExistenceAssertionHandler::class)
         );
 
-        $this->assertSame($expectedReturnValue, $handler->handle($assertion));
+        $this->assertSame($expectedReturnValue, $handler->handle($assertion, $metadata));
     }
 
     public function testHandleIdentifier(): void
@@ -50,10 +59,17 @@ class ExistenceAssertionHandlerTest extends TestCase
         $expectedReturnValue = \Mockery::mock(BodyInterface::class);
 
         $assertion = $assertionParser->parse('$".selector" exists');
+        $metadata = new Metadata($assertion);
+
         $identifierHandler = \Mockery::mock(IdentifierExistenceAssertionHandler::class);
         $identifierHandler
             ->shouldReceive('handle')
-            ->with($assertion)
+            ->withArgs(function (AssertionInterface $passedAssertion, Metadata $passedMetadata) use ($assertion) {
+                self::assertSame($assertion, $passedAssertion);
+                self::assertEquals(new Metadata($assertion), $passedMetadata);
+
+                return true;
+            })
             ->andReturn($expectedReturnValue)
         ;
 
@@ -65,7 +81,7 @@ class ExistenceAssertionHandlerTest extends TestCase
             $identifierHandler
         );
 
-        $this->assertSame($expectedReturnValue, $handler->handle($assertion));
+        $this->assertSame($expectedReturnValue, $handler->handle($assertion, $metadata));
     }
 
     public function testHandleThrowsUnsupportedContentException(): void
@@ -83,6 +99,8 @@ class ExistenceAssertionHandlerTest extends TestCase
             'invalid'
         ));
 
-        $handler->handle($assertion);
+        $metadata = new Metadata($assertion);
+
+        $handler->handle($assertion, $metadata);
     }
 }
