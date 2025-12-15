@@ -9,6 +9,7 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementExcep
 use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
+use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
 
 class AssertionHandler
 {
@@ -30,9 +31,14 @@ class AssertionHandler
     /**
      * @throws UnsupportedStatementException
      */
-    public function handle(AssertionInterface $assertion, string $stepName): BodyInterface
+    public function handle(AssertionInterface $assertion): BodyInterface
     {
-        $metadata = new Metadata($stepName, $assertion);
+        $sourceStatement = null;
+        if ($assertion instanceof DerivedValueOperationAssertion) {
+            $sourceStatement = $assertion->getSourceStatement();
+        }
+
+        $metadata = new Metadata($assertion, $sourceStatement);
 
         try {
             if ($assertion->isComparison()) {
