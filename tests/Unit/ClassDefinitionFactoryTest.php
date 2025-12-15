@@ -210,7 +210,6 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                             if (self::hasException()) {
                                 return;
                             }
-                            {{ PHPUNIT }}->setCurrentDataSet(null);
                         }
                     }
                     EOF,
@@ -222,7 +221,6 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                     ],
                     variableNames: [
                         VariableName::PANTHER_CLIENT,
-                        VariableName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],
@@ -266,7 +264,6 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                             if (self::hasException()) {
                                 return;
                             }
-                            {{ PHPUNIT }}->setCurrentDataSet(null);
                         }
 
                         #[StepName('step two')]
@@ -275,7 +272,6 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                             if (self::hasException()) {
                                 return;
                             }
-                            {{ PHPUNIT }}->setCurrentDataSet(null);
                         }
                     }
                     EOF,
@@ -287,7 +283,6 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                     ],
                     variableNames: [
                         VariableName::PANTHER_CLIENT,
-                        VariableName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],
