@@ -13,6 +13,8 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
+use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
+use webignition\BasilModels\Model\StatementInterface;
 
 class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
 {
@@ -56,7 +58,6 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
             'no arguments, assertTrue, assertion contains no quotes' => [
                 'assertionMethod' => 'assertTrue',
                 'metadata' => new TestMetaData(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -71,8 +72,7 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
                 'expectedRenderedInvocation' => <<<'EOD'
                     {{ PHPUNIT }}->assertTrue(
                         '{
-                            \"step\": \"step name\",
-                            \"statement\": \"assertion as string\"
+                            \"assertion\": \"assertion as string\"
                         }'
                     )
                     EOD,
@@ -81,7 +81,6 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
             'no arguments, assertTrue, assertion contains quotes' => [
                 'assertionMethod' => 'assertTrue',
                 'metadata' => new TestMetaData(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -96,8 +95,77 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
                 'expectedRenderedInvocation' => <<<'EOD'
                     {{ PHPUNIT }}->assertTrue(
                         '{
-                            \"step\": \"step name\",
-                            \"statement\": \"\'assertion\' \\\"as\\\" string\"
+                            \"assertion\": \"\'assertion\' \\\"as\\\" string\"
+                        }'
+                    )
+                    EOD,
+                'expectedMetadata' => $expectedMetadata,
+            ],
+            'no arguments, assertTrue, derived assertion' => [
+                'assertionMethod' => 'assertTrue',
+                'metadata' => new TestMetaData(
+                    (function () {
+                        $sourceStatement = \Mockery::mock(StatementInterface::class);
+                        $sourceStatement
+                            ->shouldReceive('__toString')
+                            ->andReturn('source assertion as string')
+                        ;
+
+                        $assertion = \Mockery::mock(DerivedValueOperationAssertion::class);
+
+                        $assertion
+                            ->shouldReceive('__toString')
+                            ->andReturn('assertion as string')
+                        ;
+
+                        $assertion
+                            ->shouldReceive('getSourceStatement')
+                            ->andReturn($sourceStatement);
+
+                        return $assertion;
+                    })(),
+                ),
+                'arguments' => new MethodArguments(),
+                'expectedRenderedInvocation' => <<<'EOD'
+                    {{ PHPUNIT }}->assertTrue(
+                        '{
+                            \"assertion\": \"assertion as string\",
+                            \"source\": \"source assertion as string\"
+                        }'
+                    )
+                    EOD,
+                'expectedMetadata' => $expectedMetadata,
+            ],
+            'no arguments, assertTrue, derived assertion contains quotes' => [
+                'assertionMethod' => 'assertTrue',
+                'metadata' => new TestMetaData(
+                    (function () {
+                        $sourceStatement = \Mockery::mock(StatementInterface::class);
+                        $sourceStatement
+                            ->shouldReceive('__toString')
+                            ->andReturn('source "assertion" as \'string\'')
+                        ;
+
+                        $assertion = \Mockery::mock(DerivedValueOperationAssertion::class);
+
+                        $assertion
+                            ->shouldReceive('__toString')
+                            ->andReturn('assertion as string')
+                        ;
+
+                        $assertion
+                            ->shouldReceive('getSourceStatement')
+                            ->andReturn($sourceStatement);
+
+                        return $assertion;
+                    })(),
+                ),
+                'arguments' => new MethodArguments(),
+                'expectedRenderedInvocation' => <<<'EOD'
+                    {{ PHPUNIT }}->assertTrue(
+                        '{
+                            \"assertion\": \"assertion as string\",
+                            \"source\": \"source \\\"assertion\\\" as \'string\'\"
                         }'
                     )
                     EOD,
@@ -106,7 +174,6 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
             'has arguments, assertEquals' => [
                 'assertionMethod' => 'assertEquals',
                 'metadata' => new TestMetaData(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -126,8 +193,7 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
                         100,
                         'string',
                         '{
-                            \"step\": \"step name\",
-                            \"statement\": \"assertion as string\"
+                            \"assertion\": \"assertion as string\"
                         }'
                     )
                     EOD,
@@ -136,7 +202,6 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
             'has arguments, assertNotEquals' => [
                 'assertionMethod' => 'assertNotEquals',
                 'metadata' => new TestMetaData(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -156,8 +221,7 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
                         100,
                         'string',
                         '{
-                            \"step\": \"step name\",
-                            \"statement\": \"assertion as string\"
+                            \"assertion\": \"assertion as string\"
                         }'
                     )
                     EOD,
