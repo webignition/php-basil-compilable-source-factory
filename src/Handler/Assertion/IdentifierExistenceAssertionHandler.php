@@ -123,57 +123,53 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
             )
         );
 
-        if (!$domIdentifier instanceof AttributeIdentifierInterface) {
-            return new Body([
-                new Statement(
-                    new AssignmentExpression($examinedElementIdentifierPlaceholder, $elementIdentifierExpression)
-                ),
-                $this->createNavigatorHasCallTryCatchBlock($elementSetBooleanExaminedValueInvocation),
-                $assertionStatement,
-            ]);
-        }
-
-        $elementIdentifierString = (string) ElementIdentifier::fromAttributeIdentifier($domIdentifier);
-        $elementExistsAssertion = new Assertion(
-            $elementIdentifierString . ' exists',
-            $elementIdentifierString,
-            'exists'
-        );
-
-        $attributeNullComparisonExpression = new ComparisonExpression(
-            $this->domIdentifierHandler->handleAttributeValue(
-                $this->elementIdentifierSerializer->serialize($domIdentifier),
-                $domIdentifier->getAttributeName()
-            ),
-            new LiteralExpression('null'),
-            '??'
-        );
-
-        $attributeSetBooleanExaminedValueInvocation = $this->createSetBooleanExaminedValueInvocation(
-            new MethodArguments([
-                new ComparisonExpression(
-                    new EncapsulatedExpression($attributeNullComparisonExpression),
-                    new LiteralExpression('null'),
-                    '!=='
-                ),
-            ])
-        );
-
-        return new Body([
+        $body = new Body([
             new Statement(
                 new AssignmentExpression($examinedElementIdentifierPlaceholder, $elementIdentifierExpression)
             ),
             $this->createNavigatorHasCallTryCatchBlock($elementSetBooleanExaminedValueInvocation),
-            $this->createAssertionStatement(
-                $elementExistsAssertion,
-                $metadata,
-                new MethodArguments([
-                    $this->createGetBooleanExaminedValueInvocation()
-                ])
-            ),
-            new Statement($attributeSetBooleanExaminedValueInvocation),
-            $assertionStatement,
         ]);
+
+        if ($domIdentifier instanceof AttributeIdentifierInterface) {
+            $elementIdentifierString = (string) ElementIdentifier::fromAttributeIdentifier($domIdentifier);
+            $elementExistsAssertion = new Assertion(
+                $elementIdentifierString . ' exists',
+                $elementIdentifierString,
+                'exists'
+            );
+
+            $attributeNullComparisonExpression = new ComparisonExpression(
+                $this->domIdentifierHandler->handleAttributeValue(
+                    $this->elementIdentifierSerializer->serialize($domIdentifier),
+                    $domIdentifier->getAttributeName()
+                ),
+                new LiteralExpression('null'),
+                '??'
+            );
+
+            $attributeSetBooleanExaminedValueInvocation = $this->createSetBooleanExaminedValueInvocation(
+                new MethodArguments([
+                    new ComparisonExpression(
+                        new EncapsulatedExpression($attributeNullComparisonExpression),
+                        new LiteralExpression('null'),
+                        '!=='
+                    ),
+                ])
+            );
+
+            $body = $body->withContent([
+                $this->createAssertionStatement(
+                    $elementExistsAssertion,
+                    $metadata,
+                    new MethodArguments([
+                        $this->createGetBooleanExaminedValueInvocation()
+                    ])
+                ),
+                new Statement($attributeSetBooleanExaminedValueInvocation),
+            ]);
+        }
+
+        return $body->withContent([$assertionStatement]);
     }
 
     protected function getOperationToAssertionTemplateMap(): array
