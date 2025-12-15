@@ -37,7 +37,7 @@ class StepHandler
     /**
      * @throws UnsupportedStepException
      */
-    public function handle(StepInterface $step, string $stepName): BodyInterface
+    public function handle(StepInterface $step): BodyInterface
     {
         $bodySources = [];
 
@@ -45,7 +45,7 @@ class StepHandler
             foreach ($step->getActions() as $action) {
                 try {
                     $derivedActionAssertions = $this->derivedAssertionFactory->createForAction($action);
-                    $bodySources[] = $this->createDerivedAssertionsBody($derivedActionAssertions, $stepName);
+                    $bodySources[] = $this->createDerivedAssertionsBody($derivedActionAssertions);
                 } catch (UnsupportedContentException $unsupportedContentException) {
                     throw new UnsupportedStatementException($action, $unsupportedContentException);
                 }
@@ -68,11 +68,11 @@ class StepHandler
                 }
             }
 
-            $bodySources[] = $this->createDerivedAssertionsBody($derivedAssertionAssertions, $stepName);
+            $bodySources[] = $this->createDerivedAssertionsBody($derivedAssertionAssertions);
 
             foreach ($stepAssertions as $assertion) {
                 $bodySources[] = $this->statementBlockFactory->create($assertion);
-                $bodySources[] = $this->assertionHandler->handle($assertion, $stepName);
+                $bodySources[] = $this->assertionHandler->handle($assertion);
                 $bodySources[] = new EmptyLine();
             }
         } catch (UnsupportedStatementException $unsupportedStatementException) {
@@ -85,12 +85,12 @@ class StepHandler
     /**
      * @throws UnsupportedStatementException
      */
-    private function createDerivedAssertionsBody(UniqueAssertionCollection $assertions, string $stepName): BodyInterface
+    private function createDerivedAssertionsBody(UniqueAssertionCollection $assertions): BodyInterface
     {
         $derivedAssertionBlockSources = [];
         foreach ($assertions as $assertion) {
             $derivedAssertionBlockSources[] = $this->statementBlockFactory->create($assertion);
-            $derivedAssertionBlockSources[] = $this->assertionHandler->handle($assertion, $stepName);
+            $derivedAssertionBlockSources[] = $this->assertionHandler->handle($assertion);
         }
 
         if ([] !== $derivedAssertionBlockSources) {

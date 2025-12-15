@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Metadata\Metadata as TestMetadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
+use webignition\BasilModels\Model\Action\ActionInterface;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
 use webignition\BasilModels\Parser\ActionParser;
@@ -39,7 +40,6 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
             'exists comparison, element identifier examined value' => [
                 'assertion' => $assertionParser->parse('$".selector" exists'),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -65,8 +65,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertTrue(
                         {{ PHPUNIT }}->getBooleanExaminedValue(),
                         '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$\\\".selector\\\" exists\"
+                            \"assertion\": \"$\\\".selector\\\" exists\"
                         }'
                     );
                     EOD,
@@ -75,7 +74,6 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
             'exists comparison, attribute identifier examined value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name exists'),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -101,22 +99,20 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertTrue(
                         {{ PHPUNIT }}->getBooleanExaminedValue(),
                         '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$\\\".selector\\\".attribute_name exists\"
+                            \"assertion\": \"$\\\".selector\\\".attribute_name exists\"
                         }'
                     );
                     {{ PHPUNIT }}->setBooleanExaminedValue(((function () {
                         $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson('{
                             "locator": ".selector"
                         }'));
-                    
+
                         return $element->getAttribute('attribute_name');
                     })() ?? null) !== null);
                     {{ PHPUNIT }}->assertTrue(
                         {{ PHPUNIT }}->getBooleanExaminedValue(),
                         '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$\\\".selector\\\".attribute_name exists\"
+                            \"assertion\": \"$\\\".selector\\\".attribute_name exists\"
                         }'
                     );
                     EOD,
@@ -125,7 +121,6 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
             'exists comparison, css attribute selector containing dot' => [
                 'assertion' => $assertionParser->parse('$"a[href=foo.html]" exists'),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -151,8 +146,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertTrue(
                         {{ PHPUNIT }}->getBooleanExaminedValue(),
                         '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$\\\"a[href=foo.html]\\\" exists\"
+                            \"assertion\": \"$\\\"a[href=foo.html]\\\" exists\"
                         }'
                     );
                     EOD,
@@ -161,7 +155,6 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
             'exists comparison, css attribute selector containing dot with attribute name' => [
                 'assertion' => $assertionParser->parse('$"a[href=foo.html]".attribute_name exists'),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -187,22 +180,20 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertTrue(
                         {{ PHPUNIT }}->getBooleanExaminedValue(),
                         '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$\\\"a[href=foo.html]\\\".attribute_name exists\"
+                            \"assertion\": \"$\\\"a[href=foo.html]\\\".attribute_name exists\"
                         }'
                     );
                     {{ PHPUNIT }}->setBooleanExaminedValue(((function () {
                         $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson('{
                             "locator": "a[href=foo.html]"
                         }'));
-                    
+
                         return $element->getAttribute('attribute_name');
                     })() ?? null) !== null);
                     {{ PHPUNIT }}->assertTrue(
                         {{ PHPUNIT }}->getBooleanExaminedValue(),
                         '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$\\\"a[href=foo.html]\\\".attribute_name exists\"
+                            \"assertion\": \"$\\\"a[href=foo.html]\\\".attribute_name exists\"
                         }'
                     );
                     EOD,
@@ -215,12 +206,22 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     'exists'
                 ),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
-                        $assertion = \Mockery::mock(AssertionInterface::class);
+                        $action = \Mockery::mock(ActionInterface::class);
+                        $action
+                            ->shouldReceive('__toString')
+                            ->andReturn('click $".selector"')
+                        ;
+
+                        $assertion = \Mockery::mock(DerivedValueOperationAssertion::class);
                         $assertion
                             ->shouldReceive('__toString')
                             ->andReturn('$".selector" exists')
+                        ;
+
+                        $assertion
+                            ->shouldReceive('getSourceStatement')
+                            ->andReturn($action)
                         ;
 
                         return $assertion;
@@ -241,8 +242,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertTrue(
                         {{ PHPUNIT }}->getBooleanExaminedValue(),
                         '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$\\\".selector\\\" exists\"
+                            \"assertion\": \"$\\\".selector\\\" exists\",
+                            \"source\": \"click $\\\".selector\\\"\"
                         }'
                     );
                     EOD,
@@ -255,12 +256,22 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     'exists'
                 ),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
-                        $assertion = \Mockery::mock(AssertionInterface::class);
+                        $action = \Mockery::mock(ActionInterface::class);
+                        $action
+                            ->shouldReceive('__toString')
+                            ->andReturn('submit $".selector"')
+                        ;
+
+                        $assertion = \Mockery::mock(DerivedValueOperationAssertion::class);
                         $assertion
                             ->shouldReceive('__toString')
                             ->andReturn('$".selector" exists')
+                        ;
+
+                        $assertion
+                            ->shouldReceive('getSourceStatement')
+                            ->andReturn($action)
                         ;
 
                         return $assertion;
@@ -281,8 +292,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertTrue(
                         {{ PHPUNIT }}->getBooleanExaminedValue(),
                         '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$\\\".selector\\\" exists\"
+                            \"assertion\": \"$\\\".selector\\\" exists\",
+                            \"source\": \"submit $\\\".selector\\\"\"
                         }'
                     );
                     EOD,
@@ -295,12 +306,22 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     'exists'
                 ),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
-                        $assertion = \Mockery::mock(AssertionInterface::class);
+                        $action = \Mockery::mock(ActionInterface::class);
+                        $action
+                            ->shouldReceive('__toString')
+                            ->andReturn('set $".selector" to "value"')
+                        ;
+
+                        $assertion = \Mockery::mock(DerivedValueOperationAssertion::class);
                         $assertion
                             ->shouldReceive('__toString')
                             ->andReturn('$".selector" exists')
+                        ;
+
+                        $assertion
+                            ->shouldReceive('getSourceStatement')
+                            ->andReturn($action)
                         ;
 
                         return $assertion;
@@ -321,8 +342,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertTrue(
                         {{ PHPUNIT }}->getBooleanExaminedValue(),
                         '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$\\\".selector\\\" exists\"
+                            \"assertion\": \"$\\\".selector\\\" exists\",
+                            \"source\": \"set $\\\".selector\\\" to \\\"value\\\"\"
                         }'
                     );
                     EOD,
@@ -335,12 +356,22 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     'exists'
                 ),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
-                        $assertion = \Mockery::mock(AssertionInterface::class);
+                        $action = \Mockery::mock(ActionInterface::class);
+                        $action
+                            ->shouldReceive('__toString')
+                            ->andReturn('wait $".duration"')
+                        ;
+
+                        $assertion = \Mockery::mock(DerivedValueOperationAssertion::class);
                         $assertion
                             ->shouldReceive('__toString')
                             ->andReturn('$".duration" exists')
+                        ;
+
+                        $assertion
+                            ->shouldReceive('getSourceStatement')
+                            ->andReturn($action)
                         ;
 
                         return $assertion;
@@ -361,8 +392,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertTrue(
                         {{ PHPUNIT }}->getBooleanExaminedValue(),
                         '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$\\\".duration\\\" exists\"
+                            \"assertion\": \"$\\\".duration\\\" exists\",
+                            \"source\": \"wait $\\\".duration\\\"\"
                         }'
                     );
                     EOD,

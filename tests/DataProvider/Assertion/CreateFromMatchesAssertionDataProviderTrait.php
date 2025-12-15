@@ -24,7 +24,6 @@ trait CreateFromMatchesAssertionDataProviderTrait
             'matches comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" matches "/^value/"'),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -48,8 +47,7 @@ trait CreateFromMatchesAssertionDataProviderTrait
                         {{ PHPUNIT }}->getExpectedValue(),
                         {{ PHPUNIT }}->getExaminedValue(),
                         '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$\\\".selector\\\" matches \\\"\\/^value\\/\\\"\"
+                            \"assertion\": \"$\\\".selector\\\" matches \\\"\\/^value\\/\\\"\"
                         }'
                     );
                     EOD,
@@ -67,7 +65,6 @@ trait CreateFromMatchesAssertionDataProviderTrait
             'matches comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name matches "/^value/"'),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -91,8 +88,7 @@ trait CreateFromMatchesAssertionDataProviderTrait
                         {{ PHPUNIT }}->getExpectedValue(),
                         {{ PHPUNIT }}->getExaminedValue(),
                         '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$\\\".selector\\\".attribute_name matches \\\"\\/^value\\/\\\"\"
+                            \"assertion\": \"$\\\".selector\\\".attribute_name matches \\\"\\/^value\\/\\\"\"
                         }'
                     );
                     EOD,

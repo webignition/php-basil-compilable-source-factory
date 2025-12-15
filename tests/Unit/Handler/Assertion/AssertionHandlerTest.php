@@ -24,21 +24,14 @@ class AssertionHandlerTest extends TestCase
         $assertionParser = AssertionParser::create();
         $assertion = $assertionParser->parse('$page.title is "value"');
 
-        $stepName = md5((string) rand());
         $expectedReturnValue = \Mockery::mock(BodyInterface::class);
 
         $comparisonHandler = \Mockery::mock(ComparisonAssertionHandler::class);
         $comparisonHandler
             ->shouldReceive('handle')
-            ->withArgs(function (
-                AssertionInterface $passedAssertion,
-                Metadata $passedMetadata
-            ) use (
-                $assertion,
-                $stepName,
-            ) {
+            ->withArgs(function (AssertionInterface $passedAssertion, Metadata $passedMetadata) use ($assertion) {
                 self::assertSame($assertion, $passedAssertion);
-                self::assertEquals(new Metadata($stepName, $assertion), $passedMetadata);
+                self::assertEquals(new Metadata($assertion), $passedMetadata);
 
                 return true;
             })
@@ -51,7 +44,7 @@ class AssertionHandlerTest extends TestCase
             \Mockery::mock(IsRegExpAssertionHandler::class)
         );
 
-        $this->assertSame($expectedReturnValue, $handler->handle($assertion, $stepName));
+        $this->assertSame($expectedReturnValue, $handler->handle($assertion));
     }
 
     public function testHandleExistence(): void
@@ -59,21 +52,14 @@ class AssertionHandlerTest extends TestCase
         $assertionParser = AssertionParser::create();
         $assertion = $assertionParser->parse('$page.title exists');
 
-        $stepName = md5((string) rand());
         $expectedReturnValue = \Mockery::mock(BodyInterface::class);
 
         $existenceHandler = \Mockery::mock(ExistenceAssertionHandler::class);
         $existenceHandler
             ->shouldReceive('handle')
-            ->withArgs(function (
-                AssertionInterface $passedAssertion,
-                Metadata $passedMetadata
-            ) use (
-                $assertion,
-                $stepName,
-            ) {
+            ->withArgs(function (AssertionInterface $passedAssertion, Metadata $passedMetadata) use ($assertion) {
                 self::assertSame($assertion, $passedAssertion);
-                self::assertEquals(new Metadata($stepName, $assertion), $passedMetadata);
+                self::assertEquals(new Metadata($assertion), $passedMetadata);
 
                 return true;
             })
@@ -86,7 +72,7 @@ class AssertionHandlerTest extends TestCase
             \Mockery::mock(IsRegExpAssertionHandler::class)
         );
 
-        $this->assertSame($expectedReturnValue, $handler->handle($assertion, $stepName));
+        $this->assertSame($expectedReturnValue, $handler->handle($assertion));
     }
 
     public function testHandleIsRegExp(): void
@@ -94,21 +80,14 @@ class AssertionHandlerTest extends TestCase
         $assertionParser = AssertionParser::create();
         $assertion = $assertionParser->parse('$page.title is-regexp');
 
-        $stepName = md5((string) rand());
         $expectedReturnValue = \Mockery::mock(BodyInterface::class);
 
         $isRegExpHandler = \Mockery::mock(IsRegExpAssertionHandler::class);
         $isRegExpHandler
             ->shouldReceive('handle')
-            ->withArgs(function (
-                AssertionInterface $passedAssertion,
-                Metadata $passedMetadata
-            ) use (
-                $assertion,
-                $stepName,
-            ) {
+            ->withArgs(function (AssertionInterface $passedAssertion, Metadata $passedMetadata) use ($assertion) {
                 self::assertSame($assertion, $passedAssertion);
-                self::assertEquals(new Metadata($stepName, $assertion), $passedMetadata);
+                self::assertEquals(new Metadata($assertion), $passedMetadata);
 
                 return true;
             })
@@ -121,7 +100,7 @@ class AssertionHandlerTest extends TestCase
             $isRegExpHandler
         );
 
-        $this->assertSame($expectedReturnValue, $handler->handle($assertion, $stepName));
+        $this->assertSame($expectedReturnValue, $handler->handle($assertion));
     }
 
     public function testHandleWrapsUnsupportedContentException(): void
@@ -129,7 +108,6 @@ class AssertionHandlerTest extends TestCase
         $assertionParser = AssertionParser::create();
         $assertion = $assertionParser->parse('$elements.examined is "value"');
 
-        $stepName = md5((string) rand());
         $expectedUnsupportedContentException = new UnsupportedContentException(
             UnsupportedContentException::TYPE_VALUE,
             '$elements.examined'
@@ -138,15 +116,9 @@ class AssertionHandlerTest extends TestCase
         $comparisonHandler = \Mockery::mock(ComparisonAssertionHandler::class);
         $comparisonHandler
             ->shouldReceive('handle')
-            ->withArgs(function (
-                AssertionInterface $passedAssertion,
-                Metadata $passedMetadata
-            ) use (
-                $assertion,
-                $stepName,
-            ) {
+            ->withArgs(function (AssertionInterface $passedAssertion, Metadata $passedMetadata) use ($assertion) {
                 self::assertSame($assertion, $passedAssertion);
-                self::assertEquals(new Metadata($stepName, $assertion), $passedMetadata);
+                self::assertEquals(new Metadata($assertion), $passedMetadata);
 
                 return true;
             })
@@ -164,7 +136,7 @@ class AssertionHandlerTest extends TestCase
             $expectedUnsupportedContentException
         ));
 
-        $handler->handle($assertion, $stepName);
+        $handler->handle($assertion);
     }
 
     public function testHandleThrowsUnsupportedStatementException(): void
@@ -184,7 +156,6 @@ class AssertionHandlerTest extends TestCase
 
         $this->expectExceptionObject(new UnsupportedStatementException($assertion));
 
-        $stepName = md5((string) rand());
-        $handler->handle($assertion, $stepName);
+        $handler->handle($assertion);
     }
 }

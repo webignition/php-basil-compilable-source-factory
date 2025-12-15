@@ -24,7 +24,6 @@ trait CreateFromExcludesAssertionDataProviderTrait
             'excludes comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" excludes "value"'),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -48,8 +47,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
                         (string) ({{ PHPUNIT }}->getExpectedValue()),
                         (string) ({{ PHPUNIT }}->getExaminedValue()),
                         '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$\\\".selector\\\" excludes \\\"value\\\"\"
+                            \"assertion\": \"$\\\".selector\\\" excludes \\\"value\\\"\"
                         }'
                     );
                     EOD,
@@ -67,7 +65,6 @@ trait CreateFromExcludesAssertionDataProviderTrait
             'excludes comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name excludes "value"'),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -91,8 +88,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
                         (string) ({{ PHPUNIT }}->getExpectedValue()),
                         (string) ({{ PHPUNIT }}->getExaminedValue()),
                         '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$\\\".selector\\\".attribute_name excludes \\\"value\\\"\"
+                            \"assertion\": \"$\\\".selector\\\".attribute_name excludes \\\"value\\\"\"
                         }'
                     );
                     EOD,

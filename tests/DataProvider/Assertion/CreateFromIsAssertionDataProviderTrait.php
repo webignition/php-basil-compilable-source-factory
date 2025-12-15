@@ -24,7 +24,6 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" is "value"'),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -48,8 +47,7 @@ trait CreateFromIsAssertionDataProviderTrait
                         {{ PHPUNIT }}->getExpectedValue(),
                         {{ PHPUNIT }}->getExaminedValue(),
                         '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$\\\".selector\\\" is \\\"value\\\"\"
+                            \"assertion\": \"$\\\".selector\\\" is \\\"value\\\"\"
                         }'
                     );
                     EOD,
@@ -67,7 +65,6 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, descendant identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".parent" >> $".child" is "value"'),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -94,8 +91,7 @@ trait CreateFromIsAssertionDataProviderTrait
                         {{ PHPUNIT }}->getExpectedValue(),
                         {{ PHPUNIT }}->getExaminedValue(),
                         '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$\\\".parent\\\" >> $\\\".child\\\" is \\\"value\\\"\"
+                            \"assertion\": \"$\\\".parent\\\" >> $\\\".child\\\" is \\\"value\\\"\"
                         }'
                     );
                     EOD,
@@ -113,7 +109,6 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name is "value"'),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -137,8 +132,7 @@ trait CreateFromIsAssertionDataProviderTrait
                         {{ PHPUNIT }}->getExpectedValue(),
                         {{ PHPUNIT }}->getExaminedValue(),
                         '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$\\\".selector\\\".attribute_name is \\\"value\\\"\"
+                            \"assertion\": \"$\\\".selector\\\".attribute_name is \\\"value\\\"\"
                         }'
                     );
                     EOD,
@@ -155,7 +149,6 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, browser object examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is "value"'),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -177,8 +170,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 {{ PHPUNIT }}->getExpectedValue(),
                 {{ PHPUNIT }}->getExaminedValue(),
                 '{
-                    \"step\": \"step name\",
-                    \"statement\": \"$browser.size is \\\"value\\\"\"
+                    \"assertion\": \"$browser.size is \\\"value\\\"\"
                 }'
             );
             EOD,
@@ -192,7 +184,6 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, environment examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$env.KEY is "value"'),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -210,8 +201,7 @@ trait CreateFromIsAssertionDataProviderTrait
                         {{ PHPUNIT }}->getExpectedValue(),
                         {{ PHPUNIT }}->getExaminedValue(),
                         '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$env.KEY is \\\"value\\\"\"
+                            \"assertion\": \"$env.KEY is \\\"value\\\"\"
                         }'
                     );
                     EOD,
@@ -225,7 +215,6 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, environment examined value with default, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$env.KEY|"default value" is "value"'),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -243,8 +232,7 @@ trait CreateFromIsAssertionDataProviderTrait
                         {{ PHPUNIT }}->getExpectedValue(),
                         {{ PHPUNIT }}->getExaminedValue(),
                         '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$env.KEY|\\\"default value\\\" is \\\"value\\\"\"
+                            \"assertion\": \"$env.KEY|\\\"default value\\\" is \\\"value\\\"\"
                         }'
                     );
                     EOD,
@@ -258,7 +246,6 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, environment examined value with default, environment examined value with default' => [
                 'assertion' => $assertionParser->parse('$env.KEY1|"default value 1" is $env.KEY2|"default value 2"'),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -276,8 +263,7 @@ trait CreateFromIsAssertionDataProviderTrait
                         {{ PHPUNIT }}->getExpectedValue(),
                         {{ PHPUNIT }}->getExaminedValue(),
                         '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$env.KEY1|\\\"default value 1\\\" is $env.KEY2|\\\"default value 2\\\"\"
+                            \"assertion\": \"$env.KEY1|\\\"default value 1\\\" is $env.KEY2|\\\"default value 2\\\"\"
                         }'
                     );
                     EOD,
@@ -291,7 +277,6 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, page object examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$page.title is "value"'),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -309,8 +294,7 @@ trait CreateFromIsAssertionDataProviderTrait
                         {{ PHPUNIT }}->getExpectedValue(),
                         {{ PHPUNIT }}->getExaminedValue(),
                         '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$page.title is \\\"value\\\"\"
+                            \"assertion\": \"$page.title is \\\"value\\\"\"
                         }'
                     );
                     EOD,
@@ -324,7 +308,6 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, browser object examined value, descendant identifier expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $".parent" >> $".child"'),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -355,8 +338,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 {{ PHPUNIT }}->getExpectedValue(),
                 {{ PHPUNIT }}->getExaminedValue(),
                 '{
-                    \"step\": \"step name\",
-                    \"statement\": \"$browser.size is $\\\".parent\\\" >> $\\\".child\\\"\"
+                    \"assertion\": \"$browser.size is $\\\".parent\\\" >> $\\\".child\\\"\"
                 }'
             );
             EOD,
@@ -375,7 +357,6 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, browser object examined value, element identifier expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $".selector"'),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -403,8 +384,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 {{ PHPUNIT }}->getExpectedValue(),
                 {{ PHPUNIT }}->getExaminedValue(),
                 '{
-                    \"step\": \"step name\",
-                    \"statement\": \"$browser.size is $\\\".selector\\\"\"
+                    \"assertion\": \"$browser.size is $\\\".selector\\\"\"
                 }'
             );
             EOD,
@@ -423,7 +403,6 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, browser object examined value, attribute identifier expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $".selector".attribute_name'),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -451,8 +430,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 {{ PHPUNIT }}->getExpectedValue(),
                 {{ PHPUNIT }}->getExaminedValue(),
                 '{
-                    \"step\": \"step name\",
-                    \"statement\": \"$browser.size is $\\\".selector\\\".attribute_name\"
+                    \"assertion\": \"$browser.size is $\\\".selector\\\".attribute_name\"
                 }'
             );
             EOD,
@@ -470,7 +448,6 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, browser object examined value, environment expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $env.KEY'),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -492,8 +469,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 {{ PHPUNIT }}->getExpectedValue(),
                 {{ PHPUNIT }}->getExaminedValue(),
                 '{
-                    \"step\": \"step name\",
-                    \"statement\": \"$browser.size is $env.KEY\"
+                    \"assertion\": \"$browser.size is $env.KEY\"
                 }'
             );
             EOD,
@@ -508,7 +484,6 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, browser object examined value, environment expected value with default' => [
                 'assertion' => $assertionParser->parse('$browser.size is $env.KEY|"default value"'),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -530,8 +505,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 {{ PHPUNIT }}->getExpectedValue(),
                 {{ PHPUNIT }}->getExaminedValue(),
                 '{
-                    \"step\": \"step name\",
-                    \"statement\": \"$browser.size is $env.KEY|\\\"default value\\\"\"
+                    \"assertion\": \"$browser.size is $env.KEY|\\\"default value\\\"\"
                 }'
             );
             EOD,
@@ -546,7 +520,6 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, browser object examined value, page object expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $page.url'),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -568,8 +541,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 {{ PHPUNIT }}->getExpectedValue(),
                 {{ PHPUNIT }}->getExaminedValue(),
                 '{
-                    \"step\": \"step name\",
-                    \"statement\": \"$browser.size is $env.KEY|\\\"default value\\\"\"
+                    \"assertion\": \"$browser.size is $env.KEY|\\\"default value\\\"\"
                 }'
             );
             EOD,
@@ -583,7 +555,6 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, literal string examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('"examined" is "expected"'),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -601,8 +572,7 @@ trait CreateFromIsAssertionDataProviderTrait
                         {{ PHPUNIT }}->getExpectedValue(),
                         {{ PHPUNIT }}->getExaminedValue(),
                         '{
-                            \"step\": \"step name\",
-                            \"statement\": \"\\\"examined\\\" is \\\"expected\\\"\"
+                            \"assertion\": \"\\\"examined\\\" is \\\"expected\\\"\"
                         }'
                     );
                     EOD,

@@ -23,7 +23,6 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
             'exists comparison, page property examined value' => [
                 'assertion' => $assertionParser->parse('$page.url exists'),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -39,8 +38,7 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertTrue(
                         {{ PHPUNIT }}->getBooleanExaminedValue(),
                         '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$page.url exists\"
+                            \"assertion\": \"$page.url exists\"
                         }'
                     );
                     EOD,
@@ -54,7 +52,6 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
             'exists comparison, data parameter value' => [
                 'assertion' => $assertionParser->parse('$data.key exists'),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -70,8 +67,7 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertTrue(
                         {{ PHPUNIT }}->getBooleanExaminedValue(),
                         '{
-                            \"step\": \"step name\",
-                            \"statement\": \"$data.key exists\"
+                            \"assertion\": \"$data.key exists\"
                         }'
                     );
                     EOD,

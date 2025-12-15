@@ -65,7 +65,7 @@ class StepMethodFactory
                 $this->createSetBasilStepNameStatement($stepName),
                 $this->createSetCurrentDataSetStatement($parameterNames),
                 new EmptyLine(),
-                $this->stepHandler->handle($step, $stepName),
+                $this->stepHandler->handle($step),
             ]),
             $parameterNames
         );

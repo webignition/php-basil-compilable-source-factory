@@ -26,22 +26,15 @@ class ExistenceAssertionHandlerTest extends TestCase
 
         $expectedReturnValue = \Mockery::mock(BodyInterface::class);
 
-        $stepName = md5((string) rand());
         $assertion = $assertionParser->parse('$page.title exists');
-        $metadata = new Metadata($stepName, $assertion);
+        $metadata = new Metadata($assertion);
 
         $scalarHandler = \Mockery::mock(ScalarExistenceAssertionHandler::class);
         $scalarHandler
             ->shouldReceive('handle')
-            ->withArgs(function (
-                AssertionInterface $passedAssertion,
-                Metadata $passedMetadata
-            ) use (
-                $assertion,
-                $stepName
-            ) {
+            ->withArgs(function (AssertionInterface $passedAssertion, Metadata $passedMetadata) use ($assertion) {
                 self::assertSame($assertion, $passedAssertion);
-                self::assertEquals(new Metadata($stepName, $assertion), $passedMetadata);
+                self::assertEquals(new Metadata($assertion), $passedMetadata);
 
                 return true;
             })
@@ -65,22 +58,15 @@ class ExistenceAssertionHandlerTest extends TestCase
 
         $expectedReturnValue = \Mockery::mock(BodyInterface::class);
 
-        $stepName = md5((string) rand());
         $assertion = $assertionParser->parse('$".selector" exists');
-        $metadata = new Metadata($stepName, $assertion);
+        $metadata = new Metadata($assertion);
 
         $identifierHandler = \Mockery::mock(IdentifierExistenceAssertionHandler::class);
         $identifierHandler
             ->shouldReceive('handle')
-            ->withArgs(function (
-                AssertionInterface $passedAssertion,
-                Metadata $passedMetadata
-            ) use (
-                $assertion,
-                $stepName
-            ) {
+            ->withArgs(function (AssertionInterface $passedAssertion, Metadata $passedMetadata) use ($assertion) {
                 self::assertSame($assertion, $passedAssertion);
-                self::assertEquals(new Metadata($stepName, $assertion), $passedMetadata);
+                self::assertEquals(new Metadata($assertion), $passedMetadata);
 
                 return true;
             })
@@ -113,8 +99,7 @@ class ExistenceAssertionHandlerTest extends TestCase
             'invalid'
         ));
 
-        $stepName = md5((string) rand());
-        $metadata = new Metadata($stepName, $assertion);
+        $metadata = new Metadata($assertion);
 
         $handler->handle($assertion, $metadata);
     }

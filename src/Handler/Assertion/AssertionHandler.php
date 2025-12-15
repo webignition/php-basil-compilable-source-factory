@@ -30,9 +30,9 @@ class AssertionHandler
     /**
      * @throws UnsupportedStatementException
      */
-    public function handle(AssertionInterface $assertion, string $stepName): BodyInterface
+    public function handle(AssertionInterface $assertion): BodyInterface
     {
-        $metadata = new Metadata($stepName, $assertion);
+        $metadata = new Metadata($assertion);
 
         try {
             if ($assertion->isComparison()) {
