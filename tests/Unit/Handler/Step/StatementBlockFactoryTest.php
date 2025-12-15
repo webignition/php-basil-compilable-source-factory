@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Step;
 
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StatementBlockFactory;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
@@ -87,42 +86,18 @@ class StatementBlockFactoryTest extends AbstractResolvableTestCase
         return [
             'click action' => [
                 'statement' => $clickAction,
-                'expectedRenderedContent' => '// click $".selector"' . "\n"
-                    . '{{ PHPUNIT }}->handledStatements[] = {{ ACTION_FACTORY }}->createFromJson(\'{' . "\n"
-                    . '    "serialised": "click action"' . "\n"
-                    . '}\');',
-                'expectedMetadata' => new Metadata(
-                    variableNames: [
-                        VariableName::ACTION_FACTORY,
-                        VariableName::PHPUNIT_TEST_CASE,
-                    ],
-                ),
+                'expectedRenderedContent' => '// click $".selector"',
+                'expectedMetadata' => new Metadata(),
             ],
             'exists assertion' => [
                 'statement' => $existsAssertion,
-                'expectedRenderedContent' => '// $".selector" exists' . "\n"
-                    . '{{ PHPUNIT }}->handledStatements[] = {{ ASSERTION_FACTORY }}->createFromJson(\'{' . "\n"
-                    . '    "serialised": "exists assertion"' . "\n"
-                    . '}\');',
-                'expectedMetadata' => new Metadata(
-                    variableNames: [
-                        VariableName::ASSERTION_FACTORY,
-                        VariableName::PHPUNIT_TEST_CASE,
-                    ],
-                ),
+                'expectedRenderedContent' => '// $".selector" exists',
+                'expectedMetadata' => new Metadata(),
             ],
             'derived exists assertion' => [
                 'statement' => $derivedElementExistsAssertion,
-                'expectedRenderedContent' => '// $".selector" exists <- click $".selector"' . "\n"
-                    . '{{ PHPUNIT }}->handledStatements[] = {{ ASSERTION_FACTORY }}->createFromJson(\'{' . "\n"
-                    . '    "serialised": "derived exists assertion"' . "\n"
-                    . '}\');',
-                'expectedMetadata' => new Metadata(
-                    variableNames: [
-                        VariableName::ASSERTION_FACTORY,
-                        VariableName::PHPUNIT_TEST_CASE,
-                    ],
-                ),
+                'expectedRenderedContent' => '// $".selector" exists <- click $".selector"',
+                'expectedMetadata' => new Metadata(),
             ],
         ];
     }
