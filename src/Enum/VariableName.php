@@ -14,4 +14,5 @@ enum VariableName: string
     case WEBDRIVER_ELEMENT_MUTATOR = 'MUTATOR';
     case PANTHER_CRAWLER = 'CRAWLER';
     case ASSERTION_FACTORY = 'ASSERTION_FACTORY';
+    case EXPECTED_VALUE = 'expectedValue';
 }

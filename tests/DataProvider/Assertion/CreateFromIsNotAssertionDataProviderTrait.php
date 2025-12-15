@@ -35,7 +35,7 @@ trait CreateFromIsNotAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->setExpectedValue("value" ?? null);
+                    $expectedValue = "value" ?? null;
                     {{ PHPUNIT }}->setExaminedValue((function () {
                         $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson('{
                             "locator": ".selector"
@@ -44,7 +44,7 @@ trait CreateFromIsNotAssertionDataProviderTrait
                         return {{ INSPECTOR }}->getValue($element);
                     })());
                     {{ PHPUNIT }}->assertNotEquals(
-                        {{ PHPUNIT }}->getExpectedValue(),
+                        $expectedValue,
                         {{ PHPUNIT }}->getExaminedValue(),
                         '{
                             \"assertion\": \"$\\\".selector\\\" is-not \\\"value\\\"\"
@@ -76,7 +76,7 @@ trait CreateFromIsNotAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->setExpectedValue("value" ?? null);
+                    $expectedValue = "value" ?? null;
                     {{ PHPUNIT }}->setExaminedValue((function () {
                         $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson('{
                             "locator": ".selector"
@@ -85,7 +85,7 @@ trait CreateFromIsNotAssertionDataProviderTrait
                         return $element->getAttribute('attribute_name');
                     })());
                     {{ PHPUNIT }}->assertNotEquals(
-                        {{ PHPUNIT }}->getExpectedValue(),
+                        $expectedValue,
                         {{ PHPUNIT }}->getExaminedValue(),
                         '{
                             \"assertion\": \"$\\\".selector\\\".attribute_name is-not \\\"value\\\"\"

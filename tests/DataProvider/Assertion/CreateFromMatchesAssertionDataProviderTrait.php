@@ -35,7 +35,7 @@ trait CreateFromMatchesAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->setExpectedValue("/^value/" ?? null);
+                    $expectedValue = "/^value/" ?? null;
                     {{ PHPUNIT }}->setExaminedValue((function () {
                         $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson('{
                             "locator": ".selector"
@@ -44,7 +44,7 @@ trait CreateFromMatchesAssertionDataProviderTrait
                         return {{ INSPECTOR }}->getValue($element);
                     })());
                     {{ PHPUNIT }}->assertMatchesRegularExpression(
-                        {{ PHPUNIT }}->getExpectedValue(),
+                        $expectedValue,
                         {{ PHPUNIT }}->getExaminedValue(),
                         '{
                             \"assertion\": \"$\\\".selector\\\" matches \\\"\\/^value\\/\\\"\"
@@ -76,7 +76,7 @@ trait CreateFromMatchesAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->setExpectedValue("/^value/" ?? null);
+                    $expectedValue = "/^value/" ?? null;
                     {{ PHPUNIT }}->setExaminedValue((function () {
                         $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson('{
                             "locator": ".selector"
@@ -85,7 +85,7 @@ trait CreateFromMatchesAssertionDataProviderTrait
                         return $element->getAttribute('attribute_name');
                     })());
                     {{ PHPUNIT }}->assertMatchesRegularExpression(
-                        {{ PHPUNIT }}->getExpectedValue(),
+                        $expectedValue,
                         {{ PHPUNIT }}->getExaminedValue(),
                         '{
                             \"assertion\": \"$\\\".selector\\\".attribute_name matches \\\"\\/^value\\/\\\"\"

@@ -35,7 +35,7 @@ trait CreateFromIncludesAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->setExpectedValue("value" ?? null);
+                    $expectedValue = "value" ?? null;
                     {{ PHPUNIT }}->setExaminedValue((function () {
                         $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson('{
                             "locator": ".selector"
@@ -44,7 +44,7 @@ trait CreateFromIncludesAssertionDataProviderTrait
                         return {{ INSPECTOR }}->getValue($element);
                     })());
                     {{ PHPUNIT }}->assertStringContainsString(
-                        (string) ({{ PHPUNIT }}->getExpectedValue()),
+                        (string) ($expectedValue),
                         (string) ({{ PHPUNIT }}->getExaminedValue()),
                         '{
                             \"assertion\": \"$\\\".selector\\\" includes \\\"value\\\"\"
@@ -76,7 +76,7 @@ trait CreateFromIncludesAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->setExpectedValue("value" ?? null);
+                    $expectedValue = "value" ?? null;
                     {{ PHPUNIT }}->setExaminedValue((function () {
                         $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson('{
                             "locator": ".selector"
@@ -85,7 +85,7 @@ trait CreateFromIncludesAssertionDataProviderTrait
                         return $element->getAttribute('attribute_name');
                     })());
                     {{ PHPUNIT }}->assertStringContainsString(
-                        (string) ({{ PHPUNIT }}->getExpectedValue()),
+                        (string) ($expectedValue),
                         (string) ({{ PHPUNIT }}->getExaminedValue()),
                         '{
                             \"assertion\": \"$\\\".selector\\\".attribute_name includes \\\"value\\\"\"

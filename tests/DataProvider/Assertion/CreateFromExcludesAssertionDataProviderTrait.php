@@ -35,7 +35,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->setExpectedValue("value" ?? null);
+                    $expectedValue = "value" ?? null;
                     {{ PHPUNIT }}->setExaminedValue((function () {
                         $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson('{
                             "locator": ".selector"
@@ -44,7 +44,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
                         return {{ INSPECTOR }}->getValue($element);
                     })());
                     {{ PHPUNIT }}->assertStringNotContainsString(
-                        (string) ({{ PHPUNIT }}->getExpectedValue()),
+                        (string) ($expectedValue),
                         (string) ({{ PHPUNIT }}->getExaminedValue()),
                         '{
                             \"assertion\": \"$\\\".selector\\\" excludes \\\"value\\\"\"
@@ -76,16 +76,16 @@ trait CreateFromExcludesAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->setExpectedValue("value" ?? null);
+                    $expectedValue = "value" ?? null;
                     {{ PHPUNIT }}->setExaminedValue((function () {
                         $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson('{
                             "locator": ".selector"
                         }'));
-                    
+
                         return $element->getAttribute('attribute_name');
                     })());
                     {{ PHPUNIT }}->assertStringNotContainsString(
-                        (string) ({{ PHPUNIT }}->getExpectedValue()),
+                        (string) ($expectedValue),
                         (string) ({{ PHPUNIT }}->getExaminedValue()),
                         '{
                             \"assertion\": \"$\\\".selector\\\".attribute_name excludes \\\"value\\\"\"
