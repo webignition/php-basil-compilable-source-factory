@@ -5,15 +5,19 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
+use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
+use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
+use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
+use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
 
@@ -83,12 +87,11 @@ class ComparisonAssertionHandler extends AbstractAssertionHandler
             });
         }
 
+        $expectedValuePlaceholder = new VariableName(VariableNameEnum::EXPECTED_VALUE->value);
+
         return new Body([
             new Statement(
-                $this->createPhpUnitTestCaseObjectMethodInvocation(
-                    'setExpectedValue',
-                    new MethodArguments([$expectedAccessor])
-                )
+                new AssignmentExpression($expectedValuePlaceholder, $expectedAccessor),
             ),
             new Statement(
                 $this->createPhpUnitTestCaseObjectMethodInvocation(

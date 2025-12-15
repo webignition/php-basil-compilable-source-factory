@@ -35,7 +35,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->setExpectedValue("value" ?? null);
+                    $expectedValue = "value" ?? null;
                     {{ PHPUNIT }}->setExaminedValue((function () {
                         $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson('{
                             "locator": ".selector"
@@ -76,7 +76,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->setExpectedValue("value" ?? null);
+                    $expectedValue = "value" ?? null;
                     {{ PHPUNIT }}->setExaminedValue((function () {
                         $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson('{
                             "locator": ".child",
@@ -120,7 +120,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->setExpectedValue("value" ?? null);
+                    $expectedValue = "value" ?? null;
                     {{ PHPUNIT }}->setExaminedValue((function () {
                         $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson('{
                             "locator": ".selector"
@@ -160,7 +160,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-            {{ PHPUNIT }}->setExpectedValue("value" ?? null);
+            $expectedValue = "value" ?? null;
             {{ PHPUNIT }}->setExaminedValue((function () {
                 $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
             
@@ -195,7 +195,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->setExpectedValue("value" ?? null);
+                    $expectedValue = "value" ?? null;
                     {{ PHPUNIT }}->setExaminedValue({{ ENV }}['KEY'] ?? null);
                     {{ PHPUNIT }}->assertEquals(
                         {{ PHPUNIT }}->getExpectedValue(),
@@ -226,7 +226,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->setExpectedValue("value" ?? null);
+                    $expectedValue = "value" ?? null;
                     {{ PHPUNIT }}->setExaminedValue({{ ENV }}['KEY'] ?? 'default value');
                     {{ PHPUNIT }}->assertEquals(
                         {{ PHPUNIT }}->getExpectedValue(),
@@ -257,7 +257,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->setExpectedValue({{ ENV }}['KEY2'] ?? 'default value 2');
+                    $expectedValue = {{ ENV }}['KEY2'] ?? 'default value 2';
                     {{ PHPUNIT }}->setExaminedValue({{ ENV }}['KEY1'] ?? 'default value 1');
                     {{ PHPUNIT }}->assertEquals(
                         {{ PHPUNIT }}->getExpectedValue(),
@@ -288,7 +288,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->setExpectedValue("value" ?? null);
+                    $expectedValue = "value" ?? null;
                     {{ PHPUNIT }}->setExaminedValue({{ CLIENT }}->getTitle() ?? null);
                     {{ PHPUNIT }}->assertEquals(
                         {{ PHPUNIT }}->getExpectedValue(),
@@ -319,7 +319,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-            {{ PHPUNIT }}->setExpectedValue((function () {
+            $expectedValue = (function () {
                 $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson('{
                     "locator": ".child",
                     "parent": {
@@ -328,10 +328,10 @@ trait CreateFromIsAssertionDataProviderTrait
                 }'));
             
                 return {{ INSPECTOR }}->getValue($element);
-            })());
+            })();
             {{ PHPUNIT }}->setExaminedValue((function () {
                 $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
-            
+
                 return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
             })());
             {{ PHPUNIT }}->assertEquals(
@@ -368,16 +368,16 @@ trait CreateFromIsAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-            {{ PHPUNIT }}->setExpectedValue((function () {
+            $expectedValue = (function () {
                 $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson('{
                     "locator": ".selector"
                 }'));
             
                 return {{ INSPECTOR }}->getValue($element);
-            })());
+            })();
             {{ PHPUNIT }}->setExaminedValue((function () {
                 $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
-            
+
                 return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
             })());
             {{ PHPUNIT }}->assertEquals(
@@ -414,16 +414,16 @@ trait CreateFromIsAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-            {{ PHPUNIT }}->setExpectedValue((function () {
+            $expectedValue = (function () {
                 $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson('{
                     "locator": ".selector"
                 }'));
             
                 return $element->getAttribute('attribute_name');
-            })());
+            })();
             {{ PHPUNIT }}->setExaminedValue((function () {
                 $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
-            
+
                 return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
             })());
             {{ PHPUNIT }}->assertEquals(
@@ -459,7 +459,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-            {{ PHPUNIT }}->setExpectedValue({{ ENV }}['KEY'] ?? null);
+            $expectedValue = {{ ENV }}['KEY'] ?? null;
             {{ PHPUNIT }}->setExaminedValue((function () {
                 $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
             
@@ -495,7 +495,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-            {{ PHPUNIT }}->setExpectedValue({{ ENV }}['KEY'] ?? 'default value');
+            $expectedValue = {{ ENV }}['KEY'] ?? 'default value';
             {{ PHPUNIT }}->setExaminedValue((function () {
                 $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
             
@@ -531,7 +531,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-            {{ PHPUNIT }}->setExpectedValue({{ CLIENT }}->getCurrentURL() ?? null);
+            $expectedValue = {{ CLIENT }}->getCurrentURL() ?? null;
             {{ PHPUNIT }}->setExaminedValue((function () {
                 $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
             
@@ -566,7 +566,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->setExpectedValue("expected" ?? null);
+                    $expectedValue = "expected" ?? null;
                     {{ PHPUNIT }}->setExaminedValue("examined" ?? null);
                     {{ PHPUNIT }}->assertEquals(
                         {{ PHPUNIT }}->getExpectedValue(),

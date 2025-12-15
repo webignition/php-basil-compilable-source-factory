@@ -35,7 +35,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->setExpectedValue("value" ?? null);
+                    $expectedValue = "value" ?? null;
                     {{ PHPUNIT }}->setExaminedValue((function () {
                         $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson('{
                             "locator": ".selector"
@@ -76,12 +76,12 @@ trait CreateFromExcludesAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->setExpectedValue("value" ?? null);
+                    $expectedValue = "value" ?? null;
                     {{ PHPUNIT }}->setExaminedValue((function () {
                         $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson('{
                             "locator": ".selector"
                         }'));
-                    
+
                         return $element->getAttribute('attribute_name');
                     })());
                     {{ PHPUNIT }}->assertStringNotContainsString(
