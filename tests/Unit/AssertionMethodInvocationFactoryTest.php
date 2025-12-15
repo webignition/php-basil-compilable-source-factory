@@ -120,7 +120,8 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
 
                         $assertion
                             ->shouldReceive('getSourceStatement')
-                            ->andReturn($sourceStatement);
+                            ->andReturn($sourceStatement)
+                        ;
 
                         return $assertion;
                     })(),
@@ -155,7 +156,8 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
 
                         $assertion
                             ->shouldReceive('getSourceStatement')
-                            ->andReturn($sourceStatement);
+                            ->andReturn($sourceStatement)
+                        ;
 
                         return $assertion;
                     })(),

@@ -9,7 +9,6 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementExcep
 use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
-use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
 
 class AssertionHandler
 {

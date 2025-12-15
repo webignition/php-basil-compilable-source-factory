@@ -32,8 +32,7 @@ class ExistenceAssertionHandlerTest extends TestCase
         $scalarHandler = \Mockery::mock(ScalarExistenceAssertionHandler::class);
         $scalarHandler
             ->shouldReceive('handle')
-            ->withArgs(function (AssertionInterface $passedAssertion, Metadata $passedMetadata) use ($assertion)
-            {
+            ->withArgs(function (AssertionInterface $passedAssertion, Metadata $passedMetadata) use ($assertion) {
                 self::assertSame($assertion, $passedAssertion);
                 self::assertEquals(new Metadata($assertion), $passedMetadata);
 
@@ -65,8 +64,7 @@ class ExistenceAssertionHandlerTest extends TestCase
         $identifierHandler = \Mockery::mock(IdentifierExistenceAssertionHandler::class);
         $identifierHandler
             ->shouldReceive('handle')
-            ->withArgs(function (AssertionInterface $passedAssertion, Metadata $passedMetadata) use ($assertion)
-            {
+            ->withArgs(function (AssertionInterface $passedAssertion, Metadata $passedMetadata) use ($assertion) {
                 self::assertSame($assertion, $passedAssertion);
                 self::assertEquals(new Metadata($assertion), $passedMetadata);
 

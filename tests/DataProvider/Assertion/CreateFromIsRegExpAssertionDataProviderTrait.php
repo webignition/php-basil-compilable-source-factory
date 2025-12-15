@@ -29,7 +29,6 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     'is-regexp'
                 ),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -48,7 +47,6 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertFalse(
                         {{ PHPUNIT }}->getBooleanExpectedValue(),
                         '{
-                            \"step\": \"step name\",
                             \"assertion\": \"$\\\".selector\\\" matches \\\"\\/^value\\/\\\"\"
                         }'
                     );
@@ -66,7 +64,6 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     'is-regexp'
                 ),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -91,7 +88,6 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertFalse(
                         {{ PHPUNIT }}->getBooleanExpectedValue(),
                         '{
-                            \"step\": \"step name\",
                             \"assertion\": \"$\\\".selector\\\" matches $\\\".pattern-container\\\"\"
                         }'
                     );
@@ -114,7 +110,6 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     'is-regexp'
                 ),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -139,7 +134,6 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertFalse(
                         {{ PHPUNIT }}->getBooleanExpectedValue(),
                         '{
-                            \"step\": \"step name\",
                             \"assertion\": \"$\\\".selector\\\" matches $\\\".pattern-container\\\".attribute_name\"
                         }'
                     );
@@ -161,7 +155,6 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     'is-regexp'
                 ),
                 'metadata' => new TestMetadata(
-                    'step name',
                     (function () {
                         $assertion = \Mockery::mock(AssertionInterface::class);
                         $assertion
@@ -180,7 +173,6 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertFalse(
                         {{ PHPUNIT }}->getBooleanExpectedValue(),
                         '{
-                            \"step\": \"step name\",
                             \"assertion\": \"$page.title matches $data.pattern\"
                         }'
                     );

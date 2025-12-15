@@ -221,7 +221,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
 
                         $assertion
                             ->shouldReceive('getSourceStatement')
-                            ->andReturn($action);
+                            ->andReturn($action)
+                        ;
 
                         return $assertion;
                     })(),
@@ -270,7 +271,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
 
                         $assertion
                             ->shouldReceive('getSourceStatement')
-                            ->andReturn($action);
+                            ->andReturn($action)
+                        ;
 
                         return $assertion;
                     })(),
@@ -319,7 +321,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
 
                         $assertion
                             ->shouldReceive('getSourceStatement')
-                            ->andReturn($action);
+                            ->andReturn($action)
+                        ;
 
                         return $assertion;
                     })(),
@@ -368,7 +371,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
 
                         $assertion
                             ->shouldReceive('getSourceStatement')
-                            ->andReturn($action);
+                            ->andReturn($action)
+                        ;
 
                         return $assertion;
                     })(),
