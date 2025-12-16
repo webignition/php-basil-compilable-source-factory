@@ -188,9 +188,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                         #[StepName('step one')]
                         public function test1()
                         {
-                            if (self::hasException()) {
-                                return;
-                            }
+
                         }
                     }
                     EOF,
@@ -237,17 +235,13 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                         #[StepName('step one')]
                         public function test1()
                         {
-                            if (self::hasException()) {
-                                return;
-                            }
+
                         }
 
                         #[StepName('step two')]
                         public function test2()
                         {
-                            if (self::hasException()) {
-                                return;
-                            }
+
                         }
                     }
                     EOF,
