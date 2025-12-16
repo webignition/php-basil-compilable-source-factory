@@ -96,13 +96,13 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             \"assertion\": \"$\\\".selector\\\".attribute_name exists\"
                         }'
                     );
-                    {{ PHPUNIT }}->setBooleanExaminedValue(((function () {
+                    $examinedValue = ((function () {
                         $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson('{
                             "locator": ".selector"
                         }'));
 
                         return $element->getAttribute('attribute_name');
-                    })() ?? null) !== null);
+                    })() ?? null) !== null;
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
@@ -171,13 +171,13 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             \"assertion\": \"$\\\"a[href=foo.html]\\\".attribute_name exists\"
                         }'
                     );
-                    {{ PHPUNIT }}->setBooleanExaminedValue(((function () {
+                    $examinedValue = ((function () {
                         $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson('{
                             "locator": "a[href=foo.html]"
                         }'));
 
                         return $element->getAttribute('attribute_name');
-                    })() ?? null) !== null);
+                    })() ?? null) !== null;
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{

@@ -92,13 +92,13 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                             \"assertion\": \"$\\\".selector\\\".attribute_name not-exists\"
                         }'
                     );
-                    {{ PHPUNIT }}->setBooleanExaminedValue(((function () {
+                    $examinedValue = ((function () {
                         $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson('{
                             "locator": ".selector"
                         }'));
                     
                         return $element->getAttribute('attribute_name');
-                    })() ?? null) !== null);
+                    })() ?? null) !== null;
                     {{ PHPUNIT }}->assertFalse(
                         $examinedValue,
                         '{

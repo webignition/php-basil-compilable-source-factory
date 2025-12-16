@@ -143,14 +143,14 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
                 '??'
             );
 
-            $attributeSetBooleanExaminedValueInvocation = $this->createSetBooleanExaminedValueInvocation(
-                new MethodArguments([
-                    new ComparisonExpression(
-                        new EncapsulatedExpression($attributeNullComparisonExpression),
-                        new LiteralExpression('null'),
-                        '!=='
-                    ),
-                ])
+            $examinedAccessor = new ComparisonExpression(
+                new EncapsulatedExpression($attributeNullComparisonExpression),
+                new LiteralExpression('null'),
+                '!=='
+            );
+
+            $examinedValueAssignmentStatement = new Statement(
+                new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
             );
 
             $body = $body->withContent([
@@ -159,7 +159,7 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
                     $metadata,
                     new MethodArguments([$examinedValuePlaceholder])
                 ),
-                new Statement($attributeSetBooleanExaminedValueInvocation),
+                $examinedValueAssignmentStatement,
             ]);
         }
 
