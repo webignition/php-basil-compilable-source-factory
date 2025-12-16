@@ -122,9 +122,7 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
             $this->createAssertionStatement(
                 $assertion,
                 $metadata,
-                new MethodArguments([
-                    $this->createPhpUnitTestCaseObjectMethodInvocation('getBooleanExpectedValue')
-                ])
+                new MethodArguments([$expectedValuePlaceholder])
             ),
         ]);
     }

@@ -43,7 +43,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     $examinedValue = "/^value/" ?? null;
                     $expectedValue = @preg_match($examinedValue, null) === false;
                     {{ PHPUNIT }}->assertFalse(
-                        {{ PHPUNIT }}->getBooleanExpectedValue(),
+                        $expectedValue,
                         '{
                             \"assertion\": \"$\\\".selector\\\" matches \\\"\\/^value\\/\\\"\"
                         }'
@@ -82,7 +82,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     })();
                     $expectedValue = @preg_match($examinedValue, null) === false;
                     {{ PHPUNIT }}->assertFalse(
-                        {{ PHPUNIT }}->getBooleanExpectedValue(),
+                        $expectedValue,
                         '{
                             \"assertion\": \"$\\\".selector\\\" matches $\\\".pattern-container\\\"\"
                         }'
@@ -126,7 +126,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     })();
                     $expectedValue = @preg_match($examinedValue, null) === false;
                     {{ PHPUNIT }}->assertFalse(
-                        {{ PHPUNIT }}->getBooleanExpectedValue(),
+                        $expectedValue,
                         '{
                             \"assertion\": \"$\\\".selector\\\" matches $\\\".pattern-container\\\".attribute_name\"
                         }'
@@ -163,7 +163,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     $examinedValue = $pattern ?? null;
                     $expectedValue = @preg_match($examinedValue, null) === false;
                     {{ PHPUNIT }}->assertFalse(
-                        {{ PHPUNIT }}->getBooleanExpectedValue(),
+                        $expectedValue,
                         '{
                             \"assertion\": \"$page.title matches $data.pattern\"
                         }'
