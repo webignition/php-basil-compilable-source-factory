@@ -23,7 +23,6 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
 
         $expectedMetadata = new Metadata(
             classNames: [
-                ElementIdentifier::class,
                 InvalidLocatorException::class,
             ],
             variableNames: [
@@ -47,11 +46,10 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->examinedElementIdentifier = ElementIdentifier::fromJson('{
-                        "locator": ".selector"
-                    }');
                     try {
-                        $examinedValue = {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier);
+                        $examinedValue = {{ NAVIGATOR }}->has('{
+                            "locator": ".selector"
+                        }');
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
@@ -78,11 +76,10 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->examinedElementIdentifier = ElementIdentifier::fromJson('{
-                        "locator": ".selector"
-                    }');
                     try {
-                        $examinedValue = {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier);
+                        $examinedValue = {{ NAVIGATOR }}->hasOne('{
+                            "locator": ".selector"
+                        }');
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
@@ -93,9 +90,9 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                         }'
                     );
                     $examinedValue = ((function () {
-                        $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson('{
+                        $element = {{ NAVIGATOR }}->findOne('{
                             "locator": ".selector"
-                        }'));
+                        }');
                     
                         return $element->getAttribute('attribute_name');
                     })() ?? null) !== null;
