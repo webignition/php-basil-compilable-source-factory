@@ -59,7 +59,7 @@
     "require": {
         "php": "^8.4",
         "ext-json": "*",
-        "webignition/base-basil-test-case": "^6.1",
+        "webignition/base-basil-test-case": "^7",
         "webignition/basil-dom-identifier-factory": "^1.1",
         "webignition/basil-identifier-analyser": "^2.0",
         "webignition/basil-models": "^9.0",
