@@ -27,7 +27,6 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterfac
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ObjectPropertyAccessExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
-use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
@@ -169,16 +168,6 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
     protected function getOperationToAssertionTemplateMap(): array
     {
         return self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP;
-    }
-
-    private function createSetBooleanExaminedValueInvocation(MethodArgumentsInterface $arguments): ExpressionInterface
-    {
-        return $this->createPhpUnitTestCaseObjectMethodInvocation('setBooleanExaminedValue', $arguments);
-    }
-
-    private function createGetBooleanExaminedValueInvocation(): ExpressionInterface
-    {
-        return $this->createPhpUnitTestCaseObjectMethodInvocation('getBooleanExaminedValue');
     }
 
     private function createDomCrawlerNavigatorCall(
