@@ -87,14 +87,6 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
     {
         $identifier = $assertion->getIdentifier();
 
-        $assertionStatement = $this->createAssertionStatement(
-            $assertion,
-            $metadata,
-            new MethodArguments([
-                $this->createGetBooleanExaminedValueInvocation()
-            ])
-        );
-
         $domIdentifier = $this->domIdentifierFactory->createFromIdentifierString((string) $identifier);
         if (null === $domIdentifier) {
             throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
@@ -119,6 +111,12 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
         $examinedValuePlaceholder = new VariableName(VariableNameEnum::EXAMINED_VALUE->value);
         $examinedValueAssignmentStatement = new Statement(
             new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
+        );
+
+        $assertionStatement = $this->createAssertionStatement(
+            $assertion,
+            $metadata,
+            new MethodArguments([$examinedValuePlaceholder])
         );
 
         $body = new Body([
