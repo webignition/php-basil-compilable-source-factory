@@ -27,12 +27,13 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterfac
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ObjectPropertyAccessExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
-use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
+use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
 use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclaration;
 use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclarationCollection;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
+use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilModels\Model\Action\ActionInterface;
 use webignition\BasilModels\Model\Assertion\Assertion;
@@ -85,14 +86,6 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
     {
         $identifier = $assertion->getIdentifier();
 
-        $assertionStatement = $this->createAssertionStatement(
-            $assertion,
-            $metadata,
-            new MethodArguments([
-                $this->createGetBooleanExaminedValueInvocation()
-            ])
-        );
-
         $domIdentifier = $this->domIdentifierFactory->createFromIdentifierString((string) $identifier);
         if (null === $domIdentifier) {
             throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
@@ -108,87 +101,73 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
             'examinedElementIdentifier'
         );
 
-        $domNavigatorCrawlerCall = $this->createDomCrawlerNavigatorCall(
+        $examinedAccessor = $this->createDomCrawlerNavigatorCall(
             $domIdentifier,
             $assertion,
             $examinedElementIdentifierPlaceholder
         );
 
-        $elementSetBooleanExaminedValueInvocation = $this->createSetBooleanExaminedValueInvocation(
-            new MethodArguments(
-                [
-                    $domNavigatorCrawlerCall
-                ],
-                MethodArgumentsInterface::FORMAT_STACKED
-            )
+        $examinedValuePlaceholder = new VariableName(VariableNameEnum::EXAMINED_VALUE->value);
+        $examinedValueAssignmentStatement = new Statement(
+            new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
         );
 
-        if (!$domIdentifier instanceof AttributeIdentifierInterface) {
-            return new Body([
-                new Statement(
-                    new AssignmentExpression($examinedElementIdentifierPlaceholder, $elementIdentifierExpression)
-                ),
-                $this->createNavigatorHasCallTryCatchBlock($elementSetBooleanExaminedValueInvocation),
-                $assertionStatement,
-            ]);
-        }
-
-        $elementIdentifierString = (string) ElementIdentifier::fromAttributeIdentifier($domIdentifier);
-        $elementExistsAssertion = new Assertion(
-            $elementIdentifierString . ' exists',
-            $elementIdentifierString,
-            'exists'
+        $assertionStatement = $this->createAssertionStatement(
+            $assertion,
+            $metadata,
+            new MethodArguments([$examinedValuePlaceholder])
         );
 
-        $attributeNullComparisonExpression = new ComparisonExpression(
-            $this->domIdentifierHandler->handleAttributeValue(
-                $this->elementIdentifierSerializer->serialize($domIdentifier),
-                $domIdentifier->getAttributeName()
-            ),
-            new LiteralExpression('null'),
-            '??'
-        );
-
-        $attributeSetBooleanExaminedValueInvocation = $this->createSetBooleanExaminedValueInvocation(
-            new MethodArguments([
-                new ComparisonExpression(
-                    new EncapsulatedExpression($attributeNullComparisonExpression),
-                    new LiteralExpression('null'),
-                    '!=='
-                ),
-            ])
-        );
-
-        return new Body([
+        $body = new Body([
             new Statement(
                 new AssignmentExpression($examinedElementIdentifierPlaceholder, $elementIdentifierExpression)
             ),
-            $this->createNavigatorHasCallTryCatchBlock($elementSetBooleanExaminedValueInvocation),
-            $this->createAssertionStatement(
-                $elementExistsAssertion,
-                $metadata,
-                new MethodArguments([
-                    $this->createGetBooleanExaminedValueInvocation()
-                ])
-            ),
-            new Statement($attributeSetBooleanExaminedValueInvocation),
-            $assertionStatement,
+            $this->createNavigatorHasCallTryCatchBlock($examinedValueAssignmentStatement),
         ]);
+
+        if ($domIdentifier instanceof AttributeIdentifierInterface) {
+            $elementIdentifierString = (string) ElementIdentifier::fromAttributeIdentifier($domIdentifier);
+            $elementExistsAssertion = new Assertion(
+                $elementIdentifierString . ' exists',
+                $elementIdentifierString,
+                'exists'
+            );
+
+            $attributeNullComparisonExpression = new ComparisonExpression(
+                $this->domIdentifierHandler->handleAttributeValue(
+                    $this->elementIdentifierSerializer->serialize($domIdentifier),
+                    $domIdentifier->getAttributeName()
+                ),
+                new LiteralExpression('null'),
+                '??'
+            );
+
+            $examinedAccessor = new ComparisonExpression(
+                new EncapsulatedExpression($attributeNullComparisonExpression),
+                new LiteralExpression('null'),
+                '!=='
+            );
+
+            $examinedValueAssignmentStatement = new Statement(
+                new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
+            );
+
+            $body = $body->withContent([
+                $this->createAssertionStatement(
+                    $elementExistsAssertion,
+                    $metadata,
+                    new MethodArguments([$examinedValuePlaceholder])
+                ),
+                $examinedValueAssignmentStatement,
+            ]);
+        }
+
+        return $body->withContent([$assertionStatement]);
     }
 
     protected function getOperationToAssertionTemplateMap(): array
     {
         return self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP;
-    }
-
-    private function createSetBooleanExaminedValueInvocation(MethodArgumentsInterface $arguments): ExpressionInterface
-    {
-        return $this->createPhpUnitTestCaseObjectMethodInvocation('setBooleanExaminedValue', $arguments);
-    }
-
-    private function createGetBooleanExaminedValueInvocation(): ExpressionInterface
-    {
-        return $this->createPhpUnitTestCaseObjectMethodInvocation('getBooleanExaminedValue');
     }
 
     private function createDomCrawlerNavigatorCall(
@@ -212,11 +191,11 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
     }
 
     private function createNavigatorHasCallTryCatchBlock(
-        ExpressionInterface $elementSetBooleanExaminedValueInvocation
+        StatementInterface $setExaminedValueAssignmentStatement
     ): TryCatchBlock {
         return new TryCatchBlock(
             new TryBlock(
-                Body::createFromExpressions([$elementSetBooleanExaminedValueInvocation])
+                new Body([$setExaminedValueAssignmentStatement]),
             ),
             new CatchBlock(
                 new CatchExpression(

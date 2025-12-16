@@ -14,7 +14,6 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpressi
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
-use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
 
 class ScalarExistenceAssertionHandler extends AbstractAssertionHandler
@@ -53,29 +52,19 @@ class ScalarExistenceAssertionHandler extends AbstractAssertionHandler
             '??'
         );
 
-        $setBooleanExaminedValueInvocation = $this->createPhpUnitTestCaseObjectMethodInvocation(
-            'setBooleanExaminedValue',
-            new MethodArguments([
-                new ComparisonExpression(
-                    new EncapsulatedExpression($nullComparisonExpression),
-                    new LiteralExpression('null'),
-                    '!=='
-                ),
-            ])
+        $examinedAccessor = new ComparisonExpression(
+            new EncapsulatedExpression($nullComparisonExpression),
+            new LiteralExpression('null'),
+            '!=='
         );
 
         $assertionStatement = $this->createAssertionStatement(
             $assertion,
             $metadata,
-            new MethodArguments([
-                $this->createPhpUnitTestCaseObjectMethodInvocation('getBooleanExaminedValue')
-            ])
+            new MethodArguments([$examinedAccessor])
         );
 
-        return new Body([
-            new Statement($setBooleanExaminedValueInvocation),
-            $assertionStatement,
-        ]);
+        return new Body([$assertionStatement]);
     }
 
     protected function getOperationToAssertionTemplateMap(): array

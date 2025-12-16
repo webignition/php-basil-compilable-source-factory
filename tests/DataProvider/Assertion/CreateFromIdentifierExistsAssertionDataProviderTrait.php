@@ -55,14 +55,12 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         "locator": ".selector"
                     }');
                     try {
-                        {{ PHPUNIT }}->setBooleanExaminedValue(
-                            {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier)
-                        );
+                        $examinedValue = {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier);
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
                     {{ PHPUNIT }}->assertTrue(
-                        {{ PHPUNIT }}->getBooleanExaminedValue(),
+                        $examinedValue,
                         '{
                             \"assertion\": \"$\\\".selector\\\" exists\"
                         }'
@@ -88,27 +86,25 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         "locator": ".selector"
                     }');
                     try {
-                        {{ PHPUNIT }}->setBooleanExaminedValue(
-                            {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier)
-                        );
+                        $examinedValue = {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier);
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
                     {{ PHPUNIT }}->assertTrue(
-                        {{ PHPUNIT }}->getBooleanExaminedValue(),
+                        $examinedValue,
                         '{
                             \"assertion\": \"$\\\".selector\\\".attribute_name exists\"
                         }'
                     );
-                    {{ PHPUNIT }}->setBooleanExaminedValue(((function () {
+                    $examinedValue = ((function () {
                         $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson('{
                             "locator": ".selector"
                         }'));
 
                         return $element->getAttribute('attribute_name');
-                    })() ?? null) !== null);
+                    })() ?? null) !== null;
                     {{ PHPUNIT }}->assertTrue(
-                        {{ PHPUNIT }}->getBooleanExaminedValue(),
+                        $examinedValue,
                         '{
                             \"assertion\": \"$\\\".selector\\\".attribute_name exists\"
                         }'
@@ -134,14 +130,12 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         "locator": "a[href=foo.html]"
                     }');
                     try {
-                        {{ PHPUNIT }}->setBooleanExaminedValue(
-                            {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier)
-                        );
+                        $examinedValue = {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier);
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
                     {{ PHPUNIT }}->assertTrue(
-                        {{ PHPUNIT }}->getBooleanExaminedValue(),
+                        $examinedValue,
                         '{
                             \"assertion\": \"$\\\"a[href=foo.html]\\\" exists\"
                         }'
@@ -167,27 +161,25 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         "locator": "a[href=foo.html]"
                     }');
                     try {
-                        {{ PHPUNIT }}->setBooleanExaminedValue(
-                            {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier)
-                        );
+                        $examinedValue = {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier);
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
                     {{ PHPUNIT }}->assertTrue(
-                        {{ PHPUNIT }}->getBooleanExaminedValue(),
+                        $examinedValue,
                         '{
                             \"assertion\": \"$\\\"a[href=foo.html]\\\".attribute_name exists\"
                         }'
                     );
-                    {{ PHPUNIT }}->setBooleanExaminedValue(((function () {
+                    $examinedValue = ((function () {
                         $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson('{
                             "locator": "a[href=foo.html]"
                         }'));
 
                         return $element->getAttribute('attribute_name');
-                    })() ?? null) !== null);
+                    })() ?? null) !== null;
                     {{ PHPUNIT }}->assertTrue(
-                        {{ PHPUNIT }}->getBooleanExaminedValue(),
+                        $examinedValue,
                         '{
                             \"assertion\": \"$\\\"a[href=foo.html]\\\".attribute_name exists\"
                         }'
@@ -228,14 +220,12 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         "locator": ".selector"
                     }');
                     try {
-                        {{ PHPUNIT }}->setBooleanExaminedValue(
-                            {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier)
-                        );
+                        $examinedValue = {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier);
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
                     {{ PHPUNIT }}->assertTrue(
-                        {{ PHPUNIT }}->getBooleanExaminedValue(),
+                        $examinedValue,
                         '{
                             \"assertion\": \"$\\\".selector\\\" exists\",
                             \"source\": \"click $\\\".selector\\\"\"
@@ -277,14 +267,12 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         "locator": ".selector"
                     }');
                     try {
-                        {{ PHPUNIT }}->setBooleanExaminedValue(
-                            {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier)
-                        );
+                        $examinedValue = {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier);
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
                     {{ PHPUNIT }}->assertTrue(
-                        {{ PHPUNIT }}->getBooleanExaminedValue(),
+                        $examinedValue,
                         '{
                             \"assertion\": \"$\\\".selector\\\" exists\",
                             \"source\": \"submit $\\\".selector\\\"\"
@@ -326,14 +314,12 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         "locator": ".selector"
                     }');
                     try {
-                        {{ PHPUNIT }}->setBooleanExaminedValue(
-                            {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier)
-                        );
+                        $examinedValue = {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier);
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
                     {{ PHPUNIT }}->assertTrue(
-                        {{ PHPUNIT }}->getBooleanExaminedValue(),
+                        $examinedValue,
                         '{
                             \"assertion\": \"$\\\".selector\\\" exists\",
                             \"source\": \"set $\\\".selector\\\" to \\\"value\\\"\"
@@ -375,14 +361,12 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         "locator": ".duration"
                     }');
                     try {
-                        {{ PHPUNIT }}->setBooleanExaminedValue(
-                            {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier)
-                        );
+                        $examinedValue = {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier);
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
                     {{ PHPUNIT }}->assertTrue(
-                        {{ PHPUNIT }}->getBooleanExaminedValue(),
+                        $examinedValue,
                         '{
                             \"assertion\": \"$\\\".duration\\\" exists\",
                             \"source\": \"wait $\\\".duration\\\"\"

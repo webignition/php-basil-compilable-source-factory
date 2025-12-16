@@ -51,14 +51,12 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                         "locator": ".selector"
                     }');
                     try {
-                        {{ PHPUNIT }}->setBooleanExaminedValue(
-                            {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier)
-                        );
+                        $examinedValue = {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier);
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
                     {{ PHPUNIT }}->assertFalse(
-                        {{ PHPUNIT }}->getBooleanExaminedValue(),
+                        $examinedValue,
                         '{
                             \"assertion\": \"$\\\".selector\\\" not-exists\"
                         }'
@@ -84,27 +82,25 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                         "locator": ".selector"
                     }');
                     try {
-                        {{ PHPUNIT }}->setBooleanExaminedValue(
-                            {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier)
-                        );
+                        $examinedValue = {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier);
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
                     {{ PHPUNIT }}->assertTrue(
-                        {{ PHPUNIT }}->getBooleanExaminedValue(),
+                        $examinedValue,
                         '{
                             \"assertion\": \"$\\\".selector\\\".attribute_name not-exists\"
                         }'
                     );
-                    {{ PHPUNIT }}->setBooleanExaminedValue(((function () {
+                    $examinedValue = ((function () {
                         $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson('{
                             "locator": ".selector"
                         }'));
                     
                         return $element->getAttribute('attribute_name');
-                    })() ?? null) !== null);
+                    })() ?? null) !== null;
                     {{ PHPUNIT }}->assertFalse(
-                        {{ PHPUNIT }}->getBooleanExaminedValue(),
+                        $examinedValue,
                         '{
                             \"assertion\": \"$\\\".selector\\\".attribute_name not-exists\"
                         }'

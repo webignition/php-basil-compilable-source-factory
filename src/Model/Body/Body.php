@@ -78,6 +78,14 @@ class Body implements BodyInterface, ResolvableCollectionInterface
         ]);
     }
 
+    /**
+     * @param BodyContentInterface[] $content
+     */
+    public function withContent(array $content): self
+    {
+        return new Body(array_merge($this->content, $content));
+    }
+
     public function getMetadata(): MetadataInterface
     {
         return $this->metadata;
