@@ -34,7 +34,7 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->setBooleanExaminedValue(({{ CLIENT }}->getCurrentURL() ?? null) !== null);
+                    $examinedValue = ({{ CLIENT }}->getCurrentURL() ?? null) !== null;
                     {{ PHPUNIT }}->assertTrue(
                         {{ PHPUNIT }}->getBooleanExaminedValue(),
                         '{
@@ -63,7 +63,7 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->setBooleanExaminedValue(($key ?? null) !== null);
+                    $examinedValue = ($key ?? null) !== null;
                     {{ PHPUNIT }}->assertTrue(
                         {{ PHPUNIT }}->getBooleanExaminedValue(),
                         '{
