@@ -70,9 +70,7 @@ class ScalarExistenceAssertionHandler extends AbstractAssertionHandler
         $assertionStatement = $this->createAssertionStatement(
             $assertion,
             $metadata,
-            new MethodArguments([
-                $this->createPhpUnitTestCaseObjectMethodInvocation('getBooleanExaminedValue')
-            ])
+            new MethodArguments([$examinedValuePlaceholder])
         );
 
         return new Body([
