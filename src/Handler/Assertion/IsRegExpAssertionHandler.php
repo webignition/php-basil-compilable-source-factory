@@ -16,7 +16,6 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpressi
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
-use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ErrorSuppressedMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
@@ -95,6 +94,7 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
         Metadata $metadata,
     ): BodyInterface {
         $examinedValuePlaceholder = new VariableName(VariableNameEnum::EXAMINED_VALUE->value);
+        $expectedValuePlaceholder = new VariableName(VariableNameEnum::EXPECTED_VALUE->value);
 
         $pregMatchInvocation = new ErrorSuppressedMethodInvocation(
             new MethodInvocation(
@@ -117,15 +117,7 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
         return new Body([
             Body::createFromExpressions([
                 new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
-                $this->createPhpUnitTestCaseObjectMethodInvocation(
-                    'setBooleanExpectedValue',
-                    new MethodArguments(
-                        [
-                            $identityComparison
-                        ],
-                        MethodArgumentsInterface::FORMAT_STACKED
-                    )
-                ),
+                new AssignmentExpression($expectedValuePlaceholder, $identityComparison),
             ]),
             $this->createAssertionStatement(
                 $assertion,

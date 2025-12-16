@@ -41,9 +41,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                 ),
                 'expectedRenderedContent' => <<<'EOD'
                     $examinedValue = "/^value/" ?? null;
-                    {{ PHPUNIT }}->setBooleanExpectedValue(
-                        @preg_match($examinedValue, null) === false
-                    );
+                    $expectedValue = @preg_match($examinedValue, null) === false;
                     {{ PHPUNIT }}->assertFalse(
                         {{ PHPUNIT }}->getBooleanExpectedValue(),
                         '{
@@ -82,9 +80,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     
                         return {{ INSPECTOR }}->getValue($element);
                     })();
-                    {{ PHPUNIT }}->setBooleanExpectedValue(
-                        @preg_match($examinedValue, null) === false
-                    );
+                    $expectedValue = @preg_match($examinedValue, null) === false;
                     {{ PHPUNIT }}->assertFalse(
                         {{ PHPUNIT }}->getBooleanExpectedValue(),
                         '{
@@ -128,9 +124,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     
                         return $element->getAttribute('attribute_name');
                     })();
-                    {{ PHPUNIT }}->setBooleanExpectedValue(
-                        @preg_match($examinedValue, null) === false
-                    );
+                    $expectedValue = @preg_match($examinedValue, null) === false;
                     {{ PHPUNIT }}->assertFalse(
                         {{ PHPUNIT }}->getBooleanExpectedValue(),
                         '{
@@ -167,9 +161,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                 ),
                 'expectedRenderedContent' => <<<'EOD'
                     $examinedValue = $pattern ?? null;
-                    {{ PHPUNIT }}->setBooleanExpectedValue(
-                        @preg_match($examinedValue, null) === false
-                    );
+                    $expectedValue = @preg_match($examinedValue, null) === false;
                     {{ PHPUNIT }}->assertFalse(
                         {{ PHPUNIT }}->getBooleanExpectedValue(),
                         '{
