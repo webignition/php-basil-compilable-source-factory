@@ -65,9 +65,7 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                     #[StepName('Step Name')]
                     public function test1()
                     {
-                        if (self::hasException()) {
-                            return;
-                        }
+                    
                     }
                     EOD,
                 'expectedTestMethodMetadata' => new Metadata(
@@ -85,9 +83,7 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                     #[StepName('step name \'contains\' single quotes')]
                     public function test2()
                     {
-                        if (self::hasException()) {
-                            return;
-                        }
+                    
                     }
                     EOD,
                 'expectedTestMethodMetadata' => new Metadata(
@@ -112,10 +108,6 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                     #[StepName('Step Name')]
                     public function test3()
                     {
-                        if (self::hasException()) {
-                            return;
-                        }
-
                         // mocked step handler response
                     }
                     EOD,
@@ -198,10 +190,6 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                     #[DataProvider('dataProvider4')]
                     public function test4($expected_value, $field_value)
                     {
-                        if (self::hasException()) {
-                            return;
-                        }
-                    
                         // mocked step handler response
                     }
                     EOD,

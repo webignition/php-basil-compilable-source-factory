@@ -8,16 +8,10 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
 use webignition\BasilCompilableSourceFactory\Model\Attribute\DataProviderAttribute;
 use webignition\BasilCompilableSourceFactory\Model\Attribute\StepNameAttribute;
-use webignition\BasilCompilableSourceFactory\Model\Block\IfBlock\IfBlock;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\DataProviderMethodDefinition;
-use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
-use webignition\BasilCompilableSourceFactory\Model\Expression\ReturnExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinition;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinitionInterface;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\StaticObjectMethodInvocation;
-use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
-use webignition\BasilCompilableSourceFactory\Model\StaticObject;
 use webignition\BasilModels\Model\DataSet\DataSetCollection;
 use webignition\BasilModels\Model\DataSet\DataSetCollectionInterface;
 use webignition\BasilModels\Model\Step\StepInterface;
@@ -50,8 +44,6 @@ class StepMethodFactory
         $testMethod = new MethodDefinition(
             'test' . (string) $index,
             new Body([
-                $this->createIfHasExpressionBlock(),
-                new EmptyLine(),
                 $this->stepHandler->handle($step),
             ]),
             $parameterNames
@@ -110,21 +102,5 @@ class StepMethodFactory
         }
 
         return $preparedDataSet;
-    }
-
-    private function createIfHasExpressionBlock(): IfBlock
-    {
-        $expression = new StaticObjectMethodInvocation(
-            new StaticObject('self'),
-            'hasException'
-        );
-
-        $body = new Body([
-            new Statement(
-                new ReturnExpression()
-            )
-        ]);
-
-        return new IfBlock($expression, $body);
     }
 }
