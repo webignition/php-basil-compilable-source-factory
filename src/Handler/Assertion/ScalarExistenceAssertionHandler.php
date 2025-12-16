@@ -5,19 +5,15 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
-use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
-use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
-use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
 
 class ScalarExistenceAssertionHandler extends AbstractAssertionHandler
@@ -62,21 +58,13 @@ class ScalarExistenceAssertionHandler extends AbstractAssertionHandler
             '!=='
         );
 
-        $examinedValuePlaceholder = new VariableName(VariableNameEnum::EXAMINED_VALUE->value);
-        $examinedValueAssignmentStatement = new Statement(
-            new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
-        );
-
         $assertionStatement = $this->createAssertionStatement(
             $assertion,
             $metadata,
-            new MethodArguments([$examinedValuePlaceholder])
+            new MethodArguments([$examinedAccessor])
         );
 
-        return new Body([
-            $examinedValueAssignmentStatement,
-            $assertionStatement,
-        ]);
+        return new Body([$assertionStatement]);
     }
 
     protected function getOperationToAssertionTemplateMap(): array

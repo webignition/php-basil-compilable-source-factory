@@ -34,9 +34,8 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    $examinedValue = ({{ CLIENT }}->getCurrentURL() ?? null) !== null;
                     {{ PHPUNIT }}->assertTrue(
-                        $examinedValue,
+                        ({{ CLIENT }}->getCurrentURL() ?? null) !== null,
                         '{
                             \"assertion\": \"$page.url exists\"
                         }'
@@ -63,9 +62,8 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    $examinedValue = ($key ?? null) !== null;
                     {{ PHPUNIT }}->assertTrue(
-                        $examinedValue,
+                        ($key ?? null) !== null,
                         '{
                             \"assertion\": \"$data.key exists\"
                         }'
