@@ -55,9 +55,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         "locator": ".selector"
                     }');
                     try {
-                        {{ PHPUNIT }}->setBooleanExaminedValue(
-                            {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier)
-                        );
+                        $examinedValue = {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier);
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
@@ -88,9 +86,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         "locator": ".selector"
                     }');
                     try {
-                        {{ PHPUNIT }}->setBooleanExaminedValue(
-                            {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier)
-                        );
+                        $examinedValue = {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier);
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
@@ -134,9 +130,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         "locator": "a[href=foo.html]"
                     }');
                     try {
-                        {{ PHPUNIT }}->setBooleanExaminedValue(
-                            {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier)
-                        );
+                        $examinedValue = {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier);
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
@@ -167,9 +161,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         "locator": "a[href=foo.html]"
                     }');
                     try {
-                        {{ PHPUNIT }}->setBooleanExaminedValue(
-                            {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier)
-                        );
+                        $examinedValue = {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier);
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
@@ -228,9 +220,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         "locator": ".selector"
                     }');
                     try {
-                        {{ PHPUNIT }}->setBooleanExaminedValue(
-                            {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier)
-                        );
+                        $examinedValue = {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier);
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
@@ -277,9 +267,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         "locator": ".selector"
                     }');
                     try {
-                        {{ PHPUNIT }}->setBooleanExaminedValue(
-                            {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier)
-                        );
+                        $examinedValue = {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier);
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
@@ -326,9 +314,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         "locator": ".selector"
                     }');
                     try {
-                        {{ PHPUNIT }}->setBooleanExaminedValue(
-                            {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier)
-                        );
+                        $examinedValue = {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier);
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
@@ -375,9 +361,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         "locator": ".duration"
                     }');
                     try {
-                        {{ PHPUNIT }}->setBooleanExaminedValue(
-                            {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier)
-                        );
+                        $examinedValue = {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier);
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }

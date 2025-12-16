@@ -51,9 +51,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                         "locator": ".selector"
                     }');
                     try {
-                        {{ PHPUNIT }}->setBooleanExaminedValue(
-                            {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier)
-                        );
+                        $examinedValue = {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier);
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
@@ -84,9 +82,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                         "locator": ".selector"
                     }');
                     try {
-                        {{ PHPUNIT }}->setBooleanExaminedValue(
-                            {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier)
-                        );
+                        $examinedValue = {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier);
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }

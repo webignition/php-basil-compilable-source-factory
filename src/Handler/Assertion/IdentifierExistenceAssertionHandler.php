@@ -30,9 +30,11 @@ use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumen
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
+use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
 use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclaration;
 use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclarationCollection;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
+use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilModels\Model\Action\ActionInterface;
 use webignition\BasilModels\Model\Assertion\Assertion;
@@ -108,26 +110,22 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
             'examinedElementIdentifier'
         );
 
-        $domNavigatorCrawlerCall = $this->createDomCrawlerNavigatorCall(
+        $examinedAccessor = $this->createDomCrawlerNavigatorCall(
             $domIdentifier,
             $assertion,
             $examinedElementIdentifierPlaceholder
         );
 
-        $elementSetBooleanExaminedValueInvocation = $this->createSetBooleanExaminedValueInvocation(
-            new MethodArguments(
-                [
-                    $domNavigatorCrawlerCall
-                ],
-                MethodArgumentsInterface::FORMAT_STACKED
-            )
+        $examinedValuePlaceholder = new VariableName(VariableNameEnum::EXAMINED_VALUE->value);
+        $examinedValueAssignmentStatement = new Statement(
+            new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
         );
 
         $body = new Body([
             new Statement(
                 new AssignmentExpression($examinedElementIdentifierPlaceholder, $elementIdentifierExpression)
             ),
-            $this->createNavigatorHasCallTryCatchBlock($elementSetBooleanExaminedValueInvocation),
+            $this->createNavigatorHasCallTryCatchBlock($examinedValueAssignmentStatement),
         ]);
 
         if ($domIdentifier instanceof AttributeIdentifierInterface) {
@@ -208,11 +206,11 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
     }
 
     private function createNavigatorHasCallTryCatchBlock(
-        ExpressionInterface $elementSetBooleanExaminedValueInvocation
+        StatementInterface $setExaminedValueAssignmentStatement
     ): TryCatchBlock {
         return new TryCatchBlock(
             new TryBlock(
-                Body::createFromExpressions([$elementSetBooleanExaminedValueInvocation])
+                new Body([$setExaminedValueAssignmentStatement]),
             ),
             new CatchBlock(
                 new CatchExpression(
