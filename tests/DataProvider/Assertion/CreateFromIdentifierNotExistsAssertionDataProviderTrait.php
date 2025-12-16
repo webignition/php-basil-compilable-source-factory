@@ -87,7 +87,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
                     {{ PHPUNIT }}->assertTrue(
-                        {{ PHPUNIT }}->getBooleanExaminedValue(),
+                        $examinedValue,
                         '{
                             \"assertion\": \"$\\\".selector\\\".attribute_name not-exists\"
                         }'

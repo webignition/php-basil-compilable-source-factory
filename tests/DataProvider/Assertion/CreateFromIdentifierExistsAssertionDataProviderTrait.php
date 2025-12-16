@@ -91,7 +91,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
                     {{ PHPUNIT }}->assertTrue(
-                        {{ PHPUNIT }}->getBooleanExaminedValue(),
+                        $examinedValue,
                         '{
                             \"assertion\": \"$\\\".selector\\\".attribute_name exists\"
                         }'
@@ -166,7 +166,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
                     {{ PHPUNIT }}->assertTrue(
-                        {{ PHPUNIT }}->getBooleanExaminedValue(),
+                        $examinedValue,
                         '{
                             \"assertion\": \"$\\\"a[href=foo.html]\\\".attribute_name exists\"
                         }'

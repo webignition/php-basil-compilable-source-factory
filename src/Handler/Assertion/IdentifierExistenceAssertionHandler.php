@@ -157,9 +157,7 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
                 $this->createAssertionStatement(
                     $elementExistsAssertion,
                     $metadata,
-                    new MethodArguments([
-                        $this->createGetBooleanExaminedValueInvocation()
-                    ])
+                    new MethodArguments([$examinedValuePlaceholder])
                 ),
                 new Statement($attributeSetBooleanExaminedValueInvocation),
             ]);
