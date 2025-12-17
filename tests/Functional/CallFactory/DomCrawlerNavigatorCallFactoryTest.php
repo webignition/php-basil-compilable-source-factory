@@ -7,7 +7,6 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Functional\CallFactory;
 use Facebook\WebDriver\WebDriverElement;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
-use webignition\BasilCompilableSourceFactory\CallFactory\ElementIdentifierCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
@@ -75,7 +74,6 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
      */
     public static function createFindCallDataProvider(): array
     {
-        $elementIdentifierCallFactory = ElementIdentifierCallFactory::createFactory();
         $elementIdentifierSerializer = ElementIdentifierSerializer::createSerializer();
 
         $argumentFactory = ArgumentFactory::createFactory();
