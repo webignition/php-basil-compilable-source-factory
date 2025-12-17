@@ -36,9 +36,9 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
      * @dataProvider createFindCallDataProvider
      */
     public function testCreateFindCall(
-        string              $fixture,
+        string $fixture,
         ExpressionInterface $expression,
-        BodyInterface       $teardownStatements
+        BodyInterface $teardownStatements
     ): void {
         $source = $this->factory->createFindCall($expression);
 
