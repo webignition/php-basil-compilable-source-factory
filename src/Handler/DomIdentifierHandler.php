@@ -82,11 +82,9 @@ class DomIdentifierHandler
 
     public function handleElementValue(string $serializedElementIdentifier): ExpressionInterface
     {
-        $elementIdentifierExpression = $this->elementIdentifierCallFactory->createConstructorCall(
-            $serializedElementIdentifier
+        $findCall = $this->domCrawlerNavigatorCallFactory->createFindCall(
+            $this->argumentFactory->createSingular($serializedElementIdentifier)
         );
-
-        $findCall = $this->domCrawlerNavigatorCallFactory->createFindCall($elementIdentifierExpression);
 
         $elementPlaceholder = new VariableName('element');
 
