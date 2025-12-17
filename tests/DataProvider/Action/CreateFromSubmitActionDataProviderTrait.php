@@ -21,17 +21,16 @@ trait CreateFromSubmitActionDataProviderTrait
         return [
             'interaction action (submit), element identifier' => [
                 'action' => $actionParser->parse('submit $".selector"'),
-                'expectedRenderedSource' => '(function () {' . "\n"
-                    . '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n"
-                    . '        "locator": ".selector"' . "\n"
-                    . '    }\'));' . "\n"
-                    . '    $element->submit();' . "\n"
-                    . '})();' . "\n"
-                    . '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
+                'expectedRenderedSource' => <<< 'EOD'
+                    (function () {
+                        $element = {{ NAVIGATOR }}->findOne('{
+                            "locator": ".selector"
+                        }');
+                        $element->submit();
+                    })();
+                    {{ PHPUNIT }}->refreshCrawlerAndNavigator();
+                    EOD,
                 'expectedMetadata' => new Metadata(
-                    classNames: [
-                        ElementIdentifier::class,
-                    ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::PHPUNIT_TEST_CASE,
