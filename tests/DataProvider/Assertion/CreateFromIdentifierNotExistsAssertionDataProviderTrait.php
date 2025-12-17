@@ -9,7 +9,6 @@ use webignition\BasilCompilableSourceFactory\Metadata\Metadata as TestMetadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Parser\AssertionParser;
-use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\SymfonyDomCrawlerNavigator\Exception\InvalidLocatorException;
 
 trait CreateFromIdentifierNotExistsAssertionDataProviderTrait

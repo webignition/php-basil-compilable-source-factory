@@ -12,7 +12,6 @@ use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
 use webignition\BasilModels\Parser\ActionParser;
 use webignition\BasilModels\Parser\AssertionParser;
-use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\SymfonyDomCrawlerNavigator\Exception\InvalidLocatorException;
 
 trait CreateFromIdentifierExistsAssertionDataProviderTrait

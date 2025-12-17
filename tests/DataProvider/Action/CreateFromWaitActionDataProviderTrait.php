@@ -7,7 +7,6 @@ namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilModels\Parser\ActionParser;
-use webignition\DomElementIdentifier\ElementIdentifier;
 
 trait CreateFromWaitActionDataProviderTrait
 {
