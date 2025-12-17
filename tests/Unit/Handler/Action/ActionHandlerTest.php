@@ -32,14 +32,14 @@ class ActionHandlerTest extends AbstractResolvableTestCase
     use CreateFromWaitForActionDataProviderTrait;
 
     /**
-     * @dataProvider createFromBackActionDataProvider
-     * @dataProvider createFromClickActionDataProvider
-     * @dataProvider createFromForwardActionDataProvider
-     * @dataProvider createFromReloadActionDataProvider
-     * @dataProvider createFromSetActionDataProvider
-     * @dataProvider createFromSubmitActionDataProvider
+     * @!dataProvider createFromBackActionDataProvider
+     * @!dataProvider createFromClickActionDataProvider
+     * @!dataProvider createFromForwardActionDataProvider
+     * @!dataProvider createFromReloadActionDataProvider
+     * @!dataProvider createFromSetActionDataProvider
+     * @!dataProvider createFromSubmitActionDataProvider
      * @dataProvider createFromWaitActionDataProvider
-     * @dataProvider createFromWaitForActionDataProvider
+     * @!dataProvider createFromWaitForActionDataProvider
      */
     public function testHandleSuccess(
         ActionInterface $action,

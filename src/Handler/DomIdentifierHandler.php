@@ -47,7 +47,7 @@ class DomIdentifierHandler
     public function handleElementCollection(string $serializedElementIdentifier): ExpressionInterface
     {
         return $this->domCrawlerNavigatorCallFactory->createFindCall(
-            $this->elementIdentifierCallFactory->createConstructorCall($serializedElementIdentifier)
+            $this->argumentFactory->createSingular($serializedElementIdentifier)
         );
     }
 
