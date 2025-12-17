@@ -118,9 +118,9 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                 ),
                 'expectedRenderedContent' => <<<'EOD'
                     $examinedValue = (function () {
-                        $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson('{
+                        $element = {{ NAVIGATOR }}->findOne('{
                             "locator": ".pattern-container"
-                        }'));
+                        }');
                     
                         return $element->getAttribute('attribute_name');
                     })();
@@ -133,9 +133,6 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedMetadata' => new Metadata(
-                    classNames: [
-                        ElementIdentifier::class,
-                    ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
