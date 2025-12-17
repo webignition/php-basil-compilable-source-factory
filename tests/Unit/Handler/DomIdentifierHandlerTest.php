@@ -50,13 +50,12 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                 'serializedElementIdentifier' => $elementIdentifierSerializer->serialize(
                     new ElementIdentifier('.selector')
                 ),
-                'expectedRenderedSource' => '{{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n"
-                    . '    "locator": ".selector"' . "\n"
-                    . '}\'))',
+                'expectedRenderedSource' => <<< 'EOD'
+                    {{ NAVIGATOR }}->findOne('{
+                        "locator": ".selector"
+                    }')
+                    EOD,
                 'expectedMetadata' => new Metadata(
-                    classNames: [
-                        ElementIdentifier::class,
-                    ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                     ],
@@ -67,16 +66,15 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     (new ElementIdentifier('.selector'))
                         ->withParentIdentifier(new ElementIdentifier('.parent'))
                 ),
-                'expectedRenderedSource' => '{{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n"
-                    . '    "locator": ".selector",' . "\n"
-                    . '    "parent": {' . "\n"
-                    . '        "locator": ".parent"' . "\n"
-                    . '    }' . "\n"
-                    . '}\'))',
+                'expectedRenderedSource' => <<< 'EOD'
+                    {{ NAVIGATOR }}->findOne('{
+                        "locator": ".selector",
+                        "parent": {
+                            "locator": ".parent"
+                        }
+                    }')
+                    EOD,
                 'expectedMetadata' => new Metadata(
-                    classNames: [
-                        ElementIdentifier::class,
-                    ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                     ],
@@ -111,13 +109,12 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                 'serializedElementIdentifier' => $elementIdentifierSerializer->serialize(
                     new ElementIdentifier('.selector')
                 ),
-                'expectedRenderedSource' => '{{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n"
-                    . '    "locator": ".selector"' . "\n"
-                    . '}\'))',
+                'expectedRenderedSource' => <<< 'EOD'
+                    {{ NAVIGATOR }}->find('{
+                        "locator": ".selector"
+                    }')
+                    EOD,
                 'expectedMetadata' => new Metadata(
-                    classNames: [
-                        ElementIdentifier::class,
-                    ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                     ],
@@ -128,16 +125,15 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     (new ElementIdentifier('.selector'))
                         ->withParentIdentifier(new ElementIdentifier('.parent'))
                 ),
-                'expectedRenderedSource' => '{{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n"
-                    . '    "locator": ".selector",' . "\n"
-                    . '    "parent": {' . "\n"
-                    . '        "locator": ".parent"' . "\n"
-                    . '    }' . "\n"
-                    . '}\'))',
+                'expectedRenderedSource' => <<< 'EOD'
+                    {{ NAVIGATOR }}->find('{
+                        "locator": ".selector",
+                        "parent": {
+                            "locator": ".parent"
+                        }
+                    }')
+                    EOD,
                 'expectedMetadata' => new Metadata(
-                    classNames: [
-                        ElementIdentifier::class,
-                    ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                     ],
@@ -174,17 +170,16 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     new AttributeIdentifier('.selector', 'attribute_name')
                 ),
                 'attributeName' => 'attribute_name',
-                'expectedRenderedSource' => '(function () {' . "\n"
-                    . '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n"
-                    . '        "locator": ".selector"' . "\n"
-                    . '    }\'));' . "\n"
-                    . "\n"
-                    . '    return $element->getAttribute(\'attribute_name\');' . "\n"
-                    . '})()',
+                'expectedRenderedSource' => <<< 'EOD'
+                    (function () {
+                        $element = {{ NAVIGATOR }}->findOne('{
+                            "locator": ".selector"
+                        }');
+                    
+                        return $element->getAttribute('attribute_name');
+                    })()
+                    EOD,
                 'expectedMetadata' => new Metadata(
-                    classNames: [
-                        ElementIdentifier::class,
-                    ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                     ],
@@ -196,20 +191,19 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                         ->withParentIdentifier(new ElementIdentifier('.parent'))
                 ),
                 'attributeName' => 'attribute_name',
-                'expectedRenderedSource' => '(function () {' . "\n"
-                    . '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n"
-                    . '        "locator": ".selector",' . "\n"
-                    . '        "parent": {' . "\n"
-                    . '            "locator": ".parent"' . "\n"
-                    . '        }' . "\n"
-                    . '    }\'));' . "\n"
-                    . "\n"
-                    . '    return $element->getAttribute(\'attribute_name\');' . "\n"
-                    . '})()',
+                'expectedRenderedSource' => <<< 'EOD'
+                    (function () {
+                        $element = {{ NAVIGATOR }}->findOne('{
+                            "locator": ".selector",
+                            "parent": {
+                                "locator": ".parent"
+                            }
+                        }');
+                    
+                        return $element->getAttribute('attribute_name');
+                    })()
+                    EOD,
                 'expectedMetadata' => new Metadata(
-                    classNames: [
-                        ElementIdentifier::class,
-                    ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                     ],
@@ -244,17 +238,16 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                 'serializedElementIdentifier' => $elementIdentifierSerializer->serialize(
                     new ElementIdentifier('.selector')
                 ),
-                'expectedRenderedSource' => '(function () {' . "\n"
-                    . '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n"
-                    . '        "locator": ".selector"' . "\n"
-                    . '    }\'));' . "\n"
-                    . "\n"
-                    . '    return {{ INSPECTOR }}->getValue($element);' . "\n"
-                    . '})()',
+                'expectedRenderedSource' => <<< 'EOD'
+                    (function () {
+                        $element = {{ NAVIGATOR }}->find('{
+                            "locator": ".selector"
+                        }');
+                    
+                        return {{ INSPECTOR }}->getValue($element);
+                    })()
+                    EOD,
                 'expectedMetadata' => new Metadata(
-                    classNames: [
-                        ElementIdentifier::class,
-                    ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
@@ -266,20 +259,19 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     (new ElementIdentifier('.selector'))
                         ->withParentIdentifier(new ElementIdentifier('.parent'))
                 ),
-                'expectedRenderedSource' => '(function () {' . "\n"
-                    . '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n"
-                    . '        "locator": ".selector",' . "\n"
-                    . '        "parent": {' . "\n"
-                    . '            "locator": ".parent"' . "\n"
-                    . '        }' . "\n"
-                    . '    }\'));' . "\n"
-                    . "\n"
-                    . '    return {{ INSPECTOR }}->getValue($element);' . "\n"
-                    . '})()',
+                'expectedRenderedSource' => <<< 'EOD'
+                    (function () {
+                        $element = {{ NAVIGATOR }}->find('{
+                            "locator": ".selector",
+                            "parent": {
+                                "locator": ".parent"
+                            }
+                        }');
+                    
+                        return {{ INSPECTOR }}->getValue($element);
+                    })()
+                    EOD,
                 'expectedMetadata' => new Metadata(
-                    classNames: [
-                        ElementIdentifier::class,
-                    ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::WEBDRIVER_ELEMENT_INSPECTOR,

@@ -6,7 +6,6 @@ namespace webignition\BasilCompilableSourceFactory\Handler;
 
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
-use webignition\BasilCompilableSourceFactory\CallFactory\ElementIdentifierCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
@@ -24,7 +23,6 @@ class DomIdentifierHandler
 {
     public function __construct(
         private DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory,
-        private ElementIdentifierCallFactory $elementIdentifierCallFactory,
         private ArgumentFactory $argumentFactory
     ) {}
 
@@ -32,7 +30,6 @@ class DomIdentifierHandler
     {
         return new DomIdentifierHandler(
             DomCrawlerNavigatorCallFactory::createFactory(),
-            ElementIdentifierCallFactory::createFactory(),
             ArgumentFactory::createFactory()
         );
     }
@@ -40,7 +37,7 @@ class DomIdentifierHandler
     public function handleElement(string $serializedElementIdentifier): ExpressionInterface
     {
         return $this->domCrawlerNavigatorCallFactory->createFindOneCall(
-            $this->elementIdentifierCallFactory->createConstructorCall($serializedElementIdentifier)
+            $this->argumentFactory->createSingular($serializedElementIdentifier)
         );
     }
 
