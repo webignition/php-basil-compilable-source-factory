@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
 use webignition\BasilCompilableSourceFactory\Model\Attribute\DataProviderAttribute;
+use webignition\BasilCompilableSourceFactory\Model\Attribute\StatementsAttribute;
 use webignition\BasilCompilableSourceFactory\Model\Attribute\StepNameAttribute;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\DataProviderMethodDefinition;
@@ -21,6 +22,7 @@ class StepMethodFactory
     public function __construct(
         private StepHandler $stepHandler,
         private SingleQuotedStringEscaper $singleQuotedStringEscaper,
+        private StatementsAttributeValuePrinter $statementsAttributeValuePrinter,
     ) {}
 
     public static function createFactory(): self
@@ -28,6 +30,7 @@ class StepMethodFactory
         return new StepMethodFactory(
             StepHandler::createHandler(),
             SingleQuotedStringEscaper::create(),
+            StatementsAttributeValuePrinter::create(),
         );
     }
 
@@ -53,6 +56,12 @@ class StepMethodFactory
 
         $testMethod = $testMethod->withAttribute(
             new StepNameAttribute($this->singleQuotedStringEscaper->escape($stepName))
+        );
+
+        $testMethod = $testMethod->withAttribute(
+            new StatementsAttribute(
+                $this->statementsAttributeValuePrinter->print($this->buildStepStatementsAttributeContent($step))
+            )
         );
 
         $hasDataProvider = count($parameterNames) > 0;
@@ -104,5 +113,35 @@ class StepMethodFactory
         }
 
         return $preparedDataSet;
+    }
+
+    /**
+     * @return array{'type':'action'|'assertion', 'statement':non-empty-string}[]
+     */
+    private function buildStepStatementsAttributeContent(StepInterface $step): array
+    {
+        $statements = [];
+
+        foreach ($step->getActions() as $action) {
+            $source = $action->getSource();
+            \assert('' !== $source);
+
+            $statements[] = [
+                'type' => 'action',
+                'statement' => $source,
+            ];
+        }
+
+        foreach ($step->getAssertions() as $assertion) {
+            $source = $assertion->getSource();
+            \assert('' !== $source);
+
+            $statements[] = [
+                'type' => 'assertion',
+                'statement' => $source,
+            ];
+        }
+
+        return $statements;
     }
 }
