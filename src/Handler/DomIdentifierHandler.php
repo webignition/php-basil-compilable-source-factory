@@ -6,7 +6,6 @@ namespace webignition\BasilCompilableSourceFactory\Handler;
 
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
-use webignition\BasilCompilableSourceFactory\CallFactory\ElementIdentifierCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
@@ -24,7 +23,6 @@ class DomIdentifierHandler
 {
     public function __construct(
         private DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory,
-        private ElementIdentifierCallFactory $elementIdentifierCallFactory,
         private ArgumentFactory $argumentFactory
     ) {}
 
@@ -32,7 +30,6 @@ class DomIdentifierHandler
     {
         return new DomIdentifierHandler(
             DomCrawlerNavigatorCallFactory::createFactory(),
-            ElementIdentifierCallFactory::createFactory(),
             ArgumentFactory::createFactory()
         );
     }
@@ -40,14 +37,14 @@ class DomIdentifierHandler
     public function handleElement(string $serializedElementIdentifier): ExpressionInterface
     {
         return $this->domCrawlerNavigatorCallFactory->createFindOneCall(
-            $this->elementIdentifierCallFactory->createConstructorCall($serializedElementIdentifier)
+            $this->argumentFactory->createSingular($serializedElementIdentifier)
         );
     }
 
     public function handleElementCollection(string $serializedElementIdentifier): ExpressionInterface
     {
         return $this->domCrawlerNavigatorCallFactory->createFindCall(
-            $this->elementIdentifierCallFactory->createConstructorCall($serializedElementIdentifier)
+            $this->argumentFactory->createSingular($serializedElementIdentifier)
         );
     }
 
@@ -55,11 +52,9 @@ class DomIdentifierHandler
         string $serializedElementIdentifier,
         string $attributeName
     ): ExpressionInterface {
-        $elementIdentifierExpression = $this->elementIdentifierCallFactory->createConstructorCall(
-            $serializedElementIdentifier
+        $findCall = $this->domCrawlerNavigatorCallFactory->createFindOneCall(
+            $this->argumentFactory->createSingular($serializedElementIdentifier)
         );
-
-        $findCall = $this->domCrawlerNavigatorCallFactory->createFindOneCall($elementIdentifierExpression);
 
         $elementPlaceholder = new VariableName('element');
 
@@ -84,11 +79,9 @@ class DomIdentifierHandler
 
     public function handleElementValue(string $serializedElementIdentifier): ExpressionInterface
     {
-        $elementIdentifierExpression = $this->elementIdentifierCallFactory->createConstructorCall(
-            $serializedElementIdentifier
+        $findCall = $this->domCrawlerNavigatorCallFactory->createFindCall(
+            $this->argumentFactory->createSingular($serializedElementIdentifier)
         );
-
-        $findCall = $this->domCrawlerNavigatorCallFactory->createFindCall($elementIdentifierExpression);
 
         $elementPlaceholder = new VariableName('element');
 

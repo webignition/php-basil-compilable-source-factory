@@ -10,7 +10,6 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
 use webignition\BasilModels\Parser\AssertionParser;
-use webignition\DomElementIdentifier\ElementIdentifier;
 
 trait CreateFromIsRegExpAssertionDataProviderTrait
 {
@@ -74,9 +73,9 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                 ),
                 'expectedRenderedContent' => <<<'EOD'
                     $examinedValue = (function () {
-                        $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson('{
+                        $element = {{ NAVIGATOR }}->find('{
                             "locator": ".pattern-container"
-                        }'));
+                        }');
                     
                         return {{ INSPECTOR }}->getValue($element);
                     })();
@@ -89,9 +88,6 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedMetadata' => new Metadata(
-                    classNames: [
-                        ElementIdentifier::class,
-                    ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
@@ -118,10 +114,10 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                 ),
                 'expectedRenderedContent' => <<<'EOD'
                     $examinedValue = (function () {
-                        $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson('{
+                        $element = {{ NAVIGATOR }}->findOne('{
                             "locator": ".pattern-container"
-                        }'));
-                    
+                        }');
+
                         return $element->getAttribute('attribute_name');
                     })();
                     $expectedValue = @preg_match($examinedValue, null) === false;
@@ -133,9 +129,6 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedMetadata' => new Metadata(
-                    classNames: [
-                        ElementIdentifier::class,
-                    ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,

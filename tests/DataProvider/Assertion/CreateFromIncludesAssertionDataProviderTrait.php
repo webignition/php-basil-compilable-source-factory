@@ -9,7 +9,6 @@ use webignition\BasilCompilableSourceFactory\Metadata\Metadata as TestMetadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Parser\AssertionParser;
-use webignition\DomElementIdentifier\ElementIdentifier;
 
 trait CreateFromIncludesAssertionDataProviderTrait
 {
@@ -37,9 +36,9 @@ trait CreateFromIncludesAssertionDataProviderTrait
                 'expectedRenderedContent' => <<<'EOD'
                     $expectedValue = "value" ?? null;
                     $examinedValue = (function () {
-                        $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson('{
+                        $element = {{ NAVIGATOR }}->find('{
                             "locator": ".selector"
-                        }'));
+                        }');
                     
                         return {{ INSPECTOR }}->getValue($element);
                     })();
@@ -52,9 +51,6 @@ trait CreateFromIncludesAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedMetadata' => new Metadata(
-                    classNames: [
-                        ElementIdentifier::class,
-                    ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::PHPUNIT_TEST_CASE,
@@ -78,9 +74,9 @@ trait CreateFromIncludesAssertionDataProviderTrait
                 'expectedRenderedContent' => <<<'EOD'
                     $expectedValue = "value" ?? null;
                     $examinedValue = (function () {
-                        $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson('{
+                        $element = {{ NAVIGATOR }}->findOne('{
                             "locator": ".selector"
-                        }'));
+                        }');
                     
                         return $element->getAttribute('attribute_name');
                     })();
@@ -93,9 +89,6 @@ trait CreateFromIncludesAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedMetadata' => new Metadata(
-                    classNames: [
-                        ElementIdentifier::class,
-                    ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::PHPUNIT_TEST_CASE,

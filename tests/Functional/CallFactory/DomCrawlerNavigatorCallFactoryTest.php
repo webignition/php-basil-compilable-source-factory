@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\CallFactory;
 
 use Facebook\WebDriver\WebDriverElement;
+use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
-use webignition\BasilCompilableSourceFactory\CallFactory\ElementIdentifierCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
@@ -36,10 +36,10 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
      */
     public function testCreateFindCall(
         string $fixture,
-        ExpressionInterface $elementIdentifierExpression,
+        ExpressionInterface $expression,
         BodyInterface $teardownStatements
     ): void {
-        $source = $this->factory->createFindCall($elementIdentifierExpression);
+        $source = $this->factory->createFindCall($expression);
 
         $collectionPlaceholder = new VariableName('collection');
 
@@ -74,13 +74,14 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
      */
     public static function createFindCallDataProvider(): array
     {
-        $elementIdentifierCallFactory = ElementIdentifierCallFactory::createFactory();
         $elementIdentifierSerializer = ElementIdentifierSerializer::createSerializer();
+
+        $argumentFactory = ArgumentFactory::createFactory();
 
         return [
             'no parent, has ordinal position' => [
                 'fixture' => '/form.html',
-                'elementIdentifierExpression' => $elementIdentifierCallFactory->createConstructorCall(
+                'expression' => $argumentFactory->createSingular(
                     $elementIdentifierSerializer->serialize(new ElementIdentifier('input', 1))
                 ),
                 'teardownStatements' => new Body([
@@ -92,7 +93,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
             ],
             'has parent' => [
                 'fixture' => '/form.html',
-                'elementIdentifierExpression' => $elementIdentifierCallFactory->createConstructorCall(
+                'expression' => $argumentFactory->createSingular(
                     $elementIdentifierSerializer->serialize(
                         (new ElementIdentifier('input'))
                             ->withParentIdentifier(new ElementIdentifier('form[action="/action2"]'))

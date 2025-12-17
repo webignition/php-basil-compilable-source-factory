@@ -7,7 +7,6 @@ namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilModels\Parser\ActionParser;
-use webignition\DomElementIdentifier\ElementIdentifier;
 
 trait CreateFromWaitActionDataProviderTrait
 {
@@ -26,17 +25,16 @@ trait CreateFromWaitActionDataProviderTrait
             ],
             'wait action, element value' => [
                 'action' => $actionParser->parse('wait $".duration-selector"'),
-                'expectedRenderedSource' => 'usleep(((int) ((function () {' . "\n"
-                    . '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n"
-                    . '        "locator": ".duration-selector"' . "\n"
-                    . '    }\'));' . "\n"
-                    . "\n"
-                    . '    return {{ INSPECTOR }}->getValue($element);' . "\n"
-                    . '})() ?? 0)) * 1000);',
+                'expectedRenderedSource' => <<<'EOD'
+                    usleep(((int) ((function () {
+                        $element = {{ NAVIGATOR }}->find('{
+                            "locator": ".duration-selector"
+                        }');
+                    
+                        return {{ INSPECTOR }}->getValue($element);
+                    })() ?? 0)) * 1000);
+                    EOD,
                 'expectedMetadata' => new Metadata(
-                    classNames: [
-                        ElementIdentifier::class,
-                    ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
@@ -45,20 +43,19 @@ trait CreateFromWaitActionDataProviderTrait
             ],
             'wait action, descendant element value' => [
                 'action' => $actionParser->parse('wait $".parent" >> $".child"'),
-                'expectedRenderedSource' => 'usleep(((int) ((function () {' . "\n"
-                    . '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n"
-                    . '        "locator": ".child",' . "\n"
-                    . '        "parent": {' . "\n"
-                    . '            "locator": ".parent"' . "\n"
-                    . '        }' . "\n"
-                    . '    }\'));' . "\n"
-                    . "\n"
-                    . '    return {{ INSPECTOR }}->getValue($element);' . "\n"
-                    . '})() ?? 0)) * 1000);',
+                'expectedRenderedSource' => <<<'EOD'
+                    usleep(((int) ((function () {
+                        $element = {{ NAVIGATOR }}->find('{
+                            "locator": ".child",
+                            "parent": {
+                                "locator": ".parent"
+                            }
+                        }');
+                    
+                        return {{ INSPECTOR }}->getValue($element);
+                    })() ?? 0)) * 1000);
+                    EOD,
                 'expectedMetadata' => new Metadata(
-                    classNames: [
-                        ElementIdentifier::class,
-                    ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
@@ -67,17 +64,16 @@ trait CreateFromWaitActionDataProviderTrait
             ],
             'wait action, single-character CSS selector element value' => [
                 'action' => $actionParser->parse('wait $"a"'),
-                'expectedRenderedSource' => 'usleep(((int) ((function () {' . "\n"
-                    . '    $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson(\'{' . "\n"
-                    . '        "locator": "a"' . "\n"
-                    . '    }\'));' . "\n"
-                    . "\n"
-                    . '    return {{ INSPECTOR }}->getValue($element);' . "\n"
-                    . '})() ?? 0)) * 1000);',
+                'expectedRenderedSource' => <<<'EOD'
+                    usleep(((int) ((function () {
+                        $element = {{ NAVIGATOR }}->find('{
+                            "locator": "a"
+                        }');
+                    
+                        return {{ INSPECTOR }}->getValue($element);
+                    })() ?? 0)) * 1000);
+                    EOD,
                 'expectedMetadata' => new Metadata(
-                    classNames: [
-                        ElementIdentifier::class,
-                    ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
@@ -86,17 +82,16 @@ trait CreateFromWaitActionDataProviderTrait
             ],
             'wait action, attribute value' => [
                 'action' => $actionParser->parse('wait $".duration-selector".attribute_name'),
-                'expectedRenderedSource' => 'usleep(((int) ((function () {' . "\n"
-                    . '    $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson(\'{' . "\n"
-                    . '        "locator": ".duration-selector"' . "\n"
-                    . '    }\'));' . "\n"
-                    . "\n"
-                    . '    return $element->getAttribute(\'attribute_name\');' . "\n"
-                    . '})() ?? 0)) * 1000);',
+                'expectedRenderedSource' => <<<'EOD'
+                    usleep(((int) ((function () {
+                        $element = {{ NAVIGATOR }}->findOne('{
+                            "locator": ".duration-selector"
+                        }');
+                    
+                        return $element->getAttribute('attribute_name');
+                    })() ?? 0)) * 1000);
+                    EOD,
                 'expectedMetadata' => new Metadata(
-                    classNames: [
-                        ElementIdentifier::class,
-                    ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                     ],

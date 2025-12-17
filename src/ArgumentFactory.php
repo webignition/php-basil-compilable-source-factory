@@ -20,6 +20,13 @@ class ArgumentFactory
         );
     }
 
+    public function createSingular(mixed $argument): ExpressionInterface
+    {
+        $expressionArguments = $this->create($argument);
+
+        return $expressionArguments[0];
+    }
+
     /**
      * @param mixed ...$arguments
      *

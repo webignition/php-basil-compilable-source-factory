@@ -7,7 +7,6 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
-use webignition\BasilCompilableSourceFactory\CallFactory\ElementIdentifierCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
@@ -25,7 +24,6 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpressi
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
-use webignition\BasilCompilableSourceFactory\Model\Expression\ObjectPropertyAccessExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
@@ -59,7 +57,6 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
         private DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory,
         private DomIdentifierFactory $domIdentifierFactory,
         private DomIdentifierHandler $domIdentifierHandler,
-        private ElementIdentifierCallFactory $elementIdentifierCallFactory,
         private ElementIdentifierSerializer $elementIdentifierSerializer,
         private ArgumentFactory $argumentFactory
     ) {
@@ -73,7 +70,6 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
             DomCrawlerNavigatorCallFactory::createFactory(),
             DomIdentifierFactory::createFactory(),
             DomIdentifierHandler::createHandler(),
-            ElementIdentifierCallFactory::createFactory(),
             ElementIdentifierSerializer::createSerializer(),
             ArgumentFactory::createFactory()
         );
@@ -92,19 +88,11 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
         }
 
         $serializedElementIdentifier = $this->elementIdentifierSerializer->serialize($domIdentifier);
-        $elementIdentifierExpression = $this->elementIdentifierCallFactory->createConstructorCall(
-            $serializedElementIdentifier
-        );
-
-        $examinedElementIdentifierPlaceholder = new ObjectPropertyAccessExpression(
-            new VariableDependency(VariableNameEnum::PHPUNIT_TEST_CASE),
-            'examinedElementIdentifier'
-        );
 
         $examinedAccessor = $this->createDomCrawlerNavigatorCall(
             $domIdentifier,
             $assertion,
-            $examinedElementIdentifierPlaceholder
+            $this->argumentFactory->createSingular($serializedElementIdentifier)
         );
 
         $examinedValuePlaceholder = new VariableName(VariableNameEnum::EXAMINED_VALUE->value);
@@ -119,9 +107,6 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
         );
 
         $body = new Body([
-            new Statement(
-                new AssignmentExpression($examinedElementIdentifierPlaceholder, $elementIdentifierExpression)
-            ),
             $this->createNavigatorHasCallTryCatchBlock($examinedValueAssignmentStatement),
         ]);
 
@@ -173,7 +158,7 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
     private function createDomCrawlerNavigatorCall(
         ElementIdentifierInterface $domIdentifier,
         AssertionInterface $assertion,
-        ObjectPropertyAccessExpression $expression
+        ExpressionInterface $expression
     ): ExpressionInterface {
         $isAttributeIdentifier = $domIdentifier instanceof AttributeIdentifierInterface;
         $isDerivedFromInteractionAction = false;

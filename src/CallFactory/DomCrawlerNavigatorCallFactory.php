@@ -17,36 +17,32 @@ class DomCrawlerNavigatorCallFactory
         return new DomCrawlerNavigatorCallFactory();
     }
 
-    public function createFindCall(ExpressionInterface $elementIdentifierExpression): ExpressionInterface
+    public function createFindCall(ExpressionInterface $expression): ExpressionInterface
     {
-        return $this->createElementCall('find', $elementIdentifierExpression);
+        return $this->createElementCall('find', $expression);
     }
 
-    public function createFindOneCall(ExpressionInterface $elementIdentifierExpression): ExpressionInterface
+    public function createFindOneCall(ExpressionInterface $expression): ExpressionInterface
     {
-        return $this->createElementCall('findOne', $elementIdentifierExpression);
+        return $this->createElementCall('findOne', $expression);
     }
 
-    public function createHasCall(ExpressionInterface $elementIdentifierExpression): ExpressionInterface
+    public function createHasCall(ExpressionInterface $expression): ExpressionInterface
     {
-        return $this->createElementCall('has', $elementIdentifierExpression);
+        return $this->createElementCall('has', $expression);
     }
 
-    public function createHasOneCall(ExpressionInterface $elementIdentifierExpression): ExpressionInterface
+    public function createHasOneCall(ExpressionInterface $expression): ExpressionInterface
     {
-        return $this->createElementCall('hasOne', $elementIdentifierExpression);
+        return $this->createElementCall('hasOne', $expression);
     }
 
-    private function createElementCall(
-        string $methodName,
-        ExpressionInterface $elementIdentifierExpression
-    ): ExpressionInterface {
+    private function createElementCall(string $methodName, ExpressionInterface $expression): ExpressionInterface
+    {
         return new ObjectMethodInvocation(
             new VariableDependency(VariableName::DOM_CRAWLER_NAVIGATOR),
             $methodName,
-            new MethodArguments([
-                $elementIdentifierExpression,
-            ])
+            new MethodArguments([$expression])
         );
     }
 }

@@ -12,7 +12,6 @@ use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
 use webignition\BasilModels\Parser\ActionParser;
 use webignition\BasilModels\Parser\AssertionParser;
-use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\SymfonyDomCrawlerNavigator\Exception\InvalidLocatorException;
 
 trait CreateFromIdentifierExistsAssertionDataProviderTrait
@@ -27,12 +26,11 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
 
         $expectedMetadata = new Metadata(
             classNames: [
-                ElementIdentifier::class,
                 InvalidLocatorException::class,
             ],
             variableNames: [
-                VariableName::DOM_CRAWLER_NAVIGATOR,
                 VariableName::PHPUNIT_TEST_CASE,
+                VariableName::DOM_CRAWLER_NAVIGATOR,
             ],
         );
 
@@ -51,11 +49,10 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->examinedElementIdentifier = ElementIdentifier::fromJson('{
-                        "locator": ".selector"
-                    }');
                     try {
-                        $examinedValue = {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier);
+                        $examinedValue = {{ NAVIGATOR }}->has('{
+                            "locator": ".selector"
+                        }');
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
@@ -82,11 +79,10 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->examinedElementIdentifier = ElementIdentifier::fromJson('{
-                        "locator": ".selector"
-                    }');
                     try {
-                        $examinedValue = {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier);
+                        $examinedValue = {{ NAVIGATOR }}->hasOne('{
+                            "locator": ".selector"
+                        }');
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
@@ -97,9 +93,9 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         }'
                     );
                     $examinedValue = ((function () {
-                        $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson('{
+                        $element = {{ NAVIGATOR }}->findOne('{
                             "locator": ".selector"
-                        }'));
+                        }');
 
                         return $element->getAttribute('attribute_name');
                     })() ?? null) !== null;
@@ -126,11 +122,10 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->examinedElementIdentifier = ElementIdentifier::fromJson('{
-                        "locator": "a[href=foo.html]"
-                    }');
                     try {
-                        $examinedValue = {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier);
+                        $examinedValue = {{ NAVIGATOR }}->has('{
+                            "locator": "a[href=foo.html]"
+                        }');
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
@@ -157,11 +152,10 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->examinedElementIdentifier = ElementIdentifier::fromJson('{
-                        "locator": "a[href=foo.html]"
-                    }');
                     try {
-                        $examinedValue = {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier);
+                        $examinedValue = {{ NAVIGATOR }}->hasOne('{
+                            "locator": "a[href=foo.html]"
+                        }');
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
@@ -172,9 +166,9 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         }'
                     );
                     $examinedValue = ((function () {
-                        $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson('{
+                        $element = {{ NAVIGATOR }}->findOne('{
                             "locator": "a[href=foo.html]"
-                        }'));
+                        }');
 
                         return $element->getAttribute('attribute_name');
                     })() ?? null) !== null;
@@ -216,11 +210,10 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->examinedElementIdentifier = ElementIdentifier::fromJson('{
-                        "locator": ".selector"
-                    }');
                     try {
-                        $examinedValue = {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier);
+                        $examinedValue = {{ NAVIGATOR }}->hasOne('{
+                            "locator": ".selector"
+                        }');
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
@@ -263,11 +256,10 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->examinedElementIdentifier = ElementIdentifier::fromJson('{
-                        "locator": ".selector"
-                    }');
                     try {
-                        $examinedValue = {{ NAVIGATOR }}->hasOne({{ PHPUNIT }}->examinedElementIdentifier);
+                        $examinedValue = {{ NAVIGATOR }}->hasOne('{
+                            "locator": ".selector"
+                        }');
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
@@ -310,11 +302,10 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->examinedElementIdentifier = ElementIdentifier::fromJson('{
-                        "locator": ".selector"
-                    }');
                     try {
-                        $examinedValue = {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier);
+                        $examinedValue = {{ NAVIGATOR }}->has('{
+                            "locator": ".selector"
+                        }');
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
@@ -357,11 +348,10 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    {{ PHPUNIT }}->examinedElementIdentifier = ElementIdentifier::fromJson('{
-                        "locator": ".duration"
-                    }');
                     try {
-                        $examinedValue = {{ NAVIGATOR }}->has({{ PHPUNIT }}->examinedElementIdentifier);
+                        $examinedValue = {{ NAVIGATOR }}->has('{
+                            "locator": ".duration"
+                        }');
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('Invalid locator');
                     }
