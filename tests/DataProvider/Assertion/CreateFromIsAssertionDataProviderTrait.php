@@ -37,9 +37,9 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedRenderedContent' => <<<'EOD'
                     $expectedValue = "value" ?? null;
                     $examinedValue = (function () {
-                        $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson('{
+                        $element = {{ NAVIGATOR }}->find('{
                             "locator": ".selector"
-                        }'));
+                        }');
                     
                         return {{ INSPECTOR }}->getValue($element);
                     })();
@@ -52,9 +52,6 @@ trait CreateFromIsAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedMetadata' => new Metadata(
-                    classNames: [
-                        ElementIdentifier::class,
-                    ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::PHPUNIT_TEST_CASE,
@@ -78,12 +75,12 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedRenderedContent' => <<<'EOD'
                     $expectedValue = "value" ?? null;
                     $examinedValue = (function () {
-                        $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson('{
+                        $element = {{ NAVIGATOR }}->find('{
                             "locator": ".child",
                             "parent": {
                                 "locator": ".parent"
                             }
-                        }'));
+                        }');
                     
                         return {{ INSPECTOR }}->getValue($element);
                     })();
@@ -96,9 +93,6 @@ trait CreateFromIsAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedMetadata' => new Metadata(
-                    classNames: [
-                        ElementIdentifier::class,
-                    ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::PHPUNIT_TEST_CASE,
@@ -122,9 +116,9 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedRenderedContent' => <<<'EOD'
                     $expectedValue = "value" ?? null;
                     $examinedValue = (function () {
-                        $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson('{
+                        $element = {{ NAVIGATOR }}->findOne('{
                             "locator": ".selector"
-                        }'));
+                        }');
                     
                         return $element->getAttribute('attribute_name');
                     })();
@@ -137,9 +131,6 @@ trait CreateFromIsAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedMetadata' => new Metadata(
-                    classNames: [
-                        ElementIdentifier::class,
-                    ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::PHPUNIT_TEST_CASE,
@@ -320,12 +311,12 @@ trait CreateFromIsAssertionDataProviderTrait
                 ),
                 'expectedRenderedContent' => <<<'EOD'
             $expectedValue = (function () {
-                $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson('{
+                $element = {{ NAVIGATOR }}->find('{
                     "locator": ".child",
                     "parent": {
                         "locator": ".parent"
                     }
-                }'));
+                }');
             
                 return {{ INSPECTOR }}->getValue($element);
             })();
@@ -343,9 +334,6 @@ trait CreateFromIsAssertionDataProviderTrait
             );
             EOD,
                 'expectedMetadata' => new Metadata(
-                    classNames: [
-                        ElementIdentifier::class,
-                    ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::PANTHER_CLIENT,
@@ -369,9 +357,9 @@ trait CreateFromIsAssertionDataProviderTrait
                 ),
                 'expectedRenderedContent' => <<<'EOD'
             $expectedValue = (function () {
-                $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson('{
+                $element = {{ NAVIGATOR }}->find('{
                     "locator": ".selector"
-                }'));
+                }');
             
                 return {{ INSPECTOR }}->getValue($element);
             })();
@@ -389,9 +377,6 @@ trait CreateFromIsAssertionDataProviderTrait
             );
             EOD,
                 'expectedMetadata' => new Metadata(
-                    classNames: [
-                        ElementIdentifier::class,
-                    ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::PANTHER_CLIENT,
@@ -415,9 +400,9 @@ trait CreateFromIsAssertionDataProviderTrait
                 ),
                 'expectedRenderedContent' => <<<'EOD'
             $expectedValue = (function () {
-                $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson('{
+                $element = {{ NAVIGATOR }}->findOne('{
                     "locator": ".selector"
-                }'));
+                }');
             
                 return $element->getAttribute('attribute_name');
             })();
@@ -435,9 +420,6 @@ trait CreateFromIsAssertionDataProviderTrait
             );
             EOD,
                 'expectedMetadata' => new Metadata(
-                    classNames: [
-                        ElementIdentifier::class,
-                    ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::PANTHER_CLIENT,

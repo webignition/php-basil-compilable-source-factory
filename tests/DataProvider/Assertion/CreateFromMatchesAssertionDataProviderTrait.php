@@ -37,9 +37,9 @@ trait CreateFromMatchesAssertionDataProviderTrait
                 'expectedRenderedContent' => <<<'EOD'
                     $expectedValue = "/^value/" ?? null;
                     $examinedValue = (function () {
-                        $element = {{ NAVIGATOR }}->find(ElementIdentifier::fromJson('{
+                        $element = {{ NAVIGATOR }}->find('{
                             "locator": ".selector"
-                        }'));
+                        }');
                     
                         return {{ INSPECTOR }}->getValue($element);
                     })();
@@ -52,9 +52,6 @@ trait CreateFromMatchesAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedMetadata' => new Metadata(
-                    classNames: [
-                        ElementIdentifier::class,
-                    ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::PHPUNIT_TEST_CASE,
@@ -78,9 +75,9 @@ trait CreateFromMatchesAssertionDataProviderTrait
                 'expectedRenderedContent' => <<<'EOD'
                     $expectedValue = "/^value/" ?? null;
                     $examinedValue = (function () {
-                        $element = {{ NAVIGATOR }}->findOne(ElementIdentifier::fromJson('{
+                        $element = {{ NAVIGATOR }}->findOne('{
                             "locator": ".selector"
-                        }'));
+                        }');
                     
                         return $element->getAttribute('attribute_name');
                     })();
@@ -93,9 +90,6 @@ trait CreateFromMatchesAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedMetadata' => new Metadata(
-                    classNames: [
-                        ElementIdentifier::class,
-                    ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::PHPUNIT_TEST_CASE,
