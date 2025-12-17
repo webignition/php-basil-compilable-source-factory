@@ -186,7 +186,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                         }
 
                         #[StepName('step one')]
-                        public function test1()
+                        public function test1(): void
                         {
 
                         }
@@ -233,13 +233,13 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                         }
 
                         #[StepName('step one')]
-                        public function test1()
+                        public function test1(): void
                         {
 
                         }
 
                         #[StepName('step two')]
-                        public function test2()
+                        public function test2(): void
                         {
 
                         }

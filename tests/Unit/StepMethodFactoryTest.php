@@ -63,7 +63,7 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                 'factory' => StepMethodFactory::createFactory(),
                 'expectedRenderedTestMethod' => <<<'EOD'
                     #[StepName('Step Name')]
-                    public function test1()
+                    public function test1(): void
                     {
                     
                     }
@@ -81,7 +81,7 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                 'factory' => StepMethodFactory::createFactory(),
                 'expectedRenderedTestMethod' => <<<'EOD'
                     #[StepName('step name \'contains\' single quotes')]
-                    public function test2()
+                    public function test2(): void
                     {
                     
                     }
@@ -106,7 +106,7 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                 ]),
                 'expectedRenderedTestMethod' => <<<'EOD'
                     #[StepName('Step Name')]
-                    public function test3()
+                    public function test3(): void
                     {
                         // mocked step handler response
                     }
@@ -188,7 +188,7 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                 'expectedRenderedTestMethod' => <<<'EOD'
                     #[StepName('Step Name')]
                     #[DataProvider('dataProvider4')]
-                    public function test4($expected_value, $field_value)
+                    public function test4($expected_value, $field_value): void
                     {
                         // mocked step handler response
                     }
@@ -265,7 +265,7 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
     ): void {
         $this->assertRenderResolvable($expectedRendered, $testMethod);
 
-        $this->assertNull($testMethod->getReturnType());
+        $this->assertSame('void', $testMethod->getReturnType());
         $this->assertFalse($testMethod->isStatic());
         $this->assertSame('public', $testMethod->getVisibility());
         $this->assertEquals($expectedMetadata, $testMethod->getMetadata());
