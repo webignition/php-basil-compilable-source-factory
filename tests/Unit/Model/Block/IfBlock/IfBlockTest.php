@@ -35,7 +35,7 @@ class IfBlockTest extends AbstractResolvableTestCase
         $body = new Body([
             new Statement(
                 new AssignmentExpression(
-                    new VariableDependency(VariableName::ASSERTION_FACTORY),
+                    new VariableDependency(VariableName::PHPUNIT_TEST_CASE),
                     new StaticObjectMethodInvocation(
                         new StaticObject(\RuntimeException::class),
                         'staticMethodName'
@@ -52,7 +52,7 @@ class IfBlockTest extends AbstractResolvableTestCase
             ],
             variableNames: [
                 VariableName::PANTHER_CLIENT,
-                VariableName::ASSERTION_FACTORY,
+                VariableName::PHPUNIT_TEST_CASE,
             ]
         );
 
