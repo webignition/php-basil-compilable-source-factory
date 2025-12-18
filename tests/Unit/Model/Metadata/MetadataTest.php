@@ -67,7 +67,7 @@ class MetadataTest extends TestCase
             ],
             variableNames: [
                 VariableName::PANTHER_CLIENT,
-                VariableName::ASSERTION_FACTORY,
+                VariableName::PHPUNIT_TEST_CASE,
             ],
         );
 
@@ -77,7 +77,7 @@ class MetadataTest extends TestCase
                 Metadata::class
             ],
             variableNames: [
-                VariableName::ASSERTION_FACTORY,
+                VariableName::PHPUNIT_TEST_CASE,
                 VariableName::DOM_CRAWLER_NAVIGATOR,
             ],
         );
@@ -91,7 +91,7 @@ class MetadataTest extends TestCase
             ],
             variableNames: [
                 VariableName::PANTHER_CLIENT,
-                VariableName::ASSERTION_FACTORY,
+                VariableName::PHPUNIT_TEST_CASE,
                 VariableName::DOM_CRAWLER_NAVIGATOR,
             ],
         );

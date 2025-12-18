@@ -48,12 +48,12 @@ class StatementTest extends AbstractResolvableTestCase
             ],
             'object method invocation' => [
                 'expression' => new ObjectMethodInvocation(
-                    new VariableDependency(VariableName::ASSERTION_FACTORY),
+                    new VariableDependency(VariableName::PHPUNIT_TEST_CASE),
                     'methodName'
                 ),
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::ASSERTION_FACTORY,
+                        VariableName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],
@@ -89,11 +89,11 @@ class StatementTest extends AbstractResolvableTestCase
             'statement encapsulating object method invocation' => [
                 'statement' => new Statement(
                     new ObjectMethodInvocation(
-                        new VariableDependency(VariableName::ASSERTION_FACTORY),
+                        new VariableDependency(VariableName::PHPUNIT_TEST_CASE),
                         'methodName'
                     )
                 ),
-                'expectedString' => '{{ ASSERTION_FACTORY }}->methodName();',
+                'expectedString' => '{{ PHPUNIT }}->methodName();',
             ],
         ];
     }
