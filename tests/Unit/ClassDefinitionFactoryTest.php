@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
+use webignition\BaseBasilTestCase\Attribute\Statements;
 use webignition\BaseBasilTestCase\Attribute\StepName;
 use webignition\BaseBasilTestCase\ClientManager;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
@@ -173,6 +174,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                     'test.yml'
                 ),
                 'expectedRenderedClassDefinition' => <<< 'EOF'
+                    use webignition\BaseBasilTestCase\Attribute\Statements;
                     use webignition\BaseBasilTestCase\Attribute\StepName;
                     use webignition\BaseBasilTestCase\ClientManager;
                     
@@ -186,6 +188,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                         }
 
                         #[StepName('step one')]
+                        #[Statements([])]
                         public function test1(): void
                         {
 
@@ -196,6 +199,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                     classNames: [
                         ClientManager::class,
                         StepName::class,
+                        Statements::class,
                     ],
                     variableNames: [
                         VariableName::PANTHER_CLIENT,
@@ -220,6 +224,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                     'test.yml'
                 ),
                 'expectedRenderedClassDefinition' => <<< 'EOF'
+                    use webignition\BaseBasilTestCase\Attribute\Statements;
                     use webignition\BaseBasilTestCase\Attribute\StepName;
                     use webignition\BaseBasilTestCase\ClientManager;
                     
@@ -233,12 +238,14 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                         }
 
                         #[StepName('step one')]
+                        #[Statements([])]
                         public function test1(): void
                         {
 
                         }
 
                         #[StepName('step two')]
+                        #[Statements([])]
                         public function test2(): void
                         {
 
@@ -249,6 +256,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                     classNames: [
                         ClientManager::class,
                         StepName::class,
+                        Statements::class,
                     ],
                     variableNames: [
                         VariableName::PANTHER_CLIENT,

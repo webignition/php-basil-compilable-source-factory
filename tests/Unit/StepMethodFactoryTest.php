@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use webignition\BaseBasilTestCase\Attribute\Statements;
 use webignition\BaseBasilTestCase\Attribute\StepName;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
@@ -14,6 +15,7 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinitionInterface;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
+use webignition\BasilCompilableSourceFactory\StatementsAttributeValuePrinter;
 use webignition\BasilCompilableSourceFactory\StepMethodFactory;
 use webignition\BasilModels\Model\Step\StepInterface;
 use webignition\BasilModels\Parser\StepParser;
@@ -63,14 +65,16 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                 'factory' => StepMethodFactory::createFactory(),
                 'expectedRenderedTestMethod' => <<<'EOD'
                     #[StepName('Step Name')]
+                    #[Statements([])]
                     public function test1(): void
                     {
-                    
+
                     }
                     EOD,
                 'expectedTestMethodMetadata' => new Metadata(
                     classNames: [
                         StepName::class,
+                        Statements::class,
                     ]
                 ),
             ],
@@ -81,14 +85,16 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                 'factory' => StepMethodFactory::createFactory(),
                 'expectedRenderedTestMethod' => <<<'EOD'
                     #[StepName('step name \'contains\' single quotes')]
+                    #[Statements([])]
                     public function test2(): void
                     {
-                    
+
                     }
                     EOD,
                 'expectedTestMethodMetadata' => new Metadata(
                     classNames: [
                         StepName::class,
+                        Statements::class,
                     ]
                 ),
             ],
@@ -106,6 +112,16 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                 ]),
                 'expectedRenderedTestMethod' => <<<'EOD'
                     #[StepName('Step Name')]
+                    #[Statements([
+                        [
+                            'type' => 'action',
+                            'statement' => 'click $".selector"',
+                        ],
+                        [
+                            'type' => 'assertion',
+                            'statement' => '$page.title is "value"',
+                        ],
+                    ])]
                     public function test3(): void
                     {
                         // mocked step handler response
@@ -114,6 +130,7 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                 'expectedTestMethodMetadata' => new Metadata(
                     classNames: [
                         StepName::class,
+                        Statements::class
                     ]
                 ),
             ],
@@ -187,6 +204,16 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                 ]),
                 'expectedRenderedTestMethod' => <<<'EOD'
                     #[StepName('Step Name')]
+                    #[Statements([
+                        [
+                            'type' => 'action',
+                            'statement' => 'set $".selector" to $data.field_value',
+                        ],
+                        [
+                            'type' => 'assertion',
+                            'statement' => '$".selector" is $data.expected_value',
+                        ],
+                    ])]
                     #[DataProvider('dataProvider4')]
                     public function test4($expected_value, $field_value): void
                     {
@@ -215,6 +242,7 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                 'expectedTestMethodMetadata' => new Metadata(
                     classNames: [
                         StepName::class,
+                        Statements::class,
                         DataProvider::class,
                     ],
                 ),
@@ -230,14 +258,10 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
         $stepHandler = $services[StepHandler::class] ?? null;
         $stepHandler = $stepHandler instanceof StepHandler ? $stepHandler : StepHandler::createHandler();
 
-        $singleQuotedStringEscaper = $services[SingleQuotedStringEscaper::class] ?? null;
-        $singleQuotedStringEscaper = $singleQuotedStringEscaper instanceof SingleQuotedStringEscaper
-            ? $singleQuotedStringEscaper
-            : SingleQuotedStringEscaper::create();
-
         return new StepMethodFactory(
             $stepHandler,
-            $singleQuotedStringEscaper,
+            SingleQuotedStringEscaper::create(),
+            StatementsAttributeValuePrinter::create()
         );
     }
 
