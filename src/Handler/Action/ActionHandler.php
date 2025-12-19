@@ -4,14 +4,12 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilModels\Model\Action\ActionInterface;
 
 class ActionHandler
@@ -21,7 +19,8 @@ class ActionHandler
         private InteractionActionHandler $interactionActionHandler,
         private SetActionHandler $setActionHandler,
         private WaitActionHandler $waitActionHandler,
-        private WaitForActionHandler $waitForActionHandler
+        private WaitForActionHandler $waitForActionHandler,
+        private PhpUnitCallFactory $phpUnitCallFactory,
     ) {}
 
     public static function createHandler(): ActionHandler
@@ -31,7 +30,8 @@ class ActionHandler
             InteractionActionHandler::createHandler(),
             SetActionHandler::createHandler(),
             WaitActionHandler::createHandler(),
-            WaitForActionHandler::createHandler()
+            WaitForActionHandler::createHandler(),
+            PhpUnitCallFactory::createFactory(),
         );
     }
 
@@ -78,10 +78,7 @@ class ActionHandler
         return new Body([
             $body,
             new Statement(
-                new ObjectMethodInvocation(
-                    new VariableDependency(VariableName::PHPUNIT_TEST_CASE),
-                    'refreshCrawlerAndNavigator'
-                )
+                $this->phpUnitCallFactory->createCall('refreshCrawlerAndNavigator'),
             ),
         ]);
     }

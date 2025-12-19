@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Assertion;
 
 use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
+use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\ExistenceAssertionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\IdentifierExistenceAssertionHandler;
@@ -43,6 +44,7 @@ class ExistenceAssertionHandlerTest extends TestCase
 
         $handler = new ExistenceAssertionHandler(
             ArgumentFactory::createFactory(),
+            PhpUnitCallFactory::createFactory(),
             IdentifierTypeAnalyser::create(),
             new ValueTypeIdentifier(),
             $scalarHandler,
@@ -75,6 +77,7 @@ class ExistenceAssertionHandlerTest extends TestCase
 
         $handler = new ExistenceAssertionHandler(
             ArgumentFactory::createFactory(),
+            PhpUnitCallFactory::createFactory(),
             IdentifierTypeAnalyser::create(),
             new ValueTypeIdentifier(),
             \Mockery::mock(ScalarExistenceAssertionHandler::class),

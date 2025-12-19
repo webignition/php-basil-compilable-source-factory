@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Step;
 
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
+use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
@@ -17,8 +17,6 @@ use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
 use webignition\BasilModels\Model\Assertion\UniqueAssertionCollection;
 use webignition\BasilModels\Model\Step\StepInterface;
@@ -32,6 +30,7 @@ class StepHandler
         private DerivedAssertionFactory $derivedAssertionFactory,
         private ArgumentFactory $argumentFactory,
         private TryCatchBlockFactory $tryCatchBlockFactory,
+        private PhpUnitCallFactory $phpUnitCallFactory,
     ) {}
 
     public static function createHandler(): StepHandler
@@ -43,6 +42,7 @@ class StepHandler
             DerivedAssertionFactory::createFactory(),
             ArgumentFactory::createFactory(),
             TryCatchBlockFactory::createFactory(),
+            PhpUnitCallFactory::createFactory(),
         );
     }
 
@@ -67,9 +67,7 @@ class StepHandler
                 $actionBody = $this->actionHandler->handle($action);
 
                 $failBody = Body::createFromExpressions([
-                    new ObjectMethodInvocation(
-                        new VariableDependency(VariableNameEnum::PHPUNIT_TEST_CASE),
-                        'fail',
+                    $this->phpUnitCallFactory->createFailCall(
                         new MethodArguments(
                             $this->argumentFactory->create((string) json_encode([
                                 'action' => $action->getSource(),
