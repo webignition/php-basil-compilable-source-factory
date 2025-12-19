@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
+use webignition\BasilCompilableSourceFactory\AssertionStatementFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
@@ -36,6 +37,7 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
     public function __construct(
         private ArgumentFactory $argumentFactory,
         PhpUnitCallFactory $phpUnitCallFactory,
+        private AssertionStatementFactory $assertionStatementFactory,
         private DomIdentifierFactory $domIdentifierFactory,
         private IdentifierTypeAnalyser $identifierTypeAnalyser,
         private ValueTypeIdentifier $valueTypeIdentifier,
@@ -49,6 +51,7 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
         return new IsRegExpAssertionHandler(
             ArgumentFactory::createFactory(),
             PhpUnitCallFactory::createFactory(),
+            AssertionStatementFactory::createFactory(),
             DomIdentifierFactory::createFactory(),
             IdentifierTypeAnalyser::create(),
             new ValueTypeIdentifier(),
@@ -114,7 +117,7 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
                 new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
                 new AssignmentExpression($expectedValuePlaceholder, $identityComparison),
             ]),
-            $this->createAssertionStatement(
+            $this->assertionStatementFactory->create(
                 $assertion,
                 self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP,
                 $metadata,

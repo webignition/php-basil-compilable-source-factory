@@ -18,6 +18,14 @@ class AssertionStatementFactory
         private PhpUnitCallFactory $phpUnitCallFactory,
     ) {}
 
+    public static function createFactory(): self
+    {
+        return new AssertionStatementFactory(
+            ArgumentFactory::createFactory(),
+            PhpUnitCallFactory::createFactory(),
+        );
+    }
+
     /**
      * @param array<string, string> $operatorToAssertionTemplateMap
      */

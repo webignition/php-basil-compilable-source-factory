@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
+use webignition\BasilCompilableSourceFactory\AssertionStatementFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
@@ -55,6 +56,7 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
         private ElementIdentifierSerializer $elementIdentifierSerializer,
         private TryCatchBlockFactory $tryCatchBlockFactory,
         private PhpUnitCallFactory $phpUnitCallFactory,
+        private AssertionStatementFactory $assertionStatementFactory,
     ) {
         parent::__construct($this->argumentFactory, $this->phpUnitCallFactory);
     }
@@ -69,6 +71,7 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
             ElementIdentifierSerializer::createSerializer(),
             TryCatchBlockFactory::createFactory(),
             PhpUnitCallFactory::createFactory(),
+            AssertionStatementFactory::createFactory(),
         );
     }
 
@@ -97,7 +100,7 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
             new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
         );
 
-        $assertionStatement = $this->createAssertionStatement(
+        $assertionStatement = $this->assertionStatementFactory->create(
             $assertion,
             self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP,
             $metadata,
@@ -136,7 +139,7 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
             );
 
             $body = $body->withContent([
-                $this->createAssertionStatement(
+                $this->assertionStatementFactory->create(
                     $elementExistsAssertion,
                     self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP,
                     $metadata,
