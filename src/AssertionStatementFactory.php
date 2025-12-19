@@ -9,9 +9,8 @@ use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
-use webignition\BasilModels\Model\Assertion\AssertionInterface;
 
-class AssertionStatementFactory
+readonly class AssertionStatementFactory
 {
     public function __construct(
         private ArgumentFactory $argumentFactory,
