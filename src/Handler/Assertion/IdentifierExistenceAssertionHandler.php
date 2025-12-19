@@ -11,14 +11,12 @@ use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEn
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
-use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\CatchBlock;
-use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryBlock;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryCatchBlock;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
+use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
-use webignition\BasilCompilableSourceFactory\Model\Expression\CatchExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
@@ -27,10 +25,9 @@ use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumen
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
-use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclaration;
-use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclarationCollection;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
+use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilModels\Model\Action\ActionInterface;
 use webignition\BasilModels\Model\Assertion\Assertion;
@@ -57,6 +54,7 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
         private DomIdentifierFactory $domIdentifierFactory,
         private DomIdentifierHandler $domIdentifierHandler,
         private ElementIdentifierSerializer $elementIdentifierSerializer,
+        private TryCatchBlockFactory $tryCatchBlockFactory,
     ) {
         parent::__construct($this->argumentFactory);
     }
@@ -69,6 +67,7 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
             DomIdentifierFactory::createFactory(),
             DomIdentifierHandler::createHandler(),
             ElementIdentifierSerializer::createSerializer(),
+            TryCatchBlockFactory::createFactory(),
         );
     }
 
@@ -175,24 +174,16 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
     private function createNavigatorHasCallTryCatchBlock(
         StatementInterface $setExaminedValueAssignmentStatement
     ): TryCatchBlock {
-        return new TryCatchBlock(
-            new TryBlock(
-                new Body([$setExaminedValueAssignmentStatement]),
-            ),
-            new CatchBlock(
-                new CatchExpression(
-                    new ObjectTypeDeclarationCollection([
-                        new ObjectTypeDeclaration(new ClassName(InvalidLocatorException::class))
-                    ])
-                ),
-                Body::createFromExpressions([
-                    new ObjectMethodInvocation(
-                        new VariableDependency(VariableNameEnum::PHPUNIT_TEST_CASE),
-                        'fail',
-                        new MethodArguments($this->argumentFactory->create('Invalid locator'))
-                    )
-                ])
-            )
+        return $this->tryCatchBlockFactory->create(
+            new Body([$setExaminedValueAssignmentStatement]),
+            new ClassNameCollection([new ClassName(InvalidLocatorException::class)]),
+            Body::createFromExpressions([
+                new ObjectMethodInvocation(
+                    new VariableDependency(VariableNameEnum::PHPUNIT_TEST_CASE),
+                    'fail',
+                    new MethodArguments($this->argumentFactory->create('Invalid locator'))
+                )
+            ])
         );
     }
 }

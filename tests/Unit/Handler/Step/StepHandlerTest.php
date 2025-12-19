@@ -19,6 +19,7 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTestCase;
+use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
 use webignition\BasilModels\Model\Action\ActionInterface;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
@@ -794,6 +795,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
             $statementBlockFactory,
             $derivedAssertionFactory,
             ArgumentFactory::createFactory(),
+            TryCatchBlockFactory::createFactory(),
         );
     }
 }
