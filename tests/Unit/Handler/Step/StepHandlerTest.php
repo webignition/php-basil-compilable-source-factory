@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Step;
 
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
+use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
@@ -796,6 +797,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
             $derivedAssertionFactory,
             ArgumentFactory::createFactory(),
             TryCatchBlockFactory::createFactory(),
+            PhpUnitCallFactory::createFactory(),
         );
     }
 }

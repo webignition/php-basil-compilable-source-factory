@@ -5,20 +5,19 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocationInterface;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
 
 abstract class AbstractAssertionHandler
 {
     public function __construct(
         private ArgumentFactory $argumentFactory,
+        private PhpUnitCallFactory $phpUnitCallFactory,
     ) {}
 
     /**
@@ -51,10 +50,10 @@ abstract class AbstractAssertionHandler
             $this->argumentFactory->createSingular($serializedMetadata)
         );
 
-        return new ObjectMethodInvocation(
-            new VariableDependency(VariableName::PHPUNIT_TEST_CASE),
-            $assertionMethod,
-            $arguments->withFormat(MethodArgumentsInterface::FORMAT_STACKED)
+        $arguments = $arguments->withFormat(
+            MethodArgumentsInterface::FORMAT_STACKED
         );
+
+        return $this->phpUnitCallFactory->createCall($assertionMethod, $arguments);
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
+use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
@@ -34,18 +35,20 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
 
     public function __construct(
         private ArgumentFactory $argumentFactory,
+        PhpUnitCallFactory $phpUnitCallFactory,
         private DomIdentifierFactory $domIdentifierFactory,
         private IdentifierTypeAnalyser $identifierTypeAnalyser,
         private ValueTypeIdentifier $valueTypeIdentifier,
         private ValueAccessorFactory $valueAccessorFactory,
     ) {
-        parent::__construct($this->argumentFactory);
+        parent::__construct($this->argumentFactory, $phpUnitCallFactory);
     }
 
     public static function createHandler(): self
     {
         return new IsRegExpAssertionHandler(
             ArgumentFactory::createFactory(),
+            PhpUnitCallFactory::createFactory(),
             DomIdentifierFactory::createFactory(),
             IdentifierTypeAnalyser::create(),
             new ValueTypeIdentifier(),

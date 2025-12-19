@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
+use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
@@ -22,10 +23,8 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpres
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
@@ -55,8 +54,9 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
         private DomIdentifierHandler $domIdentifierHandler,
         private ElementIdentifierSerializer $elementIdentifierSerializer,
         private TryCatchBlockFactory $tryCatchBlockFactory,
+        private PhpUnitCallFactory $phpUnitCallFactory,
     ) {
-        parent::__construct($this->argumentFactory);
+        parent::__construct($this->argumentFactory, $this->phpUnitCallFactory);
     }
 
     public static function createHandler(): self
@@ -68,6 +68,7 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
             DomIdentifierHandler::createHandler(),
             ElementIdentifierSerializer::createSerializer(),
             TryCatchBlockFactory::createFactory(),
+            PhpUnitCallFactory::createFactory(),
         );
     }
 
@@ -178,11 +179,9 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
             new Body([$setExaminedValueAssignmentStatement]),
             new ClassNameCollection([new ClassName(InvalidLocatorException::class)]),
             Body::createFromExpressions([
-                new ObjectMethodInvocation(
-                    new VariableDependency(VariableNameEnum::PHPUNIT_TEST_CASE),
-                    'fail',
+                $this->phpUnitCallFactory->createFailCall(
                     new MethodArguments($this->argumentFactory->create('Invalid locator'))
-                )
+                ),
             ])
         );
     }
