@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Step;
 
+use webignition\BasilCompilableSourceFactory\ArgumentFactory;
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
@@ -110,12 +112,26 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         ],
                     ]),
                 ]),
-                'expectedRenderedContent' => '// StatementBlockFactory::create($".selector" exists)' . "\n"
-                    . '// AssertionHandler::handle($".selector" exists)' . "\n"
-                    . "\n"
-                    . '// StatementBlockFactory::create(click $".selector")' . "\n"
-                    . '// ActionHandler::handle(click $".selector")' . "\n",
-                'expectedMetadata' => new Metadata(),
+                'expectedRenderedContent' => <<< 'EOD'
+                    // StatementBlockFactory::create($".selector" exists)
+                    // AssertionHandler::handle($".selector" exists)
+                    
+                    // StatementBlockFactory::create(click $".selector")
+                    try {
+                        // ActionHandler::handle(click $".selector")
+                    } catch (\Throwable $exception) {
+                        {{ PHPUNIT }}->fail('{"action":"click $\\".selector\\""}');
+                    }
+                    
+                    EOD,
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        \Throwable::class,
+                    ],
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
             ],
             'two click actions' => [
                 'step' => $stepParser->parse([
@@ -204,18 +220,36 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         ],
                     ]),
                 ]),
-                'expectedRenderedContent' => '// StatementBlockFactory::create($".selector1" exists)' . "\n"
-                    . '// AssertionHandler::handle($".selector1" exists)' . "\n"
-                    . "\n"
-                    . '// StatementBlockFactory::create(click $".selector1")' . "\n"
-                    . '// ActionHandler::handle(click $".selector1")' . "\n"
-                    . "\n"
-                    . '// StatementBlockFactory::create($".selector2" exists)' . "\n"
-                    . '// AssertionHandler::handle($".selector2" exists)' . "\n"
-                    . "\n"
-                    . '// StatementBlockFactory::create(click $".selector2")' . "\n"
-                    . '// ActionHandler::handle(click $".selector2")' . "\n",
-                'expectedMetadata' => new Metadata(),
+                'expectedRenderedContent' => <<< 'EOD'
+                    // StatementBlockFactory::create($".selector1" exists)
+                    // AssertionHandler::handle($".selector1" exists)
+                    
+                    // StatementBlockFactory::create(click $".selector1")
+                    try {
+                        // ActionHandler::handle(click $".selector1")
+                    } catch (\Throwable $exception) {
+                        {{ PHPUNIT }}->fail('{"action":"click $\\".selector1\\""}');
+                    }
+                    
+                    // StatementBlockFactory::create($".selector2" exists)
+                    // AssertionHandler::handle($".selector2" exists)
+                    
+                    // StatementBlockFactory::create(click $".selector2")
+                    try {
+                        // ActionHandler::handle(click $".selector2")
+                    } catch (\Throwable $exception) {
+                        {{ PHPUNIT }}->fail('{"action":"click $\\".selector2\\""}');
+                    }
+                    
+                    EOD,
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        \Throwable::class,
+                    ],
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
             ],
             'single exists assertion' => [
                 'step' => $stepParser->parse([
@@ -417,15 +451,29 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         ],
                     ]),
                 ]),
-                'expectedRenderedContent' => '// StatementBlockFactory::create($".selector1" exists)' . "\n"
-                    . '// AssertionHandler::handle($".selector1" exists)' . "\n"
-                    . "\n"
-                    . '// StatementBlockFactory::create(click $".selector1")' . "\n"
-                    . '// ActionHandler::handle(click $".selector1")' . "\n"
-                    . "\n"
-                    . '// StatementBlockFactory::create($".selector2" exists)' . "\n"
-                    . '// AssertionHandler::handle($".selector2" exists)' . "\n",
-                'expectedMetadata' => new Metadata(),
+                'expectedRenderedContent' => <<< 'EOD'
+                    // StatementBlockFactory::create($".selector1" exists)
+                    // AssertionHandler::handle($".selector1" exists)
+                    
+                    // StatementBlockFactory::create(click $".selector1")
+                    try {
+                        // ActionHandler::handle(click $".selector1")
+                    } catch (\Throwable $exception) {
+                        {{ PHPUNIT }}->fail('{"action":"click $\\".selector1\\""}');
+                    }
+                    
+                    // StatementBlockFactory::create($".selector2" exists)
+                    // AssertionHandler::handle($".selector2" exists)
+                    
+                    EOD,
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        \Throwable::class,
+                    ],
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
             ],
             'two descendant exists assertions with common parent' => [
                 'step' => $stepParser->parse([
@@ -740,6 +788,12 @@ class StepHandlerTest extends AbstractResolvableTestCase
             ? $derivedAssertionFactory
             : DerivedAssertionFactory::createFactory();
 
-        return new StepHandler($actionHandler, $assertionHandler, $statementBlockFactory, $derivedAssertionFactory);
+        return new StepHandler(
+            $actionHandler,
+            $assertionHandler,
+            $statementBlockFactory,
+            $derivedAssertionFactory,
+            ArgumentFactory::createFactory(),
+        );
     }
 }
