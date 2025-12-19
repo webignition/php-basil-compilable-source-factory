@@ -100,6 +100,7 @@ class IdentifierExistenceAssertionHandler
 
         $assertionStatement = $this->assertionStatementFactory->create(
             $assertion,
+            null,
             self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP,
             $metadata,
             new MethodArguments([$examinedValuePlaceholder])
@@ -139,6 +140,7 @@ class IdentifierExistenceAssertionHandler
             $body = $body->withContent([
                 $this->assertionStatementFactory->create(
                     $elementExistsAssertion,
+                    null,
                     self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP,
                     $metadata,
                     new MethodArguments([$examinedValuePlaceholder])

@@ -94,6 +94,7 @@ class ComparisonAssertionHandler
             ),
             $this->assertionStatementFactory->create(
                 $assertion,
+                null,
                 self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP,
                 $metadata,
                 new MethodArguments($assertionArguments)

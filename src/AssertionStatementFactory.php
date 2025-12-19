@@ -31,11 +31,12 @@ class AssertionStatementFactory
      */
     public function create(
         AssertionInterface $assertion,
+        ?string $assertionMethod,
         array $operatorToAssertionTemplateMap,
         Metadata $metadata,
         MethodArgumentsInterface $arguments,
     ): StatementInterface {
-        $assertionMethod = $operatorToAssertionTemplateMap[$assertion->getOperator()];
+        $assertionMethod = is_string($assertionMethod) ? $assertionMethod : $operatorToAssertionTemplateMap[$assertion->getOperator()];
 
         $serializedMetadata = (string) json_encode($metadata, JSON_PRETTY_PRINT);
 
