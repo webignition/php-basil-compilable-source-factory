@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
-use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\AssertionStatementFactory;
-use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
@@ -47,19 +45,13 @@ class ComparisonAssertionHandler extends AbstractAssertionHandler
     ];
 
     public function __construct(
-        ArgumentFactory $argumentFactory,
-        PhpUnitCallFactory $phpUnitCallFactory,
         private AssertionStatementFactory $assertionStatementFactory,
         private ValueAccessorFactory $valueAccessorFactory,
-    ) {
-        parent::__construct($argumentFactory, $phpUnitCallFactory);
-    }
+    ) {}
 
     public static function createHandler(): self
     {
         return new ComparisonAssertionHandler(
-            ArgumentFactory::createFactory(),
-            PhpUnitCallFactory::createFactory(),
             AssertionStatementFactory::createFactory(),
             ValueAccessorFactory::createFactory()
         );

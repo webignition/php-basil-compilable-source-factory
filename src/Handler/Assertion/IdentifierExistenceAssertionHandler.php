@@ -57,9 +57,7 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
         private TryCatchBlockFactory $tryCatchBlockFactory,
         private PhpUnitCallFactory $phpUnitCallFactory,
         private AssertionStatementFactory $assertionStatementFactory,
-    ) {
-        parent::__construct($this->argumentFactory, $this->phpUnitCallFactory);
-    }
+    ) {}
 
     public static function createHandler(): self
     {
