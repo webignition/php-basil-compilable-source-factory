@@ -31,7 +31,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
                         '{
-                            "assertion": "\\"\\/^value\\/\\" is-regexp",
+                            "statement": "\\"\\/^value\\/\\" is-regexp",
                             "source": "$\\".selector\\" matches \\"\\/^value\\/\\""
                         }'
                     );
@@ -60,7 +60,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
                         '{
-                            "assertion": "$\\".pattern-container\\" is-regexp",
+                            "statement": "$\\".pattern-container\\" is-regexp",
                             "source": "$\\".selector\\" matches $\\".pattern-container\\""
                         }'
                     );
@@ -91,7 +91,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
                         '{
-                            "assertion": "$\\".pattern-container\\".attribute_name is-regexp",
+                            "statement": "$\\".pattern-container\\".attribute_name is-regexp",
                             "source": "$\\".selector\\" matches $\\".pattern-container\\".attribute_name"
                         }'
                     );
@@ -115,7 +115,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
                         '{
-                            "assertion": "$data.pattern is-regexp",
+                            "statement": "$data.pattern is-regexp",
                             "source": "$page.title matches $data.pattern"
                         }'
                     );
