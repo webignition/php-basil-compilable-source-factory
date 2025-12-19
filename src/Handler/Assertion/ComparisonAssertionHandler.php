@@ -97,12 +97,12 @@ class ComparisonAssertionHandler extends AbstractAssertionHandler
             new Statement(
                 new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
             ),
-            $this->createAssertionStatement($assertion, $metadata, new MethodArguments($assertionArguments)),
+            $this->createAssertionStatement(
+                $assertion,
+                self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP,
+                $metadata,
+                new MethodArguments($assertionArguments)
+            ),
         ]);
-    }
-
-    protected function getOperationToAssertionTemplateMap(): array
-    {
-        return self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP;
     }
 }

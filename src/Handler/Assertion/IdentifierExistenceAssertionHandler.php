@@ -99,6 +99,7 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
 
         $assertionStatement = $this->createAssertionStatement(
             $assertion,
+            self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP,
             $metadata,
             new MethodArguments([$examinedValuePlaceholder])
         );
@@ -137,6 +138,7 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
             $body = $body->withContent([
                 $this->createAssertionStatement(
                     $elementExistsAssertion,
+                    self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP,
                     $metadata,
                     new MethodArguments([$examinedValuePlaceholder])
                 ),
@@ -145,11 +147,6 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
         }
 
         return $body->withContent([$assertionStatement]);
-    }
-
-    protected function getOperationToAssertionTemplateMap(): array
-    {
-        return self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP;
     }
 
     private function createDomCrawlerNavigatorCall(

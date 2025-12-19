@@ -63,15 +63,11 @@ class ScalarExistenceAssertionHandler extends AbstractAssertionHandler
 
         $assertionStatement = $this->createAssertionStatement(
             $assertion,
+            self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP,
             $metadata,
             new MethodArguments([$examinedAccessor])
         );
 
         return new Body([$assertionStatement]);
-    }
-
-    protected function getOperationToAssertionTemplateMap(): array
-    {
-        return self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP;
     }
 }

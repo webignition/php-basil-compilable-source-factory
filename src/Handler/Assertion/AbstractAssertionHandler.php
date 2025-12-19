@@ -20,16 +20,15 @@ abstract class AbstractAssertionHandler
     ) {}
 
     /**
-     * @return array<string, string>
+     * @param array<string, string> $operatorToAssertionTemplateMap
      */
-    abstract protected function getOperationToAssertionTemplateMap(): array;
-
     protected function createAssertionStatement(
         AssertionInterface $assertion,
+        array $operatorToAssertionTemplateMap,
         Metadata $metadata,
         MethodArgumentsInterface $arguments,
     ): StatementInterface {
-        $assertionMethod = $this->getOperationToAssertionTemplateMap()[$assertion->getOperator()];
+        $assertionMethod = $operatorToAssertionTemplateMap[$assertion->getOperator()];
 
         $serializedMetadata = (string) json_encode($metadata, JSON_PRETTY_PRINT);
 

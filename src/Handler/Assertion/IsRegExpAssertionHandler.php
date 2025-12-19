@@ -83,11 +83,6 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
         throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
     }
 
-    protected function getOperationToAssertionTemplateMap(): array
-    {
-        return self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP;
-    }
-
     private function createIsRegExpAssertionBody(
         ExpressionInterface $examinedAccessor,
         AssertionInterface $assertion,
@@ -121,6 +116,7 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
             ]),
             $this->createAssertionStatement(
                 $assertion,
+                self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP,
                 $metadata,
                 new MethodArguments([$expectedValuePlaceholder])
             ),
