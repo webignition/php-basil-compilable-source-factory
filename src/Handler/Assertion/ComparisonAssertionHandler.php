@@ -20,7 +20,7 @@ use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
 
-class ComparisonAssertionHandler extends AbstractAssertionHandler
+class ComparisonAssertionHandler
 {
     public const ASSERT_EQUALS_METHOD = 'assertEquals';
     public const ASSERT_NOT_EQUALS_METHOD = 'assertNotEquals';

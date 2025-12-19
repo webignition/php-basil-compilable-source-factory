@@ -38,7 +38,7 @@ use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifierInterface;
 use webignition\SymfonyDomCrawlerNavigator\Exception\InvalidLocatorException;
 
-class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
+class IdentifierExistenceAssertionHandler
 {
     public const ASSERT_TRUE_METHOD = 'assertTrue';
     public const ASSERT_FALSE_METHOD = 'assertFalse';

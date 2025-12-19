@@ -11,7 +11,7 @@ use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilValueTypeIdentifier\ValueTypeIdentifier;
 
-class ExistenceAssertionHandler extends AbstractAssertionHandler
+class ExistenceAssertionHandler
 {
     public const ASSERT_TRUE_METHOD = 'assertTrue';
     public const ASSERT_FALSE_METHOD = 'assertFalse';

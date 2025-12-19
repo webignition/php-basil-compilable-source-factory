@@ -25,7 +25,7 @@ use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilValueTypeIdentifier\ValueTypeIdentifier;
 
-class IsRegExpAssertionHandler extends AbstractAssertionHandler
+class IsRegExpAssertionHandler
 {
     public const ASSERT_FALSE_METHOD = 'assertFalse';
 

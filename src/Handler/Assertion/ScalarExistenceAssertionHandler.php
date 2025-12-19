@@ -16,7 +16,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
 
-class ScalarExistenceAssertionHandler extends AbstractAssertionHandler
+class ScalarExistenceAssertionHandler
 {
     public const ASSERT_TRUE_METHOD = 'assertTrue';
     public const ASSERT_FALSE_METHOD = 'assertFalse';
