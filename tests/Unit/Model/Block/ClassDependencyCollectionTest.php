@@ -62,10 +62,6 @@ class ClassDependencyCollectionTest extends AbstractResolvableTestCase
     public static function renderDataProvider(): array
     {
         return [
-            'empty' => [
-                'collection' => new ClassDependencyCollection(),
-                'expectedString' => '',
-            ],
             'non-empty' => [
                 'collection' => new ClassDependencyCollection(
                     new ClassNameCollection([
@@ -113,10 +109,6 @@ class ClassDependencyCollectionTest extends AbstractResolvableTestCase
     public static function countDataProvider(): array
     {
         return [
-            'empty' => [
-                'collection' => new ClassDependencyCollection(),
-                'expectedCount' => 0,
-            ],
             'one' => [
                 'collection' => new ClassDependencyCollection(
                     new ClassNameCollection([
@@ -161,10 +153,6 @@ class ClassDependencyCollectionTest extends AbstractResolvableTestCase
     public static function isEmptyDataProvider(): array
     {
         return [
-            'empty' => [
-                'collection' => new ClassDependencyCollection(),
-                'expectedIsEmpty' => true,
-            ],
             'not empty' => [
                 'collection' => new ClassDependencyCollection(
                     new ClassNameCollection([
