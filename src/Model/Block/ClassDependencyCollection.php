@@ -23,12 +23,9 @@ class ClassDependencyCollection implements
 {
     use DeferredResolvableCollectionTrait;
 
-    private ClassNameCollection $classNames;
-
-    public function __construct(?ClassNameCollection $classNames = null)
-    {
-        $this->classNames = $classNames ?? new ClassNameCollection([]);
-    }
+    public function __construct(
+        private ClassNameCollection $classNames,
+    ) {}
 
     public function merge(ClassDependencyCollection $collection): ClassDependencyCollection
     {

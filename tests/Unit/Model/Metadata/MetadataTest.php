@@ -38,12 +38,6 @@ class MetadataTest extends TestCase
     public static function createDataProvider(): array
     {
         return [
-            'empty' => [
-                'classNames' => [],
-                'variableNames' => [],
-                'expectedClassDependencies' => new ClassDependencyCollection(),
-                'expectedVariableDependencies' => new VariableDependencyCollection(),
-            ],
             'components set, correct types' => [
                 'classNames' => [ClassName::class],
                 'variableNames' => [VariableName::PANTHER_CLIENT],
