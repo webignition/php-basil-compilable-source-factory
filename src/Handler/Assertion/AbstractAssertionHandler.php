@@ -4,17 +4,21 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
-use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
+use webignition\BasilCompilableSourceFactory\ArgumentFactory;
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocationInterface;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
+use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
 
 abstract class AbstractAssertionHandler
 {
     public function __construct(
-        private AssertionMethodInvocationFactory $assertionMethodInvocationFactory
+        private ArgumentFactory $argumentFactory,
     ) {}
 
     /**
@@ -28,11 +32,29 @@ abstract class AbstractAssertionHandler
         MethodArgumentsInterface $arguments,
     ): StatementInterface {
         return new Statement(
-            $this->assertionMethodInvocationFactory->create(
+            $this->create(
                 $this->getOperationToAssertionTemplateMap()[$assertion->getOperator()],
                 $metadata,
                 $arguments
             )
+        );
+    }
+
+    private function create(
+        string $assertionMethod,
+        Metadata $metadata,
+        MethodArgumentsInterface $arguments,
+    ): MethodInvocationInterface {
+        $serializedMetadata = (string) json_encode($metadata, JSON_PRETTY_PRINT);
+
+        $arguments = $arguments->withArgument(
+            $this->argumentFactory->createSingular($serializedMetadata)
+        );
+
+        return new ObjectMethodInvocation(
+            new VariableDependency(VariableName::PHPUNIT_TEST_CASE),
+            $assertionMethod,
+            $arguments->withFormat(MethodArgumentsInterface::FORMAT_STACKED)
         );
     }
 }
