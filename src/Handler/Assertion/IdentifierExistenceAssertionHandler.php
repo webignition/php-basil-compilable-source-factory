@@ -24,6 +24,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpres
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
+use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
@@ -40,12 +41,9 @@ use webignition\SymfonyDomCrawlerNavigator\Exception\InvalidLocatorException;
 
 class IdentifierExistenceAssertionHandler
 {
-    public const ASSERT_TRUE_METHOD = 'assertTrue';
-    public const ASSERT_FALSE_METHOD = 'assertFalse';
-
-    private const OPERATOR_TO_ASSERTION_TEMPLATE_MAP = [
-        'exists' => self::ASSERT_TRUE_METHOD,
-        'not-exists' => self::ASSERT_FALSE_METHOD,
+    private const array OPERATOR_TO_ASSERTION_TEMPLATE_MAP = [
+        'exists' => 'assertTrue',
+        'not-exists' => 'assertFalse',
     ];
 
     public function __construct(
@@ -98,10 +96,10 @@ class IdentifierExistenceAssertionHandler
             new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
         );
 
-        $assertionStatement = $this->assertionStatementFactory->create(
-            self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP[$assertion->getOperator()],
+        $assertionStatement = $this->createAssertionStatement(
+            $assertion,
             $metadata,
-            new MethodArguments([$examinedValuePlaceholder])
+            new MethodArguments([$examinedValuePlaceholder]),
         );
 
         $body = new Body([
@@ -136,10 +134,10 @@ class IdentifierExistenceAssertionHandler
             );
 
             $body = $body->withContent([
-                $this->assertionStatementFactory->create(
-                    self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP[$elementExistsAssertion->getOperator()],
+                $this->createAssertionStatement(
+                    $elementExistsAssertion,
                     $metadata,
-                    new MethodArguments([$examinedValuePlaceholder])
+                    new MethodArguments([$examinedValuePlaceholder]),
                 ),
                 $examinedValueAssignmentStatement,
             ]);
@@ -179,6 +177,18 @@ class IdentifierExistenceAssertionHandler
                     new MethodArguments($this->argumentFactory->create('Invalid locator'))
                 ),
             ])
+        );
+    }
+
+    private function createAssertionStatement(
+        AssertionInterface $assertion,
+        Metadata $metadata,
+        MethodArgumentsInterface $arguments,
+    ): StatementInterface {
+        return $this->assertionStatementFactory->create(
+            self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP[$assertion->getOperator()],
+            $metadata,
+            $arguments,
         );
     }
 }
