@@ -35,13 +35,12 @@ class ComparisonAssertionHandlerTest extends AbstractResolvableTestCase
      */
     public function testHandle(
         AssertionInterface $assertion,
-        Metadata $metadata,
         string $expectedRenderedContent,
         MetadataInterface $expectedMetadata
     ): void {
         $handler = ComparisonAssertionHandler::createHandler();
 
-        $source = $handler->handle($assertion, $metadata);
+        $source = $handler->handle($assertion, new Metadata($assertion));
 
         $this->assertRenderResolvable($expectedRenderedContent, $source);
         $this->assertEquals($expectedMetadata, $source->getMetadata());
@@ -63,9 +62,7 @@ class ComparisonAssertionHandlerTest extends AbstractResolvableTestCase
 
         $this->expectExceptionObject($expectedException);
 
-        $metadata = new Metadata($assertion);
-
-        $handler->handle($assertion, $metadata);
+        $handler->handle($assertion, new Metadata($assertion));
     }
 
     /**
