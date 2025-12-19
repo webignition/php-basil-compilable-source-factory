@@ -18,12 +18,9 @@ use webignition\BasilModels\Model\Assertion\AssertionInterface;
 
 class ScalarExistenceAssertionHandler
 {
-    public const ASSERT_TRUE_METHOD = 'assertTrue';
-    public const ASSERT_FALSE_METHOD = 'assertFalse';
-
-    private const OPERATOR_TO_ASSERTION_TEMPLATE_MAP = [
-        'exists' => self::ASSERT_TRUE_METHOD,
-        'not-exists' => self::ASSERT_FALSE_METHOD,
+    private const array OPERATOR_TO_ASSERTION_TEMPLATE_MAP = [
+        'exists' => 'assertTrue',
+        'not-exists' => 'assertFalse',
     ];
 
     public function __construct(
