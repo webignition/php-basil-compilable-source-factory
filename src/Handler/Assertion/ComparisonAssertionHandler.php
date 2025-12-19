@@ -22,26 +22,12 @@ use webignition\BasilModels\Model\Assertion\AssertionInterface;
 
 class ComparisonAssertionHandler
 {
-    public const ASSERT_EQUALS_METHOD = 'assertEquals';
-    public const ASSERT_NOT_EQUALS_METHOD = 'assertNotEquals';
-    public const ASSERT_STRING_CONTAINS_STRING_METHOD = 'assertStringContainsString';
-    public const ASSERT_STRING_NOT_CONTAINS_STRING_METHOD = 'assertStringNotContainsString';
-    public const ASSERT_MATCHES_METHOD = 'assertMatchesRegularExpression';
-
-    private const OPERATOR_TO_ASSERTION_TEMPLATE_MAP = [
-        'includes' => self::ASSERT_STRING_CONTAINS_STRING_METHOD,
-        'excludes' => self::ASSERT_STRING_NOT_CONTAINS_STRING_METHOD,
-        'is' => self::ASSERT_EQUALS_METHOD,
-        'is-not' => self::ASSERT_NOT_EQUALS_METHOD,
-        'matches' => self::ASSERT_MATCHES_METHOD,
-    ];
-
-    /**
-     * @var string[]
-     */
-    private array $methodsWithStringArguments = [
-        self::ASSERT_STRING_CONTAINS_STRING_METHOD,
-        self::ASSERT_STRING_NOT_CONTAINS_STRING_METHOD,
+    private const array OPERATOR_TO_ASSERTION_TEMPLATE_MAP = [
+        'includes' => 'assertStringContainsString',
+        'excludes' => 'assertStringNotContainsString',
+        'is' => 'assertEquals',
+        'is-not' => 'assertNotEquals',
+        'matches' => 'assertMatchesRegularExpression',
     ];
 
     public function __construct(
@@ -67,8 +53,6 @@ class ComparisonAssertionHandler
             throw new UnsupportedStatementException($assertion);
         }
 
-        $assertionMethod = self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP[$assertion->getOperator()];
-
         $examinedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull((string) $assertion->getIdentifier());
         $expectedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull((string) $assertion->getValue());
 
@@ -77,9 +61,7 @@ class ComparisonAssertionHandler
 
         $assertionArguments = [$expectedValuePlaceholder, $examinedValuePlaceholder];
 
-        $isStringArgumentAssertionMethod = in_array($assertionMethod, $this->methodsWithStringArguments);
-
-        if ($isStringArgumentAssertionMethod) {
+        if ('includes' === $assertion->getOperator() || 'excludes' === $assertion->getOperator()) {
             array_walk($assertionArguments, function (ExpressionInterface &$expression) {
                 $expression = new CastExpression($expression, 'string');
             });
