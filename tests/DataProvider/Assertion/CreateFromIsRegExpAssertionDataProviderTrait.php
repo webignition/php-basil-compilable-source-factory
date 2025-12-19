@@ -31,7 +31,8 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
                         '{
-                            "assertion": "\\"\\/^value\\/\\" is-regexp",
+                            "statement": "\\"\\/^value\\/\\" is-regexp",
+                            "type": "assertion",
                             "source": "$\\".selector\\" matches \\"\\/^value\\/\\""
                         }'
                     );
@@ -60,7 +61,8 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
                         '{
-                            "assertion": "$\\".pattern-container\\" is-regexp",
+                            "statement": "$\\".pattern-container\\" is-regexp",
+                            "type": "assertion",
                             "source": "$\\".selector\\" matches $\\".pattern-container\\""
                         }'
                     );
@@ -91,7 +93,8 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
                         '{
-                            "assertion": "$\\".pattern-container\\".attribute_name is-regexp",
+                            "statement": "$\\".pattern-container\\".attribute_name is-regexp",
+                            "type": "assertion",
                             "source": "$\\".selector\\" matches $\\".pattern-container\\".attribute_name"
                         }'
                     );
@@ -115,7 +118,8 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
                         '{
-                            "assertion": "$data.pattern is-regexp",
+                            "statement": "$data.pattern is-regexp",
+                            "type": "assertion",
                             "source": "$page.title matches $data.pattern"
                         }'
                     );
