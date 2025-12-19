@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
-use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
+use webignition\BasilCompilableSourceFactory\AssertionStatementFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
@@ -25,30 +25,22 @@ use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilValueTypeIdentifier\ValueTypeIdentifier;
 
-class IsRegExpAssertionHandler extends AbstractAssertionHandler
+class IsRegExpAssertionHandler
 {
-    public const ASSERT_FALSE_METHOD = 'assertFalse';
-
-    private const OPERATOR_TO_ASSERTION_TEMPLATE_MAP = [
-        'is-regexp' => self::ASSERT_FALSE_METHOD,
-    ];
-
     public function __construct(
         private ArgumentFactory $argumentFactory,
-        PhpUnitCallFactory $phpUnitCallFactory,
+        private AssertionStatementFactory $assertionStatementFactory,
         private DomIdentifierFactory $domIdentifierFactory,
         private IdentifierTypeAnalyser $identifierTypeAnalyser,
         private ValueTypeIdentifier $valueTypeIdentifier,
         private ValueAccessorFactory $valueAccessorFactory,
-    ) {
-        parent::__construct($this->argumentFactory, $phpUnitCallFactory);
-    }
+    ) {}
 
     public static function createHandler(): self
     {
         return new IsRegExpAssertionHandler(
             ArgumentFactory::createFactory(),
-            PhpUnitCallFactory::createFactory(),
+            AssertionStatementFactory::createFactory(),
             DomIdentifierFactory::createFactory(),
             IdentifierTypeAnalyser::create(),
             new ValueTypeIdentifier(),
@@ -83,11 +75,6 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
         throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
     }
 
-    protected function getOperationToAssertionTemplateMap(): array
-    {
-        return self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP;
-    }
-
     private function createIsRegExpAssertionBody(
         ExpressionInterface $examinedAccessor,
         AssertionInterface $assertion,
@@ -119,8 +106,8 @@ class IsRegExpAssertionHandler extends AbstractAssertionHandler
                 new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
                 new AssignmentExpression($expectedValuePlaceholder, $identityComparison),
             ]),
-            $this->createAssertionStatement(
-                $assertion,
+            $this->assertionStatementFactory->create(
+                'assertFalse',
                 $metadata,
                 new MethodArguments([$expectedValuePlaceholder])
             ),

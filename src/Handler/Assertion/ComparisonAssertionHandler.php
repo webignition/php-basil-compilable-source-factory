@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
-use webignition\BasilCompilableSourceFactory\ArgumentFactory;
-use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
+use webignition\BasilCompilableSourceFactory\AssertionStatementFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
@@ -21,43 +20,25 @@ use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
 
-class ComparisonAssertionHandler extends AbstractAssertionHandler
+class ComparisonAssertionHandler
 {
-    public const ASSERT_EQUALS_METHOD = 'assertEquals';
-    public const ASSERT_NOT_EQUALS_METHOD = 'assertNotEquals';
-    public const ASSERT_STRING_CONTAINS_STRING_METHOD = 'assertStringContainsString';
-    public const ASSERT_STRING_NOT_CONTAINS_STRING_METHOD = 'assertStringNotContainsString';
-    public const ASSERT_MATCHES_METHOD = 'assertMatchesRegularExpression';
-
-    private const OPERATOR_TO_ASSERTION_TEMPLATE_MAP = [
-        'includes' => self::ASSERT_STRING_CONTAINS_STRING_METHOD,
-        'excludes' => self::ASSERT_STRING_NOT_CONTAINS_STRING_METHOD,
-        'is' => self::ASSERT_EQUALS_METHOD,
-        'is-not' => self::ASSERT_NOT_EQUALS_METHOD,
-        'matches' => self::ASSERT_MATCHES_METHOD,
-    ];
-
-    /**
-     * @var string[]
-     */
-    private array $methodsWithStringArguments = [
-        self::ASSERT_STRING_CONTAINS_STRING_METHOD,
-        self::ASSERT_STRING_NOT_CONTAINS_STRING_METHOD,
+    private const array OPERATOR_TO_ASSERTION_TEMPLATE_MAP = [
+        'includes' => 'assertStringContainsString',
+        'excludes' => 'assertStringNotContainsString',
+        'is' => 'assertEquals',
+        'is-not' => 'assertNotEquals',
+        'matches' => 'assertMatchesRegularExpression',
     ];
 
     public function __construct(
-        ArgumentFactory $argumentFactory,
-        PhpUnitCallFactory $phpUnitCallFactory,
-        private ValueAccessorFactory $valueAccessorFactory
-    ) {
-        parent::__construct($argumentFactory, $phpUnitCallFactory);
-    }
+        private AssertionStatementFactory $assertionStatementFactory,
+        private ValueAccessorFactory $valueAccessorFactory,
+    ) {}
 
     public static function createHandler(): self
     {
         return new ComparisonAssertionHandler(
-            ArgumentFactory::createFactory(),
-            PhpUnitCallFactory::createFactory(),
+            AssertionStatementFactory::createFactory(),
             ValueAccessorFactory::createFactory()
         );
     }
@@ -72,8 +53,6 @@ class ComparisonAssertionHandler extends AbstractAssertionHandler
             throw new UnsupportedStatementException($assertion);
         }
 
-        $assertionMethod = self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP[$assertion->getOperator()];
-
         $examinedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull((string) $assertion->getIdentifier());
         $expectedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull((string) $assertion->getValue());
 
@@ -82,9 +61,7 @@ class ComparisonAssertionHandler extends AbstractAssertionHandler
 
         $assertionArguments = [$expectedValuePlaceholder, $examinedValuePlaceholder];
 
-        $isStringArgumentAssertionMethod = in_array($assertionMethod, $this->methodsWithStringArguments);
-
-        if ($isStringArgumentAssertionMethod) {
+        if ('includes' === $assertion->getOperator() || 'excludes' === $assertion->getOperator()) {
             array_walk($assertionArguments, function (ExpressionInterface &$expression) {
                 $expression = new CastExpression($expression, 'string');
             });
@@ -97,12 +74,11 @@ class ComparisonAssertionHandler extends AbstractAssertionHandler
             new Statement(
                 new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
             ),
-            $this->createAssertionStatement($assertion, $metadata, new MethodArguments($assertionArguments)),
+            $this->assertionStatementFactory->create(
+                self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP[$assertion->getOperator()],
+                $metadata,
+                new MethodArguments($assertionArguments)
+            ),
         ]);
-    }
-
-    protected function getOperationToAssertionTemplateMap(): array
-    {
-        return self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP;
     }
 }

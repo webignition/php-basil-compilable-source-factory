@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
+use webignition\BasilCompilableSourceFactory\AssertionStatementFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
@@ -23,6 +24,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpres
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
+use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
@@ -37,16 +39,8 @@ use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifierInterface;
 use webignition\SymfonyDomCrawlerNavigator\Exception\InvalidLocatorException;
 
-class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
+class IdentifierExistenceAssertionHandler
 {
-    public const ASSERT_TRUE_METHOD = 'assertTrue';
-    public const ASSERT_FALSE_METHOD = 'assertFalse';
-
-    private const OPERATOR_TO_ASSERTION_TEMPLATE_MAP = [
-        'exists' => self::ASSERT_TRUE_METHOD,
-        'not-exists' => self::ASSERT_FALSE_METHOD,
-    ];
-
     public function __construct(
         private ArgumentFactory $argumentFactory,
         private DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory,
@@ -55,9 +49,8 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
         private ElementIdentifierSerializer $elementIdentifierSerializer,
         private TryCatchBlockFactory $tryCatchBlockFactory,
         private PhpUnitCallFactory $phpUnitCallFactory,
-    ) {
-        parent::__construct($this->argumentFactory, $this->phpUnitCallFactory);
-    }
+        private AssertionStatementFactory $assertionStatementFactory,
+    ) {}
 
     public static function createHandler(): self
     {
@@ -69,6 +62,7 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
             ElementIdentifierSerializer::createSerializer(),
             TryCatchBlockFactory::createFactory(),
             PhpUnitCallFactory::createFactory(),
+            AssertionStatementFactory::createFactory(),
         );
     }
 
@@ -100,7 +94,7 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
         $assertionStatement = $this->createAssertionStatement(
             $assertion,
             $metadata,
-            new MethodArguments([$examinedValuePlaceholder])
+            new MethodArguments([$examinedValuePlaceholder]),
         );
 
         $body = new Body([
@@ -138,18 +132,13 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
                 $this->createAssertionStatement(
                     $elementExistsAssertion,
                     $metadata,
-                    new MethodArguments([$examinedValuePlaceholder])
+                    new MethodArguments([$examinedValuePlaceholder]),
                 ),
                 $examinedValueAssignmentStatement,
             ]);
         }
 
         return $body->withContent([$assertionStatement]);
-    }
-
-    protected function getOperationToAssertionTemplateMap(): array
-    {
-        return self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP;
     }
 
     private function createDomCrawlerNavigatorCall(
@@ -183,6 +172,18 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
                     new MethodArguments($this->argumentFactory->create('Invalid locator'))
                 ),
             ])
+        );
+    }
+
+    private function createAssertionStatement(
+        AssertionInterface $assertion,
+        Metadata $metadata,
+        MethodArgumentsInterface $arguments,
+    ): StatementInterface {
+        return $this->assertionStatementFactory->create(
+            'exists' === $assertion->getOperator() ? 'assertTrue' : 'assertFalse',
+            $metadata,
+            $arguments,
         );
     }
 }
