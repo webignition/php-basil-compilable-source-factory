@@ -23,6 +23,7 @@ readonly class Metadata implements \JsonSerializable
     {
         $data = [
             'statement' => (string) $this->statement,
+            'type' => $this->statement->getStatementType(),
         ];
 
         if ($this->statement instanceof EncapsulatingStatementInterface) {

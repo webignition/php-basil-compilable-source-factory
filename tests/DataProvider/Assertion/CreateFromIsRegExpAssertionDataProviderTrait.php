@@ -32,6 +32,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                         $expectedValue,
                         '{
                             "statement": "\\"\\/^value\\/\\" is-regexp",
+                            "type": "assertion",
                             "source": "$\\".selector\\" matches \\"\\/^value\\/\\""
                         }'
                     );
@@ -61,6 +62,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                         $expectedValue,
                         '{
                             "statement": "$\\".pattern-container\\" is-regexp",
+                            "type": "assertion",
                             "source": "$\\".selector\\" matches $\\".pattern-container\\""
                         }'
                     );
@@ -92,6 +94,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                         $expectedValue,
                         '{
                             "statement": "$\\".pattern-container\\".attribute_name is-regexp",
+                            "type": "assertion",
                             "source": "$\\".selector\\" matches $\\".pattern-container\\".attribute_name"
                         }'
                     );
@@ -116,6 +119,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                         $expectedValue,
                         '{
                             "statement": "$data.pattern is-regexp",
+                            "type": "assertion",
                             "source": "$page.title matches $data.pattern"
                         }'
                     );
