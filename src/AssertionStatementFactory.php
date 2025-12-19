@@ -27,17 +27,13 @@ class AssertionStatementFactory
     }
 
     /**
-     * @param array<string, string> $operatorToAssertionTemplateMap
+     * @param non-empty-string $assertionMethod
      */
     public function create(
-        AssertionInterface $assertion,
-        ?string $assertionMethod,
-        array $operatorToAssertionTemplateMap,
+        string $assertionMethod,
         Metadata $metadata,
         MethodArgumentsInterface $arguments,
     ): StatementInterface {
-        $assertionMethod = is_string($assertionMethod) ? $assertionMethod : $operatorToAssertionTemplateMap[$assertion->getOperator()];
-
         $serializedMetadata = (string) json_encode($metadata, JSON_PRETTY_PRINT);
 
         $arguments = $arguments->withArgument(

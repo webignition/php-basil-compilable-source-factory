@@ -113,9 +113,7 @@ class IsRegExpAssertionHandler
                 new AssignmentExpression($expectedValuePlaceholder, $identityComparison),
             ]),
             $this->assertionStatementFactory->create(
-                $assertion,
                 self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP[$assertion->getOperator()],
-                [],
                 $metadata,
                 new MethodArguments([$expectedValuePlaceholder])
             ),
