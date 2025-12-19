@@ -59,7 +59,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
-                            \"assertion\": \"$\\\".selector\\\" exists\"
+                            "assertion": "$\\".selector\\" exists"
                         }'
                     );
                     EOD,
@@ -89,7 +89,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
-                            \"assertion\": \"$\\\".selector\\\".attribute_name exists\"
+                            "assertion": "$\\".selector\\".attribute_name exists"
                         }'
                     );
                     $examinedValue = ((function () {
@@ -102,7 +102,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
-                            \"assertion\": \"$\\\".selector\\\".attribute_name exists\"
+                            "assertion": "$\\".selector\\".attribute_name exists"
                         }'
                     );
                     EOD,
@@ -132,7 +132,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
-                            \"assertion\": \"$\\\"a[href=foo.html]\\\" exists\"
+                            "assertion": "$\\"a[href=foo.html]\\" exists"
                         }'
                     );
                     EOD,
@@ -162,7 +162,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
-                            \"assertion\": \"$\\\"a[href=foo.html]\\\".attribute_name exists\"
+                            "assertion": "$\\"a[href=foo.html]\\".attribute_name exists"
                         }'
                     );
                     $examinedValue = ((function () {
@@ -175,7 +175,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
-                            \"assertion\": \"$\\\"a[href=foo.html]\\\".attribute_name exists\"
+                            "assertion": "$\\"a[href=foo.html]\\".attribute_name exists"
                         }'
                     );
                     EOD,
@@ -220,8 +220,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
-                            \"assertion\": \"$\\\".selector\\\" exists\",
-                            \"source\": \"click $\\\".selector\\\"\"
+                            "assertion": "$\\".selector\\" exists",
+                            "source": "click $\\".selector\\""
                         }'
                     );
                     EOD,
@@ -266,8 +266,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
-                            \"assertion\": \"$\\\".selector\\\" exists\",
-                            \"source\": \"submit $\\\".selector\\\"\"
+                            "assertion": "$\\".selector\\" exists",
+                            "source": "submit $\\".selector\\""
                         }'
                     );
                     EOD,
@@ -312,8 +312,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
-                            \"assertion\": \"$\\\".selector\\\" exists\",
-                            \"source\": \"set $\\\".selector\\\" to \\\"value\\\"\"
+                            "assertion": "$\\".selector\\" exists",
+                            "source": "set $\\".selector\\" to \\"value\\""
                         }'
                     );
                     EOD,
@@ -358,8 +358,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
-                            \"assertion\": \"$\\\".duration\\\" exists\",
-                            \"source\": \"wait $\\\".duration\\\"\"
+                            "assertion": "$\\".duration\\" exists",
+                            "source": "wait $\\".duration\\""
                         }'
                     );
                     EOD,

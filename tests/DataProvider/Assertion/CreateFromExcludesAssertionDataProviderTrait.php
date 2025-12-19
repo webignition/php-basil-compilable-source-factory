@@ -46,7 +46,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
                         (string) ($expectedValue),
                         (string) ($examinedValue),
                         '{
-                            \"assertion\": \"$\\\".selector\\\" excludes \\\"value\\\"\"
+                            "assertion": "$\\".selector\\" excludes \\"value\\""
                         }'
                     );
                     EOD,
@@ -84,7 +84,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
                         (string) ($expectedValue),
                         (string) ($examinedValue),
                         '{
-                            \"assertion\": \"$\\\".selector\\\".attribute_name excludes \\\"value\\\"\"
+                            "assertion": "$\\".selector\\".attribute_name excludes \\"value\\""
                         }'
                     );
                     EOD,
