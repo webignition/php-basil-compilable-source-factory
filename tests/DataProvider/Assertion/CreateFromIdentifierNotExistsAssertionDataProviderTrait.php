@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
-use webignition\BasilCompilableSourceFactory\Metadata\Metadata as TestMetadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
-use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Parser\AssertionParser;
 use webignition\SymfonyDomCrawlerNavigator\Exception\InvalidLocatorException;
 
@@ -33,17 +31,6 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
         return [
             'not-exists comparison, element identifier examined value' => [
                 'assertion' => $assertionParser->parse('$".selector" not-exists'),
-                'metadata' => new TestMetadata(
-                    (function () {
-                        $assertion = \Mockery::mock(AssertionInterface::class);
-                        $assertion
-                            ->shouldReceive('__toString')
-                            ->andReturn('$".selector" not-exists')
-                        ;
-
-                        return $assertion;
-                    })(),
-                ),
                 'expectedRenderedContent' => <<<'EOD'
                     try {
                         $examinedValue = {{ NAVIGATOR }}->has('{
@@ -63,17 +50,6 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
             ],
             'not-exists comparison, attribute identifier examined value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name not-exists'),
-                'metadata' => new TestMetadata(
-                    (function () {
-                        $assertion = \Mockery::mock(AssertionInterface::class);
-                        $assertion
-                            ->shouldReceive('__toString')
-                            ->andReturn('$".selector".attribute_name not-exists')
-                        ;
-
-                        return $assertion;
-                    })(),
-                ),
                 'expectedRenderedContent' => <<<'EOD'
                     try {
                         $examinedValue = {{ NAVIGATOR }}->hasOne('{

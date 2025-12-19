@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
-use webignition\BasilCompilableSourceFactory\Metadata\Metadata as TestMetadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
-use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
 use webignition\BasilModels\Parser\AssertionParser;
 
@@ -27,24 +25,14 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     '"/^value/"',
                     'is-regexp'
                 ),
-                'metadata' => new TestMetadata(
-                    (function () {
-                        $assertion = \Mockery::mock(AssertionInterface::class);
-                        $assertion
-                            ->shouldReceive('__toString')
-                            ->andReturn('$".selector" matches "/^value/"')
-                        ;
-
-                        return $assertion;
-                    })(),
-                ),
                 'expectedRenderedContent' => <<<'EOD'
                     $examinedValue = "/^value/" ?? null;
                     $expectedValue = @preg_match($examinedValue, null) === false;
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
                         '{
-                            "assertion": "$\\".selector\\" matches \\"\\/^value\\/\\""
+                            "assertion": "\\"\\/^value\\/\\" is-regexp",
+                            "source": "$\\".selector\\" matches \\"\\/^value\\/\\""
                         }'
                     );
                     EOD,
@@ -60,17 +48,6 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     '$".pattern-container"',
                     'is-regexp'
                 ),
-                'metadata' => new TestMetadata(
-                    (function () {
-                        $assertion = \Mockery::mock(AssertionInterface::class);
-                        $assertion
-                            ->shouldReceive('__toString')
-                            ->andReturn('$".selector" matches $".pattern-container"')
-                        ;
-
-                        return $assertion;
-                    })(),
-                ),
                 'expectedRenderedContent' => <<<'EOD'
                     $examinedValue = (function () {
                         $element = {{ NAVIGATOR }}->find('{
@@ -83,7 +60,8 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
                         '{
-                            "assertion": "$\\".selector\\" matches $\\".pattern-container\\""
+                            "assertion": "$\\".pattern-container\\" is-regexp",
+                            "source": "$\\".selector\\" matches $\\".pattern-container\\""
                         }'
                     );
                     EOD,
@@ -101,17 +79,6 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     '$".pattern-container".attribute_name',
                     'is-regexp'
                 ),
-                'metadata' => new TestMetadata(
-                    (function () {
-                        $assertion = \Mockery::mock(AssertionInterface::class);
-                        $assertion
-                            ->shouldReceive('__toString')
-                            ->andReturn('$".selector" matches $".pattern-container".attribute_name')
-                        ;
-
-                        return $assertion;
-                    })(),
-                ),
                 'expectedRenderedContent' => <<<'EOD'
                     $examinedValue = (function () {
                         $element = {{ NAVIGATOR }}->findOne('{
@@ -124,7 +91,8 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
                         '{
-                            "assertion": "$\\".selector\\" matches $\\".pattern-container\\".attribute_name"
+                            "assertion": "$\\".pattern-container\\".attribute_name is-regexp",
+                            "source": "$\\".selector\\" matches $\\".pattern-container\\".attribute_name"
                         }'
                     );
                     EOD,
@@ -141,24 +109,14 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     '$data.pattern',
                     'is-regexp'
                 ),
-                'metadata' => new TestMetadata(
-                    (function () {
-                        $assertion = \Mockery::mock(AssertionInterface::class);
-                        $assertion
-                            ->shouldReceive('__toString')
-                            ->andReturn('$page.title matches $data.pattern')
-                        ;
-
-                        return $assertion;
-                    })(),
-                ),
                 'expectedRenderedContent' => <<<'EOD'
                     $examinedValue = $pattern ?? null;
                     $expectedValue = @preg_match($examinedValue, null) === false;
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
                         '{
-                            "assertion": "$page.title matches $data.pattern"
+                            "assertion": "$data.pattern is-regexp",
+                            "source": "$page.title matches $data.pattern"
                         }'
                     );
                     EOD,

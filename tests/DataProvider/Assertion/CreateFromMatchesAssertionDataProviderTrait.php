@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
-use webignition\BasilCompilableSourceFactory\Metadata\Metadata as TestMetadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
-use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Parser\AssertionParser;
 
 trait CreateFromMatchesAssertionDataProviderTrait
@@ -22,17 +20,6 @@ trait CreateFromMatchesAssertionDataProviderTrait
         return [
             'matches comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" matches "/^value/"'),
-                'metadata' => new TestMetadata(
-                    (function () {
-                        $assertion = \Mockery::mock(AssertionInterface::class);
-                        $assertion
-                            ->shouldReceive('__toString')
-                            ->andReturn('$".selector" matches "/^value/"')
-                        ;
-
-                        return $assertion;
-                    })(),
-                ),
                 'expectedRenderedContent' => <<<'EOD'
                     $expectedValue = "/^value/" ?? null;
                     $examinedValue = (function () {
@@ -60,17 +47,6 @@ trait CreateFromMatchesAssertionDataProviderTrait
             ],
             'matches comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name matches "/^value/"'),
-                'metadata' => new TestMetadata(
-                    (function () {
-                        $assertion = \Mockery::mock(AssertionInterface::class);
-                        $assertion
-                            ->shouldReceive('__toString')
-                            ->andReturn('$".selector".attribute_name matches "/^value/"')
-                        ;
-
-                        return $assertion;
-                    })(),
-                ),
                 'expectedRenderedContent' => <<<'EOD'
                     $expectedValue = "/^value/" ?? null;
                     $examinedValue = (function () {

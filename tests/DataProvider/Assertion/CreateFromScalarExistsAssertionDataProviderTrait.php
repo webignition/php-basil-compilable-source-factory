@@ -5,9 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
-use webignition\BasilCompilableSourceFactory\Metadata\Metadata as TestMetadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
-use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Parser\AssertionParser;
 
 trait CreateFromScalarExistsAssertionDataProviderTrait
@@ -22,17 +20,6 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
         return [
             'exists comparison, page property examined value' => [
                 'assertion' => $assertionParser->parse('$page.url exists'),
-                'metadata' => new TestMetadata(
-                    (function () {
-                        $assertion = \Mockery::mock(AssertionInterface::class);
-                        $assertion
-                            ->shouldReceive('__toString')
-                            ->andReturn('$page.url exists')
-                        ;
-
-                        return $assertion;
-                    })(),
-                ),
                 'expectedRenderedContent' => <<<'EOD'
                     {{ PHPUNIT }}->assertTrue(
                         ({{ CLIENT }}->getCurrentURL() ?? null) !== null,
@@ -50,17 +37,6 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
             ],
             'exists comparison, data parameter value' => [
                 'assertion' => $assertionParser->parse('$data.key exists'),
-                'metadata' => new TestMetadata(
-                    (function () {
-                        $assertion = \Mockery::mock(AssertionInterface::class);
-                        $assertion
-                            ->shouldReceive('__toString')
-                            ->andReturn('$data.key exists')
-                        ;
-
-                        return $assertion;
-                    })(),
-                ),
                 'expectedRenderedContent' => <<<'EOD'
                     {{ PHPUNIT }}->assertTrue(
                         ($key ?? null) !== null,

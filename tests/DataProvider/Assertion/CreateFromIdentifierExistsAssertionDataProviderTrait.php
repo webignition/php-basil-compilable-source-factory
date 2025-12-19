@@ -5,10 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
-use webignition\BasilCompilableSourceFactory\Metadata\Metadata as TestMetadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
-use webignition\BasilModels\Model\Action\ActionInterface;
-use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
 use webignition\BasilModels\Parser\ActionParser;
 use webignition\BasilModels\Parser\AssertionParser;
@@ -37,17 +34,6 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
         return [
             'exists comparison, element identifier examined value' => [
                 'assertion' => $assertionParser->parse('$".selector" exists'),
-                'metadata' => new TestMetadata(
-                    (function () {
-                        $assertion = \Mockery::mock(AssertionInterface::class);
-                        $assertion
-                            ->shouldReceive('__toString')
-                            ->andReturn('$".selector" exists')
-                        ;
-
-                        return $assertion;
-                    })(),
-                ),
                 'expectedRenderedContent' => <<<'EOD'
                     try {
                         $examinedValue = {{ NAVIGATOR }}->has('{
@@ -67,17 +53,6 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
             ],
             'exists comparison, attribute identifier examined value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name exists'),
-                'metadata' => new TestMetadata(
-                    (function () {
-                        $assertion = \Mockery::mock(AssertionInterface::class);
-                        $assertion
-                            ->shouldReceive('__toString')
-                            ->andReturn('$".selector".attribute_name exists')
-                        ;
-
-                        return $assertion;
-                    })(),
-                ),
                 'expectedRenderedContent' => <<<'EOD'
                     try {
                         $examinedValue = {{ NAVIGATOR }}->hasOne('{
@@ -110,17 +85,6 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
             ],
             'exists comparison, css attribute selector containing dot' => [
                 'assertion' => $assertionParser->parse('$"a[href=foo.html]" exists'),
-                'metadata' => new TestMetadata(
-                    (function () {
-                        $assertion = \Mockery::mock(AssertionInterface::class);
-                        $assertion
-                            ->shouldReceive('__toString')
-                            ->andReturn('$"a[href=foo.html]" exists')
-                        ;
-
-                        return $assertion;
-                    })(),
-                ),
                 'expectedRenderedContent' => <<<'EOD'
                     try {
                         $examinedValue = {{ NAVIGATOR }}->has('{
@@ -140,17 +104,6 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
             ],
             'exists comparison, css attribute selector containing dot with attribute name' => [
                 'assertion' => $assertionParser->parse('$"a[href=foo.html]".attribute_name exists'),
-                'metadata' => new TestMetadata(
-                    (function () {
-                        $assertion = \Mockery::mock(AssertionInterface::class);
-                        $assertion
-                            ->shouldReceive('__toString')
-                            ->andReturn('$"a[href=foo.html]".attribute_name exists')
-                        ;
-
-                        return $assertion;
-                    })(),
-                ),
                 'expectedRenderedContent' => <<<'EOD'
                     try {
                         $examinedValue = {{ NAVIGATOR }}->hasOne('{
@@ -187,28 +140,6 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     '$".selector"',
                     'exists'
                 ),
-                'metadata' => new TestMetadata(
-                    (function () {
-                        $action = \Mockery::mock(ActionInterface::class);
-                        $action
-                            ->shouldReceive('__toString')
-                            ->andReturn('click $".selector"')
-                        ;
-
-                        $assertion = \Mockery::mock(DerivedValueOperationAssertion::class);
-                        $assertion
-                            ->shouldReceive('__toString')
-                            ->andReturn('$".selector" exists')
-                        ;
-
-                        $assertion
-                            ->shouldReceive('getSourceStatement')
-                            ->andReturn($action)
-                        ;
-
-                        return $assertion;
-                    })(),
-                ),
                 'expectedRenderedContent' => <<<'EOD'
                     try {
                         $examinedValue = {{ NAVIGATOR }}->hasOne('{
@@ -232,28 +163,6 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     $actionParser->parse('submit $".selector"'),
                     '$".selector"',
                     'exists'
-                ),
-                'metadata' => new TestMetadata(
-                    (function () {
-                        $action = \Mockery::mock(ActionInterface::class);
-                        $action
-                            ->shouldReceive('__toString')
-                            ->andReturn('submit $".selector"')
-                        ;
-
-                        $assertion = \Mockery::mock(DerivedValueOperationAssertion::class);
-                        $assertion
-                            ->shouldReceive('__toString')
-                            ->andReturn('$".selector" exists')
-                        ;
-
-                        $assertion
-                            ->shouldReceive('getSourceStatement')
-                            ->andReturn($action)
-                        ;
-
-                        return $assertion;
-                    })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
                     try {
@@ -279,28 +188,6 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     '$".selector"',
                     'exists'
                 ),
-                'metadata' => new TestMetadata(
-                    (function () {
-                        $action = \Mockery::mock(ActionInterface::class);
-                        $action
-                            ->shouldReceive('__toString')
-                            ->andReturn('set $".selector" to "value"')
-                        ;
-
-                        $assertion = \Mockery::mock(DerivedValueOperationAssertion::class);
-                        $assertion
-                            ->shouldReceive('__toString')
-                            ->andReturn('$".selector" exists')
-                        ;
-
-                        $assertion
-                            ->shouldReceive('getSourceStatement')
-                            ->andReturn($action)
-                        ;
-
-                        return $assertion;
-                    })(),
-                ),
                 'expectedRenderedContent' => <<<'EOD'
                     try {
                         $examinedValue = {{ NAVIGATOR }}->has('{
@@ -324,28 +211,6 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     $actionParser->parse('wait $".duration"'),
                     '$".duration"',
                     'exists'
-                ),
-                'metadata' => new TestMetadata(
-                    (function () {
-                        $action = \Mockery::mock(ActionInterface::class);
-                        $action
-                            ->shouldReceive('__toString')
-                            ->andReturn('wait $".duration"')
-                        ;
-
-                        $assertion = \Mockery::mock(DerivedValueOperationAssertion::class);
-                        $assertion
-                            ->shouldReceive('__toString')
-                            ->andReturn('$".duration" exists')
-                        ;
-
-                        $assertion
-                            ->shouldReceive('getSourceStatement')
-                            ->andReturn($action)
-                        ;
-
-                        return $assertion;
-                    })(),
                 ),
                 'expectedRenderedContent' => <<<'EOD'
                     try {
