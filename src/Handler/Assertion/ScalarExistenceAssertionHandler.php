@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
-use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
+use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
@@ -27,16 +27,16 @@ class ScalarExistenceAssertionHandler extends AbstractAssertionHandler
     ];
 
     public function __construct(
-        AssertionMethodInvocationFactory $assertionMethodInvocationFactory,
+        ArgumentFactory $argumentFactory,
         private ScalarValueHandler $scalarValueHandler
     ) {
-        parent::__construct($assertionMethodInvocationFactory);
+        parent::__construct($argumentFactory);
     }
 
     public static function createHandler(): self
     {
         return new ScalarExistenceAssertionHandler(
-            AssertionMethodInvocationFactory::createFactory(),
+            ArgumentFactory::createFactory(),
             ScalarValueHandler::createHandler()
         );
     }

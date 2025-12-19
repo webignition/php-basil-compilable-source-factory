@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
-use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
@@ -53,25 +52,23 @@ class IdentifierExistenceAssertionHandler extends AbstractAssertionHandler
     ];
 
     public function __construct(
-        AssertionMethodInvocationFactory $assertionMethodInvocationFactory,
+        private ArgumentFactory $argumentFactory,
         private DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory,
         private DomIdentifierFactory $domIdentifierFactory,
         private DomIdentifierHandler $domIdentifierHandler,
         private ElementIdentifierSerializer $elementIdentifierSerializer,
-        private ArgumentFactory $argumentFactory
     ) {
-        parent::__construct($assertionMethodInvocationFactory);
+        parent::__construct($this->argumentFactory);
     }
 
     public static function createHandler(): self
     {
         return new IdentifierExistenceAssertionHandler(
-            AssertionMethodInvocationFactory::createFactory(),
+            ArgumentFactory::createFactory(),
             DomCrawlerNavigatorCallFactory::createFactory(),
             DomIdentifierFactory::createFactory(),
             DomIdentifierHandler::createHandler(),
             ElementIdentifierSerializer::createSerializer(),
-            ArgumentFactory::createFactory()
         );
     }
 

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
-use webignition\BasilCompilableSourceFactory\AssertionMethodInvocationFactory;
+use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
@@ -23,19 +23,19 @@ class ExistenceAssertionHandler extends AbstractAssertionHandler
     ];
 
     public function __construct(
-        AssertionMethodInvocationFactory $assertionMethodInvocationFactory,
+        ArgumentFactory $argumentFactory,
         private IdentifierTypeAnalyser $identifierTypeAnalyser,
         private ValueTypeIdentifier $valueTypeIdentifier,
         private ScalarExistenceAssertionHandler $scalarExistenceAssertionHandler,
         private IdentifierExistenceAssertionHandler $identifierExistenceAssertionHandler
     ) {
-        parent::__construct($assertionMethodInvocationFactory);
+        parent::__construct($argumentFactory);
     }
 
     public static function createHandler(): self
     {
         return new ExistenceAssertionHandler(
-            AssertionMethodInvocationFactory::createFactory(),
+            ArgumentFactory::createFactory(),
             IdentifierTypeAnalyser::create(),
             new ValueTypeIdentifier(),
             ScalarExistenceAssertionHandler::createHandler(),
