@@ -46,7 +46,7 @@ trait CreateFromMatchesAssertionDataProviderTrait
                         $expectedValue,
                         $examinedValue,
                         '{
-                            \"assertion\": \"$\\\".selector\\\" matches \\\"\\/^value\\/\\\"\"
+                            "assertion": "$\\".selector\\" matches \\"\\/^value\\/\\""
                         }'
                     );
                     EOD,
@@ -84,7 +84,7 @@ trait CreateFromMatchesAssertionDataProviderTrait
                         $expectedValue,
                         $examinedValue,
                         '{
-                            \"assertion\": \"$\\\".selector\\\".attribute_name matches \\\"\\/^value\\/\\\"\"
+                            "assertion": "$\\".selector\\".attribute_name matches \\"\\/^value\\/\\""
                         }'
                     );
                     EOD,

@@ -46,7 +46,7 @@ trait CreateFromIsNotAssertionDataProviderTrait
                         $expectedValue,
                         $examinedValue,
                         '{
-                            \"assertion\": \"$\\\".selector\\\" is-not \\\"value\\\"\"
+                            "assertion": "$\\".selector\\" is-not \\"value\\""
                         }'
                     );
                     EOD,
@@ -84,7 +84,7 @@ trait CreateFromIsNotAssertionDataProviderTrait
                         $expectedValue,
                         $examinedValue,
                         '{
-                            \"assertion\": \"$\\\".selector\\\".attribute_name is-not \\\"value\\\"\"
+                            "assertion": "$\\".selector\\".attribute_name is-not \\"value\\""
                         }'
                     );
                     EOD,

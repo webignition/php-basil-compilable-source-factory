@@ -55,7 +55,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertFalse(
                         $examinedValue,
                         '{
-                            \"assertion\": \"$\\\".selector\\\" not-exists\"
+                            "assertion": "$\\".selector\\" not-exists"
                         }'
                     );
                     EOD,
@@ -85,7 +85,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
-                            \"assertion\": \"$\\\".selector\\\".attribute_name not-exists\"
+                            "assertion": "$\\".selector\\".attribute_name not-exists"
                         }'
                     );
                     $examinedValue = ((function () {
@@ -98,7 +98,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertFalse(
                         $examinedValue,
                         '{
-                            \"assertion\": \"$\\\".selector\\\".attribute_name not-exists\"
+                            "assertion": "$\\".selector\\".attribute_name not-exists"
                         }'
                     );
                     EOD,

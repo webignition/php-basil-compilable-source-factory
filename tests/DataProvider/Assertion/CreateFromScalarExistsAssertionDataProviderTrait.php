@@ -37,7 +37,7 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertTrue(
                         ({{ CLIENT }}->getCurrentURL() ?? null) !== null,
                         '{
-                            \"assertion\": \"$page.url exists\"
+                            "assertion": "$page.url exists"
                         }'
                     );
                     EOD,
@@ -65,7 +65,7 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertTrue(
                         ($key ?? null) !== null,
                         '{
-                            \"assertion\": \"$data.key exists\"
+                            "assertion": "$data.key exists"
                         }'
                     );
                     EOD,

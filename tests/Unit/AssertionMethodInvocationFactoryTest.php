@@ -72,7 +72,7 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
                 'expectedRenderedInvocation' => <<<'EOD'
                     {{ PHPUNIT }}->assertTrue(
                         '{
-                            \"assertion\": \"assertion as string\"
+                            "assertion": "assertion as string"
                         }'
                     )
                     EOD,
@@ -95,7 +95,7 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
                 'expectedRenderedInvocation' => <<<'EOD'
                     {{ PHPUNIT }}->assertTrue(
                         '{
-                            \"assertion\": \"\'assertion\' \\\"as\\\" string\"
+                            "assertion": "\'assertion\' \\"as\\" string"
                         }'
                     )
                     EOD,
@@ -130,8 +130,8 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
                 'expectedRenderedInvocation' => <<<'EOD'
                     {{ PHPUNIT }}->assertTrue(
                         '{
-                            \"assertion\": \"assertion as string\",
-                            \"source\": \"source assertion as string\"
+                            "assertion": "assertion as string",
+                            "source": "source assertion as string"
                         }'
                     )
                     EOD,
@@ -166,8 +166,8 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
                 'expectedRenderedInvocation' => <<<'EOD'
                     {{ PHPUNIT }}->assertTrue(
                         '{
-                            \"assertion\": \"assertion as string\",
-                            \"source\": \"source \\\"assertion\\\" as \'string\'\"
+                            "assertion": "assertion as string",
+                            "source": "source \\"assertion\\" as \'string\'"
                         }'
                     )
                     EOD,
@@ -195,7 +195,7 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
                         100,
                         'string',
                         '{
-                            \"assertion\": \"assertion as string\"
+                            "assertion": "assertion as string"
                         }'
                     )
                     EOD,
@@ -223,7 +223,7 @@ class AssertionMethodInvocationFactoryTest extends AbstractResolvableTestCase
                         100,
                         'string',
                         '{
-                            \"assertion\": \"assertion as string\"
+                            "assertion": "assertion as string"
                         }'
                     )
                     EOD,

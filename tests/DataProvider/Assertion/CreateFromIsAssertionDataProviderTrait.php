@@ -46,7 +46,7 @@ trait CreateFromIsAssertionDataProviderTrait
                         $expectedValue,
                         $examinedValue,
                         '{
-                            \"assertion\": \"$\\\".selector\\\" is \\\"value\\\"\"
+                            "assertion": "$\\".selector\\" is \\"value\\""
                         }'
                     );
                     EOD,
@@ -87,7 +87,7 @@ trait CreateFromIsAssertionDataProviderTrait
                         $expectedValue,
                         $examinedValue,
                         '{
-                            \"assertion\": \"$\\\".parent\\\" >> $\\\".child\\\" is \\\"value\\\"\"
+                            "assertion": "$\\".parent\\" >> $\\".child\\" is \\"value\\""
                         }'
                     );
                     EOD,
@@ -125,7 +125,7 @@ trait CreateFromIsAssertionDataProviderTrait
                         $expectedValue,
                         $examinedValue,
                         '{
-                            \"assertion\": \"$\\\".selector\\\".attribute_name is \\\"value\\\"\"
+                            "assertion": "$\\".selector\\".attribute_name is \\"value\\""
                         }'
                     );
                     EOD,
@@ -160,7 +160,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 $expectedValue,
                 $examinedValue,
                 '{
-                    \"assertion\": \"$browser.size is \\\"value\\\"\"
+                    "assertion": "$browser.size is \\"value\\""
                 }'
             );
             EOD,
@@ -191,7 +191,7 @@ trait CreateFromIsAssertionDataProviderTrait
                         $expectedValue,
                         $examinedValue,
                         '{
-                            \"assertion\": \"$env.KEY is \\\"value\\\"\"
+                            "assertion": "$env.KEY is \\"value\\""
                         }'
                     );
                     EOD,
@@ -222,7 +222,7 @@ trait CreateFromIsAssertionDataProviderTrait
                         $expectedValue,
                         $examinedValue,
                         '{
-                            \"assertion\": \"$env.KEY|\\\"default value\\\" is \\\"value\\\"\"
+                            "assertion": "$env.KEY|\\"default value\\" is \\"value\\""
                         }'
                     );
                     EOD,
@@ -253,7 +253,7 @@ trait CreateFromIsAssertionDataProviderTrait
                         $expectedValue,
                         $examinedValue,
                         '{
-                            \"assertion\": \"$env.KEY1|\\\"default value 1\\\" is $env.KEY2|\\\"default value 2\\\"\"
+                            "assertion": "$env.KEY1|\\"default value 1\\" is $env.KEY2|\\"default value 2\\""
                         }'
                     );
                     EOD,
@@ -284,7 +284,7 @@ trait CreateFromIsAssertionDataProviderTrait
                         $expectedValue,
                         $examinedValue,
                         '{
-                            \"assertion\": \"$page.title is \\\"value\\\"\"
+                            "assertion": "$page.title is \\"value\\""
                         }'
                     );
                     EOD,
@@ -328,7 +328,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 $expectedValue,
                 $examinedValue,
                 '{
-                    \"assertion\": \"$browser.size is $\\\".parent\\\" >> $\\\".child\\\"\"
+                    "assertion": "$browser.size is $\\".parent\\" >> $\\".child\\""
                 }'
             );
             EOD,
@@ -371,7 +371,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 $expectedValue,
                 $examinedValue,
                 '{
-                    \"assertion\": \"$browser.size is $\\\".selector\\\"\"
+                    "assertion": "$browser.size is $\\".selector\\""
                 }'
             );
             EOD,
@@ -414,7 +414,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 $expectedValue,
                 $examinedValue,
                 '{
-                    \"assertion\": \"$browser.size is $\\\".selector\\\".attribute_name\"
+                    "assertion": "$browser.size is $\\".selector\\".attribute_name"
                 }'
             );
             EOD,
@@ -450,7 +450,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 $expectedValue,
                 $examinedValue,
                 '{
-                    \"assertion\": \"$browser.size is $env.KEY\"
+                    "assertion": "$browser.size is $env.KEY"
                 }'
             );
             EOD,
@@ -486,7 +486,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 $expectedValue,
                 $examinedValue,
                 '{
-                    \"assertion\": \"$browser.size is $env.KEY|\\\"default value\\\"\"
+                    "assertion": "$browser.size is $env.KEY|\\"default value\\""
                 }'
             );
             EOD,
@@ -522,7 +522,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 $expectedValue,
                 $examinedValue,
                 '{
-                    \"assertion\": \"$browser.size is $env.KEY|\\\"default value\\\"\"
+                    "assertion": "$browser.size is $env.KEY|\\"default value\\""
                 }'
             );
             EOD,
@@ -553,7 +553,7 @@ trait CreateFromIsAssertionDataProviderTrait
                         $expectedValue,
                         $examinedValue,
                         '{
-                            \"assertion\": \"\\\"examined\\\" is \\\"expected\\\"\"
+                            "assertion": "\\"examined\\" is \\"expected\\""
                         }'
                     );
                     EOD,
