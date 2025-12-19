@@ -8,7 +8,6 @@ use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocationInterface;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
@@ -30,20 +29,8 @@ abstract class AbstractAssertionHandler
         Metadata $metadata,
         MethodArgumentsInterface $arguments,
     ): StatementInterface {
-        return new Statement(
-            $this->create(
-                $this->getOperationToAssertionTemplateMap()[$assertion->getOperator()],
-                $metadata,
-                $arguments
-            )
-        );
-    }
+        $assertionMethod = $this->getOperationToAssertionTemplateMap()[$assertion->getOperator()];
 
-    private function create(
-        string $assertionMethod,
-        Metadata $metadata,
-        MethodArgumentsInterface $arguments,
-    ): MethodInvocationInterface {
         $serializedMetadata = (string) json_encode($metadata, JSON_PRETTY_PRINT);
 
         $arguments = $arguments->withArgument(
@@ -54,6 +41,8 @@ abstract class AbstractAssertionHandler
             MethodArgumentsInterface::FORMAT_STACKED
         );
 
-        return $this->phpUnitCallFactory->createCall($assertionMethod, $arguments);
+        $statement = $this->phpUnitCallFactory->createCall($assertionMethod, $arguments);
+
+        return new Statement($statement);
     }
 }
