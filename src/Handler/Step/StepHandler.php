@@ -11,19 +11,15 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementExcep
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
-use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\CatchBlock;
-use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryBlock;
-use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryCatchBlock;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
+use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
-use webignition\BasilCompilableSourceFactory\Model\Expression\CatchExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclaration;
-use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclarationCollection;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
+use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
 use webignition\BasilModels\Model\Assertion\UniqueAssertionCollection;
 use webignition\BasilModels\Model\Step\StepInterface;
 
@@ -35,6 +31,7 @@ class StepHandler
         private StatementBlockFactory $statementBlockFactory,
         private DerivedAssertionFactory $derivedAssertionFactory,
         private ArgumentFactory $argumentFactory,
+        private TryCatchBlockFactory $tryCatchBlockFactory,
     ) {}
 
     public static function createHandler(): StepHandler
@@ -45,6 +42,7 @@ class StepHandler
             StatementBlockFactory::createFactory(),
             DerivedAssertionFactory::createFactory(),
             ArgumentFactory::createFactory(),
+            TryCatchBlockFactory::createFactory(),
         );
     }
 
@@ -68,7 +66,7 @@ class StepHandler
 
                 $actionBody = $this->actionHandler->handle($action);
 
-                $failBlock = Body::createFromExpressions([
+                $failBody = Body::createFromExpressions([
                     new ObjectMethodInvocation(
                         new VariableDependency(VariableNameEnum::PHPUNIT_TEST_CASE),
                         'fail',
@@ -80,16 +78,10 @@ class StepHandler
                     ),
                 ]);
 
-                $tryCatchBlock = new TryCatchBlock(
-                    new TryBlock($actionBody),
-                    new CatchBlock(
-                        new CatchExpression(
-                            new ObjectTypeDeclarationCollection([
-                                new ObjectTypeDeclaration(new ClassName(\Throwable::class))
-                            ])
-                        ),
-                        $failBlock
-                    ),
+                $tryCatchBlock = $this->tryCatchBlockFactory->create(
+                    $actionBody,
+                    new ClassNameCollection([new ClassName(\Throwable::class)]),
+                    $failBody,
                 );
 
                 $bodySources[] = $tryCatchBlock;
