@@ -41,11 +41,6 @@ use webignition\SymfonyDomCrawlerNavigator\Exception\InvalidLocatorException;
 
 class IdentifierExistenceAssertionHandler
 {
-    private const array OPERATOR_TO_ASSERTION_TEMPLATE_MAP = [
-        'exists' => 'assertTrue',
-        'not-exists' => 'assertFalse',
-    ];
-
     public function __construct(
         private ArgumentFactory $argumentFactory,
         private DomCrawlerNavigatorCallFactory $domCrawlerNavigatorCallFactory,
@@ -186,7 +181,7 @@ class IdentifierExistenceAssertionHandler
         MethodArgumentsInterface $arguments,
     ): StatementInterface {
         return $this->assertionStatementFactory->create(
-            self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP[$assertion->getOperator()],
+            'exists' === $assertion->getOperator() ? 'assertTrue' : 'assertFalse',
             $metadata,
             $arguments,
         );

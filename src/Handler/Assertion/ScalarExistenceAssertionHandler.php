@@ -18,11 +18,6 @@ use webignition\BasilModels\Model\Assertion\AssertionInterface;
 
 class ScalarExistenceAssertionHandler
 {
-    private const array OPERATOR_TO_ASSERTION_TEMPLATE_MAP = [
-        'exists' => 'assertTrue',
-        'not-exists' => 'assertFalse',
-    ];
-
     public function __construct(
         private AssertionStatementFactory $assertionStatementFactory,
         private ScalarValueHandler $scalarValueHandler
@@ -54,7 +49,7 @@ class ScalarExistenceAssertionHandler
         );
 
         $assertionStatement = $this->assertionStatementFactory->create(
-            self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP[$assertion->getOperator()],
+            'exists' === $assertion->getOperator() ? 'assertTrue' : 'assertFalse',
             $metadata,
             new MethodArguments([$examinedAccessor])
         );
