@@ -100,8 +100,8 @@ class IdentifierExistenceAssertionHandler
 
         $assertionStatement = $this->assertionStatementFactory->create(
             $assertion,
-            null,
-            self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP,
+            self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP[$assertion->getOperator()],
+            [],
             $metadata,
             new MethodArguments([$examinedValuePlaceholder])
         );
