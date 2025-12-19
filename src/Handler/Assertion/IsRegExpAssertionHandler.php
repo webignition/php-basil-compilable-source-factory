@@ -27,12 +27,6 @@ use webignition\BasilValueTypeIdentifier\ValueTypeIdentifier;
 
 class IsRegExpAssertionHandler
 {
-    public const ASSERT_FALSE_METHOD = 'assertFalse';
-
-    private const OPERATOR_TO_ASSERTION_TEMPLATE_MAP = [
-        'is-regexp' => self::ASSERT_FALSE_METHOD,
-    ];
-
     public function __construct(
         private ArgumentFactory $argumentFactory,
         private AssertionStatementFactory $assertionStatementFactory,
@@ -113,7 +107,7 @@ class IsRegExpAssertionHandler
                 new AssignmentExpression($expectedValuePlaceholder, $identityComparison),
             ]),
             $this->assertionStatementFactory->create(
-                self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP[$assertion->getOperator()],
+                'assertFalse',
                 $metadata,
                 new MethodArguments([$expectedValuePlaceholder])
             ),
