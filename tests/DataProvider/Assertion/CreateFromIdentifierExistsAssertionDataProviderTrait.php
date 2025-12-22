@@ -41,8 +41,10 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         }');
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('{
-                            "statement": "$\\".selector\\" exists",
-                            "type": "assertion",
+                            "statement": {
+                                "statement": "$\\".selector\\" exists",
+                                "type": "assertion"
+                            },
                             "context": {
                                 "reason": "locator-invalid"
                             }
@@ -67,9 +69,14 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         }');
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('{
-                            "statement": "$\\".selector\\" exists",
-                            "type": "assertion",
-                            "source": "$\\".selector\\".attribute_name exists",
+                            "statement": {
+                                "statement": "$\\".selector\\" exists",
+                                "type": "assertion",
+                                "source": {
+                                    "statement": "$\\".selector\\".attribute_name exists",
+                                    "type": "assertion"
+                                }
+                            },
                             "context": {
                                 "reason": "locator-invalid"
                             }
@@ -78,8 +85,12 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
-                            "statement": "$\\".selector\\".attribute_name exists",
-                            "type": "assertion"
+                            "statement": "$\\".selector\\" exists",
+                            "type": "assertion",
+                            "source": {
+                                "statement": "$\\".selector\\".attribute_name exists",
+                                "type": "assertion"
+                            }
                         }'
                     );
                     $examinedValue = ((function () {
@@ -108,8 +119,10 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         }');
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('{
-                            "statement": "$\\"a[href=foo.html]\\" exists",
-                            "type": "assertion",
+                            "statement": {
+                                "statement": "$\\"a[href=foo.html]\\" exists",
+                                "type": "assertion"
+                            },
                             "context": {
                                 "reason": "locator-invalid"
                             }
@@ -134,9 +147,14 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         }');
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('{
-                            "statement": "$\\"a[href=foo.html]\\" exists",
-                            "type": "assertion",
-                            "source": "$\\"a[href=foo.html]\\".attribute_name exists",
+                            "statement": {
+                                "statement": "$\\"a[href=foo.html]\\" exists",
+                                "type": "assertion",
+                                "source": {
+                                    "statement": "$\\"a[href=foo.html]\\".attribute_name exists",
+                                    "type": "assertion"
+                                }
+                            },
                             "context": {
                                 "reason": "locator-invalid"
                             }
@@ -145,8 +163,12 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
-                            "statement": "$\\"a[href=foo.html]\\".attribute_name exists",
-                            "type": "assertion"
+                            "statement": "$\\"a[href=foo.html]\\" exists",
+                            "type": "assertion",
+                            "source": {
+                                "statement": "$\\"a[href=foo.html]\\".attribute_name exists",
+                                "type": "assertion"
+                            }
                         }'
                     );
                     $examinedValue = ((function () {
@@ -179,9 +201,14 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         }');
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('{
-                            "statement": "$\\".selector\\" exists",
-                            "type": "assertion",
-                            "source": "click $\\".selector\\"",
+                            "statement": {
+                                "statement": "$\\".selector\\" exists",
+                                "type": "assertion",
+                                "source": {
+                                    "statement": "click $\\".selector\\"",
+                                    "type": "action"
+                                }
+                            },
                             "context": {
                                 "reason": "locator-invalid"
                             }
@@ -192,7 +219,10 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         '{
                             "statement": "$\\".selector\\" exists",
                             "type": "assertion",
-                            "source": "click $\\".selector\\""
+                            "source": {
+                                "statement": "click $\\".selector\\"",
+                                "type": "action"
+                            }
                         }'
                     );
                     EOD,
@@ -211,9 +241,14 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         }');
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('{
-                            "statement": "$\\".selector\\" exists",
-                            "type": "assertion",
-                            "source": "submit $\\".selector\\"",
+                            "statement": {
+                                "statement": "$\\".selector\\" exists",
+                                "type": "assertion",
+                                "source": {
+                                    "statement": "submit $\\".selector\\"",
+                                    "type": "action"
+                                }
+                            },
                             "context": {
                                 "reason": "locator-invalid"
                             }
@@ -224,7 +259,10 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         '{
                             "statement": "$\\".selector\\" exists",
                             "type": "assertion",
-                            "source": "submit $\\".selector\\""
+                            "source": {
+                                "statement": "submit $\\".selector\\"",
+                                "type": "action"
+                            }
                         }'
                     );
                     EOD,
@@ -243,9 +281,14 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         }');
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('{
-                            "statement": "$\\".selector\\" exists",
-                            "type": "assertion",
-                            "source": "set $\\".selector\\" to \\"value\\"",
+                            "statement": {
+                                "statement": "$\\".selector\\" exists",
+                                "type": "assertion",
+                                "source": {
+                                    "statement": "set $\\".selector\\" to \\"value\\"",
+                                    "type": "action"
+                                }
+                            },
                             "context": {
                                 "reason": "locator-invalid"
                             }
@@ -256,7 +299,10 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         '{
                             "statement": "$\\".selector\\" exists",
                             "type": "assertion",
-                            "source": "set $\\".selector\\" to \\"value\\""
+                            "source": {
+                                "statement": "set $\\".selector\\" to \\"value\\"",
+                                "type": "action"
+                            }
                         }'
                     );
                     EOD,
@@ -275,9 +321,14 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         }');
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('{
-                            "statement": "$\\".duration\\" exists",
-                            "type": "assertion",
-                            "source": "wait $\\".duration\\"",
+                            "statement": {
+                                "statement": "$\\".duration\\" exists",
+                                "type": "assertion",
+                                "source": {
+                                    "statement": "wait $\\".duration\\"",
+                                    "type": "action"
+                                }
+                            },
                             "context": {
                                 "reason": "locator-invalid"
                             }
@@ -288,7 +339,10 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         '{
                             "statement": "$\\".duration\\" exists",
                             "type": "assertion",
-                            "source": "wait $\\".duration\\""
+                            "source": {
+                                "statement": "wait $\\".duration\\"",
+                                "type": "action"
+                            }
                         }'
                     );
                     EOD,

@@ -105,7 +105,6 @@ class IdentifierExistenceAssertionHandler
 
         $assertionStatement = $this->createAssertionStatement(
             $elementExistenceAssertion,
-            $metadata,
             new MethodArguments([$examinedValuePlaceholder]),
         );
 
@@ -164,7 +163,6 @@ class IdentifierExistenceAssertionHandler
         ])->withContent([
             'element existence assertion' => $this->createAssertionStatement(
                 $elementExistsAssertion,
-                $metadata,
                 new MethodArguments([$examinedValuePlaceholder]),
             ),
             'attribute examined value assignment' => new Statement(
@@ -172,7 +170,6 @@ class IdentifierExistenceAssertionHandler
             ),
             'attribute existence assertion' => $this->createAssertionStatement(
                 $attributeExistenceAssertion,
-                $metadata,
                 new MethodArguments([$examinedValuePlaceholder]),
             ),
         ]);
@@ -220,12 +217,11 @@ class IdentifierExistenceAssertionHandler
 
     private function createAssertionStatement(
         AssertionInterface $assertion,
-        Metadata $metadata,
         MethodArgumentsInterface $arguments,
     ): StatementInterface {
         return $this->assertionStatementFactory->create(
+            $assertion,
             'exists' === $assertion->getOperator() ? 'assertTrue' : 'assertFalse',
-            $metadata,
             $arguments,
         );
     }

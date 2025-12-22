@@ -12,6 +12,7 @@ use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumen
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocationInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
+use webignition\BasilCompilableSourceFactory\Renderable\Statement;
 
 readonly class PhpUnitCallFactory
 {
@@ -40,9 +41,13 @@ readonly class PhpUnitCallFactory
     public function createAssertionCall(
         string $methodName,
         MethodArgumentsInterface $arguments,
-        Metadata $metadata,
+        Statement $assertion
     ): MethodInvocationInterface {
-        return $this->createCallWithMetadataAndArguments($methodName, $metadata, $arguments);
+        $arguments = $arguments->withArgument(
+            $this->argumentFactory->createSingular((string) json_encode($assertion, JSON_PRETTY_PRINT))
+        );
+
+        return $this->createCall($methodName, $arguments);
     }
 
     public function createFailCall(Metadata $metadata): MethodInvocationInterface
