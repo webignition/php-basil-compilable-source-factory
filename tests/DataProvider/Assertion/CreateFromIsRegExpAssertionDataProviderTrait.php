@@ -33,7 +33,10 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                         '{
                             "statement": "\\"\\/^value\\/\\" is-regexp",
                             "type": "assertion",
-                            "source": "$\\".selector\\" matches \\"\\/^value\\/\\""
+                            "source": {
+                                "statement": "$\\".selector\\" matches \\"\\/^value\\/\\"",
+                                "type": "assertion"
+                            }
                         }'
                     );
                     EOD,
@@ -63,7 +66,10 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                         '{
                             "statement": "$\\".pattern-container\\" is-regexp",
                             "type": "assertion",
-                            "source": "$\\".selector\\" matches $\\".pattern-container\\""
+                            "source": {
+                                "statement": "$\\".selector\\" matches $\\".pattern-container\\"",
+                                "type": "assertion"
+                            }
                         }'
                     );
                     EOD,
@@ -95,7 +101,10 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                         '{
                             "statement": "$\\".pattern-container\\".attribute_name is-regexp",
                             "type": "assertion",
-                            "source": "$\\".selector\\" matches $\\".pattern-container\\".attribute_name"
+                            "source": {
+                                "statement": "$\\".selector\\" matches $\\".pattern-container\\".attribute_name",
+                                "type": "assertion"
+                            }
                         }'
                     );
                     EOD,
@@ -120,7 +129,10 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                         '{
                             "statement": "$data.pattern is-regexp",
                             "type": "assertion",
-                            "source": "$page.title matches $data.pattern"
+                            "source": {
+                                "statement": "$page.title matches $data.pattern",
+                                "type": "assertion"
+                            }
                         }'
                     );
                     EOD,

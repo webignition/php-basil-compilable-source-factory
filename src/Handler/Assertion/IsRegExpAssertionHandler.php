@@ -8,7 +8,6 @@ use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\AssertionStatementFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
@@ -51,14 +50,14 @@ class IsRegExpAssertionHandler
     /**
      * @throws UnsupportedContentException
      */
-    public function handle(AssertionInterface $assertion, Metadata $metadata): BodyInterface
+    public function handle(AssertionInterface $assertion): BodyInterface
     {
         $identifier = $assertion->getIdentifier();
 
         if (is_string($identifier) && $this->valueTypeIdentifier->isScalarValue($identifier)) {
             $examinedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull($identifier);
 
-            return $this->createIsRegExpAssertionBody($examinedAccessor, $assertion, $metadata);
+            return $this->createIsRegExpAssertionBody($examinedAccessor, $assertion);
         }
 
         if (is_string($identifier) && $this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
@@ -69,7 +68,7 @@ class IsRegExpAssertionHandler
 
             $examinedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull($identifier);
 
-            return $this->createIsRegExpAssertionBody($examinedAccessor, $assertion, $metadata);
+            return $this->createIsRegExpAssertionBody($examinedAccessor, $assertion);
         }
 
         throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
@@ -78,7 +77,6 @@ class IsRegExpAssertionHandler
     private function createIsRegExpAssertionBody(
         ExpressionInterface $examinedAccessor,
         AssertionInterface $assertion,
-        Metadata $metadata,
     ): BodyInterface {
         $examinedValuePlaceholder = new VariableName(VariableNameEnum::EXAMINED_VALUE->value);
         $expectedValuePlaceholder = new VariableName(VariableNameEnum::EXPECTED_VALUE->value);
@@ -107,8 +105,8 @@ class IsRegExpAssertionHandler
                 new AssignmentExpression($expectedValuePlaceholder, $identityComparison),
             ]),
             $this->assertionStatementFactory->create(
+                $assertion,
                 'assertFalse',
-                $metadata,
                 new MethodArguments([$expectedValuePlaceholder])
             ),
         ]);

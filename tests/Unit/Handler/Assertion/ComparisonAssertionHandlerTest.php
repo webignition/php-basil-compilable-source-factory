@@ -7,7 +7,6 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Assertion;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\ComparisonAssertionHandler;
-use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromExcludesAssertionDataProviderTrait;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion\CreateFromIncludesAssertionDataProviderTrait;
@@ -40,7 +39,7 @@ class ComparisonAssertionHandlerTest extends AbstractResolvableTestCase
     ): void {
         $handler = ComparisonAssertionHandler::createHandler();
 
-        $source = $handler->handle($assertion, new Metadata($assertion));
+        $source = $handler->handle($assertion);
 
         $this->assertRenderResolvable($expectedRenderedContent, $source);
         $this->assertEquals($expectedMetadata, $source->getMetadata());
@@ -62,7 +61,7 @@ class ComparisonAssertionHandlerTest extends AbstractResolvableTestCase
 
         $this->expectExceptionObject($expectedException);
 
-        $handler->handle($assertion, new Metadata($assertion));
+        $handler->handle($assertion);
     }
 
     /**

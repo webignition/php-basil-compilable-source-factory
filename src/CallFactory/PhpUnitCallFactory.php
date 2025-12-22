@@ -6,12 +6,13 @@ namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
-use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocationInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
+use webignition\BasilCompilableSourceFactory\Renderable\FailureMessage;
+use webignition\BasilCompilableSourceFactory\Renderable\Statement;
 
 readonly class PhpUnitCallFactory
 {
@@ -40,27 +41,23 @@ readonly class PhpUnitCallFactory
     public function createAssertionCall(
         string $methodName,
         MethodArgumentsInterface $arguments,
-        Metadata $metadata,
+        Statement $assertion
     ): MethodInvocationInterface {
-        return $this->createCallWithMetadataAndArguments($methodName, $metadata, $arguments);
-    }
-
-    public function createFailCall(Metadata $metadata): MethodInvocationInterface
-    {
-        return $this->createCallWithMetadataAndArguments('fail', $metadata);
-    }
-
-    private function createCallWithMetadataAndArguments(
-        string $methodName,
-        Metadata $metadata,
-        ?MethodArgumentsInterface $arguments = null,
-    ): MethodInvocationInterface {
-        $serializedMetadata = (string) json_encode($metadata, JSON_PRETTY_PRINT);
-
-        $arguments = ($arguments ?? new MethodArguments())->withArgument(
-            $this->argumentFactory->createSingular($serializedMetadata)
+        $arguments = $arguments->withArgument(
+            $this->argumentFactory->createSingular((string) json_encode($assertion, JSON_PRETTY_PRINT))
         );
 
         return $this->createCall($methodName, $arguments);
+    }
+
+    public function createFailCall(FailureMessage $failureMessage): MethodInvocationInterface
+    {
+        $serializedMetadata = (string) json_encode($failureMessage, JSON_PRETTY_PRINT);
+
+        $arguments = new MethodArguments()->withArgument(
+            $this->argumentFactory->createSingular($serializedMetadata)
+        );
+
+        return $this->createCall('fail', $arguments);
     }
 }

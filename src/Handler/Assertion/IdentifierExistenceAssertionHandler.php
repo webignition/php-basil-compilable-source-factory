@@ -13,7 +13,6 @@ use webignition\BasilCompilableSourceFactory\Enum\PhpUnitFailReason;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
-use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryCatchBlock;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
@@ -29,6 +28,7 @@ use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumen
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
+use webignition\BasilCompilableSourceFactory\Renderable\FailureMessage;
 use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilModels\Model\Action\ActionInterface;
@@ -69,7 +69,7 @@ class IdentifierExistenceAssertionHandler
     /**
      * @throws UnsupportedContentException
      */
-    public function handle(AssertionInterface $assertion, Metadata $metadata): BodyInterface
+    public function handle(AssertionInterface $assertion): BodyInterface
     {
         $identifier = $assertion->getIdentifier();
 
@@ -79,16 +79,15 @@ class IdentifierExistenceAssertionHandler
         }
 
         if ($domIdentifier instanceof AttributeIdentifierInterface) {
-            return $this->handleAttributeExistence($assertion, $domIdentifier, $metadata);
+            return $this->handleAttributeExistence($assertion, $domIdentifier);
         }
 
-        return $this->handleElementExistence($assertion, $domIdentifier, $metadata);
+        return $this->handleElementExistence($assertion, $domIdentifier);
     }
 
     private function handleElementExistence(
         AssertionInterface $elementExistenceAssertion,
-        ElementIdentifierInterface $domIdentifier,
-        Metadata $metadata
+        ElementIdentifierInterface $domIdentifier
     ): BodyInterface {
         $serializedElementIdentifier = $this->elementIdentifierSerializer->serialize($domIdentifier);
 
@@ -105,7 +104,6 @@ class IdentifierExistenceAssertionHandler
 
         $assertionStatement = $this->createAssertionStatement(
             $elementExistenceAssertion,
-            $metadata,
             new MethodArguments([$examinedValuePlaceholder]),
         );
 
@@ -120,7 +118,6 @@ class IdentifierExistenceAssertionHandler
     private function handleAttributeExistence(
         AssertionInterface $attributeExistenceAssertion,
         AttributeIdentifierInterface $domIdentifier,
-        Metadata $metadata
     ): BodyInterface {
         $elementExistsAssertion = new DerivedValueOperationAssertion(
             $attributeExistenceAssertion,
@@ -164,7 +161,6 @@ class IdentifierExistenceAssertionHandler
         ])->withContent([
             'element existence assertion' => $this->createAssertionStatement(
                 $elementExistsAssertion,
-                $metadata,
                 new MethodArguments([$examinedValuePlaceholder]),
             ),
             'attribute examined value assignment' => new Statement(
@@ -172,7 +168,6 @@ class IdentifierExistenceAssertionHandler
             ),
             'attribute existence assertion' => $this->createAssertionStatement(
                 $attributeExistenceAssertion,
-                $metadata,
                 new MethodArguments([$examinedValuePlaceholder]),
             ),
         ]);
@@ -207,12 +202,7 @@ class IdentifierExistenceAssertionHandler
             new ClassNameCollection([new ClassName(InvalidLocatorException::class)]),
             Body::createFromExpressions([
                 $this->phpUnitCallFactory->createFailCall(
-                    new Metadata(
-                        $assertion,
-                        [
-                            'reason' => PhpUnitFailReason::INVALID_LOCATOR->value,
-                        ],
-                    ),
+                    new FailureMessage($assertion, PhpUnitFailReason::INVALID_LOCATOR->value),
                 ),
             ])
         );
@@ -220,12 +210,11 @@ class IdentifierExistenceAssertionHandler
 
     private function createAssertionStatement(
         AssertionInterface $assertion,
-        Metadata $metadata,
         MethodArgumentsInterface $arguments,
     ): StatementInterface {
         return $this->assertionStatementFactory->create(
+            $assertion,
             'exists' === $assertion->getOperator() ? 'assertTrue' : 'assertFalse',
-            $metadata,
             $arguments,
         );
     }

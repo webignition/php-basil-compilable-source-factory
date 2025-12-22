@@ -122,11 +122,11 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         // ActionHandler::handle(click $".selector")
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail('{
-                            "statement": "click $\\".selector\\"",
-                            "type": "action",
-                            "context": {
-                                "reason": "action-failed"
-                            }
+                            "statement": {
+                                "statement": "click $\\".selector\\"",
+                                "type": "action"
+                            },
+                            "reason": "action-failed"
                         }');
                     }
                     
@@ -236,11 +236,11 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         // ActionHandler::handle(click $".selector1")
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail('{
-                            "statement": "click $\\".selector1\\"",
-                            "type": "action",
-                            "context": {
-                                "reason": "action-failed"
-                            }
+                            "statement": {
+                                "statement": "click $\\".selector1\\"",
+                                "type": "action"
+                            },
+                            "reason": "action-failed"
                         }');
                     }
                     
@@ -252,11 +252,11 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         // ActionHandler::handle(click $".selector2")
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail('{
-                            "statement": "click $\\".selector2\\"",
-                            "type": "action",
-                            "context": {
-                                "reason": "action-failed"
-                            }
+                            "statement": {
+                                "statement": "click $\\".selector2\\"",
+                                "type": "action"
+                            },
+                            "reason": "action-failed"
                         }');
                     }
                     
@@ -479,11 +479,11 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         // ActionHandler::handle(click $".selector1")
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail('{
-                            "statement": "click $\\".selector1\\"",
-                            "type": "action",
-                            "context": {
-                                "reason": "action-failed"
-                            }
+                            "statement": {
+                                "statement": "click $\\".selector1\\"",
+                                "type": "action"
+                            },
+                            "reason": "action-failed"
                         }');
                     }
                     

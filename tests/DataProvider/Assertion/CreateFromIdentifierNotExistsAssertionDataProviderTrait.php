@@ -38,11 +38,11 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                         }');
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('{
-                            "statement": "$\\".selector\\" not-exists",
-                            "type": "assertion",
-                            "context": {
-                                "reason": "locator-invalid"
-                            }
+                            "statement": {
+                                "statement": "$\\".selector\\" not-exists",
+                                "type": "assertion"
+                            },
+                            "reason": "locator-invalid"
                         }');
                     }
                     {{ PHPUNIT }}->assertFalse(
@@ -64,19 +64,26 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                         }');
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('{
-                            "statement": "$\\".selector\\" exists",
-                            "type": "assertion",
-                            "source": "$\\".selector\\".attribute_name not-exists",
-                            "context": {
-                                "reason": "locator-invalid"
-                            }
+                            "statement": {
+                                "statement": "$\\".selector\\" exists",
+                                "type": "assertion",
+                                "source": {
+                                    "statement": "$\\".selector\\".attribute_name not-exists",
+                                    "type": "assertion"
+                                }
+                            },
+                            "reason": "locator-invalid"
                         }');
                     }
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
-                            "statement": "$\\".selector\\".attribute_name not-exists",
-                            "type": "assertion"
+                            "statement": "$\\".selector\\" exists",
+                            "type": "assertion",
+                            "source": {
+                                "statement": "$\\".selector\\".attribute_name not-exists",
+                                "type": "assertion"
+                            }
                         }'
                     );
                     $examinedValue = ((function () {
