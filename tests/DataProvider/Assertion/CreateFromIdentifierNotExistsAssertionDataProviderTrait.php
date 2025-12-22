@@ -64,8 +64,9 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                         }');
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('{
-                            "statement": "$\\".selector\\".attribute_name not-exists",
+                            "statement": "$\\".selector\\" exists",
                             "type": "assertion",
+                            "source": "$\\".selector\\".attribute_name not-exists",
                             "context": {
                                 "reason": "locator-invalid"
                             }
