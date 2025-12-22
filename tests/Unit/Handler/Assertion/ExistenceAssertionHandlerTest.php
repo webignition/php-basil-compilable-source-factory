@@ -9,7 +9,6 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentExcepti
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\ExistenceAssertionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\IdentifierExistenceAssertionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\ScalarExistenceAssertionHandler;
-use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Model\Assertion\Assertion;
@@ -83,8 +82,6 @@ class ExistenceAssertionHandlerTest extends TestCase
             'invalid'
         ));
 
-        $metadata = new Metadata($assertion);
-
-        $handler->handle($assertion, $metadata);
+        $handler->handle($assertion);
     }
 }
