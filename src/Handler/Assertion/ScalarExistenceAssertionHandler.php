@@ -7,7 +7,6 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 use webignition\BasilCompilableSourceFactory\AssertionStatementFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
-use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;

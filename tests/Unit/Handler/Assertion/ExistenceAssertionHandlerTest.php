@@ -13,7 +13,6 @@ use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Model\Assertion\Assertion;
-use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Parser\AssertionParser;
 use webignition\BasilValueTypeIdentifier\ValueTypeIdentifier;
 

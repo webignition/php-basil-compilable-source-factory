@@ -8,7 +8,6 @@ use webignition\BasilCompilableSourceFactory\AssertionStatementFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
-use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;

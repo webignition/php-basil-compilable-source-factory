@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
