@@ -109,11 +109,9 @@ class IdentifierExistenceAssertionHandler
             new MethodArguments([$examinedValuePlaceholder]),
         );
 
-        $body = new Body([
+        return new Body([
             $this->createNavigatorHasCallTryCatchBlock($examinedValueAssignmentStatement, $elementExistenceAssertion),
-        ]);
-
-        return $body->withContent([$assertionStatement]);
+        ])->withContent([$assertionStatement]);
     }
 
     private function handleAttributeExistence(
