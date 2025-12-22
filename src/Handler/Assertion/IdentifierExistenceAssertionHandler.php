@@ -123,7 +123,7 @@ class IdentifierExistenceAssertionHandler
     ): BodyInterface {
         $elementIdentifierString = (string) ElementIdentifier::fromAttributeIdentifier($domIdentifier);
 
-        $derivedAssertion = new DerivedValueOperationAssertion(
+        $elementExistsAssertion = new DerivedValueOperationAssertion(
             $assertion,
             $elementIdentifierString,
             'exists',
@@ -143,10 +143,8 @@ class IdentifierExistenceAssertionHandler
         );
 
         $body = new Body([
-            $this->createNavigatorHasCallTryCatchBlock($examinedValueAssignmentStatement, $derivedAssertion),
+            $this->createNavigatorHasCallTryCatchBlock($examinedValueAssignmentStatement, $elementExistsAssertion),
         ]);
-
-        $elementExistsAssertion = $derivedAssertion;
 
         $attributeNullComparisonExpression = new ComparisonExpression(
             $this->domIdentifierHandler->handleAttributeValue(
