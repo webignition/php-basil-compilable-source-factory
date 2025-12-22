@@ -127,12 +127,12 @@ class IdentifierExistenceAssertionHandler
             'exists',
         );
 
-        $serializedElementIdentifier = $this->elementIdentifierSerializer->serialize($domIdentifier);
+        $serializedAttributeIdentifier = $this->elementIdentifierSerializer->serialize($domIdentifier);
 
         $examinedAccessor = $this->createDomCrawlerNavigatorCall(
             $domIdentifier,
             $attributeExistenceAssertion,
-            $this->argumentFactory->createSingular($serializedElementIdentifier)
+            $this->argumentFactory->createSingular($serializedAttributeIdentifier)
         );
 
         $examinedValuePlaceholder = new VariableName(VariableNameEnum::EXAMINED_VALUE->value);
@@ -146,7 +146,7 @@ class IdentifierExistenceAssertionHandler
 
         $attributeNullComparisonExpression = new ComparisonExpression(
             $this->domIdentifierHandler->handleAttributeValue(
-                $serializedElementIdentifier,
+                $serializedAttributeIdentifier,
                 $domIdentifier->getAttributeName()
             ),
             new LiteralExpression('null'),
