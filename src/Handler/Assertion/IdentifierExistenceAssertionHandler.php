@@ -130,15 +130,15 @@ class IdentifierExistenceAssertionHandler
 
         $serializedAttributeIdentifier = $this->elementIdentifierSerializer->serialize($domIdentifier);
 
-        $attributeExaminedAccessor = $this->createDomCrawlerNavigatorCall(
+        $elementExaminedAccessor = $this->createDomCrawlerNavigatorCall(
             $domIdentifier,
             $attributeExistenceAssertion,
             $this->argumentFactory->createSingular($serializedAttributeIdentifier)
         );
 
         $examinedValuePlaceholder = new VariableName(VariableNameEnum::EXAMINED_VALUE->value);
-        $attributeExaminedValueAssignmentStatement = new Statement(
-            new AssignmentExpression($examinedValuePlaceholder, $attributeExaminedAccessor),
+        $elementExaminedValueAssignmentStatement = new Statement(
+            new AssignmentExpression($examinedValuePlaceholder, $elementExaminedAccessor),
         );
 
         $attributeNullComparisonExpression = new ComparisonExpression(
@@ -150,38 +150,32 @@ class IdentifierExistenceAssertionHandler
             '??'
         );
 
-        $examinedAccessor = new ComparisonExpression(
+        $attributeExaminedAccessor = new ComparisonExpression(
             new EncapsulatedExpression($attributeNullComparisonExpression),
             new LiteralExpression('null'),
             '!=='
         );
 
-        $elementExaminedValueAssignmentStatement = new Statement(
-            new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
-        );
-
-        $elementExistenceAssertionStatement = $this->createAssertionStatement(
-            $elementExistsAssertion,
-            $metadata,
-            new MethodArguments([$examinedValuePlaceholder]),
-        );
-
-        $attributeExistenceAssertionStatement = $this->createAssertionStatement(
-            $attributeExistenceAssertion,
-            $metadata,
-            new MethodArguments([$examinedValuePlaceholder]),
-        );
-
-        $body = new Body([
-            $this->createNavigatorHasCallTryCatchBlock($attributeExaminedValueAssignmentStatement, $elementExistsAssertion),
+        return new Body([
+            $this->createNavigatorHasCallTryCatchBlock(
+                $elementExaminedValueAssignmentStatement,
+                $elementExistsAssertion
+            ),
+        ])->withContent([
+            'element existence assertion' => $this->createAssertionStatement(
+                $elementExistsAssertion,
+                $metadata,
+                new MethodArguments([$examinedValuePlaceholder]),
+            ),
+            'attribute examined value assignment' => new Statement(
+                new AssignmentExpression($examinedValuePlaceholder, $attributeExaminedAccessor),
+            ),
+            'attribute existence assertion' => $this->createAssertionStatement(
+                $attributeExistenceAssertion,
+                $metadata,
+                new MethodArguments([$examinedValuePlaceholder]),
+            ),
         ]);
-
-        $body = $body->withContent([
-            $elementExistenceAssertionStatement,
-            $elementExaminedValueAssignmentStatement,
-        ]);
-
-        return $body->withContent([$attributeExistenceAssertionStatement]);
     }
 
     private function createDomCrawlerNavigatorCall(
