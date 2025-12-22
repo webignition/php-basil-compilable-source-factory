@@ -13,14 +13,12 @@ use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
 readonly class AssertionStatementFactory
 {
     public function __construct(
-        private ArgumentFactory $argumentFactory,
         private PhpUnitCallFactory $phpUnitCallFactory,
     ) {}
 
     public static function createFactory(): self
     {
         return new AssertionStatementFactory(
-            ArgumentFactory::createFactory(),
             PhpUnitCallFactory::createFactory(),
         );
     }
@@ -33,17 +31,11 @@ readonly class AssertionStatementFactory
         Metadata $metadata,
         MethodArgumentsInterface $arguments,
     ): StatementInterface {
-        $serializedMetadata = (string) json_encode($metadata, JSON_PRETTY_PRINT);
-
-        $arguments = $arguments->withArgument(
-            $this->argumentFactory->createSingular($serializedMetadata)
-        );
-
         $arguments = $arguments->withFormat(
             MethodArgumentsInterface::FORMAT_STACKED
         );
 
-        $statement = $this->phpUnitCallFactory->createCall($assertionMethod, $arguments);
+        $statement = $this->phpUnitCallFactory->createAssertionCall($assertionMethod, $arguments, $metadata);
 
         return new Statement($statement);
     }

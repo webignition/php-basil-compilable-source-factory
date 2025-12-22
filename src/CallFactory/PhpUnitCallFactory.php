@@ -37,14 +37,30 @@ readonly class PhpUnitCallFactory
         );
     }
 
+    public function createAssertionCall(
+        string $methodName,
+        MethodArgumentsInterface $arguments,
+        Metadata $metadata,
+    ): MethodInvocationInterface {
+        return $this->createCallWithMetadataAndArguments($methodName, $metadata, $arguments);
+    }
+
     public function createFailCall(Metadata $metadata): MethodInvocationInterface
     {
+        return $this->createCallWithMetadataAndArguments('fail', $metadata);
+    }
+
+    private function createCallWithMetadataAndArguments(
+        string $methodName,
+        Metadata $metadata,
+        ?MethodArgumentsInterface $arguments = null,
+    ): MethodInvocationInterface {
         $serializedMetadata = (string) json_encode($metadata, JSON_PRETTY_PRINT);
 
-        $arguments = new MethodArguments()->withArgument(
+        $arguments = ($arguments ?? new MethodArguments())->withArgument(
             $this->argumentFactory->createSingular($serializedMetadata)
         );
 
-        return $this->createCall('fail', $arguments);
+        return $this->createCall($methodName, $arguments);
     }
 }
