@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Step;
 
-use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
@@ -122,7 +121,10 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     try {
                         // ActionHandler::handle(click $".selector")
                     } catch (\Throwable $exception) {
-                        {{ PHPUNIT }}->fail('{"action":"click $\\".selector\\""}');
+                        {{ PHPUNIT }}->fail('{
+                            "statement": "click $\\".selector\\"",
+                            "type": "action"
+                        }');
                     }
                     
                     EOD,
@@ -230,7 +232,10 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     try {
                         // ActionHandler::handle(click $".selector1")
                     } catch (\Throwable $exception) {
-                        {{ PHPUNIT }}->fail('{"action":"click $\\".selector1\\""}');
+                        {{ PHPUNIT }}->fail('{
+                            "statement": "click $\\".selector1\\"",
+                            "type": "action"
+                        }');
                     }
                     
                     // StatementBlockFactory::create($".selector2" exists)
@@ -240,7 +245,10 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     try {
                         // ActionHandler::handle(click $".selector2")
                     } catch (\Throwable $exception) {
-                        {{ PHPUNIT }}->fail('{"action":"click $\\".selector2\\""}');
+                        {{ PHPUNIT }}->fail('{
+                            "statement": "click $\\".selector2\\"",
+                            "type": "action"
+                        }');
                     }
                     
                     EOD,
@@ -461,7 +469,10 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     try {
                         // ActionHandler::handle(click $".selector1")
                     } catch (\Throwable $exception) {
-                        {{ PHPUNIT }}->fail('{"action":"click $\\".selector1\\""}');
+                        {{ PHPUNIT }}->fail('{
+                            "statement": "click $\\".selector1\\"",
+                            "type": "action"
+                        }');
                     }
                     
                     // StatementBlockFactory::create($".selector2" exists)
@@ -795,7 +806,6 @@ class StepHandlerTest extends AbstractResolvableTestCase
             $assertionHandler,
             $statementBlockFactory,
             $derivedAssertionFactory,
-            ArgumentFactory::createFactory(),
             TryCatchBlockFactory::createFactory(),
             PhpUnitCallFactory::createFactory(),
         );

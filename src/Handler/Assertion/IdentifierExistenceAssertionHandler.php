@@ -98,7 +98,7 @@ class IdentifierExistenceAssertionHandler
         );
 
         $body = new Body([
-            $this->createNavigatorHasCallTryCatchBlock($examinedValueAssignmentStatement),
+            $this->createNavigatorHasCallTryCatchBlock($examinedValueAssignmentStatement, $assertion),
         ]);
 
         if ($domIdentifier instanceof AttributeIdentifierInterface) {
@@ -162,14 +162,15 @@ class IdentifierExistenceAssertionHandler
     }
 
     private function createNavigatorHasCallTryCatchBlock(
-        StatementInterface $setExaminedValueAssignmentStatement
+        StatementInterface $setExaminedValueAssignmentStatement,
+        AssertionInterface $assertion,
     ): TryCatchBlock {
         return $this->tryCatchBlockFactory->create(
             new Body([$setExaminedValueAssignmentStatement]),
             new ClassNameCollection([new ClassName(InvalidLocatorException::class)]),
             Body::createFromExpressions([
                 $this->phpUnitCallFactory->createFailCall(
-                    new MethodArguments($this->argumentFactory->create('Invalid locator'))
+                    new Metadata($assertion),
                 ),
             ])
         );

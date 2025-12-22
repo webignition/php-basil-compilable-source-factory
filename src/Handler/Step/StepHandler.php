@@ -4,19 +4,18 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Step;
 
-use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
+use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
-use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
 use webignition\BasilModels\Model\Assertion\UniqueAssertionCollection;
 use webignition\BasilModels\Model\Step\StepInterface;
@@ -28,7 +27,6 @@ class StepHandler
         private AssertionHandler $assertionHandler,
         private StatementBlockFactory $statementBlockFactory,
         private DerivedAssertionFactory $derivedAssertionFactory,
-        private ArgumentFactory $argumentFactory,
         private TryCatchBlockFactory $tryCatchBlockFactory,
         private PhpUnitCallFactory $phpUnitCallFactory,
     ) {}
@@ -40,7 +38,6 @@ class StepHandler
             AssertionHandler::createHandler(),
             StatementBlockFactory::createFactory(),
             DerivedAssertionFactory::createFactory(),
-            ArgumentFactory::createFactory(),
             TryCatchBlockFactory::createFactory(),
             PhpUnitCallFactory::createFactory(),
         );
@@ -68,11 +65,7 @@ class StepHandler
 
                 $failBody = Body::createFromExpressions([
                     $this->phpUnitCallFactory->createFailCall(
-                        new MethodArguments(
-                            $this->argumentFactory->create((string) json_encode([
-                                'action' => $action->getSource(),
-                            ]))
-                        )
+                        new Metadata($action),
                     ),
                 ]);
 
