@@ -141,7 +141,9 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
                 'expectedExpectationFailedExceptionMessages' => [
                     '"statement": "$\"2\" exists"',
                     '"type": "assertion"',
-                    '"source": "$\"2\".attribute_name exists",'
+                    '"source": {',
+                    '    "statement": "$\"2\".attribute_name exists",',
+                    '    "type": "assertion"',
                 ],
             ],
         ];
