@@ -110,7 +110,10 @@ class IdentifierExistenceAssertionHandler
         );
 
         return new Body([
-            $this->createNavigatorHasCallTryCatchBlock($examinedValueAssignmentStatement, $elementExistenceAssertion),
+            $this->createNavigatorHasCallTryCatchBlock(
+                $examinedValueAssignmentStatement,
+                $elementExistenceAssertion
+            ),
         ])->withContent([$assertionStatement]);
     }
 
