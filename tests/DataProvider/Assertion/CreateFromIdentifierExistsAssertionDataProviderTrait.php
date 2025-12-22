@@ -45,9 +45,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                 "statement": "$\\".selector\\" exists",
                                 "type": "assertion"
                             },
-                            "context": {
-                                "reason": "locator-invalid"
-                            }
+                            "reason": "locator-invalid"
                         }');
                     }
                     {{ PHPUNIT }}->assertTrue(
@@ -77,9 +75,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                     "type": "assertion"
                                 }
                             },
-                            "context": {
-                                "reason": "locator-invalid"
-                            }
+                            "reason": "locator-invalid"
                         }');
                     }
                     {{ PHPUNIT }}->assertTrue(
@@ -123,9 +119,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                 "statement": "$\\"a[href=foo.html]\\" exists",
                                 "type": "assertion"
                             },
-                            "context": {
-                                "reason": "locator-invalid"
-                            }
+                            "reason": "locator-invalid"
                         }');
                     }
                     {{ PHPUNIT }}->assertTrue(
@@ -155,9 +149,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                     "type": "assertion"
                                 }
                             },
-                            "context": {
-                                "reason": "locator-invalid"
-                            }
+                            "reason": "locator-invalid"
                         }');
                     }
                     {{ PHPUNIT }}->assertTrue(
@@ -209,9 +201,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                     "type": "action"
                                 }
                             },
-                            "context": {
-                                "reason": "locator-invalid"
-                            }
+                            "reason": "locator-invalid"
                         }');
                     }
                     {{ PHPUNIT }}->assertTrue(
@@ -249,9 +239,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                     "type": "action"
                                 }
                             },
-                            "context": {
-                                "reason": "locator-invalid"
-                            }
+                            "reason": "locator-invalid"
                         }');
                     }
                     {{ PHPUNIT }}->assertTrue(
@@ -289,9 +277,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                     "type": "action"
                                 }
                             },
-                            "context": {
-                                "reason": "locator-invalid"
-                            }
+                            "reason": "locator-invalid"
                         }');
                     }
                     {{ PHPUNIT }}->assertTrue(
@@ -329,9 +315,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                     "type": "action"
                                 }
                             },
-                            "context": {
-                                "reason": "locator-invalid"
-                            }
+                            "reason": "locator-invalid"
                         }');
                     }
                     {{ PHPUNIT }}->assertTrue(

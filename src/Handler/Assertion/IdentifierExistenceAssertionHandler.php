@@ -13,7 +13,6 @@ use webignition\BasilCompilableSourceFactory\Enum\PhpUnitFailReason;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
-use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryCatchBlock;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
@@ -29,6 +28,7 @@ use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumen
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
+use webignition\BasilCompilableSourceFactory\Renderable\FailureMessage;
 use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilModels\Model\Action\ActionInterface;
@@ -202,12 +202,7 @@ class IdentifierExistenceAssertionHandler
             new ClassNameCollection([new ClassName(InvalidLocatorException::class)]),
             Body::createFromExpressions([
                 $this->phpUnitCallFactory->createFailCall(
-                    new Metadata(
-                        $assertion,
-                        [
-                            'reason' => PhpUnitFailReason::INVALID_LOCATOR->value,
-                        ],
-                    ),
+                    new FailureMessage($assertion, PhpUnitFailReason::INVALID_LOCATOR->value),
                 ),
             ])
         );

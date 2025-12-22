@@ -6,12 +6,12 @@ namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
-use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocationInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
+use webignition\BasilCompilableSourceFactory\Renderable\FailureMessage;
 use webignition\BasilCompilableSourceFactory\Renderable\Statement;
 
 readonly class PhpUnitCallFactory
@@ -50,22 +50,14 @@ readonly class PhpUnitCallFactory
         return $this->createCall($methodName, $arguments);
     }
 
-    public function createFailCall(Metadata $metadata): MethodInvocationInterface
+    public function createFailCall(FailureMessage $failureMessage): MethodInvocationInterface
     {
-        return $this->createCallWithMetadataAndArguments('fail', $metadata);
-    }
+        $serializedMetadata = (string) json_encode($failureMessage, JSON_PRETTY_PRINT);
 
-    private function createCallWithMetadataAndArguments(
-        string $methodName,
-        Metadata $metadata,
-        ?MethodArgumentsInterface $arguments = null,
-    ): MethodInvocationInterface {
-        $serializedMetadata = (string) json_encode($metadata, JSON_PRETTY_PRINT);
-
-        $arguments = ($arguments ?? new MethodArguments())->withArgument(
+        $arguments = new MethodArguments()->withArgument(
             $this->argumentFactory->createSingular($serializedMetadata)
         );
 
-        return $this->createCall($methodName, $arguments);
+        return $this->createCall('fail', $arguments);
     }
 }

@@ -11,12 +11,12 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementExcep
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
-use webignition\BasilCompilableSourceFactory\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
+use webignition\BasilCompilableSourceFactory\Renderable\FailureMessage;
 use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
 use webignition\BasilModels\Model\Assertion\UniqueAssertionCollection;
 use webignition\BasilModels\Model\Step\StepInterface;
@@ -66,12 +66,7 @@ class StepHandler
 
                 $failBody = Body::createFromExpressions([
                     $this->phpUnitCallFactory->createFailCall(
-                        new Metadata(
-                            $action,
-                            [
-                                'reason' => PhpUnitFailReason::ACTION_FAILED->value,
-                            ],
-                        ),
+                        new FailureMessage($action, PhpUnitFailReason::ACTION_FAILED->value),
                     ),
                 ]);
 

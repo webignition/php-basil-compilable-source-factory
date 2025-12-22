@@ -42,9 +42,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                                 "statement": "$\\".selector\\" not-exists",
                                 "type": "assertion"
                             },
-                            "context": {
-                                "reason": "locator-invalid"
-                            }
+                            "reason": "locator-invalid"
                         }');
                     }
                     {{ PHPUNIT }}->assertFalse(
@@ -74,9 +72,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                                     "type": "assertion"
                                 }
                             },
-                            "context": {
-                                "reason": "locator-invalid"
-                            }
+                            "reason": "locator-invalid"
                         }');
                     }
                     {{ PHPUNIT }}->assertTrue(

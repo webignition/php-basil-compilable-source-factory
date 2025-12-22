@@ -126,9 +126,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                 "statement": "click $\\".selector\\"",
                                 "type": "action"
                             },
-                            "context": {
-                                "reason": "action-failed"
-                            }
+                            "reason": "action-failed"
                         }');
                     }
                     
@@ -242,9 +240,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                 "statement": "click $\\".selector1\\"",
                                 "type": "action"
                             },
-                            "context": {
-                                "reason": "action-failed"
-                            }
+                            "reason": "action-failed"
                         }');
                     }
                     
@@ -260,9 +256,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                 "statement": "click $\\".selector2\\"",
                                 "type": "action"
                             },
-                            "context": {
-                                "reason": "action-failed"
-                            }
+                            "reason": "action-failed"
                         }');
                     }
                     
@@ -489,9 +483,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                 "statement": "click $\\".selector1\\"",
                                 "type": "action"
                             },
-                            "context": {
-                                "reason": "action-failed"
-                            }
+                            "reason": "action-failed"
                         }');
                     }
                     
