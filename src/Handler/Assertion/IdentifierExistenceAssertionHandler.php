@@ -129,19 +129,19 @@ class IdentifierExistenceAssertionHandler
 
         $serializedAttributeIdentifier = $this->elementIdentifierSerializer->serialize($domIdentifier);
 
-        $examinedAccessor = $this->createDomCrawlerNavigatorCall(
+        $attributeExaminedAccessor = $this->createDomCrawlerNavigatorCall(
             $domIdentifier,
             $attributeExistenceAssertion,
             $this->argumentFactory->createSingular($serializedAttributeIdentifier)
         );
 
         $examinedValuePlaceholder = new VariableName(VariableNameEnum::EXAMINED_VALUE->value);
-        $examinedValueAssignmentStatement = new Statement(
-            new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
+        $attributeExaminedValueAssignmentStatement = new Statement(
+            new AssignmentExpression($examinedValuePlaceholder, $attributeExaminedAccessor),
         );
 
         $body = new Body([
-            $this->createNavigatorHasCallTryCatchBlock($examinedValueAssignmentStatement, $elementExistsAssertion),
+            $this->createNavigatorHasCallTryCatchBlock($attributeExaminedValueAssignmentStatement, $elementExistsAssertion),
         ]);
 
         $attributeNullComparisonExpression = new ComparisonExpression(
@@ -159,7 +159,7 @@ class IdentifierExistenceAssertionHandler
             '!=='
         );
 
-        $examinedValueAssignmentStatement = new Statement(
+        $elementExaminedValueAssignmentStatement = new Statement(
             new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
         );
 
@@ -171,7 +171,7 @@ class IdentifierExistenceAssertionHandler
 
         $body = $body->withContent([
             $elementExistenceAssertionStatement,
-            $examinedValueAssignmentStatement,
+            $elementExaminedValueAssignmentStatement,
         ]);
 
         $attributeExistenceAssertionStatement = $this->createAssertionStatement(
