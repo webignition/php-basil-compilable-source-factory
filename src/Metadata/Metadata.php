@@ -9,14 +9,19 @@ use webignition\BasilModels\Model\StatementInterface;
 
 readonly class Metadata implements \JsonSerializable
 {
+    /**
+     * @param array<string, string> $context
+     */
     public function __construct(
         private StatementInterface $statement,
+        private array $context = [],
     ) {}
 
     /**
      * @return array{
      *   statement: string,
-     *   source?: string
+     *   source?: string,
+     *   context?: array<string, string>,
      * }
      */
     public function jsonSerialize(): array
@@ -28,6 +33,10 @@ readonly class Metadata implements \JsonSerializable
 
         if ($this->statement instanceof EncapsulatingStatementInterface) {
             $data['source'] = (string) $this->statement->getSourceStatement();
+        }
+
+        if ([] !== $this->context) {
+            $data['context'] = $this->context;
         }
 
         return $data;

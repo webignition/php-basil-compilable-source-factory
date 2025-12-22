@@ -123,7 +123,10 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail('{
                             "statement": "click $\\".selector\\"",
-                            "type": "action"
+                            "type": "action",
+                            "context": {
+                                "reason": "action-failed"
+                            }
                         }');
                     }
                     
@@ -234,7 +237,10 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail('{
                             "statement": "click $\\".selector1\\"",
-                            "type": "action"
+                            "type": "action",
+                            "context": {
+                                "reason": "action-failed"
+                            }
                         }');
                     }
                     
@@ -247,7 +253,10 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail('{
                             "statement": "click $\\".selector2\\"",
-                            "type": "action"
+                            "type": "action",
+                            "context": {
+                                "reason": "action-failed"
+                            }
                         }');
                     }
                     
@@ -471,7 +480,10 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail('{
                             "statement": "click $\\".selector1\\"",
-                            "type": "action"
+                            "type": "action",
+                            "context": {
+                                "reason": "action-failed"
+                            }
                         }');
                     }
                     
