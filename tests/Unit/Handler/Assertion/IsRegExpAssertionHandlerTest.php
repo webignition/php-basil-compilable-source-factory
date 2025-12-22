@@ -25,7 +25,7 @@ class IsRegExpAssertionHandlerTest extends AbstractResolvableTestCase
     ): void {
         $handler = IsRegExpAssertionHandler::createHandler();
 
-        $source = $handler->handle($assertion, new Metadata($assertion));
+        $source = $handler->handle($assertion);
 
         $this->assertRenderResolvable($expectedRenderedContent, $source);
         $this->assertEquals($expectedMetadata, $source->getMetadata());

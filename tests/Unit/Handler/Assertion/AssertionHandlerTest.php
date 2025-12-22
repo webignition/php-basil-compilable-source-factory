@@ -29,12 +29,7 @@ class AssertionHandlerTest extends TestCase
         $comparisonHandler = \Mockery::mock(ComparisonAssertionHandler::class);
         $comparisonHandler
             ->shouldReceive('handle')
-            ->withArgs(function (AssertionInterface $passedAssertion, Metadata $passedMetadata) use ($assertion) {
-                self::assertSame($assertion, $passedAssertion);
-                self::assertEquals(new Metadata($assertion), $passedMetadata);
-
-                return true;
-            })
+            ->with($assertion)
             ->andReturn($expectedReturnValue)
         ;
 
@@ -57,12 +52,7 @@ class AssertionHandlerTest extends TestCase
         $existenceHandler = \Mockery::mock(ExistenceAssertionHandler::class);
         $existenceHandler
             ->shouldReceive('handle')
-            ->withArgs(function (AssertionInterface $passedAssertion, Metadata $passedMetadata) use ($assertion) {
-                self::assertSame($assertion, $passedAssertion);
-                self::assertEquals(new Metadata($assertion), $passedMetadata);
-
-                return true;
-            })
+            ->with($assertion)
             ->andReturn($expectedReturnValue)
         ;
 
@@ -85,12 +75,7 @@ class AssertionHandlerTest extends TestCase
         $isRegExpHandler = \Mockery::mock(IsRegExpAssertionHandler::class);
         $isRegExpHandler
             ->shouldReceive('handle')
-            ->withArgs(function (AssertionInterface $passedAssertion, Metadata $passedMetadata) use ($assertion) {
-                self::assertSame($assertion, $passedAssertion);
-                self::assertEquals(new Metadata($assertion), $passedMetadata);
-
-                return true;
-            })
+            ->with($assertion)
             ->andReturn($expectedReturnValue)
         ;
 
@@ -116,12 +101,7 @@ class AssertionHandlerTest extends TestCase
         $comparisonHandler = \Mockery::mock(ComparisonAssertionHandler::class);
         $comparisonHandler
             ->shouldReceive('handle')
-            ->withArgs(function (AssertionInterface $passedAssertion, Metadata $passedMetadata) use ($assertion) {
-                self::assertSame($assertion, $passedAssertion);
-                self::assertEquals(new Metadata($assertion), $passedMetadata);
-
-                return true;
-            })
+            ->with($assertion)
             ->andThrow($expectedUnsupportedContentException)
         ;
 

@@ -34,7 +34,7 @@ class ScalarExistenceAssertionHandler
     /**
      * @throws UnsupportedContentException
      */
-    public function handle(AssertionInterface $assertion, Metadata $metadata): BodyInterface
+    public function handle(AssertionInterface $assertion): BodyInterface
     {
         $nullComparisonExpression = new ComparisonExpression(
             $this->scalarValueHandler->handle((string) $assertion->getIdentifier()),
@@ -49,8 +49,8 @@ class ScalarExistenceAssertionHandler
         );
 
         $assertionStatement = $this->assertionStatementFactory->create(
+            $assertion,
             'exists' === $assertion->getOperator() ? 'assertTrue' : 'assertFalse',
-            $metadata,
             new MethodArguments([$examinedAccessor])
         );
 

@@ -32,19 +32,17 @@ class AssertionHandler
      */
     public function handle(AssertionInterface $assertion): BodyInterface
     {
-        $metadata = new Metadata($assertion);
-
         try {
             if ($assertion->isComparison()) {
-                return $this->comparisonAssertionHandler->handle($assertion, $metadata);
+                return $this->comparisonAssertionHandler->handle($assertion);
             }
 
             if (in_array($assertion->getOperator(), ['exists', 'not-exists'])) {
-                return $this->existenceAssertionHandler->handle($assertion, $metadata);
+                return $this->existenceAssertionHandler->handle($assertion);
             }
 
             if ('is-regexp' === $assertion->getOperator()) {
-                return $this->isRegExpAssertionHandler->handle($assertion, $metadata);
+                return $this->isRegExpAssertionHandler->handle($assertion);
             }
         } catch (UnsupportedContentException $previous) {
             throw new UnsupportedStatementException($assertion, $previous);

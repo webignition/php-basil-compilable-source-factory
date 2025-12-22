@@ -47,7 +47,7 @@ class ComparisonAssertionHandler
      * @throws UnsupportedContentException
      * @throws UnsupportedStatementException
      */
-    public function handle(AssertionInterface $assertion, Metadata $metadata): BodyInterface
+    public function handle(AssertionInterface $assertion): BodyInterface
     {
         if (!$assertion->isComparison()) {
             throw new UnsupportedStatementException($assertion);
@@ -75,8 +75,8 @@ class ComparisonAssertionHandler
                 new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
             ),
             $this->assertionStatementFactory->create(
+                $assertion,
                 self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP[$assertion->getOperator()],
-                $metadata,
                 new MethodArguments($assertionArguments)
             ),
         ]);

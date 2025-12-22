@@ -69,7 +69,7 @@ class IdentifierExistenceAssertionHandler
     /**
      * @throws UnsupportedContentException
      */
-    public function handle(AssertionInterface $assertion, Metadata $metadata): BodyInterface
+    public function handle(AssertionInterface $assertion): BodyInterface
     {
         $identifier = $assertion->getIdentifier();
 
@@ -79,16 +79,15 @@ class IdentifierExistenceAssertionHandler
         }
 
         if ($domIdentifier instanceof AttributeIdentifierInterface) {
-            return $this->handleAttributeExistence($assertion, $domIdentifier, $metadata);
+            return $this->handleAttributeExistence($assertion, $domIdentifier);
         }
 
-        return $this->handleElementExistence($assertion, $domIdentifier, $metadata);
+        return $this->handleElementExistence($assertion, $domIdentifier);
     }
 
     private function handleElementExistence(
         AssertionInterface $elementExistenceAssertion,
-        ElementIdentifierInterface $domIdentifier,
-        Metadata $metadata
+        ElementIdentifierInterface $domIdentifier
     ): BodyInterface {
         $serializedElementIdentifier = $this->elementIdentifierSerializer->serialize($domIdentifier);
 
@@ -119,7 +118,6 @@ class IdentifierExistenceAssertionHandler
     private function handleAttributeExistence(
         AssertionInterface $attributeExistenceAssertion,
         AttributeIdentifierInterface $domIdentifier,
-        Metadata $metadata
     ): BodyInterface {
         $elementExistsAssertion = new DerivedValueOperationAssertion(
             $attributeExistenceAssertion,

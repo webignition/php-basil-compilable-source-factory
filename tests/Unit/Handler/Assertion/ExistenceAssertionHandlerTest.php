@@ -26,17 +26,11 @@ class ExistenceAssertionHandlerTest extends TestCase
         $expectedReturnValue = \Mockery::mock(BodyInterface::class);
 
         $assertion = $assertionParser->parse('$page.title exists');
-        $metadata = new Metadata($assertion);
 
         $scalarHandler = \Mockery::mock(ScalarExistenceAssertionHandler::class);
         $scalarHandler
             ->shouldReceive('handle')
-            ->withArgs(function (AssertionInterface $passedAssertion, Metadata $passedMetadata) use ($assertion) {
-                self::assertSame($assertion, $passedAssertion);
-                self::assertEquals(new Metadata($assertion), $passedMetadata);
-
-                return true;
-            })
+            ->with($assertion)
             ->andReturn($expectedReturnValue)
         ;
 
@@ -47,7 +41,7 @@ class ExistenceAssertionHandlerTest extends TestCase
             \Mockery::mock(IdentifierExistenceAssertionHandler::class)
         );
 
-        $this->assertSame($expectedReturnValue, $handler->handle($assertion, $metadata));
+        $this->assertSame($expectedReturnValue, $handler->handle($assertion));
     }
 
     public function testHandleIdentifier(): void
@@ -57,17 +51,11 @@ class ExistenceAssertionHandlerTest extends TestCase
         $expectedReturnValue = \Mockery::mock(BodyInterface::class);
 
         $assertion = $assertionParser->parse('$".selector" exists');
-        $metadata = new Metadata($assertion);
 
         $identifierHandler = \Mockery::mock(IdentifierExistenceAssertionHandler::class);
         $identifierHandler
             ->shouldReceive('handle')
-            ->withArgs(function (AssertionInterface $passedAssertion, Metadata $passedMetadata) use ($assertion) {
-                self::assertSame($assertion, $passedAssertion);
-                self::assertEquals(new Metadata($assertion), $passedMetadata);
-
-                return true;
-            })
+            ->with($assertion)
             ->andReturn($expectedReturnValue)
         ;
 
@@ -78,7 +66,7 @@ class ExistenceAssertionHandlerTest extends TestCase
             $identifierHandler
         );
 
-        $this->assertSame($expectedReturnValue, $handler->handle($assertion, $metadata));
+        $this->assertSame($expectedReturnValue, $handler->handle($assertion));
     }
 
     public function testHandleThrowsUnsupportedContentException(): void

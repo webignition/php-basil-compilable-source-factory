@@ -36,16 +36,16 @@ class ExistenceAssertionHandler
     /**
      * @throws UnsupportedContentException
      */
-    public function handle(AssertionInterface $assertion, Metadata $metadata): BodyInterface
+    public function handle(AssertionInterface $assertion): BodyInterface
     {
         $identifier = $assertion->getIdentifier();
 
         if (is_string($identifier) && $this->valueTypeIdentifier->isScalarValue($identifier)) {
-            return $this->scalarExistenceAssertionHandler->handle($assertion, $metadata);
+            return $this->scalarExistenceAssertionHandler->handle($assertion);
         }
 
         if (is_string($identifier) && $this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
-            return $this->identifierExistenceAssertionHandler->handle($assertion, $metadata);
+            return $this->identifierExistenceAssertionHandler->handle($assertion);
         }
 
         throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
