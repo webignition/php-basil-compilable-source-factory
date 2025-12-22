@@ -9,6 +9,7 @@ use webignition\BasilCompilableSourceFactory\AssertionStatementFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
+use webignition\BasilCompilableSourceFactory\Enum\PhpUnitFailReason;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
@@ -98,7 +99,7 @@ class IdentifierExistenceAssertionHandler
         );
 
         $body = new Body([
-            $this->createNavigatorHasCallTryCatchBlock($examinedValueAssignmentStatement),
+            $this->createNavigatorHasCallTryCatchBlock($examinedValueAssignmentStatement, $assertion),
         ]);
 
         if ($domIdentifier instanceof AttributeIdentifierInterface) {
@@ -162,14 +163,20 @@ class IdentifierExistenceAssertionHandler
     }
 
     private function createNavigatorHasCallTryCatchBlock(
-        StatementInterface $setExaminedValueAssignmentStatement
+        StatementInterface $setExaminedValueAssignmentStatement,
+        AssertionInterface $assertion,
     ): TryCatchBlock {
         return $this->tryCatchBlockFactory->create(
             new Body([$setExaminedValueAssignmentStatement]),
             new ClassNameCollection([new ClassName(InvalidLocatorException::class)]),
             Body::createFromExpressions([
                 $this->phpUnitCallFactory->createFailCall(
-                    new MethodArguments($this->argumentFactory->create('Invalid locator'))
+                    new Metadata(
+                        $assertion,
+                        [
+                            'reason' => PhpUnitFailReason::INVALID_LOCATOR->value,
+                        ],
+                    ),
                 ),
             ])
         );

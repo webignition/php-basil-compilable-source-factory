@@ -40,7 +40,13 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "locator": ".selector"
                         }');
                     } catch (InvalidLocatorException $exception) {
-                        {{ PHPUNIT }}->fail('Invalid locator');
+                        {{ PHPUNIT }}->fail('{
+                            "statement": "$\\".selector\\" exists",
+                            "type": "assertion",
+                            "context": {
+                                "reason": "locator-invalid"
+                            }
+                        }');
                     }
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
@@ -60,7 +66,13 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "locator": ".selector"
                         }');
                     } catch (InvalidLocatorException $exception) {
-                        {{ PHPUNIT }}->fail('Invalid locator');
+                        {{ PHPUNIT }}->fail('{
+                            "statement": "$\\".selector\\".attribute_name exists",
+                            "type": "assertion",
+                            "context": {
+                                "reason": "locator-invalid"
+                            }
+                        }');
                     }
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
@@ -94,7 +106,13 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "locator": "a[href=foo.html]"
                         }');
                     } catch (InvalidLocatorException $exception) {
-                        {{ PHPUNIT }}->fail('Invalid locator');
+                        {{ PHPUNIT }}->fail('{
+                            "statement": "$\\"a[href=foo.html]\\" exists",
+                            "type": "assertion",
+                            "context": {
+                                "reason": "locator-invalid"
+                            }
+                        }');
                     }
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
@@ -114,7 +132,13 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "locator": "a[href=foo.html]"
                         }');
                     } catch (InvalidLocatorException $exception) {
-                        {{ PHPUNIT }}->fail('Invalid locator');
+                        {{ PHPUNIT }}->fail('{
+                            "statement": "$\\"a[href=foo.html]\\".attribute_name exists",
+                            "type": "assertion",
+                            "context": {
+                                "reason": "locator-invalid"
+                            }
+                        }');
                     }
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
@@ -152,7 +176,14 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "locator": ".selector"
                         }');
                     } catch (InvalidLocatorException $exception) {
-                        {{ PHPUNIT }}->fail('Invalid locator');
+                        {{ PHPUNIT }}->fail('{
+                            "statement": "$\\".selector\\" exists",
+                            "type": "assertion",
+                            "source": "click $\\".selector\\"",
+                            "context": {
+                                "reason": "locator-invalid"
+                            }
+                        }');
                     }
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
@@ -177,7 +208,14 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "locator": ".selector"
                         }');
                     } catch (InvalidLocatorException $exception) {
-                        {{ PHPUNIT }}->fail('Invalid locator');
+                        {{ PHPUNIT }}->fail('{
+                            "statement": "$\\".selector\\" exists",
+                            "type": "assertion",
+                            "source": "submit $\\".selector\\"",
+                            "context": {
+                                "reason": "locator-invalid"
+                            }
+                        }');
                     }
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
@@ -202,7 +240,14 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "locator": ".selector"
                         }');
                     } catch (InvalidLocatorException $exception) {
-                        {{ PHPUNIT }}->fail('Invalid locator');
+                        {{ PHPUNIT }}->fail('{
+                            "statement": "$\\".selector\\" exists",
+                            "type": "assertion",
+                            "source": "set $\\".selector\\" to \\"value\\"",
+                            "context": {
+                                "reason": "locator-invalid"
+                            }
+                        }');
                     }
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
@@ -227,7 +272,14 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "locator": ".duration"
                         }');
                     } catch (InvalidLocatorException $exception) {
-                        {{ PHPUNIT }}->fail('Invalid locator');
+                        {{ PHPUNIT }}->fail('{
+                            "statement": "$\\".duration\\" exists",
+                            "type": "assertion",
+                            "source": "wait $\\".duration\\"",
+                            "context": {
+                                "reason": "locator-invalid"
+                            }
+                        }');
                     }
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
