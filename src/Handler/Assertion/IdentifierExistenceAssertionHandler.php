@@ -146,7 +146,7 @@ class IdentifierExistenceAssertionHandler
 
         $attributeNullComparisonExpression = new ComparisonExpression(
             $this->domIdentifierHandler->handleAttributeValue(
-                $this->elementIdentifierSerializer->serialize($domIdentifier),
+                $serializedElementIdentifier,
                 $domIdentifier->getAttributeName()
             ),
             new LiteralExpression('null'),
