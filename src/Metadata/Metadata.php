@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Metadata;
 
-use webignition\BasilModels\Model\EncapsulatingStatementInterface;
+use webignition\BasilCompilableSourceFactory\Renderable\Statement;
 use webignition\BasilModels\Model\StatementInterface;
 
 readonly class Metadata implements \JsonSerializable
@@ -19,21 +19,15 @@ readonly class Metadata implements \JsonSerializable
 
     /**
      * @return array{
-     *   statement: string,
-     *   source?: string,
+     *   statement: Statement,
      *   context?: array<string, string>,
      * }
      */
     public function jsonSerialize(): array
     {
         $data = [
-            'statement' => (string) $this->statement,
-            'type' => $this->statement->getStatementType(),
+            'statement' => new Statement($this->statement),
         ];
-
-        if ($this->statement instanceof EncapsulatingStatementInterface) {
-            $data['source'] = (string) $this->statement->getSourceStatement();
-        }
 
         if ([] !== $this->context) {
             $data['context'] = $this->context;
