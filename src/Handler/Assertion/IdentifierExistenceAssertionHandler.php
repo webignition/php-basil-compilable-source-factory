@@ -140,10 +140,6 @@ class IdentifierExistenceAssertionHandler
             new AssignmentExpression($examinedValuePlaceholder, $attributeExaminedAccessor),
         );
 
-        $body = new Body([
-            $this->createNavigatorHasCallTryCatchBlock($attributeExaminedValueAssignmentStatement, $elementExistsAssertion),
-        ]);
-
         $attributeNullComparisonExpression = new ComparisonExpression(
             $this->domIdentifierHandler->handleAttributeValue(
                 $serializedAttributeIdentifier,
@@ -168,6 +164,10 @@ class IdentifierExistenceAssertionHandler
             $metadata,
             new MethodArguments([$examinedValuePlaceholder]),
         );
+
+        $body = new Body([
+            $this->createNavigatorHasCallTryCatchBlock($attributeExaminedValueAssignmentStatement, $elementExistsAssertion),
+        ]);
 
         $body = $body->withContent([
             $elementExistenceAssertionStatement,
