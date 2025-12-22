@@ -121,11 +121,9 @@ class IdentifierExistenceAssertionHandler
         AttributeIdentifierInterface $domIdentifier,
         Metadata $metadata
     ): BodyInterface {
-        $elementIdentifierString = (string) ElementIdentifier::fromAttributeIdentifier($domIdentifier);
-
         $elementExistsAssertion = new DerivedValueOperationAssertion(
             $attributeExistenceAssertion,
-            $elementIdentifierString,
+            (string) ElementIdentifier::fromAttributeIdentifier($domIdentifier),
             'exists',
         );
 
