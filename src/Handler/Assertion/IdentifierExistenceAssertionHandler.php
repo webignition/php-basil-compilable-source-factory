@@ -85,9 +85,6 @@ class IdentifierExistenceAssertionHandler
         return $this->handleElementExistence($assertion, $domIdentifier, $metadata);
     }
 
-    /**
-     * @throws UnsupportedContentException
-     */
     private function handleElementExistence(
         AssertionInterface $assertion,
         ElementIdentifierInterface $domIdentifier,
@@ -119,9 +116,6 @@ class IdentifierExistenceAssertionHandler
         return $body->withContent([$assertionStatement]);
     }
 
-    /**
-     * @throws UnsupportedContentException
-     */
     private function handleAttributeExistence(
         AssertionInterface $assertion,
         AttributeIdentifierInterface $domIdentifier,
