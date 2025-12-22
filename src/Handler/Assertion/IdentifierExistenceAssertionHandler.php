@@ -166,6 +166,12 @@ class IdentifierExistenceAssertionHandler
             new MethodArguments([$examinedValuePlaceholder]),
         );
 
+        $attributeExistenceAssertionStatement = $this->createAssertionStatement(
+            $attributeExistenceAssertion,
+            $metadata,
+            new MethodArguments([$examinedValuePlaceholder]),
+        );
+
         $body = new Body([
             $this->createNavigatorHasCallTryCatchBlock($attributeExaminedValueAssignmentStatement, $elementExistsAssertion),
         ]);
@@ -174,12 +180,6 @@ class IdentifierExistenceAssertionHandler
             $elementExistenceAssertionStatement,
             $elementExaminedValueAssignmentStatement,
         ]);
-
-        $attributeExistenceAssertionStatement = $this->createAssertionStatement(
-            $attributeExistenceAssertion,
-            $metadata,
-            new MethodArguments([$examinedValuePlaceholder]),
-        );
 
         return $body->withContent([$attributeExistenceAssertionStatement]);
     }
