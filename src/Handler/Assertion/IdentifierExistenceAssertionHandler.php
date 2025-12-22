@@ -32,7 +32,6 @@ use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilModels\Model\Action\ActionInterface;
-use webignition\BasilModels\Model\Assertion\Assertion;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
 use webignition\DomElementIdentifier\AttributeIdentifierInterface;
@@ -79,6 +78,21 @@ class IdentifierExistenceAssertionHandler
             throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }
 
+        if ($domIdentifier instanceof AttributeIdentifierInterface) {
+            return $this->handleAttributeExistence($assertion, $domIdentifier, $metadata);
+        }
+
+        return $this->handleElementExistence($assertion, $domIdentifier, $metadata);
+    }
+
+    /**
+     * @throws UnsupportedContentException
+     */
+    private function handleElementExistence(
+        AssertionInterface $assertion,
+        ElementIdentifierInterface $domIdentifier,
+        Metadata $metadata
+    ): BodyInterface {
         $serializedElementIdentifier = $this->elementIdentifierSerializer->serialize($domIdentifier);
 
         $examinedAccessor = $this->createDomCrawlerNavigatorCall(
@@ -102,44 +116,81 @@ class IdentifierExistenceAssertionHandler
             $this->createNavigatorHasCallTryCatchBlock($examinedValueAssignmentStatement, $assertion),
         ]);
 
-        if ($domIdentifier instanceof AttributeIdentifierInterface) {
-            $elementIdentifierString = (string) ElementIdentifier::fromAttributeIdentifier($domIdentifier);
-            $elementExistsAssertion = new Assertion(
-                $elementIdentifierString . ' exists',
-                $elementIdentifierString,
-                'exists'
-            );
-
-            $attributeNullComparisonExpression = new ComparisonExpression(
-                $this->domIdentifierHandler->handleAttributeValue(
-                    $this->elementIdentifierSerializer->serialize($domIdentifier),
-                    $domIdentifier->getAttributeName()
-                ),
-                new LiteralExpression('null'),
-                '??'
-            );
-
-            $examinedAccessor = new ComparisonExpression(
-                new EncapsulatedExpression($attributeNullComparisonExpression),
-                new LiteralExpression('null'),
-                '!=='
-            );
-
-            $examinedValueAssignmentStatement = new Statement(
-                new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
-            );
-
-            $body = $body->withContent([
-                $this->createAssertionStatement(
-                    $elementExistsAssertion,
-                    $metadata,
-                    new MethodArguments([$examinedValuePlaceholder]),
-                ),
-                $examinedValueAssignmentStatement,
-            ]);
-        }
-
         return $body->withContent([$assertionStatement]);
+    }
+
+    /**
+     * @throws UnsupportedContentException
+     */
+    private function handleAttributeExistence(
+        AssertionInterface $assertion,
+        AttributeIdentifierInterface $domIdentifier,
+        Metadata $metadata
+    ): BodyInterface {
+        $elementIdentifierString = (string) ElementIdentifier::fromAttributeIdentifier($domIdentifier);
+
+        $derivedAssertion = new DerivedValueOperationAssertion(
+            $assertion,
+            $elementIdentifierString,
+            'exists',
+        );
+
+        $serializedElementIdentifier = $this->elementIdentifierSerializer->serialize($domIdentifier);
+
+        $examinedAccessor = $this->createDomCrawlerNavigatorCall(
+            $domIdentifier,
+            $assertion,
+            $this->argumentFactory->createSingular($serializedElementIdentifier)
+        );
+
+        $examinedValuePlaceholder = new VariableName(VariableNameEnum::EXAMINED_VALUE->value);
+        $examinedValueAssignmentStatement = new Statement(
+            new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
+        );
+
+        $body = new Body([
+            $this->createNavigatorHasCallTryCatchBlock($examinedValueAssignmentStatement, $derivedAssertion),
+        ]);
+
+        $elementExistsAssertion = $derivedAssertion;
+
+        $attributeNullComparisonExpression = new ComparisonExpression(
+            $this->domIdentifierHandler->handleAttributeValue(
+                $this->elementIdentifierSerializer->serialize($domIdentifier),
+                $domIdentifier->getAttributeName()
+            ),
+            new LiteralExpression('null'),
+            '??'
+        );
+
+        $examinedAccessor = new ComparisonExpression(
+            new EncapsulatedExpression($attributeNullComparisonExpression),
+            new LiteralExpression('null'),
+            '!=='
+        );
+
+        $examinedValueAssignmentStatement = new Statement(
+            new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
+        );
+
+        $elementExistenceAssertionStatement = $this->createAssertionStatement(
+            $elementExistsAssertion,
+            $metadata,
+            new MethodArguments([$examinedValuePlaceholder]),
+        );
+
+        $body = $body->withContent([
+            $elementExistenceAssertionStatement,
+            $examinedValueAssignmentStatement,
+        ]);
+
+        $attributeExistenceAssertionStatement = $this->createAssertionStatement(
+            $assertion,
+            $metadata,
+            new MethodArguments([$examinedValuePlaceholder]),
+        );
+
+        return $body->withContent([$attributeExistenceAssertionStatement]);
     }
 
     private function createDomCrawlerNavigatorCall(

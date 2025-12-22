@@ -139,8 +139,9 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
                 'fixture' => '/index.html',
                 'assertion' => $assertionParser->parse('$"2".attribute_name exists'),
                 'expectedExpectationFailedExceptionMessages' => [
-                    '"statement": "$\"2\".attribute_name exists",',
+                    '"statement": "$\"2\" exists"',
                     '"type": "assertion"',
+                    '"source": "$\"2\".attribute_name exists",'
                 ],
             ],
         ];
