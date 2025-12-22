@@ -86,7 +86,7 @@ class IdentifierExistenceAssertionHandler
     }
 
     private function handleElementExistence(
-        AssertionInterface $assertion,
+        AssertionInterface $elementExistenceAssertion,
         ElementIdentifierInterface $domIdentifier,
         Metadata $metadata
     ): BodyInterface {
@@ -94,7 +94,7 @@ class IdentifierExistenceAssertionHandler
 
         $examinedAccessor = $this->createDomCrawlerNavigatorCall(
             $domIdentifier,
-            $assertion,
+            $elementExistenceAssertion,
             $this->argumentFactory->createSingular($serializedElementIdentifier)
         );
 
@@ -104,27 +104,27 @@ class IdentifierExistenceAssertionHandler
         );
 
         $assertionStatement = $this->createAssertionStatement(
-            $assertion,
+            $elementExistenceAssertion,
             $metadata,
             new MethodArguments([$examinedValuePlaceholder]),
         );
 
         $body = new Body([
-            $this->createNavigatorHasCallTryCatchBlock($examinedValueAssignmentStatement, $assertion),
+            $this->createNavigatorHasCallTryCatchBlock($examinedValueAssignmentStatement, $elementExistenceAssertion),
         ]);
 
         return $body->withContent([$assertionStatement]);
     }
 
     private function handleAttributeExistence(
-        AssertionInterface $assertion,
+        AssertionInterface $attributeExistenceAssertion,
         AttributeIdentifierInterface $domIdentifier,
         Metadata $metadata
     ): BodyInterface {
         $elementIdentifierString = (string) ElementIdentifier::fromAttributeIdentifier($domIdentifier);
 
         $elementExistsAssertion = new DerivedValueOperationAssertion(
-            $assertion,
+            $attributeExistenceAssertion,
             $elementIdentifierString,
             'exists',
         );
@@ -133,7 +133,7 @@ class IdentifierExistenceAssertionHandler
 
         $examinedAccessor = $this->createDomCrawlerNavigatorCall(
             $domIdentifier,
-            $assertion,
+            $attributeExistenceAssertion,
             $this->argumentFactory->createSingular($serializedElementIdentifier)
         );
 
@@ -177,7 +177,7 @@ class IdentifierExistenceAssertionHandler
         ]);
 
         $attributeExistenceAssertionStatement = $this->createAssertionStatement(
-            $assertion,
+            $attributeExistenceAssertion,
             $metadata,
             new MethodArguments([$examinedValuePlaceholder]),
         );
