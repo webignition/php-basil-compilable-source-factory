@@ -11,15 +11,15 @@ use webignition\BasilModels\Model\StatementInterface;
 readonly class Statement extends JsonExpression
 {
     public function __construct(
-        private StatementInterface $statement,
+        StatementInterface $statement,
     ) {
         $data = [
-            'statement' => (string) $this->statement,
-            'type' => $this->statement->getStatementType(),
+            'statement' => (string) $statement,
+            'type' => $statement->getStatementType(),
         ];
 
-        if ($this->statement instanceof EncapsulatingStatementInterface) {
-            $data['source'] = new Statement($this->statement->getSourceStatement());
+        if ($statement instanceof EncapsulatingStatementInterface) {
+            $data['source'] = new Statement($statement->getSourceStatement());
         }
 
         parent::__construct($data);
