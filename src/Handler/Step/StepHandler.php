@@ -16,7 +16,7 @@ use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
-use webignition\BasilCompilableSourceFactory\Renderable\FailureMessage;
+use webignition\BasilCompilableSourceFactory\Model\Json\FailureMessage;
 use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
 use webignition\BasilModels\Model\Assertion\UniqueAssertionCollection;
 use webignition\BasilModels\Model\Step\StepInterface;

@@ -23,12 +23,12 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpressi
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
+use webignition\BasilCompilableSourceFactory\Model\Json\FailureMessage;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
-use webignition\BasilCompilableSourceFactory\Renderable\FailureMessage;
 use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilModels\Model\Action\ActionInterface;
