@@ -10,12 +10,20 @@ use webignition\BasilModels\Model\StatementInterface;
 readonly class FailureMessage extends JsonExpression
 {
     public function __construct(
-        private StatementInterface $statement,
-        private string $reason,
+        StatementInterface $statement,
+        string $reason,
+        Literal $exceptionClassCall,
+        Literal $exceptionCodeCall,
+        Literal $exceptionMessageCall,
     ) {
         parent::__construct([
-            'statement' => new Statement($this->statement),
-            'reason' => $this->reason,
+            'statement' => new Statement($statement),
+            'reason' => $reason,
+            'exception' => [
+                'class' => $exceptionClassCall,
+                'code' => $exceptionCodeCall,
+                'message' => $exceptionMessageCall,
+            ],
         ]);
     }
 }

@@ -45,7 +45,12 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                 "statement": "$\\".selector\\" exists",
                                 "type": "assertion"
                             },
-                            "reason": "locator-invalid"
+                            "reason": "locator-invalid",
+                            "exception": {
+                                "class": ' . addcslashes($exception::class, "'\\") . ',
+                                "code": ' . $exception->getCode() . ',
+                                "message": ' . addcslashes($exception->getMessage(), "'\\") . '
+                            }
                         }');
                     }
                     {{ PHPUNIT }}->assertTrue(
@@ -75,7 +80,12 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                     "type": "assertion"
                                 }
                             },
-                            "reason": "locator-invalid"
+                            "reason": "locator-invalid",
+                            "exception": {
+                                "class": ' . addcslashes($exception::class, "'\\") . ',
+                                "code": ' . $exception->getCode() . ',
+                                "message": ' . addcslashes($exception->getMessage(), "'\\") . '
+                            }
                         }');
                     }
                     {{ PHPUNIT }}->assertTrue(
@@ -119,7 +129,12 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                 "statement": "$\\"a[href=foo.html]\\" exists",
                                 "type": "assertion"
                             },
-                            "reason": "locator-invalid"
+                            "reason": "locator-invalid",
+                            "exception": {
+                                "class": ' . addcslashes($exception::class, "'\\") . ',
+                                "code": ' . $exception->getCode() . ',
+                                "message": ' . addcslashes($exception->getMessage(), "'\\") . '
+                            }
                         }');
                     }
                     {{ PHPUNIT }}->assertTrue(
@@ -145,7 +160,12 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                 "statement": "$\\"[data-value=\\\\\\"\'single quoted\'\\\\\\"]\\" exists",
                                 "type": "assertion"
                             },
-                            "reason": "locator-invalid"
+                            "reason": "locator-invalid",
+                            "exception": {
+                                "class": ' . addcslashes($exception::class, "'\\") . ',
+                                "code": ' . $exception->getCode() . ',
+                                "message": ' . addcslashes($exception->getMessage(), "'\\") . '
+                            }
                         }');
                     }
                     {{ PHPUNIT }}->assertTrue(
@@ -175,7 +195,12 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                     "type": "assertion"
                                 }
                             },
-                            "reason": "locator-invalid"
+                            "reason": "locator-invalid",
+                            "exception": {
+                                "class": ' . addcslashes($exception::class, "'\\") . ',
+                                "code": ' . $exception->getCode() . ',
+                                "message": ' . addcslashes($exception->getMessage(), "'\\") . '
+                            }
                         }');
                     }
                     {{ PHPUNIT }}->assertTrue(
@@ -227,7 +252,12 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                     "type": "action"
                                 }
                             },
-                            "reason": "locator-invalid"
+                            "reason": "locator-invalid",
+                            "exception": {
+                                "class": ' . addcslashes($exception::class, "'\\") . ',
+                                "code": ' . $exception->getCode() . ',
+                                "message": ' . addcslashes($exception->getMessage(), "'\\") . '
+                            }
                         }');
                     }
                     {{ PHPUNIT }}->assertTrue(
@@ -265,7 +295,12 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                     "type": "action"
                                 }
                             },
-                            "reason": "locator-invalid"
+                            "reason": "locator-invalid",
+                            "exception": {
+                                "class": ' . addcslashes($exception::class, "'\\") . ',
+                                "code": ' . $exception->getCode() . ',
+                                "message": ' . addcslashes($exception->getMessage(), "'\\") . '
+                            }
                         }');
                     }
                     {{ PHPUNIT }}->assertTrue(
@@ -303,7 +338,12 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                     "type": "action"
                                 }
                             },
-                            "reason": "locator-invalid"
+                            "reason": "locator-invalid",
+                            "exception": {
+                                "class": ' . addcslashes($exception::class, "'\\") . ',
+                                "code": ' . $exception->getCode() . ',
+                                "message": ' . addcslashes($exception->getMessage(), "'\\") . '
+                            }
                         }');
                     }
                     {{ PHPUNIT }}->assertTrue(
@@ -341,7 +381,12 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                     "type": "action"
                                 }
                             },
-                            "reason": "locator-invalid"
+                            "reason": "locator-invalid",
+                            "exception": {
+                                "class": ' . addcslashes($exception::class, "'\\") . ',
+                                "code": ' . $exception->getCode() . ',
+                                "message": ' . addcslashes($exception->getMessage(), "'\\") . '
+                            }
                         }');
                     }
                     {{ PHPUNIT }}->assertTrue(

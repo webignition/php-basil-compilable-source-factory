@@ -9,6 +9,7 @@ use webignition\BasilCompilableSourceFactory\Enum\PhpUnitFailReason;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
+use webignition\BasilCompilableSourceFactory\FailureMessageFactory;
 use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
@@ -16,7 +17,6 @@ use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
-use webignition\BasilCompilableSourceFactory\Model\Json\FailureMessage;
 use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
 use webignition\BasilModels\Model\Assertion\UniqueAssertionCollection;
 use webignition\BasilModels\Model\Step\StepInterface;
@@ -30,6 +30,7 @@ class StepHandler
         private DerivedAssertionFactory $derivedAssertionFactory,
         private TryCatchBlockFactory $tryCatchBlockFactory,
         private PhpUnitCallFactory $phpUnitCallFactory,
+        private FailureMessageFactory $failureMessageFactory,
     ) {}
 
     public static function createHandler(): StepHandler
@@ -41,6 +42,7 @@ class StepHandler
             DerivedAssertionFactory::createFactory(),
             TryCatchBlockFactory::createFactory(),
             PhpUnitCallFactory::createFactory(),
+            FailureMessageFactory::createFactory(),
         );
     }
 
@@ -66,7 +68,7 @@ class StepHandler
 
                 $failBody = Body::createFromExpressions([
                     $this->phpUnitCallFactory->createFailCall(
-                        new FailureMessage($action, PhpUnitFailReason::ACTION_FAILED->value),
+                        $this->failureMessageFactory->create($action, PhpUnitFailReason::ACTION_FAILED)
                     ),
                 ]);
 

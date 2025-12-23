@@ -36,7 +36,12 @@ class CatchExpression implements ExpressionInterface
     {
         return [
             'class_list' => $this->classes,
-            'variable' => new VariableName('exception'),
+            'variable' => self::getVariableName(),
         ];
+    }
+
+    public static function getVariableName(): VariableName
+    {
+        return new VariableName('exception');
     }
 }
