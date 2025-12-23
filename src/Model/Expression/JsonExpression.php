@@ -79,10 +79,10 @@ readonly class JsonExpression implements ExpressionInterface, \JsonSerializable
             }
 
             if (is_array($value)) {
-                $foo = $this->createDataSet($value);
+                $subDataSet = $this->createDataSet($value);
 
-                $literalPlaceholders[$key] = $foo->placeholders;
-                $data[$key] = $foo->data;
+                $literalPlaceholders[$key] = $subDataSet->placeholders;
+                $data[$key] = $subDataSet->data;
             }
 
             if (is_scalar($value) || $value instanceof JsonExpression) {
