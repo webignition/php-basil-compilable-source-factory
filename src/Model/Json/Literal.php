@@ -7,6 +7,6 @@ namespace webignition\BasilCompilableSourceFactory\Model\Json;
 readonly class Literal
 {
     public function __construct(
-        public readonly string $value,
+        public string $value,
     ) {}
 }
