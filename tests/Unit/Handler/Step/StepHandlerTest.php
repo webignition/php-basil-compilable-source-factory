@@ -9,6 +9,7 @@ use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
+use webignition\BasilCompilableSourceFactory\FailureMessageFactory;
 use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Step\DerivedAssertionFactory;
@@ -126,7 +127,12 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                 "statement": "click $\\".selector\\"",
                                 "type": "action"
                             },
-                            "reason": "action-failed"
+                            "reason": "action-failed",
+                            "exception": {
+                                "class": ' . addcslashes($exception::class, "'\\") . ',
+                                "code": ' . $exception->getCode() . ',
+                                "message": ' . addcslashes($exception->getMessage(), "'\\") . '
+                            }
                         }');
                     }
                     
@@ -240,7 +246,12 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                 "statement": "click $\\".selector1\\"",
                                 "type": "action"
                             },
-                            "reason": "action-failed"
+                            "reason": "action-failed",
+                            "exception": {
+                                "class": ' . addcslashes($exception::class, "'\\") . ',
+                                "code": ' . $exception->getCode() . ',
+                                "message": ' . addcslashes($exception->getMessage(), "'\\") . '
+                            }
                         }');
                     }
                     
@@ -256,7 +267,12 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                 "statement": "click $\\".selector2\\"",
                                 "type": "action"
                             },
-                            "reason": "action-failed"
+                            "reason": "action-failed",
+                            "exception": {
+                                "class": ' . addcslashes($exception::class, "'\\") . ',
+                                "code": ' . $exception->getCode() . ',
+                                "message": ' . addcslashes($exception->getMessage(), "'\\") . '
+                            }
                         }');
                     }
                     
@@ -483,7 +499,12 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                 "statement": "click $\\".selector1\\"",
                                 "type": "action"
                             },
-                            "reason": "action-failed"
+                            "reason": "action-failed",
+                            "exception": {
+                                "class": ' . addcslashes($exception::class, "'\\") . ',
+                                "code": ' . $exception->getCode() . ',
+                                "message": ' . addcslashes($exception->getMessage(), "'\\") . '
+                            }
                         }');
                     }
                     
@@ -820,6 +841,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
             $derivedAssertionFactory,
             TryCatchBlockFactory::createFactory(),
             PhpUnitCallFactory::createFactory(),
+            FailureMessageFactory::createFactory(),
         );
     }
 }

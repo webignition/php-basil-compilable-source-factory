@@ -4,11 +4,15 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 
+use webignition\BasilCompilableSourceFactory\Model\Json\DataSet;
+use webignition\BasilCompilableSourceFactory\Model\Json\Literal;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 
 readonly class JsonExpression implements ExpressionInterface, \JsonSerializable
 {
+    public const string TEMPLATE_PLACEHOLDER = 'serialized_json';
+
     /**
      * @var array<mixed>
      */
@@ -24,13 +28,24 @@ readonly class JsonExpression implements ExpressionInterface, \JsonSerializable
 
     public function getTemplate(): string
     {
-        return '\'{{ serialized_json }}\'';
+        return '\'{{ ' . self::TEMPLATE_PLACEHOLDER . ' }}\'';
     }
 
     public function getContext(): array
     {
+        $dataSet = $this->createDataSet($this->data);
+
+        $serialized = (string) json_encode($dataSet->data, JSON_PRETTY_PRINT);
+        $serialized = addcslashes($serialized, "'\\");
+
+        $serialized = $this->replacePlaceholdersWithLiteralValues(
+            $this->data,
+            $dataSet->placeholders,
+            $serialized
+        );
+
         return [
-            'serialized_json' => addcslashes((string) json_encode($this->data, JSON_PRETTY_PRINT), "'\\"),
+            self::TEMPLATE_PLACEHOLDER => $serialized,
         ];
     }
 
@@ -45,5 +60,63 @@ readonly class JsonExpression implements ExpressionInterface, \JsonSerializable
     public function jsonSerialize(): array
     {
         return $this->data;
+    }
+
+    /**
+     * @param array<mixed> $rawData
+     */
+    private function createDataSet(array $rawData): DataSet
+    {
+        $data = [];
+        $literalPlaceholders = [];
+
+        foreach ($rawData as $key => $value) {
+            if ($value instanceof Literal) {
+                $placeholder = md5((string) rand());
+
+                $literalPlaceholders[$key] = $placeholder;
+                $data[$key] = $placeholder;
+            }
+
+            if (is_array($value)) {
+                $foo = $this->createDataSet($value);
+
+                $literalPlaceholders[$key] = $foo->placeholders;
+                $data[$key] = $foo->data;
+            }
+
+            if (is_scalar($value) || $value instanceof JsonExpression) {
+                $data[$key] = $value;
+            }
+        }
+
+        return new DataSet($literalPlaceholders, $data);
+    }
+
+    /**
+     * @param array<mixed> $source
+     * @param array<mixed> $placeholders
+     */
+    private function replacePlaceholdersWithLiteralValues(array $source, array $placeholders, string $output): string
+    {
+        foreach ($placeholders as $key => $placeholder) {
+            if (is_string($placeholder)) {
+                $literal = $source[$key];
+
+                if ($literal instanceof Literal) {
+                    $output = str_replace(
+                        '"' . $placeholder . '"',
+                        "' . " . $literal->value . " . '",
+                        $output,
+                    );
+                }
+            }
+
+            if (is_array($placeholder) && is_array($source[$key])) {
+                $output = $this->replacePlaceholdersWithLiteralValues($source[$key], $placeholder, $output);
+            }
+        }
+
+        return $output;
     }
 }

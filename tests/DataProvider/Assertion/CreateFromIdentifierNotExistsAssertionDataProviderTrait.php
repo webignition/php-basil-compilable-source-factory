@@ -42,7 +42,12 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                                 "statement": "$\\".selector\\" not-exists",
                                 "type": "assertion"
                             },
-                            "reason": "locator-invalid"
+                            "reason": "locator-invalid",
+                            "exception": {
+                                "class": ' . addcslashes($exception::class, "'\\") . ',
+                                "code": ' . $exception->getCode() . ',
+                                "message": ' . addcslashes($exception->getMessage(), "'\\") . '
+                            }
                         }');
                     }
                     {{ PHPUNIT }}->assertFalse(
@@ -72,7 +77,12 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                                     "type": "assertion"
                                 }
                             },
-                            "reason": "locator-invalid"
+                            "reason": "locator-invalid",
+                            "exception": {
+                                "class": ' . addcslashes($exception::class, "'\\") . ',
+                                "code": ' . $exception->getCode() . ',
+                                "message": ' . addcslashes($exception->getMessage(), "'\\") . '
+                            }
                         }');
                     }
                     {{ PHPUNIT }}->assertTrue(

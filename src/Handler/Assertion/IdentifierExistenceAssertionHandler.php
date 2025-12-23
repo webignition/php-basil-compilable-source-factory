@@ -12,6 +12,7 @@ use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Enum\PhpUnitFailReason;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
+use webignition\BasilCompilableSourceFactory\FailureMessageFactory;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryCatchBlock;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
@@ -23,7 +24,6 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpressi
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
-use webignition\BasilCompilableSourceFactory\Model\Json\FailureMessage;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
@@ -50,6 +50,7 @@ class IdentifierExistenceAssertionHandler
         private TryCatchBlockFactory $tryCatchBlockFactory,
         private PhpUnitCallFactory $phpUnitCallFactory,
         private AssertionStatementFactory $assertionStatementFactory,
+        private FailureMessageFactory $failureMessageFactory,
     ) {}
 
     public static function createHandler(): self
@@ -63,6 +64,7 @@ class IdentifierExistenceAssertionHandler
             TryCatchBlockFactory::createFactory(),
             PhpUnitCallFactory::createFactory(),
             AssertionStatementFactory::createFactory(),
+            FailureMessageFactory::createFactory(),
         );
     }
 
@@ -202,7 +204,7 @@ class IdentifierExistenceAssertionHandler
             new ClassNameCollection([new ClassName(InvalidLocatorException::class)]),
             Body::createFromExpressions([
                 $this->phpUnitCallFactory->createFailCall(
-                    new FailureMessage($assertion, PhpUnitFailReason::INVALID_LOCATOR->value),
+                    $this->failureMessageFactory->create($assertion, PhpUnitFailReason::INVALID_LOCATOR)
                 ),
             ])
         );
