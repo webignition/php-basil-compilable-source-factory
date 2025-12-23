@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 
-use webignition\BasilCompilableSourceFactory\Model\Json\DataSet;
 use webignition\BasilCompilableSourceFactory\Model\Json\Literal;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
@@ -35,12 +34,12 @@ readonly class JsonExpression implements ExpressionInterface, \JsonSerializable
     {
         $dataSet = $this->createDataSet($this->data);
 
-        $serialized = (string) json_encode($dataSet->data, JSON_PRETTY_PRINT);
+        $serialized = (string) json_encode($dataSet['data'], JSON_PRETTY_PRINT);
         $serialized = addcslashes($serialized, "'\\");
 
         $serialized = $this->replacePlaceholdersWithLiteralValues(
             $this->data,
-            $dataSet->placeholders,
+            $dataSet['placeholders'],
             $serialized
         );
 
@@ -64,8 +63,10 @@ readonly class JsonExpression implements ExpressionInterface, \JsonSerializable
 
     /**
      * @param array<mixed> $rawData
+     *
+     * @return array{placeholders: array<mixed>, data: array<mixed>}
      */
-    private function createDataSet(array $rawData): DataSet
+    private function createDataSet(array $rawData): array
     {
         $data = [];
         $literalPlaceholders = [];
@@ -81,8 +82,8 @@ readonly class JsonExpression implements ExpressionInterface, \JsonSerializable
             if (is_array($value)) {
                 $subDataSet = $this->createDataSet($value);
 
-                $literalPlaceholders[$key] = $subDataSet->placeholders;
-                $data[$key] = $subDataSet->data;
+                $literalPlaceholders[$key] = $subDataSet['placeholders'];
+                $data[$key] = $subDataSet['data'];
             }
 
             if (is_scalar($value) || $value instanceof JsonExpression) {
@@ -90,7 +91,10 @@ readonly class JsonExpression implements ExpressionInterface, \JsonSerializable
             }
         }
 
-        return new DataSet($literalPlaceholders, $data);
+        return [
+            'placeholders' => $literalPlaceholders,
+            'data' => $data,
+        ];
     }
 
     /**
