@@ -132,6 +132,32 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     EOD,
                 'expectedMetadata' => $expectedMetadata,
             ],
+            'exists comparison, css attribute selector containing single quotes' => [
+                'assertion' => $assertionParser->parse('$"[data-value=\"' . "'single quoted'" . '\"]" exists'),
+                'expectedRenderedContent' => <<<'EOD'
+                    try {
+                        $examinedValue = {{ NAVIGATOR }}->has('{
+                            "locator": "[data-value=\\"\'single quoted\'\\"]"
+                        }');
+                    } catch (InvalidLocatorException $exception) {
+                        {{ PHPUNIT }}->fail('{
+                            "statement": {
+                                "statement": "$\\"[data-value=\\\\\\"\'single quoted\'\\\\\\"]\\" exists",
+                                "type": "assertion"
+                            },
+                            "reason": "locator-invalid"
+                        }');
+                    }
+                    {{ PHPUNIT }}->assertTrue(
+                        $examinedValue,
+                        '{
+                            "statement": "$\\"[data-value=\\\\\\"\'single quoted\'\\\\\\"]\\" exists",
+                            "type": "assertion"
+                        }'
+                    );
+                    EOD,
+                'expectedMetadata' => $expectedMetadata,
+            ],
             'exists comparison, css attribute selector containing dot with attribute name' => [
                 'assertion' => $assertionParser->parse('$"a[href=foo.html]".attribute_name exists'),
                 'expectedRenderedContent' => <<<'EOD'

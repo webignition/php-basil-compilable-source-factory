@@ -46,6 +46,34 @@ trait CreateFromExcludesAssertionDataProviderTrait
                     ],
                 ),
             ],
+            'excludes comparison, element identifier examined value, literal string expected w/ single quotes' => [
+                'assertion' => $assertionParser->parse('$".selector" excludes "\'value\'"'),
+                'expectedRenderedContent' => <<<'EOD'
+                    $expectedValue = "'value'" ?? null;
+                    $examinedValue = (function () {
+                        $element = {{ NAVIGATOR }}->find('{
+                            "locator": ".selector"
+                        }');
+                    
+                        return {{ INSPECTOR }}->getValue($element);
+                    })();
+                    {{ PHPUNIT }}->assertStringNotContainsString(
+                        (string) ($expectedValue),
+                        (string) ($examinedValue),
+                        '{
+                            "statement": "$\\".selector\\" excludes \\"\'value\'\\"",
+                            "type": "assertion"
+                        }'
+                    );
+                    EOD,
+                'expectedMetadata' => new Metadata(
+                    variableNames: [
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
+                    ],
+                ),
+            ],
             'excludes comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name excludes "value"'),
                 'expectedRenderedContent' => <<<'EOD'
