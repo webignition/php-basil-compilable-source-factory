@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Body;
 
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
-use webignition\BasilCompilableSourceFactory\Model\Block\IfBlock\IfBlock;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\CatchBlock;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryBlock;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryCatchBlock;
@@ -91,14 +90,6 @@ class BodyTest extends AbstractResolvableTestCase
                         )
                     ),
                     new Body([]),
-                    new IfBlock(
-                        new LiteralExpression('true'),
-                        new Body([
-                            new Statement(
-                                new ReturnExpression()
-                            )
-                        ])
-                    )
                 ],
                 'expectedContent' => [
                     new SingleLineComment('singe line comment'),
@@ -130,14 +121,6 @@ class BodyTest extends AbstractResolvableTestCase
                             ])
                         )
                     ),
-                    new IfBlock(
-                        new LiteralExpression('true'),
-                        new Body([
-                            new Statement(
-                                new ReturnExpression()
-                            )
-                        ])
-                    )
                 ],
             ],
         ];
@@ -192,14 +175,6 @@ class BodyTest extends AbstractResolvableTestCase
                             ])
                         )
                     ),
-                    new IfBlock(
-                        new LiteralExpression('true'),
-                        new Body([
-                            new Statement(
-                                new ReturnExpression()
-                            )
-                        ])
-                    ),
                 ]),
                 'expectedString' => '// single line comment' . "\n"
                     . "\n"
@@ -209,9 +184,6 @@ class BodyTest extends AbstractResolvableTestCase
                     . '    // TryBlock comment' . "\n"
                     . '} catch (\LogicException $exception) {' . "\n"
                     . '    // CatchBlock comment' . "\n"
-                    . '}' . "\n"
-                    . 'if (true) {' . "\n"
-                    . '    return;' . "\n"
                     . '}',
             ],
             'empty return only' => [
