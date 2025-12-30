@@ -8,7 +8,7 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 
-readonly class ArrayAccessExpression implements ExpressionInterface
+readonly class ArrayAccessExpression implements NullableExpressionInterface
 {
     public function __construct(
         private VariableDependency|VariableName $variable,

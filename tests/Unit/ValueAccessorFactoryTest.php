@@ -9,7 +9,6 @@ use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
-use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
@@ -48,7 +47,7 @@ class ValueAccessorFactoryTest extends TestCase
         return [
             'scalar, literal' => [
                 'value' => '"literal"',
-                'expectedExpression' => $scalarValueHandler->handle('"literal"')
+                'expectedExpression' => new LiteralExpression('"literal"'),
             ],
             'scalar, page property' => [
                 'value' => '$page.title',
@@ -87,18 +86,13 @@ class ValueAccessorFactoryTest extends TestCase
      */
     public static function createWithDefaultIfNullDataProvider(): array
     {
-        $scalarValueHandler = ScalarValueHandler::createHandler();
         $domIdentifierHandler = DomIdentifierHandler::createHandler();
         $elementIdentifierSerializer = ElementIdentifierSerializer::createSerializer();
 
         return [
             'scalar, literal' => [
                 'value' => '"literal"',
-                'expectedExpression' => new ComparisonExpression(
-                    $scalarValueHandler->handle('"literal"'),
-                    new LiteralExpression('null'),
-                    '??'
-                ),
+                'expectedExpression' => new LiteralExpression('"literal"'),
             ],
             'element identifier' => [
                 'value' => '$".selector"',
