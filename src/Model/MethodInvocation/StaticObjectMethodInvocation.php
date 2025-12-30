@@ -51,16 +51,16 @@ class StaticObjectMethodInvocation extends AbstractMethodInvocationEncapsulator 
         return $this->staticObject;
     }
 
-    protected function getAdditionalMetadata(): MetadataInterface
-    {
-        return $this->staticObject->getMetadata();
-    }
-
     public function setIsErrorSuppressed(bool $isErrorSuppressed): static
     {
         $new = clone $this;
         $new->isErrorSuppressed = $isErrorSuppressed;
 
         return $new;
+    }
+
+    protected function getAdditionalMetadata(): MetadataInterface
+    {
+        return $this->staticObject->getMetadata();
     }
 }

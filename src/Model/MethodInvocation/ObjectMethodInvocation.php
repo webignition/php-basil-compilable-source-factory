@@ -44,16 +44,16 @@ class ObjectMethodInvocation extends AbstractMethodInvocationEncapsulator implem
         ];
     }
 
-    protected function getAdditionalMetadata(): MetadataInterface
-    {
-        return $this->object->getMetadata();
-    }
-
     public function setIsErrorSuppressed(bool $isErrorSuppressed): static
     {
         $new = clone $this;
         $new->isErrorSuppressed = $isErrorSuppressed;
 
         return $new;
+    }
+
+    protected function getAdditionalMetadata(): MetadataInterface
+    {
+        return $this->object->getMetadata();
     }
 }
