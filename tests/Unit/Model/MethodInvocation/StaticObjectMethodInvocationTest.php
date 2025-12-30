@@ -104,6 +104,15 @@ class StaticObjectMethodInvocationTest extends AbstractResolvableTestCase
                 ),
                 'expectedString' => 'parent::methodName()',
             ],
+            'object and method name only, string reference, error-suppressed' => [
+                'invocation' => new StaticObjectMethodInvocation(
+                    new StaticObject(
+                        'parent'
+                    ),
+                    'methodName'
+                )->setIsErrorSuppressed(true),
+                'expectedString' => '@parent::methodName()',
+            ],
             'object and method name only, object reference' => [
                 'invocation' => new StaticObjectMethodInvocation(
                     new StaticObject(
