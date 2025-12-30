@@ -24,6 +24,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpressi
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\NullCoalescerExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
@@ -140,13 +141,12 @@ class IdentifierExistenceAssertionHandler
             new AssignmentExpression($examinedValuePlaceholder, $elementExaminedAccessor),
         );
 
-        $attributeNullComparisonExpression = new ComparisonExpression(
+        $attributeNullComparisonExpression = new NullCoalescerExpression(
             $this->domIdentifierHandler->handleAttributeValue(
                 $serializedAttributeIdentifier,
                 $domIdentifier->getAttributeName()
             ),
             new LiteralExpression('null'),
-            '??'
         );
 
         $attributeExaminedAccessor = new ComparisonExpression(
