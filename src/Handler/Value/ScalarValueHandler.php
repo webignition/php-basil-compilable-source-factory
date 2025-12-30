@@ -9,6 +9,7 @@ use webignition\BasilCompilableSourceFactory\EnvironmentValueFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
+use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayAccessExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ClosureExpression;
@@ -105,10 +106,10 @@ class ScalarValueHandler
         $environmentValue = $this->environmentValueFactory->create($value);
         $property = $environmentValue->getProperty();
 
-        return new CompositeExpression([
+        return new ArrayAccessExpression(
             new VariableDependency(VariableNameEnum::ENVIRONMENT_VARIABLE_ARRAY),
-            new LiteralExpression(sprintf('[\'%s\']', $property)),
-        ]);
+            $property
+        );
     }
 
     /**
