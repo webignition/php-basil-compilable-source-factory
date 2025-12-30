@@ -14,6 +14,8 @@ class ObjectMethodInvocation extends AbstractMethodInvocationEncapsulator implem
 
     private ExpressionInterface $object;
 
+    private bool $isErrorSuppressed = false;
+
     public function __construct(
         ExpressionInterface $object,
         string $methodName,
@@ -25,7 +27,13 @@ class ObjectMethodInvocation extends AbstractMethodInvocationEncapsulator implem
 
     public function getTemplate(): string
     {
-        return self::RENDER_TEMPLATE;
+        $template = self::RENDER_TEMPLATE;
+
+        if ($this->isErrorSuppressed) {
+            $template = self::ERROR_SUPPRESSION_PREFIX . $template;
+        }
+
+        return $template;
     }
 
     public function getContext(): array
@@ -34,6 +42,14 @@ class ObjectMethodInvocation extends AbstractMethodInvocationEncapsulator implem
             'object' => $this->object,
             'method_invocation' => $this->invocation,
         ];
+    }
+
+    public function setIsErrorSuppressed(bool $isErrorSuppressed): static
+    {
+        $new = clone $this;
+        $new->isErrorSuppressed = $isErrorSuppressed;
+
+        return $new;
     }
 
     protected function getAdditionalMetadata(): MetadataInterface

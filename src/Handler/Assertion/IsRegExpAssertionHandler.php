@@ -15,7 +15,6 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpressi
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ErrorSuppressedMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
@@ -81,17 +80,15 @@ class IsRegExpAssertionHandler
         $examinedValuePlaceholder = new VariableName(VariableNameEnum::EXAMINED_VALUE->value);
         $expectedValuePlaceholder = new VariableName(VariableNameEnum::EXPECTED_VALUE->value);
 
-        $pregMatchInvocation = new ErrorSuppressedMethodInvocation(
-            new MethodInvocation(
-                'preg_match',
-                new MethodArguments(
-                    $this->argumentFactory->create(
-                        $examinedValuePlaceholder,
-                        null,
-                    )
+        $pregMatchInvocation = new MethodInvocation(
+            'preg_match',
+            new MethodArguments(
+                $this->argumentFactory->create(
+                    $examinedValuePlaceholder,
+                    null,
                 )
             )
-        );
+        )->setIsErrorSuppressed(true);
 
         $identityComparison = new ComparisonExpression(
             $pregMatchInvocation,

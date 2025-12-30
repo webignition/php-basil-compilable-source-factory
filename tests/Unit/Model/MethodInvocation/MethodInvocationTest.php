@@ -60,6 +60,10 @@ class MethodInvocationTest extends AbstractResolvableTestCase
                 'invocation' => new MethodInvocation('methodName'),
                 'expectedString' => 'methodName()',
             ],
+            'no arguments, error-suppressed' => [
+                'invocation' => new MethodInvocation('methodName')->setIsErrorSuppressed(true),
+                'expectedString' => '@methodName()',
+            ],
             'has arguments, inline' => [
                 'invocation' => new MethodInvocation(
                     'methodName',

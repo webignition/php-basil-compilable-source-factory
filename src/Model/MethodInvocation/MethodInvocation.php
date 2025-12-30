@@ -15,6 +15,8 @@ class MethodInvocation implements MethodInvocationInterface
     private string $methodName;
     private MethodArgumentsInterface $arguments;
 
+    private bool $isErrorSuppressed = false;
+
     public function __construct(string $methodName, ?MethodArgumentsInterface $arguments = null)
     {
         $this->methodName = $methodName;
@@ -38,7 +40,13 @@ class MethodInvocation implements MethodInvocationInterface
 
     public function getTemplate(): string
     {
-        return self::RENDER_TEMPLATE;
+        $template = self::RENDER_TEMPLATE;
+
+        if ($this->isErrorSuppressed) {
+            $template = self::ERROR_SUPPRESSION_PREFIX . $template;
+        }
+
+        return $template;
     }
 
     public function getContext(): array
@@ -47,5 +55,13 @@ class MethodInvocation implements MethodInvocationInterface
             'call' => $this->getCall(),
             'arguments' => $this->arguments,
         ];
+    }
+
+    public function setIsErrorSuppressed(bool $isErrorSuppressed): static
+    {
+        $new = clone $this;
+        $new->isErrorSuppressed = $isErrorSuppressed;
+
+        return $new;
     }
 }

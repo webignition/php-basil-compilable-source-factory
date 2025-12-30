@@ -114,6 +114,13 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
                 ),
                 'expectedString' => '{{ CLIENT }}->methodName()',
             ],
+            'object and method name only, error-suppressed' => [
+                'invocation' => new ObjectMethodInvocation(
+                    new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                    'methodName'
+                )->setIsErrorSuppressed(true),
+                'expectedString' => '@{{ CLIENT }}->methodName()',
+            ],
             'has arguments, inline' => [
                 'invocation' => new ObjectMethodInvocation(
                     new VariableDependency(VariableNameEnum::PANTHER_CLIENT),

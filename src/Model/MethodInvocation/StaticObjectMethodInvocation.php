@@ -15,6 +15,8 @@ class StaticObjectMethodInvocation extends AbstractMethodInvocationEncapsulator 
 
     private StaticObject $staticObject;
 
+    private bool $isErrorSuppressed = false;
+
     public function __construct(
         StaticObject $staticObject,
         string $methodName,
@@ -27,7 +29,13 @@ class StaticObjectMethodInvocation extends AbstractMethodInvocationEncapsulator 
 
     public function getTemplate(): string
     {
-        return self::RENDER_TEMPLATE;
+        $template = self::RENDER_TEMPLATE;
+
+        if ($this->isErrorSuppressed) {
+            $template = self::ERROR_SUPPRESSION_PREFIX . $template;
+        }
+
+        return $template;
     }
 
     public function getContext(): array
@@ -41,6 +49,14 @@ class StaticObjectMethodInvocation extends AbstractMethodInvocationEncapsulator 
     public function getStaticObject(): StaticObject
     {
         return $this->staticObject;
+    }
+
+    public function setIsErrorSuppressed(bool $isErrorSuppressed): static
+    {
+        $new = clone $this;
+        $new->isErrorSuppressed = $isErrorSuppressed;
+
+        return $new;
     }
 
     protected function getAdditionalMetadata(): MetadataInterface
