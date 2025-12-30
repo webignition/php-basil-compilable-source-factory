@@ -39,21 +39,21 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('{
                             "statement": {
-                                "statement": "$\\".selector\\" not-exists",
+                                "statement": "$\".selector\" not-exists",
                                 "type": "assertion"
                             },
                             "reason": "locator-invalid",
                             "exception": {
-                                "class": ' . addcslashes($exception::class, "'\\") . ',
+                                "class": ' . addcslashes($exception::class, "'") . ',
                                 "code": ' . $exception->getCode() . ',
-                                "message": ' . addcslashes($exception->getMessage(), "'\\") . '
+                                "message": ' . addcslashes($exception->getMessage(), "'") . '
                             }
                         }');
                     }
                     {{ PHPUNIT }}->assertFalse(
                         $examinedValue,
                         '{
-                            "statement": "$\\".selector\\" not-exists",
+                            "statement": "$\".selector\" not-exists",
                             "type": "assertion"
                         }'
                     );
@@ -70,28 +70,28 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('{
                             "statement": {
-                                "statement": "$\\".selector\\" exists",
+                                "statement": "$\".selector\" exists",
                                 "type": "assertion",
                                 "source": {
-                                    "statement": "$\\".selector\\".attribute_name not-exists",
+                                    "statement": "$\".selector\".attribute_name not-exists",
                                     "type": "assertion"
                                 }
                             },
                             "reason": "locator-invalid",
                             "exception": {
-                                "class": ' . addcslashes($exception::class, "'\\") . ',
+                                "class": ' . addcslashes($exception::class, "'") . ',
                                 "code": ' . $exception->getCode() . ',
-                                "message": ' . addcslashes($exception->getMessage(), "'\\") . '
+                                "message": ' . addcslashes($exception->getMessage(), "'") . '
                             }
                         }');
                     }
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
-                            "statement": "$\\".selector\\" exists",
+                            "statement": "$\".selector\" exists",
                             "type": "assertion",
                             "source": {
-                                "statement": "$\\".selector\\".attribute_name not-exists",
+                                "statement": "$\".selector\".attribute_name not-exists",
                                 "type": "assertion"
                             }
                         }'
@@ -106,7 +106,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertFalse(
                         $examinedValue,
                         '{
-                            "statement": "$\\".selector\\".attribute_name not-exists",
+                            "statement": "$\".selector\".attribute_name not-exists",
                             "type": "assertion"
                         }'
                     );

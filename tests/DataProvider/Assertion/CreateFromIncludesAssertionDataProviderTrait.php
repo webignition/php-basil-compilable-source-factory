@@ -33,7 +33,7 @@ trait CreateFromIncludesAssertionDataProviderTrait
                         (string) ($expectedValue),
                         (string) ($examinedValue),
                         '{
-                            "statement": "$\\".selector\\" includes \\"value\\"",
+                            "statement": "$\".selector\" includes \"value\"",
                             "type": "assertion"
                         }'
                     );
@@ -61,7 +61,7 @@ trait CreateFromIncludesAssertionDataProviderTrait
                         (string) ($expectedValue),
                         (string) ($examinedValue),
                         '{
-                            "statement": "$\\".selector\\".attribute_name includes \\"value\\"",
+                            "statement": "$\".selector\".attribute_name includes \"value\"",
                             "type": "assertion"
                         }'
                     );

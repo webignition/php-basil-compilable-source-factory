@@ -42,21 +42,21 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('{
                             "statement": {
-                                "statement": "$\\".selector\\" exists",
+                                "statement": "$\".selector\" exists",
                                 "type": "assertion"
                             },
                             "reason": "locator-invalid",
                             "exception": {
-                                "class": ' . addcslashes($exception::class, "'\\") . ',
+                                "class": ' . addcslashes($exception::class, "'") . ',
                                 "code": ' . $exception->getCode() . ',
-                                "message": ' . addcslashes($exception->getMessage(), "'\\") . '
+                                "message": ' . addcslashes($exception->getMessage(), "'") . '
                             }
                         }');
                     }
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
-                            "statement": "$\\".selector\\" exists",
+                            "statement": "$\".selector\" exists",
                             "type": "assertion"
                         }'
                     );
@@ -73,28 +73,28 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('{
                             "statement": {
-                                "statement": "$\\".selector\\" exists",
+                                "statement": "$\".selector\" exists",
                                 "type": "assertion",
                                 "source": {
-                                    "statement": "$\\".selector\\".attribute_name exists",
+                                    "statement": "$\".selector\".attribute_name exists",
                                     "type": "assertion"
                                 }
                             },
                             "reason": "locator-invalid",
                             "exception": {
-                                "class": ' . addcslashes($exception::class, "'\\") . ',
+                                "class": ' . addcslashes($exception::class, "'") . ',
                                 "code": ' . $exception->getCode() . ',
-                                "message": ' . addcslashes($exception->getMessage(), "'\\") . '
+                                "message": ' . addcslashes($exception->getMessage(), "'") . '
                             }
                         }');
                     }
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
-                            "statement": "$\\".selector\\" exists",
+                            "statement": "$\".selector\" exists",
                             "type": "assertion",
                             "source": {
-                                "statement": "$\\".selector\\".attribute_name exists",
+                                "statement": "$\".selector\".attribute_name exists",
                                 "type": "assertion"
                             }
                         }'
@@ -109,7 +109,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
-                            "statement": "$\\".selector\\".attribute_name exists",
+                            "statement": "$\".selector\".attribute_name exists",
                             "type": "assertion"
                         }'
                     );
@@ -126,21 +126,21 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('{
                             "statement": {
-                                "statement": "$\\"a[href=foo.html]\\" exists",
+                                "statement": "$\"a[href=foo.html]\" exists",
                                 "type": "assertion"
                             },
                             "reason": "locator-invalid",
                             "exception": {
-                                "class": ' . addcslashes($exception::class, "'\\") . ',
+                                "class": ' . addcslashes($exception::class, "'") . ',
                                 "code": ' . $exception->getCode() . ',
-                                "message": ' . addcslashes($exception->getMessage(), "'\\") . '
+                                "message": ' . addcslashes($exception->getMessage(), "'") . '
                             }
                         }');
                     }
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
-                            "statement": "$\\"a[href=foo.html]\\" exists",
+                            "statement": "$\"a[href=foo.html]\" exists",
                             "type": "assertion"
                         }'
                     );
@@ -157,21 +157,21 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('{
                             "statement": {
-                                "statement": "$\\"[data-value=\\\\\\"\'single quoted\'\\\\\\"]\\" exists",
+                                "statement": "$\"[data-value=\\\"\'single quoted\'\\\"]\" exists",
                                 "type": "assertion"
                             },
                             "reason": "locator-invalid",
                             "exception": {
-                                "class": ' . addcslashes($exception::class, "'\\") . ',
+                                "class": ' . addcslashes($exception::class, "'") . ',
                                 "code": ' . $exception->getCode() . ',
-                                "message": ' . addcslashes($exception->getMessage(), "'\\") . '
+                                "message": ' . addcslashes($exception->getMessage(), "'") . '
                             }
                         }');
                     }
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
-                            "statement": "$\\"[data-value=\\\\\\"\'single quoted\'\\\\\\"]\\" exists",
+                            "statement": "$\"[data-value=\\\"\'single quoted\'\\\"]\" exists",
                             "type": "assertion"
                         }'
                     );
@@ -188,28 +188,28 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('{
                             "statement": {
-                                "statement": "$\\"a[href=foo.html]\\" exists",
+                                "statement": "$\"a[href=foo.html]\" exists",
                                 "type": "assertion",
                                 "source": {
-                                    "statement": "$\\"a[href=foo.html]\\".attribute_name exists",
+                                    "statement": "$\"a[href=foo.html]\".attribute_name exists",
                                     "type": "assertion"
                                 }
                             },
                             "reason": "locator-invalid",
                             "exception": {
-                                "class": ' . addcslashes($exception::class, "'\\") . ',
+                                "class": ' . addcslashes($exception::class, "'") . ',
                                 "code": ' . $exception->getCode() . ',
-                                "message": ' . addcslashes($exception->getMessage(), "'\\") . '
+                                "message": ' . addcslashes($exception->getMessage(), "'") . '
                             }
                         }');
                     }
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
-                            "statement": "$\\"a[href=foo.html]\\" exists",
+                            "statement": "$\"a[href=foo.html]\" exists",
                             "type": "assertion",
                             "source": {
-                                "statement": "$\\"a[href=foo.html]\\".attribute_name exists",
+                                "statement": "$\"a[href=foo.html]\".attribute_name exists",
                                 "type": "assertion"
                             }
                         }'
@@ -224,7 +224,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
-                            "statement": "$\\"a[href=foo.html]\\".attribute_name exists",
+                            "statement": "$\"a[href=foo.html]\".attribute_name exists",
                             "type": "assertion"
                         }'
                     );
@@ -245,28 +245,28 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('{
                             "statement": {
-                                "statement": "$\\".selector\\" exists",
+                                "statement": "$\".selector\" exists",
                                 "type": "assertion",
                                 "source": {
-                                    "statement": "click $\\".selector\\"",
+                                    "statement": "click $\".selector\"",
                                     "type": "action"
                                 }
                             },
                             "reason": "locator-invalid",
                             "exception": {
-                                "class": ' . addcslashes($exception::class, "'\\") . ',
+                                "class": ' . addcslashes($exception::class, "'") . ',
                                 "code": ' . $exception->getCode() . ',
-                                "message": ' . addcslashes($exception->getMessage(), "'\\") . '
+                                "message": ' . addcslashes($exception->getMessage(), "'") . '
                             }
                         }');
                     }
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
-                            "statement": "$\\".selector\\" exists",
+                            "statement": "$\".selector\" exists",
                             "type": "assertion",
                             "source": {
-                                "statement": "click $\\".selector\\"",
+                                "statement": "click $\".selector\"",
                                 "type": "action"
                             }
                         }'
@@ -288,28 +288,28 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('{
                             "statement": {
-                                "statement": "$\\".selector\\" exists",
+                                "statement": "$\".selector\" exists",
                                 "type": "assertion",
                                 "source": {
-                                    "statement": "submit $\\".selector\\"",
+                                    "statement": "submit $\".selector\"",
                                     "type": "action"
                                 }
                             },
                             "reason": "locator-invalid",
                             "exception": {
-                                "class": ' . addcslashes($exception::class, "'\\") . ',
+                                "class": ' . addcslashes($exception::class, "'") . ',
                                 "code": ' . $exception->getCode() . ',
-                                "message": ' . addcslashes($exception->getMessage(), "'\\") . '
+                                "message": ' . addcslashes($exception->getMessage(), "'") . '
                             }
                         }');
                     }
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
-                            "statement": "$\\".selector\\" exists",
+                            "statement": "$\".selector\" exists",
                             "type": "assertion",
                             "source": {
-                                "statement": "submit $\\".selector\\"",
+                                "statement": "submit $\".selector\"",
                                 "type": "action"
                             }
                         }'
@@ -331,28 +331,28 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('{
                             "statement": {
-                                "statement": "$\\".selector\\" exists",
+                                "statement": "$\".selector\" exists",
                                 "type": "assertion",
                                 "source": {
-                                    "statement": "set $\\".selector\\" to \\"value\\"",
+                                    "statement": "set $\".selector\" to \"value\"",
                                     "type": "action"
                                 }
                             },
                             "reason": "locator-invalid",
                             "exception": {
-                                "class": ' . addcslashes($exception::class, "'\\") . ',
+                                "class": ' . addcslashes($exception::class, "'") . ',
                                 "code": ' . $exception->getCode() . ',
-                                "message": ' . addcslashes($exception->getMessage(), "'\\") . '
+                                "message": ' . addcslashes($exception->getMessage(), "'") . '
                             }
                         }');
                     }
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
-                            "statement": "$\\".selector\\" exists",
+                            "statement": "$\".selector\" exists",
                             "type": "assertion",
                             "source": {
-                                "statement": "set $\\".selector\\" to \\"value\\"",
+                                "statement": "set $\".selector\" to \"value\"",
                                 "type": "action"
                             }
                         }'
@@ -374,28 +374,28 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('{
                             "statement": {
-                                "statement": "$\\".duration\\" exists",
+                                "statement": "$\".duration\" exists",
                                 "type": "assertion",
                                 "source": {
-                                    "statement": "wait $\\".duration\\"",
+                                    "statement": "wait $\".duration\"",
                                     "type": "action"
                                 }
                             },
                             "reason": "locator-invalid",
                             "exception": {
-                                "class": ' . addcslashes($exception::class, "'\\") . ',
+                                "class": ' . addcslashes($exception::class, "'") . ',
                                 "code": ' . $exception->getCode() . ',
-                                "message": ' . addcslashes($exception->getMessage(), "'\\") . '
+                                "message": ' . addcslashes($exception->getMessage(), "'") . '
                             }
                         }');
                     }
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
-                            "statement": "$\\".duration\\" exists",
+                            "statement": "$\".duration\" exists",
                             "type": "assertion",
                             "source": {
-                                "statement": "wait $\\".duration\\"",
+                                "statement": "wait $\".duration\"",
                                 "type": "action"
                             }
                         }'

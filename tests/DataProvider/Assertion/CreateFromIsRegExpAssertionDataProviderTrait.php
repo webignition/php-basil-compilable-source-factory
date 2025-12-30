@@ -31,10 +31,10 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
                         '{
-                            "statement": "\\"\\/^value\\/\\" is-regexp",
+                            "statement": "\"\/^value\/\" is-regexp",
                             "type": "assertion",
                             "source": {
-                                "statement": "$\\".selector\\" matches \\"\\/^value\\/\\"",
+                                "statement": "$\".selector\" matches \"\/^value\/\"",
                                 "type": "assertion"
                             }
                         }'
@@ -64,10 +64,10 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
                         '{
-                            "statement": "$\\".pattern-container\\" is-regexp",
+                            "statement": "$\".pattern-container\" is-regexp",
                             "type": "assertion",
                             "source": {
-                                "statement": "$\\".selector\\" matches $\\".pattern-container\\"",
+                                "statement": "$\".selector\" matches $\".pattern-container\"",
                                 "type": "assertion"
                             }
                         }'
@@ -99,10 +99,10 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
                         '{
-                            "statement": "$\\".pattern-container\\".attribute_name is-regexp",
+                            "statement": "$\".pattern-container\".attribute_name is-regexp",
                             "type": "assertion",
                             "source": {
-                                "statement": "$\\".selector\\" matches $\\".pattern-container\\".attribute_name",
+                                "statement": "$\".selector\" matches $\".pattern-container\".attribute_name",
                                 "type": "assertion"
                             }
                         }'
