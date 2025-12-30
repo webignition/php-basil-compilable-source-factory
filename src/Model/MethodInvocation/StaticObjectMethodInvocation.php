@@ -47,4 +47,9 @@ class StaticObjectMethodInvocation extends AbstractMethodInvocationEncapsulator 
     {
         return $this->staticObject->getMetadata();
     }
+
+    public function setIsErrorSuppressed(bool $isErrorSuppressed): static
+    {
+        return $this;
+    }
 }

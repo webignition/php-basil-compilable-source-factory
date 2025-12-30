@@ -40,4 +40,9 @@ class ErrorSuppressedMethodInvocation implements MethodInvocationInterface
     {
         return $this->invocation->getContext();
     }
+
+    public function setIsErrorSuppressed(bool $isErrorSuppressed): static
+    {
+        return $this;
+    }
 }

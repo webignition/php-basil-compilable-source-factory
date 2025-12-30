@@ -48,4 +48,9 @@ class MethodInvocation implements MethodInvocationInterface
             'arguments' => $this->arguments,
         ];
     }
+
+    public function setIsErrorSuppressed(bool $isErrorSuppressed): static
+    {
+        return $this;
+    }
 }

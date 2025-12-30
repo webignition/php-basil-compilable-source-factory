@@ -40,4 +40,9 @@ class ObjectMethodInvocation extends AbstractMethodInvocationEncapsulator implem
     {
         return $this->object->getMetadata();
     }
+
+    public function setIsErrorSuppressed(bool $isErrorSuppressed): static
+    {
+        return $this;
+    }
 }
