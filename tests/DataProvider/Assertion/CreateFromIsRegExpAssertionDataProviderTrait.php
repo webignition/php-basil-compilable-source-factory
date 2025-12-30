@@ -26,7 +26,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     'is-regexp'
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    $examinedValue = "/^value/" ?? null;
+                    $examinedValue = "/^value/";
                     $expectedValue = @preg_match($examinedValue, null) === false;
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
@@ -122,7 +122,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     'is-regexp'
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    $examinedValue = $pattern ?? null;
+                    $examinedValue = $pattern;
                     $expectedValue = @preg_match($examinedValue, null) === false;
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,

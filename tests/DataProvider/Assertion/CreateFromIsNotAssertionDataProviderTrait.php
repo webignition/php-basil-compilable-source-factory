@@ -21,7 +21,7 @@ trait CreateFromIsNotAssertionDataProviderTrait
             'is-not comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" is-not "value"'),
                 'expectedRenderedContent' => <<<'EOD'
-                    $expectedValue = "value" ?? null;
+                    $expectedValue = "value";
                     $examinedValue = (function () {
                         $element = {{ NAVIGATOR }}->find('{
                             "locator": ".selector"
@@ -49,7 +49,7 @@ trait CreateFromIsNotAssertionDataProviderTrait
             'is-not comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name is-not "value"'),
                 'expectedRenderedContent' => <<<'EOD'
-                    $expectedValue = "value" ?? null;
+                    $expectedValue = "value";
                     $examinedValue = (function () {
                         $element = {{ NAVIGATOR }}->findOne('{
                             "locator": ".selector"

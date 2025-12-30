@@ -11,6 +11,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ClosureExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\NullableExpressionInterface;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\DomElementIdentifier\AttributeIdentifierInterface;
@@ -70,10 +71,16 @@ class ValueAccessorFactory
     public function createWithDefaultIfNull(string $value): ExpressionInterface
     {
         $accessor = $this->create($value);
+        if ($accessor instanceof ClosureExpression) {
+            return $accessor;
+        }
 
-        if (!$accessor instanceof ClosureExpression) {
-            $defaultValue = $this->accessorDefaultValueFactory->createString($value) ?? 'null';
+        $defaultValue = $this->accessorDefaultValueFactory->createString($value);
+        if (null === $defaultValue && $accessor instanceof NullableExpressionInterface) {
+            $defaultValue = 'null';
+        }
 
+        if (null !== $defaultValue) {
             $accessor = new ComparisonExpression(
                 $accessor,
                 new LiteralExpression($defaultValue),

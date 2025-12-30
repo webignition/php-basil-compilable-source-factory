@@ -21,7 +21,7 @@ trait CreateFromIncludesAssertionDataProviderTrait
             'includes comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" includes "value"'),
                 'expectedRenderedContent' => <<<'EOD'
-                    $expectedValue = "value" ?? null;
+                    $expectedValue = "value";
                     $examinedValue = (function () {
                         $element = {{ NAVIGATOR }}->find('{
                             "locator": ".selector"
@@ -49,7 +49,7 @@ trait CreateFromIncludesAssertionDataProviderTrait
             'includes comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name includes "value"'),
                 'expectedRenderedContent' => <<<'EOD'
-                    $expectedValue = "value" ?? null;
+                    $expectedValue = "value";
                     $examinedValue = (function () {
                         $element = {{ NAVIGATOR }}->findOne('{
                             "locator": ".selector"

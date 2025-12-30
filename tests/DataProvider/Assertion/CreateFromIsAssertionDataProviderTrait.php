@@ -21,12 +21,12 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" is "value"'),
                 'expectedRenderedContent' => <<<'EOD'
-                    $expectedValue = "value" ?? null;
+                    $expectedValue = "value";
                     $examinedValue = (function () {
                         $element = {{ NAVIGATOR }}->find('{
                             "locator": ".selector"
                         }');
-                    
+
                         return {{ INSPECTOR }}->getValue($element);
                     })();
                     {{ PHPUNIT }}->assertEquals(
@@ -49,7 +49,7 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, descendant identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".parent" >> $".child" is "value"'),
                 'expectedRenderedContent' => <<<'EOD'
-                    $expectedValue = "value" ?? null;
+                    $expectedValue = "value";
                     $examinedValue = (function () {
                         $element = {{ NAVIGATOR }}->find('{
                             "locator": ".child",
@@ -57,7 +57,7 @@ trait CreateFromIsAssertionDataProviderTrait
                                 "locator": ".parent"
                             }
                         }');
-                    
+
                         return {{ INSPECTOR }}->getValue($element);
                     })();
                     {{ PHPUNIT }}->assertEquals(
@@ -80,12 +80,12 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name is "value"'),
                 'expectedRenderedContent' => <<<'EOD'
-                    $expectedValue = "value" ?? null;
+                    $expectedValue = "value";
                     $examinedValue = (function () {
                         $element = {{ NAVIGATOR }}->findOne('{
                             "locator": ".selector"
                         }');
-                    
+
                         return $element->getAttribute('attribute_name');
                     })();
                     {{ PHPUNIT }}->assertEquals(
@@ -107,10 +107,10 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, browser object examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is "value"'),
                 'expectedRenderedContent' => <<<'EOD'
-            $expectedValue = "value" ?? null;
+            $expectedValue = "value";
             $examinedValue = (function () {
                 $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
-            
+
                 return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
             })();
             {{ PHPUNIT }}->assertEquals(
@@ -132,7 +132,7 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, environment examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$env.KEY is "value"'),
                 'expectedRenderedContent' => <<<'EOD'
-                    $expectedValue = "value" ?? null;
+                    $expectedValue = "value";
                     $examinedValue = {{ ENV }}['KEY'] ?? null;
                     {{ PHPUNIT }}->assertEquals(
                         $expectedValue,
@@ -153,7 +153,7 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, environment examined value with default, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$env.KEY|"default value" is "value"'),
                 'expectedRenderedContent' => <<<'EOD'
-                    $expectedValue = "value" ?? null;
+                    $expectedValue = "value";
                     $examinedValue = {{ ENV }}['KEY'] ?? 'default value';
                     {{ PHPUNIT }}->assertEquals(
                         $expectedValue,
@@ -195,8 +195,8 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, page object examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$page.title is "value"'),
                 'expectedRenderedContent' => <<<'EOD'
-                    $expectedValue = "value" ?? null;
-                    $examinedValue = {{ CLIENT }}->getTitle() ?? null;
+                    $expectedValue = "value";
+                    $examinedValue = {{ CLIENT }}->getTitle();
                     {{ PHPUNIT }}->assertEquals(
                         $expectedValue,
                         $examinedValue,
@@ -369,7 +369,7 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, browser object examined value, page object expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $page.url'),
                 'expectedRenderedContent' => <<<'EOD'
-            $expectedValue = {{ CLIENT }}->getCurrentURL() ?? null;
+            $expectedValue = {{ CLIENT }}->getCurrentURL();
             $examinedValue = (function () {
                 $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
             
@@ -394,8 +394,8 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, literal string examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('"examined" is "expected"'),
                 'expectedRenderedContent' => <<<'EOD'
-                    $expectedValue = "expected" ?? null;
-                    $examinedValue = "examined" ?? null;
+                    $expectedValue = "expected";
+                    $examinedValue = "examined";
                     {{ PHPUNIT }}->assertEquals(
                         $expectedValue,
                         $examinedValue,

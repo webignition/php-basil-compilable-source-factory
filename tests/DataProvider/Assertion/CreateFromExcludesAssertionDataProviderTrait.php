@@ -21,7 +21,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
             'excludes comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" excludes "value"'),
                 'expectedRenderedContent' => <<<'EOD'
-                    $expectedValue = "value" ?? null;
+                    $expectedValue = "value";
                     $examinedValue = (function () {
                         $element = {{ NAVIGATOR }}->find('{
                             "locator": ".selector"
@@ -49,7 +49,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
             'excludes comparison, element identifier examined value, literal string expected w/ single quotes' => [
                 'assertion' => $assertionParser->parse('$".selector" excludes "\'value\'"'),
                 'expectedRenderedContent' => <<<'EOD'
-                    $expectedValue = "'value'" ?? null;
+                    $expectedValue = "'value'";
                     $examinedValue = (function () {
                         $element = {{ NAVIGATOR }}->find('{
                             "locator": ".selector"
@@ -77,7 +77,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
             'excludes comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name excludes "value"'),
                 'expectedRenderedContent' => <<<'EOD'
-                    $expectedValue = "value" ?? null;
+                    $expectedValue = "value";
                     $examinedValue = (function () {
                         $element = {{ NAVIGATOR }}->findOne('{
                             "locator": ".selector"
