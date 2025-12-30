@@ -12,8 +12,8 @@ use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
-use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\NullCoalescerExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
@@ -93,10 +93,9 @@ class SetActionHandler
 
         $defaultValue = $this->accessorDefaultValueFactory->createString($value);
         if (null !== $defaultValue) {
-            $valueAccessor = new ComparisonExpression(
+            $valueAccessor = new NullCoalescerExpression(
                 $valueAccessor,
                 new LiteralExpression((string) $this->accessorDefaultValueFactory->createString($value)),
-                '??'
             );
         }
 

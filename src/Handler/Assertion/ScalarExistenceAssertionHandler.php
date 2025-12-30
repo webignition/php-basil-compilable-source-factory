@@ -12,6 +12,7 @@ use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\NullCoalescerExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
 
@@ -35,10 +36,9 @@ class ScalarExistenceAssertionHandler
      */
     public function handle(AssertionInterface $assertion): BodyInterface
     {
-        $nullComparisonExpression = new ComparisonExpression(
+        $nullComparisonExpression = new NullCoalescerExpression(
             $this->scalarValueHandler->handle((string) $assertion->getIdentifier()),
             new LiteralExpression('null'),
-            '??'
         );
 
         $examinedAccessor = new ComparisonExpression(

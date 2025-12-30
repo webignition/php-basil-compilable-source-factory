@@ -8,10 +8,10 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentExcepti
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ClosureExpression;
-use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\NullableExpressionInterface;
+use webignition\BasilCompilableSourceFactory\Model\Expression\NullCoalescerExpression;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\DomElementIdentifier\AttributeIdentifierInterface;
@@ -81,11 +81,7 @@ class ValueAccessorFactory
         }
 
         if (null !== $defaultValue) {
-            $accessor = new ComparisonExpression(
-                $accessor,
-                new LiteralExpression($defaultValue),
-                '??'
-            );
+            $accessor = new NullCoalescerExpression($accessor, new LiteralExpression($defaultValue));
         }
 
         return $accessor;

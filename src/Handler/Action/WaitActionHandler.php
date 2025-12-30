@@ -9,10 +9,10 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentExcepti
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CastExpression;
-use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CompositeExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\NullCoalescerExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
@@ -47,10 +47,9 @@ class WaitActionHandler
 
         $durationAccessor = $this->valueAccessorFactory->create($duration);
 
-        $nullCoalescingExpression = new ComparisonExpression(
+        $nullCoalescingExpression = new NullCoalescerExpression(
             $durationAccessor,
             new LiteralExpression((string) ($this->accessorDefaultValueFactory->createInteger($duration) ?? 0)),
-            '??'
         );
 
         $castToIntExpression = new CastExpression($nullCoalescingExpression, 'int');
