@@ -33,7 +33,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
                         (string) ($expectedValue),
                         (string) ($examinedValue),
                         '{
-                            "statement": "$\\".selector\\" excludes \\"value\\"",
+                            "statement": "$\".selector\" excludes \"value\"",
                             "type": "assertion"
                         }'
                     );
@@ -61,7 +61,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
                         (string) ($expectedValue),
                         (string) ($examinedValue),
                         '{
-                            "statement": "$\\".selector\\" excludes \\"\'value\'\\"",
+                            "statement": "$\".selector\" excludes \"\'value\'\"",
                             "type": "assertion"
                         }'
                     );
@@ -89,7 +89,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
                         (string) ($expectedValue),
                         (string) ($examinedValue),
                         '{
-                            "statement": "$\\".selector\\".attribute_name excludes \\"value\\"",
+                            "statement": "$\".selector\".attribute_name excludes \"value\"",
                             "type": "assertion"
                         }'
                     );

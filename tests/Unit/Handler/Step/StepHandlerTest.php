@@ -124,14 +124,14 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail('{
                             "statement": {
-                                "statement": "click $\\".selector\\"",
+                                "statement": "click $\".selector\"",
                                 "type": "action"
                             },
                             "reason": "action-failed",
                             "exception": {
-                                "class": ' . addcslashes($exception::class, "'\\") . ',
+                                "class": ' . addcslashes($exception::class, "'") . ',
                                 "code": ' . $exception->getCode() . ',
-                                "message": ' . addcslashes($exception->getMessage(), "'\\") . '
+                                "message": ' . addcslashes($exception->getMessage(), "'") . '
                             }
                         }');
                     }
@@ -243,14 +243,14 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail('{
                             "statement": {
-                                "statement": "click $\\".selector1\\"",
+                                "statement": "click $\".selector1\"",
                                 "type": "action"
                             },
                             "reason": "action-failed",
                             "exception": {
-                                "class": ' . addcslashes($exception::class, "'\\") . ',
+                                "class": ' . addcslashes($exception::class, "'") . ',
                                 "code": ' . $exception->getCode() . ',
-                                "message": ' . addcslashes($exception->getMessage(), "'\\") . '
+                                "message": ' . addcslashes($exception->getMessage(), "'") . '
                             }
                         }');
                     }
@@ -264,14 +264,14 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail('{
                             "statement": {
-                                "statement": "click $\\".selector2\\"",
+                                "statement": "click $\".selector2\"",
                                 "type": "action"
                             },
                             "reason": "action-failed",
                             "exception": {
-                                "class": ' . addcslashes($exception::class, "'\\") . ',
+                                "class": ' . addcslashes($exception::class, "'") . ',
                                 "code": ' . $exception->getCode() . ',
-                                "message": ' . addcslashes($exception->getMessage(), "'\\") . '
+                                "message": ' . addcslashes($exception->getMessage(), "'") . '
                             }
                         }');
                     }
@@ -496,14 +496,14 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail('{
                             "statement": {
-                                "statement": "click $\\".selector1\\"",
+                                "statement": "click $\".selector1\"",
                                 "type": "action"
                             },
                             "reason": "action-failed",
                             "exception": {
-                                "class": ' . addcslashes($exception::class, "'\\") . ',
+                                "class": ' . addcslashes($exception::class, "'") . ',
                                 "code": ' . $exception->getCode() . ',
-                                "message": ' . addcslashes($exception->getMessage(), "'\\") . '
+                                "message": ' . addcslashes($exception->getMessage(), "'") . '
                             }
                         }');
                     }

@@ -35,7 +35,7 @@ readonly class JsonExpression implements ExpressionInterface, \JsonSerializable
         $dataSet = $this->createDataSet($this->data);
 
         $serialized = (string) json_encode($dataSet['data'], JSON_PRETTY_PRINT);
-        $serialized = addcslashes($serialized, "'\\");
+        $serialized = addcslashes($serialized, "'");
 
         $serialized = $this->replacePlaceholdersWithLiteralValues(
             $this->data,
