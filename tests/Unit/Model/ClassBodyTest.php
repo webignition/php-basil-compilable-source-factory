@@ -12,7 +12,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpressi
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinition;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\StaticObjectMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
@@ -53,7 +53,7 @@ class ClassBodyTest extends AbstractResolvableTestCase
                         new Statement(
                             new AssignmentExpression(
                                 new VariableName('statement'),
-                                new StaticObjectMethodInvocation(
+                                new ObjectMethodInvocation(
                                     new StaticObject('Acme\Statement'),
                                     'createAction',
                                     new MethodArguments([
@@ -74,7 +74,7 @@ class ClassBodyTest extends AbstractResolvableTestCase
                         new Statement(
                             new AssignmentExpression(
                                 new VariableName('statement'),
-                                new StaticObjectMethodInvocation(
+                                new ObjectMethodInvocation(
                                     new StaticObject('Acme\Statement'),
                                     'createAction',
                                     new MethodArguments([
@@ -115,7 +115,7 @@ class ClassBodyTest extends AbstractResolvableTestCase
                                 new Statement(
                                     new AssignmentExpression(
                                         new VariableName('statement'),
-                                        new StaticObjectMethodInvocation(
+                                        new ObjectMethodInvocation(
                                             new StaticObject('Acme\Statement'),
                                             'createAction',
                                             new MethodArguments([
@@ -155,7 +155,7 @@ class ClassBodyTest extends AbstractResolvableTestCase
                         new Statement(
                             new AssignmentExpression(
                                 new VariableName('statement'),
-                                new StaticObjectMethodInvocation(
+                                new ObjectMethodInvocation(
                                     new StaticObject('Acme\Statement'),
                                     'createAction',
                                     new MethodArguments([

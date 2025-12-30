@@ -18,7 +18,6 @@ use webignition\BasilCompilableSourceFactory\Model\MethodDefinition;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinitionInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectConstructor;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
@@ -79,7 +78,7 @@ class ClassDefinitionFactory
     {
         $setupBeforeClassBody = new Body([
             new Statement(
-                new StaticObjectMethodInvocation(
+                new ObjectMethodInvocation(
                     new StaticObject('self'),
                     'setClientManager',
                     new MethodArguments(
@@ -93,7 +92,7 @@ class ClassDefinitionFactory
                 )
             ),
             new Statement(
-                new StaticObjectMethodInvocation(
+                new ObjectMethodInvocation(
                     new StaticObject('parent'),
                     'setUpBeforeClass'
                 )

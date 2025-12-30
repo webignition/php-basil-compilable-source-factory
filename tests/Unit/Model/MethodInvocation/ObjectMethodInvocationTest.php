@@ -14,7 +14,6 @@ use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumen
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
@@ -70,7 +69,7 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
                 'object' => new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                 'methodName' => 'method',
                 'arguments' => new MethodArguments([
-                    new StaticObjectMethodInvocation(
+                    new ObjectMethodInvocation(
                         new StaticObject(ClassName::class),
                         'staticMethodName'
                     )
@@ -113,6 +112,13 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
                     'methodName'
                 ),
                 'expectedString' => '{{ CLIENT }}->methodName()',
+            ],
+            'static object and method name only' => [
+                'invocation' => new ObjectMethodInvocation(
+                    new StaticObject('parent'),
+                    'methodName'
+                ),
+                'expectedString' => 'parent::methodName()',
             ],
             'object and method name only, error-suppressed' => [
                 'invocation' => new ObjectMethodInvocation(
