@@ -19,7 +19,6 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
@@ -79,7 +78,7 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
             ],
             'has metadata' => [
                 'arguments' => [
-                    new StaticObjectMethodInvocation(
+                    new ObjectMethodInvocation(
                         new StaticObject(ClassName::class),
                         'staticMethodName'
                     )
@@ -142,7 +141,7 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                             new VariableDependency(VariableNameEnum::DOM_CRAWLER_NAVIGATOR),
                             'find',
                             new MethodArguments([
-                                new StaticObjectMethodInvocation(
+                                new ObjectMethodInvocation(
                                     new StaticObject(ObjectMethodInvocation::class),
                                     'fromJson',
                                     new MethodArguments([

@@ -18,7 +18,6 @@ use webignition\BasilCompilableSourceFactory\Model\MethodDefinition;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinitionInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectConstructor;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
@@ -29,7 +28,7 @@ class MethodDefinitionFactory
 {
     public static function createSetUpBeforeClassMethodDefinition(string $fixture): MethodDefinitionInterface
     {
-        $requestBaseUri = new StaticObjectMethodInvocation(
+        $requestBaseUri = new ObjectMethodInvocation(
             new StaticObject(Options::class),
             'getBaseUri'
         );
@@ -43,7 +42,7 @@ class MethodDefinitionFactory
 
         $body = new Body([
             new Statement(
-                new StaticObjectMethodInvocation(
+                new ObjectMethodInvocation(
                     new StaticObject('self'),
                     'setClientManager',
                     new MethodArguments([

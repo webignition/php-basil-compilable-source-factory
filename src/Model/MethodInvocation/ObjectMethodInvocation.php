@@ -7,10 +7,14 @@ namespace webignition\BasilCompilableSourceFactory\Model\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
+use webignition\BasilCompilableSourceFactory\Model\StaticObject;
 
 class ObjectMethodInvocation extends AbstractMethodInvocationEncapsulator implements MethodInvocationInterface
 {
-    private const RENDER_TEMPLATE = '{{ object }}->{{ method_invocation }}';
+    private const string RENDER_TEMPLATE_OBJECT_METHOD_CALL = '->';
+    private const string RENDER_TEMPLATE_STATIC_OBJECT_METHOD_CALL = '::';
+    private const string RENDER_TEMPLATE_OBJECT = '{{ object }}';
+    private const string RENDER_TEMPLATE_METHOD = '{{ method_invocation }}';
 
     private ExpressionInterface $object;
 
@@ -27,13 +31,18 @@ class ObjectMethodInvocation extends AbstractMethodInvocationEncapsulator implem
 
     public function getTemplate(): string
     {
-        $template = self::RENDER_TEMPLATE;
+        $errorSuppressionComponent = $this->isErrorSuppressed ? self::ERROR_SUPPRESSION_PREFIX : '';
+        $methodCallComponent = $this->object instanceof StaticObject
+            ? self::RENDER_TEMPLATE_STATIC_OBJECT_METHOD_CALL
+            : self::RENDER_TEMPLATE_OBJECT_METHOD_CALL;
 
-        if ($this->isErrorSuppressed) {
-            $template = self::ERROR_SUPPRESSION_PREFIX . $template;
-        }
-
-        return $template;
+        return sprintf(
+            '%s%s%s%s',
+            $errorSuppressionComponent,
+            self::RENDER_TEMPLATE_OBJECT,
+            $methodCallComponent,
+            self::RENDER_TEMPLATE_METHOD,
+        );
     }
 
     public function getContext(): array

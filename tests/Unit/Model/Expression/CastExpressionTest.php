@@ -15,7 +15,6 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ObjectPropertyAccessExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\StaticObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
@@ -118,7 +117,7 @@ class CastExpressionTest extends AbstractResolvableTestCase
             ],
             'static object method invocation as string, class in root namespace' => [
                 'expression' => new CastExpression(
-                    new StaticObjectMethodInvocation(
+                    new ObjectMethodInvocation(
                         new StaticObject('Object'),
                         'methodName'
                     ),
@@ -128,7 +127,7 @@ class CastExpressionTest extends AbstractResolvableTestCase
             ],
             'static object method invocation as string, class not in root namespace' => [
                 'expression' => new CastExpression(
-                    new StaticObjectMethodInvocation(
+                    new ObjectMethodInvocation(
                         new StaticObject('Acme\Object'),
                         'methodName'
                     ),

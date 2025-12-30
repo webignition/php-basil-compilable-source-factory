@@ -11,7 +11,7 @@ use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumen
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocationInterface;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\StaticObjectMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
@@ -30,7 +30,7 @@ class MethodInvocationTest extends AbstractResolvableTestCase
     {
         $methodName = 'methodName';
         $arguments = new MethodArguments([
-            new StaticObjectMethodInvocation(
+            new ObjectMethodInvocation(
                 new StaticObject(ClassName::class),
                 'staticMethodName'
             )
