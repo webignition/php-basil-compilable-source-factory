@@ -9,7 +9,8 @@ use webignition\BasilCompilableSourceFactory\Enum\PhpUnitFailReason;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CatchExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\StaticObjectProperty;
 use webignition\BasilCompilableSourceFactory\Model\Json\FailureMessage;
-use webignition\BasilCompilableSourceFactory\Model\Json\Literal;
+use webignition\BasilCompilableSourceFactory\Model\Json\IntegerLiteral;
+use webignition\BasilCompilableSourceFactory\Model\Json\StringLiteral;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilModels\Model\StatementInterface;
 use webignition\Stubble\VariableResolver;
@@ -49,9 +50,9 @@ readonly class FailureMessageFactory
         return new FailureMessage(
             $statement,
             $reason->value,
-            new Literal($resolvedClassCall),
-            new Literal($resolvedCodeCall),
-            new Literal($resolvedMessageCall),
+            new StringLiteral($resolvedClassCall),
+            new IntegerLiteral($resolvedCodeCall),
+            new StringLiteral($resolvedMessageCall),
         );
     }
 }

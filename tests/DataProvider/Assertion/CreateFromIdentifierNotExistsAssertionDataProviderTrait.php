@@ -44,9 +44,9 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                             },
                             "reason": "locator-invalid",
                             "exception": {
-                                "class": ' . addcslashes($exception::class, "'") . ',
+                                "class": "' . addcslashes($exception::class, "'") . '",
                                 "code": ' . $exception->getCode() . ',
-                                "message": ' . addcslashes($exception->getMessage(), "'") . '
+                                "message": "' . addcslashes($exception->getMessage(), "'") . '"
                             }
                         }');
                     }
@@ -79,9 +79,9 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                             },
                             "reason": "locator-invalid",
                             "exception": {
-                                "class": ' . addcslashes($exception::class, "'") . ',
+                                "class": "' . addcslashes($exception::class, "'") . '",
                                 "code": ' . $exception->getCode() . ',
-                                "message": ' . addcslashes($exception->getMessage(), "'") . '
+                                "message": "' . addcslashes($exception->getMessage(), "'") . '"
                             }
                         }');
                     }

@@ -12,9 +12,9 @@ readonly class FailureMessage extends JsonExpression
     public function __construct(
         StatementInterface $statement,
         string $reason,
-        Literal $exceptionClassCall,
-        Literal $exceptionCodeCall,
-        Literal $exceptionMessageCall,
+        StringLiteral $exceptionClassCall,
+        IntegerLiteral $exceptionCodeCall,
+        StringLiteral $exceptionMessageCall,
     ) {
         parent::__construct([
             'statement' => new Statement($statement),
