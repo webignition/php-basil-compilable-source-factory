@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 
-use webignition\BasilCompilableSourceFactory\Model\Json\Literal;
+use webignition\BasilCompilableSourceFactory\Model\Json\LiteralInterface;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 
@@ -72,7 +72,7 @@ readonly class JsonExpression implements ExpressionInterface, \JsonSerializable
         $literalPlaceholders = [];
 
         foreach ($rawData as $key => $value) {
-            if ($value instanceof Literal) {
+            if ($value instanceof LiteralInterface) {
                 $placeholder = md5((string) rand());
 
                 $literalPlaceholders[$key] = $placeholder;
@@ -107,12 +107,17 @@ readonly class JsonExpression implements ExpressionInterface, \JsonSerializable
             if (is_string($placeholder)) {
                 $literal = $source[$key];
 
-                if ($literal instanceof Literal) {
-                    $output = str_replace(
-                        '"' . $placeholder . '"',
-                        "' . " . $literal->value . " . '",
-                        $output,
+                if ($literal instanceof LiteralInterface) {
+                    $search = '"' . $placeholder . '"';
+
+                    $replace = sprintf(
+                        "%s' . %s . '%s",
+                        $literal->isQuotable() ? '"' : '',
+                        $literal->getValue(),
+                        $literal->isQuotable() ? '"' : '',
                     );
+
+                    $output = str_replace($search, $replace, $output);
                 }
             }
 
