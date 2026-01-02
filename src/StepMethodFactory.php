@@ -64,18 +64,9 @@ class StepMethodFactory
             new StepNameAttribute($this->singleQuotedStringEscaper->escape($stepName))
         );
 
-        $statements = [];
-        foreach ($step->getActions() as $action) {
-            $statements[] = $action;
-        }
-
-        foreach ($step->getAssertions() as $assertion) {
-            $statements[] = $assertion;
-        }
-
         $testMethod = $testMethod->withAttribute(
             new StatementsAttribute(
-                $this->statementsAttributeValuePrinter->print($statements)
+                $this->statementsAttributeValuePrinter->print(array_merge($step->getActions(), $step->getAssertions()))
             )
         );
 
