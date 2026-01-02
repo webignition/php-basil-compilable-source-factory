@@ -31,11 +31,17 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
                         '{
-                            "statement": "\"\/^value\/\" is-regexp",
-                            "type": "assertion",
-                            "source": {
-                                "statement": "$\".selector\" matches \"\/^value\/\"",
-                                "type": "assertion"
+                            "container": {
+                                "value": "\"\/^value\/\"",
+                                "operator": "is-regexp",
+                                "type": "derived-value-operation-assertion"
+                            },
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$\".selector\" matches \"\/^value\/\"",
+                                "identifier": "$\".selector\"",
+                                "value": "\"\/^value\/\"",
+                                "operator": "matches"
                             }
                         }'
                     );
@@ -64,11 +70,17 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
                         '{
-                            "statement": "$\".pattern-container\" is-regexp",
-                            "type": "assertion",
-                            "source": {
-                                "statement": "$\".selector\" matches $\".pattern-container\"",
-                                "type": "assertion"
+                            "container": {
+                                "value": "$\".pattern-container\"",
+                                "operator": "is-regexp",
+                                "type": "derived-value-operation-assertion"
+                            },
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$\".selector\" matches $\".pattern-container\"",
+                                "identifier": "$\".selector\"",
+                                "value": "$\".pattern-container\"",
+                                "operator": "matches"
                             }
                         }'
                     );
@@ -99,11 +111,17 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
                         '{
-                            "statement": "$\".pattern-container\".attribute_name is-regexp",
-                            "type": "assertion",
-                            "source": {
-                                "statement": "$\".selector\" matches $\".pattern-container\".attribute_name",
-                                "type": "assertion"
+                            "container": {
+                                "value": "$\".pattern-container\".attribute_name",
+                                "operator": "is-regexp",
+                                "type": "derived-value-operation-assertion"
+                            },
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$\".selector\" matches $\".pattern-container\".attribute_name",
+                                "identifier": "$\".selector\"",
+                                "value": "$\".pattern-container\".attribute_name",
+                                "operator": "matches"
                             }
                         }'
                     );
@@ -127,11 +145,17 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
                         '{
-                            "statement": "$data.pattern is-regexp",
-                            "type": "assertion",
-                            "source": {
-                                "statement": "$page.title matches $data.pattern",
-                                "type": "assertion"
+                            "container": {
+                                "value": "$data.pattern",
+                                "operator": "is-regexp",
+                                "type": "derived-value-operation-assertion"
+                            },
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$page.title matches $data.pattern",
+                                "identifier": "$page.title",
+                                "value": "$data.pattern",
+                                "operator": "matches"
                             }
                         }'
                     );

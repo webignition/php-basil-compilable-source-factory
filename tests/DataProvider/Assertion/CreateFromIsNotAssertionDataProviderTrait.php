@@ -33,8 +33,13 @@ trait CreateFromIsNotAssertionDataProviderTrait
                         $expectedValue,
                         $examinedValue,
                         '{
-                            "statement": "$\".selector\" is-not \"value\"",
-                            "type": "assertion"
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$\".selector\" is-not \"value\"",
+                                "identifier": "$\".selector\"",
+                                "value": "\"value\"",
+                                "operator": "is-not"
+                            }
                         }'
                     );
                     EOD,
@@ -61,8 +66,13 @@ trait CreateFromIsNotAssertionDataProviderTrait
                         $expectedValue,
                         $examinedValue,
                         '{
-                            "statement": "$\".selector\".attribute_name is-not \"value\"",
-                            "type": "assertion"
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$\".selector\".attribute_name is-not \"value\"",
+                                "identifier": "$\".selector\".attribute_name",
+                                "value": "\"value\"",
+                                "operator": "is-not"
+                            }
                         }'
                     );
                     EOD,
