@@ -37,7 +37,7 @@ readonly class StatementsAttributeValuePrinter
         $renderedStatements = [];
 
         foreach ($statements as $statement) {
-            $serializedStatement = $this->foo($statement);
+            $serializedStatement = $this->serializeStatement($statement);
 
             $renderedStatements[] = sprintf(
                 $statementTemplate,
@@ -50,7 +50,7 @@ readonly class StatementsAttributeValuePrinter
         return sprintf($statementsTemplate, trim($renderedStatementsContent));
     }
 
-    private function foo(StatementInterface $statement): string
+    private function serializeStatement(StatementInterface $statement): string
     {
         $content = (string) json_encode($statement, JSON_PRETTY_PRINT);
         $lines = explode("\n", $content);
