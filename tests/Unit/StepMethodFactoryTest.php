@@ -118,14 +118,16 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                             "source": "click $\".selector\"",
                             "identifier": "$\".selector\"",
                             "type": "click",
-                            "arguments": "$\".selector\""
+                            "arguments": "$\".selector\"",
+                            "index": 0
                         }',
                         '{
                             "statement-type": "assertion",
                             "source": "$page.title is \"value\"",
                             "identifier": "$page.title",
                             "value": "\"value\"",
-                            "operator": "is"
+                            "operator": "is",
+                            "index": 1
                         }',
                     ])]
                     public function test3(): void
@@ -217,14 +219,16 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                             "identifier": "$\".selector\"",
                             "value": "$data.field_value",
                             "type": "set",
-                            "arguments": "$\".selector\" to $data.field_value"
+                            "arguments": "$\".selector\" to $data.field_value",
+                            "index": 0
                         }',
                         '{
                             "statement-type": "assertion",
                             "source": "$\".selector\" is $data.expected_value",
                             "identifier": "$\".selector\"",
                             "value": "$data.expected_value",
-                            "operator": "is"
+                            "operator": "is",
+                            "index": 1
                         }',
                     ])]
                     #[DataProvider('dataProvider4')]
