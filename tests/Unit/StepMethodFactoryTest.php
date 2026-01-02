@@ -113,14 +113,20 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                 'expectedRenderedTestMethod' => <<<'EOD'
                     #[StepName('Step Name')]
                     #[Statements([
-                        [
-                            'type' => 'action',
-                            'statement' => 'click $".selector"',
-                        ],
-                        [
-                            'type' => 'assertion',
-                            'statement' => '$page.title is "value"',
-                        ],
+                        '{
+                            "statement-type": "action",
+                            "source": "click $\".selector\"",
+                            "identifier": "$\".selector\"",
+                            "type": "click",
+                            "arguments": "$\".selector\""
+                        }',
+                        '{
+                            "statement-type": "assertion",
+                            "source": "$page.title is \"value\"",
+                            "identifier": "$page.title",
+                            "value": "\"value\"",
+                            "operator": "is"
+                        }',
                     ])]
                     public function test3(): void
                     {
@@ -205,14 +211,21 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                 'expectedRenderedTestMethod' => <<<'EOD'
                     #[StepName('Step Name')]
                     #[Statements([
-                        [
-                            'type' => 'action',
-                            'statement' => 'set $".selector" to $data.field_value',
-                        ],
-                        [
-                            'type' => 'assertion',
-                            'statement' => '$".selector" is $data.expected_value',
-                        ],
+                        '{
+                            "statement-type": "action",
+                            "source": "set $\".selector\" to $data.field_value",
+                            "identifier": "$\".selector\"",
+                            "value": "$data.field_value",
+                            "type": "set",
+                            "arguments": "$\".selector\" to $data.field_value"
+                        }',
+                        '{
+                            "statement-type": "assertion",
+                            "source": "$\".selector\" is $data.expected_value",
+                            "identifier": "$\".selector\"",
+                            "value": "$data.expected_value",
+                            "operator": "is"
+                        }',
                     ])]
                     #[DataProvider('dataProvider4')]
                     public function test4($expected_value, $field_value): void

@@ -33,8 +33,13 @@ trait CreateFromExcludesAssertionDataProviderTrait
                         (string) ($expectedValue),
                         (string) ($examinedValue),
                         '{
-                            "statement": "$\".selector\" excludes \"value\"",
-                            "type": "assertion"
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$\".selector\" excludes \"value\"",
+                                "identifier": "$\".selector\"",
+                                "value": "\"value\"",
+                                "operator": "excludes"
+                            }
                         }'
                     );
                     EOD,
@@ -61,8 +66,13 @@ trait CreateFromExcludesAssertionDataProviderTrait
                         (string) ($expectedValue),
                         (string) ($examinedValue),
                         '{
-                            "statement": "$\".selector\" excludes \"\'value\'\"",
-                            "type": "assertion"
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$\".selector\" excludes \"\'value\'\"",
+                                "identifier": "$\".selector\"",
+                                "value": "\"\'value\'\"",
+                                "operator": "excludes"
+                            }
                         }'
                     );
                     EOD,
@@ -89,8 +99,13 @@ trait CreateFromExcludesAssertionDataProviderTrait
                         (string) ($expectedValue),
                         (string) ($examinedValue),
                         '{
-                            "statement": "$\".selector\".attribute_name excludes \"value\"",
-                            "type": "assertion"
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$\".selector\".attribute_name excludes \"value\"",
+                                "identifier": "$\".selector\".attribute_name",
+                                "value": "\"value\"",
+                                "operator": "excludes"
+                            }
                         }'
                     );
                     EOD,

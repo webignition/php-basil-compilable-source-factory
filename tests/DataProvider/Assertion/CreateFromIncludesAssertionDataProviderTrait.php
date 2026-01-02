@@ -33,8 +33,13 @@ trait CreateFromIncludesAssertionDataProviderTrait
                         (string) ($expectedValue),
                         (string) ($examinedValue),
                         '{
-                            "statement": "$\".selector\" includes \"value\"",
-                            "type": "assertion"
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$\".selector\" includes \"value\"",
+                                "identifier": "$\".selector\"",
+                                "value": "\"value\"",
+                                "operator": "includes"
+                            }
                         }'
                     );
                     EOD,
@@ -61,8 +66,13 @@ trait CreateFromIncludesAssertionDataProviderTrait
                         (string) ($expectedValue),
                         (string) ($examinedValue),
                         '{
-                            "statement": "$\".selector\".attribute_name includes \"value\"",
-                            "type": "assertion"
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$\".selector\".attribute_name includes \"value\"",
+                                "identifier": "$\".selector\".attribute_name",
+                                "value": "\"value\"",
+                                "operator": "includes"
+                            }
                         }'
                     );
                     EOD,

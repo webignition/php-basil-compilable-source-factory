@@ -16,14 +16,16 @@ readonly class FailureMessage extends JsonExpression
         IntegerLiteral $exceptionCodeCall,
         StringLiteral $exceptionMessageCall,
     ) {
-        parent::__construct([
-            'statement' => new Statement($statement),
-            'reason' => $reason,
-            'exception' => [
-                'class' => $exceptionClassCall,
-                'code' => $exceptionCodeCall,
-                'message' => $exceptionMessageCall,
-            ],
-        ]);
+        parent::__construct(array_merge(
+            new SerializedStatement($statement)->serialize(),
+            [
+                'reason' => $reason,
+                'exception' => [
+                    'class' => $exceptionClassCall,
+                    'code' => $exceptionCodeCall,
+                    'message' => $exceptionMessageCall,
+                ],
+            ]
+        ));
     }
 }

@@ -24,13 +24,11 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
 
     /**
      * @dataProvider createSourceForFailingAssertionsDataProvider
-     *
-     * @param string[] $expectedExpectationFailedExceptionMessages
      */
     public function testHandleForFailingAssertions(
         string $fixture,
         AssertionInterface $assertion,
-        array $expectedExpectationFailedExceptionMessages
+        string $expectedExpectationFailedExceptionMessage
     ): void {
         $source = $this->handler->handle($assertion);
         $classCode = $this->testCodeGenerator->createBrowserTestForBlock($source, $fixture);
@@ -49,12 +47,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
             $testRunJob->getOutputAsString()
         );
 
-        foreach ($expectedExpectationFailedExceptionMessages as $expectedExpectationFailedExceptionMessage) {
-            $this->assertStringContainsString(
-                $expectedExpectationFailedExceptionMessage,
-                $testRunJob->getOutputAsString()
-            );
-        }
+        $this->assertStringContainsString($expectedExpectationFailedExceptionMessage, $testRunJob->getOutputAsString());
     }
 
     /**
@@ -68,38 +61,55 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
             'exists comparison, element identifier examined value, element does not exist' => [
                 'fixture' => '/index.html',
                 'assertion' => $assertionParser->parse('$".selector" exists'),
-                'expectedExpectationFailedExceptionMessages' => [
-                    '"statement": "$\".selector\" exists"',
-                    '"type": "assertion"',
-                    'Failed asserting that false is true.',
-                ],
+                'expectedExpectationFailedExceptionMessage' => <<<'EOD'
+                    "statement": {
+                        "statement-type": "assertion",
+                        "source": "$\".selector\" exists",
+                        "identifier": "$\".selector\"",
+                        "operator": "exists"
+                    }
+    EOD,
             ],
             'exists comparison, attribute identifier examined value, element does not exist' => [
                 'fixture' => '/index.html',
                 'assertion' => $assertionParser->parse('$".selector".attribute_name exists'),
-                'expectedExpectationFailedExceptionMessages' => [
-                    '"statement": "$\".selector\".attribute_name exists"',
-                    '"type": "assertion"',
-                    'Failed asserting that false is true.',
-                ],
+                'expectedExpectationFailedExceptionMessage' => <<<'EOD'
+                    "container": {
+                        "value": "$\".selector\"",
+                        "operator": "exists",
+                        "type": "derived-value-operation-assertion"
+                    },
+                    "statement": {
+                        "statement-type": "assertion",
+                        "source": "$\".selector\".attribute_name exists",
+                        "identifier": "$\".selector\".attribute_name",
+                        "operator": "exists"
+                    }
+    EOD,
             ],
             'exists comparison, attribute identifier examined value, attribute does not exist' => [
                 'fixture' => '/index.html',
                 'assertion' => $assertionParser->parse('$"h1".attribute_name exists'),
-                'expectedExpectationFailedExceptionMessages' => [
-                    '"statement": "$\"h1\".attribute_name exists"',
-                    '"type": "assertion"',
-                    'Failed asserting that false is true.',
-                ],
+                'expectedExpectationFailedExceptionMessage' => <<<'EOD'
+                    "statement": {
+                        "statement-type": "assertion",
+                        "source": "$\"h1\".attribute_name exists",
+                        "identifier": "$\"h1\".attribute_name",
+                        "operator": "exists"
+                    }
+    EOD,
             ],
             'exists comparison, environment examined value, environment variable does not exist' => [
                 'fixture' => '/index.html',
                 'assertion' => $assertionParser->parse('$env.FOO exists'),
-                'expectedExpectationFailedExceptionMessages' => [
-                    '"statement": "$env.FOO exists"',
-                    '"type": "assertion"',
-                    'Failed asserting that false is true.',
-                ],
+                'expectedExpectationFailedExceptionMessage' => <<<'EOD'
+                    "statement": {
+                        "statement-type": "assertion",
+                        "source": "$env.FOO exists",
+                        "identifier": "$env.FOO",
+                        "operator": "exists"
+                    }
+    EOD,
             ],
             'is-regexp operation, scalar identifier, literal value is not a regular expression' => [
                 'fixture' => '/index.html',
@@ -108,11 +118,20 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
                     '"pattern"',
                     'is-regexp'
                 ),
-                'expectedExpectationFailedExceptionMessages' => [
-                    '"statement": "\"pattern\" is-regexp"',
-                    '"type": "assertion"',
-                    'Failed asserting that true is false.',
-                ],
+                'expectedExpectationFailedExceptionMessage' => <<<'EOD'
+                    "container": {
+                        "value": "\"pattern\"",
+                        "operator": "is-regexp",
+                        "type": "derived-value-operation-assertion"
+                    },
+                    "statement": {
+                        "statement-type": "assertion",
+                        "source": "$page.title matches \"pattern\"",
+                        "identifier": "$page.title",
+                        "value": "\"pattern\"",
+                        "operator": "matches"
+                    }
+    EOD,
             ],
             'is-regexp operation, scalar identifier, elemental value is not a regular expression' => [
                 'fixture' => '/index.html',
@@ -121,30 +140,61 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
                     '$"h1"',
                     'is-regexp'
                 ),
-                'expectedExpectationFailedExceptionMessages' => [
-                    '"statement": "$\"h1\" is-regexp"',
-                    '"type": "assertion"',
-                    'Failed asserting that true is false.',
-                ],
+                'expectedExpectationFailedExceptionMessage' => <<<'EOD'
+                    "container": {
+                        "value": "$\"h1\"",
+                        "operator": "is-regexp",
+                        "type": "derived-value-operation-assertion"
+                    },
+                    "statement": {
+                        "statement-type": "assertion",
+                        "source": "$page.title matches $\"h1\"",
+                        "identifier": "$page.title",
+                        "value": "$\"h1\"",
+                        "operator": "matches"
+                    }
+    EOD,
             ],
             'exists comparison, element identifier examined value, invalid locator exception is caught' => [
                 'fixture' => '/index.html',
                 'assertion' => $assertionParser->parse('$"2" exists'),
-                'expectedExpectationFailedExceptionMessages' => [
-                    '"statement": "$\"2\" exists",',
-                    '"type": "assertion"',
-                ],
+                'expectedExpectationFailedExceptionMessage' => <<<'EOD'
+                    "statement": {
+                        "statement-type": "assertion",
+                        "source": "$\"2\" exists",
+                        "identifier": "$\"2\"",
+                        "operator": "exists"
+                    },
+                    "reason": "locator-invalid",
+                    "exception": {
+                        "class": "webignition\SymfonyDomCrawlerNavigator\Exception\InvalidLocatorException",
+                        "code": 0,
+                        "message": "Invalid CSS selector locator 2"
+                    }
+    EOD,
             ],
             'exists comparison, attribute identifier examined value, invalid locator exception is caught' => [
                 'fixture' => '/index.html',
                 'assertion' => $assertionParser->parse('$"2".attribute_name exists'),
-                'expectedExpectationFailedExceptionMessages' => [
-                    '"statement": "$\"2\" exists"',
-                    '"type": "assertion"',
-                    '"source": {',
-                    '    "statement": "$\"2\".attribute_name exists",',
-                    '    "type": "assertion"',
-                ],
+                'expectedExpectationFailedExceptionMessage' => <<<'EOD'
+                    "container": {
+                        "value": "$\"2\"",
+                        "operator": "exists",
+                        "type": "derived-value-operation-assertion"
+                    },
+                    "statement": {
+                        "statement-type": "assertion",
+                        "source": "$\"2\".attribute_name exists",
+                        "identifier": "$\"2\".attribute_name",
+                        "operator": "exists"
+                    },
+                    "reason": "locator-invalid",
+                    "exception": {
+                        "class": "webignition\SymfonyDomCrawlerNavigator\Exception\InvalidLocatorException",
+                        "code": 0,
+                        "message": "Invalid CSS selector locator 2"
+                    }
+    EOD,
             ],
         ];
     }

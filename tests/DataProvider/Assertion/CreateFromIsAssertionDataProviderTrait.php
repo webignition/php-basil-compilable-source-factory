@@ -33,8 +33,13 @@ trait CreateFromIsAssertionDataProviderTrait
                         $expectedValue,
                         $examinedValue,
                         '{
-                            "statement": "$\".selector\" is \"value\"",
-                            "type": "assertion"
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$\".selector\" is \"value\"",
+                                "identifier": "$\".selector\"",
+                                "value": "\"value\"",
+                                "operator": "is"
+                            }
                         }'
                     );
                     EOD,
@@ -64,8 +69,13 @@ trait CreateFromIsAssertionDataProviderTrait
                         $expectedValue,
                         $examinedValue,
                         '{
-                            "statement": "$\".parent\" >> $\".child\" is \"value\"",
-                            "type": "assertion"
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$\".parent\" >> $\".child\" is \"value\"",
+                                "identifier": "$\".parent\" >> $\".child\"",
+                                "value": "\"value\"",
+                                "operator": "is"
+                            }
                         }'
                     );
                     EOD,
@@ -92,8 +102,13 @@ trait CreateFromIsAssertionDataProviderTrait
                         $expectedValue,
                         $examinedValue,
                         '{
-                            "statement": "$\".selector\".attribute_name is \"value\"",
-                            "type": "assertion"
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$\".selector\".attribute_name is \"value\"",
+                                "identifier": "$\".selector\".attribute_name",
+                                "value": "\"value\"",
+                                "operator": "is"
+                            }
                         }'
                     );
                     EOD,
@@ -117,8 +132,13 @@ trait CreateFromIsAssertionDataProviderTrait
                 $expectedValue,
                 $examinedValue,
                 '{
-                    "statement": "$browser.size is \"value\"",
-                    "type": "assertion"
+                    "statement": {
+                        "statement-type": "assertion",
+                        "source": "$browser.size is \"value\"",
+                        "identifier": "$browser.size",
+                        "value": "\"value\"",
+                        "operator": "is"
+                    }
                 }'
             );
             EOD,
@@ -138,8 +158,13 @@ trait CreateFromIsAssertionDataProviderTrait
                         $expectedValue,
                         $examinedValue,
                         '{
-                            "statement": "$env.KEY is \"value\"",
-                            "type": "assertion"
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$env.KEY is \"value\"",
+                                "identifier": "$env.KEY",
+                                "value": "\"value\"",
+                                "operator": "is"
+                            }
                         }'
                     );
                     EOD,
@@ -159,8 +184,13 @@ trait CreateFromIsAssertionDataProviderTrait
                         $expectedValue,
                         $examinedValue,
                         '{
-                            "statement": "$env.KEY|\"default value\" is \"value\"",
-                            "type": "assertion"
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$env.KEY|\"default value\" is \"value\"",
+                                "identifier": "$env.KEY|\"default value\"",
+                                "value": "\"value\"",
+                                "operator": "is"
+                            }
                         }'
                     );
                     EOD,
@@ -180,8 +210,13 @@ trait CreateFromIsAssertionDataProviderTrait
                         $expectedValue,
                         $examinedValue,
                         '{
-                            "statement": "$env.KEY1|\"default value 1\" is $env.KEY2|\"default value 2\"",
-                            "type": "assertion"
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$env.KEY1|\"default value 1\" is $env.KEY2|\"default value 2\"",
+                                "identifier": "$env.KEY1|\"default value 1\"",
+                                "value": "$env.KEY2|\"default value 2\"",
+                                "operator": "is"
+                            }
                         }'
                     );
                     EOD,
@@ -201,8 +236,13 @@ trait CreateFromIsAssertionDataProviderTrait
                         $expectedValue,
                         $examinedValue,
                         '{
-                            "statement": "$page.title is \"value\"",
-                            "type": "assertion"
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$page.title is \"value\"",
+                                "identifier": "$page.title",
+                                "value": "\"value\"",
+                                "operator": "is"
+                            }
                         }'
                     );
                     EOD,
@@ -235,8 +275,13 @@ trait CreateFromIsAssertionDataProviderTrait
                 $expectedValue,
                 $examinedValue,
                 '{
-                    "statement": "$browser.size is $\".parent\" >> $\".child\"",
-                    "type": "assertion"
+                    "statement": {
+                        "statement-type": "assertion",
+                        "source": "$browser.size is $\".parent\" >> $\".child\"",
+                        "identifier": "$browser.size",
+                        "value": "$\".parent\" >> $\".child\"",
+                        "operator": "is"
+                    }
                 }'
             );
             EOD,
@@ -268,8 +313,13 @@ trait CreateFromIsAssertionDataProviderTrait
                 $expectedValue,
                 $examinedValue,
                 '{
-                    "statement": "$browser.size is $\".selector\"",
-                    "type": "assertion"
+                    "statement": {
+                        "statement-type": "assertion",
+                        "source": "$browser.size is $\".selector\"",
+                        "identifier": "$browser.size",
+                        "value": "$\".selector\"",
+                        "operator": "is"
+                    }
                 }'
             );
             EOD,
@@ -301,8 +351,13 @@ trait CreateFromIsAssertionDataProviderTrait
                 $expectedValue,
                 $examinedValue,
                 '{
-                    "statement": "$browser.size is $\".selector\".attribute_name",
-                    "type": "assertion"
+                    "statement": {
+                        "statement-type": "assertion",
+                        "source": "$browser.size is $\".selector\".attribute_name",
+                        "identifier": "$browser.size",
+                        "value": "$\".selector\".attribute_name",
+                        "operator": "is"
+                    }
                 }'
             );
             EOD,
@@ -327,8 +382,13 @@ trait CreateFromIsAssertionDataProviderTrait
                 $expectedValue,
                 $examinedValue,
                 '{
-                    "statement": "$browser.size is $env.KEY",
-                    "type": "assertion"
+                    "statement": {
+                        "statement-type": "assertion",
+                        "source": "$browser.size is $env.KEY",
+                        "identifier": "$browser.size",
+                        "value": "$env.KEY",
+                        "operator": "is"
+                    }
                 }'
             );
             EOD,
@@ -353,8 +413,13 @@ trait CreateFromIsAssertionDataProviderTrait
                 $expectedValue,
                 $examinedValue,
                 '{
-                    "statement": "$browser.size is $env.KEY|\"default value\"",
-                    "type": "assertion"
+                    "statement": {
+                        "statement-type": "assertion",
+                        "source": "$browser.size is $env.KEY|\"default value\"",
+                        "identifier": "$browser.size",
+                        "value": "$env.KEY|\"default value\"",
+                        "operator": "is"
+                    }
                 }'
             );
             EOD,
@@ -379,8 +444,13 @@ trait CreateFromIsAssertionDataProviderTrait
                 $expectedValue,
                 $examinedValue,
                 '{
-                    "statement": "$browser.size is $page.url",
-                    "type": "assertion"
+                    "statement": {
+                        "statement-type": "assertion",
+                        "source": "$browser.size is $page.url",
+                        "identifier": "$browser.size",
+                        "value": "$page.url",
+                        "operator": "is"
+                    }
                 }'
             );
             EOD,
@@ -400,8 +470,13 @@ trait CreateFromIsAssertionDataProviderTrait
                         $expectedValue,
                         $examinedValue,
                         '{
-                            "statement": "\"examined\" is \"expected\"",
-                            "type": "assertion"
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "\"examined\" is \"expected\"",
+                                "identifier": "\"examined\"",
+                                "value": "\"expected\"",
+                                "operator": "is"
+                            }
                         }'
                     );
                     EOD,

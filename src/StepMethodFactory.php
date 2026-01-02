@@ -13,10 +13,16 @@ use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\DataProviderMethodDefinition;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinition;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinitionInterface;
+use webignition\BasilModels\Model\Action\ActionInterface;
+use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\DataSet\DataSetCollection;
 use webignition\BasilModels\Model\DataSet\DataSetCollectionInterface;
 use webignition\BasilModels\Model\Step\StepInterface;
 
+/**
+ * @phpstan-import-type SerializedAction from ActionInterface
+ * @phpstan-import-type SerializedAssertion from AssertionInterface
+ */
 class StepMethodFactory
 {
     public function __construct(
@@ -58,9 +64,18 @@ class StepMethodFactory
             new StepNameAttribute($this->singleQuotedStringEscaper->escape($stepName))
         );
 
+        $statements = [];
+        foreach ($step->getActions() as $action) {
+            $statements[] = $action;
+        }
+
+        foreach ($step->getAssertions() as $assertion) {
+            $statements[] = $assertion;
+        }
+
         $testMethod = $testMethod->withAttribute(
             new StatementsAttribute(
-                $this->statementsAttributeValuePrinter->print($this->buildStepStatementsAttributeContent($step))
+                $this->statementsAttributeValuePrinter->print($statements)
             )
         );
 
@@ -113,35 +128,5 @@ class StepMethodFactory
         }
 
         return $preparedDataSet;
-    }
-
-    /**
-     * @return array{'type':'action'|'assertion', 'statement':non-empty-string}[]
-     */
-    private function buildStepStatementsAttributeContent(StepInterface $step): array
-    {
-        $statements = [];
-
-        foreach ($step->getActions() as $action) {
-            $source = $action->getSource();
-            \assert('' !== $source);
-
-            $statements[] = [
-                'type' => 'action',
-                'statement' => $source,
-            ];
-        }
-
-        foreach ($step->getAssertions() as $assertion) {
-            $source = $assertion->getSource();
-            \assert('' !== $source);
-
-            $statements[] = [
-                'type' => 'assertion',
-                'statement' => $source,
-            ];
-        }
-
-        return $statements;
     }
 }

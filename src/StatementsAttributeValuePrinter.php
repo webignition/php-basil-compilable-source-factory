@@ -4,27 +4,23 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory;
 
+use webignition\BasilModels\Model\StatementInterface;
+
 readonly class StatementsAttributeValuePrinter
 {
-    public function __construct(
-        private SingleQuotedStringEscaper $singleQuotedStringEscaper,
-    ) {}
-
     public static function create(): self
     {
-        return new StatementsAttributeValuePrinter(
-            SingleQuotedStringEscaper::create(),
-        );
+        return new StatementsAttributeValuePrinter();
     }
 
     /**
-     * @param array{'type':'action'|'assertion', 'statement':non-empty-string}[] $statementsData
+     * @param StatementInterface[] $statements
      *
      * @return non-empty-string
      */
-    public function print(array $statementsData): string
+    public function print(array $statements): string
     {
-        if ([] === $statementsData) {
+        if ([] === $statements) {
             return '[]';
         }
 
@@ -35,24 +31,38 @@ readonly class StatementsAttributeValuePrinter
         EOD;
 
         $statementTemplate = <<< 'EOD'
-            [
-                'type' => '%s',
-                'statement' => '%s',
-            ],
+            '%s',
         EOD;
 
         $renderedStatements = [];
 
-        foreach ($statementsData as $statementData) {
+        foreach ($statements as $statement) {
+            $serializedStatement = $this->foo($statement);
+
             $renderedStatements[] = sprintf(
                 $statementTemplate,
-                $statementData['type'],
-                $this->singleQuotedStringEscaper->escape($statementData['statement']),
+                addcslashes($serializedStatement, "'"),
             );
         }
 
         $renderedStatementsContent = implode("\n", $renderedStatements);
 
         return sprintf($statementsTemplate, trim($renderedStatementsContent));
+    }
+
+    private function foo(StatementInterface $statement): string
+    {
+        $content = (string) json_encode($statement, JSON_PRETTY_PRINT);
+        $lines = explode("\n", $content);
+
+        foreach ($lines as $index => $line) {
+            if (0 === $index) {
+                $lines[$index] = $line;
+            } else {
+                $lines[$index] = '    ' . $line;
+            }
+        }
+
+        return implode("\n", $lines);
     }
 }

@@ -59,10 +59,10 @@
     "require": {
         "php": "^8.4",
         "ext-json": "*",
-        "webignition/base-basil-test-case": "^8.1",
+        "webignition/base-basil-test-case": "^10.1",
         "webignition/basil-dom-identifier-factory": "^1.1",
         "webignition/basil-identifier-analyser": "^2.0",
-        "webignition/basil-models": "^9.0",
+        "webignition/basil-models": "^10",
         "webignition/basil-value-type-identifier": ">=0.3,<1",
         "webignition/php-dom-element-identifier": ">=0.16,<1",
         "webignition/quoted-string-value-extractor": ">=0.4,<1",
