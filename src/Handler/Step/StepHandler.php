@@ -12,6 +12,8 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\FailureMessageFactory;
 use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
+use webignition\BasilCompilableSourceFactory\IndexedAction;
+use webignition\BasilCompilableSourceFactory\IndexedAssertion;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
@@ -52,9 +54,12 @@ class StepHandler
     public function handle(StepInterface $step): BodyInterface
     {
         $bodySources = [];
+        $statementIndex = 0;
 
         try {
             foreach ($step->getActions() as $action) {
+                $action = new IndexedAction($action, $statementIndex);
+
                 try {
                     $derivedActionAssertions = $this->derivedAssertionFactory->createForAction($action);
                     $bodySources[] = $this->createDerivedAssertionsBody($derivedActionAssertions);
@@ -80,12 +85,17 @@ class StepHandler
 
                 $bodySources[] = $tryCatchBlock;
                 $bodySources[] = new EmptyLine();
+
+                ++$statementIndex;
             }
 
-            $stepAssertions = $step->getAssertions();
+            $stepAssertions = [];
 
             $derivedAssertionAssertions = new UniqueAssertionCollection();
-            foreach ($stepAssertions as $assertion) {
+
+            foreach ($step->getAssertions() as $assertion) {
+                $assertion = new IndexedAssertion($assertion, $statementIndex);
+
                 try {
                     $derivedAssertionAssertions = $derivedAssertionAssertions->merge(
                         $this->derivedAssertionFactory->createForAssertion($assertion)
@@ -93,6 +103,9 @@ class StepHandler
                 } catch (UnsupportedContentException $unsupportedContentException) {
                     throw new UnsupportedStatementException($assertion, $unsupportedContentException);
                 }
+
+                $stepAssertions[] = $assertion;
+                ++$statementIndex;
             }
 
             $bodySources[] = $this->createDerivedAssertionsBody($derivedAssertionAssertions);
