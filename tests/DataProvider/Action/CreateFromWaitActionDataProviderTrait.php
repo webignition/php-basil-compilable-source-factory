@@ -19,12 +19,12 @@ trait CreateFromWaitActionDataProviderTrait
 
         return [
             'wait action, literal' => [
-                'action' => $actionParser->parse('wait 30'),
+                'action' => $actionParser->parse('wait 30', 0),
                 'expectedRenderedSource' => 'usleep(((int) ("30" ?? 0)) * 1000);',
                 'expectedMetadata' => new Metadata(),
             ],
             'wait action, element value' => [
-                'action' => $actionParser->parse('wait $".duration-selector"'),
+                'action' => $actionParser->parse('wait $".duration-selector"', 0),
                 'expectedRenderedSource' => <<<'EOD'
                     usleep(((int) ((function () {
                         $element = {{ NAVIGATOR }}->find('{
@@ -42,7 +42,7 @@ trait CreateFromWaitActionDataProviderTrait
                 ),
             ],
             'wait action, descendant element value' => [
-                'action' => $actionParser->parse('wait $".parent" >> $".child"'),
+                'action' => $actionParser->parse('wait $".parent" >> $".child"', 0),
                 'expectedRenderedSource' => <<<'EOD'
                     usleep(((int) ((function () {
                         $element = {{ NAVIGATOR }}->find('{
@@ -63,7 +63,7 @@ trait CreateFromWaitActionDataProviderTrait
                 ),
             ],
             'wait action, single-character CSS selector element value' => [
-                'action' => $actionParser->parse('wait $"a"'),
+                'action' => $actionParser->parse('wait $"a"', 0),
                 'expectedRenderedSource' => <<<'EOD'
                     usleep(((int) ((function () {
                         $element = {{ NAVIGATOR }}->find('{
@@ -81,7 +81,7 @@ trait CreateFromWaitActionDataProviderTrait
                 ),
             ],
             'wait action, attribute value' => [
-                'action' => $actionParser->parse('wait $".duration-selector".attribute_name'),
+                'action' => $actionParser->parse('wait $".duration-selector".attribute_name', 0),
                 'expectedRenderedSource' => <<<'EOD'
                     usleep(((int) ((function () {
                         $element = {{ NAVIGATOR }}->findOne('{
@@ -98,7 +98,7 @@ trait CreateFromWaitActionDataProviderTrait
                 ),
             ],
             'wait action, browser property' => [
-                'action' => $actionParser->parse('wait $browser.size'),
+                'action' => $actionParser->parse('wait $browser.size', 0),
                 'expectedRenderedSource' => 'usleep(((int) ((function () {' . "\n"
                     . '    $webDriverDimension = '
                     . '{{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n"
@@ -113,7 +113,7 @@ trait CreateFromWaitActionDataProviderTrait
                 ),
             ],
             'wait action, page property' => [
-                'action' => $actionParser->parse('wait $page.title'),
+                'action' => $actionParser->parse('wait $page.title', 0),
                 'expectedRenderedSource' => 'usleep(((int) ({{ CLIENT }}->getTitle() ?? 0)) * 1000);',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
@@ -122,7 +122,7 @@ trait CreateFromWaitActionDataProviderTrait
                 ),
             ],
             'wait action, environment value' => [
-                'action' => $actionParser->parse('wait $env.DURATION'),
+                'action' => $actionParser->parse('wait $env.DURATION', 0),
                 'expectedRenderedSource' => 'usleep(((int) ({{ ENV }}[\'DURATION\'] ?? 0)) * 1000);',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
@@ -131,7 +131,7 @@ trait CreateFromWaitActionDataProviderTrait
                 ),
             ],
             'wait action, environment value with default' => [
-                'action' => $actionParser->parse('wait $env.DURATION|"3"'),
+                'action' => $actionParser->parse('wait $env.DURATION|"3"', 0),
                 'expectedRenderedSource' => 'usleep(((int) ({{ ENV }}[\'DURATION\'] ?? 3)) * 1000);',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
@@ -140,7 +140,7 @@ trait CreateFromWaitActionDataProviderTrait
                 ),
             ],
             'wait action, data parameter' => [
-                'action' => $actionParser->parse('wait $data.key'),
+                'action' => $actionParser->parse('wait $data.key', 0),
                 'expectedRenderedSource' => 'usleep(((int) ($key ?? 0)) * 1000);',
                 'expectedMetadata' => new Metadata(),
             ],

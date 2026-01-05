@@ -73,20 +73,20 @@ class ComparisonAssertionHandlerTest extends AbstractResolvableTestCase
 
         return [
             'unsupported comparison' => [
-                'assertion' => $assertionParser->parse('$".selector" foo "value"'),
+                'assertion' => $assertionParser->parse('$".selector" foo "value"', 0),
                 'expectedException' => new UnsupportedStatementException(
-                    $assertionParser->parse('$".selector" foo "value"')
+                    $assertionParser->parse('$".selector" foo "value"', 0)
                 ),
             ],
             'comparison; examined value is not supported' => [
-                'assertion' => $assertionParser->parse('$elements.examined is "value"'),
+                'assertion' => $assertionParser->parse('$elements.examined is "value"', 0),
                 'expectedException' => new UnsupportedContentException(
                     UnsupportedContentException::TYPE_VALUE,
                     '$elements.examined'
                 ),
             ],
             'comparison; expected value is not supported' => [
-                'assertion' => $assertionParser->parse('$".selector" is $elements.expected'),
+                'assertion' => $assertionParser->parse('$".selector" is $elements.expected', 0),
                 'expectedException' => new UnsupportedContentException(
                     UnsupportedContentException::TYPE_VALUE,
                     '$elements.expected'

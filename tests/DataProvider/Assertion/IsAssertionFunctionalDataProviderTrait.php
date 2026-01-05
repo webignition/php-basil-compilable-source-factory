@@ -17,52 +17,52 @@ trait IsAssertionFunctionalDataProviderTrait
 
         $assertions = [
             'element identifier examined value, scalar expected value' => [
-                'assertion' => $assertionParser->parse('$".selector" is ".selector content"'),
+                'assertion' => $assertionParser->parse('$".selector" is ".selector content"', 0),
             ],
             'attribute identifier examined value, scalar expected value' => [
-                'assertion' => $assertionParser->parse('$".selector".data-test-attribute is "attribute content"'),
+                'assertion' => $assertionParser->parse('$".selector".data-test-attribute is "attribute content"', 0),
             ],
             'environment examined value, scalar expected value' => [
-                'assertion' => $assertionParser->parse('$env.TEST1 is "environment value"'),
+                'assertion' => $assertionParser->parse('$env.TEST1 is "environment value"', 0),
             ],
             'browser object examined value, scalar expected value' => [
-                'assertion' => $assertionParser->parse('$browser.size is "1200x1100"'),
+                'assertion' => $assertionParser->parse('$browser.size is "1200x1100"', 0),
             ],
             'page object examined value, scalar expected value' => [
-                'assertion' => $assertionParser->parse('$page.title is "Test fixture web server default document"'),
+                'assertion' => $assertionParser->parse('$page.title is "Test fixture web server default document"', 0),
             ],
             'element identifier examined value, element identifier expected value' => [
-                'assertion' => $assertionParser->parse('$".selector" is $".selector"'),
+                'assertion' => $assertionParser->parse('$".selector" is $".selector"', 0),
             ],
             'element identifier examined value, attribute identifier expected value' => [
-                'assertion' => $assertionParser->parse('$".selector" is $".selector".data-is-selector-content'),
+                'assertion' => $assertionParser->parse('$".selector" is $".selector".data-is-selector-content', 0),
             ],
             'attribute identifier examined value, environment expected value' => [
-                'assertion' => $assertionParser->parse('$".selector".data-environment-value is $env.TEST1'),
+                'assertion' => $assertionParser->parse('$".selector".data-environment-value is $env.TEST1', 0),
             ],
             'attribute identifier examined value, browser object expected value' => [
-                'assertion' => $assertionParser->parse('$".selector".data-browser-size is $browser.size'),
+                'assertion' => $assertionParser->parse('$".selector".data-browser-size is $browser.size', 0),
             ],
             'attribute identifier examined value, page object expected value' => [
-                'assertion' => $assertionParser->parse('$".selector".data-page-title is $page.title'),
+                'assertion' => $assertionParser->parse('$".selector".data-page-title is $page.title', 0),
             ],
             'select element identifier examined value, scalar expected value (1)' => [
-                'assertion' => $assertionParser->parse('$".select-none-selected" is "none-selected-1"'),
+                'assertion' => $assertionParser->parse('$".select-none-selected" is "none-selected-1"', 0),
             ],
             'select element identifier examined value, scalar expected value (2)' => [
-                'assertion' => $assertionParser->parse('$".select-has-selected" is "has-selected-2"'),
+                'assertion' => $assertionParser->parse('$".select-has-selected" is "has-selected-2"', 0),
             ],
             'option collection element identifier examined value, scalar expected value (1)' => [
-                'assertion' => $assertionParser->parse('$".select-none-selected option" is "none-selected-1"'),
+                'assertion' => $assertionParser->parse('$".select-none-selected option" is "none-selected-1"', 0),
             ],
             'option collection element identifier examined value, scalar expected value (2)' => [
-                'assertion' => $assertionParser->parse('$".select-has-selected option" is "has-selected-2"'),
+                'assertion' => $assertionParser->parse('$".select-has-selected option" is "has-selected-2"', 0),
             ],
             'radio group element identifier examined value, scalar expected value (1)' => [
-                'assertion' => $assertionParser->parse('$"input[name=radio-not-checked]" is ""'),
+                'assertion' => $assertionParser->parse('$"input[name=radio-not-checked]" is ""', 0),
             ],
             'radio group element identifier examined value, scalar expected value (2)' => [
-                'assertion' => $assertionParser->parse('$"input[name=radio-checked]" is "checked-2"'),
+                'assertion' => $assertionParser->parse('$"input[name=radio-checked]" is "checked-2"', 0),
             ],
         ];
 

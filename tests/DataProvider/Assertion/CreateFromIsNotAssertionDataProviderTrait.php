@@ -19,7 +19,7 @@ trait CreateFromIsNotAssertionDataProviderTrait
 
         return [
             'is-not comparison, element identifier examined value, literal string expected value' => [
-                'assertion' => $assertionParser->parse('$".selector" is-not "value"'),
+                'assertion' => $assertionParser->parse('$".selector" is-not "value"', 0),
                 'expectedRenderedContent' => <<<'EOD'
                     $expectedValue = "value";
                     $examinedValue = (function () {
@@ -36,6 +36,7 @@ trait CreateFromIsNotAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "assertion",
                                 "source": "$\".selector\" is-not \"value\"",
+                                "index": 0,
                                 "identifier": "$\".selector\"",
                                 "value": "\"value\"",
                                 "operator": "is-not"
@@ -52,7 +53,7 @@ trait CreateFromIsNotAssertionDataProviderTrait
                 ),
             ],
             'is-not comparison, attribute identifier examined value, literal string expected value' => [
-                'assertion' => $assertionParser->parse('$".selector".attribute_name is-not "value"'),
+                'assertion' => $assertionParser->parse('$".selector".attribute_name is-not "value"', 0),
                 'expectedRenderedContent' => <<<'EOD'
                     $expectedValue = "value";
                     $examinedValue = (function () {
@@ -69,6 +70,7 @@ trait CreateFromIsNotAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "assertion",
                                 "source": "$\".selector\".attribute_name is-not \"value\"",
+                                "index": 0,
                                 "identifier": "$\".selector\".attribute_name",
                                 "value": "\"value\"",
                                 "operator": "is-not"

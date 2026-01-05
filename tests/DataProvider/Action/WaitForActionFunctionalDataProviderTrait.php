@@ -18,11 +18,11 @@ trait WaitForActionFunctionalDataProviderTrait
         return [
             'wait-for action, css selector' => [
                 'fixture' => '/action-wait-for.html',
-                'action' => $actionParser->parse('wait-for $"#hello"'),
+                'action' => $actionParser->parse('wait-for $"#hello"', 0),
             ],
             'wait-for action, xpath expression' => [
                 'fixture' => '/action-wait-for.html',
-                'action' => $actionParser->parse('wait-for $"//*[@id=\'hello\']"'),
+                'action' => $actionParser->parse('wait-for $"//*[@id=\'hello\']"', 0),
             ],
         ];
     }

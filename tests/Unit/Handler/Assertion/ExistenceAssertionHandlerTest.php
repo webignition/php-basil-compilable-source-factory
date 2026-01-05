@@ -23,7 +23,7 @@ class ExistenceAssertionHandlerTest extends TestCase
 
         $expectedReturnValue = \Mockery::mock(BodyInterface::class);
 
-        $assertion = $assertionParser->parse('$page.title exists');
+        $assertion = $assertionParser->parse('$page.title exists', 0);
 
         $scalarHandler = \Mockery::mock(ScalarExistenceAssertionHandler::class);
         $scalarHandler
@@ -48,7 +48,7 @@ class ExistenceAssertionHandlerTest extends TestCase
 
         $expectedReturnValue = \Mockery::mock(BodyInterface::class);
 
-        $assertion = $assertionParser->parse('$".selector" exists');
+        $assertion = $assertionParser->parse('$".selector" exists', 0);
 
         $identifierHandler = \Mockery::mock(IdentifierExistenceAssertionHandler::class);
         $identifierHandler
@@ -71,6 +71,7 @@ class ExistenceAssertionHandlerTest extends TestCase
     {
         $assertion = new Assertion(
             'invalid exists',
+            0,
             'invalid',
             'exists',
         );

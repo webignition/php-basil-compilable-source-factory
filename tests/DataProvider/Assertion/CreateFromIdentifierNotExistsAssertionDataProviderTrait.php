@@ -30,7 +30,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
 
         return [
             'not-exists comparison, element identifier examined value' => [
-                'assertion' => $assertionParser->parse('$".selector" not-exists'),
+                'assertion' => $assertionParser->parse('$".selector" not-exists', 0),
                 'expectedRenderedContent' => <<<'EOD'
                     try {
                         $examinedValue = {{ NAVIGATOR }}->has('{
@@ -41,6 +41,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "assertion",
                                 "source": "$\".selector\" not-exists",
+                                "index": 0,
                                 "identifier": "$\".selector\"",
                                 "operator": "not-exists"
                             },
@@ -58,6 +59,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "assertion",
                                 "source": "$\".selector\" not-exists",
+                                "index": 0,
                                 "identifier": "$\".selector\"",
                                 "operator": "not-exists"
                             }
@@ -67,7 +69,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                 'expectedMetadata' => $expectedMetadata,
             ],
             'not-exists comparison, attribute identifier examined value' => [
-                'assertion' => $assertionParser->parse('$".selector".attribute_name not-exists'),
+                'assertion' => $assertionParser->parse('$".selector".attribute_name not-exists', 0),
                 'expectedRenderedContent' => <<<'EOD'
                     try {
                         $examinedValue = {{ NAVIGATOR }}->hasOne('{
@@ -83,6 +85,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "assertion",
                                 "source": "$\".selector\".attribute_name not-exists",
+                                "index": 0,
                                 "identifier": "$\".selector\".attribute_name",
                                 "operator": "not-exists"
                             },
@@ -105,6 +108,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "assertion",
                                 "source": "$\".selector\".attribute_name not-exists",
+                                "index": 0,
                                 "identifier": "$\".selector\".attribute_name",
                                 "operator": "not-exists"
                             }
@@ -123,6 +127,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "assertion",
                                 "source": "$\".selector\".attribute_name not-exists",
+                                "index": 0,
                                 "identifier": "$\".selector\".attribute_name",
                                 "operator": "not-exists"
                             }

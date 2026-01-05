@@ -19,7 +19,7 @@ trait CreateFromSubmitActionDataProviderTrait
 
         return [
             'interaction action (submit), element identifier' => [
-                'action' => $actionParser->parse('submit $".selector"'),
+                'action' => $actionParser->parse('submit $".selector"', 0),
                 'expectedRenderedSource' => <<< 'EOD'
                     (function () {
                         $element = {{ NAVIGATOR }}->findOne('{

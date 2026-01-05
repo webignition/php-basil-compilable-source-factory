@@ -20,37 +20,39 @@ trait ExistsAssertionFunctionalDataProviderTrait
         return [
             'exists comparison, element identifier examined value' => [
                 'fixture' => '/assertions.html',
-                'assertion' => $assertionParser->parse('$".selector" exists'),
+                'assertion' => $assertionParser->parse('$".selector" exists', 0),
             ],
             'exists comparison, attribute identifier examined value' => [
                 'fixture' => '/assertions.html',
-                'assertion' => $assertionParser->parse('$".selector".data-test-attribute exists'),
+                'assertion' => $assertionParser->parse('$".selector".data-test-attribute exists', 0),
             ],
             'exists comparison, environment examined value' => [
                 'fixture' => '/empty.html',
-                'assertion' => $assertionParser->parse('$env.TEST1 exists'),
+                'assertion' => $assertionParser->parse('$env.TEST1 exists', 0),
                 'additionalVariableIdentifiers' => [
                     VariableName::ENVIRONMENT_VARIABLE_ARRAY->value => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
                 ],
             ],
             'exists comparison, browser object value' => [
                 'fixture' => '/empty.html',
-                'assertion' => $assertionParser->parse('$browser.size exists'),
+                'assertion' => $assertionParser->parse('$browser.size exists', 0),
             ],
             'exists comparison, page object value' => [
                 'fixture' => '/empty.html',
-                'assertion' => $assertionParser->parse('$page.title exists'),
+                'assertion' => $assertionParser->parse('$page.title exists', 0),
             ],
             'exists comparison, element identifier examined value, selector contains single quotes (1)' => [
                 'fixture' => '/assertions.html',
                 'assertion' => $assertionParser->parse(
-                    '$"[data-value=\"\'data attribute within single quotes\'\"]" exists'
+                    '$"[data-value=\"\'data attribute within single quotes\'\"]" exists',
+                    0,
                 ),
             ],
             'exists comparison, element identifier examined value, selector contains single quotes (2)' => [
                 'fixture' => '/assertions.html',
                 'assertion' => $assertionParser->parse(
-                    '$"[data-value=\"data attribute \'containing\' single quotes\"]" exists'
+                    '$"[data-value=\"data attribute \'containing\' single quotes\"]" exists',
+                    0,
                 ),
             ],
         ];

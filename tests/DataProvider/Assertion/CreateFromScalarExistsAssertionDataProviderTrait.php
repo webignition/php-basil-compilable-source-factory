@@ -19,7 +19,7 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
 
         return [
             'exists comparison, page property examined value' => [
-                'assertion' => $assertionParser->parse('$page.url exists'),
+                'assertion' => $assertionParser->parse('$page.url exists', 0),
                 'expectedRenderedContent' => <<<'EOD'
                     {{ PHPUNIT }}->assertTrue(
                         ({{ CLIENT }}->getCurrentURL() ?? null) !== null,
@@ -27,6 +27,7 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "assertion",
                                 "source": "$page.url exists",
+                                "index": 0,
                                 "identifier": "$page.url",
                                 "operator": "exists"
                             }
@@ -41,7 +42,7 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
                 ),
             ],
             'exists comparison, data parameter value' => [
-                'assertion' => $assertionParser->parse('$data.key exists'),
+                'assertion' => $assertionParser->parse('$data.key exists', 0),
                 'expectedRenderedContent' => <<<'EOD'
                     {{ PHPUNIT }}->assertTrue(
                         ($key ?? null) !== null,
@@ -49,6 +50,7 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "assertion",
                                 "source": "$data.key exists",
+                                "index": 0,
                                 "identifier": "$data.key",
                                 "operator": "exists"
                             }

@@ -60,11 +60,12 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
         return [
             'exists comparison, element identifier examined value, element does not exist' => [
                 'fixture' => '/index.html',
-                'assertion' => $assertionParser->parse('$".selector" exists'),
+                'assertion' => $assertionParser->parse('$".selector" exists', 0),
                 'expectedExpectationFailedExceptionMessage' => <<<'EOD'
                     "statement": {
                         "statement-type": "assertion",
                         "source": "$\".selector\" exists",
+                        "index": 0,
                         "identifier": "$\".selector\"",
                         "operator": "exists"
                     }
@@ -72,7 +73,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
             ],
             'exists comparison, attribute identifier examined value, element does not exist' => [
                 'fixture' => '/index.html',
-                'assertion' => $assertionParser->parse('$".selector".attribute_name exists'),
+                'assertion' => $assertionParser->parse('$".selector".attribute_name exists', 0),
                 'expectedExpectationFailedExceptionMessage' => <<<'EOD'
                     "container": {
                         "value": "$\".selector\"",
@@ -82,6 +83,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
                     "statement": {
                         "statement-type": "assertion",
                         "source": "$\".selector\".attribute_name exists",
+                        "index": 0,
                         "identifier": "$\".selector\".attribute_name",
                         "operator": "exists"
                     }
@@ -89,11 +91,12 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
             ],
             'exists comparison, attribute identifier examined value, attribute does not exist' => [
                 'fixture' => '/index.html',
-                'assertion' => $assertionParser->parse('$"h1".attribute_name exists'),
+                'assertion' => $assertionParser->parse('$"h1".attribute_name exists', 0),
                 'expectedExpectationFailedExceptionMessage' => <<<'EOD'
                     "statement": {
                         "statement-type": "assertion",
                         "source": "$\"h1\".attribute_name exists",
+                        "index": 0,
                         "identifier": "$\"h1\".attribute_name",
                         "operator": "exists"
                     }
@@ -101,11 +104,12 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
             ],
             'exists comparison, environment examined value, environment variable does not exist' => [
                 'fixture' => '/index.html',
-                'assertion' => $assertionParser->parse('$env.FOO exists'),
+                'assertion' => $assertionParser->parse('$env.FOO exists', 0),
                 'expectedExpectationFailedExceptionMessage' => <<<'EOD'
                     "statement": {
                         "statement-type": "assertion",
                         "source": "$env.FOO exists",
+                        "index": 0,
                         "identifier": "$env.FOO",
                         "operator": "exists"
                     }
@@ -114,7 +118,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
             'is-regexp operation, scalar identifier, literal value is not a regular expression' => [
                 'fixture' => '/index.html',
                 'assertion' => new DerivedValueOperationAssertion(
-                    $assertionParser->parse('$page.title matches "pattern"'),
+                    $assertionParser->parse('$page.title matches "pattern"', 0),
                     '"pattern"',
                     'is-regexp'
                 ),
@@ -127,6 +131,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
                     "statement": {
                         "statement-type": "assertion",
                         "source": "$page.title matches \"pattern\"",
+                        "index": 0,
                         "identifier": "$page.title",
                         "value": "\"pattern\"",
                         "operator": "matches"
@@ -136,7 +141,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
             'is-regexp operation, scalar identifier, elemental value is not a regular expression' => [
                 'fixture' => '/index.html',
                 'assertion' => new DerivedValueOperationAssertion(
-                    $assertionParser->parse('$page.title matches $"h1"'),
+                    $assertionParser->parse('$page.title matches $"h1"', 0),
                     '$"h1"',
                     'is-regexp'
                 ),
@@ -149,6 +154,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
                     "statement": {
                         "statement-type": "assertion",
                         "source": "$page.title matches $\"h1\"",
+                        "index": 0,
                         "identifier": "$page.title",
                         "value": "$\"h1\"",
                         "operator": "matches"
@@ -157,11 +163,12 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
             ],
             'exists comparison, element identifier examined value, invalid locator exception is caught' => [
                 'fixture' => '/index.html',
-                'assertion' => $assertionParser->parse('$"2" exists'),
+                'assertion' => $assertionParser->parse('$"2" exists', 0),
                 'expectedExpectationFailedExceptionMessage' => <<<'EOD'
                     "statement": {
                         "statement-type": "assertion",
                         "source": "$\"2\" exists",
+                        "index": 0,
                         "identifier": "$\"2\"",
                         "operator": "exists"
                     },
@@ -175,7 +182,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
             ],
             'exists comparison, attribute identifier examined value, invalid locator exception is caught' => [
                 'fixture' => '/index.html',
-                'assertion' => $assertionParser->parse('$"2".attribute_name exists'),
+                'assertion' => $assertionParser->parse('$"2".attribute_name exists', 0),
                 'expectedExpectationFailedExceptionMessage' => <<<'EOD'
                     "container": {
                         "value": "$\"2\"",
@@ -185,6 +192,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
                     "statement": {
                         "statement-type": "assertion",
                         "source": "$\"2\".attribute_name exists",
+                        "index": 0,
                         "identifier": "$\"2\".attribute_name",
                         "operator": "exists"
                     },

@@ -64,14 +64,14 @@ class IdentifierExistsAssertionHandlerTest extends AbstractResolvableTestCase
 
         return [
             'existence; identifier is not supported' => [
-                'assertion' => $assertionParser->parse('$elements.element_name exists'),
+                'assertion' => $assertionParser->parse('$elements.element_name exists', 0),
                 'expectedException' => new UnsupportedContentException(
                     UnsupportedContentException::TYPE_IDENTIFIER,
                     '$elements.element_name'
                 ),
             ],
             'existence; identifier cannot be extracted' => [
-                'assertion' => $assertionParser->parse('$".selector" exists'),
+                'assertion' => $assertionParser->parse('$".selector" exists', 0),
                 'expectedException' => new UnsupportedContentException(
                     UnsupportedContentException::TYPE_IDENTIFIER,
                     '$".selector"'

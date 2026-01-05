@@ -75,9 +75,9 @@ class ActionHandlerTest extends AbstractResolvableTestCase
 
         return [
             'interaction action, identifier not dom identifier' => [
-                'action' => $actionParser->parse('click $elements.element_name'),
+                'action' => $actionParser->parse('click $elements.element_name', 0),
                 'expectedException' => new UnsupportedStatementException(
-                    $actionParser->parse('click $elements.element_name'),
+                    $actionParser->parse('click $elements.element_name', 0),
                     new UnsupportedContentException(
                         UnsupportedContentException::TYPE_IDENTIFIER,
                         '$elements.element_name'
@@ -85,9 +85,9 @@ class ActionHandlerTest extends AbstractResolvableTestCase
                 ),
             ],
             'unsupported action type' => [
-                'action' => $actionParser->parse('foo $".selector"'),
+                'action' => $actionParser->parse('foo $".selector"', 0),
                 'expectedException' => new UnsupportedStatementException(
-                    $actionParser->parse('foo $".selector"')
+                    $actionParser->parse('foo $".selector"', 0)
                 ),
             ],
         ];

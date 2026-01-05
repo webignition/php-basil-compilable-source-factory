@@ -42,21 +42,21 @@ class WaitForActionHandlerTest extends TestCase
 
         return [
             'identifier is not dom identifier' => [
-                'action' => $actionParser->parse('wait-for $elements.element_name'),
+                'action' => $actionParser->parse('wait-for $elements.element_name', 0),
                 'expectedException' => new UnsupportedContentException(
                     UnsupportedContentException::TYPE_IDENTIFIER,
                     '$elements.element_name'
                 ),
             ],
             'identifier is attribute reference' => [
-                'action' => $actionParser->parse('wait-for $".selector".attribute_name'),
+                'action' => $actionParser->parse('wait-for $".selector".attribute_name', 0),
                 'expectedException' => new UnsupportedContentException(
                     UnsupportedContentException::TYPE_IDENTIFIER,
                     '$".selector".attribute_name'
                 ),
             ],
             'identifier cannot be extracted' => [
-                'action' => $actionParser->parse('wait-for $".selector"'),
+                'action' => $actionParser->parse('wait-for $".selector"', 0),
                 'expectedException' => new UnsupportedContentException(
                     UnsupportedContentException::TYPE_IDENTIFIER,
                     '$".selector"'
