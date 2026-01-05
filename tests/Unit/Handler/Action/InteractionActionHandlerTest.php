@@ -35,14 +35,14 @@ class InteractionActionHandlerTest extends TestCase
 
         return [
             'identifier is not dom identifier' => [
-                'action' => $actionParser->parse('click $elements.element_name'),
+                'action' => $actionParser->parse('click $elements.element_name', 0),
                 'expectedException' => new UnsupportedContentException(
                     UnsupportedContentException::TYPE_IDENTIFIER,
                     '$elements.element_name'
                 ),
             ],
             'attribute identifier' => [
-                'action' => $actionParser->parse('submit $".selector".attribute_name'),
+                'action' => $actionParser->parse('submit $".selector".attribute_name', 0),
                 'expectedException' => new UnsupportedContentException(
                     UnsupportedContentException::TYPE_IDENTIFIER,
                     '$".selector".attribute_name'

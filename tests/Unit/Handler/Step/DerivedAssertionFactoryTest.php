@@ -46,85 +46,85 @@ class DerivedAssertionFactoryTest extends TestCase
 
         return [
             'click action' => [
-                'action' => $actionParser->parse('click $".selector"'),
+                'action' => $actionParser->parse('click $".selector"', 0),
                 'expectedAssertions' => new UniqueAssertionCollection([
                     new DerivedValueOperationAssertion(
-                        $actionParser->parse('click $".selector"'),
+                        $actionParser->parse('click $".selector"', 0),
                         '$".selector"',
                         'exists'
                     ),
                 ]),
             ],
             'click action, descendant identifier' => [
-                'action' => $actionParser->parse('click $".parent" >> $".child"'),
+                'action' => $actionParser->parse('click $".parent" >> $".child"', 0),
                 'expectedAssertions' => new UniqueAssertionCollection([
                     new DerivedValueOperationAssertion(
-                        $actionParser->parse('click $".parent" >> $".child"'),
+                        $actionParser->parse('click $".parent" >> $".child"', 0),
                         '$".parent"',
                         'exists'
                     ),
                     new DerivedValueOperationAssertion(
-                        $actionParser->parse('click $".parent" >> $".child"'),
+                        $actionParser->parse('click $".parent" >> $".child"', 0),
                         '$".parent" >> $".child"',
                         'exists'
                     ),
                 ]),
             ],
             'set action' => [
-                'action' => $actionParser->parse('set $".selector" to "value"'),
+                'action' => $actionParser->parse('set $".selector" to "value"', 0),
                 'expectedAssertions' => new UniqueAssertionCollection([
                     new DerivedValueOperationAssertion(
-                        $actionParser->parse('set $".selector" to "value"'),
+                        $actionParser->parse('set $".selector" to "value"', 0),
                         '$".selector"',
                         'exists'
                     ),
                 ]),
             ],
             'set action, descendant identifier' => [
-                'action' => $actionParser->parse('set $".parent" >> $".child" to "value"'),
+                'action' => $actionParser->parse('set $".parent" >> $".child" to "value"', 0),
                 'expectedAssertions' => new UniqueAssertionCollection([
                     new DerivedValueOperationAssertion(
-                        $actionParser->parse('set $".parent" >> $".child" to "value"'),
+                        $actionParser->parse('set $".parent" >> $".child" to "value"', 0),
                         '$".parent"',
                         'exists'
                     ),
                     new DerivedValueOperationAssertion(
-                        $actionParser->parse('set $".parent" >> $".child" to "value"'),
+                        $actionParser->parse('set $".parent" >> $".child" to "value"', 0),
                         '$".parent" >> $".child"',
                         'exists'
                     ),
                 ]),
             ],
             'set action, elemental value' => [
-                'action' => $actionParser->parse('set $".selector" to $".value"'),
+                'action' => $actionParser->parse('set $".selector" to $".value"', 0),
                 'expectedAssertions' => new UniqueAssertionCollection([
                     new DerivedValueOperationAssertion(
-                        $actionParser->parse('set $".selector" to $".value"'),
+                        $actionParser->parse('set $".selector" to $".value"', 0),
                         '$".selector"',
                         'exists'
                     ),
                     new DerivedValueOperationAssertion(
-                        $actionParser->parse('set $".selector" to $".value"'),
+                        $actionParser->parse('set $".selector" to $".value"', 0),
                         '$".value"',
                         'exists'
                     ),
                 ]),
             ],
             'set action, elemental value matches identifier' => [
-                'action' => $actionParser->parse('set $".selector" to $".selector"'),
+                'action' => $actionParser->parse('set $".selector" to $".selector"', 0),
                 'expectedAssertions' => new UniqueAssertionCollection([
                     new DerivedValueOperationAssertion(
-                        $actionParser->parse('set $".selector" to $".selector"'),
+                        $actionParser->parse('set $".selector" to $".selector"', 0),
                         '$".selector"',
                         'exists'
                     ),
                 ]),
             ],
             'wait action, elemental duration' => [
-                'action' => $actionParser->parse('wait $".duration"'),
+                'action' => $actionParser->parse('wait $".duration"', 0),
                 'expectedAssertions' => new UniqueAssertionCollection([
                     new DerivedValueOperationAssertion(
-                        $actionParser->parse('wait $".duration"'),
+                        $actionParser->parse('wait $".duration"', 0),
                         '$".duration"',
                         'exists'
                     ),
@@ -155,68 +155,68 @@ class DerivedAssertionFactoryTest extends TestCase
 
         return [
             'exists assertion' => [
-                'assertion' => $assertionParser->parse('$".selector" exists'),
+                'assertion' => $assertionParser->parse('$".selector" exists', 0),
                 'expectedAssertions' => new UniqueAssertionCollection([]),
             ],
             'not-exists assertion' => [
-                'assertion' => $assertionParser->parse('$".selector" not-exists'),
+                'assertion' => $assertionParser->parse('$".selector" not-exists', 0),
                 'expectedAssertions' => new UniqueAssertionCollection([]),
             ],
             'exists assertion, descendant identifier' => [
-                'assertion' => $assertionParser->parse('$".parent" >> $".child" exists'),
+                'assertion' => $assertionParser->parse('$".parent" >> $".child" exists', 0),
                 'expectedAssertions' => new UniqueAssertionCollection([
                     new DerivedValueOperationAssertion(
-                        $assertionParser->parse('$".parent" >> $".child" exists'),
+                        $assertionParser->parse('$".parent" >> $".child" exists', 0),
                         '$".parent"',
                         'exists'
                     ),
                 ]),
             ],
             'is assertion' => [
-                'assertion' => $assertionParser->parse('$".selector" is "value"'),
+                'assertion' => $assertionParser->parse('$".selector" is "value"', 0),
                 'expectedAssertions' => new UniqueAssertionCollection([
                     new DerivedValueOperationAssertion(
-                        $assertionParser->parse('$".selector" is "value"'),
+                        $assertionParser->parse('$".selector" is "value"', 0),
                         '$".selector"',
                         'exists'
                     ),
                 ]),
             ],
             'is assertion, elemental value' => [
-                'assertion' => $assertionParser->parse('$".selector" is $".value"'),
+                'assertion' => $assertionParser->parse('$".selector" is $".value"', 0),
                 'expectedAssertions' => new UniqueAssertionCollection([
                     new DerivedValueOperationAssertion(
-                        $assertionParser->parse('$".selector" is $".value"'),
+                        $assertionParser->parse('$".selector" is $".value"', 0),
                         '$".selector"',
                         'exists'
                     ),
                     new DerivedValueOperationAssertion(
-                        $assertionParser->parse('$".selector" is $".value"'),
+                        $assertionParser->parse('$".selector" is $".value"', 0),
                         '$".value"',
                         'exists'
                     ),
                 ]),
             ],
             'matches, scalar to scalar' => [
-                'assertion' => $assertionParser->parse('$page.title matches "pattern"'),
+                'assertion' => $assertionParser->parse('$page.title matches "pattern"', 0),
                 'expectedAssertions' => new UniqueAssertionCollection([
                     new DerivedValueOperationAssertion(
-                        $assertionParser->parse('$page.title matches "pattern"'),
+                        $assertionParser->parse('$page.title matches "pattern"', 0),
                         '"pattern"',
                         'is-regexp'
                     )
                 ]),
             ],
             'matches, scalar to elemental' => [
-                'assertion' => $assertionParser->parse('$page.title matches $".pattern-container"'),
+                'assertion' => $assertionParser->parse('$page.title matches $".pattern-container"', 0),
                 'expectedAssertions' => new UniqueAssertionCollection([
                     new DerivedValueOperationAssertion(
-                        $assertionParser->parse('$page.title matches $".pattern-container"'),
+                        $assertionParser->parse('$page.title matches $".pattern-container"', 0),
                         '$".pattern-container"',
                         'exists'
                     ),
                     new DerivedValueOperationAssertion(
-                        $assertionParser->parse('$page.title matches $".pattern-container"'),
+                        $assertionParser->parse('$page.title matches $".pattern-container"', 0),
                         '$".pattern-container"',
                         'is-regexp'
                     )
@@ -229,6 +229,7 @@ class DerivedAssertionFactoryTest extends TestCase
     {
         $action = new Action(
             'click "foo"',
+            0,
             'click',
             '"foo"',
             '"foo"'
@@ -245,6 +246,7 @@ class DerivedAssertionFactoryTest extends TestCase
     {
         $action = new Action(
             'set "foo" to "value"',
+            0,
             'set',
             '"foo" to "value"',
             '"foo"',

@@ -116,18 +116,18 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                         '{
                             "statement-type": "action",
                             "source": "click $\".selector\"",
+                            "index": 0,
                             "identifier": "$\".selector\"",
                             "type": "click",
-                            "arguments": "$\".selector\"",
-                            "index": 0
+                            "arguments": "$\".selector\""
                         }',
                         '{
                             "statement-type": "assertion",
                             "source": "$page.title is \"value\"",
+                            "index": 1,
                             "identifier": "$page.title",
                             "value": "\"value\"",
-                            "operator": "is",
-                            "index": 1
+                            "operator": "is"
                         }',
                     ])]
                     public function test3(): void
@@ -216,19 +216,19 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                         '{
                             "statement-type": "action",
                             "source": "set $\".selector\" to $data.field_value",
+                            "index": 0,
                             "identifier": "$\".selector\"",
                             "value": "$data.field_value",
                             "type": "set",
-                            "arguments": "$\".selector\" to $data.field_value",
-                            "index": 0
+                            "arguments": "$\".selector\" to $data.field_value"
                         }',
                         '{
                             "statement-type": "assertion",
                             "source": "$\".selector\" is $data.expected_value",
+                            "index": 1,
                             "identifier": "$\".selector\"",
                             "value": "$data.expected_value",
-                            "operator": "is",
-                            "index": 1
+                            "operator": "is"
                         }',
                     ])]
                     #[DataProvider('dataProvider4')]

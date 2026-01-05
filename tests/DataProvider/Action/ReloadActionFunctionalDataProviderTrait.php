@@ -68,7 +68,7 @@ trait ReloadActionFunctionalDataProviderTrait
         return [
             'reload action' => [
                 'fixture' => '/action-wait-for.html',
-                'action' => $actionParser->parse('reload'),
+                'action' => $actionParser->parse('reload', 0),
                 'additionalSetupStatements' => $setupTeardownStatements,
                 'teardownStatements' => $setupTeardownStatements,
             ],

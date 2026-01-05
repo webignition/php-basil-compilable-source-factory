@@ -21,7 +21,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
         return [
             'derived is-regexp, matches assertion with literal scalar value' => [
                 'assertion' => new DerivedValueOperationAssertion(
-                    $assertionParser->parse('$".selector" matches "/^value/"'),
+                    $assertionParser->parse('$".selector" matches "/^value/"', 0),
                     '"/^value/"',
                     'is-regexp'
                 ),
@@ -39,6 +39,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "assertion",
                                 "source": "$\".selector\" matches \"\/^value\/\"",
+                                "index": 0,
                                 "identifier": "$\".selector\"",
                                 "value": "\"\/^value\/\"",
                                 "operator": "matches"
@@ -54,7 +55,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
             ],
             'derived is-regexp, matches assertion with elemental value' => [
                 'assertion' => new DerivedValueOperationAssertion(
-                    $assertionParser->parse('$".selector" matches $".pattern-container"'),
+                    $assertionParser->parse('$".selector" matches $".pattern-container"', 0),
                     '$".pattern-container"',
                     'is-regexp'
                 ),
@@ -78,6 +79,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "assertion",
                                 "source": "$\".selector\" matches $\".pattern-container\"",
+                                "index": 0,
                                 "identifier": "$\".selector\"",
                                 "value": "$\".pattern-container\"",
                                 "operator": "matches"
@@ -95,7 +97,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
             ],
             'derived is-regexp, matches assertion with attribute value' => [
                 'assertion' => new DerivedValueOperationAssertion(
-                    $assertionParser->parse('$".selector" matches $".pattern-container".attribute_name'),
+                    $assertionParser->parse('$".selector" matches $".pattern-container".attribute_name', 0),
                     '$".pattern-container".attribute_name',
                     'is-regexp'
                 ),
@@ -119,6 +121,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "assertion",
                                 "source": "$\".selector\" matches $\".pattern-container\".attribute_name",
+                                "index": 0,
                                 "identifier": "$\".selector\"",
                                 "value": "$\".pattern-container\".attribute_name",
                                 "operator": "matches"
@@ -135,7 +138,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
             ],
             'derived is-regexp, matches assertion with data parameter scalar value' => [
                 'assertion' => new DerivedValueOperationAssertion(
-                    $assertionParser->parse('$page.title matches $data.pattern'),
+                    $assertionParser->parse('$page.title matches $data.pattern', 0),
                     '$data.pattern',
                     'is-regexp'
                 ),
@@ -153,6 +156,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "assertion",
                                 "source": "$page.title matches $data.pattern",
+                                "index": 0,
                                 "identifier": "$page.title",
                                 "value": "$data.pattern",
                                 "operator": "matches"

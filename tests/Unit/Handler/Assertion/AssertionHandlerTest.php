@@ -20,7 +20,7 @@ class AssertionHandlerTest extends TestCase
     public function testHandleComparison(): void
     {
         $assertionParser = AssertionParser::create();
-        $assertion = $assertionParser->parse('$page.title is "value"');
+        $assertion = $assertionParser->parse('$page.title is "value"', 0);
 
         $expectedReturnValue = \Mockery::mock(BodyInterface::class);
 
@@ -43,7 +43,7 @@ class AssertionHandlerTest extends TestCase
     public function testHandleExistence(): void
     {
         $assertionParser = AssertionParser::create();
-        $assertion = $assertionParser->parse('$page.title exists');
+        $assertion = $assertionParser->parse('$page.title exists', 0);
 
         $expectedReturnValue = \Mockery::mock(BodyInterface::class);
 
@@ -66,7 +66,7 @@ class AssertionHandlerTest extends TestCase
     public function testHandleIsRegExp(): void
     {
         $assertionParser = AssertionParser::create();
-        $assertion = $assertionParser->parse('$page.title is-regexp');
+        $assertion = $assertionParser->parse('$page.title is-regexp', 0);
 
         $expectedReturnValue = \Mockery::mock(BodyInterface::class);
 
@@ -89,7 +89,7 @@ class AssertionHandlerTest extends TestCase
     public function testHandleWrapsUnsupportedContentException(): void
     {
         $assertionParser = AssertionParser::create();
-        $assertion = $assertionParser->parse('$elements.examined is "value"');
+        $assertion = $assertionParser->parse('$elements.examined is "value"', 0);
 
         $expectedUnsupportedContentException = new UnsupportedContentException(
             UnsupportedContentException::TYPE_VALUE,
@@ -121,6 +121,7 @@ class AssertionHandlerTest extends TestCase
     {
         $assertion = new Assertion(
             '$".selector" invalid-comparison "value"',
+            0,
             '$".selector"',
             'invalid-comparison',
             '"value"'

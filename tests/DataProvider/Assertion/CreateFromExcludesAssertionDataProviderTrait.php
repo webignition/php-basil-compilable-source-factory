@@ -19,7 +19,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
 
         return [
             'excludes comparison, element identifier examined value, literal string expected value' => [
-                'assertion' => $assertionParser->parse('$".selector" excludes "value"'),
+                'assertion' => $assertionParser->parse('$".selector" excludes "value"', 0),
                 'expectedRenderedContent' => <<<'EOD'
                     $expectedValue = "value";
                     $examinedValue = (function () {
@@ -36,6 +36,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "assertion",
                                 "source": "$\".selector\" excludes \"value\"",
+                                "index": 0,
                                 "identifier": "$\".selector\"",
                                 "value": "\"value\"",
                                 "operator": "excludes"
@@ -52,7 +53,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
                 ),
             ],
             'excludes comparison, element identifier examined value, literal string expected w/ single quotes' => [
-                'assertion' => $assertionParser->parse('$".selector" excludes "\'value\'"'),
+                'assertion' => $assertionParser->parse('$".selector" excludes "\'value\'"', 0),
                 'expectedRenderedContent' => <<<'EOD'
                     $expectedValue = "'value'";
                     $examinedValue = (function () {
@@ -69,6 +70,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "assertion",
                                 "source": "$\".selector\" excludes \"\'value\'\"",
+                                "index": 0,
                                 "identifier": "$\".selector\"",
                                 "value": "\"\'value\'\"",
                                 "operator": "excludes"
@@ -85,7 +87,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
                 ),
             ],
             'excludes comparison, attribute identifier examined value, literal string expected value' => [
-                'assertion' => $assertionParser->parse('$".selector".attribute_name excludes "value"'),
+                'assertion' => $assertionParser->parse('$".selector".attribute_name excludes "value"', 0),
                 'expectedRenderedContent' => <<<'EOD'
                     $expectedValue = "value";
                     $examinedValue = (function () {
@@ -102,6 +104,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "assertion",
                                 "source": "$\".selector\".attribute_name excludes \"value\"",
+                                "index": 0,
                                 "identifier": "$\".selector\".attribute_name",
                                 "value": "\"value\"",
                                 "operator": "excludes"

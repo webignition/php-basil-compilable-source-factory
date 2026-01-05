@@ -19,7 +19,7 @@ trait CreateFromForwardActionDataProviderTrait
 
         return [
             'no-arguments action (forward)' => [
-                'action' => $actionParser->parse('forward'),
+                'action' => $actionParser->parse('forward', 0),
                 'expectedRenderedSource' => '{{ CRAWLER }} = {{ CLIENT }}->forward();' . "\n"
                     . '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
                 'expectedMetadata' => new Metadata(

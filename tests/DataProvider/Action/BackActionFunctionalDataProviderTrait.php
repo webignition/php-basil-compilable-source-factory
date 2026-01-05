@@ -20,7 +20,7 @@ trait BackActionFunctionalDataProviderTrait
         return [
             'back action' => [
                 'fixture' => '/index.html',
-                'action' => $actionParser->parse('back'),
+                'action' => $actionParser->parse('back', 0),
                 'additionalSetupStatements' => new Body([
                     StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
                     StatementFactory::createCrawlerActionCallForElement('#link-to-assertions', 'click'),

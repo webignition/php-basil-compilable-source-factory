@@ -43,21 +43,21 @@ class SetActionHandlerTest extends TestCase
 
         return [
             'identifier is not dom identifier' => [
-                'action' => $actionParser->parse('set $elements.element_name to "value"'),
+                'action' => $actionParser->parse('set $elements.element_name to "value"', 0),
                 'expectedException' => new UnsupportedContentException(
                     UnsupportedContentException::TYPE_IDENTIFIER,
                     '$elements.element_name'
                 ),
             ],
             'identifier is attribute reference' => [
-                'action' => $actionParser->parse('set $".selector".attribute_name to "value"'),
+                'action' => $actionParser->parse('set $".selector".attribute_name to "value"', 0),
                 'expectedException' => new UnsupportedContentException(
                     UnsupportedContentException::TYPE_IDENTIFIER,
                     '$".selector".attribute_name'
                 ),
             ],
             'identifier cannot be extracted' => [
-                'action' => $actionParser->parse('set $".selector" to "value"'),
+                'action' => $actionParser->parse('set $".selector" to "value"', 0),
                 'expectedException' => new UnsupportedContentException(
                     UnsupportedContentException::TYPE_IDENTIFIER,
                     '$".selector"'
@@ -79,7 +79,7 @@ class SetActionHandlerTest extends TestCase
                 },
             ],
             'value identifier cannot be extracted' => [
-                'action' => $actionParser->parse('set $".selector" to $".value"'),
+                'action' => $actionParser->parse('set $".selector" to $".value"', 0),
                 'expectedException' => new UnsupportedContentException(
                     UnsupportedContentException::TYPE_IDENTIFIER,
                     '$".value"'

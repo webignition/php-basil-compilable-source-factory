@@ -19,7 +19,7 @@ trait CreateFromIncludesAssertionDataProviderTrait
 
         return [
             'includes comparison, element identifier examined value, literal string expected value' => [
-                'assertion' => $assertionParser->parse('$".selector" includes "value"'),
+                'assertion' => $assertionParser->parse('$".selector" includes "value"', 0),
                 'expectedRenderedContent' => <<<'EOD'
                     $expectedValue = "value";
                     $examinedValue = (function () {
@@ -36,6 +36,7 @@ trait CreateFromIncludesAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "assertion",
                                 "source": "$\".selector\" includes \"value\"",
+                                "index": 0,
                                 "identifier": "$\".selector\"",
                                 "value": "\"value\"",
                                 "operator": "includes"
@@ -52,7 +53,7 @@ trait CreateFromIncludesAssertionDataProviderTrait
                 ),
             ],
             'includes comparison, attribute identifier examined value, literal string expected value' => [
-                'assertion' => $assertionParser->parse('$".selector".attribute_name includes "value"'),
+                'assertion' => $assertionParser->parse('$".selector".attribute_name includes "value"', 0),
                 'expectedRenderedContent' => <<<'EOD'
                     $expectedValue = "value";
                     $examinedValue = (function () {
@@ -69,6 +70,7 @@ trait CreateFromIncludesAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "assertion",
                                 "source": "$\".selector\".attribute_name includes \"value\"",
+                                "index": 0,
                                 "identifier": "$\".selector\".attribute_name",
                                 "value": "\"value\"",
                                 "operator": "includes"

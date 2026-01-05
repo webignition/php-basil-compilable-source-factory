@@ -19,7 +19,7 @@ trait CreateFromBackActionDataProviderTrait
 
         return [
             'no-arguments action (back)' => [
-                'action' => $actionParser->parse('back'),
+                'action' => $actionParser->parse('back', 0),
                 'expectedRenderedSource' => '{{ CRAWLER }} = {{ CLIENT }}->back();' . "\n"
                     . '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
                 'expectedMetadata' => new Metadata(variableNames: [

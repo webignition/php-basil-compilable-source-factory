@@ -25,12 +25,12 @@ trait CreateFromWaitForActionDataProviderTrait
 
         return [
             'interaction action (wait-for), element identifier' => [
-                'action' => $actionParser->parse('wait-for $".selector"'),
+                'action' => $actionParser->parse('wait-for $".selector"', 0),
                 'expectedRenderedSource' => '{{ CRAWLER }} = {{ CLIENT }}->waitFor(\'.selector\');',
                 'expectedMetadata' => $expectedMetadata,
             ],
             'interaction action (wait-for), single-character CSS selector element value' => [
-                'action' => $actionParser->parse('wait-for $"a"'),
+                'action' => $actionParser->parse('wait-for $"a"', 0),
                 'expectedRenderedSource' => '{{ CRAWLER }} = {{ CLIENT }}->waitFor(\'a\');',
                 'expectedMetadata' => $expectedMetadata,
             ],

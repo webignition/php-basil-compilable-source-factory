@@ -33,7 +33,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
 
         return [
             'exists comparison, element identifier examined value' => [
-                'assertion' => $assertionParser->parse('$".selector" exists'),
+                'assertion' => $assertionParser->parse('$".selector" exists', 0),
                 'expectedRenderedContent' => <<<'EOD'
                     try {
                         $examinedValue = {{ NAVIGATOR }}->has('{
@@ -44,6 +44,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "assertion",
                                 "source": "$\".selector\" exists",
+                                "index": 0,
                                 "identifier": "$\".selector\"",
                                 "operator": "exists"
                             },
@@ -61,6 +62,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "assertion",
                                 "source": "$\".selector\" exists",
+                                "index": 0,
                                 "identifier": "$\".selector\"",
                                 "operator": "exists"
                             }
@@ -70,7 +72,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                 'expectedMetadata' => $expectedMetadata,
             ],
             'exists comparison, attribute identifier examined value' => [
-                'assertion' => $assertionParser->parse('$".selector".attribute_name exists'),
+                'assertion' => $assertionParser->parse('$".selector".attribute_name exists', 0),
                 'expectedRenderedContent' => <<<'EOD'
                     try {
                         $examinedValue = {{ NAVIGATOR }}->hasOne('{
@@ -86,6 +88,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "assertion",
                                 "source": "$\".selector\".attribute_name exists",
+                                "index": 0,
                                 "identifier": "$\".selector\".attribute_name",
                                 "operator": "exists"
                             },
@@ -108,6 +111,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "assertion",
                                 "source": "$\".selector\".attribute_name exists",
+                                "index": 0,
                                 "identifier": "$\".selector\".attribute_name",
                                 "operator": "exists"
                             }
@@ -126,6 +130,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "assertion",
                                 "source": "$\".selector\".attribute_name exists",
+                                "index": 0,
                                 "identifier": "$\".selector\".attribute_name",
                                 "operator": "exists"
                             }
@@ -135,7 +140,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                 'expectedMetadata' => $expectedMetadata,
             ],
             'exists comparison, css attribute selector containing dot' => [
-                'assertion' => $assertionParser->parse('$"a[href=foo.html]" exists'),
+                'assertion' => $assertionParser->parse('$"a[href=foo.html]" exists', 0),
                 'expectedRenderedContent' => <<<'EOD'
                     try {
                         $examinedValue = {{ NAVIGATOR }}->has('{
@@ -146,6 +151,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "assertion",
                                 "source": "$\"a[href=foo.html]\" exists",
+                                "index": 0,
                                 "identifier": "$\"a[href=foo.html]\"",
                                 "operator": "exists"
                             },
@@ -163,6 +169,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "assertion",
                                 "source": "$\"a[href=foo.html]\" exists",
+                                "index": 0,
                                 "identifier": "$\"a[href=foo.html]\"",
                                 "operator": "exists"
                             }
@@ -172,7 +179,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                 'expectedMetadata' => $expectedMetadata,
             ],
             'exists comparison, css attribute selector containing single quotes' => [
-                'assertion' => $assertionParser->parse('$"[data-value=\"' . "'single quoted'" . '\"]" exists'),
+                'assertion' => $assertionParser->parse('$"[data-value=\"' . "'single quoted'" . '\"]" exists', 0),
                 'expectedRenderedContent' => <<<'EOD'
                     try {
                         $examinedValue = {{ NAVIGATOR }}->has('{
@@ -183,6 +190,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "assertion",
                                 "source": "$\"[data-value=\\\"\'single quoted\'\\\"]\" exists",
+                                "index": 0,
                                 "identifier": "$\"[data-value=\\\"\'single quoted\'\\\"]\"",
                                 "operator": "exists"
                             },
@@ -200,6 +208,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "assertion",
                                 "source": "$\"[data-value=\\\"\'single quoted\'\\\"]\" exists",
+                                "index": 0,
                                 "identifier": "$\"[data-value=\\\"\'single quoted\'\\\"]\"",
                                 "operator": "exists"
                             }
@@ -209,7 +218,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                 'expectedMetadata' => $expectedMetadata,
             ],
             'exists comparison, css attribute selector containing dot with attribute name' => [
-                'assertion' => $assertionParser->parse('$"a[href=foo.html]".attribute_name exists'),
+                'assertion' => $assertionParser->parse('$"a[href=foo.html]".attribute_name exists', 0),
                 'expectedRenderedContent' => <<<'EOD'
                     try {
                         $examinedValue = {{ NAVIGATOR }}->hasOne('{
@@ -225,6 +234,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "assertion",
                                 "source": "$\"a[href=foo.html]\".attribute_name exists",
+                                "index": 0,
                                 "identifier": "$\"a[href=foo.html]\".attribute_name",
                                 "operator": "exists"
                             },
@@ -247,6 +257,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "assertion",
                                 "source": "$\"a[href=foo.html]\".attribute_name exists",
+                                "index": 0,
                                 "identifier": "$\"a[href=foo.html]\".attribute_name",
                                 "operator": "exists"
                             }
@@ -265,6 +276,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "assertion",
                                 "source": "$\"a[href=foo.html]\".attribute_name exists",
+                                "index": 0,
                                 "identifier": "$\"a[href=foo.html]\".attribute_name",
                                 "operator": "exists"
                             }
@@ -275,7 +287,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
             ],
             'derived exists comparison, click action source' => [
                 'assertion' => new DerivedValueOperationAssertion(
-                    $actionParser->parse('click $".selector"'),
+                    $actionParser->parse('click $".selector"', 0),
                     '$".selector"',
                     'exists'
                 ),
@@ -294,6 +306,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "action",
                                 "source": "click $\".selector\"",
+                                "index": 0,
                                 "identifier": "$\".selector\"",
                                 "type": "click",
                                 "arguments": "$\".selector\""
@@ -317,6 +330,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "action",
                                 "source": "click $\".selector\"",
+                                "index": 0,
                                 "identifier": "$\".selector\"",
                                 "type": "click",
                                 "arguments": "$\".selector\""
@@ -328,7 +342,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
             ],
             'derived exists comparison, submit action source' => [
                 'assertion' => new DerivedValueOperationAssertion(
-                    $actionParser->parse('submit $".selector"'),
+                    $actionParser->parse('submit $".selector"', 0),
                     '$".selector"',
                     'exists'
                 ),
@@ -347,6 +361,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "action",
                                 "source": "submit $\".selector\"",
+                                "index": 0,
                                 "identifier": "$\".selector\"",
                                 "type": "submit",
                                 "arguments": "$\".selector\""
@@ -370,6 +385,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "action",
                                 "source": "submit $\".selector\"",
+                                "index": 0,
                                 "identifier": "$\".selector\"",
                                 "type": "submit",
                                 "arguments": "$\".selector\""
@@ -381,7 +397,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
             ],
             'derived exists comparison, set action source' => [
                 'assertion' => new DerivedValueOperationAssertion(
-                    $actionParser->parse('set $".selector" to "value"'),
+                    $actionParser->parse('set $".selector" to "value"', 0),
                     '$".selector"',
                     'exists'
                 ),
@@ -400,6 +416,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "action",
                                 "source": "set $\".selector\" to \"value\"",
+                                "index": 0,
                                 "identifier": "$\".selector\"",
                                 "value": "\"value\"",
                                 "type": "set",
@@ -424,6 +441,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "action",
                                 "source": "set $\".selector\" to \"value\"",
+                                "index": 0,
                                 "identifier": "$\".selector\"",
                                 "value": "\"value\"",
                                 "type": "set",
@@ -436,7 +454,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
             ],
             'derived exists comparison, wait action source' => [
                 'assertion' => new DerivedValueOperationAssertion(
-                    $actionParser->parse('wait $".duration"'),
+                    $actionParser->parse('wait $".duration"', 0),
                     '$".duration"',
                     'exists'
                 ),
@@ -455,6 +473,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "action",
                                 "source": "wait $\".duration\"",
+                                "index": 0,
                                 "value": "$\".duration\"",
                                 "type": "wait",
                                 "arguments": "$\".duration\""
@@ -478,6 +497,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "statement": {
                                 "statement-type": "action",
                                 "source": "wait $\".duration\"",
+                                "index": 0,
                                 "value": "$\".duration\"",
                                 "type": "wait",
                                 "arguments": "$\".duration\""

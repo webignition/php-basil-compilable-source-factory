@@ -19,7 +19,7 @@ trait CreateFromSetActionDataProviderTrait
 
         return [
             'input action, element identifier, literal value' => [
-                'action' => $actionParser->parse('set $".selector" to "value"'),
+                'action' => $actionParser->parse('set $".selector" to "value"', 0),
                 'expectedRenderedSource' => <<<'EOD'
                     {{ MUTATOR }}->setValue(
                         {{ NAVIGATOR }}->find('{
@@ -38,7 +38,7 @@ trait CreateFromSetActionDataProviderTrait
                 ),
             ],
             'input action, element identifier, element value' => [
-                'action' => $actionParser->parse('set $".selector" to $".source"'),
+                'action' => $actionParser->parse('set $".selector" to $".source"', 0),
                 'expectedRenderedSource' => <<<'EOD'
                     {{ MUTATOR }}->setValue(
                         {{ NAVIGATOR }}->find('{
@@ -64,7 +64,7 @@ trait CreateFromSetActionDataProviderTrait
                 ),
             ],
             'input action, element identifier, attribute value' => [
-                'action' => $actionParser->parse('set $".selector" to $".source".attribute_name'),
+                'action' => $actionParser->parse('set $".selector" to $".source".attribute_name', 0),
                 'expectedRenderedSource' => <<<'EOD'
                     {{ MUTATOR }}->setValue(
                         {{ NAVIGATOR }}->find('{
@@ -89,7 +89,7 @@ trait CreateFromSetActionDataProviderTrait
                 ),
             ],
             'input action, browser property' => [
-                'action' => $actionParser->parse('set $".selector" to $browser.size'),
+                'action' => $actionParser->parse('set $".selector" to $browser.size', 0),
                 'expectedRenderedSource' => <<<'EOD'
         {{ MUTATOR }}->setValue(
             {{ NAVIGATOR }}->find('{
@@ -113,7 +113,7 @@ trait CreateFromSetActionDataProviderTrait
                 ),
             ],
             'input action, page property' => [
-                'action' => $actionParser->parse('set $".selector" to $page.url'),
+                'action' => $actionParser->parse('set $".selector" to $page.url', 0),
                 'expectedRenderedSource' => <<<'EOD'
                     {{ MUTATOR }}->setValue(
                         {{ NAVIGATOR }}->find('{
@@ -133,7 +133,7 @@ trait CreateFromSetActionDataProviderTrait
                 ),
             ],
             'input action, environment value' => [
-                'action' => $actionParser->parse('set $".selector" to $env.KEY'),
+                'action' => $actionParser->parse('set $".selector" to $env.KEY', 0),
                 'expectedRenderedSource' => <<<'EOD'
                     {{ MUTATOR }}->setValue(
                         {{ NAVIGATOR }}->find('{
@@ -153,7 +153,7 @@ trait CreateFromSetActionDataProviderTrait
                 ),
             ],
             'input action, environment value with default' => [
-                'action' => $actionParser->parse('set $".selector" to $env.KEY|"default"'),
+                'action' => $actionParser->parse('set $".selector" to $env.KEY|"default"', 0),
                 'expectedRenderedSource' => <<<'EOD'
                     {{ MUTATOR }}->setValue(
                         {{ NAVIGATOR }}->find('{
@@ -173,7 +173,7 @@ trait CreateFromSetActionDataProviderTrait
                 ),
             ],
             'input action, environment value with default with whitespace' => [
-                'action' => $actionParser->parse('set $".selector" to $env.KEY|"default value"'),
+                'action' => $actionParser->parse('set $".selector" to $env.KEY|"default value"', 0),
                 'expectedRenderedSource' => <<<'EOD'
                     {{ MUTATOR }}->setValue(
                         {{ NAVIGATOR }}->find('{
@@ -193,7 +193,7 @@ trait CreateFromSetActionDataProviderTrait
                 ),
             ],
             'input action, parent > child element identifier, literal value' => [
-                'action' => $actionParser->parse('set $".parent" >> $".child" to "value"'),
+                'action' => $actionParser->parse('set $".parent" >> $".child" to "value"', 0),
                 'expectedRenderedSource' => <<<'EOD'
                     {{ MUTATOR }}->setValue(
                         {{ NAVIGATOR }}->find('{
@@ -215,7 +215,7 @@ trait CreateFromSetActionDataProviderTrait
                 ),
             ],
             'input action, element identifier, data parameter value' => [
-                'action' => $actionParser->parse('set $".selector" to $data.key'),
+                'action' => $actionParser->parse('set $".selector" to $data.key', 0),
                 'expectedRenderedSource' => <<<'EOD'
                     {{ MUTATOR }}->setValue(
                         {{ NAVIGATOR }}->find('{
