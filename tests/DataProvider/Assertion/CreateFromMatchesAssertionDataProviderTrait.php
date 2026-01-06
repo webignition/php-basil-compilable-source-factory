@@ -33,14 +33,12 @@ trait CreateFromMatchesAssertionDataProviderTrait
                         $expectedValue,
                         $examinedValue,
                         '{
-                            "statement": {
-                                "statement-type": "assertion",
-                                "source": "$\".selector\" matches \"\/^value\/\"",
-                                "index": 0,
-                                "identifier": "$\".selector\"",
-                                "value": "\"\/^value\/\"",
-                                "operator": "matches"
-                            }
+                            "statement-type": "assertion",
+                            "source": "$\".selector\" matches \"\/^value\/\"",
+                            "index": 0,
+                            "identifier": "$\".selector\"",
+                            "value": "\"\/^value\/\"",
+                            "operator": "matches"
                         }'
                     );
                     EOD,
@@ -67,14 +65,12 @@ trait CreateFromMatchesAssertionDataProviderTrait
                         $expectedValue,
                         $examinedValue,
                         '{
-                            "statement": {
-                                "statement-type": "assertion",
-                                "source": "$\".selector\".attribute_name matches \"\/^value\/\"",
-                                "index": 0,
-                                "identifier": "$\".selector\".attribute_name",
-                                "value": "\"\/^value\/\"",
-                                "operator": "matches"
-                            }
+                            "statement-type": "assertion",
+                            "source": "$\".selector\".attribute_name matches \"\/^value\/\"",
+                            "index": 0,
+                            "identifier": "$\".selector\".attribute_name",
+                            "value": "\"\/^value\/\"",
+                            "operator": "matches"
                         }'
                     );
                     EOD,

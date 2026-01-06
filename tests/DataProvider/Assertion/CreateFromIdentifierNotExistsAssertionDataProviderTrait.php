@@ -56,13 +56,11 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertFalse(
                         $examinedValue,
                         '{
-                            "statement": {
-                                "statement-type": "assertion",
-                                "source": "$\".selector\" not-exists",
-                                "index": 0,
-                                "identifier": "$\".selector\"",
-                                "operator": "not-exists"
-                            }
+                            "statement-type": "assertion",
+                            "source": "$\".selector\" not-exists",
+                            "index": 0,
+                            "identifier": "$\".selector\"",
+                            "operator": "not-exists"
                         }'
                     );
                     EOD,
@@ -77,17 +75,19 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                         }');
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('{
-                            "container": {
-                                "value": "$\".selector\"",
-                                "operator": "exists",
-                                "type": "derived-value-operation-assertion"
-                            },
                             "statement": {
-                                "statement-type": "assertion",
-                                "source": "$\".selector\".attribute_name not-exists",
-                                "index": 0,
-                                "identifier": "$\".selector\".attribute_name",
-                                "operator": "not-exists"
+                                "container": {
+                                    "value": "$\".selector\"",
+                                    "operator": "exists",
+                                    "type": "derived-value-operation-assertion"
+                                },
+                                "statement": {
+                                    "statement-type": "assertion",
+                                    "source": "$\".selector\".attribute_name not-exists",
+                                    "index": 0,
+                                    "identifier": "$\".selector\".attribute_name",
+                                    "operator": "not-exists"
+                                }
                             },
                             "reason": "locator-invalid",
                             "exception": {
@@ -124,13 +124,11 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertFalse(
                         $examinedValue,
                         '{
-                            "statement": {
-                                "statement-type": "assertion",
-                                "source": "$\".selector\".attribute_name not-exists",
-                                "index": 0,
-                                "identifier": "$\".selector\".attribute_name",
-                                "operator": "not-exists"
-                            }
+                            "statement-type": "assertion",
+                            "source": "$\".selector\".attribute_name not-exists",
+                            "index": 0,
+                            "identifier": "$\".selector\".attribute_name",
+                            "operator": "not-exists"
                         }'
                     );
                     EOD,

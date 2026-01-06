@@ -11,6 +11,6 @@ readonly class Statement extends JsonExpression
 {
     public function __construct(StatementInterface $statement)
     {
-        parent::__construct(new SerializedStatement($statement)->serialize());
+        parent::__construct($statement->jsonSerialize());
     }
 }

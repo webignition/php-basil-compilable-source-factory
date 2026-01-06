@@ -62,13 +62,11 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
                 'fixture' => '/index.html',
                 'assertion' => $assertionParser->parse('$".selector" exists', 0),
                 'expectedExpectationFailedExceptionMessage' => <<<'EOD'
-                    "statement": {
-                        "statement-type": "assertion",
-                        "source": "$\".selector\" exists",
-                        "index": 0,
-                        "identifier": "$\".selector\"",
-                        "operator": "exists"
-                    }
+                    "statement-type": "assertion",
+                    "source": "$\".selector\" exists",
+                    "index": 0,
+                    "identifier": "$\".selector\"",
+                    "operator": "exists"
     EOD,
             ],
             'exists comparison, attribute identifier examined value, element does not exist' => [
@@ -93,26 +91,22 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
                 'fixture' => '/index.html',
                 'assertion' => $assertionParser->parse('$"h1".attribute_name exists', 0),
                 'expectedExpectationFailedExceptionMessage' => <<<'EOD'
-                    "statement": {
-                        "statement-type": "assertion",
-                        "source": "$\"h1\".attribute_name exists",
-                        "index": 0,
-                        "identifier": "$\"h1\".attribute_name",
-                        "operator": "exists"
-                    }
+                    "statement-type": "assertion",
+                    "source": "$\"h1\".attribute_name exists",
+                    "index": 0,
+                    "identifier": "$\"h1\".attribute_name",
+                    "operator": "exists"
     EOD,
             ],
             'exists comparison, environment examined value, environment variable does not exist' => [
                 'fixture' => '/index.html',
                 'assertion' => $assertionParser->parse('$env.FOO exists', 0),
                 'expectedExpectationFailedExceptionMessage' => <<<'EOD'
-                    "statement": {
-                        "statement-type": "assertion",
-                        "source": "$env.FOO exists",
-                        "index": 0,
-                        "identifier": "$env.FOO",
-                        "operator": "exists"
-                    }
+                    "statement-type": "assertion",
+                    "source": "$env.FOO exists",
+                    "index": 0,
+                    "identifier": "$env.FOO",
+                    "operator": "exists"
     EOD,
             ],
             'is-regexp operation, scalar identifier, literal value is not a regular expression' => [
@@ -184,17 +178,19 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
                 'fixture' => '/index.html',
                 'assertion' => $assertionParser->parse('$"2".attribute_name exists', 0),
                 'expectedExpectationFailedExceptionMessage' => <<<'EOD'
-                    "container": {
-                        "value": "$\"2\"",
-                        "operator": "exists",
-                        "type": "derived-value-operation-assertion"
-                    },
                     "statement": {
-                        "statement-type": "assertion",
-                        "source": "$\"2\".attribute_name exists",
-                        "index": 0,
-                        "identifier": "$\"2\".attribute_name",
-                        "operator": "exists"
+                        "container": {
+                            "value": "$\"2\"",
+                            "operator": "exists",
+                            "type": "derived-value-operation-assertion"
+                        },
+                        "statement": {
+                            "statement-type": "assertion",
+                            "source": "$\"2\".attribute_name exists",
+                            "index": 0,
+                            "identifier": "$\"2\".attribute_name",
+                            "operator": "exists"
+                        }
                     },
                     "reason": "locator-invalid",
                     "exception": {

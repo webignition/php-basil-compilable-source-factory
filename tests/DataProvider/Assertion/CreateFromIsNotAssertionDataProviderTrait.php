@@ -33,14 +33,12 @@ trait CreateFromIsNotAssertionDataProviderTrait
                         $expectedValue,
                         $examinedValue,
                         '{
-                            "statement": {
-                                "statement-type": "assertion",
-                                "source": "$\".selector\" is-not \"value\"",
-                                "index": 0,
-                                "identifier": "$\".selector\"",
-                                "value": "\"value\"",
-                                "operator": "is-not"
-                            }
+                            "statement-type": "assertion",
+                            "source": "$\".selector\" is-not \"value\"",
+                            "index": 0,
+                            "identifier": "$\".selector\"",
+                            "value": "\"value\"",
+                            "operator": "is-not"
                         }'
                     );
                     EOD,
@@ -67,14 +65,12 @@ trait CreateFromIsNotAssertionDataProviderTrait
                         $expectedValue,
                         $examinedValue,
                         '{
-                            "statement": {
-                                "statement-type": "assertion",
-                                "source": "$\".selector\".attribute_name is-not \"value\"",
-                                "index": 0,
-                                "identifier": "$\".selector\".attribute_name",
-                                "value": "\"value\"",
-                                "operator": "is-not"
-                            }
+                            "statement-type": "assertion",
+                            "source": "$\".selector\".attribute_name is-not \"value\"",
+                            "index": 0,
+                            "identifier": "$\".selector\".attribute_name",
+                            "value": "\"value\"",
+                            "operator": "is-not"
                         }'
                     );
                     EOD,

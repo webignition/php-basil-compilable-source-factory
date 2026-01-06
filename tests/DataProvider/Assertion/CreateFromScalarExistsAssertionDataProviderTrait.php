@@ -24,13 +24,11 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertTrue(
                         ({{ CLIENT }}->getCurrentURL() ?? null) !== null,
                         '{
-                            "statement": {
-                                "statement-type": "assertion",
-                                "source": "$page.url exists",
-                                "index": 0,
-                                "identifier": "$page.url",
-                                "operator": "exists"
-                            }
+                            "statement-type": "assertion",
+                            "source": "$page.url exists",
+                            "index": 0,
+                            "identifier": "$page.url",
+                            "operator": "exists"
                         }'
                     );
                     EOD,
@@ -47,13 +45,11 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertTrue(
                         ($key ?? null) !== null,
                         '{
-                            "statement": {
-                                "statement-type": "assertion",
-                                "source": "$data.key exists",
-                                "index": 0,
-                                "identifier": "$data.key",
-                                "operator": "exists"
-                            }
+                            "statement-type": "assertion",
+                            "source": "$data.key exists",
+                            "index": 0,
+                            "identifier": "$data.key",
+                            "operator": "exists"
                         }'
                     );
                     EOD,

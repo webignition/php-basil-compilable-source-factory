@@ -33,14 +33,12 @@ trait CreateFromExcludesAssertionDataProviderTrait
                         (string) ($expectedValue),
                         (string) ($examinedValue),
                         '{
-                            "statement": {
-                                "statement-type": "assertion",
-                                "source": "$\".selector\" excludes \"value\"",
-                                "index": 0,
-                                "identifier": "$\".selector\"",
-                                "value": "\"value\"",
-                                "operator": "excludes"
-                            }
+                            "statement-type": "assertion",
+                            "source": "$\".selector\" excludes \"value\"",
+                            "index": 0,
+                            "identifier": "$\".selector\"",
+                            "value": "\"value\"",
+                            "operator": "excludes"
                         }'
                     );
                     EOD,
@@ -67,14 +65,12 @@ trait CreateFromExcludesAssertionDataProviderTrait
                         (string) ($expectedValue),
                         (string) ($examinedValue),
                         '{
-                            "statement": {
-                                "statement-type": "assertion",
-                                "source": "$\".selector\" excludes \"\'value\'\"",
-                                "index": 0,
-                                "identifier": "$\".selector\"",
-                                "value": "\"\'value\'\"",
-                                "operator": "excludes"
-                            }
+                            "statement-type": "assertion",
+                            "source": "$\".selector\" excludes \"\'value\'\"",
+                            "index": 0,
+                            "identifier": "$\".selector\"",
+                            "value": "\"\'value\'\"",
+                            "operator": "excludes"
                         }'
                     );
                     EOD,
@@ -101,14 +97,12 @@ trait CreateFromExcludesAssertionDataProviderTrait
                         (string) ($expectedValue),
                         (string) ($examinedValue),
                         '{
-                            "statement": {
-                                "statement-type": "assertion",
-                                "source": "$\".selector\".attribute_name excludes \"value\"",
-                                "index": 0,
-                                "identifier": "$\".selector\".attribute_name",
-                                "value": "\"value\"",
-                                "operator": "excludes"
-                            }
+                            "statement-type": "assertion",
+                            "source": "$\".selector\".attribute_name excludes \"value\"",
+                            "index": 0,
+                            "identifier": "$\".selector\".attribute_name",
+                            "value": "\"value\"",
+                            "operator": "excludes"
                         }'
                     );
                     EOD,
