@@ -59,13 +59,11 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
-                            "statement": {
-                                "statement-type": "assertion",
-                                "source": "$\".selector\" exists",
-                                "index": 0,
-                                "identifier": "$\".selector\"",
-                                "operator": "exists"
-                            }
+                            "statement-type": "assertion",
+                            "source": "$\".selector\" exists",
+                            "index": 0,
+                            "identifier": "$\".selector\"",
+                            "operator": "exists"
                         }'
                     );
                     EOD,
@@ -80,17 +78,19 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         }');
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('{
-                            "container": {
-                                "value": "$\".selector\"",
-                                "operator": "exists",
-                                "type": "derived-value-operation-assertion"
-                            },
                             "statement": {
-                                "statement-type": "assertion",
-                                "source": "$\".selector\".attribute_name exists",
-                                "index": 0,
-                                "identifier": "$\".selector\".attribute_name",
-                                "operator": "exists"
+                                "container": {
+                                    "value": "$\".selector\"",
+                                    "operator": "exists",
+                                    "type": "derived-value-operation-assertion"
+                                },
+                                "statement": {
+                                    "statement-type": "assertion",
+                                    "source": "$\".selector\".attribute_name exists",
+                                    "index": 0,
+                                    "identifier": "$\".selector\".attribute_name",
+                                    "operator": "exists"
+                                }
                             },
                             "reason": "locator-invalid",
                             "exception": {
@@ -127,13 +127,11 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
-                            "statement": {
-                                "statement-type": "assertion",
-                                "source": "$\".selector\".attribute_name exists",
-                                "index": 0,
-                                "identifier": "$\".selector\".attribute_name",
-                                "operator": "exists"
-                            }
+                            "statement-type": "assertion",
+                            "source": "$\".selector\".attribute_name exists",
+                            "index": 0,
+                            "identifier": "$\".selector\".attribute_name",
+                            "operator": "exists"
                         }'
                     );
                     EOD,
@@ -166,13 +164,11 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
-                            "statement": {
-                                "statement-type": "assertion",
-                                "source": "$\"a[href=foo.html]\" exists",
-                                "index": 0,
-                                "identifier": "$\"a[href=foo.html]\"",
-                                "operator": "exists"
-                            }
+                            "statement-type": "assertion",
+                            "source": "$\"a[href=foo.html]\" exists",
+                            "index": 0,
+                            "identifier": "$\"a[href=foo.html]\"",
+                            "operator": "exists"
                         }'
                     );
                     EOD,
@@ -205,13 +201,11 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
-                            "statement": {
-                                "statement-type": "assertion",
-                                "source": "$\"[data-value=\\\"\'single quoted\'\\\"]\" exists",
-                                "index": 0,
-                                "identifier": "$\"[data-value=\\\"\'single quoted\'\\\"]\"",
-                                "operator": "exists"
-                            }
+                            "statement-type": "assertion",
+                            "source": "$\"[data-value=\\\"\'single quoted\'\\\"]\" exists",
+                            "index": 0,
+                            "identifier": "$\"[data-value=\\\"\'single quoted\'\\\"]\"",
+                            "operator": "exists"
                         }'
                     );
                     EOD,
@@ -226,17 +220,19 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         }');
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('{
-                            "container": {
-                                "value": "$\"a[href=foo.html]\"",
-                                "operator": "exists",
-                                "type": "derived-value-operation-assertion"
-                            },
                             "statement": {
-                                "statement-type": "assertion",
-                                "source": "$\"a[href=foo.html]\".attribute_name exists",
-                                "index": 0,
-                                "identifier": "$\"a[href=foo.html]\".attribute_name",
-                                "operator": "exists"
+                                "container": {
+                                    "value": "$\"a[href=foo.html]\"",
+                                    "operator": "exists",
+                                    "type": "derived-value-operation-assertion"
+                                },
+                                "statement": {
+                                    "statement-type": "assertion",
+                                    "source": "$\"a[href=foo.html]\".attribute_name exists",
+                                    "index": 0,
+                                    "identifier": "$\"a[href=foo.html]\".attribute_name",
+                                    "operator": "exists"
+                                }
                             },
                             "reason": "locator-invalid",
                             "exception": {
@@ -273,13 +269,11 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
-                            "statement": {
-                                "statement-type": "assertion",
-                                "source": "$\"a[href=foo.html]\".attribute_name exists",
-                                "index": 0,
-                                "identifier": "$\"a[href=foo.html]\".attribute_name",
-                                "operator": "exists"
-                            }
+                            "statement-type": "assertion",
+                            "source": "$\"a[href=foo.html]\".attribute_name exists",
+                            "index": 0,
+                            "identifier": "$\"a[href=foo.html]\".attribute_name",
+                            "operator": "exists"
                         }'
                     );
                     EOD,
@@ -298,18 +292,20 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         }');
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('{
-                            "container": {
-                                "value": "$\".selector\"",
-                                "operator": "exists",
-                                "type": "derived-value-operation-assertion"
-                            },
                             "statement": {
-                                "statement-type": "action",
-                                "source": "click $\".selector\"",
-                                "index": 0,
-                                "identifier": "$\".selector\"",
-                                "type": "click",
-                                "arguments": "$\".selector\""
+                                "container": {
+                                    "value": "$\".selector\"",
+                                    "operator": "exists",
+                                    "type": "derived-value-operation-assertion"
+                                },
+                                "statement": {
+                                    "statement-type": "action",
+                                    "source": "click $\".selector\"",
+                                    "index": 0,
+                                    "identifier": "$\".selector\"",
+                                    "type": "click",
+                                    "arguments": "$\".selector\""
+                                }
                             },
                             "reason": "locator-invalid",
                             "exception": {
@@ -353,18 +349,20 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         }');
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('{
-                            "container": {
-                                "value": "$\".selector\"",
-                                "operator": "exists",
-                                "type": "derived-value-operation-assertion"
-                            },
                             "statement": {
-                                "statement-type": "action",
-                                "source": "submit $\".selector\"",
-                                "index": 0,
-                                "identifier": "$\".selector\"",
-                                "type": "submit",
-                                "arguments": "$\".selector\""
+                                "container": {
+                                    "value": "$\".selector\"",
+                                    "operator": "exists",
+                                    "type": "derived-value-operation-assertion"
+                                },
+                                "statement": {
+                                    "statement-type": "action",
+                                    "source": "submit $\".selector\"",
+                                    "index": 0,
+                                    "identifier": "$\".selector\"",
+                                    "type": "submit",
+                                    "arguments": "$\".selector\""
+                                }
                             },
                             "reason": "locator-invalid",
                             "exception": {
@@ -408,19 +406,21 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         }');
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('{
-                            "container": {
-                                "value": "$\".selector\"",
-                                "operator": "exists",
-                                "type": "derived-value-operation-assertion"
-                            },
                             "statement": {
-                                "statement-type": "action",
-                                "source": "set $\".selector\" to \"value\"",
-                                "index": 0,
-                                "identifier": "$\".selector\"",
-                                "value": "\"value\"",
-                                "type": "set",
-                                "arguments": "$\".selector\" to \"value\""
+                                "container": {
+                                    "value": "$\".selector\"",
+                                    "operator": "exists",
+                                    "type": "derived-value-operation-assertion"
+                                },
+                                "statement": {
+                                    "statement-type": "action",
+                                    "source": "set $\".selector\" to \"value\"",
+                                    "index": 0,
+                                    "identifier": "$\".selector\"",
+                                    "value": "\"value\"",
+                                    "type": "set",
+                                    "arguments": "$\".selector\" to \"value\""
+                                }
                             },
                             "reason": "locator-invalid",
                             "exception": {
@@ -465,18 +465,20 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         }');
                     } catch (InvalidLocatorException $exception) {
                         {{ PHPUNIT }}->fail('{
-                            "container": {
-                                "value": "$\".duration\"",
-                                "operator": "exists",
-                                "type": "derived-value-operation-assertion"
-                            },
                             "statement": {
-                                "statement-type": "action",
-                                "source": "wait $\".duration\"",
-                                "index": 0,
-                                "value": "$\".duration\"",
-                                "type": "wait",
-                                "arguments": "$\".duration\""
+                                "container": {
+                                    "value": "$\".duration\"",
+                                    "operator": "exists",
+                                    "type": "derived-value-operation-assertion"
+                                },
+                                "statement": {
+                                    "statement-type": "action",
+                                    "source": "wait $\".duration\"",
+                                    "index": 0,
+                                    "value": "$\".duration\"",
+                                    "type": "wait",
+                                    "arguments": "$\".duration\""
+                                }
                             },
                             "reason": "locator-invalid",
                             "exception": {

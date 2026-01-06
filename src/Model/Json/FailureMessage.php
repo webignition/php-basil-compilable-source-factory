@@ -17,8 +17,8 @@ readonly class FailureMessage extends JsonExpression
         StringLiteral $exceptionMessageCall,
     ) {
         parent::__construct(array_merge(
-            new SerializedStatement($statement)->serialize(),
             [
+                'statement' => $statement->jsonSerialize(),
                 'reason' => $reason,
                 'exception' => [
                     'class' => $exceptionClassCall,

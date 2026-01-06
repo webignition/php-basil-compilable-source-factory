@@ -33,14 +33,12 @@ trait CreateFromIncludesAssertionDataProviderTrait
                         (string) ($expectedValue),
                         (string) ($examinedValue),
                         '{
-                            "statement": {
-                                "statement-type": "assertion",
-                                "source": "$\".selector\" includes \"value\"",
-                                "index": 0,
-                                "identifier": "$\".selector\"",
-                                "value": "\"value\"",
-                                "operator": "includes"
-                            }
+                            "statement-type": "assertion",
+                            "source": "$\".selector\" includes \"value\"",
+                            "index": 0,
+                            "identifier": "$\".selector\"",
+                            "value": "\"value\"",
+                            "operator": "includes"
                         }'
                     );
                     EOD,
@@ -67,14 +65,12 @@ trait CreateFromIncludesAssertionDataProviderTrait
                         (string) ($expectedValue),
                         (string) ($examinedValue),
                         '{
-                            "statement": {
-                                "statement-type": "assertion",
-                                "source": "$\".selector\".attribute_name includes \"value\"",
-                                "index": 0,
-                                "identifier": "$\".selector\".attribute_name",
-                                "value": "\"value\"",
-                                "operator": "includes"
-                            }
+                            "statement-type": "assertion",
+                            "source": "$\".selector\".attribute_name includes \"value\"",
+                            "index": 0,
+                            "identifier": "$\".selector\".attribute_name",
+                            "value": "\"value\"",
+                            "operator": "includes"
                         }'
                     );
                     EOD,
