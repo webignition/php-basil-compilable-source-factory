@@ -11,9 +11,9 @@ use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayAccessExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
-use webignition\BasilCompilableSourceFactory\Model\Expression\CastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ClosureExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CompositeExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ReturnExpression;
@@ -86,12 +86,12 @@ class ScalarValueHandler
             new Statement(
                 new ReturnExpression(
                     new CompositeExpression([
-                        new CastExpression(
+                        new EncapsulatingCastExpression(
                             new ObjectMethodInvocation($webDriverDimensionPlaceholder, 'getWidth'),
                             'string'
                         ),
                         new LiteralExpression(' . \'x\' . '),
-                        new CastExpression(
+                        new EncapsulatingCastExpression(
                             new ObjectMethodInvocation($webDriverDimensionPlaceholder, 'getHeight'),
                             'string'
                         ),

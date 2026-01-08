@@ -11,7 +11,7 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementExcep
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
-use webignition\BasilCompilableSourceFactory\Model\Expression\CastExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
@@ -62,7 +62,7 @@ class ComparisonAssertionHandler
 
         if ('includes' === $assertion->getOperator() || 'excludes' === $assertion->getOperator()) {
             array_walk($assertionArguments, function (ExpressionInterface &$expression) {
-                $expression = new CastExpression($expression, 'string');
+                $expression = new EncapsulatingCastExpression($expression, 'string');
             });
         }
 
