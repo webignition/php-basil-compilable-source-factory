@@ -63,7 +63,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                                 "identifier": "$\".selector\"",
                                 "operator": "not-exists"
                             },
-                            "expected": ' . 'null' . ',
+                            "expected": ' . (false ? 'true' : 'false') . ',
                             "examined": ' . ($examinedValue ? 'true' : 'false') . '
                         }'
                     );
@@ -118,7 +118,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                                     "operator": "not-exists"
                                 }
                             },
-                            "expected": ' . 'null' . ',
+                            "expected": ' . (true ? 'true' : 'false') . ',
                             "examined": ' . ($examinedValue ? 'true' : 'false') . '
                         }'
                     );
@@ -139,7 +139,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                                 "identifier": "$\".selector\".attribute_name",
                                 "operator": "not-exists"
                             },
-                            "expected": ' . 'null' . ',
+                            "expected": ' . (false ? 'true' : 'false') . ',
                             "examined": ' . ($examinedValue ? 'true' : 'false') . '
                         }'
                     );

@@ -32,7 +32,7 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
                                 "identifier": "$page.url",
                                 "operator": "exists"
                             },
-                            "expected": ' . 'null' . ',
+                            "expected": ' . (true ? 'true' : 'false') . ',
                             "examined": ' . ($examinedValue ? 'true' : 'false') . '
                         }'
                     );
@@ -58,7 +58,7 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
                                 "identifier": "$data.key",
                                 "operator": "exists"
                             },
-                            "expected": ' . 'null' . ',
+                            "expected": ' . (true ? 'true' : 'false') . ',
                             "examined": ' . ($examinedValue ? 'true' : 'false') . '
                         }'
                     );

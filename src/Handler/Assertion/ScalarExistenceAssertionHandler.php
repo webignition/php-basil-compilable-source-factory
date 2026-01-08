@@ -56,6 +56,10 @@ class ScalarExistenceAssertionHandler
             '!=='
         );
 
+        $expectedAssertionArgument = new AssertionArgument(
+            new LiteralExpression(('exists' === $assertion->getOperator()) ? 'true' : 'false'),
+            'bool'
+        );
         $examinedAssertionArgument = new AssertionArgument($examinedValuePlaceholder, 'bool');
 
         return new Body([
@@ -66,7 +70,7 @@ class ScalarExistenceAssertionHandler
                 'exists' === $assertion->getOperator() ? 'assertTrue' : 'assertFalse',
                 $this->assertionMessageFactory->create(
                     assertion: $assertion,
-                    expected: null,
+                    expected: $expectedAssertionArgument,
                     examined: $examinedAssertionArgument,
                 ),
                 expected: null,

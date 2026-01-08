@@ -66,7 +66,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                 "identifier": "$\".selector\"",
                                 "operator": "exists"
                             },
-                            "expected": ' . 'null' . ',
+                            "expected": ' . (true ? 'true' : 'false') . ',
                             "examined": ' . ($examinedValue ? 'true' : 'false') . '
                         }'
                     );
@@ -121,7 +121,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                     "operator": "exists"
                                 }
                             },
-                            "expected": ' . 'null' . ',
+                            "expected": ' . (true ? 'true' : 'false') . ',
                             "examined": ' . ($examinedValue ? 'true' : 'false') . '
                         }'
                     );
@@ -142,7 +142,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                 "identifier": "$\".selector\".attribute_name",
                                 "operator": "exists"
                             },
-                            "expected": ' . 'null' . ',
+                            "expected": ' . (true ? 'true' : 'false') . ',
                             "examined": ' . ($examinedValue ? 'true' : 'false') . '
                         }'
                     );
@@ -183,7 +183,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                 "identifier": "$\"a[href=foo.html]\"",
                                 "operator": "exists"
                             },
-                            "expected": ' . 'null' . ',
+                            "expected": ' . (true ? 'true' : 'false') . ',
                             "examined": ' . ($examinedValue ? 'true' : 'false') . '
                         }'
                     );
@@ -224,7 +224,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                 "identifier": "$\"[data-value=\\\"\'single quoted\'\\\"]\"",
                                 "operator": "exists"
                             },
-                            "expected": ' . 'null' . ',
+                            "expected": ' . (true ? 'true' : 'false') . ',
                             "examined": ' . ($examinedValue ? 'true' : 'false') . '
                         }'
                     );
@@ -279,7 +279,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                     "operator": "exists"
                                 }
                             },
-                            "expected": ' . 'null' . ',
+                            "expected": ' . (true ? 'true' : 'false') . ',
                             "examined": ' . ($examinedValue ? 'true' : 'false') . '
                         }'
                     );
@@ -300,7 +300,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                 "identifier": "$\"a[href=foo.html]\".attribute_name",
                                 "operator": "exists"
                             },
-                            "expected": ' . 'null' . ',
+                            "expected": ' . (true ? 'true' : 'false') . ',
                             "examined": ' . ($examinedValue ? 'true' : 'false') . '
                         }'
                     );
@@ -361,7 +361,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                     "arguments": "$\".selector\""
                                 }
                             },
-                            "expected": ' . 'null' . ',
+                            "expected": ' . (true ? 'true' : 'false') . ',
                             "examined": ' . ($examinedValue ? 'true' : 'false') . '
                         }'
                     );
@@ -422,7 +422,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                     "arguments": "$\".selector\""
                                 }
                             },
-                            "expected": ' . 'null' . ',
+                            "expected": ' . (true ? 'true' : 'false') . ',
                             "examined": ' . ($examinedValue ? 'true' : 'false') . '
                         }'
                     );
@@ -485,7 +485,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                     "arguments": "$\".selector\" to \"value\""
                                 }
                             },
-                            "expected": ' . 'null' . ',
+                            "expected": ' . (true ? 'true' : 'false') . ',
                             "examined": ' . ($examinedValue ? 'true' : 'false') . '
                         }'
                     );
@@ -546,7 +546,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                     "arguments": "$\".duration\""
                                 }
                             },
-                            "expected": ' . 'null' . ',
+                            "expected": ' . (true ? 'true' : 'false') . ',
                             "examined": ' . ($examinedValue ? 'true' : 'false') . '
                         }'
                     );

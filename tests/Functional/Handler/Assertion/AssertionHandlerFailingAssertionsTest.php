@@ -69,7 +69,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
                         "identifier": "$\".selector\"",
                         "operator": "exists"
                     },
-                    "expected": null,
+                    "expected": true,
                     "examined": false
     EOD,
             ],
@@ -91,7 +91,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
                             "operator": "exists"
                         }
                     },
-                    "expected": null,
+                    "expected": true,
                     "examined": false
     EOD,
             ],
@@ -106,7 +106,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
                         "identifier": "$\"h1\".attribute_name",
                         "operator": "exists"
                     },
-                    "expected": null,
+                    "expected": true,
                     "examined": false
     EOD,
             ],
@@ -121,7 +121,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
                         "identifier": "$env.FOO",
                         "operator": "exists"
                     },
-                    "expected": null,
+                    "expected": true,
                     "examined": false
     EOD,
             ],
