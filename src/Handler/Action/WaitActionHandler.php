@@ -8,9 +8,9 @@ use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
-use webignition\BasilCompilableSourceFactory\Model\Expression\CastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CompositeExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\NullCoalescerExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
@@ -52,7 +52,7 @@ class WaitActionHandler
             new LiteralExpression((string) ($this->accessorDefaultValueFactory->createInteger($duration) ?? 0)),
         );
 
-        $castToIntExpression = new CastExpression($nullCoalescingExpression, 'int');
+        $castToIntExpression = new EncapsulatingCastExpression($nullCoalescingExpression, 'int');
 
         $sleepInvocation = new MethodInvocation(
             'usleep',

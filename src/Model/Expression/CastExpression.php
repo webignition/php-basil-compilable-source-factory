@@ -8,16 +8,12 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 
 class CastExpression implements ExpressionInterface
 {
-    private const RENDER_TEMPLATE = '({{ cast_type }}) {{ expression }}';
+    private const string RENDER_TEMPLATE = '({{ cast_type }}) {{ expression }}';
 
-    private ExpressionInterface $expression;
-    private string $castTo;
-
-    public function __construct(ExpressionInterface $expression, string $castTo)
-    {
-        $this->expression = new EncapsulatedExpression($expression);
-        $this->castTo = $castTo;
-    }
+    public function __construct(
+        private ExpressionInterface $expression,
+        private string $castTo
+    ) {}
 
     public function getTemplate(): string
     {

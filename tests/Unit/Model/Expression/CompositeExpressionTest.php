@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression;
 
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
-use webignition\BasilCompilableSourceFactory\Model\Expression\CastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CompositeExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
@@ -108,12 +108,12 @@ class CompositeExpressionTest extends AbstractResolvableTestCase
             ],
             'resolvable expression, stringable expression, resolvable expression' => [
                 'expression' => new CompositeExpression([
-                    new CastExpression(
+                    new EncapsulatingCastExpression(
                         new LiteralExpression('1'),
                         'string'
                     ),
                     new LiteralExpression(' . \'x\' . '),
-                    new CastExpression(
+                    new EncapsulatingCastExpression(
                         new LiteralExpression('2'),
                         'string'
                     ),

@@ -17,6 +17,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\CastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CatchExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ClosureExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CompositeExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ReturnExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
@@ -147,7 +148,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                     ])
                 ),
                 'expectedString' => '(function () {' . "\n"
-                    . '    return (string) (5);' . "\n"
+                    . '    return (string) 5;' . "\n"
                     . '})()',
             ],
             'multiple literal statements' => [
@@ -184,7 +185,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                         new Statement(
                             new ReturnExpression(
                                 new CompositeExpression([
-                                    new CastExpression(
+                                    new EncapsulatingCastExpression(
                                         new ObjectMethodInvocation(
                                             new VariableName('variable'),
                                             'getWidth'
@@ -192,7 +193,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                                         'string'
                                     ),
                                     new LiteralExpression(' . \'x\' . '),
-                                    new CastExpression(
+                                    new EncapsulatingCastExpression(
                                         new ObjectMethodInvocation(
                                             new VariableName('variable'),
                                             'getHeight'
