@@ -218,11 +218,16 @@ class IdentifierExistenceAssertionHandler
     ): StatementInterface {
         $examined = new AssertionArgument($examinedValuePlaceholder, 'bool');
 
+        $expected = new AssertionArgument(
+            new LiteralExpression(('exists' === $assertion->getOperator()) ? 'true' : 'false'),
+            'bool'
+        );
+
         return $this->assertionStatementFactory->create(
             assertionMethod: 'exists' === $assertion->getOperator() ? 'assertTrue' : 'assertFalse',
             assertionMessage: $this->assertionMessageFactory->create(
                 assertion: $assertion,
-                expected: null,
+                expected: $expected,
                 examined: $examined,
             ),
             expected: null,
