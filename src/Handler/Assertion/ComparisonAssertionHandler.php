@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
+use webignition\BasilCompilableSourceFactory\AssertionArgument;
+use webignition\BasilCompilableSourceFactory\AssertionMessageFactory;
 use webignition\BasilCompilableSourceFactory\AssertionStatementFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
@@ -11,9 +13,6 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementExcep
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
-use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastExpression;
-use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
-use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
@@ -32,13 +31,15 @@ class ComparisonAssertionHandler
     public function __construct(
         private AssertionStatementFactory $assertionStatementFactory,
         private ValueAccessorFactory $valueAccessorFactory,
+        private AssertionMessageFactory $assertionMessageFactory,
     ) {}
 
     public static function createHandler(): self
     {
         return new ComparisonAssertionHandler(
             AssertionStatementFactory::createFactory(),
-            ValueAccessorFactory::createFactory()
+            ValueAccessorFactory::createFactory(),
+            AssertionMessageFactory::createFactory(),
         );
     }
 
@@ -58,13 +59,8 @@ class ComparisonAssertionHandler
         $expectedValuePlaceholder = new VariableName(VariableNameEnum::EXPECTED_VALUE->value);
         $examinedValuePlaceholder = new VariableName(VariableNameEnum::EXAMINED_VALUE->value);
 
-        $assertionArguments = [$expectedValuePlaceholder, $examinedValuePlaceholder];
-
-        if ('includes' === $assertion->getOperator() || 'excludes' === $assertion->getOperator()) {
-            array_walk($assertionArguments, function (ExpressionInterface &$expression) {
-                $expression = new EncapsulatingCastExpression($expression, 'string');
-            });
-        }
+        $expected = new AssertionArgument($expectedValuePlaceholder, 'string');
+        $examined = new AssertionArgument($examinedValuePlaceholder, 'string');
 
         return new Body([
             new Statement(
@@ -74,9 +70,10 @@ class ComparisonAssertionHandler
                 new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
             ),
             $this->assertionStatementFactory->create(
-                $assertion,
-                self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP[$assertion->getOperator()],
-                new MethodArguments($assertionArguments)
+                assertionMethod: self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP[$assertion->getOperator()],
+                assertionMessage: $this->assertionMessageFactory->create($assertion, $expected, $examined),
+                expected: $expected,
+                examined: $examined,
             ),
         ]);
     }

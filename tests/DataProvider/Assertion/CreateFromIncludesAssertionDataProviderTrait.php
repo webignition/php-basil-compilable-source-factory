@@ -30,15 +30,19 @@ trait CreateFromIncludesAssertionDataProviderTrait
                         return {{ INSPECTOR }}->getValue($element);
                     })();
                     {{ PHPUNIT }}->assertStringContainsString(
-                        (string) ($expectedValue),
-                        (string) ($examinedValue),
+                        (string) $expectedValue,
+                        (string) $examinedValue,
                         '{
-                            "statement-type": "assertion",
-                            "source": "$\".selector\" includes \"value\"",
-                            "index": 0,
-                            "identifier": "$\".selector\"",
-                            "value": "\"value\"",
-                            "operator": "includes"
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$\".selector\" includes \"value\"",
+                                "index": 0,
+                                "identifier": "$\".selector\"",
+                                "value": "\"value\"",
+                                "operator": "includes"
+                            },
+                            "expected": "' . addcslashes((string) $expectedValue, "'") . '",
+                            "examined": "' . addcslashes((string) $examinedValue, "'") . '"
                         }'
                     );
                     EOD,
@@ -62,15 +66,19 @@ trait CreateFromIncludesAssertionDataProviderTrait
                         return $element->getAttribute('attribute_name');
                     })();
                     {{ PHPUNIT }}->assertStringContainsString(
-                        (string) ($expectedValue),
-                        (string) ($examinedValue),
+                        (string) $expectedValue,
+                        (string) $examinedValue,
                         '{
-                            "statement-type": "assertion",
-                            "source": "$\".selector\".attribute_name includes \"value\"",
-                            "index": 0,
-                            "identifier": "$\".selector\".attribute_name",
-                            "value": "\"value\"",
-                            "operator": "includes"
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$\".selector\".attribute_name includes \"value\"",
+                                "index": 0,
+                                "identifier": "$\".selector\".attribute_name",
+                                "value": "\"value\"",
+                                "operator": "includes"
+                            },
+                            "expected": "' . addcslashes((string) $expectedValue, "'") . '",
+                            "examined": "' . addcslashes((string) $examinedValue, "'") . '"
                         }'
                     );
                     EOD,

@@ -56,11 +56,15 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertFalse(
                         $examinedValue,
                         '{
-                            "statement-type": "assertion",
-                            "source": "$\".selector\" not-exists",
-                            "index": 0,
-                            "identifier": "$\".selector\"",
-                            "operator": "not-exists"
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$\".selector\" not-exists",
+                                "index": 0,
+                                "identifier": "$\".selector\"",
+                                "operator": "not-exists"
+                            },
+                            "expected": ' . 'null' . ',
+                            "examined": ' . ($examinedValue ? 'true' : 'false') . '
                         }'
                     );
                     EOD,
@@ -100,18 +104,22 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
-                            "container": {
-                                "value": "$\".selector\"",
-                                "operator": "exists",
-                                "type": "derived-value-operation-assertion"
-                            },
                             "statement": {
-                                "statement-type": "assertion",
-                                "source": "$\".selector\".attribute_name not-exists",
-                                "index": 0,
-                                "identifier": "$\".selector\".attribute_name",
-                                "operator": "not-exists"
-                            }
+                                "container": {
+                                    "value": "$\".selector\"",
+                                    "operator": "exists",
+                                    "type": "derived-value-operation-assertion"
+                                },
+                                "statement": {
+                                    "statement-type": "assertion",
+                                    "source": "$\".selector\".attribute_name not-exists",
+                                    "index": 0,
+                                    "identifier": "$\".selector\".attribute_name",
+                                    "operator": "not-exists"
+                                }
+                            },
+                            "expected": ' . 'null' . ',
+                            "examined": ' . ($examinedValue ? 'true' : 'false') . '
                         }'
                     );
                     $examinedValue = ((function () {
@@ -124,11 +132,15 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertFalse(
                         $examinedValue,
                         '{
-                            "statement-type": "assertion",
-                            "source": "$\".selector\".attribute_name not-exists",
-                            "index": 0,
-                            "identifier": "$\".selector\".attribute_name",
-                            "operator": "not-exists"
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$\".selector\".attribute_name not-exists",
+                                "index": 0,
+                                "identifier": "$\".selector\".attribute_name",
+                                "operator": "not-exists"
+                            },
+                            "expected": ' . 'null' . ',
+                            "examined": ' . ($examinedValue ? 'true' : 'false') . '
                         }'
                     );
                     EOD,

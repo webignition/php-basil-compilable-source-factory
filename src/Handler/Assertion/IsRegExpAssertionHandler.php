@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
+use webignition\BasilCompilableSourceFactory\AssertionArgument;
+use webignition\BasilCompilableSourceFactory\AssertionMessageFactory;
 use webignition\BasilCompilableSourceFactory\AssertionStatementFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
@@ -32,6 +34,7 @@ class IsRegExpAssertionHandler
         private IdentifierTypeAnalyser $identifierTypeAnalyser,
         private ValueTypeIdentifier $valueTypeIdentifier,
         private ValueAccessorFactory $valueAccessorFactory,
+        private AssertionMessageFactory $assertionMessageFactory,
     ) {}
 
     public static function createHandler(): self
@@ -43,6 +46,7 @@ class IsRegExpAssertionHandler
             IdentifierTypeAnalyser::create(),
             new ValueTypeIdentifier(),
             ValueAccessorFactory::createFactory(),
+            AssertionMessageFactory::createFactory(),
         );
     }
 
@@ -102,9 +106,14 @@ class IsRegExpAssertionHandler
                 new AssignmentExpression($expectedValuePlaceholder, $identityComparison),
             ]),
             $this->assertionStatementFactory->create(
-                $assertion,
                 'assertFalse',
-                new MethodArguments([$expectedValuePlaceholder])
+                $this->assertionMessageFactory->create(
+                    $assertion,
+                    new AssertionArgument($expectedValuePlaceholder, 'bool'),
+                    new AssertionArgument($examinedValuePlaceholder, 'string'),
+                ),
+                new AssertionArgument($expectedValuePlaceholder, 'bool'),
+                null,
             ),
         ]);
     }
