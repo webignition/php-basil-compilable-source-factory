@@ -21,14 +21,19 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
             'exists comparison, page property examined value' => [
                 'assertion' => $assertionParser->parse('$page.url exists', 0),
                 'expectedRenderedContent' => <<<'EOD'
+                    $examinedValue = ({{ CLIENT }}->getCurrentURL() ?? null) !== null;
                     {{ PHPUNIT }}->assertTrue(
-                        ({{ CLIENT }}->getCurrentURL() ?? null) !== null,
+                        $examinedValue,
                         '{
-                            "statement-type": "assertion",
-                            "source": "$page.url exists",
-                            "index": 0,
-                            "identifier": "$page.url",
-                            "operator": "exists"
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$page.url exists",
+                                "index": 0,
+                                "identifier": "$page.url",
+                                "operator": "exists"
+                            },
+                            "expected": ' . 'null' . ',
+                            "examined": ' . ($examinedValue ? 'true' : 'false') . '
                         }'
                     );
                     EOD,
@@ -42,14 +47,19 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
             'exists comparison, data parameter value' => [
                 'assertion' => $assertionParser->parse('$data.key exists', 0),
                 'expectedRenderedContent' => <<<'EOD'
+                    $examinedValue = ($key ?? null) !== null;
                     {{ PHPUNIT }}->assertTrue(
-                        ($key ?? null) !== null,
+                        $examinedValue,
                         '{
-                            "statement-type": "assertion",
-                            "source": "$data.key exists",
-                            "index": 0,
-                            "identifier": "$data.key",
-                            "operator": "exists"
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$data.key exists",
+                                "index": 0,
+                                "identifier": "$data.key",
+                                "operator": "exists"
+                            },
+                            "expected": ' . 'null' . ',
+                            "examined": ' . ($examinedValue ? 'true' : 'false') . '
                         }'
                     );
                     EOD,

@@ -30,15 +30,19 @@ trait CreateFromMatchesAssertionDataProviderTrait
                         return {{ INSPECTOR }}->getValue($element);
                     })();
                     {{ PHPUNIT }}->assertMatchesRegularExpression(
-                        $expectedValue,
-                        $examinedValue,
+                        (string) $expectedValue,
+                        (string) $examinedValue,
                         '{
-                            "statement-type": "assertion",
-                            "source": "$\".selector\" matches \"\/^value\/\"",
-                            "index": 0,
-                            "identifier": "$\".selector\"",
-                            "value": "\"\/^value\/\"",
-                            "operator": "matches"
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$\".selector\" matches \"\/^value\/\"",
+                                "index": 0,
+                                "identifier": "$\".selector\"",
+                                "value": "\"\/^value\/\"",
+                                "operator": "matches"
+                            },
+                            "expected": "' . addcslashes((string) $expectedValue, "'") . '",
+                            "examined": "' . addcslashes((string) $examinedValue, "'") . '"
                         }'
                     );
                     EOD,
@@ -62,15 +66,19 @@ trait CreateFromMatchesAssertionDataProviderTrait
                         return $element->getAttribute('attribute_name');
                     })();
                     {{ PHPUNIT }}->assertMatchesRegularExpression(
-                        $expectedValue,
-                        $examinedValue,
+                        (string) $expectedValue,
+                        (string) $examinedValue,
                         '{
-                            "statement-type": "assertion",
-                            "source": "$\".selector\".attribute_name matches \"\/^value\/\"",
-                            "index": 0,
-                            "identifier": "$\".selector\".attribute_name",
-                            "value": "\"\/^value\/\"",
-                            "operator": "matches"
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$\".selector\".attribute_name matches \"\/^value\/\"",
+                                "index": 0,
+                                "identifier": "$\".selector\".attribute_name",
+                                "value": "\"\/^value\/\"",
+                                "operator": "matches"
+                            },
+                            "expected": "' . addcslashes((string) $expectedValue, "'") . '",
+                            "examined": "' . addcslashes((string) $examinedValue, "'") . '"
                         }'
                     );
                     EOD,

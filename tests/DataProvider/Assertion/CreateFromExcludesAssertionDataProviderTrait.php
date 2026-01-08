@@ -30,15 +30,19 @@ trait CreateFromExcludesAssertionDataProviderTrait
                         return {{ INSPECTOR }}->getValue($element);
                     })();
                     {{ PHPUNIT }}->assertStringNotContainsString(
-                        (string) ($expectedValue),
-                        (string) ($examinedValue),
+                        (string) $expectedValue,
+                        (string) $examinedValue,
                         '{
-                            "statement-type": "assertion",
-                            "source": "$\".selector\" excludes \"value\"",
-                            "index": 0,
-                            "identifier": "$\".selector\"",
-                            "value": "\"value\"",
-                            "operator": "excludes"
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$\".selector\" excludes \"value\"",
+                                "index": 0,
+                                "identifier": "$\".selector\"",
+                                "value": "\"value\"",
+                                "operator": "excludes"
+                            },
+                            "expected": "' . addcslashes((string) $expectedValue, "'") . '",
+                            "examined": "' . addcslashes((string) $examinedValue, "'") . '"
                         }'
                     );
                     EOD,
@@ -62,15 +66,19 @@ trait CreateFromExcludesAssertionDataProviderTrait
                         return {{ INSPECTOR }}->getValue($element);
                     })();
                     {{ PHPUNIT }}->assertStringNotContainsString(
-                        (string) ($expectedValue),
-                        (string) ($examinedValue),
+                        (string) $expectedValue,
+                        (string) $examinedValue,
                         '{
-                            "statement-type": "assertion",
-                            "source": "$\".selector\" excludes \"\'value\'\"",
-                            "index": 0,
-                            "identifier": "$\".selector\"",
-                            "value": "\"\'value\'\"",
-                            "operator": "excludes"
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$\".selector\" excludes \"\'value\'\"",
+                                "index": 0,
+                                "identifier": "$\".selector\"",
+                                "value": "\"\'value\'\"",
+                                "operator": "excludes"
+                            },
+                            "expected": "' . addcslashes((string) $expectedValue, "'") . '",
+                            "examined": "' . addcslashes((string) $examinedValue, "'") . '"
                         }'
                     );
                     EOD,
@@ -94,15 +102,19 @@ trait CreateFromExcludesAssertionDataProviderTrait
                         return $element->getAttribute('attribute_name');
                     })();
                     {{ PHPUNIT }}->assertStringNotContainsString(
-                        (string) ($expectedValue),
-                        (string) ($examinedValue),
+                        (string) $expectedValue,
+                        (string) $examinedValue,
                         '{
-                            "statement-type": "assertion",
-                            "source": "$\".selector\".attribute_name excludes \"value\"",
-                            "index": 0,
-                            "identifier": "$\".selector\".attribute_name",
-                            "value": "\"value\"",
-                            "operator": "excludes"
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$\".selector\".attribute_name excludes \"value\"",
+                                "index": 0,
+                                "identifier": "$\".selector\".attribute_name",
+                                "value": "\"value\"",
+                                "operator": "excludes"
+                            },
+                            "expected": "' . addcslashes((string) $expectedValue, "'") . '",
+                            "examined": "' . addcslashes((string) $examinedValue, "'") . '"
                         }'
                     );
                     EOD,

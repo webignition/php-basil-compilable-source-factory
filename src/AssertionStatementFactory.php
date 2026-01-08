@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
-use webignition\BasilCompilableSourceFactory\Model\Json\Statement as JsonStatement;
+use webignition\BasilCompilableSourceFactory\Model\Expression\CastExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
+use webignition\BasilCompilableSourceFactory\Model\Json\AssertionMessage;
+use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
-use webignition\BasilModels\Model\Assertion\AssertionInterface;
 
 readonly class AssertionStatementFactory
 {
@@ -28,20 +30,35 @@ readonly class AssertionStatementFactory
      * @param non-empty-string $assertionMethod
      */
     public function create(
-        AssertionInterface $assertion,
         string $assertionMethod,
-        MethodArgumentsInterface $arguments,
+        AssertionMessage $assertionMessage,
+        ?AssertionArgument $expected,
+        ?AssertionArgument $examined,
     ): StatementInterface {
-        $arguments = $arguments->withFormat(
-            MethodArgumentsInterface::FORMAT_STACKED
-        );
+        $argumentExpressions = [];
+
+        if ($expected instanceof AssertionArgument) {
+            $argumentExpressions[] = $this->createMethodArgumentsExpression($expected);
+        }
+
+        if ($examined instanceof AssertionArgument) {
+            $argumentExpressions[] = $this->createMethodArgumentsExpression($examined);
+        }
+
+        $arguments = new MethodArguments($argumentExpressions, MethodArgumentsInterface::FORMAT_STACKED);
 
         return new Statement(
-            $this->phpUnitCallFactory->createAssertionCall(
-                $assertionMethod,
-                $arguments,
-                new JsonStatement($assertion),
-            )
+            $this->phpUnitCallFactory->createAssertionCall($assertionMethod, $arguments, $assertionMessage)
         );
+    }
+
+    private function createMethodArgumentsExpression(AssertionArgument $argument): ExpressionInterface
+    {
+        $expression = $argument->expression;
+        if ('string' === $argument->type) {
+            $expression = new CastExpression($argument->expression, 'string');
+        }
+
+        return $expression;
     }
 }

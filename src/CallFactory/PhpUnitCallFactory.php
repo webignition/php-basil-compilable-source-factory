@@ -5,8 +5,8 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Model\Json\AssertionMessage;
 use webignition\BasilCompilableSourceFactory\Model\Json\FailureMessage;
-use webignition\BasilCompilableSourceFactory\Model\Json\Statement;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocationInterface;
@@ -34,9 +34,9 @@ readonly class PhpUnitCallFactory
     public function createAssertionCall(
         string $methodName,
         MethodArgumentsInterface $arguments,
-        Statement $assertion,
+        AssertionMessage $assertionMessage,
     ): MethodInvocationInterface {
-        $arguments = $arguments->withArgument($assertion);
+        $arguments = $arguments->withArgument($assertionMessage);
 
         return $this->createCall($methodName, $arguments);
     }

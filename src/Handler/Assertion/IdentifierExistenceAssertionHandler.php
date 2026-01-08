@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
+use webignition\BasilCompilableSourceFactory\AssertionArgument;
+use webignition\BasilCompilableSourceFactory\AssertionMessageFactory;
 use webignition\BasilCompilableSourceFactory\AssertionStatementFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
@@ -25,8 +27,6 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpres
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\NullCoalescerExpression;
-use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
-use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
@@ -52,6 +52,7 @@ class IdentifierExistenceAssertionHandler
         private PhpUnitCallFactory $phpUnitCallFactory,
         private AssertionStatementFactory $assertionStatementFactory,
         private FailureMessageFactory $failureMessageFactory,
+        private AssertionMessageFactory $assertionMessageFactory,
     ) {}
 
     public static function createHandler(): self
@@ -66,6 +67,7 @@ class IdentifierExistenceAssertionHandler
             PhpUnitCallFactory::createFactory(),
             AssertionStatementFactory::createFactory(),
             FailureMessageFactory::createFactory(),
+            AssertionMessageFactory::createFactory(),
         );
     }
 
@@ -107,7 +109,7 @@ class IdentifierExistenceAssertionHandler
 
         $assertionStatement = $this->createAssertionStatement(
             $elementExistenceAssertion,
-            new MethodArguments([$examinedValuePlaceholder]),
+            $examinedValuePlaceholder,
         );
 
         return new Body([
@@ -163,14 +165,14 @@ class IdentifierExistenceAssertionHandler
         ])->withContent([
             'element existence assertion' => $this->createAssertionStatement(
                 $elementExistsAssertion,
-                new MethodArguments([$examinedValuePlaceholder]),
+                $examinedValuePlaceholder,
             ),
             'attribute examined value assignment' => new Statement(
                 new AssignmentExpression($examinedValuePlaceholder, $attributeExaminedAccessor),
             ),
             'attribute existence assertion' => $this->createAssertionStatement(
                 $attributeExistenceAssertion,
-                new MethodArguments([$examinedValuePlaceholder]),
+                $examinedValuePlaceholder,
             ),
         ]);
     }
@@ -212,12 +214,19 @@ class IdentifierExistenceAssertionHandler
 
     private function createAssertionStatement(
         AssertionInterface $assertion,
-        MethodArgumentsInterface $arguments,
+        ExpressionInterface $examinedValuePlaceholder,
     ): StatementInterface {
+        $examined = new AssertionArgument($examinedValuePlaceholder, 'bool');
+
         return $this->assertionStatementFactory->create(
-            $assertion,
-            'exists' === $assertion->getOperator() ? 'assertTrue' : 'assertFalse',
-            $arguments,
+            assertionMethod: 'exists' === $assertion->getOperator() ? 'assertTrue' : 'assertFalse',
+            assertionMessage: $this->assertionMessageFactory->create(
+                assertion: $assertion,
+                expected: null,
+                examined: $examined,
+            ),
+            expected: null,
+            examined: $examined,
         );
     }
 }

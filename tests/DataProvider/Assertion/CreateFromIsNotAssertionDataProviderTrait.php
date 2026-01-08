@@ -30,15 +30,19 @@ trait CreateFromIsNotAssertionDataProviderTrait
                         return {{ INSPECTOR }}->getValue($element);
                     })();
                     {{ PHPUNIT }}->assertNotEquals(
-                        $expectedValue,
-                        $examinedValue,
+                        (string) $expectedValue,
+                        (string) $examinedValue,
                         '{
-                            "statement-type": "assertion",
-                            "source": "$\".selector\" is-not \"value\"",
-                            "index": 0,
-                            "identifier": "$\".selector\"",
-                            "value": "\"value\"",
-                            "operator": "is-not"
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$\".selector\" is-not \"value\"",
+                                "index": 0,
+                                "identifier": "$\".selector\"",
+                                "value": "\"value\"",
+                                "operator": "is-not"
+                            },
+                            "expected": "' . addcslashes((string) $expectedValue, "'") . '",
+                            "examined": "' . addcslashes((string) $examinedValue, "'") . '"
                         }'
                     );
                     EOD,
@@ -62,15 +66,19 @@ trait CreateFromIsNotAssertionDataProviderTrait
                         return $element->getAttribute('attribute_name');
                     })();
                     {{ PHPUNIT }}->assertNotEquals(
-                        $expectedValue,
-                        $examinedValue,
+                        (string) $expectedValue,
+                        (string) $examinedValue,
                         '{
-                            "statement-type": "assertion",
-                            "source": "$\".selector\".attribute_name is-not \"value\"",
-                            "index": 0,
-                            "identifier": "$\".selector\".attribute_name",
-                            "value": "\"value\"",
-                            "operator": "is-not"
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$\".selector\".attribute_name is-not \"value\"",
+                                "index": 0,
+                                "identifier": "$\".selector\".attribute_name",
+                                "value": "\"value\"",
+                                "operator": "is-not"
+                            },
+                            "expected": "' . addcslashes((string) $expectedValue, "'") . '",
+                            "examined": "' . addcslashes((string) $examinedValue, "'") . '"
                         }'
                     );
                     EOD,
