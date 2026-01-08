@@ -20,6 +20,14 @@ use webignition\BasilModels\Model\Assertion\AssertionInterface;
 
 class ComparisonAssertionHandler
 {
+    private const array OPERATOR_TO_ASSERTION_TEMPLATE_MAP = [
+        'includes' => 'assertStringContainsString',
+        'excludes' => 'assertStringNotContainsString',
+        'is' => 'assertEquals',
+        'is-not' => 'assertNotEquals',
+        'matches' => 'assertMatchesRegularExpression',
+    ];
+
     public function __construct(
         private AssertionStatementFactory $assertionStatementFactory,
         private ValueAccessorFactory $valueAccessorFactory,
@@ -62,35 +70,11 @@ class ComparisonAssertionHandler
                 new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
             ),
             $this->assertionStatementFactory->create(
-                assertionMethod: $this->getAssertionMethod($assertion->getOperator()),
+                assertionMethod: self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP[$assertion->getOperator()],
                 assertionMessage: $this->assertionMessageFactory->create($assertion, $expected, $examined),
                 expected: $expected,
                 examined: $examined,
             ),
         ]);
-    }
-
-    /**
-     * @return non-empty-string
-     */
-    private function getAssertionMethod(string $operator): string
-    {
-        if ('includes' === $operator) {
-            return 'assertStringContainsString';
-        }
-
-        if ('excludes' === $operator) {
-            return 'assertStringNotContainsString';
-        }
-
-        if ('is-not' === $operator) {
-            return 'assertNotEquals';
-        }
-
-        if ('matches' === $operator) {
-            return 'assertMatchesRegularExpression';
-        }
-
-        return 'assertEquals';
     }
 }
