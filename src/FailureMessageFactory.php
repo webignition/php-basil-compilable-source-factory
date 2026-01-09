@@ -32,15 +32,18 @@ readonly class FailureMessageFactory
 
     public function createForActionFailure(StatementInterface $statement): FailureMessage
     {
-        return $this->create($statement, PhpUnitFailReason::ACTION_FAILED);
+        return $this->create($statement, PhpUnitFailReason::ACTION_FAILED, []);
     }
 
     public function createForInvalidLocatorException(StatementInterface $statement): FailureMessage
     {
-        return $this->create($statement, PhpUnitFailReason::INVALID_LOCATOR);
+        return $this->create($statement, PhpUnitFailReason::INVALID_LOCATOR, []);
     }
 
-    private function create(StatementInterface $statement, PhpUnitFailReason $reason): FailureMessage
+    /**
+     * @param array<string, string> $context
+     */
+    private function create(StatementInterface $statement, PhpUnitFailReason $reason, array $context): FailureMessage
     {
         $exceptionVariableName = CatchExpression::getVariableName();
 
@@ -63,6 +66,7 @@ readonly class FailureMessageFactory
             new StringLiteral($resolvedClassCall),
             new IntegerLiteral($resolvedCodeCall),
             new StringLiteral($resolvedMessageCall),
+            $context,
         );
     }
 }
