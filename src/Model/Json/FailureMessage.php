@@ -9,23 +9,31 @@ use webignition\BasilModels\Model\StatementInterface;
 
 readonly class FailureMessage extends JsonExpression
 {
+    /**
+     * @param array<string, LiteralInterface> $context
+     */
     public function __construct(
         StatementInterface $statement,
         string $reason,
         StringLiteral $exceptionClassCall,
         IntegerLiteral $exceptionCodeCall,
         StringLiteral $exceptionMessageCall,
+        array $context,
     ) {
-        parent::__construct(array_merge(
-            [
-                'statement' => $statement->jsonSerialize(),
-                'reason' => $reason,
-                'exception' => [
-                    'class' => $exceptionClassCall,
-                    'code' => $exceptionCodeCall,
-                    'message' => $exceptionMessageCall,
-                ],
-            ]
-        ));
+        $data = [
+            'statement' => $statement->jsonSerialize(),
+            'reason' => $reason,
+            'exception' => [
+                'class' => $exceptionClassCall,
+                'code' => $exceptionCodeCall,
+                'message' => $exceptionMessageCall,
+            ],
+        ];
+
+        if ([] !== $context) {
+            $data['context'] = $context;
+        }
+
+        parent::__construct($data);
     }
 }

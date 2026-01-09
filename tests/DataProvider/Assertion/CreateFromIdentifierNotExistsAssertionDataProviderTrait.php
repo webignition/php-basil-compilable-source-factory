@@ -37,6 +37,8 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                             "locator": ".selector"
                         }');
                     } catch (InvalidLocatorException $exception) {
+                        $locator = $exception->getElementIdentifier()->getLocator();
+                        $type = $exception->getElementIdentifier()->isCssSelector() ? 'css' : 'xpath';
                         {{ PHPUNIT }}->fail('{
                             "statement": {
                                 "statement-type": "assertion",
@@ -50,6 +52,10 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                                 "class": "' . addcslashes($exception::class, '"\\') . '",
                                 "code": ' . $exception->getCode() . ',
                                 "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                            },
+                            "context": {
+                                "locator": "' . addcslashes($locator, '"\\') . '",
+                                "type": "' . addcslashes($type, '"\\') . '"
                             }
                         }');
                     }
@@ -78,6 +84,8 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                             "locator": ".selector"
                         }');
                     } catch (InvalidLocatorException $exception) {
+                        $locator = $exception->getElementIdentifier()->getLocator();
+                        $type = $exception->getElementIdentifier()->isCssSelector() ? 'css' : 'xpath';
                         {{ PHPUNIT }}->fail('{
                             "statement": {
                                 "container": {
@@ -98,6 +106,10 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                                 "class": "' . addcslashes($exception::class, '"\\') . '",
                                 "code": ' . $exception->getCode() . ',
                                 "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                            },
+                            "context": {
+                                "locator": "' . addcslashes($locator, '"\\') . '",
+                                "type": "' . addcslashes($type, '"\\') . '"
                             }
                         }');
                     }

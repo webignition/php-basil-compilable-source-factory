@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Step;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
-use webignition\BasilCompilableSourceFactory\Enum\PhpUnitFailReason;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
@@ -68,7 +67,7 @@ class StepHandler
 
                 $failBody = Body::createFromExpressions([
                     $this->phpUnitCallFactory->createFailCall(
-                        $this->failureMessageFactory->create($action, PhpUnitFailReason::ACTION_FAILED)
+                        $this->failureMessageFactory->createForActionFailure($action)
                     ),
                 ]);
 
