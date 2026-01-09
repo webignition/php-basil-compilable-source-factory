@@ -40,6 +40,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "locator": ".selector"
                         }');
                     } catch (InvalidLocatorException $exception) {
+                        $locator = $exception->getElementIdentifier()->getLocator();
+                        $type = $exception->getElementIdentifier()->isCssSelector() ? 'css' : 'xpath';
                         {{ PHPUNIT }}->fail('{
                             "statement": {
                                 "statement-type": "assertion",
@@ -53,6 +55,10 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                 "class": "' . addcslashes($exception::class, '"\\') . '",
                                 "code": ' . $exception->getCode() . ',
                                 "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                            },
+                            "context": {
+                                "locator": "' . addcslashes($locator, '"\\') . '",
+                                "type": "' . addcslashes($type, '"\\') . '"
                             }
                         }');
                     }
@@ -81,6 +87,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "locator": ".selector"
                         }');
                     } catch (InvalidLocatorException $exception) {
+                        $locator = $exception->getElementIdentifier()->getLocator();
+                        $type = $exception->getElementIdentifier()->isCssSelector() ? 'css' : 'xpath';
                         {{ PHPUNIT }}->fail('{
                             "statement": {
                                 "container": {
@@ -101,6 +109,10 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                 "class": "' . addcslashes($exception::class, '"\\') . '",
                                 "code": ' . $exception->getCode() . ',
                                 "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                            },
+                            "context": {
+                                "locator": "' . addcslashes($locator, '"\\') . '",
+                                "type": "' . addcslashes($type, '"\\') . '"
                             }
                         }');
                     }
@@ -157,6 +169,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "locator": "a[href=foo.html]"
                         }');
                     } catch (InvalidLocatorException $exception) {
+                        $locator = $exception->getElementIdentifier()->getLocator();
+                        $type = $exception->getElementIdentifier()->isCssSelector() ? 'css' : 'xpath';
                         {{ PHPUNIT }}->fail('{
                             "statement": {
                                 "statement-type": "assertion",
@@ -170,6 +184,10 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                 "class": "' . addcslashes($exception::class, '"\\') . '",
                                 "code": ' . $exception->getCode() . ',
                                 "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                            },
+                            "context": {
+                                "locator": "' . addcslashes($locator, '"\\') . '",
+                                "type": "' . addcslashes($type, '"\\') . '"
                             }
                         }');
                     }
@@ -198,6 +216,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "locator": "[data-value=\\"\'single quoted\'\\"]"
                         }');
                     } catch (InvalidLocatorException $exception) {
+                        $locator = $exception->getElementIdentifier()->getLocator();
+                        $type = $exception->getElementIdentifier()->isCssSelector() ? 'css' : 'xpath';
                         {{ PHPUNIT }}->fail('{
                             "statement": {
                                 "statement-type": "assertion",
@@ -211,6 +231,10 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                 "class": "' . addcslashes($exception::class, '"\\') . '",
                                 "code": ' . $exception->getCode() . ',
                                 "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                            },
+                            "context": {
+                                "locator": "' . addcslashes($locator, '"\\') . '",
+                                "type": "' . addcslashes($type, '"\\') . '"
                             }
                         }');
                     }
@@ -239,6 +263,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "locator": "a[href=foo.html]"
                         }');
                     } catch (InvalidLocatorException $exception) {
+                        $locator = $exception->getElementIdentifier()->getLocator();
+                        $type = $exception->getElementIdentifier()->isCssSelector() ? 'css' : 'xpath';
                         {{ PHPUNIT }}->fail('{
                             "statement": {
                                 "container": {
@@ -259,6 +285,10 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                 "class": "' . addcslashes($exception::class, '"\\') . '",
                                 "code": ' . $exception->getCode() . ',
                                 "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                            },
+                            "context": {
+                                "locator": "' . addcslashes($locator, '"\\') . '",
+                                "type": "' . addcslashes($type, '"\\') . '"
                             }
                         }');
                     }
@@ -319,6 +349,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "locator": ".selector"
                         }');
                     } catch (InvalidLocatorException $exception) {
+                        $locator = $exception->getElementIdentifier()->getLocator();
+                        $type = $exception->getElementIdentifier()->isCssSelector() ? 'css' : 'xpath';
                         {{ PHPUNIT }}->fail('{
                             "statement": {
                                 "container": {
@@ -340,6 +372,10 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                 "class": "' . addcslashes($exception::class, '"\\') . '",
                                 "code": ' . $exception->getCode() . ',
                                 "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                            },
+                            "context": {
+                                "locator": "' . addcslashes($locator, '"\\') . '",
+                                "type": "' . addcslashes($type, '"\\') . '"
                             }
                         }');
                     }
@@ -380,6 +416,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "locator": ".selector"
                         }');
                     } catch (InvalidLocatorException $exception) {
+                        $locator = $exception->getElementIdentifier()->getLocator();
+                        $type = $exception->getElementIdentifier()->isCssSelector() ? 'css' : 'xpath';
                         {{ PHPUNIT }}->fail('{
                             "statement": {
                                 "container": {
@@ -401,6 +439,10 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                 "class": "' . addcslashes($exception::class, '"\\') . '",
                                 "code": ' . $exception->getCode() . ',
                                 "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                            },
+                            "context": {
+                                "locator": "' . addcslashes($locator, '"\\') . '",
+                                "type": "' . addcslashes($type, '"\\') . '"
                             }
                         }');
                     }
@@ -441,6 +483,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "locator": ".selector"
                         }');
                     } catch (InvalidLocatorException $exception) {
+                        $locator = $exception->getElementIdentifier()->getLocator();
+                        $type = $exception->getElementIdentifier()->isCssSelector() ? 'css' : 'xpath';
                         {{ PHPUNIT }}->fail('{
                             "statement": {
                                 "container": {
@@ -463,6 +507,10 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                 "class": "' . addcslashes($exception::class, '"\\') . '",
                                 "code": ' . $exception->getCode() . ',
                                 "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                            },
+                            "context": {
+                                "locator": "' . addcslashes($locator, '"\\') . '",
+                                "type": "' . addcslashes($type, '"\\') . '"
                             }
                         }');
                     }
@@ -504,6 +552,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "locator": ".duration"
                         }');
                     } catch (InvalidLocatorException $exception) {
+                        $locator = $exception->getElementIdentifier()->getLocator();
+                        $type = $exception->getElementIdentifier()->isCssSelector() ? 'css' : 'xpath';
                         {{ PHPUNIT }}->fail('{
                             "statement": {
                                 "container": {
@@ -525,6 +575,10 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                 "class": "' . addcslashes($exception::class, '"\\') . '",
                                 "code": ' . $exception->getCode() . ',
                                 "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                            },
+                            "context": {
+                                "locator": "' . addcslashes($locator, '"\\') . '",
+                                "type": "' . addcslashes($type, '"\\') . '"
                             }
                         }');
                     }

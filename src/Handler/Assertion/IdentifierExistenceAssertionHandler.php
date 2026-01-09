@@ -26,6 +26,8 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpres
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\NullCoalescerExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\TernaryExpression;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
@@ -200,14 +202,50 @@ class IdentifierExistenceAssertionHandler
         StatementInterface $setExaminedValueAssignmentStatement,
         AssertionInterface $assertion,
     ): TryCatchBlock {
+        $exceptionVariable = new VariableName('exception');
+        $getElementIdentifierInvocation = new ObjectMethodInvocation(
+            $exceptionVariable,
+            'getElementIdentifier'
+        );
+
+        $locatorVariableExpression = new VariableName('locator');
+        $locatorAssignmentExpression = new AssignmentExpression(
+            $locatorVariableExpression,
+            new ObjectMethodInvocation(
+                $getElementIdentifierInvocation,
+                'getLocator'
+            ),
+        );
+
+        $typeVariableExpression = new VariableName('type');
+        $typeAssignmentExpression = new AssignmentExpression(
+            $typeVariableExpression,
+            new TernaryExpression(
+                new ObjectMethodInvocation(
+                    $getElementIdentifierInvocation,
+                    'isCssSelector'
+                ),
+                new LiteralExpression("'css'"),
+                new LiteralExpression("'xpath'"),
+            ),
+        );
+
+        $catchBody = Body::createFromExpressions([
+            $locatorAssignmentExpression,
+            $typeAssignmentExpression,
+            $this->phpUnitCallFactory->createFailCall(
+                $this->failureMessageFactory->createForInvalidLocatorException(
+                    $assertion,
+                    $locatorVariableExpression,
+                    $typeVariableExpression,
+                )
+            ),
+        ]);
+
         return $this->tryCatchBlockFactory->create(
             new Body([$setExaminedValueAssignmentStatement]),
             new ClassNameCollection([new ClassName(InvalidLocatorException::class)]),
-            Body::createFromExpressions([
-                $this->phpUnitCallFactory->createFailCall(
-                    $this->failureMessageFactory->createForInvalidLocatorException($assertion)
-                ),
-            ])
+            $catchBody,
         );
     }
 

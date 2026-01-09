@@ -10,7 +10,7 @@ use webignition\BasilModels\Model\StatementInterface;
 readonly class FailureMessage extends JsonExpression
 {
     /**
-     * @param array<string, string> $context
+     * @param array<string, LiteralInterface> $context
      */
     public function __construct(
         StatementInterface $statement,
