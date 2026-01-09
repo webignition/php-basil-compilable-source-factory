@@ -50,9 +50,9 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             },
                             "reason": "locator-invalid",
                             "exception": {
-                                "class": "' . addcslashes($exception::class, "'") . '",
+                                "class": "' . addcslashes($exception::class, '"\\') . '",
                                 "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), "'") . '"
+                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
                             }
                         }');
                     }
@@ -98,9 +98,9 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             },
                             "reason": "locator-invalid",
                             "exception": {
-                                "class": "' . addcslashes($exception::class, "'") . '",
+                                "class": "' . addcslashes($exception::class, '"\\') . '",
                                 "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), "'") . '"
+                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
                             }
                         }');
                     }
@@ -167,9 +167,9 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             },
                             "reason": "locator-invalid",
                             "exception": {
-                                "class": "' . addcslashes($exception::class, "'") . '",
+                                "class": "' . addcslashes($exception::class, '"\\') . '",
                                 "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), "'") . '"
+                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
                             }
                         }');
                     }
@@ -208,9 +208,9 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             },
                             "reason": "locator-invalid",
                             "exception": {
-                                "class": "' . addcslashes($exception::class, "'") . '",
+                                "class": "' . addcslashes($exception::class, '"\\') . '",
                                 "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), "'") . '"
+                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
                             }
                         }');
                     }
@@ -256,9 +256,9 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             },
                             "reason": "locator-invalid",
                             "exception": {
-                                "class": "' . addcslashes($exception::class, "'") . '",
+                                "class": "' . addcslashes($exception::class, '"\\') . '",
                                 "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), "'") . '"
+                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
                             }
                         }');
                     }
@@ -337,9 +337,9 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             },
                             "reason": "locator-invalid",
                             "exception": {
-                                "class": "' . addcslashes($exception::class, "'") . '",
+                                "class": "' . addcslashes($exception::class, '"\\') . '",
                                 "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), "'") . '"
+                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
                             }
                         }');
                     }
@@ -398,9 +398,9 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             },
                             "reason": "locator-invalid",
                             "exception": {
-                                "class": "' . addcslashes($exception::class, "'") . '",
+                                "class": "' . addcslashes($exception::class, '"\\') . '",
                                 "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), "'") . '"
+                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
                             }
                         }');
                     }
@@ -460,9 +460,9 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             },
                             "reason": "locator-invalid",
                             "exception": {
-                                "class": "' . addcslashes($exception::class, "'") . '",
+                                "class": "' . addcslashes($exception::class, '"\\') . '",
                                 "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), "'") . '"
+                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
                             }
                         }');
                     }
@@ -522,9 +522,9 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             },
                             "reason": "locator-invalid",
                             "exception": {
-                                "class": "' . addcslashes($exception::class, "'") . '",
+                                "class": "' . addcslashes($exception::class, '"\\') . '",
                                 "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), "'") . '"
+                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
                             }
                         }');
                     }

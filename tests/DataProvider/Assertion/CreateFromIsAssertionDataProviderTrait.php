@@ -41,8 +41,8 @@ trait CreateFromIsAssertionDataProviderTrait
                                 "value": "\"value\"",
                                 "operator": "is"
                             },
-                            "expected": "' . addcslashes((string) $expectedValue, "'") . '",
-                            "examined": "' . addcslashes((string) $examinedValue, "'") . '"
+                            "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
+                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
                         }'
                     );
                     EOD,
@@ -80,8 +80,8 @@ trait CreateFromIsAssertionDataProviderTrait
                                 "value": "\"value\"",
                                 "operator": "is"
                             },
-                            "expected": "' . addcslashes((string) $expectedValue, "'") . '",
-                            "examined": "' . addcslashes((string) $examinedValue, "'") . '"
+                            "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
+                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
                         }'
                     );
                     EOD,
@@ -116,8 +116,8 @@ trait CreateFromIsAssertionDataProviderTrait
                                 "value": "\"value\"",
                                 "operator": "is"
                             },
-                            "expected": "' . addcslashes((string) $expectedValue, "'") . '",
-                            "examined": "' . addcslashes((string) $examinedValue, "'") . '"
+                            "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
+                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
                         }'
                     );
                     EOD,
@@ -149,8 +149,8 @@ trait CreateFromIsAssertionDataProviderTrait
                         "value": "\"value\"",
                         "operator": "is"
                     },
-                    "expected": "' . addcslashes((string) $expectedValue, "'") . '",
-                    "examined": "' . addcslashes((string) $examinedValue, "'") . '"
+                    "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
+                    "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
                 }'
             );
             EOD,
@@ -178,8 +178,8 @@ trait CreateFromIsAssertionDataProviderTrait
                                 "value": "\"value\"",
                                 "operator": "is"
                             },
-                            "expected": "' . addcslashes((string) $expectedValue, "'") . '",
-                            "examined": "' . addcslashes((string) $examinedValue, "'") . '"
+                            "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
+                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
                         }'
                     );
                     EOD,
@@ -207,8 +207,8 @@ trait CreateFromIsAssertionDataProviderTrait
                                 "value": "\"value\"",
                                 "operator": "is"
                             },
-                            "expected": "' . addcslashes((string) $expectedValue, "'") . '",
-                            "examined": "' . addcslashes((string) $examinedValue, "'") . '"
+                            "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
+                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
                         }'
                     );
                     EOD,
@@ -236,8 +236,8 @@ trait CreateFromIsAssertionDataProviderTrait
                                 "value": "$env.KEY2|\"default value 2\"",
                                 "operator": "is"
                             },
-                            "expected": "' . addcslashes((string) $expectedValue, "'") . '",
-                            "examined": "' . addcslashes((string) $examinedValue, "'") . '"
+                            "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
+                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
                         }'
                     );
                     EOD,
@@ -265,8 +265,8 @@ trait CreateFromIsAssertionDataProviderTrait
                                 "value": "\"value\"",
                                 "operator": "is"
                             },
-                            "expected": "' . addcslashes((string) $expectedValue, "'") . '",
-                            "examined": "' . addcslashes((string) $examinedValue, "'") . '"
+                            "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
+                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
                         }'
                     );
                     EOD,
@@ -307,8 +307,8 @@ trait CreateFromIsAssertionDataProviderTrait
                         "value": "$\".parent\" >> $\".child\"",
                         "operator": "is"
                     },
-                    "expected": "' . addcslashes((string) $expectedValue, "'") . '",
-                    "examined": "' . addcslashes((string) $examinedValue, "'") . '"
+                    "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
+                    "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
                 }'
             );
             EOD,
@@ -348,8 +348,8 @@ trait CreateFromIsAssertionDataProviderTrait
                         "value": "$\".selector\"",
                         "operator": "is"
                     },
-                    "expected": "' . addcslashes((string) $expectedValue, "'") . '",
-                    "examined": "' . addcslashes((string) $examinedValue, "'") . '"
+                    "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
+                    "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
                 }'
             );
             EOD,
@@ -389,8 +389,8 @@ trait CreateFromIsAssertionDataProviderTrait
                         "value": "$\".selector\".attribute_name",
                         "operator": "is"
                     },
-                    "expected": "' . addcslashes((string) $expectedValue, "'") . '",
-                    "examined": "' . addcslashes((string) $examinedValue, "'") . '"
+                    "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
+                    "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
                 }'
             );
             EOD,
@@ -423,8 +423,8 @@ trait CreateFromIsAssertionDataProviderTrait
                         "value": "$env.KEY",
                         "operator": "is"
                     },
-                    "expected": "' . addcslashes((string) $expectedValue, "'") . '",
-                    "examined": "' . addcslashes((string) $examinedValue, "'") . '"
+                    "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
+                    "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
                 }'
             );
             EOD,
@@ -457,8 +457,8 @@ trait CreateFromIsAssertionDataProviderTrait
                         "value": "$env.KEY|\"default value\"",
                         "operator": "is"
                     },
-                    "expected": "' . addcslashes((string) $expectedValue, "'") . '",
-                    "examined": "' . addcslashes((string) $examinedValue, "'") . '"
+                    "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
+                    "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
                 }'
             );
             EOD,
@@ -491,8 +491,8 @@ trait CreateFromIsAssertionDataProviderTrait
                         "value": "$page.url",
                         "operator": "is"
                     },
-                    "expected": "' . addcslashes((string) $expectedValue, "'") . '",
-                    "examined": "' . addcslashes((string) $examinedValue, "'") . '"
+                    "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
+                    "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
                 }'
             );
             EOD,
@@ -520,8 +520,8 @@ trait CreateFromIsAssertionDataProviderTrait
                                 "value": "\"expected\"",
                                 "operator": "is"
                             },
-                            "expected": "' . addcslashes((string) $expectedValue, "'") . '",
-                            "examined": "' . addcslashes((string) $examinedValue, "'") . '"
+                            "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
+                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
                         }'
                     );
                     EOD,

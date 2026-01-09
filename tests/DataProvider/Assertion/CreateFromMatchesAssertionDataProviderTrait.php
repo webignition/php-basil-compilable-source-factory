@@ -41,8 +41,8 @@ trait CreateFromMatchesAssertionDataProviderTrait
                                 "value": "\"\/^value\/\"",
                                 "operator": "matches"
                             },
-                            "expected": "' . addcslashes((string) $expectedValue, "'") . '",
-                            "examined": "' . addcslashes((string) $examinedValue, "'") . '"
+                            "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
+                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
                         }'
                     );
                     EOD,
@@ -77,8 +77,8 @@ trait CreateFromMatchesAssertionDataProviderTrait
                                 "value": "\"\/^value\/\"",
                                 "operator": "matches"
                             },
-                            "expected": "' . addcslashes((string) $expectedValue, "'") . '",
-                            "examined": "' . addcslashes((string) $examinedValue, "'") . '"
+                            "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
+                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
                         }'
                     );
                     EOD,

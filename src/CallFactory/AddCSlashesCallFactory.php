@@ -22,7 +22,8 @@ readonly class AddCSlashesCallFactory
             'addcslashes',
             new MethodArguments([
                 $expression,
-                new LiteralExpression('"' . "'" . '"'),
+                // '"\'
+                new LiteralExpression('\'"\\\\\''),
             ]),
         );
     }
