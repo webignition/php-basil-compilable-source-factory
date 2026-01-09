@@ -11,7 +11,6 @@ use webignition\BasilCompilableSourceFactory\AssertionStatementFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
-use webignition\BasilCompilableSourceFactory\Enum\PhpUnitFailReason;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\FailureMessageFactory;
@@ -206,7 +205,7 @@ class IdentifierExistenceAssertionHandler
             new ClassNameCollection([new ClassName(InvalidLocatorException::class)]),
             Body::createFromExpressions([
                 $this->phpUnitCallFactory->createFailCall(
-                    $this->failureMessageFactory->create($assertion, PhpUnitFailReason::INVALID_LOCATOR)
+                    $this->failureMessageFactory->createForInvalidLocatorException($assertion)
                 ),
             ])
         );
