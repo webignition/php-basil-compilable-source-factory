@@ -47,7 +47,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                                 }
                             },
                             "expected": ' . ($expectedValue ? 'true' : 'false') . ',
-                            "examined": "' . addcslashes((string) $examinedValue, "'") . '"
+                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
                         }'
                     );
                     EOD,
@@ -91,7 +91,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                                 }
                             },
                             "expected": ' . ($expectedValue ? 'true' : 'false') . ',
-                            "examined": "' . addcslashes((string) $examinedValue, "'") . '"
+                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
                         }'
                     );
                     EOD,
@@ -137,7 +137,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                                 }
                             },
                             "expected": ' . ($expectedValue ? 'true' : 'false') . ',
-                            "examined": "' . addcslashes((string) $examinedValue, "'") . '"
+                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
                         }'
                     );
                     EOD,
@@ -176,7 +176,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                                 }
                             },
                             "expected": ' . ($expectedValue ? 'true' : 'false') . ',
-                            "examined": "' . addcslashes((string) $examinedValue, "'") . '"
+                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
                         }'
                     );
                     EOD,

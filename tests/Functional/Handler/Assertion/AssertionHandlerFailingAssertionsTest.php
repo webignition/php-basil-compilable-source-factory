@@ -192,7 +192,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
                     },
                     "reason": "locator-invalid",
                     "exception": {
-                        "class": "webignition\SymfonyDomCrawlerNavigator\Exception\InvalidLocatorException",
+                        "class": "webignition\\SymfonyDomCrawlerNavigator\\Exception\\InvalidLocatorException",
                         "code": 0,
                         "message": "Invalid CSS selector locator 2"
                     }
@@ -218,7 +218,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
                     },
                     "reason": "locator-invalid",
                     "exception": {
-                        "class": "webignition\SymfonyDomCrawlerNavigator\Exception\InvalidLocatorException",
+                        "class": "webignition\\SymfonyDomCrawlerNavigator\\Exception\\InvalidLocatorException",
                         "code": 0,
                         "message": "Invalid CSS selector locator 2"
                     }

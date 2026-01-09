@@ -133,9 +133,9 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             },
                             "reason": "action-failed",
                             "exception": {
-                                "class": "' . addcslashes($exception::class, "'") . '",
+                                "class": "' . addcslashes($exception::class, '"\\') . '",
                                 "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), "'") . '"
+                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
                             }
                         }');
                     }
@@ -256,9 +256,9 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             },
                             "reason": "action-failed",
                             "exception": {
-                                "class": "' . addcslashes($exception::class, "'") . '",
+                                "class": "' . addcslashes($exception::class, '"\\') . '",
                                 "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), "'") . '"
+                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
                             }
                         }');
                     }
@@ -281,9 +281,9 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             },
                             "reason": "action-failed",
                             "exception": {
-                                "class": "' . addcslashes($exception::class, "'") . '",
+                                "class": "' . addcslashes($exception::class, '"\\') . '",
                                 "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), "'") . '"
+                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
                             }
                         }');
                     }
@@ -517,9 +517,9 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             },
                             "reason": "action-failed",
                             "exception": {
-                                "class": "' . addcslashes($exception::class, "'") . '",
+                                "class": "' . addcslashes($exception::class, '"\\') . '",
                                 "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), "'") . '"
+                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
                             }
                         }');
                     }
