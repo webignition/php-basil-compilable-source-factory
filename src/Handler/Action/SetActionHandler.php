@@ -6,18 +6,22 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
+use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
+use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\NullCoalescerExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
+use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Model\Action\ActionInterface;
@@ -99,18 +103,29 @@ class SetActionHandler
             );
         }
 
+        $setValueCollectionPlaceholder = new VariableName('setValueCollection');
+        $setValueValuePlaceholder = new VariableName('setValueValue');
+
         $mutationInvocation = new ObjectMethodInvocation(
-            new VariableDependency(VariableName::WEBDRIVER_ELEMENT_MUTATOR),
+            new VariableDependency(VariableNameEnum::WEBDRIVER_ELEMENT_MUTATOR),
             'setValue',
             new MethodArguments(
                 [
-                    $collectionAccessor,
-                    $valueAccessor
+                    $setValueCollectionPlaceholder,
+                    $setValueValuePlaceholder,
                 ],
-                MethodArgumentsInterface::FORMAT_STACKED
+                MethodArgumentsInterface::FORMAT_INLINE
             )
         );
 
-        return Body::createFromExpressions([$mutationInvocation]);
+        $setValueCollectionAssignment = new AssignmentExpression($setValueCollectionPlaceholder, $collectionAccessor);
+        $setValueValueAssignment = new AssignmentExpression($setValueValuePlaceholder, $valueAccessor);
+
+        return new Body([
+            new Statement($setValueCollectionAssignment),
+            new Statement($setValueValueAssignment),
+            new EmptyLine(),
+            new Statement($mutationInvocation),
+        ]);
     }
 }

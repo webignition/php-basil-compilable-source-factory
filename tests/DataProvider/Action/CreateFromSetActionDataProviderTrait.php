@@ -21,12 +21,12 @@ trait CreateFromSetActionDataProviderTrait
             'input action, element identifier, literal value' => [
                 'action' => $actionParser->parse('set $".selector" to "value"', 0),
                 'expectedRenderedSource' => <<<'EOD'
-                    {{ MUTATOR }}->setValue(
-                        {{ NAVIGATOR }}->find('{
-                            "locator": ".selector"
-                        }'),
-                        "value"
-                    );
+                    $setValueCollection = {{ NAVIGATOR }}->find('{
+                        "locator": ".selector"
+                    }');
+                    $setValueValue = "value";
+                    
+                    {{ MUTATOR }}->setValue($setValueCollection, $setValueValue);
                     {{ PHPUNIT }}->refreshCrawlerAndNavigator();
                     EOD,
                 'expectedMetadata' => new Metadata(
@@ -40,18 +40,18 @@ trait CreateFromSetActionDataProviderTrait
             'input action, element identifier, element value' => [
                 'action' => $actionParser->parse('set $".selector" to $".source"', 0),
                 'expectedRenderedSource' => <<<'EOD'
-                    {{ MUTATOR }}->setValue(
-                        {{ NAVIGATOR }}->find('{
-                            "locator": ".selector"
-                        }'),
-                        (function () {
-                            $element = {{ NAVIGATOR }}->find('{
-                                "locator": ".source"
-                            }');
+                    $setValueCollection = {{ NAVIGATOR }}->find('{
+                        "locator": ".selector"
+                    }');
+                    $setValueValue = (function () {
+                        $element = {{ NAVIGATOR }}->find('{
+                            "locator": ".source"
+                        }');
+
+                        return {{ INSPECTOR }}->getValue($element);
+                    })();
                     
-                            return {{ INSPECTOR }}->getValue($element);
-                        })()
-                    );
+                    {{ MUTATOR }}->setValue($setValueCollection, $setValueValue);
                     {{ PHPUNIT }}->refreshCrawlerAndNavigator();
                     EOD,
                 'expectedMetadata' => new Metadata(
@@ -66,18 +66,18 @@ trait CreateFromSetActionDataProviderTrait
             'input action, element identifier, attribute value' => [
                 'action' => $actionParser->parse('set $".selector" to $".source".attribute_name', 0),
                 'expectedRenderedSource' => <<<'EOD'
-                    {{ MUTATOR }}->setValue(
-                        {{ NAVIGATOR }}->find('{
-                            "locator": ".selector"
-                        }'),
-                        (function () {
-                            $element = {{ NAVIGATOR }}->findOne('{
-                                "locator": ".source"
-                            }');
+                    $setValueCollection = {{ NAVIGATOR }}->find('{
+                        "locator": ".selector"
+                    }');
+                    $setValueValue = (function () {
+                        $element = {{ NAVIGATOR }}->findOne('{
+                            "locator": ".source"
+                        }');
+
+                        return $element->getAttribute('attribute_name');
+                    })();
                     
-                            return $element->getAttribute('attribute_name');
-                        })()
-                    );
+                    {{ MUTATOR }}->setValue($setValueCollection, $setValueValue);
                     {{ PHPUNIT }}->refreshCrawlerAndNavigator();
                     EOD,
                 'expectedMetadata' => new Metadata(
@@ -91,16 +91,16 @@ trait CreateFromSetActionDataProviderTrait
             'input action, browser property' => [
                 'action' => $actionParser->parse('set $".selector" to $browser.size', 0),
                 'expectedRenderedSource' => <<<'EOD'
-        {{ MUTATOR }}->setValue(
-            {{ NAVIGATOR }}->find('{
-                "locator": ".selector"
-            }'),
-            (function () {
-                $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
+        $setValueCollection = {{ NAVIGATOR }}->find('{
+            "locator": ".selector"
+        }');
+        $setValueValue = (function () {
+            $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
+
+            return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
+        })();
         
-                return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
-            })()
-        );
+        {{ MUTATOR }}->setValue($setValueCollection, $setValueValue);
         {{ PHPUNIT }}->refreshCrawlerAndNavigator();
         EOD,
                 'expectedMetadata' => new Metadata(
@@ -115,12 +115,12 @@ trait CreateFromSetActionDataProviderTrait
             'input action, page property' => [
                 'action' => $actionParser->parse('set $".selector" to $page.url', 0),
                 'expectedRenderedSource' => <<<'EOD'
-                    {{ MUTATOR }}->setValue(
-                        {{ NAVIGATOR }}->find('{
-                            "locator": ".selector"
-                        }'),
-                        {{ CLIENT }}->getCurrentURL()
-                    );
+                    $setValueCollection = {{ NAVIGATOR }}->find('{
+                        "locator": ".selector"
+                    }');
+                    $setValueValue = {{ CLIENT }}->getCurrentURL();
+                    
+                    {{ MUTATOR }}->setValue($setValueCollection, $setValueValue);
                     {{ PHPUNIT }}->refreshCrawlerAndNavigator();
                     EOD,
                 'expectedMetadata' => new Metadata(
@@ -135,12 +135,12 @@ trait CreateFromSetActionDataProviderTrait
             'input action, environment value' => [
                 'action' => $actionParser->parse('set $".selector" to $env.KEY', 0),
                 'expectedRenderedSource' => <<<'EOD'
-                    {{ MUTATOR }}->setValue(
-                        {{ NAVIGATOR }}->find('{
-                            "locator": ".selector"
-                        }'),
-                        {{ ENV }}['KEY']
-                    );
+                    $setValueCollection = {{ NAVIGATOR }}->find('{
+                        "locator": ".selector"
+                    }');
+                    $setValueValue = {{ ENV }}['KEY'];
+                    
+                    {{ MUTATOR }}->setValue($setValueCollection, $setValueValue);
                     {{ PHPUNIT }}->refreshCrawlerAndNavigator();
                     EOD,
                 'expectedMetadata' => new Metadata(
@@ -155,12 +155,12 @@ trait CreateFromSetActionDataProviderTrait
             'input action, environment value with default' => [
                 'action' => $actionParser->parse('set $".selector" to $env.KEY|"default"', 0),
                 'expectedRenderedSource' => <<<'EOD'
-                    {{ MUTATOR }}->setValue(
-                        {{ NAVIGATOR }}->find('{
-                            "locator": ".selector"
-                        }'),
-                        {{ ENV }}['KEY'] ?? 'default'
-                    );
+                    $setValueCollection = {{ NAVIGATOR }}->find('{
+                        "locator": ".selector"
+                    }');
+                    $setValueValue = {{ ENV }}['KEY'] ?? 'default';
+                    
+                    {{ MUTATOR }}->setValue($setValueCollection, $setValueValue);
                     {{ PHPUNIT }}->refreshCrawlerAndNavigator();
                     EOD,
                 'expectedMetadata' => new Metadata(
@@ -175,12 +175,12 @@ trait CreateFromSetActionDataProviderTrait
             'input action, environment value with default with whitespace' => [
                 'action' => $actionParser->parse('set $".selector" to $env.KEY|"default value"', 0),
                 'expectedRenderedSource' => <<<'EOD'
-                    {{ MUTATOR }}->setValue(
-                        {{ NAVIGATOR }}->find('{
-                            "locator": ".selector"
-                        }'),
-                        {{ ENV }}['KEY'] ?? 'default value'
-                    );
+                    $setValueCollection = {{ NAVIGATOR }}->find('{
+                        "locator": ".selector"
+                    }');
+                    $setValueValue = {{ ENV }}['KEY'] ?? 'default value';
+                    
+                    {{ MUTATOR }}->setValue($setValueCollection, $setValueValue);
                     {{ PHPUNIT }}->refreshCrawlerAndNavigator();
                     EOD,
                 'expectedMetadata' => new Metadata(
@@ -195,15 +195,15 @@ trait CreateFromSetActionDataProviderTrait
             'input action, parent > child element identifier, literal value' => [
                 'action' => $actionParser->parse('set $".parent" >> $".child" to "value"', 0),
                 'expectedRenderedSource' => <<<'EOD'
-                    {{ MUTATOR }}->setValue(
-                        {{ NAVIGATOR }}->find('{
-                            "locator": ".child",
-                            "parent": {
-                                "locator": ".parent"
-                            }
-                        }'),
-                        "value"
-                    );
+                    $setValueCollection = {{ NAVIGATOR }}->find('{
+                        "locator": ".child",
+                        "parent": {
+                            "locator": ".parent"
+                        }
+                    }');
+                    $setValueValue = "value";
+                    
+                    {{ MUTATOR }}->setValue($setValueCollection, $setValueValue);
                     {{ PHPUNIT }}->refreshCrawlerAndNavigator();
                     EOD,
                 'expectedMetadata' => new Metadata(
@@ -217,12 +217,12 @@ trait CreateFromSetActionDataProviderTrait
             'input action, element identifier, data parameter value' => [
                 'action' => $actionParser->parse('set $".selector" to $data.key', 0),
                 'expectedRenderedSource' => <<<'EOD'
-                    {{ MUTATOR }}->setValue(
-                        {{ NAVIGATOR }}->find('{
-                            "locator": ".selector"
-                        }'),
-                        $key
-                    );
+                    $setValueCollection = {{ NAVIGATOR }}->find('{
+                        "locator": ".selector"
+                    }');
+                    $setValueValue = $key;
+                    
+                    {{ MUTATOR }}->setValue($setValueCollection, $setValueValue);
                     {{ PHPUNIT }}->refreshCrawlerAndNavigator();
                     EOD,
                 'expectedMetadata' => new Metadata(
