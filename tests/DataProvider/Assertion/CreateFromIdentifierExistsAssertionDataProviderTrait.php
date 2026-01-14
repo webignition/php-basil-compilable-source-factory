@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
+use webignition\BaseBasilTestCase\Enum\StatementStage;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
 use webignition\BasilModels\Parser\ActionParser;
 use webignition\BasilModels\Parser\AssertionParser;
-use webignition\SymfonyDomCrawlerNavigator\Exception\InvalidLocatorException;
 
 trait CreateFromIdentifierExistsAssertionDataProviderTrait
 {
@@ -29,28 +29,20 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         $elementExists = {{ NAVIGATOR }}->has('{
                             "locator": ".selector"
                         }');
-                    } catch (InvalidLocatorException $exception) {
-                        $locator = $exception->getElementIdentifier()->getLocator();
-                        $type = $exception->getElementIdentifier()->isCssSelector() ? 'css' : 'xpath';
-                        {{ PHPUNIT }}->fail('{
-                            "statement": {
-                                "statement-type": "assertion",
-                                "source": "$\".selector\" exists",
-                                "index": 0,
-                                "identifier": "$\".selector\"",
-                                "operator": "exists"
-                            },
-                            "reason": "locator-invalid",
-                            "exception": {
-                                "class": "' . addcslashes($exception::class, '"\\') . '",
-                                "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
-                            },
-                            "context": {
-                                "locator": "' . addcslashes($locator, '"\\') . '",
-                                "type": "' . addcslashes($type, '"\\') . '"
-                            }
-                        }');
+                    } catch (\Throwable $exception) {
+                        {{ PHPUNIT }}->fail(
+                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                                '{
+                                    "statement-type": "assertion",
+                                    "source": "$\\".selector\\" exists",
+                                    "index": 0,
+                                    "identifier": "$\\".selector\\"",
+                                    "operator": "exists"
+                                }',
+                                StatementStage::SETUP,
+                                $exception,
+                            ),
+                        );
                     }
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
@@ -71,11 +63,13 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     classNames: [
-                        InvalidLocatorException::class,
+                        StatementStage::class,
+                        \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::FAILURE_MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -98,35 +92,27 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
 
                             return $element->getAttribute('attribute_name');
                         })() ?? null) !== null;
-                    } catch (InvalidLocatorException $exception) {
-                        $locator = $exception->getElementIdentifier()->getLocator();
-                        $type = $exception->getElementIdentifier()->isCssSelector() ? 'css' : 'xpath';
-                        {{ PHPUNIT }}->fail('{
-                            "statement": {
-                                "container": {
-                                    "value": "$\".selector\"",
-                                    "operator": "exists",
-                                    "type": "derived-value-operation-assertion"
-                                },
-                                "statement": {
-                                    "statement-type": "assertion",
-                                    "source": "$\".selector\".attribute_name exists",
-                                    "index": 0,
-                                    "identifier": "$\".selector\".attribute_name",
-                                    "operator": "exists"
-                                }
-                            },
-                            "reason": "locator-invalid",
-                            "exception": {
-                                "class": "' . addcslashes($exception::class, '"\\') . '",
-                                "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
-                            },
-                            "context": {
-                                "locator": "' . addcslashes($locator, '"\\') . '",
-                                "type": "' . addcslashes($type, '"\\') . '"
-                            }
-                        }');
+                    } catch (\Throwable $exception) {
+                        {{ PHPUNIT }}->fail(
+                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                                '{
+                                    "container": {
+                                        "value": "$\\".selector\\"",
+                                        "operator": "exists",
+                                        "type": "derived-value-operation-assertion"
+                                    },
+                                    "statement": {
+                                        "statement-type": "assertion",
+                                        "source": "$\\".selector\\".attribute_name exists",
+                                        "index": 0,
+                                        "identifier": "$\\".selector\\".attribute_name",
+                                        "operator": "exists"
+                                    }
+                                }',
+                                StatementStage::SETUP,
+                                $exception,
+                            ),
+                        );
                     }
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
@@ -168,11 +154,13 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     classNames: [
-                        InvalidLocatorException::class,
+                        StatementStage::class,
+                        \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::FAILURE_MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -188,28 +176,20 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         $elementExists = {{ NAVIGATOR }}->has('{
                             "locator": "a[href=foo.html]"
                         }');
-                    } catch (InvalidLocatorException $exception) {
-                        $locator = $exception->getElementIdentifier()->getLocator();
-                        $type = $exception->getElementIdentifier()->isCssSelector() ? 'css' : 'xpath';
-                        {{ PHPUNIT }}->fail('{
-                            "statement": {
-                                "statement-type": "assertion",
-                                "source": "$\"a[href=foo.html]\" exists",
-                                "index": 0,
-                                "identifier": "$\"a[href=foo.html]\"",
-                                "operator": "exists"
-                            },
-                            "reason": "locator-invalid",
-                            "exception": {
-                                "class": "' . addcslashes($exception::class, '"\\') . '",
-                                "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
-                            },
-                            "context": {
-                                "locator": "' . addcslashes($locator, '"\\') . '",
-                                "type": "' . addcslashes($type, '"\\') . '"
-                            }
-                        }');
+                    } catch (\Throwable $exception) {
+                        {{ PHPUNIT }}->fail(
+                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                                '{
+                                    "statement-type": "assertion",
+                                    "source": "$\\"a[href=foo.html]\\" exists",
+                                    "index": 0,
+                                    "identifier": "$\\"a[href=foo.html]\\"",
+                                    "operator": "exists"
+                                }',
+                                StatementStage::SETUP,
+                                $exception,
+                            ),
+                        );
                     }
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
@@ -230,11 +210,13 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     classNames: [
-                        InvalidLocatorException::class,
+                        StatementStage::class,
+                        \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::FAILURE_MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -250,28 +232,20 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         $elementExists = {{ NAVIGATOR }}->has('{
                             "locator": "[data-value=\\"\'single quoted\'\\"]"
                         }');
-                    } catch (InvalidLocatorException $exception) {
-                        $locator = $exception->getElementIdentifier()->getLocator();
-                        $type = $exception->getElementIdentifier()->isCssSelector() ? 'css' : 'xpath';
-                        {{ PHPUNIT }}->fail('{
-                            "statement": {
-                                "statement-type": "assertion",
-                                "source": "$\"[data-value=\\\"\'single quoted\'\\\"]\" exists",
-                                "index": 0,
-                                "identifier": "$\"[data-value=\\\"\'single quoted\'\\\"]\"",
-                                "operator": "exists"
-                            },
-                            "reason": "locator-invalid",
-                            "exception": {
-                                "class": "' . addcslashes($exception::class, '"\\') . '",
-                                "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
-                            },
-                            "context": {
-                                "locator": "' . addcslashes($locator, '"\\') . '",
-                                "type": "' . addcslashes($type, '"\\') . '"
-                            }
-                        }');
+                    } catch (\Throwable $exception) {
+                        {{ PHPUNIT }}->fail(
+                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                                '{
+                                    "statement-type": "assertion",
+                                    "source": "$\\"[data-value=\\\\\\"\\\'single quoted\\\'\\\\\\"]\\" exists",
+                                    "index": 0,
+                                    "identifier": "$\\"[data-value=\\\\\\"\\\'single quoted\\\'\\\\\\"]\\"",
+                                    "operator": "exists"
+                                }',
+                                StatementStage::SETUP,
+                                $exception,
+                            ),
+                        );
                     }
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
@@ -292,11 +266,13 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     classNames: [
-                        InvalidLocatorException::class,
+                        StatementStage::class,
+                        \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::FAILURE_MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -319,35 +295,27 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
 
                             return $element->getAttribute('attribute_name');
                         })() ?? null) !== null;
-                    } catch (InvalidLocatorException $exception) {
-                        $locator = $exception->getElementIdentifier()->getLocator();
-                        $type = $exception->getElementIdentifier()->isCssSelector() ? 'css' : 'xpath';
-                        {{ PHPUNIT }}->fail('{
-                            "statement": {
-                                "container": {
-                                    "value": "$\"a[href=foo.html]\"",
-                                    "operator": "exists",
-                                    "type": "derived-value-operation-assertion"
-                                },
-                                "statement": {
-                                    "statement-type": "assertion",
-                                    "source": "$\"a[href=foo.html]\".attribute_name exists",
-                                    "index": 0,
-                                    "identifier": "$\"a[href=foo.html]\".attribute_name",
-                                    "operator": "exists"
-                                }
-                            },
-                            "reason": "locator-invalid",
-                            "exception": {
-                                "class": "' . addcslashes($exception::class, '"\\') . '",
-                                "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
-                            },
-                            "context": {
-                                "locator": "' . addcslashes($locator, '"\\') . '",
-                                "type": "' . addcslashes($type, '"\\') . '"
-                            }
-                        }');
+                    } catch (\Throwable $exception) {
+                        {{ PHPUNIT }}->fail(
+                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                                '{
+                                    "container": {
+                                        "value": "$\\"a[href=foo.html]\\"",
+                                        "operator": "exists",
+                                        "type": "derived-value-operation-assertion"
+                                    },
+                                    "statement": {
+                                        "statement-type": "assertion",
+                                        "source": "$\\"a[href=foo.html]\\".attribute_name exists",
+                                        "index": 0,
+                                        "identifier": "$\\"a[href=foo.html]\\".attribute_name",
+                                        "operator": "exists"
+                                    }
+                                }',
+                                StatementStage::SETUP,
+                                $exception,
+                            ),
+                        );
                     }
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
@@ -389,11 +357,13 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     classNames: [
-                        InvalidLocatorException::class,
+                        StatementStage::class,
+                        \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::FAILURE_MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -413,36 +383,28 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         $elementExists = {{ NAVIGATOR }}->hasOne('{
                             "locator": ".selector"
                         }');
-                    } catch (InvalidLocatorException $exception) {
-                        $locator = $exception->getElementIdentifier()->getLocator();
-                        $type = $exception->getElementIdentifier()->isCssSelector() ? 'css' : 'xpath';
-                        {{ PHPUNIT }}->fail('{
-                            "statement": {
-                                "container": {
-                                    "value": "$\".selector\"",
-                                    "operator": "exists",
-                                    "type": "derived-value-operation-assertion"
-                                },
-                                "statement": {
-                                    "statement-type": "action",
-                                    "source": "click $\".selector\"",
-                                    "index": 0,
-                                    "identifier": "$\".selector\"",
-                                    "type": "click",
-                                    "arguments": "$\".selector\""
-                                }
-                            },
-                            "reason": "locator-invalid",
-                            "exception": {
-                                "class": "' . addcslashes($exception::class, '"\\') . '",
-                                "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
-                            },
-                            "context": {
-                                "locator": "' . addcslashes($locator, '"\\') . '",
-                                "type": "' . addcslashes($type, '"\\') . '"
-                            }
-                        }');
+                    } catch (\Throwable $exception) {
+                        {{ PHPUNIT }}->fail(
+                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                                '{
+                                    "container": {
+                                        "value": "$\\".selector\\"",
+                                        "operator": "exists",
+                                        "type": "derived-value-operation-assertion"
+                                    },
+                                    "statement": {
+                                        "statement-type": "action",
+                                        "source": "click $\\".selector\\"",
+                                        "index": 0,
+                                        "identifier": "$\\".selector\\"",
+                                        "type": "click",
+                                        "arguments": "$\\".selector\\""
+                                    }
+                                }',
+                                StatementStage::SETUP,
+                                $exception,
+                            ),
+                        );
                     }
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
@@ -471,11 +433,13 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     classNames: [
-                        InvalidLocatorException::class,
+                        StatementStage::class,
+                        \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::FAILURE_MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -495,36 +459,28 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         $elementExists = {{ NAVIGATOR }}->hasOne('{
                             "locator": ".selector"
                         }');
-                    } catch (InvalidLocatorException $exception) {
-                        $locator = $exception->getElementIdentifier()->getLocator();
-                        $type = $exception->getElementIdentifier()->isCssSelector() ? 'css' : 'xpath';
-                        {{ PHPUNIT }}->fail('{
-                            "statement": {
-                                "container": {
-                                    "value": "$\".selector\"",
-                                    "operator": "exists",
-                                    "type": "derived-value-operation-assertion"
-                                },
-                                "statement": {
-                                    "statement-type": "action",
-                                    "source": "submit $\".selector\"",
-                                    "index": 0,
-                                    "identifier": "$\".selector\"",
-                                    "type": "submit",
-                                    "arguments": "$\".selector\""
-                                }
-                            },
-                            "reason": "locator-invalid",
-                            "exception": {
-                                "class": "' . addcslashes($exception::class, '"\\') . '",
-                                "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
-                            },
-                            "context": {
-                                "locator": "' . addcslashes($locator, '"\\') . '",
-                                "type": "' . addcslashes($type, '"\\') . '"
-                            }
-                        }');
+                    } catch (\Throwable $exception) {
+                        {{ PHPUNIT }}->fail(
+                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                                '{
+                                    "container": {
+                                        "value": "$\\".selector\\"",
+                                        "operator": "exists",
+                                        "type": "derived-value-operation-assertion"
+                                    },
+                                    "statement": {
+                                        "statement-type": "action",
+                                        "source": "submit $\\".selector\\"",
+                                        "index": 0,
+                                        "identifier": "$\\".selector\\"",
+                                        "type": "submit",
+                                        "arguments": "$\\".selector\\""
+                                    }
+                                }',
+                                StatementStage::SETUP,
+                                $exception,
+                            ),
+                        );
                     }
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
@@ -553,11 +509,13 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     classNames: [
-                        InvalidLocatorException::class,
+                        StatementStage::class,
+                        \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::FAILURE_MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -577,37 +535,29 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         $elementExists = {{ NAVIGATOR }}->has('{
                             "locator": ".selector"
                         }');
-                    } catch (InvalidLocatorException $exception) {
-                        $locator = $exception->getElementIdentifier()->getLocator();
-                        $type = $exception->getElementIdentifier()->isCssSelector() ? 'css' : 'xpath';
-                        {{ PHPUNIT }}->fail('{
-                            "statement": {
-                                "container": {
-                                    "value": "$\".selector\"",
-                                    "operator": "exists",
-                                    "type": "derived-value-operation-assertion"
-                                },
-                                "statement": {
-                                    "statement-type": "action",
-                                    "source": "set $\".selector\" to \"value\"",
-                                    "index": 0,
-                                    "identifier": "$\".selector\"",
-                                    "value": "\"value\"",
-                                    "type": "set",
-                                    "arguments": "$\".selector\" to \"value\""
-                                }
-                            },
-                            "reason": "locator-invalid",
-                            "exception": {
-                                "class": "' . addcslashes($exception::class, '"\\') . '",
-                                "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
-                            },
-                            "context": {
-                                "locator": "' . addcslashes($locator, '"\\') . '",
-                                "type": "' . addcslashes($type, '"\\') . '"
-                            }
-                        }');
+                    } catch (\Throwable $exception) {
+                        {{ PHPUNIT }}->fail(
+                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                                '{
+                                    "container": {
+                                        "value": "$\\".selector\\"",
+                                        "operator": "exists",
+                                        "type": "derived-value-operation-assertion"
+                                    },
+                                    "statement": {
+                                        "statement-type": "action",
+                                        "source": "set $\\".selector\\" to \\"value\\"",
+                                        "index": 0,
+                                        "identifier": "$\\".selector\\"",
+                                        "value": "\\"value\\"",
+                                        "type": "set",
+                                        "arguments": "$\\".selector\\" to \\"value\\""
+                                    }
+                                }',
+                                StatementStage::SETUP,
+                                $exception,
+                            ),
+                        );
                     }
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
@@ -637,11 +587,13 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     classNames: [
-                        InvalidLocatorException::class,
+                        StatementStage::class,
+                        \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::FAILURE_MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -661,36 +613,28 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         $elementExists = {{ NAVIGATOR }}->has('{
                             "locator": ".duration"
                         }');
-                    } catch (InvalidLocatorException $exception) {
-                        $locator = $exception->getElementIdentifier()->getLocator();
-                        $type = $exception->getElementIdentifier()->isCssSelector() ? 'css' : 'xpath';
-                        {{ PHPUNIT }}->fail('{
-                            "statement": {
-                                "container": {
-                                    "value": "$\".duration\"",
-                                    "operator": "exists",
-                                    "type": "derived-value-operation-assertion"
-                                },
-                                "statement": {
-                                    "statement-type": "action",
-                                    "source": "wait $\".duration\"",
-                                    "index": 0,
-                                    "value": "$\".duration\"",
-                                    "type": "wait",
-                                    "arguments": "$\".duration\""
-                                }
-                            },
-                            "reason": "locator-invalid",
-                            "exception": {
-                                "class": "' . addcslashes($exception::class, '"\\') . '",
-                                "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
-                            },
-                            "context": {
-                                "locator": "' . addcslashes($locator, '"\\') . '",
-                                "type": "' . addcslashes($type, '"\\') . '"
-                            }
-                        }');
+                    } catch (\Throwable $exception) {
+                        {{ PHPUNIT }}->fail(
+                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                                '{
+                                    "container": {
+                                        "value": "$\\".duration\\"",
+                                        "operator": "exists",
+                                        "type": "derived-value-operation-assertion"
+                                    },
+                                    "statement": {
+                                        "statement-type": "action",
+                                        "source": "wait $\\".duration\\"",
+                                        "index": 0,
+                                        "value": "$\\".duration\\"",
+                                        "type": "wait",
+                                        "arguments": "$\\".duration\\""
+                                    }
+                                }',
+                                StatementStage::SETUP,
+                                $exception,
+                            ),
+                        );
                     }
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
@@ -719,11 +663,13 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     classNames: [
-                        InvalidLocatorException::class,
+                        StatementStage::class,
+                        \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::FAILURE_MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(

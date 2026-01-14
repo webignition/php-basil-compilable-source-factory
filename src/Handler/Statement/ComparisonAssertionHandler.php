@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Statement;
 
+use webignition\BaseBasilTestCase\Enum\StatementStage;
 use webignition\BasilCompilableSourceFactory\AssertionArgument;
 use webignition\BasilCompilableSourceFactory\AssertionMessageFactory;
 use webignition\BasilCompilableSourceFactory\AssertionStatementFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\FailureMessageFactory;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
@@ -37,7 +37,6 @@ class ComparisonAssertionHandler implements StatementHandlerInterface
         private AssertionMessageFactory $assertionMessageFactory,
         private TryCatchBlockFactory $tryCatchBlockFactory,
         private PhpUnitCallFactory $phpUnitCallFactory,
-        private FailureMessageFactory $failureMessageFactory,
     ) {}
 
     public static function createHandler(): self
@@ -48,7 +47,6 @@ class ComparisonAssertionHandler implements StatementHandlerInterface
             AssertionMessageFactory::createFactory(),
             TryCatchBlockFactory::createFactory(),
             PhpUnitCallFactory::createFactory(),
-            FailureMessageFactory::createFactory(),
         );
     }
 
@@ -75,9 +73,7 @@ class ComparisonAssertionHandler implements StatementHandlerInterface
         $examined = new AssertionArgument($examinedValuePlaceholder, 'string');
 
         $catchBody = Body::createFromExpressions([
-            $this->phpUnitCallFactory->createFailCall(
-                $this->failureMessageFactory->createForAssertionSetupThrowable($statement)
-            ),
+            $this->phpUnitCallFactory->createFailCall($statement, StatementStage::SETUP),
         ]);
 
         return new StatementHandlerComponents(

@@ -7,12 +7,12 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Statement;
 use SmartAssert\DomIdentifier\AttributeIdentifierInterface;
 use SmartAssert\DomIdentifier\Factory as DomIdentifierFactory;
 use SmartAssert\DomIdentifier\FactoryInterface as DomIdentifierFactoryInterface;
+use webignition\BaseBasilTestCase\Enum\StatementStage;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\FailureMessageFactory;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
@@ -43,7 +43,6 @@ class SetActionHandler implements StatementHandlerInterface
         private ElementIdentifierSerializer $elementIdentifierSerializer,
         private TryCatchBlockFactory $tryCatchBlockFactory,
         private PhpUnitCallFactory $phpUnitCallFactory,
-        private FailureMessageFactory $failureMessageFactory,
     ) {}
 
     public static function createHandler(): self
@@ -57,7 +56,6 @@ class SetActionHandler implements StatementHandlerInterface
             ElementIdentifierSerializer::createSerializer(),
             TryCatchBlockFactory::createFactory(),
             PhpUnitCallFactory::createFactory(),
-            FailureMessageFactory::createFactory(),
         );
     }
 
@@ -138,9 +136,7 @@ class SetActionHandler implements StatementHandlerInterface
         );
 
         $catchBody = Body::createFromExpressions([
-            $this->phpUnitCallFactory->createFailCall(
-                $this->failureMessageFactory->createForActionSetupThrowable($statement)
-            ),
+            $this->phpUnitCallFactory->createFailCall($statement, StatementStage::SETUP),
         ]);
 
         return new StatementHandlerComponents(

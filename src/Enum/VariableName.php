@@ -12,6 +12,7 @@ enum VariableName: string
     case PHPUNIT_TEST_CASE = 'PHPUNIT';
     case WEBDRIVER_ELEMENT_INSPECTOR = 'INSPECTOR';
     case WEBDRIVER_ELEMENT_MUTATOR = 'MUTATOR';
+    case FAILURE_MESSAGE_FACTORY = 'FAILURE_MESSAGE_FACTORY';
     case PANTHER_CRAWLER = 'CRAWLER';
     case EXPECTED_VALUE = 'expectedValue';
     case EXAMINED_VALUE = 'examinedValue';

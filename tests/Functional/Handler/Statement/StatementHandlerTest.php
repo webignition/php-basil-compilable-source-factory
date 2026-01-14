@@ -278,13 +278,17 @@ class StatementHandlerTest extends AbstractBrowserTestCase
                         "identifier": "$\"2\"",
                         "operator": "exists"
                     },
-                    "reason": "locator-invalid",
+                    "stage": "setup",
                     "exception": {
                         "class": "webignition\\SymfonyDomCrawlerNavigator\\Exception\\InvalidLocatorException",
                         "code": 0,
                         "message": "Invalid CSS selector locator 2"
+                    },
+                    "context": {
+                        "locator": "2",
+                        "type": "css"
                     }
-    EOD,
+                EOD,
             ],
             'exists comparison, attribute identifier examined value, invalid locator exception is caught' => [
                 'fixture' => '/index.html',
@@ -304,13 +308,17 @@ class StatementHandlerTest extends AbstractBrowserTestCase
                             "operator": "exists"
                         }
                     },
-                    "reason": "locator-invalid",
+                    "stage": "setup",
                     "exception": {
                         "class": "webignition\\SymfonyDomCrawlerNavigator\\Exception\\InvalidLocatorException",
                         "code": 0,
                         "message": "Invalid CSS selector locator 2"
+                    },
+                    "context": {
+                        "locator": "2",
+                        "type": "css"
                     }
-    EOD,
+                EOD,
             ],
         ];
     }
