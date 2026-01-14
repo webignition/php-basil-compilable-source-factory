@@ -21,14 +21,34 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" is "value"', 0),
                 'expectedRenderedContent' => <<<'EOD'
-                    $expectedValue = "value";
-                    $examinedValue = (function () {
-                        $element = {{ NAVIGATOR }}->find('{
-                            "locator": ".selector"
-                        }');
+                    try {
+                        $expectedValue = "value";
+                        $examinedValue = (function () {
+                            $element = {{ NAVIGATOR }}->find('{
+                                "locator": ".selector"
+                            }');
 
-                        return {{ INSPECTOR }}->getValue($element);
-                    })();
+                            return {{ INSPECTOR }}->getValue($element);
+                        })();
+                    } catch (\Throwable $exception) {
+                        {{ PHPUNIT }}->fail('{
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$\".selector\" is \"value\"",
+                                "index": 0,
+                                "identifier": "$\".selector\"",
+                                "value": "\"value\"",
+                                "operator": "is"
+                            },
+                            "reason": "assertion-setup-failed",
+                            "exception": {
+                                "class": "' . addcslashes($exception::class, '"\\') . '",
+                                "code": ' . $exception->getCode() . ',
+                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                            }
+                        }');
+                    }
+
                     {{ PHPUNIT }}->assertEquals(
                         (string) $expectedValue,
                         (string) $examinedValue,
@@ -47,6 +67,9 @@ trait CreateFromIsAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedMetadata' => new Metadata(
+                    classNames: [
+                        \Throwable::class,
+                    ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::PHPUNIT_TEST_CASE,
@@ -57,17 +80,37 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, descendant identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".parent" >> $".child" is "value"', 0),
                 'expectedRenderedContent' => <<<'EOD'
-                    $expectedValue = "value";
-                    $examinedValue = (function () {
-                        $element = {{ NAVIGATOR }}->find('{
-                            "locator": ".child",
-                            "parent": {
-                                "locator": ".parent"
+                    try {
+                        $expectedValue = "value";
+                        $examinedValue = (function () {
+                            $element = {{ NAVIGATOR }}->find('{
+                                "locator": ".child",
+                                "parent": {
+                                    "locator": ".parent"
+                                }
+                            }');
+
+                            return {{ INSPECTOR }}->getValue($element);
+                        })();
+                    } catch (\Throwable $exception) {
+                        {{ PHPUNIT }}->fail('{
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$\".parent\" >> $\".child\" is \"value\"",
+                                "index": 0,
+                                "identifier": "$\".parent\" >> $\".child\"",
+                                "value": "\"value\"",
+                                "operator": "is"
+                            },
+                            "reason": "assertion-setup-failed",
+                            "exception": {
+                                "class": "' . addcslashes($exception::class, '"\\') . '",
+                                "code": ' . $exception->getCode() . ',
+                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
                             }
                         }');
+                    }
 
-                        return {{ INSPECTOR }}->getValue($element);
-                    })();
                     {{ PHPUNIT }}->assertEquals(
                         (string) $expectedValue,
                         (string) $examinedValue,
@@ -86,6 +129,9 @@ trait CreateFromIsAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedMetadata' => new Metadata(
+                    classNames: [
+                        \Throwable::class,
+                    ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::PHPUNIT_TEST_CASE,
@@ -96,14 +142,34 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name is "value"', 0),
                 'expectedRenderedContent' => <<<'EOD'
-                    $expectedValue = "value";
-                    $examinedValue = (function () {
-                        $element = {{ NAVIGATOR }}->findOne('{
-                            "locator": ".selector"
-                        }');
+                    try {
+                        $expectedValue = "value";
+                        $examinedValue = (function () {
+                            $element = {{ NAVIGATOR }}->findOne('{
+                                "locator": ".selector"
+                            }');
 
-                        return $element->getAttribute('attribute_name');
-                    })();
+                            return $element->getAttribute('attribute_name');
+                        })();
+                    } catch (\Throwable $exception) {
+                        {{ PHPUNIT }}->fail('{
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$\".selector\".attribute_name is \"value\"",
+                                "index": 0,
+                                "identifier": "$\".selector\".attribute_name",
+                                "value": "\"value\"",
+                                "operator": "is"
+                            },
+                            "reason": "assertion-setup-failed",
+                            "exception": {
+                                "class": "' . addcslashes($exception::class, '"\\') . '",
+                                "code": ' . $exception->getCode() . ',
+                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                            }
+                        }');
+                    }
+
                     {{ PHPUNIT }}->assertEquals(
                         (string) $expectedValue,
                         (string) $examinedValue,
@@ -122,6 +188,9 @@ trait CreateFromIsAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedMetadata' => new Metadata(
+                    classNames: [
+                        \Throwable::class,
+                    ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::PHPUNIT_TEST_CASE,
@@ -131,30 +200,53 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, browser object examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is "value"', 0),
                 'expectedRenderedContent' => <<<'EOD'
+        try {
             $expectedValue = "value";
             $examinedValue = (function () {
                 $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
 
                 return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
             })();
-            {{ PHPUNIT }}->assertEquals(
-                (string) $expectedValue,
-                (string) $examinedValue,
-                '{
-                    "statement": {
-                        "statement-type": "assertion",
-                        "source": "$browser.size is \"value\"",
-                        "index": 0,
-                        "identifier": "$browser.size",
-                        "value": "\"value\"",
-                        "operator": "is"
-                    },
-                    "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
-                    "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
-                }'
-            );
-            EOD,
+        } catch (\Throwable $exception) {
+            {{ PHPUNIT }}->fail('{
+                "statement": {
+                    "statement-type": "assertion",
+                    "source": "$browser.size is \"value\"",
+                    "index": 0,
+                    "identifier": "$browser.size",
+                    "value": "\"value\"",
+                    "operator": "is"
+                },
+                "reason": "assertion-setup-failed",
+                "exception": {
+                    "class": "' . addcslashes($exception::class, '"\\') . '",
+                    "code": ' . $exception->getCode() . ',
+                    "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                }
+            }');
+        }
+
+        {{ PHPUNIT }}->assertEquals(
+            (string) $expectedValue,
+            (string) $examinedValue,
+            '{
+                "statement": {
+                    "statement-type": "assertion",
+                    "source": "$browser.size is \"value\"",
+                    "index": 0,
+                    "identifier": "$browser.size",
+                    "value": "\"value\"",
+                    "operator": "is"
+                },
+                "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
+                "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
+            }'
+        );
+        EOD,
                 'expectedMetadata' => new Metadata(
+                    classNames: [
+                        \Throwable::class,
+                    ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::PANTHER_CLIENT,
@@ -164,8 +256,28 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, environment examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$env.KEY is "value"', 0),
                 'expectedRenderedContent' => <<<'EOD'
-                    $expectedValue = "value";
-                    $examinedValue = {{ ENV }}['KEY'] ?? null;
+                    try {
+                        $expectedValue = "value";
+                        $examinedValue = {{ ENV }}['KEY'] ?? null;
+                    } catch (\Throwable $exception) {
+                        {{ PHPUNIT }}->fail('{
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$env.KEY is \"value\"",
+                                "index": 0,
+                                "identifier": "$env.KEY",
+                                "value": "\"value\"",
+                                "operator": "is"
+                            },
+                            "reason": "assertion-setup-failed",
+                            "exception": {
+                                "class": "' . addcslashes($exception::class, '"\\') . '",
+                                "code": ' . $exception->getCode() . ',
+                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                            }
+                        }');
+                    }
+
                     {{ PHPUNIT }}->assertEquals(
                         (string) $expectedValue,
                         (string) $examinedValue,
@@ -184,6 +296,9 @@ trait CreateFromIsAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedMetadata' => new Metadata(
+                    classNames: [
+                        \Throwable::class,
+                    ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::ENVIRONMENT_VARIABLE_ARRAY
@@ -193,8 +308,28 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, environment examined value with default, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$env.KEY|"default value" is "value"', 0),
                 'expectedRenderedContent' => <<<'EOD'
-                    $expectedValue = "value";
-                    $examinedValue = {{ ENV }}['KEY'] ?? 'default value';
+                    try {
+                        $expectedValue = "value";
+                        $examinedValue = {{ ENV }}['KEY'] ?? 'default value';
+                    } catch (\Throwable $exception) {
+                        {{ PHPUNIT }}->fail('{
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$env.KEY|\"default value\" is \"value\"",
+                                "index": 0,
+                                "identifier": "$env.KEY|\"default value\"",
+                                "value": "\"value\"",
+                                "operator": "is"
+                            },
+                            "reason": "assertion-setup-failed",
+                            "exception": {
+                                "class": "' . addcslashes($exception::class, '"\\') . '",
+                                "code": ' . $exception->getCode() . ',
+                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                            }
+                        }');
+                    }
+
                     {{ PHPUNIT }}->assertEquals(
                         (string) $expectedValue,
                         (string) $examinedValue,
@@ -213,6 +348,9 @@ trait CreateFromIsAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedMetadata' => new Metadata(
+                    classNames: [
+                        \Throwable::class,
+                    ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::ENVIRONMENT_VARIABLE_ARRAY
@@ -222,8 +360,28 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, environment examined value with default, environment examined value with default' => [
                 'assertion' => $assertionParser->parse('$env.KEY1|"default value 1" is $env.KEY2|"default value 2"', 0),
                 'expectedRenderedContent' => <<<'EOD'
-                    $expectedValue = {{ ENV }}['KEY2'] ?? 'default value 2';
-                    $examinedValue = {{ ENV }}['KEY1'] ?? 'default value 1';
+                    try {
+                        $expectedValue = {{ ENV }}['KEY2'] ?? 'default value 2';
+                        $examinedValue = {{ ENV }}['KEY1'] ?? 'default value 1';
+                    } catch (\Throwable $exception) {
+                        {{ PHPUNIT }}->fail('{
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$env.KEY1|\"default value 1\" is $env.KEY2|\"default value 2\"",
+                                "index": 0,
+                                "identifier": "$env.KEY1|\"default value 1\"",
+                                "value": "$env.KEY2|\"default value 2\"",
+                                "operator": "is"
+                            },
+                            "reason": "assertion-setup-failed",
+                            "exception": {
+                                "class": "' . addcslashes($exception::class, '"\\') . '",
+                                "code": ' . $exception->getCode() . ',
+                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                            }
+                        }');
+                    }
+
                     {{ PHPUNIT }}->assertEquals(
                         (string) $expectedValue,
                         (string) $examinedValue,
@@ -242,6 +400,9 @@ trait CreateFromIsAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedMetadata' => new Metadata(
+                    classNames: [
+                        \Throwable::class,
+                    ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::ENVIRONMENT_VARIABLE_ARRAY
@@ -251,8 +412,28 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, page object examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$page.title is "value"', 0),
                 'expectedRenderedContent' => <<<'EOD'
-                    $expectedValue = "value";
-                    $examinedValue = {{ CLIENT }}->getTitle();
+                    try {
+                        $expectedValue = "value";
+                        $examinedValue = {{ CLIENT }}->getTitle();
+                    } catch (\Throwable $exception) {
+                        {{ PHPUNIT }}->fail('{
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$page.title is \"value\"",
+                                "index": 0,
+                                "identifier": "$page.title",
+                                "value": "\"value\"",
+                                "operator": "is"
+                            },
+                            "reason": "assertion-setup-failed",
+                            "exception": {
+                                "class": "' . addcslashes($exception::class, '"\\') . '",
+                                "code": ' . $exception->getCode() . ',
+                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                            }
+                        }');
+                    }
+
                     {{ PHPUNIT }}->assertEquals(
                         (string) $expectedValue,
                         (string) $examinedValue,
@@ -271,6 +452,9 @@ trait CreateFromIsAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedMetadata' => new Metadata(
+                    classNames: [
+                        \Throwable::class,
+                    ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::PANTHER_CLIENT,
@@ -280,6 +464,7 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, browser object examined value, descendant identifier expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $".parent" >> $".child"', 0),
                 'expectedRenderedContent' => <<<'EOD'
+        try {
             $expectedValue = (function () {
                 $element = {{ NAVIGATOR }}->find('{
                     "locator": ".child",
@@ -287,7 +472,7 @@ trait CreateFromIsAssertionDataProviderTrait
                         "locator": ".parent"
                     }
                 }');
-            
+
                 return {{ INSPECTOR }}->getValue($element);
             })();
             $examinedValue = (function () {
@@ -295,24 +480,46 @@ trait CreateFromIsAssertionDataProviderTrait
 
                 return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
             })();
-            {{ PHPUNIT }}->assertEquals(
-                (string) $expectedValue,
-                (string) $examinedValue,
-                '{
-                    "statement": {
-                        "statement-type": "assertion",
-                        "source": "$browser.size is $\".parent\" >> $\".child\"",
-                        "index": 0,
-                        "identifier": "$browser.size",
-                        "value": "$\".parent\" >> $\".child\"",
-                        "operator": "is"
-                    },
-                    "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
-                    "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
-                }'
-            );
-            EOD,
+        } catch (\Throwable $exception) {
+            {{ PHPUNIT }}->fail('{
+                "statement": {
+                    "statement-type": "assertion",
+                    "source": "$browser.size is $\".parent\" >> $\".child\"",
+                    "index": 0,
+                    "identifier": "$browser.size",
+                    "value": "$\".parent\" >> $\".child\"",
+                    "operator": "is"
+                },
+                "reason": "assertion-setup-failed",
+                "exception": {
+                    "class": "' . addcslashes($exception::class, '"\\') . '",
+                    "code": ' . $exception->getCode() . ',
+                    "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                }
+            }');
+        }
+
+        {{ PHPUNIT }}->assertEquals(
+            (string) $expectedValue,
+            (string) $examinedValue,
+            '{
+                "statement": {
+                    "statement-type": "assertion",
+                    "source": "$browser.size is $\".parent\" >> $\".child\"",
+                    "index": 0,
+                    "identifier": "$browser.size",
+                    "value": "$\".parent\" >> $\".child\"",
+                    "operator": "is"
+                },
+                "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
+                "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
+            }'
+        );
+        EOD,
                 'expectedMetadata' => new Metadata(
+                    classNames: [
+                        \Throwable::class,
+                    ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::PANTHER_CLIENT,
@@ -324,11 +531,12 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, browser object examined value, element identifier expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $".selector"', 0),
                 'expectedRenderedContent' => <<<'EOD'
+        try {
             $expectedValue = (function () {
                 $element = {{ NAVIGATOR }}->find('{
                     "locator": ".selector"
                 }');
-            
+
                 return {{ INSPECTOR }}->getValue($element);
             })();
             $examinedValue = (function () {
@@ -336,24 +544,46 @@ trait CreateFromIsAssertionDataProviderTrait
 
                 return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
             })();
-            {{ PHPUNIT }}->assertEquals(
-                (string) $expectedValue,
-                (string) $examinedValue,
-                '{
-                    "statement": {
-                        "statement-type": "assertion",
-                        "source": "$browser.size is $\".selector\"",
-                        "index": 0,
-                        "identifier": "$browser.size",
-                        "value": "$\".selector\"",
-                        "operator": "is"
-                    },
-                    "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
-                    "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
-                }'
-            );
-            EOD,
+        } catch (\Throwable $exception) {
+            {{ PHPUNIT }}->fail('{
+                "statement": {
+                    "statement-type": "assertion",
+                    "source": "$browser.size is $\".selector\"",
+                    "index": 0,
+                    "identifier": "$browser.size",
+                    "value": "$\".selector\"",
+                    "operator": "is"
+                },
+                "reason": "assertion-setup-failed",
+                "exception": {
+                    "class": "' . addcslashes($exception::class, '"\\') . '",
+                    "code": ' . $exception->getCode() . ',
+                    "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                }
+            }');
+        }
+
+        {{ PHPUNIT }}->assertEquals(
+            (string) $expectedValue,
+            (string) $examinedValue,
+            '{
+                "statement": {
+                    "statement-type": "assertion",
+                    "source": "$browser.size is $\".selector\"",
+                    "index": 0,
+                    "identifier": "$browser.size",
+                    "value": "$\".selector\"",
+                    "operator": "is"
+                },
+                "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
+                "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
+            }'
+        );
+        EOD,
                 'expectedMetadata' => new Metadata(
+                    classNames: [
+                        \Throwable::class,
+                    ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::PANTHER_CLIENT,
@@ -365,11 +595,12 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, browser object examined value, attribute identifier expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $".selector".attribute_name', 0),
                 'expectedRenderedContent' => <<<'EOD'
+        try {
             $expectedValue = (function () {
                 $element = {{ NAVIGATOR }}->findOne('{
                     "locator": ".selector"
                 }');
-            
+
                 return $element->getAttribute('attribute_name');
             })();
             $examinedValue = (function () {
@@ -377,24 +608,46 @@ trait CreateFromIsAssertionDataProviderTrait
 
                 return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
             })();
-            {{ PHPUNIT }}->assertEquals(
-                (string) $expectedValue,
-                (string) $examinedValue,
-                '{
-                    "statement": {
-                        "statement-type": "assertion",
-                        "source": "$browser.size is $\".selector\".attribute_name",
-                        "index": 0,
-                        "identifier": "$browser.size",
-                        "value": "$\".selector\".attribute_name",
-                        "operator": "is"
-                    },
-                    "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
-                    "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
-                }'
-            );
-            EOD,
+        } catch (\Throwable $exception) {
+            {{ PHPUNIT }}->fail('{
+                "statement": {
+                    "statement-type": "assertion",
+                    "source": "$browser.size is $\".selector\".attribute_name",
+                    "index": 0,
+                    "identifier": "$browser.size",
+                    "value": "$\".selector\".attribute_name",
+                    "operator": "is"
+                },
+                "reason": "assertion-setup-failed",
+                "exception": {
+                    "class": "' . addcslashes($exception::class, '"\\') . '",
+                    "code": ' . $exception->getCode() . ',
+                    "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                }
+            }');
+        }
+
+        {{ PHPUNIT }}->assertEquals(
+            (string) $expectedValue,
+            (string) $examinedValue,
+            '{
+                "statement": {
+                    "statement-type": "assertion",
+                    "source": "$browser.size is $\".selector\".attribute_name",
+                    "index": 0,
+                    "identifier": "$browser.size",
+                    "value": "$\".selector\".attribute_name",
+                    "operator": "is"
+                },
+                "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
+                "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
+            }'
+        );
+        EOD,
                 'expectedMetadata' => new Metadata(
+                    classNames: [
+                        \Throwable::class,
+                    ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::PANTHER_CLIENT,
@@ -405,30 +658,53 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, browser object examined value, environment expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $env.KEY', 0),
                 'expectedRenderedContent' => <<<'EOD'
+        try {
             $expectedValue = {{ ENV }}['KEY'] ?? null;
             $examinedValue = (function () {
                 $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
-            
+
                 return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
             })();
-            {{ PHPUNIT }}->assertEquals(
-                (string) $expectedValue,
-                (string) $examinedValue,
-                '{
-                    "statement": {
-                        "statement-type": "assertion",
-                        "source": "$browser.size is $env.KEY",
-                        "index": 0,
-                        "identifier": "$browser.size",
-                        "value": "$env.KEY",
-                        "operator": "is"
-                    },
-                    "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
-                    "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
-                }'
-            );
-            EOD,
+        } catch (\Throwable $exception) {
+            {{ PHPUNIT }}->fail('{
+                "statement": {
+                    "statement-type": "assertion",
+                    "source": "$browser.size is $env.KEY",
+                    "index": 0,
+                    "identifier": "$browser.size",
+                    "value": "$env.KEY",
+                    "operator": "is"
+                },
+                "reason": "assertion-setup-failed",
+                "exception": {
+                    "class": "' . addcslashes($exception::class, '"\\') . '",
+                    "code": ' . $exception->getCode() . ',
+                    "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                }
+            }');
+        }
+
+        {{ PHPUNIT }}->assertEquals(
+            (string) $expectedValue,
+            (string) $examinedValue,
+            '{
+                "statement": {
+                    "statement-type": "assertion",
+                    "source": "$browser.size is $env.KEY",
+                    "index": 0,
+                    "identifier": "$browser.size",
+                    "value": "$env.KEY",
+                    "operator": "is"
+                },
+                "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
+                "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
+            }'
+        );
+        EOD,
                 'expectedMetadata' => new Metadata(
+                    classNames: [
+                        \Throwable::class,
+                    ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::PANTHER_CLIENT,
@@ -439,30 +715,53 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, browser object examined value, environment expected value with default' => [
                 'assertion' => $assertionParser->parse('$browser.size is $env.KEY|"default value"', 0),
                 'expectedRenderedContent' => <<<'EOD'
+        try {
             $expectedValue = {{ ENV }}['KEY'] ?? 'default value';
             $examinedValue = (function () {
                 $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
-            
+
                 return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
             })();
-            {{ PHPUNIT }}->assertEquals(
-                (string) $expectedValue,
-                (string) $examinedValue,
-                '{
-                    "statement": {
-                        "statement-type": "assertion",
-                        "source": "$browser.size is $env.KEY|\"default value\"",
-                        "index": 0,
-                        "identifier": "$browser.size",
-                        "value": "$env.KEY|\"default value\"",
-                        "operator": "is"
-                    },
-                    "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
-                    "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
-                }'
-            );
-            EOD,
+        } catch (\Throwable $exception) {
+            {{ PHPUNIT }}->fail('{
+                "statement": {
+                    "statement-type": "assertion",
+                    "source": "$browser.size is $env.KEY|\"default value\"",
+                    "index": 0,
+                    "identifier": "$browser.size",
+                    "value": "$env.KEY|\"default value\"",
+                    "operator": "is"
+                },
+                "reason": "assertion-setup-failed",
+                "exception": {
+                    "class": "' . addcslashes($exception::class, '"\\') . '",
+                    "code": ' . $exception->getCode() . ',
+                    "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                }
+            }');
+        }
+
+        {{ PHPUNIT }}->assertEquals(
+            (string) $expectedValue,
+            (string) $examinedValue,
+            '{
+                "statement": {
+                    "statement-type": "assertion",
+                    "source": "$browser.size is $env.KEY|\"default value\"",
+                    "index": 0,
+                    "identifier": "$browser.size",
+                    "value": "$env.KEY|\"default value\"",
+                    "operator": "is"
+                },
+                "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
+                "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
+            }'
+        );
+        EOD,
                 'expectedMetadata' => new Metadata(
+                    classNames: [
+                        \Throwable::class,
+                    ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::PANTHER_CLIENT,
@@ -473,30 +772,53 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, browser object examined value, page object expected value' => [
                 'assertion' => $assertionParser->parse('$browser.size is $page.url', 0),
                 'expectedRenderedContent' => <<<'EOD'
+        try {
             $expectedValue = {{ CLIENT }}->getCurrentURL();
             $examinedValue = (function () {
                 $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
-            
+
                 return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
             })();
-            {{ PHPUNIT }}->assertEquals(
-                (string) $expectedValue,
-                (string) $examinedValue,
-                '{
-                    "statement": {
-                        "statement-type": "assertion",
-                        "source": "$browser.size is $page.url",
-                        "index": 0,
-                        "identifier": "$browser.size",
-                        "value": "$page.url",
-                        "operator": "is"
-                    },
-                    "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
-                    "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
-                }'
-            );
-            EOD,
+        } catch (\Throwable $exception) {
+            {{ PHPUNIT }}->fail('{
+                "statement": {
+                    "statement-type": "assertion",
+                    "source": "$browser.size is $page.url",
+                    "index": 0,
+                    "identifier": "$browser.size",
+                    "value": "$page.url",
+                    "operator": "is"
+                },
+                "reason": "assertion-setup-failed",
+                "exception": {
+                    "class": "' . addcslashes($exception::class, '"\\') . '",
+                    "code": ' . $exception->getCode() . ',
+                    "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                }
+            }');
+        }
+
+        {{ PHPUNIT }}->assertEquals(
+            (string) $expectedValue,
+            (string) $examinedValue,
+            '{
+                "statement": {
+                    "statement-type": "assertion",
+                    "source": "$browser.size is $page.url",
+                    "index": 0,
+                    "identifier": "$browser.size",
+                    "value": "$page.url",
+                    "operator": "is"
+                },
+                "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
+                "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
+            }'
+        );
+        EOD,
                 'expectedMetadata' => new Metadata(
+                    classNames: [
+                        \Throwable::class,
+                    ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::PANTHER_CLIENT,
@@ -506,8 +828,28 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, literal string examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('"examined" is "expected"', 0),
                 'expectedRenderedContent' => <<<'EOD'
-                    $expectedValue = "expected";
-                    $examinedValue = "examined";
+                    try {
+                        $expectedValue = "expected";
+                        $examinedValue = "examined";
+                    } catch (\Throwable $exception) {
+                        {{ PHPUNIT }}->fail('{
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "\"examined\" is \"expected\"",
+                                "index": 0,
+                                "identifier": "\"examined\"",
+                                "value": "\"expected\"",
+                                "operator": "is"
+                            },
+                            "reason": "assertion-setup-failed",
+                            "exception": {
+                                "class": "' . addcslashes($exception::class, '"\\') . '",
+                                "code": ' . $exception->getCode() . ',
+                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                            }
+                        }');
+                    }
+
                     {{ PHPUNIT }}->assertEquals(
                         (string) $expectedValue,
                         (string) $examinedValue,
@@ -526,6 +868,9 @@ trait CreateFromIsAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedMetadata' => new Metadata(
+                    classNames: [
+                        \Throwable::class,
+                    ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                     ],
