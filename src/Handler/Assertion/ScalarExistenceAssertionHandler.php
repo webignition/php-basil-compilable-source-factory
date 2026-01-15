@@ -39,9 +39,11 @@ class ScalarExistenceAssertionHandler
     }
 
     /**
+     * @return array{'setup': BodyInterface, 'body': BodyInterface}
+     *
      * @throws UnsupportedContentException
      */
-    public function handle(AssertionInterface $assertion): BodyInterface
+    public function handle(AssertionInterface $assertion): array
     {
         $nullComparisonExpression = new NullCoalescerExpression(
             $this->scalarValueHandler->handle((string) $assertion->getIdentifier()),
@@ -62,11 +64,11 @@ class ScalarExistenceAssertionHandler
         );
         $examinedAssertionArgument = new AssertionArgument($examinedValuePlaceholder, 'bool');
 
-        return new Body([
-            new Statement(
+        return [
+            'setup' => new Statement(
                 new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
             ),
-            $this->assertionStatementFactory->create(
+            'body' => $this->assertionStatementFactory->create(
                 'exists' === $assertion->getOperator() ? 'assertTrue' : 'assertFalse',
                 $this->assertionMessageFactory->create(
                     assertion: $assertion,
@@ -75,7 +77,7 @@ class ScalarExistenceAssertionHandler
                 ),
                 expected: null,
                 examined: $examinedAssertionArgument,
-            )
-        ]);
+            ),
+        ];
     }
 }

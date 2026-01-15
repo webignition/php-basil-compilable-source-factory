@@ -6,7 +6,9 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
+use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
+use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
 
 class AssertionHandler
@@ -31,22 +33,32 @@ class AssertionHandler
      */
     public function handle(AssertionInterface $assertion): BodyInterface
     {
+        $components = [];
+
         try {
             if ($assertion->isComparison()) {
-                return $this->comparisonAssertionHandler->handle($assertion);
+                $components = $this->comparisonAssertionHandler->handle($assertion);
             }
 
             if (in_array($assertion->getOperator(), ['exists', 'not-exists'])) {
-                return $this->existenceAssertionHandler->handle($assertion);
+                $components = $this->existenceAssertionHandler->handle($assertion);
             }
 
             if ('is-regexp' === $assertion->getOperator()) {
-                return $this->isRegExpAssertionHandler->handle($assertion);
+                $components = $this->isRegExpAssertionHandler->handle($assertion);
             }
         } catch (UnsupportedContentException $previous) {
             throw new UnsupportedStatementException($assertion, $previous);
         }
 
-        throw new UnsupportedStatementException($assertion);
+        if ([] === $components) {
+            throw new UnsupportedStatementException($assertion);
+        }
+
+        return new Body([
+            'setup' => $components['setup'],
+            new EmptyLine(),
+            'body' => $components['body'],
+        ]);
     }
 }

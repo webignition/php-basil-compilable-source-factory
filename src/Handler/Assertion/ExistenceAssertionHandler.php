@@ -33,9 +33,11 @@ class ExistenceAssertionHandler
     }
 
     /**
+     * @return array{'setup': BodyInterface, 'body': BodyInterface}
+     *
      * @throws UnsupportedContentException
      */
-    public function handle(AssertionInterface $assertion): BodyInterface
+    public function handle(AssertionInterface $assertion): array
     {
         $identifier = $assertion->getIdentifier();
 

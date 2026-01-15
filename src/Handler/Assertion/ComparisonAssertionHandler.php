@@ -16,7 +16,6 @@ use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
-use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
@@ -55,10 +54,12 @@ class ComparisonAssertionHandler
     }
 
     /**
+     * @return array{'setup': BodyInterface, 'body': BodyInterface}
+     *
      * @throws UnsupportedContentException
      * @throws UnsupportedStatementException
      */
-    public function handle(AssertionInterface $assertion): BodyInterface
+    public function handle(AssertionInterface $assertion): array
     {
         if (!$assertion->isComparison()) {
             throw new UnsupportedStatementException($assertion);
@@ -88,15 +89,14 @@ class ComparisonAssertionHandler
             $catchBody,
         );
 
-        return new Body([
-            $tryCatchBlock,
-            new EmptyLine(),
-            $this->assertionStatementFactory->create(
+        return [
+            'setup' => $tryCatchBlock,
+            'body' => $this->assertionStatementFactory->create(
                 assertionMethod: self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP[$assertion->getOperator()],
                 assertionMessage: $this->assertionMessageFactory->create($assertion, $expected, $examined),
                 expected: $expected,
                 examined: $examined,
             ),
-        ]);
+        ];
     }
 }

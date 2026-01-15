@@ -73,9 +73,11 @@ class IdentifierExistenceAssertionHandler
     }
 
     /**
+     * @return array{'setup': BodyInterface, 'body': BodyInterface}
+     *
      * @throws UnsupportedContentException
      */
-    public function handle(AssertionInterface $assertion): BodyInterface
+    public function handle(AssertionInterface $assertion): array
     {
         $identifier = $assertion->getIdentifier();
 
@@ -91,10 +93,13 @@ class IdentifierExistenceAssertionHandler
         return $this->handleElementExistence($assertion, $domIdentifier);
     }
 
+    /**
+     * @return array{'setup': BodyInterface, 'body': BodyInterface}
+     */
     private function handleElementExistence(
         AssertionInterface $elementExistenceAssertion,
         ElementIdentifierInterface $domIdentifier
-    ): BodyInterface {
+    ): array {
         $serializedElementIdentifier = $this->elementIdentifierSerializer->serialize($domIdentifier);
 
         $examinedAccessor = $this->createDomCrawlerNavigatorCall(
@@ -113,18 +118,22 @@ class IdentifierExistenceAssertionHandler
             $examinedValuePlaceholder,
         );
 
-        return new Body([
-            $this->createNavigatorHasCallTryCatchBlock(
+        return [
+            'setup' => $this->createNavigatorHasCallTryCatchBlock(
                 $examinedValueAssignmentStatement,
                 $elementExistenceAssertion
             ),
-        ])->withContent([$assertionStatement]);
+            'body' => $assertionStatement,
+        ];
     }
 
+    /**
+     * @return array{'setup': BodyInterface, 'body': BodyInterface}
+     */
     private function handleAttributeExistence(
         AssertionInterface $attributeExistenceAssertion,
         AttributeIdentifierInterface $domIdentifier,
-    ): BodyInterface {
+    ): array {
         $elementExistsAssertion = new DerivedValueOperationAssertion(
             $attributeExistenceAssertion,
             (string) ElementIdentifier::fromAttributeIdentifier($domIdentifier),
@@ -174,22 +183,23 @@ class IdentifierExistenceAssertionHandler
             $catchBody,
         );
 
-        return new Body([
-            $this->createNavigatorHasCallTryCatchBlock(
+        return [
+            'setup' => $this->createNavigatorHasCallTryCatchBlock(
                 $elementExaminedValueAssignmentStatement,
                 $elementExistsAssertion
             ),
-        ])->withContent([
-            'element existence assertion' => $this->createAssertionStatement(
-                $elementExistsAssertion,
-                $examinedValuePlaceholder,
-            ),
-            'attribute examined value assignment' => $tryCatchBlock,
-            'attribute existence assertion' => $this->createAssertionStatement(
-                $attributeExistenceAssertion,
-                $examinedValuePlaceholder,
-            ),
-        ]);
+            'body' => new Body([
+                'element existence assertion' => $this->createAssertionStatement(
+                    $elementExistsAssertion,
+                    $examinedValuePlaceholder,
+                ),
+                'attribute examined value assignment' => $tryCatchBlock,
+                'attribute existence assertion' => $this->createAssertionStatement(
+                    $attributeExistenceAssertion,
+                    $examinedValuePlaceholder,
+                ),
+            ]),
+        ];
     }
 
     private function createDomCrawlerNavigatorCall(
