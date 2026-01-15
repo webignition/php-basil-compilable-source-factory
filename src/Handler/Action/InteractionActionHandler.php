@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
+use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
@@ -22,7 +23,8 @@ class InteractionActionHandler
     public function __construct(
         private DomIdentifierHandler $domIdentifierHandler,
         private DomIdentifierFactory $domIdentifierFactory,
-        private ElementIdentifierSerializer $elementIdentifierSerializer
+        private ElementIdentifierSerializer $elementIdentifierSerializer,
+        private PhpUnitCallFactory $phpUnitCallFactory,
     ) {}
 
     public static function createHandler(): self
@@ -30,14 +32,17 @@ class InteractionActionHandler
         return new InteractionActionHandler(
             DomIdentifierHandler::createHandler(),
             DomIdentifierFactory::createFactory(),
-            ElementIdentifierSerializer::createSerializer()
+            ElementIdentifierSerializer::createSerializer(),
+            PhpUnitCallFactory::createFactory(),
         );
     }
 
     /**
+     * @return array{'setup': ?BodyInterface, 'body': BodyInterface}
+     *
      * @throws UnsupportedContentException
      */
-    public function handle(ActionInterface $action): BodyInterface
+    public function handle(ActionInterface $action): array
     {
         $identifier = (string) $action->getIdentifier();
 
@@ -66,9 +71,14 @@ class InteractionActionHandler
             $action->getType()
         ));
 
-        return Body::createEnclosingBody(new Body([
-            $accessor,
-            $invocation,
-        ]));
+        return [
+            'setup' => $accessor,
+            'body' => new Body([
+                $invocation,
+                new Statement(
+                    $this->phpUnitCallFactory->createCall('refreshCrawlerAndNavigator'),
+                ),
+            ]),
+        ];
     }
 }

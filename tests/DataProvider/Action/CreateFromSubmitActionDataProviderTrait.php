@@ -21,12 +21,11 @@ trait CreateFromSubmitActionDataProviderTrait
             'interaction action (submit), element identifier' => [
                 'action' => $actionParser->parse('submit $".selector"', 0),
                 'expectedRenderedSource' => <<< 'EOD'
-                    (function () {
-                        $element = {{ NAVIGATOR }}->findOne('{
-                            "locator": ".selector"
-                        }');
-                        $element->submit();
-                    })();
+                    $element = {{ NAVIGATOR }}->findOne('{
+                        "locator": ".selector"
+                    }');
+
+                    $element->submit();
                     {{ PHPUNIT }}->refreshCrawlerAndNavigator();
                     EOD,
                 'expectedMetadata' => new Metadata(

@@ -4,12 +4,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
-use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
-use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
+use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilModels\Model\Action\ActionInterface;
 
 class ActionHandler
@@ -20,7 +19,6 @@ class ActionHandler
         private SetActionHandler $setActionHandler,
         private WaitActionHandler $waitActionHandler,
         private WaitForActionHandler $waitForActionHandler,
-        private PhpUnitCallFactory $phpUnitCallFactory,
     ) {}
 
     public static function createHandler(): ActionHandler
@@ -31,7 +29,6 @@ class ActionHandler
             SetActionHandler::createHandler(),
             WaitActionHandler::createHandler(),
             WaitForActionHandler::createHandler(),
-            PhpUnitCallFactory::createFactory(),
         );
     }
 
@@ -40,46 +37,46 @@ class ActionHandler
      */
     public function handle(ActionInterface $action): BodyInterface
     {
+        $components = [];
+
         try {
             if (in_array($action->getType(), ['back', 'forward', 'reload'])) {
-                return $this->addRefreshCrawlerAndNavigatorStatement(
-                    $this->browserOperationActionHandler->handle($action)
-                );
+                $components = $this->browserOperationActionHandler->handle($action);
             }
 
             if ($action->isInteraction()) {
                 if (in_array($action->getType(), ['click', 'submit'])) {
-                    return $this->addRefreshCrawlerAndNavigatorStatement(
-                        $this->interactionActionHandler->handle($action)
-                    );
+                    $components = $this->interactionActionHandler->handle($action);
                 }
 
                 if (in_array($action->getType(), ['wait-for'])) {
-                    return $this->waitForActionHandler->handle($action);
+                    $components = $this->waitForActionHandler->handle($action);
                 }
             }
 
             if ($action->isInput()) {
-                return $this->addRefreshCrawlerAndNavigatorStatement($this->setActionHandler->handle($action));
+                $components = $this->setActionHandler->handle($action);
             }
 
             if ($action->isWait()) {
-                return $this->waitActionHandler->handle($action);
+                $components = $this->waitActionHandler->handle($action);
             }
         } catch (UnsupportedContentException $unsupportedContentException) {
             throw new UnsupportedStatementException($action, $unsupportedContentException);
         }
 
-        throw new UnsupportedStatementException($action);
-    }
+        if ([] === $components) {
+            throw new UnsupportedStatementException($action);
+        }
 
-    private function addRefreshCrawlerAndNavigatorStatement(BodyInterface $body): BodyInterface
-    {
-        return new Body([
-            $body,
-            new Statement(
-                $this->phpUnitCallFactory->createCall('refreshCrawlerAndNavigator'),
-            ),
-        ]);
+        $bodyComponents = [];
+        if ($components['setup'] instanceof BodyInterface) {
+            $bodyComponents[] = $components['setup'];
+            $bodyComponents[] = new EmptyLine();
+        }
+
+        $bodyComponents[] = $components['body'];
+
+        return new Body($bodyComponents);
     }
 }

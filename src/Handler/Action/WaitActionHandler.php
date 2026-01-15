@@ -15,6 +15,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\NullCoalescerExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
 use webignition\BasilModels\Model\Action\ActionInterface;
 
@@ -36,9 +37,11 @@ class WaitActionHandler
     }
 
     /**
+     * @return array{'setup': ?BodyInterface, 'body': BodyInterface}
+     *
      * @throws UnsupportedContentException
      */
-    public function handle(ActionInterface $waitAction): BodyInterface
+    public function handle(ActionInterface $waitAction): array
     {
         $duration = (string) $waitAction->getValue();
         if (ctype_digit($duration)) {
@@ -67,6 +70,9 @@ class WaitActionHandler
             )
         );
 
-        return Body::createFromExpressions([$sleepInvocation]);
+        return [
+            'setup' => null,
+            'body' => new Statement($sleepInvocation),
+        ];
     }
 }
