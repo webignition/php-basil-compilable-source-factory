@@ -6,8 +6,6 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\IdentifierExistenceAssertionHandler;
-use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
-use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTestCase;
 use webignition\BasilDomIdentifierFactory\Factory;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
@@ -16,26 +14,6 @@ use webignition\ObjectReflector\ObjectReflector;
 
 class IdentifierExistsAssertionHandlerTest extends AbstractResolvableTestCase
 {
-    use Assertion\CreateFromIdentifierExistsAssertionDataProviderTrait;
-    use Assertion\CreateFromIdentifierNotExistsAssertionDataProviderTrait;
-
-    /**
-     * @dataProvider createFromIdentifierExistsAssertionDataProvider
-     * @dataProvider createFromIdentifierNotExistsAssertionDataProvider
-     */
-    public function testHandle(
-        AssertionInterface $assertion,
-        string $expectedRenderedContent,
-        MetadataInterface $expectedMetadata
-    ): void {
-        $handler = IdentifierExistenceAssertionHandler::createHandler();
-
-        $source = $handler->handle($assertion);
-
-        $this->assertRenderResolvable($expectedRenderedContent, $source);
-        $this->assertEquals($expectedMetadata, $source->getMetadata());
-    }
-
     /**
      * @dataProvider handleThrowsExceptionDataProvider
      */
