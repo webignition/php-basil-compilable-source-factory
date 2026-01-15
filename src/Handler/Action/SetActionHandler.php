@@ -5,13 +5,17 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
+use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
+use webignition\BasilCompilableSourceFactory\FailureMessageFactory;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
+use webignition\BasilCompilableSourceFactory\Model\ClassName;
+use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
@@ -22,6 +26,7 @@ use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethod
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
+use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Model\Action\ActionInterface;
@@ -35,7 +40,10 @@ class SetActionHandler
         private AccessorDefaultValueFactory $accessorDefaultValueFactory,
         private DomIdentifierFactory $domIdentifierFactory,
         private IdentifierTypeAnalyser $identifierTypeAnalyser,
-        private ElementIdentifierSerializer $elementIdentifierSerializer
+        private ElementIdentifierSerializer $elementIdentifierSerializer,
+        private TryCatchBlockFactory $tryCatchBlockFactory,
+        private PhpUnitCallFactory $phpUnitCallFactory,
+        private FailureMessageFactory $failureMessageFactory,
     ) {}
 
     public static function createHandler(): self
@@ -46,7 +54,10 @@ class SetActionHandler
             AccessorDefaultValueFactory::createFactory(),
             DomIdentifierFactory::createFactory(),
             IdentifierTypeAnalyser::create(),
-            ElementIdentifierSerializer::createSerializer()
+            ElementIdentifierSerializer::createSerializer(),
+            TryCatchBlockFactory::createFactory(),
+            PhpUnitCallFactory::createFactory(),
+            FailureMessageFactory::createFactory(),
         );
     }
 
@@ -118,12 +129,23 @@ class SetActionHandler
             )
         );
 
-        $setValueCollectionAssignment = new AssignmentExpression($setValueCollectionPlaceholder, $collectionAccessor);
-        $setValueValueAssignment = new AssignmentExpression($setValueValuePlaceholder, $valueAccessor);
+        $catchBody = Body::createFromExpressions([
+            $this->phpUnitCallFactory->createFailCall(
+                $this->failureMessageFactory->createForActionSetupThrowable($action)
+            ),
+        ]);
+
+        $tryCatchBlock = $this->tryCatchBlockFactory->create(
+            Body::createFromExpressions([
+                new AssignmentExpression($setValueCollectionPlaceholder, $collectionAccessor),
+                new AssignmentExpression($setValueValuePlaceholder, $valueAccessor),
+            ]),
+            new ClassNameCollection([new ClassName(\Throwable::class)]),
+            $catchBody,
+        );
 
         return new Body([
-            new Statement($setValueCollectionAssignment),
-            new Statement($setValueValueAssignment),
+            $tryCatchBlock,
             new EmptyLine(),
             new Statement($mutationInvocation),
         ]);
