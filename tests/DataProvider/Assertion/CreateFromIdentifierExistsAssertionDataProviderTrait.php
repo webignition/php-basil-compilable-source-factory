@@ -137,13 +137,31 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "examined": ' . ($examinedValue ? 'true' : 'false') . '
                         }'
                     );
-                    $examinedValue = ((function () {
-                        $element = {{ NAVIGATOR }}->findOne('{
-                            "locator": ".selector"
-                        }');
+                    try {
+                        $examinedValue = ((function () {
+                            $element = {{ NAVIGATOR }}->findOne('{
+                                "locator": ".selector"
+                            }');
 
-                        return $element->getAttribute('attribute_name');
-                    })() ?? null) !== null;
+                            return $element->getAttribute('attribute_name');
+                        })() ?? null) !== null;
+                    } catch (\Throwable $exception) {
+                        {{ PHPUNIT }}->fail('{
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$\".selector\".attribute_name exists",
+                                "index": 0,
+                                "identifier": "$\".selector\".attribute_name",
+                                "operator": "exists"
+                            },
+                            "reason": "assertion-setup-failed",
+                            "exception": {
+                                "class": "' . addcslashes($exception::class, '"\\') . '",
+                                "code": ' . $exception->getCode() . ',
+                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                            }
+                        }');
+                    }
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
@@ -159,7 +177,16 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         }'
                     );
                     EOD,
-                'expectedMetadata' => $expectedMetadata,
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        InvalidLocatorException::class,
+                        \Throwable::class,
+                    ],
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                    ],
+                ),
             ],
             'exists comparison, css attribute selector containing dot' => [
                 'assertion' => $assertionParser->parse('$"a[href=foo.html]" exists', 0),
@@ -313,13 +340,31 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "examined": ' . ($examinedValue ? 'true' : 'false') . '
                         }'
                     );
-                    $examinedValue = ((function () {
-                        $element = {{ NAVIGATOR }}->findOne('{
-                            "locator": "a[href=foo.html]"
-                        }');
+                    try {
+                        $examinedValue = ((function () {
+                            $element = {{ NAVIGATOR }}->findOne('{
+                                "locator": "a[href=foo.html]"
+                            }');
 
-                        return $element->getAttribute('attribute_name');
-                    })() ?? null) !== null;
+                            return $element->getAttribute('attribute_name');
+                        })() ?? null) !== null;
+                    } catch (\Throwable $exception) {
+                        {{ PHPUNIT }}->fail('{
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$\"a[href=foo.html]\".attribute_name exists",
+                                "index": 0,
+                                "identifier": "$\"a[href=foo.html]\".attribute_name",
+                                "operator": "exists"
+                            },
+                            "reason": "assertion-setup-failed",
+                            "exception": {
+                                "class": "' . addcslashes($exception::class, '"\\') . '",
+                                "code": ' . $exception->getCode() . ',
+                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                            }
+                        }');
+                    }
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
@@ -335,7 +380,16 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         }'
                     );
                     EOD,
-                'expectedMetadata' => $expectedMetadata,
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        InvalidLocatorException::class,
+                        \Throwable::class,
+                    ],
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                    ],
+                ),
             ],
             'derived exists comparison, click action source' => [
                 'assertion' => new DerivedValueOperationAssertion(
