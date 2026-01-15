@@ -11,79 +11,48 @@ use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\ComparisonAssertionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\ExistenceAssertionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\IsRegExpAssertionHandler;
-use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
+use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion as AssertionDataProvider;
+use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvableRenderer;
 use webignition\BasilModels\Model\Assertion\Assertion;
+use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Parser\AssertionParser;
+use webignition\Stubble\Resolvable\ResolvableInterface;
 
 class AssertionHandlerTest extends TestCase
 {
-    public function testHandleComparison(): void
-    {
-        $assertionParser = AssertionParser::create();
-        $assertion = $assertionParser->parse('$page.title is "value"', 0);
+    use AssertionDataProvider\CreateFromExcludesAssertionDataProviderTrait;
+    use AssertionDataProvider\CreateFromIncludesAssertionDataProviderTrait;
+    use AssertionDataProvider\CreateFromIsAssertionDataProviderTrait;
+    use AssertionDataProvider\CreateFromIsNotAssertionDataProviderTrait;
+    use AssertionDataProvider\CreateFromMatchesAssertionDataProviderTrait;
+    use AssertionDataProvider\CreateFromIdentifierExistsAssertionDataProviderTrait;
+    use AssertionDataProvider\CreateFromIdentifierNotExistsAssertionDataProviderTrait;
+    use AssertionDataProvider\CreateFromIsRegExpAssertionDataProviderTrait;
+    use AssertionDataProvider\CreateFromScalarExistsAssertionDataProviderTrait;
 
-        $expectedReturnValue = \Mockery::mock(BodyInterface::class);
+    /**
+     * @dataProvider createFromExcludesAssertionDataProvider
+     * @dataProvider createFromIncludesAssertionDataProvider
+     * @dataProvider createFromIsAssertionDataProvider
+     * @dataProvider createFromIsNotAssertionDataProvider
+     * @dataProvider createFromMatchesAssertionDataProvider
+     * @dataProvider createFromIdentifierExistsAssertionDataProvider
+     * @dataProvider createFromIdentifierNotExistsAssertionDataProvider
+     * @dataProvider createFromIsRegExpAssertionDataProvider
+     * @dataProvider createFromScalarExistsAssertionDataProvider
+     */
+    public function testHandleSuccess(
+        AssertionInterface $assertion,
+        string $expectedRenderedContent,
+        MetadataInterface $expectedMetadata
+    ): void {
+        $handler = AssertionHandler::createHandler();
 
-        $comparisonHandler = \Mockery::mock(ComparisonAssertionHandler::class);
-        $comparisonHandler
-            ->shouldReceive('handle')
-            ->with($assertion)
-            ->andReturn($expectedReturnValue)
-        ;
+        $source = $handler->handle($assertion);
 
-        $handler = new AssertionHandler(
-            $comparisonHandler,
-            \Mockery::mock(ExistenceAssertionHandler::class),
-            \Mockery::mock(IsRegExpAssertionHandler::class)
-        );
-
-        $this->assertSame($expectedReturnValue, $handler->handle($assertion));
-    }
-
-    public function testHandleExistence(): void
-    {
-        $assertionParser = AssertionParser::create();
-        $assertion = $assertionParser->parse('$page.title exists', 0);
-
-        $expectedReturnValue = \Mockery::mock(BodyInterface::class);
-
-        $existenceHandler = \Mockery::mock(ExistenceAssertionHandler::class);
-        $existenceHandler
-            ->shouldReceive('handle')
-            ->with($assertion)
-            ->andReturn($expectedReturnValue)
-        ;
-
-        $handler = new AssertionHandler(
-            \Mockery::mock(ComparisonAssertionHandler::class),
-            $existenceHandler,
-            \Mockery::mock(IsRegExpAssertionHandler::class)
-        );
-
-        $this->assertSame($expectedReturnValue, $handler->handle($assertion));
-    }
-
-    public function testHandleIsRegExp(): void
-    {
-        $assertionParser = AssertionParser::create();
-        $assertion = $assertionParser->parse('$page.title is-regexp', 0);
-
-        $expectedReturnValue = \Mockery::mock(BodyInterface::class);
-
-        $isRegExpHandler = \Mockery::mock(IsRegExpAssertionHandler::class);
-        $isRegExpHandler
-            ->shouldReceive('handle')
-            ->with($assertion)
-            ->andReturn($expectedReturnValue)
-        ;
-
-        $handler = new AssertionHandler(
-            \Mockery::mock(ComparisonAssertionHandler::class),
-            \Mockery::mock(ExistenceAssertionHandler::class),
-            $isRegExpHandler
-        );
-
-        $this->assertSame($expectedReturnValue, $handler->handle($assertion));
+        $this->assertRenderResolvable($expectedRenderedContent, $source);
+        $this->assertEquals($expectedMetadata, $source->getMetadata());
     }
 
     public function testHandleWrapsUnsupportedContentException(): void
@@ -136,5 +105,13 @@ class AssertionHandlerTest extends TestCase
         $this->expectExceptionObject(new UnsupportedStatementException($assertion));
 
         $handler->handle($assertion);
+    }
+
+    public function assertRenderResolvable(string $expectedString, ResolvableInterface $resolvable): void
+    {
+        self::assertSame(
+            $expectedString,
+            ResolvableRenderer::resolve($resolvable)
+        );
     }
 }
