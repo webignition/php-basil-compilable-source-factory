@@ -134,13 +134,31 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                             "examined": ' . ($examinedValue ? 'true' : 'false') . '
                         }'
                     );
-                    $examinedValue = ((function () {
-                        $element = {{ NAVIGATOR }}->findOne('{
-                            "locator": ".selector"
+                    try {
+                        $examinedValue = ((function () {
+                            $element = {{ NAVIGATOR }}->findOne('{
+                                "locator": ".selector"
+                            }');
+
+                            return $element->getAttribute('attribute_name');
+                        })() ?? null) !== null;
+                    } catch (\Throwable $exception) {
+                        {{ PHPUNIT }}->fail('{
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$\".selector\".attribute_name not-exists",
+                                "index": 0,
+                                "identifier": "$\".selector\".attribute_name",
+                                "operator": "not-exists"
+                            },
+                            "reason": "assertion-setup-failed",
+                            "exception": {
+                                "class": "' . addcslashes($exception::class, '"\\') . '",
+                                "code": ' . $exception->getCode() . ',
+                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                            }
                         }');
-                    
-                        return $element->getAttribute('attribute_name');
-                    })() ?? null) !== null;
+                    }
                     {{ PHPUNIT }}->assertFalse(
                         $examinedValue,
                         '{
@@ -156,7 +174,16 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                         }'
                     );
                     EOD,
-                'expectedMetadata' => $expectedMetadata,
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        InvalidLocatorException::class,
+                        \Throwable::class,
+                    ],
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                    ],
+                ),
             ],
         ];
     }

@@ -26,8 +26,34 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     'is-regexp'
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    $examinedValue = "/^value/";
-                    $expectedValue = @preg_match($examinedValue, null) === false;
+                    try {
+                        $examinedValue = "/^value/";
+                        $expectedValue = @preg_match($examinedValue, null) === false;
+                    } catch (\Throwable $exception) {
+                        {{ PHPUNIT }}->fail('{
+                            "statement": {
+                                "container": {
+                                    "value": "\"\/^value\/\"",
+                                    "operator": "is-regexp",
+                                    "type": "derived-value-operation-assertion"
+                                },
+                                "statement": {
+                                    "statement-type": "assertion",
+                                    "source": "$\".selector\" matches \"\/^value\/\"",
+                                    "index": 0,
+                                    "identifier": "$\".selector\"",
+                                    "value": "\"\/^value\/\"",
+                                    "operator": "matches"
+                                }
+                            },
+                            "reason": "assertion-setup-failed",
+                            "exception": {
+                                "class": "' . addcslashes($exception::class, '"\\') . '",
+                                "code": ' . $exception->getCode() . ',
+                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                            }
+                        }');
+                    }
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
                         '{
@@ -52,6 +78,9 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedMetadata' => new Metadata(
+                    classNames: [
+                        \Throwable::class,
+                    ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                     ],
@@ -64,14 +93,40 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     'is-regexp'
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    $examinedValue = (function () {
-                        $element = {{ NAVIGATOR }}->find('{
-                            "locator": ".pattern-container"
+                    try {
+                        $examinedValue = (function () {
+                            $element = {{ NAVIGATOR }}->find('{
+                                "locator": ".pattern-container"
+                            }');
+
+                            return {{ INSPECTOR }}->getValue($element);
+                        })();
+                        $expectedValue = @preg_match($examinedValue, null) === false;
+                    } catch (\Throwable $exception) {
+                        {{ PHPUNIT }}->fail('{
+                            "statement": {
+                                "container": {
+                                    "value": "$\".pattern-container\"",
+                                    "operator": "is-regexp",
+                                    "type": "derived-value-operation-assertion"
+                                },
+                                "statement": {
+                                    "statement-type": "assertion",
+                                    "source": "$\".selector\" matches $\".pattern-container\"",
+                                    "index": 0,
+                                    "identifier": "$\".selector\"",
+                                    "value": "$\".pattern-container\"",
+                                    "operator": "matches"
+                                }
+                            },
+                            "reason": "assertion-setup-failed",
+                            "exception": {
+                                "class": "' . addcslashes($exception::class, '"\\') . '",
+                                "code": ' . $exception->getCode() . ',
+                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                            }
                         }');
-                    
-                        return {{ INSPECTOR }}->getValue($element);
-                    })();
-                    $expectedValue = @preg_match($examinedValue, null) === false;
+                    }
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
                         '{
@@ -96,6 +151,9 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedMetadata' => new Metadata(
+                    classNames: [
+                        \Throwable::class,
+                    ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
@@ -110,14 +168,40 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     'is-regexp'
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    $examinedValue = (function () {
-                        $element = {{ NAVIGATOR }}->findOne('{
-                            "locator": ".pattern-container"
-                        }');
+                    try {
+                        $examinedValue = (function () {
+                            $element = {{ NAVIGATOR }}->findOne('{
+                                "locator": ".pattern-container"
+                            }');
 
-                        return $element->getAttribute('attribute_name');
-                    })();
-                    $expectedValue = @preg_match($examinedValue, null) === false;
+                            return $element->getAttribute('attribute_name');
+                        })();
+                        $expectedValue = @preg_match($examinedValue, null) === false;
+                    } catch (\Throwable $exception) {
+                        {{ PHPUNIT }}->fail('{
+                            "statement": {
+                                "container": {
+                                    "value": "$\".pattern-container\".attribute_name",
+                                    "operator": "is-regexp",
+                                    "type": "derived-value-operation-assertion"
+                                },
+                                "statement": {
+                                    "statement-type": "assertion",
+                                    "source": "$\".selector\" matches $\".pattern-container\".attribute_name",
+                                    "index": 0,
+                                    "identifier": "$\".selector\"",
+                                    "value": "$\".pattern-container\".attribute_name",
+                                    "operator": "matches"
+                                }
+                            },
+                            "reason": "assertion-setup-failed",
+                            "exception": {
+                                "class": "' . addcslashes($exception::class, '"\\') . '",
+                                "code": ' . $exception->getCode() . ',
+                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                            }
+                        }');
+                    }
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
                         '{
@@ -142,6 +226,9 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedMetadata' => new Metadata(
+                    classNames: [
+                        \Throwable::class,
+                    ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
@@ -155,8 +242,34 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     'is-regexp'
                 ),
                 'expectedRenderedContent' => <<<'EOD'
-                    $examinedValue = $pattern;
-                    $expectedValue = @preg_match($examinedValue, null) === false;
+                    try {
+                        $examinedValue = $pattern;
+                        $expectedValue = @preg_match($examinedValue, null) === false;
+                    } catch (\Throwable $exception) {
+                        {{ PHPUNIT }}->fail('{
+                            "statement": {
+                                "container": {
+                                    "value": "$data.pattern",
+                                    "operator": "is-regexp",
+                                    "type": "derived-value-operation-assertion"
+                                },
+                                "statement": {
+                                    "statement-type": "assertion",
+                                    "source": "$page.title matches $data.pattern",
+                                    "index": 0,
+                                    "identifier": "$page.title",
+                                    "value": "$data.pattern",
+                                    "operator": "matches"
+                                }
+                            },
+                            "reason": "assertion-setup-failed",
+                            "exception": {
+                                "class": "' . addcslashes($exception::class, '"\\') . '",
+                                "code": ' . $exception->getCode() . ',
+                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                            }
+                        }');
+                    }
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
                         '{
@@ -181,6 +294,9 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedMetadata' => new Metadata(
+                    classNames: [
+                        \Throwable::class,
+                    ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                     ],

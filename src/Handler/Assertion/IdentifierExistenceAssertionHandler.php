@@ -158,6 +158,22 @@ class IdentifierExistenceAssertionHandler
             '!=='
         );
 
+        $examinedValueAssignment = new AssignmentExpression($examinedValuePlaceholder, $attributeExaminedAccessor);
+
+        $catchBody = Body::createFromExpressions([
+            $this->phpUnitCallFactory->createFailCall(
+                $this->failureMessageFactory->createForAssertionSetupThrowable($attributeExistenceAssertion)
+            ),
+        ]);
+
+        $tryCatchBlock = $this->tryCatchBlockFactory->create(
+            Body::createFromExpressions([
+                $examinedValueAssignment,
+            ]),
+            new ClassNameCollection([new ClassName(\Throwable::class)]),
+            $catchBody,
+        );
+
         return new Body([
             $this->createNavigatorHasCallTryCatchBlock(
                 $elementExaminedValueAssignmentStatement,
@@ -168,9 +184,7 @@ class IdentifierExistenceAssertionHandler
                 $elementExistsAssertion,
                 $examinedValuePlaceholder,
             ),
-            'attribute examined value assignment' => new Statement(
-                new AssignmentExpression($examinedValuePlaceholder, $attributeExaminedAccessor),
-            ),
+            'attribute examined value assignment' => $tryCatchBlock,
             'attribute existence assertion' => $this->createAssertionStatement(
                 $attributeExistenceAssertion,
                 $examinedValuePlaceholder,
