@@ -8,10 +8,14 @@ use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\AssertionArgument;
 use webignition\BasilCompilableSourceFactory\AssertionMessageFactory;
 use webignition\BasilCompilableSourceFactory\AssertionStatementFactory;
+use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
+use webignition\BasilCompilableSourceFactory\FailureMessageFactory;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
+use webignition\BasilCompilableSourceFactory\Model\ClassName;
+use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
@@ -19,6 +23,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
+use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
@@ -35,6 +40,9 @@ class IsRegExpAssertionHandler
         private ValueTypeIdentifier $valueTypeIdentifier,
         private ValueAccessorFactory $valueAccessorFactory,
         private AssertionMessageFactory $assertionMessageFactory,
+        private FailureMessageFactory $failureMessageFactory,
+        private PhpUnitCallFactory $phpUnitCallFactory,
+        private TryCatchBlockFactory $tryCatchBlockFactory,
     ) {}
 
     public static function createHandler(): self
@@ -47,6 +55,9 @@ class IsRegExpAssertionHandler
             new ValueTypeIdentifier(),
             ValueAccessorFactory::createFactory(),
             AssertionMessageFactory::createFactory(),
+            FailureMessageFactory::createFactory(),
+            PhpUnitCallFactory::createFactory(),
+            TryCatchBlockFactory::createFactory(),
         );
     }
 
@@ -57,24 +68,31 @@ class IsRegExpAssertionHandler
     {
         $identifier = $assertion->getIdentifier();
 
-        if (is_string($identifier) && $this->valueTypeIdentifier->isScalarValue($identifier)) {
-            $examinedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull($identifier);
+        $unsupportedContentException = new UnsupportedContentException(
+            UnsupportedContentException::TYPE_IDENTIFIER,
+            $identifier
+        );
 
-            return $this->createIsRegExpAssertionBody($examinedAccessor, $assertion);
+        if (!is_string($identifier)) {
+            throw $unsupportedContentException;
         }
 
-        if (is_string($identifier) && $this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
-            $domIdentifier = $this->domIdentifierFactory->createFromIdentifierString($identifier);
-            if (null === $domIdentifier) {
-                throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
+        if (
+            !$this->valueTypeIdentifier->isScalarValue($identifier)
+            && !$this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)
+        ) {
+            throw $unsupportedContentException;
+        }
+
+        $examinedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull($identifier);
+
+        if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
+            if (null === $this->domIdentifierFactory->createFromIdentifierString($identifier)) {
+                throw $unsupportedContentException;
             }
-
-            $examinedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull($identifier);
-
-            return $this->createIsRegExpAssertionBody($examinedAccessor, $assertion);
         }
 
-        throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
+        return $this->createIsRegExpAssertionBody($examinedAccessor, $assertion);
     }
 
     private function createIsRegExpAssertionBody(
@@ -100,11 +118,23 @@ class IsRegExpAssertionHandler
             '==='
         );
 
-        return new Body([
+        $catchBody = Body::createFromExpressions([
+            $this->phpUnitCallFactory->createFailCall(
+                $this->failureMessageFactory->createForAssertionSetupThrowable($assertion)
+            ),
+        ]);
+
+        $tryCatchBlock = $this->tryCatchBlockFactory->create(
             Body::createFromExpressions([
                 new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
                 new AssignmentExpression($expectedValuePlaceholder, $identityComparison),
             ]),
+            new ClassNameCollection([new ClassName(\Throwable::class)]),
+            $catchBody,
+        );
+
+        return new Body([
+            $tryCatchBlock,
             $this->assertionStatementFactory->create(
                 'assertFalse',
                 $this->assertionMessageFactory->create(
