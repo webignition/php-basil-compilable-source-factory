@@ -58,6 +58,16 @@ readonly class FailureMessageFactory
         );
     }
 
+    public function createForAssertionSetupThrowable(StatementInterface $statement): FailureMessage
+    {
+        return $this->create($statement, PhpUnitFailReason::ASSERTION_SETUP_FAILED, []);
+    }
+
+    public function createForActionSetupThrowable(StatementInterface $statement): FailureMessage
+    {
+        return $this->create($statement, PhpUnitFailReason::ACTION_SETUP_FAILED, []);
+    }
+
     /**
      * @param array<string, LiteralInterface> $context
      */

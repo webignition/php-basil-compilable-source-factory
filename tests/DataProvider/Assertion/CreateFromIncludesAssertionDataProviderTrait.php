@@ -21,14 +21,34 @@ trait CreateFromIncludesAssertionDataProviderTrait
             'includes comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" includes "value"', 0),
                 'expectedRenderedContent' => <<<'EOD'
-                    $expectedValue = "value";
-                    $examinedValue = (function () {
-                        $element = {{ NAVIGATOR }}->find('{
-                            "locator": ".selector"
+                    try {
+                        $expectedValue = "value";
+                        $examinedValue = (function () {
+                            $element = {{ NAVIGATOR }}->find('{
+                                "locator": ".selector"
+                            }');
+
+                            return {{ INSPECTOR }}->getValue($element);
+                        })();
+                    } catch (\Throwable $exception) {
+                        {{ PHPUNIT }}->fail('{
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$\".selector\" includes \"value\"",
+                                "index": 0,
+                                "identifier": "$\".selector\"",
+                                "value": "\"value\"",
+                                "operator": "includes"
+                            },
+                            "reason": "assertion-setup-failed",
+                            "exception": {
+                                "class": "' . addcslashes($exception::class, '"\\') . '",
+                                "code": ' . $exception->getCode() . ',
+                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                            }
                         }');
-                    
-                        return {{ INSPECTOR }}->getValue($element);
-                    })();
+                    }
+
                     {{ PHPUNIT }}->assertStringContainsString(
                         (string) $expectedValue,
                         (string) $examinedValue,
@@ -47,6 +67,9 @@ trait CreateFromIncludesAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedMetadata' => new Metadata(
+                    classNames: [
+                        \Throwable::class,
+                    ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::PHPUNIT_TEST_CASE,
@@ -57,14 +80,34 @@ trait CreateFromIncludesAssertionDataProviderTrait
             'includes comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name includes "value"', 0),
                 'expectedRenderedContent' => <<<'EOD'
-                    $expectedValue = "value";
-                    $examinedValue = (function () {
-                        $element = {{ NAVIGATOR }}->findOne('{
-                            "locator": ".selector"
+                    try {
+                        $expectedValue = "value";
+                        $examinedValue = (function () {
+                            $element = {{ NAVIGATOR }}->findOne('{
+                                "locator": ".selector"
+                            }');
+
+                            return $element->getAttribute('attribute_name');
+                        })();
+                    } catch (\Throwable $exception) {
+                        {{ PHPUNIT }}->fail('{
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$\".selector\".attribute_name includes \"value\"",
+                                "index": 0,
+                                "identifier": "$\".selector\".attribute_name",
+                                "value": "\"value\"",
+                                "operator": "includes"
+                            },
+                            "reason": "assertion-setup-failed",
+                            "exception": {
+                                "class": "' . addcslashes($exception::class, '"\\') . '",
+                                "code": ' . $exception->getCode() . ',
+                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                            }
                         }');
-                    
-                        return $element->getAttribute('attribute_name');
-                    })();
+                    }
+
                     {{ PHPUNIT }}->assertStringContainsString(
                         (string) $expectedValue,
                         (string) $examinedValue,
@@ -83,6 +126,9 @@ trait CreateFromIncludesAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedMetadata' => new Metadata(
+                    classNames: [
+                        \Throwable::class,
+                    ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::PHPUNIT_TEST_CASE,

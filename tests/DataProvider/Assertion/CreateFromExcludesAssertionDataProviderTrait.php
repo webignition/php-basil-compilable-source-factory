@@ -21,14 +21,34 @@ trait CreateFromExcludesAssertionDataProviderTrait
             'excludes comparison, element identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector" excludes "value"', 0),
                 'expectedRenderedContent' => <<<'EOD'
-                    $expectedValue = "value";
-                    $examinedValue = (function () {
-                        $element = {{ NAVIGATOR }}->find('{
-                            "locator": ".selector"
+                    try {
+                        $expectedValue = "value";
+                        $examinedValue = (function () {
+                            $element = {{ NAVIGATOR }}->find('{
+                                "locator": ".selector"
+                            }');
+
+                            return {{ INSPECTOR }}->getValue($element);
+                        })();
+                    } catch (\Throwable $exception) {
+                        {{ PHPUNIT }}->fail('{
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$\".selector\" excludes \"value\"",
+                                "index": 0,
+                                "identifier": "$\".selector\"",
+                                "value": "\"value\"",
+                                "operator": "excludes"
+                            },
+                            "reason": "assertion-setup-failed",
+                            "exception": {
+                                "class": "' . addcslashes($exception::class, '"\\') . '",
+                                "code": ' . $exception->getCode() . ',
+                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                            }
                         }');
-                    
-                        return {{ INSPECTOR }}->getValue($element);
-                    })();
+                    }
+
                     {{ PHPUNIT }}->assertStringNotContainsString(
                         (string) $expectedValue,
                         (string) $examinedValue,
@@ -47,6 +67,9 @@ trait CreateFromExcludesAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedMetadata' => new Metadata(
+                    classNames: [
+                        \Throwable::class,
+                    ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::PHPUNIT_TEST_CASE,
@@ -57,14 +80,34 @@ trait CreateFromExcludesAssertionDataProviderTrait
             'excludes comparison, element identifier examined value, literal string expected w/ single quotes' => [
                 'assertion' => $assertionParser->parse('$".selector" excludes "\'value\'"', 0),
                 'expectedRenderedContent' => <<<'EOD'
-                    $expectedValue = "'value'";
-                    $examinedValue = (function () {
-                        $element = {{ NAVIGATOR }}->find('{
-                            "locator": ".selector"
+                    try {
+                        $expectedValue = "'value'";
+                        $examinedValue = (function () {
+                            $element = {{ NAVIGATOR }}->find('{
+                                "locator": ".selector"
+                            }');
+
+                            return {{ INSPECTOR }}->getValue($element);
+                        })();
+                    } catch (\Throwable $exception) {
+                        {{ PHPUNIT }}->fail('{
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$\".selector\" excludes \"\'value\'\"",
+                                "index": 0,
+                                "identifier": "$\".selector\"",
+                                "value": "\"\'value\'\"",
+                                "operator": "excludes"
+                            },
+                            "reason": "assertion-setup-failed",
+                            "exception": {
+                                "class": "' . addcslashes($exception::class, '"\\') . '",
+                                "code": ' . $exception->getCode() . ',
+                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                            }
                         }');
-                    
-                        return {{ INSPECTOR }}->getValue($element);
-                    })();
+                    }
+
                     {{ PHPUNIT }}->assertStringNotContainsString(
                         (string) $expectedValue,
                         (string) $examinedValue,
@@ -83,6 +126,9 @@ trait CreateFromExcludesAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedMetadata' => new Metadata(
+                    classNames: [
+                        \Throwable::class,
+                    ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::PHPUNIT_TEST_CASE,
@@ -93,14 +139,34 @@ trait CreateFromExcludesAssertionDataProviderTrait
             'excludes comparison, attribute identifier examined value, literal string expected value' => [
                 'assertion' => $assertionParser->parse('$".selector".attribute_name excludes "value"', 0),
                 'expectedRenderedContent' => <<<'EOD'
-                    $expectedValue = "value";
-                    $examinedValue = (function () {
-                        $element = {{ NAVIGATOR }}->findOne('{
-                            "locator": ".selector"
-                        }');
+                    try {
+                        $expectedValue = "value";
+                        $examinedValue = (function () {
+                            $element = {{ NAVIGATOR }}->findOne('{
+                                "locator": ".selector"
+                            }');
 
-                        return $element->getAttribute('attribute_name');
-                    })();
+                            return $element->getAttribute('attribute_name');
+                        })();
+                    } catch (\Throwable $exception) {
+                        {{ PHPUNIT }}->fail('{
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$\".selector\".attribute_name excludes \"value\"",
+                                "index": 0,
+                                "identifier": "$\".selector\".attribute_name",
+                                "value": "\"value\"",
+                                "operator": "excludes"
+                            },
+                            "reason": "assertion-setup-failed",
+                            "exception": {
+                                "class": "' . addcslashes($exception::class, '"\\') . '",
+                                "code": ' . $exception->getCode() . ',
+                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
+                            }
+                        }');
+                    }
+
                     {{ PHPUNIT }}->assertStringNotContainsString(
                         (string) $expectedValue,
                         (string) $examinedValue,
@@ -119,6 +185,9 @@ trait CreateFromExcludesAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedMetadata' => new Metadata(
+                    classNames: [
+                        \Throwable::class,
+                    ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::PHPUNIT_TEST_CASE,
