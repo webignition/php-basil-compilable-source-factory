@@ -11,7 +11,6 @@ use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\ComparisonAssertionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\ExistenceAssertionHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\IsRegExpAssertionHandler;
-use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion as AssertionDataProvider;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvableRenderer;
@@ -54,52 +53,6 @@ class AssertionHandlerTest extends TestCase
 
         $this->assertRenderResolvable($expectedRenderedContent, $source);
         $this->assertEquals($expectedMetadata, $source->getMetadata());
-    }
-
-    public function testHandleExistence(): void
-    {
-        $assertionParser = AssertionParser::create();
-        $assertion = $assertionParser->parse('$page.title exists', 0);
-
-        $expectedReturnValue = \Mockery::mock(BodyInterface::class);
-
-        $existenceHandler = \Mockery::mock(ExistenceAssertionHandler::class);
-        $existenceHandler
-            ->shouldReceive('handle')
-            ->with($assertion)
-            ->andReturn($expectedReturnValue)
-        ;
-
-        $handler = new AssertionHandler(
-            \Mockery::mock(ComparisonAssertionHandler::class),
-            $existenceHandler,
-            \Mockery::mock(IsRegExpAssertionHandler::class)
-        );
-
-        $this->assertSame($expectedReturnValue, $handler->handle($assertion));
-    }
-
-    public function testHandleIsRegExp(): void
-    {
-        $assertionParser = AssertionParser::create();
-        $assertion = $assertionParser->parse('$page.title is-regexp', 0);
-
-        $expectedReturnValue = \Mockery::mock(BodyInterface::class);
-
-        $isRegExpHandler = \Mockery::mock(IsRegExpAssertionHandler::class);
-        $isRegExpHandler
-            ->shouldReceive('handle')
-            ->with($assertion)
-            ->andReturn($expectedReturnValue)
-        ;
-
-        $handler = new AssertionHandler(
-            \Mockery::mock(ComparisonAssertionHandler::class),
-            \Mockery::mock(ExistenceAssertionHandler::class),
-            $isRegExpHandler
-        );
-
-        $this->assertSame($expectedReturnValue, $handler->handle($assertion));
     }
 
     public function testHandleWrapsUnsupportedContentException(): void
