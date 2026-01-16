@@ -33,7 +33,7 @@ class AssertionHandler
      */
     public function handle(AssertionInterface $assertion): BodyInterface
     {
-        $components = [];
+        $components = null;
 
         try {
             if ($assertion->isComparison()) {
@@ -51,14 +51,19 @@ class AssertionHandler
             throw new UnsupportedStatementException($assertion, $previous);
         }
 
-        if ([] === $components) {
+        if (null === $components) {
             throw new UnsupportedStatementException($assertion);
         }
 
-        return new Body([
-            'setup' => $components['setup'],
-            new EmptyLine(),
-            'body' => $components['body'],
-        ]);
+        $bodyComponents = [];
+        $setup = $components->getSetup();
+        if ($setup instanceof BodyInterface) {
+            $bodyComponents[] = $setup;
+            $bodyComponents[] = new EmptyLine();
+        }
+
+        $bodyComponents[] = $components->getBody();
+
+        return new Body($bodyComponents);
     }
 }

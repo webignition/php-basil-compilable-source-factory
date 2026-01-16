@@ -15,9 +15,9 @@ use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEn
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\FailureMessageFactory;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
+use webignition\BasilCompilableSourceFactory\Handler\StatementHandlerComponents;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryCatchBlock;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
-use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
@@ -73,11 +73,9 @@ class IdentifierExistenceAssertionHandler
     }
 
     /**
-     * @return array{'setup': BodyInterface, 'body': BodyInterface}
-     *
      * @throws UnsupportedContentException
      */
-    public function handle(AssertionInterface $assertion): array
+    public function handle(AssertionInterface $assertion): StatementHandlerComponents
     {
         $identifier = $assertion->getIdentifier();
 
@@ -93,13 +91,10 @@ class IdentifierExistenceAssertionHandler
         return $this->handleElementExistence($assertion, $domIdentifier);
     }
 
-    /**
-     * @return array{'setup': BodyInterface, 'body': BodyInterface}
-     */
     private function handleElementExistence(
         AssertionInterface $elementExistenceAssertion,
         ElementIdentifierInterface $domIdentifier
-    ): array {
+    ): StatementHandlerComponents {
         $serializedElementIdentifier = $this->elementIdentifierSerializer->serialize($domIdentifier);
 
         $examinedAccessor = $this->createDomCrawlerNavigatorCall(
@@ -113,27 +108,23 @@ class IdentifierExistenceAssertionHandler
             new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
         );
 
-        $assertionStatement = $this->createAssertionStatement(
-            $elementExistenceAssertion,
-            $examinedValuePlaceholder,
-        );
-
-        return [
-            'setup' => $this->createNavigatorHasCallTryCatchBlock(
+        return new StatementHandlerComponents(
+            $this->createAssertionStatement(
+                $elementExistenceAssertion,
+                $examinedValuePlaceholder,
+            )
+        )->withSetup(
+            $this->createNavigatorHasCallTryCatchBlock(
                 $examinedValueAssignmentStatement,
                 $elementExistenceAssertion
-            ),
-            'body' => $assertionStatement,
-        ];
+            )
+        );
     }
 
-    /**
-     * @return array{'setup': BodyInterface, 'body': BodyInterface}
-     */
     private function handleAttributeExistence(
         AssertionInterface $attributeExistenceAssertion,
         AttributeIdentifierInterface $domIdentifier,
-    ): array {
+    ): StatementHandlerComponents {
         $elementExistsAssertion = new DerivedValueOperationAssertion(
             $attributeExistenceAssertion,
             (string) ElementIdentifier::fromAttributeIdentifier($domIdentifier),
@@ -183,12 +174,8 @@ class IdentifierExistenceAssertionHandler
             $catchBody,
         );
 
-        return [
-            'setup' => $this->createNavigatorHasCallTryCatchBlock(
-                $elementExaminedValueAssignmentStatement,
-                $elementExistsAssertion
-            ),
-            'body' => new Body([
+        return new StatementHandlerComponents(
+            new Body([
                 'element existence assertion' => $this->createAssertionStatement(
                     $elementExistsAssertion,
                     $examinedValuePlaceholder,
@@ -198,8 +185,13 @@ class IdentifierExistenceAssertionHandler
                     $attributeExistenceAssertion,
                     $examinedValuePlaceholder,
                 ),
-            ]),
-        ];
+            ])
+        )->withSetup(
+            $this->createNavigatorHasCallTryCatchBlock(
+                $elementExaminedValueAssignmentStatement,
+                $elementExistsAssertion
+            )
+        );
     }
 
     private function createDomCrawlerNavigatorCall(

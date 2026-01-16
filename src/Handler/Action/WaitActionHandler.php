@@ -6,8 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\Model\Body\Body;
-use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
+use webignition\BasilCompilableSourceFactory\Handler\StatementHandlerComponents;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CompositeExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastExpression;
@@ -37,11 +36,9 @@ class WaitActionHandler
     }
 
     /**
-     * @return array{'setup': ?BodyInterface, 'body': BodyInterface}
-     *
      * @throws UnsupportedContentException
      */
-    public function handle(ActionInterface $waitAction): array
+    public function handle(ActionInterface $waitAction): StatementHandlerComponents
     {
         $duration = (string) $waitAction->getValue();
         if (ctype_digit($duration)) {
@@ -70,9 +67,8 @@ class WaitActionHandler
             )
         );
 
-        return [
-            'setup' => null,
-            'body' => new Statement($sleepInvocation),
-        ];
+        return new StatementHandlerComponents(
+            new Statement($sleepInvocation)
+        );
     }
 }

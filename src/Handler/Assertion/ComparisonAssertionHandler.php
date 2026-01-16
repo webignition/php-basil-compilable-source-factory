@@ -12,8 +12,8 @@ use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEn
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\FailureMessageFactory;
+use webignition\BasilCompilableSourceFactory\Handler\StatementHandlerComponents;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
-use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
@@ -54,12 +54,10 @@ class ComparisonAssertionHandler
     }
 
     /**
-     * @return array{'setup': BodyInterface, 'body': BodyInterface}
-     *
      * @throws UnsupportedContentException
      * @throws UnsupportedStatementException
      */
-    public function handle(AssertionInterface $assertion): array
+    public function handle(AssertionInterface $assertion): StatementHandlerComponents
     {
         if (!$assertion->isComparison()) {
             throw new UnsupportedStatementException($assertion);
@@ -80,23 +78,22 @@ class ComparisonAssertionHandler
             ),
         ]);
 
-        $tryCatchBlock = $this->tryCatchBlockFactory->create(
-            Body::createFromExpressions([
-                new AssignmentExpression($expectedValuePlaceholder, $expectedAccessor),
-                new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
-            ]),
-            new ClassNameCollection([new ClassName(\Throwable::class)]),
-            $catchBody,
-        );
-
-        return [
-            'setup' => $tryCatchBlock,
-            'body' => $this->assertionStatementFactory->create(
+        return new StatementHandlerComponents(
+            $this->assertionStatementFactory->create(
                 assertionMethod: self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP[$assertion->getOperator()],
                 assertionMessage: $this->assertionMessageFactory->create($assertion, $expected, $examined),
                 expected: $expected,
                 examined: $examined,
+            )
+        )->withSetup(
+            $this->tryCatchBlockFactory->create(
+                Body::createFromExpressions([
+                    new AssignmentExpression($expectedValuePlaceholder, $expectedAccessor),
+                    new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
+                ]),
+                new ClassNameCollection([new ClassName(\Throwable::class)]),
+                $catchBody,
             ),
-        ];
+        );
     }
 }

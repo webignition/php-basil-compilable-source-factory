@@ -37,7 +37,7 @@ class ActionHandler
      */
     public function handle(ActionInterface $action): BodyInterface
     {
-        $components = [];
+        $components = null;
 
         try {
             if (in_array($action->getType(), ['back', 'forward', 'reload'])) {
@@ -65,17 +65,18 @@ class ActionHandler
             throw new UnsupportedStatementException($action, $unsupportedContentException);
         }
 
-        if ([] === $components) {
+        if (null === $components) {
             throw new UnsupportedStatementException($action);
         }
 
         $bodyComponents = [];
-        if ($components['setup'] instanceof BodyInterface) {
-            $bodyComponents[] = $components['setup'];
+        $setup = $components->getSetup();
+        if ($setup instanceof BodyInterface) {
+            $bodyComponents[] = $setup;
             $bodyComponents[] = new EmptyLine();
         }
 
-        $bodyComponents[] = $components['body'];
+        $bodyComponents[] = $components->getBody();
 
         return new Body($bodyComponents);
     }

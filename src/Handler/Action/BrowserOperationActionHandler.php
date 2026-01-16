@@ -6,8 +6,8 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Handler\StatementHandlerComponents;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
-use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
@@ -27,14 +27,10 @@ class BrowserOperationActionHandler
         );
     }
 
-    /**
-     * @return array{'setup': ?BodyInterface, 'body': BodyInterface}
-     */
-    public function handle(ActionInterface $action): array
+    public function handle(ActionInterface $action): StatementHandlerComponents
     {
-        return [
-            'setup' => null,
-            'body' => new Body([
+        return new StatementHandlerComponents(
+            new Body([
                 new Statement(
                     new AssignmentExpression(
                         new VariableDependency(VariableName::PANTHER_CRAWLER),
@@ -47,7 +43,7 @@ class BrowserOperationActionHandler
                 new Statement(
                     $this->phpUnitCallFactory->createCall('refreshCrawlerAndNavigator'),
                 ),
-            ]),
-        ];
+            ])
+        );
     }
 }
