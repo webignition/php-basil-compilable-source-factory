@@ -9,6 +9,7 @@ use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\StatementHandlerComponents;
+use webignition\BasilCompilableSourceFactory\Handler\StatementHandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
@@ -16,9 +17,10 @@ use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilModels\Model\Action\ActionInterface;
+use webignition\BasilModels\Model\StatementInterface;
 use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
-class InteractionActionHandler implements HandlerInterface
+class InteractionActionHandler implements StatementHandlerInterface
 {
     public function __construct(
         private DomIdentifierHandler $domIdentifierHandler,
@@ -40,13 +42,17 @@ class InteractionActionHandler implements HandlerInterface
     /**
      * @throws UnsupportedContentException
      */
-    public function handle(ActionInterface $action): ?StatementHandlerComponents
+    public function handle(StatementInterface $statement): ?StatementHandlerComponents
     {
-        if (!in_array($action->getType(), ['click', 'submit'])) {
+        if (!$statement instanceof ActionInterface) {
             return null;
         }
 
-        $identifier = (string) $action->getIdentifier();
+        if (!in_array($statement->getType(), ['click', 'submit'])) {
+            return null;
+        }
+
+        $identifier = (string) $statement->getIdentifier();
 
         $domIdentifier = $this->domIdentifierFactory->createFromIdentifierString($identifier);
         if (null === $domIdentifier) {
@@ -63,7 +69,7 @@ class InteractionActionHandler implements HandlerInterface
             new Body([
                 new Statement(new ObjectMethodInvocation(
                     $elementPlaceholder,
-                    $action->getType()
+                    $statement->getType()
                 )),
                 new Statement(
                     $this->phpUnitCallFactory->createCall('refreshCrawlerAndNavigator'),

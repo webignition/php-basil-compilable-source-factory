@@ -10,6 +10,7 @@ use webignition\BasilCompilableSourceFactory\AssertionStatementFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\StatementHandlerComponents;
+use webignition\BasilCompilableSourceFactory\Handler\StatementHandlerInterface;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
@@ -19,8 +20,9 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\NullCoalescerExpre
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
+use webignition\BasilModels\Model\StatementInterface;
 
-class ScalarExistenceAssertionHandler
+class ScalarExistenceAssertionHandler implements StatementHandlerInterface
 {
     public function __construct(
         private AssertionStatementFactory $assertionStatementFactory,
@@ -40,10 +42,14 @@ class ScalarExistenceAssertionHandler
     /**
      * @throws UnsupportedContentException
      */
-    public function handle(AssertionInterface $assertion): StatementHandlerComponents
+    public function handle(StatementInterface $statement): ?StatementHandlerComponents
     {
+        if (!$statement instanceof AssertionInterface) {
+            return null;
+        }
+
         $nullComparisonExpression = new NullCoalescerExpression(
-            $this->scalarValueHandler->handle((string) $assertion->getIdentifier()),
+            $this->scalarValueHandler->handle((string) $statement->getIdentifier()),
             new LiteralExpression('null'),
         );
 
@@ -56,16 +62,16 @@ class ScalarExistenceAssertionHandler
         );
 
         $expectedAssertionArgument = new AssertionArgument(
-            new LiteralExpression(('exists' === $assertion->getOperator()) ? 'true' : 'false'),
+            new LiteralExpression(('exists' === $statement->getOperator()) ? 'true' : 'false'),
             'bool'
         );
         $examinedAssertionArgument = new AssertionArgument($examinedValuePlaceholder, 'bool');
 
         return new StatementHandlerComponents(
             $this->assertionStatementFactory->create(
-                'exists' === $assertion->getOperator() ? 'assertTrue' : 'assertFalse',
+                'exists' === $statement->getOperator() ? 'assertTrue' : 'assertFalse',
                 $this->assertionMessageFactory->create(
-                    assertion: $assertion,
+                    assertion: $statement,
                     expected: $expectedAssertionArgument,
                     examined: $examinedAssertionArgument,
                 ),

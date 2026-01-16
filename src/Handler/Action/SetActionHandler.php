@@ -12,6 +12,7 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentExcepti
 use webignition\BasilCompilableSourceFactory\FailureMessageFactory;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\StatementHandlerComponents;
+use webignition\BasilCompilableSourceFactory\Handler\StatementHandlerInterface;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
@@ -29,9 +30,10 @@ use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Model\Action\ActionInterface;
+use webignition\BasilModels\Model\StatementInterface;
 use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
-class SetActionHandler implements HandlerInterface
+class SetActionHandler implements StatementHandlerInterface
 {
     public function __construct(
         private ScalarValueHandler $scalarValueHandler,
@@ -63,19 +65,23 @@ class SetActionHandler implements HandlerInterface
     /**
      * @throws UnsupportedContentException
      */
-    public function handle(ActionInterface $action): ?StatementHandlerComponents
+    public function handle(StatementInterface $statement): ?StatementHandlerComponents
     {
-        if (!$action->isInput()) {
+        if (!$statement instanceof ActionInterface) {
             return null;
         }
 
-        $identifier = (string) $action->getIdentifier();
+        if (!$statement->isInput()) {
+            return null;
+        }
+
+        $identifier = (string) $statement->getIdentifier();
 
         if (!$this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
             throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }
 
-        $value = (string) $action->getValue();
+        $value = (string) $statement->getValue();
         $domIdentifier = $this->domIdentifierFactory->createFromIdentifierString($identifier);
         if (null === $domIdentifier) {
             throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
@@ -134,7 +140,7 @@ class SetActionHandler implements HandlerInterface
 
         $catchBody = Body::createFromExpressions([
             $this->phpUnitCallFactory->createFailCall(
-                $this->failureMessageFactory->createForActionSetupThrowable($action)
+                $this->failureMessageFactory->createForActionSetupThrowable($statement)
             ),
         ]);
 

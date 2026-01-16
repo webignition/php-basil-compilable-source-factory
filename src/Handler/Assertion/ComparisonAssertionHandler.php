@@ -10,9 +10,9 @@ use webignition\BasilCompilableSourceFactory\AssertionStatementFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\FailureMessageFactory;
 use webignition\BasilCompilableSourceFactory\Handler\StatementHandlerComponents;
+use webignition\BasilCompilableSourceFactory\Handler\StatementHandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
@@ -21,8 +21,9 @@ use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
+use webignition\BasilModels\Model\StatementInterface;
 
-class ComparisonAssertionHandler
+class ComparisonAssertionHandler implements StatementHandlerInterface
 {
     private const array OPERATOR_TO_ASSERTION_TEMPLATE_MAP = [
         'includes' => 'assertStringContainsString',
@@ -55,16 +56,19 @@ class ComparisonAssertionHandler
 
     /**
      * @throws UnsupportedContentException
-     * @throws UnsupportedStatementException
      */
-    public function handle(AssertionInterface $assertion): StatementHandlerComponents
+    public function handle(StatementInterface $statement): ?StatementHandlerComponents
     {
-        if (!$assertion->isComparison()) {
-            throw new UnsupportedStatementException($assertion);
+        if (!$statement instanceof AssertionInterface) {
+            return null;
         }
 
-        $examinedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull((string) $assertion->getIdentifier());
-        $expectedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull((string) $assertion->getValue());
+        if (!$statement->isComparison()) {
+            return null;
+        }
+
+        $examinedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull((string) $statement->getIdentifier());
+        $expectedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull((string) $statement->getValue());
 
         $expectedValuePlaceholder = new VariableName(VariableNameEnum::EXPECTED_VALUE->value);
         $examinedValuePlaceholder = new VariableName(VariableNameEnum::EXAMINED_VALUE->value);
@@ -74,14 +78,14 @@ class ComparisonAssertionHandler
 
         $catchBody = Body::createFromExpressions([
             $this->phpUnitCallFactory->createFailCall(
-                $this->failureMessageFactory->createForAssertionSetupThrowable($assertion)
+                $this->failureMessageFactory->createForAssertionSetupThrowable($statement)
             ),
         ]);
 
         return new StatementHandlerComponents(
             $this->assertionStatementFactory->create(
-                assertionMethod: self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP[$assertion->getOperator()],
-                assertionMessage: $this->assertionMessageFactory->create($assertion, $expected, $examined),
+                assertionMethod: self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP[$statement->getOperator()],
+                assertionMessage: $this->assertionMessageFactory->create($statement, $expected, $examined),
                 expected: $expected,
                 examined: $examined,
             )

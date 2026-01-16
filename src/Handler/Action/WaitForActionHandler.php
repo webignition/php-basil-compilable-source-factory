@@ -8,6 +8,7 @@ use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\StatementHandlerComponents;
+use webignition\BasilCompilableSourceFactory\Handler\StatementHandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
@@ -16,9 +17,10 @@ use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Model\Action\ActionInterface;
+use webignition\BasilModels\Model\StatementInterface;
 use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
-class WaitForActionHandler implements HandlerInterface
+class WaitForActionHandler implements StatementHandlerInterface
 {
     public function __construct(
         private DomIdentifierFactory $domIdentifierFactory,
@@ -38,13 +40,17 @@ class WaitForActionHandler implements HandlerInterface
     /**
      * @throws UnsupportedContentException
      */
-    public function handle(ActionInterface $action): ?StatementHandlerComponents
+    public function handle(StatementInterface $statement): ?StatementHandlerComponents
     {
-        if ('wait-for' !== $action->getType()) {
+        if (!$statement instanceof ActionInterface) {
             return null;
         }
 
-        $identifier = (string) $action->getIdentifier();
+        if ('wait-for' !== $statement->getType()) {
+            return null;
+        }
+
+        $identifier = (string) $statement->getIdentifier();
 
         if (!$this->identifierTypeAnalyser->isDomIdentifier($identifier)) {
             throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);

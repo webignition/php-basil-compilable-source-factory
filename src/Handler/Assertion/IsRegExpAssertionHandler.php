@@ -13,6 +13,7 @@ use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEn
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\FailureMessageFactory;
 use webignition\BasilCompilableSourceFactory\Handler\StatementHandlerComponents;
+use webignition\BasilCompilableSourceFactory\Handler\StatementHandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
@@ -28,9 +29,10 @@ use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
+use webignition\BasilModels\Model\StatementInterface;
 use webignition\BasilValueTypeIdentifier\ValueTypeIdentifier;
 
-class IsRegExpAssertionHandler
+class IsRegExpAssertionHandler implements StatementHandlerInterface
 {
     public function __construct(
         private ArgumentFactory $argumentFactory,
@@ -64,9 +66,17 @@ class IsRegExpAssertionHandler
     /**
      * @throws UnsupportedContentException
      */
-    public function handle(AssertionInterface $assertion): StatementHandlerComponents
+    public function handle(StatementInterface $statement): ?StatementHandlerComponents
     {
-        $identifier = $assertion->getIdentifier();
+        if (!$statement instanceof AssertionInterface) {
+            return null;
+        }
+
+        if ('is-regexp' !== $statement->getOperator()) {
+            return null;
+        }
+
+        $identifier = $statement->getIdentifier();
 
         $unsupportedContentException = new UnsupportedContentException(
             UnsupportedContentException::TYPE_IDENTIFIER,
@@ -92,7 +102,7 @@ class IsRegExpAssertionHandler
             }
         }
 
-        return $this->createIsRegExpAssertionBody($examinedAccessor, $assertion);
+        return $this->createIsRegExpAssertionBody($examinedAccessor, $statement);
     }
 
     private function createIsRegExpAssertionBody(

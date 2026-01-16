@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
+use webignition\BasilCompilableSourceFactory\Handler\StatementHandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
@@ -14,7 +15,7 @@ use webignition\BasilModels\Model\Action\ActionInterface;
 class ActionHandler
 {
     /**
-     * @param HandlerInterface[] $handlers
+     * @param StatementHandlerInterface[] $handlers
      */
     public function __construct(
         private array $handlers,
