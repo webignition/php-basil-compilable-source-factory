@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\StatementHandlerComponents;
+use webignition\BasilCompilableSourceFactory\Handler\StatementHandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CompositeExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastExpression;
@@ -17,8 +18,9 @@ use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvoca
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
 use webignition\BasilModels\Model\Action\ActionInterface;
+use webignition\BasilModels\Model\StatementInterface;
 
-class WaitActionHandler implements HandlerInterface
+class WaitActionHandler implements StatementHandlerInterface
 {
     private const MICROSECONDS_PER_MILLISECOND = 1000;
 
@@ -38,13 +40,17 @@ class WaitActionHandler implements HandlerInterface
     /**
      * @throws UnsupportedContentException
      */
-    public function handle(ActionInterface $action): ?StatementHandlerComponents
+    public function handle(StatementInterface $statement): ?StatementHandlerComponents
     {
-        if (!$action->isWait()) {
+        if (!$statement instanceof ActionInterface) {
             return null;
         }
 
-        $duration = (string) $action->getValue();
+        if (!$statement->isWait()) {
+            return null;
+        }
+
+        $duration = (string) $statement->getValue();
         if (ctype_digit($duration)) {
             $duration = '"' . $duration . '"';
         }

@@ -6,11 +6,13 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\StatementHandlerComponents;
+use webignition\BasilCompilableSourceFactory\Handler\StatementHandlerInterface;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
+use webignition\BasilModels\Model\StatementInterface;
 use webignition\BasilValueTypeIdentifier\ValueTypeIdentifier;
 
-class ExistenceAssertionHandler
+class ExistenceAssertionHandler implements StatementHandlerInterface
 {
     public function __construct(
         private IdentifierTypeAnalyser $identifierTypeAnalyser,
@@ -32,16 +34,24 @@ class ExistenceAssertionHandler
     /**
      * @throws UnsupportedContentException
      */
-    public function handle(AssertionInterface $assertion): StatementHandlerComponents
+    public function handle(StatementInterface $statement): ?StatementHandlerComponents
     {
-        $identifier = $assertion->getIdentifier();
+        if (!$statement instanceof AssertionInterface) {
+            return null;
+        }
+
+        if (!in_array($statement->getOperator(), ['exists', 'not-exists'])) {
+            return null;
+        }
+
+        $identifier = $statement->getIdentifier();
 
         if (is_string($identifier) && $this->valueTypeIdentifier->isScalarValue($identifier)) {
-            return $this->scalarExistenceAssertionHandler->handle($assertion);
+            return $this->scalarExistenceAssertionHandler->handle($statement);
         }
 
         if (is_string($identifier) && $this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
-            return $this->identifierExistenceAssertionHandler->handle($assertion);
+            return $this->identifierExistenceAssertionHandler->handle($statement);
         }
 
         throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);

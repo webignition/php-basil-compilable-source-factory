@@ -7,14 +7,16 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Handler\StatementHandlerComponents;
+use webignition\BasilCompilableSourceFactory\Handler\StatementHandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilModels\Model\Action\ActionInterface;
+use webignition\BasilModels\Model\StatementInterface;
 
-class BrowserOperationActionHandler implements HandlerInterface
+class BrowserOperationActionHandler implements StatementHandlerInterface
 {
     public function __construct(
         private PhpUnitCallFactory $phpUnitCallFactory,
@@ -27,9 +29,14 @@ class BrowserOperationActionHandler implements HandlerInterface
         );
     }
 
-    public function handle(ActionInterface $action): ?StatementHandlerComponents
+    public function handle(StatementInterface $statement): ?StatementHandlerComponents
     {
-        if (!in_array($action->getType(), ['back', 'forward', 'reload'])) {
+        if (!$statement instanceof ActionInterface) {
+            return null;
+        }
+
+        if (
+            !in_array($statement->getType(), ['back', 'forward', 'reload'])) {
             return null;
         }
 
@@ -40,7 +47,7 @@ class BrowserOperationActionHandler implements HandlerInterface
                         new VariableDependency(VariableName::PANTHER_CRAWLER),
                         new ObjectMethodInvocation(
                             new VariableDependency(VariableName::PANTHER_CLIENT),
-                            $action->getType()
+                            $statement->getType()
                         )
                     )
                 ),

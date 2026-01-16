@@ -8,9 +8,6 @@ use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
-use webignition\BasilCompilableSourceFactory\Handler\Assertion\ComparisonAssertionHandler;
-use webignition\BasilCompilableSourceFactory\Handler\Assertion\ExistenceAssertionHandler;
-use webignition\BasilCompilableSourceFactory\Handler\Assertion\IsRegExpAssertionHandler;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion as AssertionDataProvider;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvableRenderer;
@@ -55,59 +52,88 @@ class AssertionHandlerTest extends TestCase
         $this->assertEquals($expectedMetadata, $source->getMetadata());
     }
 
-    public function testHandleWrapsUnsupportedContentException(): void
+    /**
+     * @dataProvider handleThrowsUnsupportedStatementExceptionDataProvider
+     */
+    public function testHandleThrowsUnsupportedStatementException(
+        AssertionInterface $assertion,
+        UnsupportedStatementException $expected
+    ): void {
+        $handler = AssertionHandler::createHandler();
+
+        try {
+            $handler->handle($assertion);
+        } catch (UnsupportedStatementException $exception) {
+            self::assertSame((string) $expected->getStatement(), (string) $exception->getStatement());
+            self::assertSame($expected->getCode(), $exception->getCode());
+        }
+    }
+
+    /**
+     * @return array<mixed>
+     */
+    public static function handleThrowsUnsupportedStatementExceptionDataProvider(): array
     {
         $assertionParser = AssertionParser::create();
-        $assertion = $assertionParser->parse('$elements.examined is "value"', 0);
 
-        $expectedUnsupportedContentException = new UnsupportedContentException(
-            UnsupportedContentException::TYPE_VALUE,
-            '$elements.examined'
-        );
-
-        $comparisonHandler = \Mockery::mock(ComparisonAssertionHandler::class);
-        $comparisonHandler
-            ->shouldReceive('handle')
-            ->with($assertion)
-            ->andThrow($expectedUnsupportedContentException)
-        ;
-
-        $handler = new AssertionHandler(
-            $comparisonHandler,
-            \Mockery::mock(ExistenceAssertionHandler::class),
-            \Mockery::mock(IsRegExpAssertionHandler::class)
-        );
-
-        $this->expectExceptionObject(new UnsupportedStatementException(
-            $assertion,
-            $expectedUnsupportedContentException
-        ));
-
-        $handler->handle($assertion);
-    }
-
-    public function testHandleThrowsUnsupportedStatementException(): void
-    {
-        $assertion = new Assertion(
-            '$".selector" invalid-comparison "value"',
+        $invalidExistsAssertion = new Assertion(
+            'invalid exists',
             0,
-            '$".selector"',
-            'invalid-comparison',
-            '"value"'
+            'invalid',
+            'exists',
         );
 
-        $handler = new AssertionHandler(
-            \Mockery::mock(ComparisonAssertionHandler::class),
-            \Mockery::mock(ExistenceAssertionHandler::class),
-            \Mockery::mock(IsRegExpAssertionHandler::class)
-        );
-
-        $this->expectExceptionObject(new UnsupportedStatementException($assertion));
-
-        $handler->handle($assertion);
+        return [
+            'comparison assertion, unsupported comparison' => [
+                'assertion' => $assertionParser->parse('$".selector" foo "value"', 0),
+                'expected' => new UnsupportedStatementException(
+                    $assertionParser->parse('$".selector" foo "value"', 0)
+                ),
+            ],
+            'comparison assertion, examined value is not supported' => [
+                'assertion' => $assertionParser->parse('$elements.examined is "value"', 0),
+                'expected' => new UnsupportedStatementException(
+                    $assertionParser->parse('$elements.examined is "value"', 0),
+                    new UnsupportedContentException(
+                        UnsupportedContentException::TYPE_VALUE,
+                        '$elements.examined'
+                    )
+                ),
+            ],
+            'comparison assertion, expected value is not supported' => [
+                'assertion' => $assertionParser->parse('$".selector" is $elements.expected', 0),
+                'expected' => new UnsupportedStatementException(
+                    $assertionParser->parse('$".selector" is $elements.expected', 0),
+                    new UnsupportedContentException(
+                        UnsupportedContentException::TYPE_VALUE,
+                        '$elements.expected'
+                    )
+                ),
+            ],
+            'existence assertion, unsupported identifier' => [
+                'assertion' => $invalidExistsAssertion,
+                'expected' => new UnsupportedStatementException(
+                    $invalidExistsAssertion,
+                    new UnsupportedContentException(
+                        UnsupportedContentException::TYPE_IDENTIFIER,
+                        'invalid'
+                    )
+                ),
+            ],
+            'existence assertion, identifier is not supported' => [
+                'assertion' => $assertionParser->parse('$elements.element_name exists', 0),
+                'expected' => new UnsupportedStatementException(
+                    $assertionParser->parse('$elements.element_name exists', 0),
+                    new UnsupportedContentException(
+                        UnsupportedContentException::TYPE_IDENTIFIER,
+                        '$elements.element_name'
+                    )
+                ),
+            ],
+        ];
     }
 
-    public function assertRenderResolvable(string $expectedString, ResolvableInterface $resolvable): void
+    private function assertRenderResolvable(string $expectedString, ResolvableInterface $resolvable): void
     {
         self::assertSame(
             $expectedString,

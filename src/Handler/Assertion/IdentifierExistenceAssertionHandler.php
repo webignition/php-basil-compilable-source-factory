@@ -16,6 +16,7 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentExcepti
 use webignition\BasilCompilableSourceFactory\FailureMessageFactory;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\StatementHandlerComponents;
+use webignition\BasilCompilableSourceFactory\Handler\StatementHandlerInterface;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryCatchBlock;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
@@ -36,12 +37,13 @@ use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilModels\Model\Action\ActionInterface;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
+use webignition\BasilModels\Model\StatementInterface as StatementModelInterface;
 use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\DomElementIdentifier\ElementIdentifierInterface;
 use webignition\SymfonyDomCrawlerNavigator\Exception\InvalidLocatorException;
 
-class IdentifierExistenceAssertionHandler
+class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
 {
     public function __construct(
         private ArgumentFactory $argumentFactory,
@@ -75,9 +77,13 @@ class IdentifierExistenceAssertionHandler
     /**
      * @throws UnsupportedContentException
      */
-    public function handle(AssertionInterface $assertion): StatementHandlerComponents
+    public function handle(StatementModelInterface $statement): ?StatementHandlerComponents
     {
-        $identifier = $assertion->getIdentifier();
+        if (!$statement instanceof AssertionInterface) {
+            return null;
+        }
+
+        $identifier = $statement->getIdentifier();
 
         $domIdentifier = $this->domIdentifierFactory->createFromIdentifierString((string) $identifier);
         if (null === $domIdentifier) {
@@ -85,10 +91,10 @@ class IdentifierExistenceAssertionHandler
         }
 
         if ($domIdentifier instanceof AttributeIdentifierInterface) {
-            return $this->handleAttributeExistence($assertion, $domIdentifier);
+            return $this->handleAttributeExistence($statement, $domIdentifier);
         }
 
-        return $this->handleElementExistence($assertion, $domIdentifier);
+        return $this->handleElementExistence($statement, $domIdentifier);
     }
 
     private function handleElementExistence(
