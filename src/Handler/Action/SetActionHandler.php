@@ -31,7 +31,7 @@ use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Model\Action\ActionInterface;
 use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
-class SetActionHandler
+class SetActionHandler implements HandlerInterface
 {
     public function __construct(
         private ScalarValueHandler $scalarValueHandler,
@@ -63,8 +63,12 @@ class SetActionHandler
     /**
      * @throws UnsupportedContentException
      */
-    public function handle(ActionInterface $action): StatementHandlerComponents
+    public function handle(ActionInterface $action): ?StatementHandlerComponents
     {
+        if (!$action->isInput()) {
+            return null;
+        }
+
         $identifier = (string) $action->getIdentifier();
 
         if (!$this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {

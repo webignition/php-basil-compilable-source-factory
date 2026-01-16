@@ -18,7 +18,7 @@ use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
 use webignition\BasilModels\Model\Action\ActionInterface;
 
-class WaitActionHandler
+class WaitActionHandler implements HandlerInterface
 {
     private const MICROSECONDS_PER_MILLISECOND = 1000;
 
@@ -38,9 +38,13 @@ class WaitActionHandler
     /**
      * @throws UnsupportedContentException
      */
-    public function handle(ActionInterface $waitAction): StatementHandlerComponents
+    public function handle(ActionInterface $action): ?StatementHandlerComponents
     {
-        $duration = (string) $waitAction->getValue();
+        if (!$action->isWait()) {
+            return null;
+        }
+
+        $duration = (string) $action->getValue();
         if (ctype_digit($duration)) {
             $duration = '"' . $duration . '"';
         }
