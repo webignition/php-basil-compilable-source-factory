@@ -17,52 +17,63 @@ trait CreateFromClickActionDataProviderTrait
     {
         $actionParser = ActionParser::create();
 
-        $expectedMetadata = new Metadata(
+        $expectedSetupMetadata = new Metadata(
             variableNames: [
                 VariableName::DOM_CRAWLER_NAVIGATOR,
+            ],
+        );
+
+        $expectedBodyMetadata = new Metadata(
+            variableNames: [
                 VariableName::PHPUNIT_TEST_CASE,
             ],
         );
 
         return [
             'interaction action (click), element identifier' => [
-                'action' => $actionParser->parse('click $".selector"', 0),
-                'expectedRenderedSource' => <<< 'EOD'
+                'statement' => $actionParser->parse('click $".selector"', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
                     $element = {{ NAVIGATOR }}->findOne('{
                         "locator": ".selector"
                     }');
-                    
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     $element->click();
                     {{ PHPUNIT }}->refreshCrawlerAndNavigator();
                     EOD,
-                'expectedMetadata' => $expectedMetadata,
+                'expectedSetupMetadata' => $expectedSetupMetadata,
+                'expectedBodyMetadata' => $expectedBodyMetadata,
             ],
             'interaction action (click), parent > child identifier' => [
-                'action' => $actionParser->parse('click $".parent" >> $".child"', 0),
-                'expectedRenderedSource' => <<< 'EOD'
+                'statement' => $actionParser->parse('click $".parent" >> $".child"', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
                     $element = {{ NAVIGATOR }}->findOne('{
                         "locator": ".child",
                         "parent": {
                             "locator": ".parent"
                         }
                     }');
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     $element->click();
                     {{ PHPUNIT }}->refreshCrawlerAndNavigator();
                     EOD,
-                'expectedMetadata' => $expectedMetadata,
+                'expectedSetupMetadata' => $expectedSetupMetadata,
+                'expectedBodyMetadata' => $expectedBodyMetadata,
             ],
             'interaction action (click), single-character CSS selector element identifier' => [
-                'action' => $actionParser->parse('click $"a"', 0),
-                'expectedRenderedSource' => <<< 'EOD'
+                'statement' => $actionParser->parse('click $"a"', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
                     $element = {{ NAVIGATOR }}->findOne('{
                         "locator": "a"
                     }');
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     $element->click();
                     {{ PHPUNIT }}->refreshCrawlerAndNavigator();
                     EOD,
-                'expectedMetadata' => $expectedMetadata,
+                'expectedSetupMetadata' => $expectedSetupMetadata,
+                'expectedBodyMetadata' => $expectedBodyMetadata,
             ],
         ];
     }

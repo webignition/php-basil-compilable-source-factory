@@ -17,44 +17,44 @@ trait ExcludesAssertionFunctionalDataProviderTrait
 
         $assertions = [
             'element identifier examined value, scalar expected value' => [
-                'assertion' => $assertionParser->parse('$".selector" excludes "not-present value"', 0),
+                'statement' => $assertionParser->parse('$".selector" excludes "not-present value"', 0),
             ],
             'attribute identifier examined value, scalar expected value' => [
-                'assertion' => $assertionParser->parse(
+                'statement' => $assertionParser->parse(
                     '$".selector".data-test-attribute excludes "not-present value"',
                     0,
                 ),
             ],
             'environment examined value, scalar expected value' => [
-                'assertion' => $assertionParser->parse('$env.TEST1 excludes "not-present value"', 0),
+                'statement' => $assertionParser->parse('$env.TEST1 excludes "not-present value"', 0),
             ],
             'browser object examined value, scalar expected value' => [
-                'assertion' => $assertionParser->parse('$browser.size excludes "1x2"', 0),
+                'statement' => $assertionParser->parse('$browser.size excludes "1x2"', 0),
             ],
             'page object examined value, scalar expected value' => [
-                'assertion' => $assertionParser->parse('$page.title excludes "not-present value"', 0),
+                'statement' => $assertionParser->parse('$page.title excludes "not-present value"', 0),
             ],
             'element identifier examined value, element identifier expected value' => [
-                'assertion' => $assertionParser->parse('$".selector" excludes $".secondary-selector"', 0),
+                'statement' => $assertionParser->parse('$".selector" excludes $".secondary-selector"', 0),
             ],
             'element identifier examined value, attribute identifier expected value' => [
-                'assertion' => $assertionParser->parse('$".selector" excludes $".selector".data-browser-size', 0),
+                'statement' => $assertionParser->parse('$".selector" excludes $".selector".data-browser-size', 0),
             ],
             'attribute identifier examined value, environment expected value' => [
-                'assertion' => $assertionParser->parse('$".selector".data-test-attribute excludes $env.TEST1', 0),
+                'statement' => $assertionParser->parse('$".selector".data-test-attribute excludes $env.TEST1', 0),
             ],
             'attribute identifier examined value, browser object expected value' => [
-                'assertion' => $assertionParser->parse('$".selector".data-test-attribute excludes $browser.size', 0),
+                'statement' => $assertionParser->parse('$".selector".data-test-attribute excludes $browser.size', 0),
             ],
             'attribute identifier examined value, page object expected value' => [
-                'assertion' => $assertionParser->parse('$".selector".data-test-attribute excludes $page.title', 0),
+                'statement' => $assertionParser->parse('$".selector".data-test-attribute excludes $page.title', 0),
             ],
         ];
 
         $testCases = [];
 
         foreach (self::inclusionAssertionFunctionalDataProvider() as $testName => $testData) {
-            $testData['assertion'] = $assertions[$testName]['assertion'];
+            $testData['statement'] = $assertions[$testName]['statement'];
             $testCases['excludes comparison, ' . $testName] = $testData;
         }
 

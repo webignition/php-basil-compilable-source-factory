@@ -19,8 +19,8 @@ trait CreateFromExcludesAssertionDataProviderTrait
 
         return [
             'excludes comparison, element identifier examined value, literal string expected value' => [
-                'assertion' => $assertionParser->parse('$".selector" excludes "value"', 0),
-                'expectedRenderedContent' => <<<'EOD'
+                'statement' => $assertionParser->parse('$".selector" excludes "value"', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $expectedValue = "value";
                         $examinedValue = (function () {
@@ -48,7 +48,8 @@ trait CreateFromExcludesAssertionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertStringNotContainsString(
                         (string) $expectedValue,
                         (string) $examinedValue,
@@ -66,7 +67,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
                         }'
                     );
                     EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         \Throwable::class,
                     ],
@@ -76,10 +77,15 @@ trait CreateFromExcludesAssertionDataProviderTrait
                         VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
                     ],
                 ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
             ],
             'excludes comparison, element identifier examined value, literal string expected w/ single quotes' => [
-                'assertion' => $assertionParser->parse('$".selector" excludes "\'value\'"', 0),
-                'expectedRenderedContent' => <<<'EOD'
+                'statement' => $assertionParser->parse('$".selector" excludes "\'value\'"', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $expectedValue = "'value'";
                         $examinedValue = (function () {
@@ -107,7 +113,8 @@ trait CreateFromExcludesAssertionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertStringNotContainsString(
                         (string) $expectedValue,
                         (string) $examinedValue,
@@ -125,7 +132,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
                         }'
                     );
                     EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         \Throwable::class,
                     ],
@@ -135,10 +142,15 @@ trait CreateFromExcludesAssertionDataProviderTrait
                         VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
                     ],
                 ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
             ],
             'excludes comparison, attribute identifier examined value, literal string expected value' => [
-                'assertion' => $assertionParser->parse('$".selector".attribute_name excludes "value"', 0),
-                'expectedRenderedContent' => <<<'EOD'
+                'statement' => $assertionParser->parse('$".selector".attribute_name excludes "value"', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $expectedValue = "value";
                         $examinedValue = (function () {
@@ -166,7 +178,8 @@ trait CreateFromExcludesAssertionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertStringNotContainsString(
                         (string) $expectedValue,
                         (string) $examinedValue,
@@ -184,12 +197,17 @@ trait CreateFromExcludesAssertionDataProviderTrait
                         }'
                     );
                     EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                     ],
                 ),

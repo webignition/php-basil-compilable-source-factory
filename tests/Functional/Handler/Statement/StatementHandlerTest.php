@@ -2,36 +2,126 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\Assertion;
+namespace Functional\Handler\Statement;
 
-use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
+use webignition\BasilCompilableSourceFactory\Handler\Statement\StatementHandler;
+use webignition\BasilCompilableSourceFactory\Model\Body\Body;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
-use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
+use webignition\BasilModels\Model\StatementInterface;
 use webignition\BasilModels\Parser\AssertionParser;
 
-class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
+class StatementHandlerTest extends AbstractBrowserTestCase
 {
-    private AssertionHandler $handler;
+    use Action\BackActionFunctionalDataProviderTrait;
+    use Action\ClickActionFunctionalDataProviderTrait;
+    use Action\ForwardActionFunctionalDataProviderTrait;
+    use Action\ReloadActionFunctionalDataProviderTrait;
+    use Action\SetActionFunctionalDataProviderTrait;
+    use Action\SubmitActionFunctionalDataProviderTrait;
+    use Action\WaitActionFunctionalDataProviderTrait;
+    use Action\WaitForActionFunctionalDataProviderTrait;
+    use Assertion\EqualityAssertionFunctionalDataProviderTrait;
+    use Assertion\InclusionAssertionFunctionalDataProviderTrait;
+    use Assertion\ExcludesAssertionFunctionalDataProviderTrait;
+    use Assertion\ExistsAssertionFunctionalDataProviderTrait;
+    use Assertion\IncludesAssertionFunctionalDataProviderTrait;
+    use Assertion\IsAssertionFunctionalDataProviderTrait;
+    use Assertion\IsNotAssertionFunctionalDataProviderTrait;
+    use Assertion\IsRegExpAssertionFunctionalDataProviderTrait;
+    use Assertion\MatchesAssertionFunctionalDataProviderTrait;
+    use Assertion\NotExistsAssertionFunctionalDataProviderTrait;
+
+    private StatementHandler $handler;
 
     protected function setUp(): void
     {
         parent::setUp();
 
-        $this->handler = AssertionHandler::createHandler();
+        $this->handler = StatementHandler::createHandler();
+    }
+
+    /**
+     * @dataProvider backActionFunctionalDataProvider
+     * @dataProvider clickActionFunctionalDataProvider
+     * @dataProvider forwardActionFunctionalDataProvider
+     * @dataProvider reloadActionFunctionalDataProvider
+     * @dataProvider setActionFunctionalDataProvider
+     * @dataProvider submitActionFunctionalDataProvider
+     * @dataProvider waitActionFunctionalDataProvider
+     * @dataProvider waitForActionFunctionalDataProvider
+     * @dataProvider excludesAssertionFunctionalDataProvider
+     * @dataProvider existsAssertionFunctionalDataProvider
+     * @dataProvider includesAssertionFunctionalDataProvider
+     * @dataProvider isAssertionFunctionalDataProvider
+     * @dataProvider isNotAssertionFunctionalDataProvider
+     * @dataProvider matchesAssertionFunctionalDataProvider
+     * @dataProvider notExistsAssertionFunctionalDataProvider
+     * @dataProvider isRegExpAssertionFunctionalDataProvider
+     *
+     * @param array<string, string> $additionalVariableIdentifiers
+     */
+    public function testHandleForPassingStatements(
+        string $fixture,
+        StatementInterface $statement,
+        array $additionalVariableIdentifiers = [],
+        ?BodyInterface $additionalSetupStatements = null,
+        ?BodyInterface $teardownStatements = null,
+    ): void {
+        $components = $this->handler->handle($statement);
+
+        $bodyParts = [];
+        $setupComponent = $components->getSetup();
+        if ($setupComponent instanceof BodyInterface) {
+            $bodyParts[] = $setupComponent;
+        }
+        $bodyParts[] = $components->getBody();
+        $body = new Body($bodyParts);
+
+        $classCode = $this->testCodeGenerator->createBrowserTestForBlock(
+            $body,
+            $fixture,
+            $additionalSetupStatements,
+            $teardownStatements,
+            $additionalVariableIdentifiers
+        );
+
+        $testRunJob = $this->testRunner->createTestRunJob($classCode);
+
+        if ($testRunJob instanceof TestRunJob) {
+            $this->testRunner->run($testRunJob);
+
+            $this->assertSame(
+                $testRunJob->getExpectedExitCode(),
+                $testRunJob->getExitCode(),
+                $testRunJob->getOutputAsString()
+            );
+        }
     }
 
     /**
      * @dataProvider createSourceForFailingAssertionsDataProvider
      */
-    public function testHandleForFailingAssertions(
+    public function testHandleForFailingStatements(
         string $fixture,
-        AssertionInterface $assertion,
+        StatementInterface $statement,
         string $expectedExpectationFailedExceptionMessage
     ): void {
-        $source = $this->handler->handle($assertion);
-        $classCode = $this->testCodeGenerator->createBrowserTestForBlock($source, $fixture);
+        $components = $this->handler->handle($statement);
+
+        $bodyParts = [];
+        $setupComponent = $components->getSetup();
+        if ($setupComponent instanceof BodyInterface) {
+            $bodyParts[] = $setupComponent;
+        }
+        $bodyParts[] = $components->getBody();
+        $body = new Body($bodyParts);
+
+        $classCode = $this->testCodeGenerator->createBrowserTestForBlock($body, $fixture);
 
         $testRunJob = $this->testRunner->createTestRunJob($classCode, 1);
 
@@ -60,7 +150,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
         return [
             'exists comparison, element identifier examined value, element does not exist' => [
                 'fixture' => '/index.html',
-                'assertion' => $assertionParser->parse('$".selector" exists', 0),
+                'statement' => $assertionParser->parse('$".selector" exists', 0),
                 'expectedExpectationFailedExceptionMessage' => <<<'EOD'
                     "statement": {
                         "statement-type": "assertion",
@@ -75,7 +165,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
             ],
             'exists comparison, attribute identifier examined value, element does not exist' => [
                 'fixture' => '/index.html',
-                'assertion' => $assertionParser->parse('$".selector".attribute_name exists', 0),
+                'statement' => $assertionParser->parse('$".selector".attribute_name exists', 0),
                 'expectedExpectationFailedExceptionMessage' => <<<'EOD'
                     "statement": {
                         "container": {
@@ -97,7 +187,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
             ],
             'exists comparison, attribute identifier examined value, attribute does not exist' => [
                 'fixture' => '/index.html',
-                'assertion' => $assertionParser->parse('$"h1".attribute_name exists', 0),
+                'statement' => $assertionParser->parse('$"h1".attribute_name exists', 0),
                 'expectedExpectationFailedExceptionMessage' => <<<'EOD'
                     "statement": {
                         "statement-type": "assertion",
@@ -112,7 +202,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
             ],
             'exists comparison, environment examined value, environment variable does not exist' => [
                 'fixture' => '/index.html',
-                'assertion' => $assertionParser->parse('$env.FOO exists', 0),
+                'statement' => $assertionParser->parse('$env.FOO exists', 0),
                 'expectedExpectationFailedExceptionMessage' => <<<'EOD'
                     "statement": {
                         "statement-type": "assertion",
@@ -127,7 +217,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
             ],
             'is-regexp operation, scalar identifier, literal value is not a regular expression' => [
                 'fixture' => '/index.html',
-                'assertion' => new DerivedValueOperationAssertion(
+                'statement' => new DerivedValueOperationAssertion(
                     $assertionParser->parse('$page.title matches "pattern"', 0),
                     '"pattern"',
                     'is-regexp'
@@ -154,7 +244,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
             ],
             'is-regexp operation, scalar identifier, elemental value is not a regular expression' => [
                 'fixture' => '/index.html',
-                'assertion' => new DerivedValueOperationAssertion(
+                'statement' => new DerivedValueOperationAssertion(
                     $assertionParser->parse('$page.title matches $"h1"', 0),
                     '$"h1"',
                     'is-regexp'
@@ -181,7 +271,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
             ],
             'exists comparison, element identifier examined value, invalid locator exception is caught' => [
                 'fixture' => '/index.html',
-                'assertion' => $assertionParser->parse('$"2" exists', 0),
+                'statement' => $assertionParser->parse('$"2" exists', 0),
                 'expectedExpectationFailedExceptionMessage' => <<<'EOD'
                     "statement": {
                         "statement-type": "assertion",
@@ -200,7 +290,7 @@ class AssertionHandlerFailingAssertionsTest extends AbstractBrowserTestCase
             ],
             'exists comparison, attribute identifier examined value, invalid locator exception is caught' => [
                 'fixture' => '/index.html',
-                'assertion' => $assertionParser->parse('$"2".attribute_name exists', 0),
+                'statement' => $assertionParser->parse('$"2".attribute_name exists', 0),
                 'expectedExpectationFailedExceptionMessage' => <<<'EOD'
                     "statement": {
                         "container": {

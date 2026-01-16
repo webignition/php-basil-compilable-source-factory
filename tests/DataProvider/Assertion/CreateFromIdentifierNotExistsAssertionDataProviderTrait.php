@@ -30,8 +30,8 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
 
         return [
             'not-exists comparison, element identifier examined value' => [
-                'assertion' => $assertionParser->parse('$".selector" not-exists', 0),
-                'expectedRenderedContent' => <<<'EOD'
+                'statement' => $assertionParser->parse('$".selector" not-exists', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $examinedValue = {{ NAVIGATOR }}->has('{
                             "locator": ".selector"
@@ -59,7 +59,8 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertFalse(
                         $examinedValue,
                         '{
@@ -75,11 +76,25 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                         }'
                     );
                     EOD,
-                'expectedMetadata' => $expectedMetadata,
+                'expectedSetupMetadata' => new Metadata(
+                    classNames: [
+                        InvalidLocatorException::class,
+                    ],
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                    ],
+                ),
+                'expectedBodyMetadata' => new Metadata(
+                    classNames: [],
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
             ],
             'not-exists comparison, attribute identifier examined value' => [
-                'assertion' => $assertionParser->parse('$".selector".attribute_name not-exists', 0),
-                'expectedRenderedContent' => <<<'EOD'
+                'statement' => $assertionParser->parse('$".selector".attribute_name not-exists', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $examinedValue = {{ NAVIGATOR }}->hasOne('{
                             "locator": ".selector"
@@ -114,7 +129,8 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
@@ -176,10 +192,18 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                         }'
                     );
                     EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         InvalidLocatorException::class,
-                        \Throwable::class,
+                    ],
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                    ],
+                ),
+                'expectedBodyMetadata' => new Metadata(
+                    classNames: [
+                        \Throwable::class
                     ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,

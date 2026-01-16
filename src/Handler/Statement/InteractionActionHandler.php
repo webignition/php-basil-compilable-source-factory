@@ -2,38 +2,38 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSourceFactory\Handler\Action;
+namespace webignition\BasilCompilableSourceFactory\Handler\Statement;
 
-use webignition\BasilCompilableSourceFactory\ArgumentFactory;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
+use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\Handler\StatementHandlerComponents;
-use webignition\BasilCompilableSourceFactory\Handler\StatementHandlerInterface;
+use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
+use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
-use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
+use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
-use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Model\Action\ActionInterface;
 use webignition\BasilModels\Model\StatementInterface;
 use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
-class WaitForActionHandler implements StatementHandlerInterface
+class InteractionActionHandler implements StatementHandlerInterface
 {
     public function __construct(
+        private DomIdentifierHandler $domIdentifierHandler,
         private DomIdentifierFactory $domIdentifierFactory,
-        private IdentifierTypeAnalyser $identifierTypeAnalyser,
-        private ArgumentFactory $argumentFactory
+        private ElementIdentifierSerializer $elementIdentifierSerializer,
+        private PhpUnitCallFactory $phpUnitCallFactory,
     ) {}
 
-    public static function createHandler(): WaitForActionHandler
+    public static function createHandler(): self
     {
-        return new WaitForActionHandler(
+        return new InteractionActionHandler(
+            DomIdentifierHandler::createHandler(),
             DomIdentifierFactory::createFactory(),
-            IdentifierTypeAnalyser::create(),
-            ArgumentFactory::createFactory(),
+            ElementIdentifierSerializer::createSerializer(),
+            PhpUnitCallFactory::createFactory(),
         );
     }
 
@@ -46,15 +46,11 @@ class WaitForActionHandler implements StatementHandlerInterface
             return null;
         }
 
-        if ('wait-for' !== $statement->getType()) {
+        if (!in_array($statement->getType(), ['click', 'submit'])) {
             return null;
         }
 
         $identifier = (string) $statement->getIdentifier();
-
-        if (!$this->identifierTypeAnalyser->isDomIdentifier($identifier)) {
-            throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
-        }
 
         $domIdentifier = $this->domIdentifierFactory->createFromIdentifierString($identifier);
         if (null === $domIdentifier) {
@@ -65,16 +61,24 @@ class WaitForActionHandler implements StatementHandlerInterface
             throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }
 
+        $elementPlaceholder = new VariableName('element');
+
         return new StatementHandlerComponents(
+            new Body([
+                new Statement(new ObjectMethodInvocation(
+                    $elementPlaceholder,
+                    $statement->getType()
+                )),
+                new Statement(
+                    $this->phpUnitCallFactory->createCall('refreshCrawlerAndNavigator'),
+                ),
+            ])
+        )->withSetup(
             new Statement(
                 new AssignmentExpression(
-                    new VariableDependency(VariableName::PANTHER_CRAWLER),
-                    new ObjectMethodInvocation(
-                        new VariableDependency(VariableName::PANTHER_CLIENT),
-                        'waitFor',
-                        new MethodArguments(
-                            $this->argumentFactory->create($domIdentifier->getLocator())
-                        )
+                    $elementPlaceholder,
+                    $this->domIdentifierHandler->handleElement(
+                        $this->elementIdentifierSerializer->serialize($domIdentifier)
                     )
                 )
             )

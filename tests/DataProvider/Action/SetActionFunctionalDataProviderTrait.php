@@ -30,10 +30,11 @@ trait SetActionFunctionalDataProviderTrait
             [
                 'input action, element identifier, element value' => [
                     'fixture' => '/form.html',
-                    'action' => $actionParser->parse(
+                    'statement' => $actionParser->parse(
                         'set $"input[name=input-without-value]" to $".textarea-non-empty"',
                         0,
                     ),
+                    'additionalVariableIdentifiers' => [],
                     'additionalSetupStatements' => new Body([
                         StatementFactory::createCrawlerFilterCallForElement(
                             'input[name=input-without-value]',
@@ -51,10 +52,11 @@ trait SetActionFunctionalDataProviderTrait
                 ],
                 'input action, element identifier, attribute value' => [
                     'fixture' => '/form.html',
-                    'action' => $actionParser->parse(
+                    'statement' => $actionParser->parse(
                         'set $"input[name=input-without-value]" to $"#form1".action',
                         0,
                     ),
+                    'additionalVariableIdentifiers' => [],
                     'additionalSetupStatements' => new Body([
                         StatementFactory::createCrawlerFilterCallForElement(
                             'input[name=input-without-value]',
@@ -75,10 +77,11 @@ trait SetActionFunctionalDataProviderTrait
                 ],
                 'input action, browser property' => [
                     'fixture' => '/form.html',
-                    'action' => $actionParser->parse(
+                    'statement' => $actionParser->parse(
                         'set $"input[name=input-without-value]" to $browser.size',
                         0,
                     ),
+                    'additionalVariableIdentifiers' => [],
                     'additionalSetupStatements' => new Body([
                         StatementFactory::createCrawlerFilterCallForElement(
                             'input[name=input-without-value]',
@@ -99,7 +102,8 @@ trait SetActionFunctionalDataProviderTrait
                 ],
                 'input action, page property' => [
                     'fixture' => '/form.html',
-                    'action' => $actionParser->parse('set $"input[name=input-without-value]" to $page.url', 0),
+                    'statement' => $actionParser->parse('set $"input[name=input-without-value]" to $page.url', 0),
+                    'additionalVariableIdentifiers' => [],
                     'additionalSetupStatements' => new Body([
                         StatementFactory::createCrawlerFilterCallForElement(
                             'input[name=input-without-value]',
@@ -120,7 +124,10 @@ trait SetActionFunctionalDataProviderTrait
                 ],
                 'input action, environment value' => [
                     'fixture' => '/form.html',
-                    'action' => $actionParser->parse('set $"input[name=input-without-value]" to $env.TEST1', 0),
+                    'statement' => $actionParser->parse('set $"input[name=input-without-value]" to $env.TEST1', 0),
+                    'additionalVariableIdentifiers' => [
+                        VariableNameEnum::ENVIRONMENT_VARIABLE_ARRAY->value => ResolvedNames::ENV_ARRAY_VARIABLE_NAME,
+                    ],
                     'additionalSetupStatements' => new Body([
                         StatementFactory::createCrawlerFilterCallForElement(
                             'input[name=input-without-value]',
@@ -138,9 +145,6 @@ trait SetActionFunctionalDataProviderTrait
                             '$input->getAttribute("value")'
                         ),
                     ]),
-                    'additionalVariableIdentifiers' => [
-                        VariableNameEnum::ENVIRONMENT_VARIABLE_ARRAY->value => ResolvedNames::ENV_ARRAY_VARIABLE_NAME,
-                    ],
                 ],
             ]
         );
@@ -157,7 +161,8 @@ trait SetActionFunctionalDataProviderTrait
         return [
             'input action, literal value: empty text input, empty value' => [
                 'fixture' => '/form.html',
-                'action' => $actionParser->parse('set $"input[name=input-without-value]" to ""', 0),
+                'statement' => $actionParser->parse('set $"input[name=input-without-value]" to ""', 0),
+                'additionalVariableIdentifiers' => [],
                 'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement(
                         'input[name=input-without-value]',
@@ -175,7 +180,8 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: empty text input, non-empty value' => [
                 'fixture' => '/form.html',
-                'action' => $actionParser->parse('set $"input[name=input-without-value]" to "non-empty value"', 0),
+                'statement' => $actionParser->parse('set $"input[name=input-without-value]" to "non-empty value"', 0),
+                'additionalVariableIdentifiers' => [],
                 'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement(
                         'input[name=input-without-value]',
@@ -193,7 +199,8 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: non-empty text input, empty value' => [
                 'fixture' => '/form.html',
-                'action' => $actionParser->parse('set $"input[name=input-with-value]" to ""', 0),
+                'statement' => $actionParser->parse('set $"input[name=input-with-value]" to ""', 0),
+                'additionalVariableIdentifiers' => [],
                 'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement(
                         'input[name=input-with-value]',
@@ -211,7 +218,8 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: non-empty text input, non-empty value' => [
                 'fixture' => '/form.html',
-                'action' => $actionParser->parse('set $"input[name=input-with-value]" to "new value"', 0),
+                'statement' => $actionParser->parse('set $"input[name=input-with-value]" to "new value"', 0),
+                'additionalVariableIdentifiers' => [],
                 'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement(
                         'input[name=input-with-value]',
@@ -241,7 +249,8 @@ trait SetActionFunctionalDataProviderTrait
         return [
             'input action, literal value: empty textarea, empty value' => [
                 'fixture' => '/form.html',
-                'action' => $actionParser->parse('set $".textarea-empty" to ""', 0),
+                'statement' => $actionParser->parse('set $".textarea-empty" to ""', 0),
+                'additionalVariableIdentifiers' => [],
                 'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.textarea-empty', $textareaPlaceholder),
                     StatementFactory::createAssertSame('""', '$textarea->getAttribute("value")'),
@@ -253,7 +262,8 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: empty textarea, non-empty value' => [
                 'fixture' => '/form.html',
-                'action' => $actionParser->parse('set $".textarea-empty" to "non-empty value"', 0),
+                'statement' => $actionParser->parse('set $".textarea-empty" to "non-empty value"', 0),
+                'additionalVariableIdentifiers' => [],
                 'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.textarea-empty', $textareaPlaceholder),
                     StatementFactory::createAssertSame('""', '$textarea->getAttribute("value")'),
@@ -265,7 +275,8 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: non-empty textarea, empty value' => [
                 'fixture' => '/form.html',
-                'action' => $actionParser->parse('set $".textarea-non-empty" to ""', 0),
+                'statement' => $actionParser->parse('set $".textarea-non-empty" to ""', 0),
+                'additionalVariableIdentifiers' => [],
                 'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.textarea-non-empty', $textareaPlaceholder),
                     StatementFactory::createAssertSame('"textarea content"', '$textarea->getAttribute("value")'),
@@ -277,7 +288,8 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: non-empty textarea, non-empty value' => [
                 'fixture' => '/form.html',
-                'action' => $actionParser->parse('set $".textarea-non-empty" to "new value"', 0),
+                'statement' => $actionParser->parse('set $".textarea-non-empty" to "new value"', 0),
+                'additionalVariableIdentifiers' => [],
                 'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.textarea-non-empty', $textareaPlaceholder),
                     StatementFactory::createAssertSame('"textarea content"', '$textarea->getAttribute("value")'),
@@ -301,7 +313,8 @@ trait SetActionFunctionalDataProviderTrait
         return [
             'input action, literal value: select none selected, empty value' => [
                 'fixture' => '/form.html',
-                'action' => $actionParser->parse('set $".select-none-selected" to ""', 0),
+                'statement' => $actionParser->parse('set $".select-none-selected" to ""', 0),
+                'additionalVariableIdentifiers' => [],
                 'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.select-none-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"none-selected-1"', '$select->getAttribute("value")'),
@@ -313,7 +326,8 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: select none selected, invalid non-empty value' => [
                 'fixture' => '/form.html',
-                'action' => $actionParser->parse('set $".select-none-selected" to "invalid"', 0),
+                'statement' => $actionParser->parse('set $".select-none-selected" to "invalid"', 0),
+                'additionalVariableIdentifiers' => [],
                 'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.select-none-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"none-selected-1"', '$select->getAttribute("value")'),
@@ -325,7 +339,8 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: select none selected, valid non-empty value' => [
                 'fixture' => '/form.html',
-                'action' => $actionParser->parse('set $".select-none-selected" to "none-selected-2"', 0),
+                'statement' => $actionParser->parse('set $".select-none-selected" to "none-selected-2"', 0),
+                'additionalVariableIdentifiers' => [],
                 'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.select-none-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"none-selected-1"', '$select->getAttribute("value")'),
@@ -337,7 +352,8 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: select has selected, empty value' => [
                 'fixture' => '/form.html',
-                'action' => $actionParser->parse('set $".select-has-selected" to ""', 0),
+                'statement' => $actionParser->parse('set $".select-has-selected" to ""', 0),
+                'additionalVariableIdentifiers' => [],
                 'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.select-has-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"has-selected-2"', '$select->getAttribute("value")'),
@@ -349,7 +365,8 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: select has selected, invalid non-empty value' => [
                 'fixture' => '/form.html',
-                'action' => $actionParser->parse('set $".select-has-selected" to "invalid"', 0),
+                'statement' => $actionParser->parse('set $".select-has-selected" to "invalid"', 0),
+                'additionalVariableIdentifiers' => [],
                 'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.select-has-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"has-selected-2"', '$select->getAttribute("value")'),
@@ -361,7 +378,8 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: select has selected, valid non-empty value' => [
                 'fixture' => '/form.html',
-                'action' => $actionParser->parse('set $".select-has-selected" to "has-selected-3"', 0),
+                'statement' => $actionParser->parse('set $".select-has-selected" to "has-selected-3"', 0),
+                'additionalVariableIdentifiers' => [],
                 'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.select-has-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"has-selected-2"', '$select->getAttribute("value")'),
@@ -385,7 +403,8 @@ trait SetActionFunctionalDataProviderTrait
         return [
             'input action, literal value: option group none selected, empty value' => [
                 'fixture' => '/form.html',
-                'action' => $actionParser->parse('set $".select-none-selected option" to ""', 0),
+                'statement' => $actionParser->parse('set $".select-none-selected option" to ""', 0),
+                'additionalVariableIdentifiers' => [],
                 'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.select-none-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"none-selected-1"', '$select->getAttribute("value")'),
@@ -397,7 +416,8 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: option group none selected, invalid non-empty value' => [
                 'fixture' => '/form.html',
-                'action' => $actionParser->parse('set $".select-none-selected option" to "invalid"', 0),
+                'statement' => $actionParser->parse('set $".select-none-selected option" to "invalid"', 0),
+                'additionalVariableIdentifiers' => [],
                 'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.select-none-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"none-selected-1"', '$select->getAttribute("value")'),
@@ -409,7 +429,8 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: option group none selected, valid non-empty value' => [
                 'fixture' => '/form.html',
-                'action' => $actionParser->parse('set $".select-none-selected option" to "none-selected-2"', 0),
+                'statement' => $actionParser->parse('set $".select-none-selected option" to "none-selected-2"', 0),
+                'additionalVariableIdentifiers' => [],
                 'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.select-none-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"none-selected-1"', '$select->getAttribute("value")'),
@@ -421,7 +442,8 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: option group has selected, empty value' => [
                 'fixture' => '/form.html',
-                'action' => $actionParser->parse('set $".select-has-selected option" to ""', 0),
+                'statement' => $actionParser->parse('set $".select-has-selected option" to ""', 0),
+                'additionalVariableIdentifiers' => [],
                 'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.select-has-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"has-selected-2"', '$select->getAttribute("value")'),
@@ -433,7 +455,8 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: option group has selected, invalid non-empty value' => [
                 'fixture' => '/form.html',
-                'action' => $actionParser->parse('set $".select-has-selected option" to "invalid"', 0),
+                'statement' => $actionParser->parse('set $".select-has-selected option" to "invalid"', 0),
+                'additionalVariableIdentifiers' => [],
                 'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.select-has-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"has-selected-2"', '$select->getAttribute("value")'),
@@ -445,7 +468,8 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: option group has selected, valid non-empty value' => [
                 'fixture' => '/form.html',
-                'action' => $actionParser->parse('set $".select-has-selected option" to "has-selected-3"', 0),
+                'statement' => $actionParser->parse('set $".select-has-selected option" to "has-selected-3"', 0),
+                'additionalVariableIdentifiers' => [],
                 'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement('.select-has-selected', $selectPlaceholder),
                     StatementFactory::createAssertSame('"has-selected-2"', '$select->getAttribute("value")'),
@@ -469,7 +493,8 @@ trait SetActionFunctionalDataProviderTrait
         return [
             'input action, literal value: radio group none checked, empty value' => [
                 'fixture' => '/form.html',
-                'action' => $actionParser->parse('set $"input[name=radio-not-checked]" to ""', 0),
+                'statement' => $actionParser->parse('set $"input[name=radio-not-checked]" to ""', 0),
+                'additionalVariableIdentifiers' => [],
                 'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCall('input[name=radio-not-checked]', $radioGroupPlaceholder),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(0)->isSelected()'),
@@ -485,7 +510,8 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: radio group none checked, invalid non-empty value' => [
                 'fixture' => '/form.html',
-                'action' => $actionParser->parse('set $"input[name=radio-not-checked]" to "invalid"', 0),
+                'statement' => $actionParser->parse('set $"input[name=radio-not-checked]" to "invalid"', 0),
+                'additionalVariableIdentifiers' => [],
                 'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCall('input[name=radio-not-checked]', $radioGroupPlaceholder),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(0)->isSelected()'),
@@ -501,7 +527,8 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: radio group none checked, valid non-empty value' => [
                 'fixture' => '/form.html',
-                'action' => $actionParser->parse('set $"input[name=radio-not-checked]" to "not-checked-2"', 0),
+                'statement' => $actionParser->parse('set $"input[name=radio-not-checked]" to "not-checked-2"', 0),
+                'additionalVariableIdentifiers' => [],
                 'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCall('input[name=radio-not-checked]', $radioGroupPlaceholder),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(0)->isSelected()'),
@@ -517,7 +544,8 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: radio group has checked, empty value' => [
                 'fixture' => '/form.html',
-                'action' => $actionParser->parse('set $"input[name=radio-checked]" to ""', 0),
+                'statement' => $actionParser->parse('set $"input[name=radio-checked]" to ""', 0),
+                'additionalVariableIdentifiers' => [],
                 'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCall('input[name=radio-checked]', $radioGroupPlaceholder),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(0)->isSelected()'),
@@ -533,7 +561,8 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: radio group has checked, invalid non-empty value' => [
                 'fixture' => '/form.html',
-                'action' => $actionParser->parse('set $"input[name=radio-checked]" to "invalid"', 0),
+                'statement' => $actionParser->parse('set $"input[name=radio-checked]" to "invalid"', 0),
+                'additionalVariableIdentifiers' => [],
                 'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCall('input[name=radio-checked]', $radioGroupPlaceholder),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(0)->isSelected()'),
@@ -549,7 +578,8 @@ trait SetActionFunctionalDataProviderTrait
             ],
             'input action, literal value: radio group has checked, valid non-empty value' => [
                 'fixture' => '/form.html',
-                'action' => $actionParser->parse('set $"input[name=radio-checked]" to "checked-3"', 0),
+                'statement' => $actionParser->parse('set $"input[name=radio-checked]" to "checked-3"', 0),
+                'additionalVariableIdentifiers' => [],
                 'additionalSetupStatements' => new Body([
                     StatementFactory::createCrawlerFilterCall('input[name=radio-checked]', $radioGroupPlaceholder),
                     StatementFactory::createAssertFalse('$radioGroup->getElement(0)->isSelected()'),

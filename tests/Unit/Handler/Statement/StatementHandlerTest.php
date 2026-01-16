@@ -2,22 +2,31 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Assertion;
+namespace Unit\Handler\Statement;
 
-use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
-use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
+use webignition\BasilCompilableSourceFactory\Handler\Statement\StatementHandler;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
+// use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
+use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action as ActionDataProvider;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion as AssertionDataProvider;
-use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvableRenderer;
+use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTestCase;
 use webignition\BasilModels\Model\Assertion\Assertion;
-use webignition\BasilModels\Model\Assertion\AssertionInterface;
+use webignition\BasilModels\Model\StatementInterface;
+use webignition\BasilModels\Parser\ActionParser;
 use webignition\BasilModels\Parser\AssertionParser;
-use webignition\Stubble\Resolvable\ResolvableInterface;
 
-class AssertionHandlerTest extends TestCase
+class StatementHandlerTest extends AbstractResolvableTestCase
 {
+    use ActionDataProvider\CreateFromBackActionDataProviderTrait;
+    use ActionDataProvider\CreateFromClickActionDataProviderTrait;
+    use ActionDataProvider\CreateFromForwardActionDataProviderTrait;
+    use ActionDataProvider\CreateFromReloadActionDataProviderTrait;
+    use ActionDataProvider\CreateFromSetActionDataProviderTrait;
+    use ActionDataProvider\CreateFromSubmitActionDataProviderTrait;
+    use ActionDataProvider\CreateFromWaitActionDataProviderTrait;
+    use ActionDataProvider\CreateFromWaitForActionDataProviderTrait;
     use AssertionDataProvider\CreateFromExcludesAssertionDataProviderTrait;
     use AssertionDataProvider\CreateFromIncludesAssertionDataProviderTrait;
     use AssertionDataProvider\CreateFromIsAssertionDataProviderTrait;
@@ -29,6 +38,14 @@ class AssertionHandlerTest extends TestCase
     use AssertionDataProvider\CreateFromScalarExistsAssertionDataProviderTrait;
 
     /**
+     * @dataProvider createFromBackActionDataProvider
+     * @dataProvider createFromClickActionDataProvider
+     * @dataProvider createFromForwardActionDataProvider
+     * @dataProvider createFromReloadActionDataProvider
+     * @dataProvider createFromSetActionDataProvider
+     * @dataProvider createFromSubmitActionDataProvider
+     * @dataProvider createFromWaitActionDataProvider
+     * @dataProvider createFromWaitForActionDataProvider
      * @dataProvider createFromExcludesAssertionDataProvider
      * @dataProvider createFromIncludesAssertionDataProvider
      * @dataProvider createFromIsAssertionDataProvider
@@ -40,29 +57,79 @@ class AssertionHandlerTest extends TestCase
      * @dataProvider createFromScalarExistsAssertionDataProvider
      */
     public function testHandleSuccess(
-        AssertionInterface $assertion,
-        string $expectedRenderedContent,
-        MetadataInterface $expectedMetadata
+        StatementInterface $statement,
+        ?string $expectedRenderedSetup,
+        string $expectedRenderedBody,
+        ?MetadataInterface $expectedSetupMetadata,
+        MetadataInterface $expectedBodyMetadata,
     ): void {
-        $handler = AssertionHandler::createHandler();
+        $handler = StatementHandler::createHandler();
+        $components = $handler->handle($statement);
 
-        $source = $handler->handle($assertion);
+        $setup = $components->getSetup();
+        if (null === $setup) {
+            self::assertNull($expectedRenderedSetup);
+            self::assertNull($expectedSetupMetadata);
+        } else {
+            $this->assertRenderResolvable((string) $expectedRenderedSetup, $setup);
+            $this->assertEquals($expectedSetupMetadata, $setup->getMetadata());
+        }
 
-        $this->assertRenderResolvable($expectedRenderedContent, $source);
-        $this->assertEquals($expectedMetadata, $source->getMetadata());
+        $this->assertRenderResolvable($expectedRenderedBody, $components->getBody());
+        $this->assertEquals($expectedBodyMetadata, $components->getBody()->getMetadata());
+    }
+
+    /**
+     * @dataProvider handleThrowsExceptionDataProvider
+     */
+    public function testHandleThrowsException(
+        StatementInterface $statement,
+        UnsupportedStatementException $expectedException
+    ): void {
+        $handler = StatementHandler::createHandler();
+        $this->expectExceptionObject($expectedException);
+
+        $handler->handle($statement);
+    }
+
+    /**
+     * @return array<mixed>
+     */
+    public static function handleThrowsExceptionDataProvider(): array
+    {
+        $actionParser = ActionParser::create();
+
+        return [
+            'interaction action, identifier not dom identifier' => [
+                'statement' => $actionParser->parse('click $elements.element_name', 0),
+                'expectedException' => new UnsupportedStatementException(
+                    $actionParser->parse('click $elements.element_name', 0),
+                    new UnsupportedContentException(
+                        UnsupportedContentException::TYPE_IDENTIFIER,
+                        '$elements.element_name'
+                    )
+                ),
+            ],
+            'unsupported action type' => [
+                'statement' => $actionParser->parse('foo $".selector"', 0),
+                'expectedException' => new UnsupportedStatementException(
+                    $actionParser->parse('foo $".selector"', 0)
+                ),
+            ],
+        ];
     }
 
     /**
      * @dataProvider handleThrowsUnsupportedStatementExceptionDataProvider
      */
     public function testHandleThrowsUnsupportedStatementException(
-        AssertionInterface $assertion,
+        StatementInterface $statement,
         UnsupportedStatementException $expected
     ): void {
-        $handler = AssertionHandler::createHandler();
+        $handler = StatementHandler::createHandler();
 
         try {
-            $handler->handle($assertion);
+            $handler->handle($statement);
         } catch (UnsupportedStatementException $exception) {
             self::assertSame((string) $expected->getStatement(), (string) $exception->getStatement());
             self::assertSame($expected->getCode(), $exception->getCode());
@@ -85,13 +152,13 @@ class AssertionHandlerTest extends TestCase
 
         return [
             'comparison assertion, unsupported comparison' => [
-                'assertion' => $assertionParser->parse('$".selector" foo "value"', 0),
+                'statement' => $assertionParser->parse('$".selector" foo "value"', 0),
                 'expected' => new UnsupportedStatementException(
                     $assertionParser->parse('$".selector" foo "value"', 0)
                 ),
             ],
             'comparison assertion, examined value is not supported' => [
-                'assertion' => $assertionParser->parse('$elements.examined is "value"', 0),
+                'statement' => $assertionParser->parse('$elements.examined is "value"', 0),
                 'expected' => new UnsupportedStatementException(
                     $assertionParser->parse('$elements.examined is "value"', 0),
                     new UnsupportedContentException(
@@ -101,7 +168,7 @@ class AssertionHandlerTest extends TestCase
                 ),
             ],
             'comparison assertion, expected value is not supported' => [
-                'assertion' => $assertionParser->parse('$".selector" is $elements.expected', 0),
+                'statement' => $assertionParser->parse('$".selector" is $elements.expected', 0),
                 'expected' => new UnsupportedStatementException(
                     $assertionParser->parse('$".selector" is $elements.expected', 0),
                     new UnsupportedContentException(
@@ -111,7 +178,7 @@ class AssertionHandlerTest extends TestCase
                 ),
             ],
             'existence assertion, unsupported identifier' => [
-                'assertion' => $invalidExistsAssertion,
+                'statement' => $invalidExistsAssertion,
                 'expected' => new UnsupportedStatementException(
                     $invalidExistsAssertion,
                     new UnsupportedContentException(
@@ -121,7 +188,7 @@ class AssertionHandlerTest extends TestCase
                 ),
             ],
             'existence assertion, identifier is not supported' => [
-                'assertion' => $assertionParser->parse('$elements.element_name exists', 0),
+                'statement' => $assertionParser->parse('$elements.element_name exists', 0),
                 'expected' => new UnsupportedStatementException(
                     $assertionParser->parse('$elements.element_name exists', 0),
                     new UnsupportedContentException(
@@ -131,13 +198,5 @@ class AssertionHandlerTest extends TestCase
                 ),
             ],
         ];
-    }
-
-    private function assertRenderResolvable(string $expectedString, ResolvableInterface $resolvable): void
-    {
-        self::assertSame(
-            $expectedString,
-            ResolvableRenderer::resolve($resolvable)
-        );
     }
 }

@@ -9,8 +9,8 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentExcepti
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\FailureMessageFactory;
-use webignition\BasilCompilableSourceFactory\Handler\Action\ActionHandler;
-use webignition\BasilCompilableSourceFactory\Handler\Assertion\AssertionHandler;
+use webignition\BasilCompilableSourceFactory\Handler\Statement\StatementHandler;
+use webignition\BasilCompilableSourceFactory\Handler\Statement\StatementHandlerComponents;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
@@ -23,8 +23,7 @@ use webignition\BasilModels\Model\Step\StepInterface;
 class StepHandler
 {
     public function __construct(
-        private ActionHandler $actionHandler,
-        private AssertionHandler $assertionHandler,
+        private StatementHandler $statementHandler,
         private StatementBlockFactory $statementBlockFactory,
         private DerivedAssertionFactory $derivedAssertionFactory,
         private TryCatchBlockFactory $tryCatchBlockFactory,
@@ -35,8 +34,7 @@ class StepHandler
     public static function createHandler(): StepHandler
     {
         return new StepHandler(
-            ActionHandler::createHandler(),
-            AssertionHandler::createHandler(),
+            StatementHandler::createHandler(),
             StatementBlockFactory::createFactory(),
             DerivedAssertionFactory::createFactory(),
             TryCatchBlockFactory::createFactory(),
@@ -63,7 +61,7 @@ class StepHandler
 
                 $bodySources[] = $this->statementBlockFactory->create($action);
 
-                $actionBody = $this->actionHandler->handle($action);
+                $actionBody = $this->createBodyFromStatementHandlerComponents($this->statementHandler->handle($action));
 
                 $failBody = Body::createFromExpressions([
                     $this->phpUnitCallFactory->createFailCall(
@@ -101,7 +99,9 @@ class StepHandler
 
             foreach ($stepAssertions as $assertion) {
                 $bodySources[] = $this->statementBlockFactory->create($assertion);
-                $bodySources[] = $this->assertionHandler->handle($assertion);
+                $bodySources[] = $this->createBodyFromStatementHandlerComponents(
+                    $this->statementHandler->handle($assertion)
+                );
                 $bodySources[] = new EmptyLine();
             }
         } catch (UnsupportedStatementException $unsupportedStatementException) {
@@ -119,7 +119,9 @@ class StepHandler
         $derivedAssertionBlockSources = [];
         foreach ($assertions as $assertion) {
             $derivedAssertionBlockSources[] = $this->statementBlockFactory->create($assertion);
-            $derivedAssertionBlockSources[] = $this->assertionHandler->handle($assertion);
+            $derivedAssertionBlockSources[] = $this->createBodyFromStatementHandlerComponents(
+                $this->statementHandler->handle($assertion)
+            );
         }
 
         if ([] !== $derivedAssertionBlockSources) {
@@ -127,5 +129,19 @@ class StepHandler
         }
 
         return new Body($derivedAssertionBlockSources);
+    }
+
+    private function createBodyFromStatementHandlerComponents(StatementHandlerComponents $components): BodyInterface
+    {
+        $parts = [];
+        $setup = $components->getSetup();
+        if ($setup instanceof BodyInterface) {
+            $parts[] = $setup;
+            $parts[] = new EmptyLine();
+        }
+
+        $parts[] = $components->getBody();
+
+        return new Body($parts);
     }
 }
