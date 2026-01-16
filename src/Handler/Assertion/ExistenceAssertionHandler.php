@@ -5,16 +5,13 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
+use webignition\BasilCompilableSourceFactory\Handler\StatementHandlerComponents;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilValueTypeIdentifier\ValueTypeIdentifier;
 
 class ExistenceAssertionHandler
 {
-    public const ASSERT_TRUE_METHOD = 'assertTrue';
-    public const ASSERT_FALSE_METHOD = 'assertFalse';
-
     public function __construct(
         private IdentifierTypeAnalyser $identifierTypeAnalyser,
         private ValueTypeIdentifier $valueTypeIdentifier,
@@ -33,11 +30,9 @@ class ExistenceAssertionHandler
     }
 
     /**
-     * @return array{'setup': BodyInterface, 'body': BodyInterface}
-     *
      * @throws UnsupportedContentException
      */
-    public function handle(AssertionInterface $assertion): array
+    public function handle(AssertionInterface $assertion): StatementHandlerComponents
     {
         $identifier = $assertion->getIdentifier();
 

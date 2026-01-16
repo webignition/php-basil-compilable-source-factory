@@ -11,9 +11,9 @@ use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEn
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\FailureMessageFactory;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
+use webignition\BasilCompilableSourceFactory\Handler\StatementHandlerComponents;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
-use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
@@ -61,11 +61,9 @@ class SetActionHandler
     }
 
     /**
-     * @return array{'setup': ?BodyInterface, 'body': BodyInterface}
-     *
      * @throws UnsupportedContentException
      */
-    public function handle(ActionInterface $action): array
+    public function handle(ActionInterface $action): StatementHandlerComponents
     {
         $identifier = (string) $action->getIdentifier();
 
@@ -136,23 +134,22 @@ class SetActionHandler
             ),
         ]);
 
-        $tryCatchBlock = $this->tryCatchBlockFactory->create(
-            Body::createFromExpressions([
-                new AssignmentExpression($setValueCollectionPlaceholder, $collectionAccessor),
-                new AssignmentExpression($setValueValuePlaceholder, $valueAccessor),
-            ]),
-            new ClassNameCollection([new ClassName(\Throwable::class)]),
-            $catchBody,
-        );
-
-        return [
-            'setup' => $tryCatchBlock,
-            'body' => new Body([
+        return new StatementHandlerComponents(
+            new Body([
                 new Statement($mutationInvocation),
                 new Statement(
                     $this->phpUnitCallFactory->createCall('refreshCrawlerAndNavigator'),
                 ),
             ])
-        ];
+        )->withSetup(
+            $this->tryCatchBlockFactory->create(
+                Body::createFromExpressions([
+                    new AssignmentExpression($setValueCollectionPlaceholder, $collectionAccessor),
+                    new AssignmentExpression($setValueValuePlaceholder, $valueAccessor),
+                ]),
+                new ClassNameCollection([new ClassName(\Throwable::class)]),
+                $catchBody,
+            ),
+        );
     }
 }

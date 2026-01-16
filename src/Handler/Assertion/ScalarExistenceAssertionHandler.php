@@ -9,9 +9,8 @@ use webignition\BasilCompilableSourceFactory\AssertionMessageFactory;
 use webignition\BasilCompilableSourceFactory\AssertionStatementFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
+use webignition\BasilCompilableSourceFactory\Handler\StatementHandlerComponents;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
-use webignition\BasilCompilableSourceFactory\Model\Body\Body;
-use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpression;
@@ -39,11 +38,9 @@ class ScalarExistenceAssertionHandler
     }
 
     /**
-     * @return array{'setup': BodyInterface, 'body': BodyInterface}
-     *
      * @throws UnsupportedContentException
      */
-    public function handle(AssertionInterface $assertion): array
+    public function handle(AssertionInterface $assertion): StatementHandlerComponents
     {
         $nullComparisonExpression = new NullCoalescerExpression(
             $this->scalarValueHandler->handle((string) $assertion->getIdentifier()),
@@ -64,11 +61,8 @@ class ScalarExistenceAssertionHandler
         );
         $examinedAssertionArgument = new AssertionArgument($examinedValuePlaceholder, 'bool');
 
-        return [
-            'setup' => new Statement(
-                new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
-            ),
-            'body' => $this->assertionStatementFactory->create(
+        return new StatementHandlerComponents(
+            $this->assertionStatementFactory->create(
                 'exists' === $assertion->getOperator() ? 'assertTrue' : 'assertFalse',
                 $this->assertionMessageFactory->create(
                     assertion: $assertion,
@@ -77,7 +71,11 @@ class ScalarExistenceAssertionHandler
                 ),
                 expected: null,
                 examined: $examinedAssertionArgument,
-            ),
-        ];
+            )
+        )->withSetup(
+            new Statement(
+                new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
+            )
+        );
     }
 }

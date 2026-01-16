@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
+use webignition\BasilCompilableSourceFactory\Handler\StatementHandlerComponents;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
@@ -36,11 +36,9 @@ class WaitForActionHandler
     }
 
     /**
-     * @return array{'setup': ?BodyInterface, 'body': BodyInterface}
-     *
      * @throws UnsupportedContentException
      */
-    public function handle(ActionInterface $action): array
+    public function handle(ActionInterface $action): StatementHandlerComponents
     {
         $identifier = (string) $action->getIdentifier();
 
@@ -57,9 +55,8 @@ class WaitForActionHandler
             throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }
 
-        return [
-            'setup' => null,
-            'body' => new Statement(
+        return new StatementHandlerComponents(
+            new Statement(
                 new AssignmentExpression(
                     new VariableDependency(VariableName::PANTHER_CRAWLER),
                     new ObjectMethodInvocation(
@@ -70,7 +67,7 @@ class WaitForActionHandler
                         )
                     )
                 )
-            ),
-        ];
+            )
+        );
     }
 }

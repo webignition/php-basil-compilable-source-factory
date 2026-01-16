@@ -12,8 +12,8 @@ use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\FailureMessageFactory;
+use webignition\BasilCompilableSourceFactory\Handler\StatementHandlerComponents;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
-use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
@@ -62,11 +62,9 @@ class IsRegExpAssertionHandler
     }
 
     /**
-     * @return array{'setup': BodyInterface, 'body': BodyInterface}
-     *
      * @throws UnsupportedContentException
      */
-    public function handle(AssertionInterface $assertion): array
+    public function handle(AssertionInterface $assertion): StatementHandlerComponents
     {
         $identifier = $assertion->getIdentifier();
 
@@ -97,13 +95,10 @@ class IsRegExpAssertionHandler
         return $this->createIsRegExpAssertionBody($examinedAccessor, $assertion);
     }
 
-    /**
-     * @return array{'setup': BodyInterface, 'body': BodyInterface}
-     */
     private function createIsRegExpAssertionBody(
         ExpressionInterface $examinedAccessor,
         AssertionInterface $assertion,
-    ): array {
+    ): StatementHandlerComponents {
         $examinedValuePlaceholder = new VariableName(VariableNameEnum::EXAMINED_VALUE->value);
         $expectedValuePlaceholder = new VariableName(VariableNameEnum::EXPECTED_VALUE->value);
 
@@ -129,18 +124,8 @@ class IsRegExpAssertionHandler
             ),
         ]);
 
-        $tryCatchBlock = $this->tryCatchBlockFactory->create(
-            Body::createFromExpressions([
-                new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
-                new AssignmentExpression($expectedValuePlaceholder, $identityComparison),
-            ]),
-            new ClassNameCollection([new ClassName(\Throwable::class)]),
-            $catchBody,
-        );
-
-        return [
-            'setup' => $tryCatchBlock,
-            'body' => $this->assertionStatementFactory->create(
+        return new StatementHandlerComponents(
+            $this->assertionStatementFactory->create(
                 'assertFalse',
                 $this->assertionMessageFactory->create(
                     $assertion,
@@ -150,6 +135,15 @@ class IsRegExpAssertionHandler
                 new AssertionArgument($expectedValuePlaceholder, 'bool'),
                 null,
             )
-        ];
+        )->withSetup(
+            $this->tryCatchBlockFactory->create(
+                Body::createFromExpressions([
+                    new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
+                    new AssignmentExpression($expectedValuePlaceholder, $identityComparison),
+                ]),
+                new ClassNameCollection([new ClassName(\Throwable::class)]),
+                $catchBody,
+            )
+        );
     }
 }

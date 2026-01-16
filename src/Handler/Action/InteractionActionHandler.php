@@ -8,8 +8,8 @@ use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
+use webignition\BasilCompilableSourceFactory\Handler\StatementHandlerComponents;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
-use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
@@ -38,11 +38,9 @@ class InteractionActionHandler
     }
 
     /**
-     * @return array{'setup': ?BodyInterface, 'body': BodyInterface}
-     *
      * @throws UnsupportedContentException
      */
-    public function handle(ActionInterface $action): array
+    public function handle(ActionInterface $action): StatementHandlerComponents
     {
         $identifier = (string) $action->getIdentifier();
 
@@ -57,28 +55,25 @@ class InteractionActionHandler
 
         $elementPlaceholder = new VariableName('element');
 
-        $accessor = new Statement(
-            new AssignmentExpression(
-                $elementPlaceholder,
-                $this->domIdentifierHandler->handleElement(
-                    $this->elementIdentifierSerializer->serialize($domIdentifier)
-                )
-            )
-        );
-
-        $invocation = new Statement(new ObjectMethodInvocation(
-            $elementPlaceholder,
-            $action->getType()
-        ));
-
-        return [
-            'setup' => $accessor,
-            'body' => new Body([
-                $invocation,
+        return new StatementHandlerComponents(
+            new Body([
+                new Statement(new ObjectMethodInvocation(
+                    $elementPlaceholder,
+                    $action->getType()
+                )),
                 new Statement(
                     $this->phpUnitCallFactory->createCall('refreshCrawlerAndNavigator'),
                 ),
-            ]),
-        ];
+            ])
+        )->withSetup(
+            new Statement(
+                new AssignmentExpression(
+                    $elementPlaceholder,
+                    $this->domIdentifierHandler->handleElement(
+                        $this->elementIdentifierSerializer->serialize($domIdentifier)
+                    )
+                )
+            )
+        );
     }
 }
