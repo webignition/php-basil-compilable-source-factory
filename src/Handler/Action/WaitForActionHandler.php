@@ -7,10 +7,11 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Action;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
+use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
@@ -35,9 +36,11 @@ class WaitForActionHandler
     }
 
     /**
+     * @return array{'setup': ?BodyInterface, 'body': BodyInterface}
+     *
      * @throws UnsupportedContentException
      */
-    public function handle(ActionInterface $action): BodyInterface
+    public function handle(ActionInterface $action): array
     {
         $identifier = (string) $action->getIdentifier();
 
@@ -54,15 +57,20 @@ class WaitForActionHandler
             throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }
 
-        return Body::createForSingleAssignmentStatement(
-            new VariableDependency(VariableName::PANTHER_CRAWLER),
-            new ObjectMethodInvocation(
-                new VariableDependency(VariableName::PANTHER_CLIENT),
-                'waitFor',
-                new MethodArguments(
-                    $this->argumentFactory->create($domIdentifier->getLocator())
+        return [
+            'setup' => null,
+            'body' => new Statement(
+                new AssignmentExpression(
+                    new VariableDependency(VariableName::PANTHER_CRAWLER),
+                    new ObjectMethodInvocation(
+                        new VariableDependency(VariableName::PANTHER_CLIENT),
+                        'waitFor',
+                        new MethodArguments(
+                            $this->argumentFactory->create($domIdentifier->getLocator())
+                        )
+                    )
                 )
-            )
-        );
+            ),
+        ];
     }
 }

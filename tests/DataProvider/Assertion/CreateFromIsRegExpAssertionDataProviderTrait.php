@@ -54,6 +54,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                             }
                         }');
                     }
+
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
                         '{
@@ -127,6 +128,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                             }
                         }');
                     }
+
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
                         '{
@@ -202,6 +204,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                             }
                         }');
                     }
+
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
                         '{
@@ -270,6 +273,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                             }
                         }');
                     }
+
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
                         '{

@@ -16,7 +16,6 @@ use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
-use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\NullCoalescerExpression;
@@ -62,9 +61,11 @@ class SetActionHandler
     }
 
     /**
+     * @return array{'setup': ?BodyInterface, 'body': BodyInterface}
+     *
      * @throws UnsupportedContentException
      */
-    public function handle(ActionInterface $action): BodyInterface
+    public function handle(ActionInterface $action): array
     {
         $identifier = (string) $action->getIdentifier();
 
@@ -144,10 +145,14 @@ class SetActionHandler
             $catchBody,
         );
 
-        return new Body([
-            $tryCatchBlock,
-            new EmptyLine(),
-            new Statement($mutationInvocation),
-        ]);
+        return [
+            'setup' => $tryCatchBlock,
+            'body' => new Body([
+                new Statement($mutationInvocation),
+                new Statement(
+                    $this->phpUnitCallFactory->createCall('refreshCrawlerAndNavigator'),
+                ),
+            ])
+        ];
     }
 }

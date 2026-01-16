@@ -59,6 +59,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                             }
                         }');
                     }
+
                     {{ PHPUNIT }}->assertFalse(
                         $examinedValue,
                         '{
@@ -113,6 +114,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                             }
                         }');
                     }
+
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{

@@ -62,6 +62,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             }
                         }');
                     }
+
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
@@ -116,6 +117,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             }
                         }');
                     }
+
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
@@ -218,6 +220,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             }
                         }');
                     }
+
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
@@ -265,6 +268,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             }
                         }');
                     }
+
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
@@ -319,6 +323,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             }
                         }');
                     }
+
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
@@ -433,6 +438,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             }
                         }');
                     }
+
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
@@ -500,6 +506,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             }
                         }');
                     }
+
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
@@ -568,6 +575,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             }
                         }');
                     }
+
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
@@ -636,6 +644,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             }
                         }');
                     }
+
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{

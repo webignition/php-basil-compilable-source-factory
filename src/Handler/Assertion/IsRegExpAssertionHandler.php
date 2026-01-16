@@ -62,9 +62,11 @@ class IsRegExpAssertionHandler
     }
 
     /**
+     * @return array{'setup': BodyInterface, 'body': BodyInterface}
+     *
      * @throws UnsupportedContentException
      */
-    public function handle(AssertionInterface $assertion): BodyInterface
+    public function handle(AssertionInterface $assertion): array
     {
         $identifier = $assertion->getIdentifier();
 
@@ -95,10 +97,13 @@ class IsRegExpAssertionHandler
         return $this->createIsRegExpAssertionBody($examinedAccessor, $assertion);
     }
 
+    /**
+     * @return array{'setup': BodyInterface, 'body': BodyInterface}
+     */
     private function createIsRegExpAssertionBody(
         ExpressionInterface $examinedAccessor,
         AssertionInterface $assertion,
-    ): BodyInterface {
+    ): array {
         $examinedValuePlaceholder = new VariableName(VariableNameEnum::EXAMINED_VALUE->value);
         $expectedValuePlaceholder = new VariableName(VariableNameEnum::EXPECTED_VALUE->value);
 
@@ -133,9 +138,9 @@ class IsRegExpAssertionHandler
             $catchBody,
         );
 
-        return new Body([
-            $tryCatchBlock,
-            $this->assertionStatementFactory->create(
+        return [
+            'setup' => $tryCatchBlock,
+            'body' => $this->assertionStatementFactory->create(
                 'assertFalse',
                 $this->assertionMessageFactory->create(
                     $assertion,
@@ -144,7 +149,7 @@ class IsRegExpAssertionHandler
                 ),
                 new AssertionArgument($expectedValuePlaceholder, 'bool'),
                 null,
-            ),
-        ]);
+            )
+        ];
     }
 }
