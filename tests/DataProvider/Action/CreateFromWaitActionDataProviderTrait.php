@@ -20,19 +20,30 @@ trait CreateFromWaitActionDataProviderTrait
         return [
             'wait action, literal' => [
                 'action' => $actionParser->parse('wait 30', 0),
-                'expectedRenderedSource' => 'usleep(((int) ("30" ?? 0)) * 1000);',
+                'expectedRenderedSource' => <<<'EOD'
+                    $duration = "30";
+                    $duration = $duration ?? 0;
+                    $duration = (int) $duration;
+                    
+                    usleep($duration * 1000);
+                    EOD,
+
                 'expectedMetadata' => new Metadata(),
             ],
             'wait action, element value' => [
                 'action' => $actionParser->parse('wait $".duration-selector"', 0),
                 'expectedRenderedSource' => <<<'EOD'
-                    usleep(((int) ((function () {
+                    $duration = (function () {
                         $element = {{ NAVIGATOR }}->find('{
                             "locator": ".duration-selector"
                         }');
                     
                         return {{ INSPECTOR }}->getValue($element);
-                    })() ?? 0)) * 1000);
+                    })();
+                    $duration = $duration ?? 0;
+                    $duration = (int) $duration;
+
+                    usleep($duration * 1000);
                     EOD,
                 'expectedMetadata' => new Metadata(
                     variableNames: [
@@ -44,7 +55,7 @@ trait CreateFromWaitActionDataProviderTrait
             'wait action, descendant element value' => [
                 'action' => $actionParser->parse('wait $".parent" >> $".child"', 0),
                 'expectedRenderedSource' => <<<'EOD'
-                    usleep(((int) ((function () {
+                    $duration = (function () {
                         $element = {{ NAVIGATOR }}->find('{
                             "locator": ".child",
                             "parent": {
@@ -53,7 +64,11 @@ trait CreateFromWaitActionDataProviderTrait
                         }');
                     
                         return {{ INSPECTOR }}->getValue($element);
-                    })() ?? 0)) * 1000);
+                    })();
+                    $duration = $duration ?? 0;
+                    $duration = (int) $duration;
+                    
+                    usleep($duration * 1000);
                     EOD,
                 'expectedMetadata' => new Metadata(
                     variableNames: [
@@ -65,13 +80,17 @@ trait CreateFromWaitActionDataProviderTrait
             'wait action, single-character CSS selector element value' => [
                 'action' => $actionParser->parse('wait $"a"', 0),
                 'expectedRenderedSource' => <<<'EOD'
-                    usleep(((int) ((function () {
+                    $duration = (function () {
                         $element = {{ NAVIGATOR }}->find('{
                             "locator": "a"
                         }');
                     
                         return {{ INSPECTOR }}->getValue($element);
-                    })() ?? 0)) * 1000);
+                    })();
+                    $duration = $duration ?? 0;
+                    $duration = (int) $duration;
+
+                    usleep($duration * 1000);
                     EOD,
                 'expectedMetadata' => new Metadata(
                     variableNames: [
@@ -83,13 +102,17 @@ trait CreateFromWaitActionDataProviderTrait
             'wait action, attribute value' => [
                 'action' => $actionParser->parse('wait $".duration-selector".attribute_name', 0),
                 'expectedRenderedSource' => <<<'EOD'
-                    usleep(((int) ((function () {
+                    $duration = (function () {
                         $element = {{ NAVIGATOR }}->findOne('{
                             "locator": ".duration-selector"
                         }');
                     
                         return $element->getAttribute('attribute_name');
-                    })() ?? 0)) * 1000);
+                    })();
+                    $duration = $duration ?? 0;
+                    $duration = (int) $duration;
+
+                    usleep($duration * 1000);
                     EOD,
                 'expectedMetadata' => new Metadata(
                     variableNames: [
@@ -99,13 +122,17 @@ trait CreateFromWaitActionDataProviderTrait
             ],
             'wait action, browser property' => [
                 'action' => $actionParser->parse('wait $browser.size', 0),
-                'expectedRenderedSource' => 'usleep(((int) ((function () {' . "\n"
-                    . '    $webDriverDimension = '
-                    . '{{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n"
-                    . "\n"
-                    . '    return (string) ($webDriverDimension->getWidth()) . \'x\' . '
-                    . '(string) ($webDriverDimension->getHeight());' . "\n"
-                    . '})() ?? 0)) * 1000);',
+                'expectedRenderedSource' => <<<'EOD'
+            $duration = (function () {
+                $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
+            
+                return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
+            })();
+            $duration = $duration ?? 0;
+            $duration = (int) $duration;
+
+            usleep($duration * 1000);
+            EOD,
                 'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PANTHER_CLIENT,
@@ -114,7 +141,13 @@ trait CreateFromWaitActionDataProviderTrait
             ],
             'wait action, page property' => [
                 'action' => $actionParser->parse('wait $page.title', 0),
-                'expectedRenderedSource' => 'usleep(((int) ({{ CLIENT }}->getTitle() ?? 0)) * 1000);',
+                'expectedRenderedSource' => <<<'EOD'
+                    $duration = {{ CLIENT }}->getTitle();
+                    $duration = $duration ?? 0;
+                    $duration = (int) $duration;
+
+                    usleep($duration * 1000);
+                    EOD,
                 'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PANTHER_CLIENT,
@@ -123,7 +156,13 @@ trait CreateFromWaitActionDataProviderTrait
             ],
             'wait action, environment value' => [
                 'action' => $actionParser->parse('wait $env.DURATION', 0),
-                'expectedRenderedSource' => 'usleep(((int) ({{ ENV }}[\'DURATION\'] ?? 0)) * 1000);',
+                'expectedRenderedSource' => <<<'EOD'
+                    $duration = {{ ENV }}['DURATION'];
+                    $duration = $duration ?? 0;
+                    $duration = (int) $duration;
+
+                    usleep($duration * 1000);
+                    EOD,
                 'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableName::ENVIRONMENT_VARIABLE_ARRAY,
@@ -132,7 +171,13 @@ trait CreateFromWaitActionDataProviderTrait
             ],
             'wait action, environment value with default' => [
                 'action' => $actionParser->parse('wait $env.DURATION|"3"', 0),
-                'expectedRenderedSource' => 'usleep(((int) ({{ ENV }}[\'DURATION\'] ?? 3)) * 1000);',
+                'expectedRenderedSource' => <<<'EOD'
+                    $duration = {{ ENV }}['DURATION'];
+                    $duration = $duration ?? 3;
+                    $duration = (int) $duration;
+
+                    usleep($duration * 1000);
+                    EOD,
                 'expectedMetadata' => new Metadata(
                     variableNames: [
                         VariableName::ENVIRONMENT_VARIABLE_ARRAY,
@@ -141,7 +186,13 @@ trait CreateFromWaitActionDataProviderTrait
             ],
             'wait action, data parameter' => [
                 'action' => $actionParser->parse('wait $data.key', 0),
-                'expectedRenderedSource' => 'usleep(((int) ($key ?? 0)) * 1000);',
+                'expectedRenderedSource' => <<<'EOD'
+                    $duration = $key;
+                    $duration = $duration ?? 0;
+                    $duration = (int) $duration;
+
+                    usleep($duration * 1000);
+                    EOD,
                 'expectedMetadata' => new Metadata(),
             ],
         ];
