@@ -18,7 +18,7 @@ use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilModels\Model\Action\ActionInterface;
 use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
-class InteractionActionHandler
+class InteractionActionHandler implements HandlerInterface
 {
     public function __construct(
         private DomIdentifierHandler $domIdentifierHandler,
@@ -40,8 +40,12 @@ class InteractionActionHandler
     /**
      * @throws UnsupportedContentException
      */
-    public function handle(ActionInterface $action): StatementHandlerComponents
+    public function handle(ActionInterface $action): ?StatementHandlerComponents
     {
+        if (!in_array($action->getType(), ['click', 'submit'])) {
+            return null;
+        }
+
         $identifier = (string) $action->getIdentifier();
 
         $domIdentifier = $this->domIdentifierFactory->createFromIdentifierString($identifier);

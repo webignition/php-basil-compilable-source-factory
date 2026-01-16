@@ -18,7 +18,7 @@ use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Model\Action\ActionInterface;
 use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
-class WaitForActionHandler
+class WaitForActionHandler implements HandlerInterface
 {
     public function __construct(
         private DomIdentifierFactory $domIdentifierFactory,
@@ -38,8 +38,12 @@ class WaitForActionHandler
     /**
      * @throws UnsupportedContentException
      */
-    public function handle(ActionInterface $action): StatementHandlerComponents
+    public function handle(ActionInterface $action): ?StatementHandlerComponents
     {
+        if ('wait-for' !== $action->getType()) {
+            return null;
+        }
+
         $identifier = (string) $action->getIdentifier();
 
         if (!$this->identifierTypeAnalyser->isDomIdentifier($identifier)) {

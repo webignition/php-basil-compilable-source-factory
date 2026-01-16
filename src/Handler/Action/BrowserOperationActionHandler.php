@@ -14,7 +14,7 @@ use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilModels\Model\Action\ActionInterface;
 
-class BrowserOperationActionHandler
+class BrowserOperationActionHandler implements HandlerInterface
 {
     public function __construct(
         private PhpUnitCallFactory $phpUnitCallFactory,
@@ -27,8 +27,12 @@ class BrowserOperationActionHandler
         );
     }
 
-    public function handle(ActionInterface $action): StatementHandlerComponents
+    public function handle(ActionInterface $action): ?StatementHandlerComponents
     {
+        if (!in_array($action->getType(), ['back', 'forward', 'reload'])) {
+            return null;
+        }
+
         return new StatementHandlerComponents(
             new Body([
                 new Statement(

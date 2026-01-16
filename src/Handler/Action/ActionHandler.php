@@ -13,23 +13,22 @@ use webignition\BasilModels\Model\Action\ActionInterface;
 
 class ActionHandler
 {
+    /**
+     * @param HandlerInterface[] $handlers
+     */
     public function __construct(
-        private BrowserOperationActionHandler $browserOperationActionHandler,
-        private InteractionActionHandler $interactionActionHandler,
-        private SetActionHandler $setActionHandler,
-        private WaitActionHandler $waitActionHandler,
-        private WaitForActionHandler $waitForActionHandler,
+        private array $handlers,
     ) {}
 
     public static function createHandler(): ActionHandler
     {
-        return new ActionHandler(
+        return new ActionHandler([
             BrowserOperationActionHandler::createHandler(),
             InteractionActionHandler::createHandler(),
             SetActionHandler::createHandler(),
             WaitActionHandler::createHandler(),
             WaitForActionHandler::createHandler(),
-        );
+        ]);
     }
 
     /**
@@ -39,30 +38,14 @@ class ActionHandler
     {
         $components = null;
 
-        try {
-            if (in_array($action->getType(), ['back', 'forward', 'reload'])) {
-                $components = $this->browserOperationActionHandler->handle($action);
-            }
-
-            if ($action->isInteraction()) {
-                if (in_array($action->getType(), ['click', 'submit'])) {
-                    $components = $this->interactionActionHandler->handle($action);
-                }
-
-                if (in_array($action->getType(), ['wait-for'])) {
-                    $components = $this->waitForActionHandler->handle($action);
+        foreach ($this->handlers as $handler) {
+            if (null === $components) {
+                try {
+                    $components = $handler->handle($action);
+                } catch (UnsupportedContentException $unsupportedContentException) {
+                    throw new UnsupportedStatementException($action, $unsupportedContentException);
                 }
             }
-
-            if ($action->isInput()) {
-                $components = $this->setActionHandler->handle($action);
-            }
-
-            if ($action->isWait()) {
-                $components = $this->waitActionHandler->handle($action);
-            }
-        } catch (UnsupportedContentException $unsupportedContentException) {
-            throw new UnsupportedStatementException($action, $unsupportedContentException);
         }
 
         if (null === $components) {
