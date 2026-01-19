@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
@@ -12,11 +13,10 @@ use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 class VariableDependencyCollectionTest extends TestCase
 {
     /**
-     * @dataProvider createDataProvider
-     *
      * @param VariableName[]       $names
      * @param VariableDependency[] $expectedPlaceholders
      */
+    #[DataProvider('createDataProvider')]
     public function testCreate(array $names, array $expectedPlaceholders): void
     {
         $collection = new VariableDependencyCollection($names);

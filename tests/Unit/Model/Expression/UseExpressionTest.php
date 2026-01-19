@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\UseExpression;
@@ -19,9 +20,7 @@ class UseExpressionTest extends AbstractResolvableTestCase
         $this->assertEquals(new Metadata(), $expression->getMetadata());
     }
 
-    /**
-     * @dataProvider renderDataProvider
-     */
+    #[DataProvider('renderDataProvider')]
     public function testRender(UseExpression $expression, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $expression);

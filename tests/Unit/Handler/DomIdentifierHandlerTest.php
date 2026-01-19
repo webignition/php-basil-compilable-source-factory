@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
@@ -24,9 +25,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
         $this->handler = DomIdentifierHandler::createHandler();
     }
 
-    /**
-     * @dataProvider handleElementDataProvider
-     */
+    #[DataProvider('handleElementDataProvider')]
     public function testHandleElement(
         string $serializedElementIdentifier,
         string $expectedRenderedSource,
@@ -83,9 +82,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
         ];
     }
 
-    /**
-     * @dataProvider handleElementCollectionDataProvider
-     */
+    #[DataProvider('handleElementCollectionDataProvider')]
     public function testHandleElementCollection(
         string $serializedElementIdentifier,
         string $expectedRenderedSource,
@@ -142,9 +139,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
         ];
     }
 
-    /**
-     * @dataProvider handleAttributeValueDataProvider
-     */
+    #[DataProvider('handleAttributeValueDataProvider')]
     public function testHandleAttributeValue(
         string $serializedElementIdentifier,
         string $attributeName,
@@ -212,9 +207,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
         ];
     }
 
-    /**
-     * @dataProvider handleElementValueDataProvider
-     */
+    #[DataProvider('handleElementValueDataProvider')]
     public function testHandleElementValue(
         string $serializedElementIdentifier,
         string $expectedRenderedSource,

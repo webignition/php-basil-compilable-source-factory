@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 
@@ -18,9 +19,7 @@ class SingleQuotedStringEscaperTest extends TestCase
         $this->escaper = SingleQuotedStringEscaper::create();
     }
 
-    /**
-     * @dataProvider escapeDataProvider
-     */
+    #[DataProvider('escapeDataProvider')]
     public function testEscape(string $string, string $expectedEscapedString): void
     {
         $this->assertEquals($expectedEscapedString, $this->escaper->escape($string));

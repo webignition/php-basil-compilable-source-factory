@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Unit\Handler\Statement;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Handler\Statement\StatementHandler;
@@ -37,25 +38,23 @@ class StatementHandlerTest extends AbstractResolvableTestCase
     use AssertionDataProvider\CreateFromIsRegExpAssertionDataProviderTrait;
     use AssertionDataProvider\CreateFromScalarExistsAssertionDataProviderTrait;
 
-    /**
-     * @dataProvider createFromBackActionDataProvider
-     * @dataProvider createFromClickActionDataProvider
-     * @dataProvider createFromForwardActionDataProvider
-     * @dataProvider createFromReloadActionDataProvider
-     * @dataProvider createFromSetActionDataProvider
-     * @dataProvider createFromSubmitActionDataProvider
-     * @dataProvider createFromWaitActionDataProvider
-     * @dataProvider createFromWaitForActionDataProvider
-     * @dataProvider createFromExcludesAssertionDataProvider
-     * @dataProvider createFromIncludesAssertionDataProvider
-     * @dataProvider createFromIsAssertionDataProvider
-     * @dataProvider createFromIsNotAssertionDataProvider
-     * @dataProvider createFromMatchesAssertionDataProvider
-     * @dataProvider createFromIdentifierExistsAssertionDataProvider
-     * @dataProvider createFromIdentifierNotExistsAssertionDataProvider
-     * @dataProvider createFromIsRegExpAssertionDataProvider
-     * @dataProvider createFromScalarExistsAssertionDataProvider
-     */
+    #[DataProvider('createFromBackActionDataProvider')]
+    #[DataProvider('createFromClickActionDataProvider')]
+    #[DataProvider('createFromForwardActionDataProvider')]
+    #[DataProvider('createFromReloadActionDataProvider')]
+    #[DataProvider('createFromSetActionDataProvider')]
+    #[DataProvider('createFromSubmitActionDataProvider')]
+    #[DataProvider('createFromWaitActionDataProvider')]
+    #[DataProvider('createFromWaitForActionDataProvider')]
+    #[DataProvider('createFromExcludesAssertionDataProvider')]
+    #[DataProvider('createFromIncludesAssertionDataProvider')]
+    #[DataProvider('createFromIsAssertionDataProvider')]
+    #[DataProvider('createFromIsNotAssertionDataProvider')]
+    #[DataProvider('createFromMatchesAssertionDataProvider')]
+    #[DataProvider('createFromIdentifierExistsAssertionDataProvider')]
+    #[DataProvider('createFromIdentifierNotExistsAssertionDataProvider')]
+    #[DataProvider('createFromIsRegExpAssertionDataProvider')]
+    #[DataProvider('createFromScalarExistsAssertionDataProvider')]
     public function testHandleSuccess(
         StatementInterface $statement,
         ?string $expectedRenderedSetup,
@@ -79,9 +78,7 @@ class StatementHandlerTest extends AbstractResolvableTestCase
         $this->assertEquals($expectedBodyMetadata, $components->getBody()->getMetadata());
     }
 
-    /**
-     * @dataProvider handleThrowsExceptionDataProvider
-     */
+    #[DataProvider('handleThrowsExceptionDataProvider')]
     public function testHandleThrowsException(
         StatementInterface $statement,
         UnsupportedStatementException $expectedException
@@ -119,9 +116,7 @@ class StatementHandlerTest extends AbstractResolvableTestCase
         ];
     }
 
-    /**
-     * @dataProvider handleThrowsUnsupportedStatementExceptionDataProvider
-     */
+    #[DataProvider('handleThrowsUnsupportedStatementExceptionDataProvider')]
     public function testHandleThrowsUnsupportedStatementException(
         StatementInterface $statement,
         UnsupportedStatementException $expected

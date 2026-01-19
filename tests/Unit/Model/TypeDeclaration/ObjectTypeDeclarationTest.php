@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\TypeDeclaration;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
@@ -24,9 +25,7 @@ class ObjectTypeDeclarationTest extends TestCase
         $this->assertEquals($expectedMetadata, $declaration->getMetadata());
     }
 
-    /**
-     * @dataProvider toStringDataProvider
-     */
+    #[DataProvider('toStringDataProvider')]
     public function testToString(ObjectTypeDeclaration $declaration, string $expectedString): void
     {
         $this->assertSame($expectedString, (string) $declaration);

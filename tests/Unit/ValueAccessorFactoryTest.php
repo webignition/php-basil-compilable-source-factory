@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
@@ -27,9 +28,7 @@ class ValueAccessorFactoryTest extends TestCase
         $this->factory = ValueAccessorFactory::createFactory();
     }
 
-    /**
-     * @dataProvider createDataProvider
-     */
+    #[DataProvider('createDataProvider')]
     public function testCreate(string $value, ExpressionInterface $expectedExpression): void
     {
         $this->assertEquals($expectedExpression, $this->factory->create($value));
@@ -73,9 +72,7 @@ class ValueAccessorFactoryTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider createWithDefaultIfNullDataProvider
-     */
+    #[DataProvider('createWithDefaultIfNullDataProvider')]
     public function testCreateWithDefaultIfNull(string $value, ExpressionInterface $expectedExpression): void
     {
         $this->assertEquals($expectedExpression, $this->factory->createWithDefaultIfNull($value));
@@ -105,9 +102,7 @@ class ValueAccessorFactoryTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider createThrowsExceptionDataProvider
-     */
+    #[DataProvider('createThrowsExceptionDataProvider')]
     public function testCreateThrowsException(
         string $value,
         \Exception $expectedException,

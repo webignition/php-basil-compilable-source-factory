@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CompositeExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastExpression;
@@ -16,10 +17,9 @@ use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvable
 class CompositeExpressionTest extends AbstractResolvableTestCase
 {
     /**
-     * @dataProvider createDataProvider
-     *
      * @param array<mixed> $expressions
      */
+    #[DataProvider('createDataProvider')]
     public function testCreate(array $expressions, MetadataInterface $expectedMetadata): void
     {
         $expression = new CompositeExpression($expressions);
@@ -61,9 +61,7 @@ class CompositeExpressionTest extends AbstractResolvableTestCase
         ];
     }
 
-    /**
-     * @dataProvider renderDataProvider
-     */
+    #[DataProvider('renderDataProvider')]
     public function testRender(CompositeExpression $expression, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $expression);

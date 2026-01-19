@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Body;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\CatchBlock;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryBlock;
@@ -29,11 +30,10 @@ use webignition\ObjectReflector\ObjectReflector;
 class BodyTest extends AbstractResolvableTestCase
 {
     /**
-     * @dataProvider createDataProvider
-     *
      * @param BodyContentInterface[] $content
      * @param BodyContentInterface[] $expectedContent
      */
+    #[DataProvider('createDataProvider')]
     public function testCreate(array $content, array $expectedContent): void
     {
         $body = new Body($content);
@@ -126,9 +126,7 @@ class BodyTest extends AbstractResolvableTestCase
         ];
     }
 
-    /**
-     * @dataProvider renderDataProvider
-     */
+    #[DataProvider('renderDataProvider')]
     public function testRender(Body $body, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $body);
@@ -236,9 +234,7 @@ class BodyTest extends AbstractResolvableTestCase
         ];
     }
 
-    /**
-     * @dataProvider createEnclosingBodyDataProvider
-     */
+    #[DataProvider('createEnclosingBodyDataProvider')]
     public function testCreateEnclosingBody(BodyInterface $body, BodyInterface $expectedBody): void
     {
         $this->assertEquals($expectedBody, Body::createEnclosingBody($body));
@@ -283,10 +279,9 @@ class BodyTest extends AbstractResolvableTestCase
     }
 
     /**
-     * @dataProvider createFromExpressionsDataProvider
-     *
      * @param array<mixed> $expressions
      */
+    #[DataProvider('createFromExpressionsDataProvider')]
     public function testCreateFromExpressions(array $expressions, Body $expectedBody): void
     {
         self::assertEquals($expectedBody, Body::createFromExpressions($expressions));

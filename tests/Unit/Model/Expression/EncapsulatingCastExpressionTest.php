@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Unit\Model\Expression;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression;
@@ -29,9 +30,7 @@ class EncapsulatingCastExpressionTest extends AbstractResolvableTestCase
         $this->assertEquals($expression->getMetadata(), $castExpression->getMetadata());
     }
 
-    /**
-     * @dataProvider renderDataProvider
-     */
+    #[DataProvider('renderDataProvider')]
     public function testRender(EncapsulatingCastExpression $expression, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $expression);

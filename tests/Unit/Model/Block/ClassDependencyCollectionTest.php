@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Block;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
@@ -14,9 +15,7 @@ use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\ClassNameTest;
 
 class ClassDependencyCollectionTest extends AbstractResolvableTestCase
 {
-    /**
-     * @dataProvider createDataProvider
-     */
+    #[DataProvider('createDataProvider')]
     public function testCreate(ClassNameCollection $classNames, ClassNameCollection $expectedClassNames): void
     {
         $collection = new ClassDependencyCollection($classNames);
@@ -48,9 +47,7 @@ class ClassDependencyCollectionTest extends AbstractResolvableTestCase
         ];
     }
 
-    /**
-     * @dataProvider renderDataProvider
-     */
+    #[DataProvider('renderDataProvider')]
     public function testRender(ClassDependencyCollection $collection, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $collection);
@@ -87,17 +84,13 @@ class ClassDependencyCollectionTest extends AbstractResolvableTestCase
         ];
     }
 
-    /**
-     * @dataProvider countDataProvider
-     */
+    #[DataProvider('countDataProvider')]
     public function testCount(ClassDependencyCollection $collection, int $expectedCount): void
     {
         self::assertCount($expectedCount, $collection);
     }
 
-    /**
-     * @dataProvider countDataProvider
-     */
+    #[DataProvider('countDataProvider')]
     public function testCountable(ClassDependencyCollection $collection, int $expectedCount): void
     {
         self::assertCount($expectedCount, $collection);
@@ -139,9 +132,7 @@ class ClassDependencyCollectionTest extends AbstractResolvableTestCase
         ];
     }
 
-    /**
-     * @dataProvider isEmptyDataProvider
-     */
+    #[DataProvider('isEmptyDataProvider')]
     public function testIsEmpty(ClassDependencyCollection $collection, bool $expectedIsEmpty): void
     {
         self::assertSame($expectedIsEmpty, $collection->isEmpty());

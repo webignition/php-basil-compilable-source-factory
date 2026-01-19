@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace Functional\Handler\Statement;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Handler\Statement\StatementHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
@@ -46,25 +47,24 @@ class StatementHandlerTest extends AbstractBrowserTestCase
     }
 
     /**
-     * @dataProvider backActionFunctionalDataProvider
-     * @dataProvider clickActionFunctionalDataProvider
-     * @dataProvider forwardActionFunctionalDataProvider
-     * @dataProvider reloadActionFunctionalDataProvider
-     * @dataProvider setActionFunctionalDataProvider
-     * @dataProvider submitActionFunctionalDataProvider
-     * @dataProvider waitActionFunctionalDataProvider
-     * @dataProvider waitForActionFunctionalDataProvider
-     * @dataProvider excludesAssertionFunctionalDataProvider
-     * @dataProvider existsAssertionFunctionalDataProvider
-     * @dataProvider includesAssertionFunctionalDataProvider
-     * @dataProvider isAssertionFunctionalDataProvider
-     * @dataProvider isNotAssertionFunctionalDataProvider
-     * @dataProvider matchesAssertionFunctionalDataProvider
-     * @dataProvider notExistsAssertionFunctionalDataProvider
-     * @dataProvider isRegExpAssertionFunctionalDataProvider
-     *
      * @param array<string, string> $additionalVariableIdentifiers
      */
+    #[DataProvider('backActionFunctionalDataProvider')]
+    #[DataProvider('clickActionFunctionalDataProvider')]
+    #[DataProvider('forwardActionFunctionalDataProvider')]
+    #[DataProvider('reloadActionFunctionalDataProvider')]
+    #[DataProvider('setActionFunctionalDataProvider')]
+    #[DataProvider('submitActionFunctionalDataProvider')]
+    #[DataProvider('waitActionFunctionalDataProvider')]
+    #[DataProvider('waitForActionFunctionalDataProvider')]
+    #[DataProvider('excludesAssertionFunctionalDataProvider')]
+    #[DataProvider('existsAssertionFunctionalDataProvider')]
+    #[DataProvider('includesAssertionFunctionalDataProvider')]
+    #[DataProvider('isAssertionFunctionalDataProvider')]
+    #[DataProvider('isNotAssertionFunctionalDataProvider')]
+    #[DataProvider('matchesAssertionFunctionalDataProvider')]
+    #[DataProvider('notExistsAssertionFunctionalDataProvider')]
+    #[DataProvider('isRegExpAssertionFunctionalDataProvider')]
     public function testHandleForPassingStatements(
         string $fixture,
         StatementInterface $statement,
@@ -103,9 +103,7 @@ class StatementHandlerTest extends AbstractBrowserTestCase
         }
     }
 
-    /**
-     * @dataProvider createSourceForFailingAssertionsDataProvider
-     */
+    #[DataProvider('createSourceForFailingAssertionsDataProvider')]
     public function testHandleForFailingStatements(
         string $fixture,
         StatementInterface $statement,

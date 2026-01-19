@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayKey;
@@ -17,9 +18,7 @@ use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvable
 
 class ArrayPairTest extends AbstractResolvableTestCase
 {
-    /**
-     * @dataProvider getMetadataDataProvider
-     */
+    #[DataProvider('getMetadataDataProvider')]
     public function testGetMetadata(ArrayPair $pair, MetadataInterface $expectedMetadata): void
     {
         self::assertEquals($expectedMetadata, $pair->getMetadata());
@@ -55,9 +54,7 @@ class ArrayPairTest extends AbstractResolvableTestCase
         ];
     }
 
-    /**
-     * @dataProvider renderDataProvider
-     */
+    #[DataProvider('renderDataProvider')]
     public function testRender(ArrayPair $pair, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $pair);

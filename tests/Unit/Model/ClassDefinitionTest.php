@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
@@ -37,9 +38,7 @@ class ClassDefinitionTest extends AbstractResolvableTestCase
         self::assertSame($body, $classDefinition->getBody());
     }
 
-    /**
-     * @dataProvider getMetadataDataProvider
-     */
+    #[DataProvider('getMetadataDataProvider')]
     public function testGetMetadata(
         ClassDefinitionInterface $classDefinition,
         MetadataInterface $expectedMetadata
@@ -101,9 +100,7 @@ class ClassDefinitionTest extends AbstractResolvableTestCase
         ];
     }
 
-    /**
-     * @dataProvider renderDataProvider
-     */
+    #[DataProvider('renderDataProvider')]
     public function testRender(ClassDefinitionInterface $classDefinition, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $classDefinition);

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\CallFactory;
 
 use Facebook\WebDriver\WebDriverElement;
+use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
@@ -31,9 +32,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
         $this->factory = DomCrawlerNavigatorCallFactory::createFactory();
     }
 
-    /**
-     * @dataProvider createFindCallDataProvider
-     */
+    #[DataProvider('createFindCallDataProvider')]
     public function testCreateFindCall(
         string $fixture,
         ExpressionInterface $expression,

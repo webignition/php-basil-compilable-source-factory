@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\Value;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
@@ -25,9 +26,7 @@ class ScalarValueHandlerTest extends AbstractBrowserTestCase
         $this->handler = ScalarValueHandler::createHandler();
     }
 
-    /**
-     * @dataProvider createSourceDataProvider
-     */
+    #[DataProvider('createSourceDataProvider')]
     public function testCreateSource(string $fixture, string $value, BodyInterface $teardownStatements): void
     {
         $source = $this->handler->handle($value);

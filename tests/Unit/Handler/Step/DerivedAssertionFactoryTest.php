@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Step;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\Step\DerivedAssertionFactory;
@@ -26,9 +27,7 @@ class DerivedAssertionFactoryTest extends TestCase
         $this->factory = DerivedAssertionFactory::createFactory();
     }
 
-    /**
-     * @dataProvider createForActionDataProvider
-     */
+    #[DataProvider('createForActionDataProvider')]
     public function testCreateForAction(ActionInterface $action, UniqueAssertionCollection $expectedAssertions): void
     {
         $this->assertEquals(
@@ -133,9 +132,7 @@ class DerivedAssertionFactoryTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider createForAssertionDataProvider
-     */
+    #[DataProvider('createForAssertionDataProvider')]
     public function testCreateForAssertion(
         AssertionInterface $assertion,
         UniqueAssertionCollection $expectedAssertions

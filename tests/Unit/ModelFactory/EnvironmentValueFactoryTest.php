@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\ModelFactory;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\EnvironmentValue;
 use webignition\BasilCompilableSourceFactory\EnvironmentValueFactory;
 
 class EnvironmentValueFactoryTest extends TestCase
 {
-    /**
-     * @dataProvider createDataProvider
-     */
+    #[DataProvider('createDataProvider')]
     public function testCreate(string $value, EnvironmentValue $expectedEnvironmentValue): void
     {
         $factory = EnvironmentValueFactory::createFactory();

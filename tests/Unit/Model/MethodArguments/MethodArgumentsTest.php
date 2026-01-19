@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\MethodArguments;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
@@ -28,10 +29,9 @@ use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvable
 class MethodArgumentsTest extends AbstractResolvableTestCase
 {
     /**
-     * @dataProvider createDataProvider
-     *
      * @param ExpressionInterface[] $arguments
      */
+    #[DataProvider('createDataProvider')]
     public function testCreate(
         array $arguments,
         string $format,
@@ -93,9 +93,7 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
         ];
     }
 
-    /**
-     * @dataProvider renderDataProvider
-     */
+    #[DataProvider('renderDataProvider')]
     public function testRender(MethodArguments $arguments, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $arguments);

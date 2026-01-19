@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\ClassDefinitionFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilModels\Model\Test\NamedTest;
@@ -22,9 +23,7 @@ class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
         $this->factory = ClassDefinitionFactory::createFactory();
     }
 
-    /**
-     * @dataProvider createSourceDataProvider
-     */
+    #[DataProvider('createSourceDataProvider')]
     public function testCreateSource(NamedTestInterface $test): void
     {
         $classDefinition = $this->factory->createClassDefinition($test, AbstractGeneratedTestCase::class);

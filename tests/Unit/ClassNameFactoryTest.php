@@ -4,15 +4,14 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\ClassNameFactory;
 use webignition\BasilModels\Model\Test\NamedTestInterface;
 
 class ClassNameFactoryTest extends TestCase
 {
-    /**
-     * @dataProvider createDataProvider
-     */
+    #[DataProvider('createDataProvider')]
     public function testCreate(NamedTestInterface $test, string $expectedClassName): void
     {
         self::assertSame($expectedClassName, (new ClassNameFactory())->create($test));

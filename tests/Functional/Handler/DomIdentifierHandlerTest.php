@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
@@ -30,9 +31,7 @@ class DomIdentifierHandlerTest extends AbstractBrowserTestCase
         $this->handler = DomIdentifierHandler::createHandler();
     }
 
-    /**
-     * @dataProvider handleElementValueDataProvider
-     */
+    #[DataProvider('handleElementValueDataProvider')]
     public function testHandleElementValue(
         string $fixture,
         string $serializedElementIdentifier,
@@ -73,9 +72,7 @@ class DomIdentifierHandlerTest extends AbstractBrowserTestCase
         ];
     }
 
-    /**
-     * @dataProvider handleAttributeValueDataProvider
-     */
+    #[DataProvider('handleAttributeValueDataProvider')]
     public function testHandleAttributeValue(
         string $fixture,
         string $serializedElementIdentifier,
@@ -119,9 +116,7 @@ class DomIdentifierHandlerTest extends AbstractBrowserTestCase
         ];
     }
 
-    /**
-     * @dataProvider handleElementCollectionDataProvider
-     */
+    #[DataProvider('handleElementCollectionDataProvider')]
     public function testHandleElementCollection(
         string $fixture,
         string $serializedElementIdentifier,

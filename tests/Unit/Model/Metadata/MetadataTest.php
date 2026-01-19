@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Metadata;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
@@ -15,11 +16,10 @@ use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 class MetadataTest extends TestCase
 {
     /**
-     * @dataProvider createDataProvider
-     *
      * @param non-empty-string[] $classNames
      * @param VariableName::*[]  $variableNames
      */
+    #[DataProvider('createDataProvider')]
     public function testCreate(
         array $classNames,
         array $variableNames,
