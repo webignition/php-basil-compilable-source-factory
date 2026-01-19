@@ -21,22 +21,6 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
         $actionParser = ActionParser::create();
         $assertionParser = AssertionParser::create();
 
-        $expectedSetupMetadata = new Metadata(
-            classNames: [
-                InvalidLocatorException::class,
-            ],
-            variableNames: [
-                VariableName::PHPUNIT_TEST_CASE,
-                VariableName::DOM_CRAWLER_NAVIGATOR,
-            ],
-        );
-
-        $expectedBodyMetadata = new Metadata(
-            variableNames: [
-                VariableName::PHPUNIT_TEST_CASE,
-            ],
-        );
-
         return [
             'exists comparison, element identifier examined value' => [
                 'statement' => $assertionParser->parse('$".selector" exists', 0),
