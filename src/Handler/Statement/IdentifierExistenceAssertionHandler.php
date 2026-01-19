@@ -11,7 +11,6 @@ use webignition\BasilCompilableSourceFactory\AssertionStatementFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\FailureMessageFactory;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
@@ -107,19 +106,19 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
             $this->argumentFactory->createSingular($serializedElementIdentifier)
         );
 
-        $examinedValuePlaceholder = new VariableName(VariableNameEnum::EXAMINED_VALUE->value);
-        $examinedValueAssignmentStatement = new Statement(
-            new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
+        $elementExistPlaceholder = new VariableName('elementExists');
+        $elementAssignment = new Statement(
+            new AssignmentExpression($elementExistPlaceholder, $examinedAccessor),
         );
 
         return new StatementHandlerComponents(
             $this->createAssertionStatement(
                 $elementExistenceAssertion,
-                $examinedValuePlaceholder,
+                $elementExistPlaceholder,
             )
         )->withSetup(
             $this->createNavigatorHasCallTryCatchBlock(
-                $examinedValueAssignmentStatement,
+                $elementAssignment,
                 $elementExistenceAssertion
             )
         );
@@ -137,15 +136,15 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
 
         $serializedAttributeIdentifier = $this->elementIdentifierSerializer->serialize($domIdentifier);
 
-        $elementExaminedAccessor = $this->createDomCrawlerNavigatorCall(
+        $elementAccessor = $this->createDomCrawlerNavigatorCall(
             $domIdentifier,
             $attributeExistenceAssertion,
             $this->argumentFactory->createSingular($serializedAttributeIdentifier)
         );
 
-        $examinedValuePlaceholder = new VariableName(VariableNameEnum::EXAMINED_VALUE->value);
-        $elementExaminedValueAssignmentStatement = new Statement(
-            new AssignmentExpression($examinedValuePlaceholder, $elementExaminedAccessor),
+        $elementExistsPlaceholder = new VariableName('elementExists');
+        $elementAssignment = new Statement(
+            new AssignmentExpression($elementExistsPlaceholder, $elementAccessor),
         );
 
         $attributeNullComparisonExpression = new NullCoalescerExpression(
@@ -156,13 +155,14 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
             new LiteralExpression('null'),
         );
 
-        $attributeExaminedAccessor = new ComparisonExpression(
+        $attributeAccessor = new ComparisonExpression(
             new EncapsulatedExpression($attributeNullComparisonExpression),
             new LiteralExpression('null'),
             '!=='
         );
 
-        $examinedValueAssignment = new AssignmentExpression($examinedValuePlaceholder, $attributeExaminedAccessor);
+        $attributeExistsPlaceholder = new VariableName('attributeExists');
+        $attributeAssignment = new AssignmentExpression($attributeExistsPlaceholder, $attributeAccessor);
 
         $catchBody = Body::createFromExpressions([
             $this->phpUnitCallFactory->createFailCall(
@@ -172,7 +172,7 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
 
         $tryCatchBlock = $this->tryCatchBlockFactory->create(
             Body::createFromExpressions([
-                $examinedValueAssignment,
+                $attributeAssignment,
             ]),
             new ClassNameCollection([new ClassName(\Throwable::class)]),
             $catchBody,
@@ -182,17 +182,17 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
             new Body([
                 'element existence assertion' => $this->createAssertionStatement(
                     $elementExistsAssertion,
-                    $examinedValuePlaceholder,
+                    $elementExistsPlaceholder,
                 ),
                 'attribute examined value assignment' => $tryCatchBlock,
                 'attribute existence assertion' => $this->createAssertionStatement(
                     $attributeExistenceAssertion,
-                    $examinedValuePlaceholder,
+                    $attributeExistsPlaceholder,
                 ),
             ])
         )->withSetup(
             $this->createNavigatorHasCallTryCatchBlock(
-                $elementExaminedValueAssignmentStatement,
+                $elementAssignment,
                 $elementExistsAssertion
             )
         );
