@@ -16,6 +16,7 @@ use webignition\BasilCompilableSourceFactory\FailureMessageFactory;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryCatchBlock;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
@@ -162,20 +163,8 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
         );
 
         $attributeExistsPlaceholder = new VariableName('attributeExists');
-        $attributeAssignment = new AssignmentExpression($attributeExistsPlaceholder, $attributeAccessor);
-
-        $catchBody = Body::createFromExpressions([
-            $this->phpUnitCallFactory->createFailCall(
-                $this->failureMessageFactory->createForAssertionSetupThrowable($attributeExistenceAssertion)
-            ),
-        ]);
-
-        $tryCatchBlock = $this->tryCatchBlockFactory->create(
-            Body::createFromExpressions([
-                $attributeAssignment,
-            ]),
-            new ClassNameCollection([new ClassName(\Throwable::class)]),
-            $catchBody,
+        $attributeAssignment = new Statement(
+            new AssignmentExpression($attributeExistsPlaceholder, $attributeAccessor)
         );
 
         return new StatementHandlerComponents(
@@ -184,7 +173,6 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
                     $elementExistsAssertion,
                     $elementExistsPlaceholder,
                 ),
-                'attribute examined value assignment' => $tryCatchBlock,
                 'attribute existence assertion' => $this->createAssertionStatement(
                     $attributeExistenceAssertion,
                     $attributeExistsPlaceholder,
@@ -192,7 +180,7 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
             ])
         )->withSetup(
             $this->createNavigatorHasCallTryCatchBlock(
-                $elementAssignment,
+                new Body([$elementAssignment, $attributeAssignment]),
                 $elementExistsAssertion
             )
         );
@@ -219,7 +207,7 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
     }
 
     private function createNavigatorHasCallTryCatchBlock(
-        StatementInterface $setExaminedValueAssignmentStatement,
+        BodyInterface $tryBody,
         AssertionInterface $assertion,
     ): TryCatchBlock {
         $exceptionVariable = new VariableName('exception');
@@ -263,7 +251,7 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
         ]);
 
         return $this->tryCatchBlockFactory->create(
-            new Body([$setExaminedValueAssignmentStatement]),
+            $tryBody,
             new ClassNameCollection([new ClassName(InvalidLocatorException::class)]),
             $catchBody,
         );
