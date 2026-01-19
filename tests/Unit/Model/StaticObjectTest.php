@@ -15,9 +15,8 @@ class StaticObjectTest extends TestCase
 {
     /**
      * @param non-empty-string $object
-     *
-     * @dataProvider getMetadataDataProvider
      */
+    #[DataProvider('getMetadataDataProvider')]
     public function testGetMetadata(string $object, MetadataInterface $expectedMetadata): void
     {
         $staticObject = new StaticObject($object);
@@ -54,9 +53,7 @@ class StaticObjectTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider toStringDataProvider
-     */
+    #[DataProvider('toStringDataProvider')]
     public function testToString(StaticObject $object, string $expectedString): void
     {
         $this->assertSame($expectedString, (string) $object);

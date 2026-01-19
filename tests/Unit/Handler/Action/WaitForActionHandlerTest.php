@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Action;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\Statement\WaitForActionHandler;
@@ -14,9 +15,7 @@ use webignition\ObjectReflector\ObjectReflector;
 
 class WaitForActionHandlerTest extends TestCase
 {
-    /**
-     * @dataProvider handleThrowsExceptionDataProvider
-     */
+    #[DataProvider('handleThrowsExceptionDataProvider')]
     public function testHandleThrowsException(
         ActionInterface $action,
         \Exception $expectedException,

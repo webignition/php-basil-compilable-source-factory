@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
@@ -22,11 +23,10 @@ class ArgumentFactoryTest extends TestCase
     }
 
     /**
-     * @dataProvider createDataProvider
-     *
      * @param array<mixed>          $arguments
      * @param ExpressionInterface[] $expectedArguments
      */
+    #[DataProvider('createDataProvider')]
     public function testCreate(array $arguments, array $expectedArguments): void
     {
         self::assertEquals($expectedArguments, $this->factory->create(...$arguments));

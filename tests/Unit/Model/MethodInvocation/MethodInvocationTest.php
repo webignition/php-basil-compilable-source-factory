@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\MethodInvocation;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
@@ -42,9 +43,7 @@ class MethodInvocationTest extends AbstractResolvableTestCase
         self::assertEquals($arguments->getMetadata(), $invocation->getMetadata());
     }
 
-    /**
-     * @dataProvider renderDataProvider
-     */
+    #[DataProvider('renderDataProvider')]
     public function testRender(MethodInvocationInterface $invocation, string $expectedString): void
     {
         self::assertRenderResolvable($expectedString, $invocation);

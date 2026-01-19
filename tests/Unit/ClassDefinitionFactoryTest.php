@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BaseBasilTestCase\Attribute\Statements;
 use webignition\BaseBasilTestCase\Attribute\StepName;
 use webignition\BaseBasilTestCase\ClientManager;
@@ -21,9 +22,7 @@ use webignition\BasilModels\Parser\Test\TestParser;
 
 class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
 {
-    /**
-     * @dataProvider createClassDefinitionDataProvider
-     */
+    #[DataProvider('createClassDefinitionDataProvider')]
     public function testCreateClassDefinition(
         ClassDefinitionFactory $factory,
         string $expectedClassName,

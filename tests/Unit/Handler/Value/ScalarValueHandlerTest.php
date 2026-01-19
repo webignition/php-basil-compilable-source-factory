@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Value;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
@@ -22,9 +23,7 @@ class ScalarValueHandlerTest extends AbstractResolvableTestCase
         $this->handler = ScalarValueHandler::createHandler();
     }
 
-    /**
-     * @dataProvider createFromValueDataProvider
-     */
+    #[DataProvider('createFromValueDataProvider')]
     public function testHandle(
         string $value,
         string $expectedRenderedSource,
@@ -101,9 +100,7 @@ class ScalarValueHandlerTest extends AbstractResolvableTestCase
         ];
     }
 
-    /**
-     * @dataProvider handleThrowsExceptionDataProvider
-     */
+    #[DataProvider('handleThrowsExceptionDataProvider')]
     public function testHandleThrowsException(string $value, \Exception $expectedException): void
     {
         $this->expectExceptionObject($expectedException);

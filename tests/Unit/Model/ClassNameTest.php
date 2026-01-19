@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\ObjectReflector\ObjectReflector;
@@ -13,9 +14,8 @@ class ClassNameTest extends TestCase
     /**
      * @param non-empty-string      $className
      * @param null|non-empty-string $alias
-     *
-     * @dataProvider createDataProvider
      */
+    #[DataProvider('createDataProvider')]
     public function testCreate(string $className, ?string $alias): void
     {
         $classDependency = new ClassName($className, $alias);
@@ -41,9 +41,7 @@ class ClassNameTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider getClassDataProvider
-     */
+    #[DataProvider('getClassDataProvider')]
     public function testGetClass(ClassName $className, string $expectedClass): void
     {
         $this->assertSame($expectedClass, $className->getClass());
@@ -66,9 +64,7 @@ class ClassNameTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider toStringDataProvider
-     */
+    #[DataProvider('toStringDataProvider')]
     public function testToString(ClassName $className, string $expectedString): void
     {
         $this->assertSame($expectedString, (string) $className);
@@ -99,9 +95,7 @@ class ClassNameTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider isInRootNamespaceDataProvider
-     */
+    #[DataProvider('isInRootNamespaceDataProvider')]
     public function testIsInRootNamespace(ClassName $className, bool $expectedIsInRootNamespace): void
     {
         $this->assertSame($expectedIsInRootNamespace, $className->isInRootNamespace());
@@ -132,9 +126,7 @@ class ClassNameTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider renderClassNameDataProvider
-     */
+    #[DataProvider('renderClassNameDataProvider')]
     public function testRenderClassName(ClassName $className, string $expectedString): void
     {
         $this->assertSame($expectedString, $className->renderClassName());
@@ -165,9 +157,7 @@ class ClassNameTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider isFullyQualifiedClassNameDataProvider
-     */
+    #[DataProvider('isFullyQualifiedClassNameDataProvider')]
     public function testIsFullyQualifiedClassName(string $className, bool $expectedIsFullyQualifiedClassName): void
     {
         self::assertSame($expectedIsFullyQualifiedClassName, ClassName::isFullyQualifiedClassName($className));

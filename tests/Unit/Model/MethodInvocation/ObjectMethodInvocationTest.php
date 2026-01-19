@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\MethodInvocation;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
@@ -21,9 +22,7 @@ use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvable
 
 class ObjectMethodInvocationTest extends AbstractResolvableTestCase
 {
-    /**
-     * @dataProvider createDataProvider
-     */
+    #[DataProvider('createDataProvider')]
     public function testCreate(
         ExpressionInterface $object,
         string $methodName,
@@ -92,9 +91,7 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
         ];
     }
 
-    /**
-     * @dataProvider renderDataProvider
-     */
+    #[DataProvider('renderDataProvider')]
     public function testRender(ObjectMethodInvocation $invocation, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $invocation);

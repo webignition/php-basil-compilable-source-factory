@@ -12,9 +12,7 @@ use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 
 class VariableDependencyTest extends AbstractResolvableTestCase
 {
-    /**
-     * @dataProvider getMetadataDataProvider
-     */
+    #[DataProvider('getMetadataDataProvider')]
     public function testGetMetadata(VariableDependency $dependency, MetadataInterface $expectedMetadata): void
     {
         $this->assertEquals($expectedMetadata, $dependency->getMetadata());
@@ -37,9 +35,7 @@ class VariableDependencyTest extends AbstractResolvableTestCase
         ];
     }
 
-    /**
-     * @dataProvider renderDataProvider
-     */
+    #[DataProvider('renderDataProvider')]
     public function testRender(VariableDependency $dependency, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $dependency);

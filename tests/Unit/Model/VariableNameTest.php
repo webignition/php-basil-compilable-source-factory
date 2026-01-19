@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 
@@ -14,9 +15,7 @@ class VariableNameTest extends AbstractResolvableTestCase
         $this->assertEquals(new Metadata(), (new VariableName('name'))->getMetadata());
     }
 
-    /**
-     * @dataProvider renderDataProvider
-     */
+    #[DataProvider('renderDataProvider')]
     public function testRender(VariableName $placeholder, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $placeholder);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayKey;
@@ -18,9 +19,7 @@ use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvable
 
 class ArrayExpressionTest extends AbstractResolvableTestCase
 {
-    /**
-     * @dataProvider getMetadataDataProvider
-     */
+    #[DataProvider('getMetadataDataProvider')]
     public function testGetMetadata(ArrayExpression $expression, MetadataInterface $expectedMetadata): void
     {
         self::assertEquals($expectedMetadata, $expression->getMetadata());
@@ -64,9 +63,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
         ];
     }
 
-    /**
-     * @dataProvider renderDataProvider
-     */
+    #[DataProvider('renderDataProvider')]
     public function testRender(ArrayExpression $expression, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $expression);
@@ -259,9 +256,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
         ];
     }
 
-    /**
-     * @dataProvider fromArrayDataProvider
-     */
+    #[DataProvider('fromArrayDataProvider')]
     public function testFromArray(ArrayExpression $expression, ArrayExpression $expectedExpression): void
     {
         self::assertEquals($expectedExpression, $expression);

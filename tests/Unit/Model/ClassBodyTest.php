@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Model\Attribute\DataProviderAttribute;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\ClassBody;
@@ -20,9 +21,7 @@ use webignition\BasilCompilableSourceFactory\Model\VariableName;
 
 class ClassBodyTest extends AbstractResolvableTestCase
 {
-    /**
-     * @dataProvider renderDataProvider
-     */
+    #[DataProvider('renderDataProvider')]
     public function testRender(ClassBody $body, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $body);

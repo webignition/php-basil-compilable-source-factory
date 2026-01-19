@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Statement;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
@@ -17,9 +18,7 @@ use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvable
 
 class StatementTest extends AbstractResolvableTestCase
 {
-    /**
-     * @dataProvider createDataProvider
-     */
+    #[DataProvider('createDataProvider')]
     public function testCreate(ExpressionInterface $expression, MetadataInterface $expectedMetadata): void
     {
         $statement = new Statement($expression);
@@ -60,9 +59,7 @@ class StatementTest extends AbstractResolvableTestCase
         ];
     }
 
-    /**
-     * @dataProvider renderDataProvider
-     */
+    #[DataProvider('renderDataProvider')]
     public function testRender(StatementInterface $statement, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $statement);

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 
@@ -18,9 +19,7 @@ class AccessorDefaultValueFactoryTest extends TestCase
         $this->accessorDefaultValueFactory = AccessorDefaultValueFactory::createFactory();
     }
 
-    /**
-     * @dataProvider createIntegerDataProvider
-     */
+    #[DataProvider('createIntegerDataProvider')]
     public function testCreateInteger(string $value, ?int $expectedDefaultValue): void
     {
         $this->assertSame($expectedDefaultValue, $this->accessorDefaultValueFactory->createInteger($value));
@@ -51,9 +50,7 @@ class AccessorDefaultValueFactoryTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider createStringDataProvider
-     */
+    #[DataProvider('createStringDataProvider')]
     public function testCreateString(string $value, ?string $expectedDefaultValue): void
     {
         $this->assertSame($expectedDefaultValue, $this->accessorDefaultValueFactory->createString($value));

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Block\TryCatch;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\CatchBlock;
@@ -60,9 +61,7 @@ class CatchBlockTest extends AbstractResolvableTestCase
         $this->assertEquals($expectedMetadata, $catchBlock->getMetadata());
     }
 
-    /**
-     * @dataProvider renderDataProvider
-     */
+    #[DataProvider('renderDataProvider')]
     public function testRender(CatchBlock $tryBlock, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $tryBlock);

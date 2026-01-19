@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\ClassSignature;
@@ -18,9 +19,7 @@ class ClassSignatureTest extends AbstractResolvableTestCase
         self::assertSame($name, $signature->getName());
     }
 
-    /**
-     * @dataProvider getBaseClassDataProvider
-     */
+    #[DataProvider('getBaseClassDataProvider')]
     public function testGetBaseClass(ClassSignature $signature, ?ClassName $expectedBaseClass): void
     {
         self::assertSame($expectedBaseClass, $signature->getBaseClass());
@@ -45,9 +44,7 @@ class ClassSignatureTest extends AbstractResolvableTestCase
         ];
     }
 
-    /**
-     * @dataProvider renderDataProvider
-     */
+    #[DataProvider('renderDataProvider')]
     public function testRender(ClassSignature $classSignature, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $classSignature);

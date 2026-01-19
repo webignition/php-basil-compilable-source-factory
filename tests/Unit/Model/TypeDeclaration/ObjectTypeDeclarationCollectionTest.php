@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\TypeDeclaration;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
@@ -14,9 +15,7 @@ use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvable
 
 class ObjectTypeDeclarationCollectionTest extends AbstractResolvableTestCase
 {
-    /**
-     * @dataProvider getMetadataDataProvider
-     */
+    #[DataProvider('getMetadataDataProvider')]
     public function testGetMetadata(
         ObjectTypeDeclarationCollection $collection,
         MetadataInterface $expectedMetadata
@@ -49,9 +48,7 @@ class ObjectTypeDeclarationCollectionTest extends AbstractResolvableTestCase
         ];
     }
 
-    /**
-     * @dataProvider renderDataProvider
-     */
+    #[DataProvider('renderDataProvider')]
     public function testRender(ObjectTypeDeclarationCollection $collection, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $collection);

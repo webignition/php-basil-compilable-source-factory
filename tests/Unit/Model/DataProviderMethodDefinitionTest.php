@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Model\DataProviderMethodDefinition;
 use webignition\BasilCompilableSourceFactory\Model\DataProviderMethodDefinitionInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinition;
@@ -11,10 +12,9 @@ use webignition\BasilCompilableSourceFactory\Model\MethodDefinition;
 class DataProviderMethodDefinitionTest extends AbstractResolvableTestCase
 {
     /**
-     * @dataProvider createDataProvider
-     *
      * @param array<mixed> $data
      */
+    #[DataProvider('createDataProvider')]
     public function testCreate(string $name, array $data): void
     {
         $methodDefinition = new DataProviderMethodDefinition($name, $data);
@@ -53,9 +53,7 @@ class DataProviderMethodDefinitionTest extends AbstractResolvableTestCase
         ];
     }
 
-    /**
-     * @dataProvider renderDataProvider
-     */
+    #[DataProvider('renderDataProvider')]
     public function testRender(DataProviderMethodDefinitionInterface $methodDefinition, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $methodDefinition);

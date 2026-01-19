@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\Step;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
@@ -24,9 +25,7 @@ class StepHandlerTest extends AbstractBrowserTestCase
         $this->handler = StepHandler::createHandler();
     }
 
-    /**
-     * @dataProvider handleDataProvider
-     */
+    #[DataProvider('handleDataProvider')]
     public function testHandle(
         string $fixture,
         StepInterface $step,
@@ -128,9 +127,7 @@ class StepHandlerTest extends AbstractBrowserTestCase
         ];
     }
 
-    /**
-     * @dataProvider handleForFailingActionsDataProvider
-     */
+    #[DataProvider('handleForFailingActionsDataProvider')]
     public function testHandleForFailingActions(
         string $fixture,
         StepInterface $step,

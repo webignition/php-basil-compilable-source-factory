@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\ObjectReflector\ObjectReflector;
 
@@ -17,9 +18,7 @@ class SingleLineCommentTest extends AbstractResolvableTestCase
         $this->assertSame($content, ObjectReflector::getProperty($comment, 'content'));
     }
 
-    /**
-     * @dataProvider renderDataProvider
-     */
+    #[DataProvider('renderDataProvider')]
     public function testRender(SingleLineComment $comment, string $expectedString): void
     {
         $this->assertRenderResolvable($expectedString, $comment);

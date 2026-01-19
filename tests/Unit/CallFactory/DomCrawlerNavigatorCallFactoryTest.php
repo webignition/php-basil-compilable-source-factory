@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
@@ -23,9 +24,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTestCase
         $this->factory = DomCrawlerNavigatorCallFactory::createFactory();
     }
 
-    /**
-     * @dataProvider createFindCallDataProvider
-     */
+    #[DataProvider('createFindCallDataProvider')]
     public function testCreateFindCall(
         ExpressionInterface $elementIdentifierExpression,
         string $expectedRenderedExpression,
@@ -45,9 +44,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTestCase
         return self::createElementCallDataProvider('find');
     }
 
-    /**
-     * @dataProvider createFindOneCallDataProvider
-     */
+    #[DataProvider('createFindOneCallDataProvider')]
     public function testCreateFindOneCall(
         ExpressionInterface $elementIdentifierExpression,
         string $expectedRenderedExpression,
@@ -67,9 +64,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTestCase
         return self::createElementCallDataProvider('findOne');
     }
 
-    /**
-     * @dataProvider createHasCallDataProvider
-     */
+    #[DataProvider('createHasCallDataProvider')]
     public function testCreateHasCall(
         ExpressionInterface $elementIdentifierExpression,
         string $expectedRenderedExpression,
@@ -89,9 +84,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTestCase
         return self::createElementCallDataProvider('has');
     }
 
-    /**
-     * @dataProvider createHasOneCallDataProvider
-     */
+    #[DataProvider('createHasOneCallDataProvider')]
     public function testCreateHasOneCall(
         ExpressionInterface $elementIdentifierExpression,
         string $expectedRenderedExpression,

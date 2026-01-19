@@ -22,9 +22,7 @@ use webignition\BasilModels\Parser\StepParser;
 
 class StepMethodFactoryTest extends AbstractResolvableTestCase
 {
-    /**
-     * @dataProvider createWithoutDataProviderDataProvider
-     */
+    #[DataProvider('createWithoutDataProviderDataProvider')]
     public function testCreateWithoutDataProvider(
         int $index,
         string $stepName,
@@ -145,9 +143,7 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
         ];
     }
 
-    /**
-     * @dataProvider createWithDataProviderDataProvider
-     */
+    #[DataProvider('createWithDataProviderDataProvider')]
     public function testCreateWithDataProvider(
         int $index,
         string $stepName,

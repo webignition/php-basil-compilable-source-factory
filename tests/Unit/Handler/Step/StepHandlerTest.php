@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Step;
 
+use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
@@ -32,9 +33,7 @@ use webignition\Stubble\Resolvable\ResolvableInterface;
 
 class StepHandlerTest extends AbstractResolvableTestCase
 {
-    /**
-     * @dataProvider handleSuccessDataProvider
-     */
+    #[DataProvider('handleSuccessDataProvider')]
     public function testHandleSuccess(
         StepInterface $step,
         StepHandler $handler,
@@ -716,9 +715,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
         ];
     }
 
-    /**
-     * @dataProvider handleThrowsExceptionDataProvider
-     */
+    #[DataProvider('handleThrowsExceptionDataProvider')]
     public function testHandleThrowsException(StepInterface $step, UnsupportedStepException $expectedException): void
     {
         $handler = StepHandler::createHandler();
