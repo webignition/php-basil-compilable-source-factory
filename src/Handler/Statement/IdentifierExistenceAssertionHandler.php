@@ -21,6 +21,7 @@ use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\CompositeExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
@@ -164,7 +165,14 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
 
         $attributeExistsPlaceholder = new VariableName('attributeExists');
         $attributeAssignment = new Statement(
-            new AssignmentExpression($attributeExistsPlaceholder, $attributeAccessor)
+            new AssignmentExpression(
+                $attributeExistsPlaceholder,
+                new CompositeExpression([
+                    $elementExistsPlaceholder,
+                    new LiteralExpression(' && '),
+                    $attributeAccessor,
+                ])
+            )
         );
 
         return new StatementHandlerComponents(

@@ -99,7 +99,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                         $elementExists = {{ NAVIGATOR }}->hasOne('{
                             "locator": ".selector"
                         }');
-                        $attributeExists = ((function () {
+                        $attributeExists = $elementExists && ((function () {
                             $element = {{ NAVIGATOR }}->findOne('{
                                 "locator": ".selector"
                             }');
