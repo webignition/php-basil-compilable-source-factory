@@ -26,7 +26,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$".selector" exists', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
                     try {
-                        $examinedValue = {{ NAVIGATOR }}->has('{
+                        $elementExists = {{ NAVIGATOR }}->has('{
                             "locator": ".selector"
                         }');
                     } catch (InvalidLocatorException $exception) {
@@ -55,7 +55,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
-                        $examinedValue,
+                        $elementExists,
                         '{
                             "statement": {
                                 "statement-type": "assertion",
@@ -65,7 +65,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                 "operator": "exists"
                             },
                             "expected": ' . (true ? 'true' : 'false') . ',
-                            "examined": ' . ($examinedValue ? 'true' : 'false') . '
+                            "examined": ' . ($elementExists ? 'true' : 'false') . '
                         }'
                     );
                     EOD,
@@ -88,7 +88,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$".selector".attribute_name exists', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
                     try {
-                        $examinedValue = {{ NAVIGATOR }}->hasOne('{
+                        $elementExists = {{ NAVIGATOR }}->hasOne('{
                             "locator": ".selector"
                         }');
                     } catch (InvalidLocatorException $exception) {
@@ -124,7 +124,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
-                        $examinedValue,
+                        $elementExists,
                         '{
                             "statement": {
                                 "container": {
@@ -141,11 +141,11 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                 }
                             },
                             "expected": ' . (true ? 'true' : 'false') . ',
-                            "examined": ' . ($examinedValue ? 'true' : 'false') . '
+                            "examined": ' . ($elementExists ? 'true' : 'false') . '
                         }'
                     );
                     try {
-                        $examinedValue = ((function () {
+                        $attributeExists = ((function () {
                             $element = {{ NAVIGATOR }}->findOne('{
                                 "locator": ".selector"
                             }');
@@ -170,7 +170,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         }');
                     }
                     {{ PHPUNIT }}->assertTrue(
-                        $examinedValue,
+                        $attributeExists,
                         '{
                             "statement": {
                                 "statement-type": "assertion",
@@ -180,7 +180,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                 "operator": "exists"
                             },
                             "expected": ' . (true ? 'true' : 'false') . ',
-                            "examined": ' . ($examinedValue ? 'true' : 'false') . '
+                            "examined": ' . ($attributeExists ? 'true' : 'false') . '
                         }'
                     );
                     EOD,
@@ -207,7 +207,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$"a[href=foo.html]" exists', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
                     try {
-                        $examinedValue = {{ NAVIGATOR }}->has('{
+                        $elementExists = {{ NAVIGATOR }}->has('{
                             "locator": "a[href=foo.html]"
                         }');
                     } catch (InvalidLocatorException $exception) {
@@ -236,7 +236,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
-                        $examinedValue,
+                        $elementExists,
                         '{
                             "statement": {
                                 "statement-type": "assertion",
@@ -246,7 +246,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                 "operator": "exists"
                             },
                             "expected": ' . (true ? 'true' : 'false') . ',
-                            "examined": ' . ($examinedValue ? 'true' : 'false') . '
+                            "examined": ' . ($elementExists ? 'true' : 'false') . '
                         }'
                     );
                     EOD,
@@ -269,7 +269,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$"[data-value=\"' . "'single quoted'" . '\"]" exists', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
                     try {
-                        $examinedValue = {{ NAVIGATOR }}->has('{
+                        $elementExists = {{ NAVIGATOR }}->has('{
                             "locator": "[data-value=\\"\'single quoted\'\\"]"
                         }');
                     } catch (InvalidLocatorException $exception) {
@@ -298,7 +298,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
-                        $examinedValue,
+                        $elementExists,
                         '{
                             "statement": {
                                 "statement-type": "assertion",
@@ -308,7 +308,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                 "operator": "exists"
                             },
                             "expected": ' . (true ? 'true' : 'false') . ',
-                            "examined": ' . ($examinedValue ? 'true' : 'false') . '
+                            "examined": ' . ($elementExists ? 'true' : 'false') . '
                         }'
                     );
                     EOD,
@@ -331,7 +331,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$"a[href=foo.html]".attribute_name exists', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
                     try {
-                        $examinedValue = {{ NAVIGATOR }}->hasOne('{
+                        $elementExists = {{ NAVIGATOR }}->hasOne('{
                             "locator": "a[href=foo.html]"
                         }');
                     } catch (InvalidLocatorException $exception) {
@@ -367,7 +367,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
-                        $examinedValue,
+                        $elementExists,
                         '{
                             "statement": {
                                 "container": {
@@ -384,11 +384,11 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                 }
                             },
                             "expected": ' . (true ? 'true' : 'false') . ',
-                            "examined": ' . ($examinedValue ? 'true' : 'false') . '
+                            "examined": ' . ($elementExists ? 'true' : 'false') . '
                         }'
                     );
                     try {
-                        $examinedValue = ((function () {
+                        $attributeExists = ((function () {
                             $element = {{ NAVIGATOR }}->findOne('{
                                 "locator": "a[href=foo.html]"
                             }');
@@ -413,7 +413,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         }');
                     }
                     {{ PHPUNIT }}->assertTrue(
-                        $examinedValue,
+                        $attributeExists,
                         '{
                             "statement": {
                                 "statement-type": "assertion",
@@ -423,7 +423,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                 "operator": "exists"
                             },
                             "expected": ' . (true ? 'true' : 'false') . ',
-                            "examined": ' . ($examinedValue ? 'true' : 'false') . '
+                            "examined": ' . ($attributeExists ? 'true' : 'false') . '
                         }'
                     );
                     EOD,
@@ -454,7 +454,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                 ),
                 'expectedRenderedSetup' => <<< 'EOD'
                     try {
-                        $examinedValue = {{ NAVIGATOR }}->hasOne('{
+                        $elementExists = {{ NAVIGATOR }}->hasOne('{
                             "locator": ".selector"
                         }');
                     } catch (InvalidLocatorException $exception) {
@@ -491,7 +491,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
-                        $examinedValue,
+                        $elementExists,
                         '{
                             "statement": {
                                 "container": {
@@ -509,7 +509,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                 }
                             },
                             "expected": ' . (true ? 'true' : 'false') . ',
-                            "examined": ' . ($examinedValue ? 'true' : 'false') . '
+                            "examined": ' . ($elementExists ? 'true' : 'false') . '
                         }'
                     );
                     EOD,
@@ -536,7 +536,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                 ),
                 'expectedRenderedSetup' => <<< 'EOD'
                     try {
-                        $examinedValue = {{ NAVIGATOR }}->hasOne('{
+                        $elementExists = {{ NAVIGATOR }}->hasOne('{
                             "locator": ".selector"
                         }');
                     } catch (InvalidLocatorException $exception) {
@@ -573,7 +573,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
-                        $examinedValue,
+                        $elementExists,
                         '{
                             "statement": {
                                 "container": {
@@ -591,7 +591,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                 }
                             },
                             "expected": ' . (true ? 'true' : 'false') . ',
-                            "examined": ' . ($examinedValue ? 'true' : 'false') . '
+                            "examined": ' . ($elementExists ? 'true' : 'false') . '
                         }'
                     );
                     EOD,
@@ -618,7 +618,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                 ),
                 'expectedRenderedSetup' => <<< 'EOD'
                     try {
-                        $examinedValue = {{ NAVIGATOR }}->has('{
+                        $elementExists = {{ NAVIGATOR }}->has('{
                             "locator": ".selector"
                         }');
                     } catch (InvalidLocatorException $exception) {
@@ -656,7 +656,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
-                        $examinedValue,
+                        $elementExists,
                         '{
                             "statement": {
                                 "container": {
@@ -675,7 +675,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                 }
                             },
                             "expected": ' . (true ? 'true' : 'false') . ',
-                            "examined": ' . ($examinedValue ? 'true' : 'false') . '
+                            "examined": ' . ($elementExists ? 'true' : 'false') . '
                         }'
                     );
                     EOD,
@@ -702,7 +702,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                 ),
                 'expectedRenderedSetup' => <<< 'EOD'
                     try {
-                        $examinedValue = {{ NAVIGATOR }}->has('{
+                        $elementExists = {{ NAVIGATOR }}->has('{
                             "locator": ".duration"
                         }');
                     } catch (InvalidLocatorException $exception) {
@@ -739,7 +739,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
-                        $examinedValue,
+                        $elementExists,
                         '{
                             "statement": {
                                 "container": {
@@ -757,7 +757,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                 }
                             },
                             "expected": ' . (true ? 'true' : 'false') . ',
-                            "examined": ' . ($examinedValue ? 'true' : 'false') . '
+                            "examined": ' . ($elementExists ? 'true' : 'false') . '
                         }'
                     );
                     EOD,
