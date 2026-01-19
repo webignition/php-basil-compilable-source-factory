@@ -91,6 +91,13 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         $elementExists = {{ NAVIGATOR }}->hasOne('{
                             "locator": ".selector"
                         }');
+                        $attributeExists = $elementExists && ((function () {
+                            $element = {{ NAVIGATOR }}->findOne('{
+                                "locator": ".selector"
+                            }');
+
+                            return $element->getAttribute('attribute_name');
+                        })() ?? null) !== null;
                     } catch (InvalidLocatorException $exception) {
                         $locator = $exception->getElementIdentifier()->getLocator();
                         $type = $exception->getElementIdentifier()->isCssSelector() ? 'css' : 'xpath';
@@ -144,31 +151,6 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "examined": ' . ($elementExists ? 'true' : 'false') . '
                         }'
                     );
-                    try {
-                        $attributeExists = ((function () {
-                            $element = {{ NAVIGATOR }}->findOne('{
-                                "locator": ".selector"
-                            }');
-
-                            return $element->getAttribute('attribute_name');
-                        })() ?? null) !== null;
-                    } catch (\Throwable $exception) {
-                        {{ PHPUNIT }}->fail('{
-                            "statement": {
-                                "statement-type": "assertion",
-                                "source": "$\".selector\".attribute_name exists",
-                                "index": 0,
-                                "identifier": "$\".selector\".attribute_name",
-                                "operator": "exists"
-                            },
-                            "reason": "assertion-setup-failed",
-                            "exception": {
-                                "class": "' . addcslashes($exception::class, '"\\') . '",
-                                "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
-                            }
-                        }');
-                    }
                     {{ PHPUNIT }}->assertTrue(
                         $attributeExists,
                         '{
@@ -194,12 +176,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
-                    classNames: [
-                        \Throwable::class,
-                    ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::DOM_CRAWLER_NAVIGATOR,
                     ],
                 ),
             ],
@@ -334,6 +312,13 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         $elementExists = {{ NAVIGATOR }}->hasOne('{
                             "locator": "a[href=foo.html]"
                         }');
+                        $attributeExists = $elementExists && ((function () {
+                            $element = {{ NAVIGATOR }}->findOne('{
+                                "locator": "a[href=foo.html]"
+                            }');
+
+                            return $element->getAttribute('attribute_name');
+                        })() ?? null) !== null;
                     } catch (InvalidLocatorException $exception) {
                         $locator = $exception->getElementIdentifier()->getLocator();
                         $type = $exception->getElementIdentifier()->isCssSelector() ? 'css' : 'xpath';
@@ -387,31 +372,6 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "examined": ' . ($elementExists ? 'true' : 'false') . '
                         }'
                     );
-                    try {
-                        $attributeExists = ((function () {
-                            $element = {{ NAVIGATOR }}->findOne('{
-                                "locator": "a[href=foo.html]"
-                            }');
-
-                            return $element->getAttribute('attribute_name');
-                        })() ?? null) !== null;
-                    } catch (\Throwable $exception) {
-                        {{ PHPUNIT }}->fail('{
-                            "statement": {
-                                "statement-type": "assertion",
-                                "source": "$\"a[href=foo.html]\".attribute_name exists",
-                                "index": 0,
-                                "identifier": "$\"a[href=foo.html]\".attribute_name",
-                                "operator": "exists"
-                            },
-                            "reason": "assertion-setup-failed",
-                            "exception": {
-                                "class": "' . addcslashes($exception::class, '"\\') . '",
-                                "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
-                            }
-                        }');
-                    }
                     {{ PHPUNIT }}->assertTrue(
                         $attributeExists,
                         '{
@@ -437,12 +397,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
-                    classNames: [
-                        \Throwable::class,
-                    ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::DOM_CRAWLER_NAVIGATOR,
                     ],
                 ),
             ],

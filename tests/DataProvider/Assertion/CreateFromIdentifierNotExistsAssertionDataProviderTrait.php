@@ -99,6 +99,13 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                         $elementExists = {{ NAVIGATOR }}->hasOne('{
                             "locator": ".selector"
                         }');
+                        $attributeExists = $elementExists && ((function () {
+                            $element = {{ NAVIGATOR }}->findOne('{
+                                "locator": ".selector"
+                            }');
+
+                            return $element->getAttribute('attribute_name');
+                        })() ?? null) !== null;
                     } catch (InvalidLocatorException $exception) {
                         $locator = $exception->getElementIdentifier()->getLocator();
                         $type = $exception->getElementIdentifier()->isCssSelector() ? 'css' : 'xpath';
@@ -152,31 +159,6 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                             "examined": ' . ($elementExists ? 'true' : 'false') . '
                         }'
                     );
-                    try {
-                        $attributeExists = ((function () {
-                            $element = {{ NAVIGATOR }}->findOne('{
-                                "locator": ".selector"
-                            }');
-
-                            return $element->getAttribute('attribute_name');
-                        })() ?? null) !== null;
-                    } catch (\Throwable $exception) {
-                        {{ PHPUNIT }}->fail('{
-                            "statement": {
-                                "statement-type": "assertion",
-                                "source": "$\".selector\".attribute_name not-exists",
-                                "index": 0,
-                                "identifier": "$\".selector\".attribute_name",
-                                "operator": "not-exists"
-                            },
-                            "reason": "assertion-setup-failed",
-                            "exception": {
-                                "class": "' . addcslashes($exception::class, '"\\') . '",
-                                "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
-                            }
-                        }');
-                    }
                     {{ PHPUNIT }}->assertFalse(
                         $attributeExists,
                         '{
@@ -202,12 +184,8 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
-                    classNames: [
-                        \Throwable::class
-                    ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::DOM_CRAWLER_NAVIGATOR,
                     ],
                 ),
             ],
