@@ -2,11 +2,9 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSourceFactory\Handler\Assertion;
+namespace webignition\BasilCompilableSourceFactory\Handler\Statement;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\Handler\StatementHandlerComponents;
-use webignition\BasilCompilableSourceFactory\Handler\StatementHandlerInterface;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\StatementInterface;

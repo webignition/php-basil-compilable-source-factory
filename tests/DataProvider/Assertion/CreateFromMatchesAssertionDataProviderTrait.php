@@ -19,8 +19,8 @@ trait CreateFromMatchesAssertionDataProviderTrait
 
         return [
             'matches comparison, element identifier examined value, literal string expected value' => [
-                'assertion' => $assertionParser->parse('$".selector" matches "/^value/"', 0),
-                'expectedRenderedContent' => <<<'EOD'
+                'statement' => $assertionParser->parse('$".selector" matches "/^value/"', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $expectedValue = "/^value/";
                         $examinedValue = (function () {
@@ -48,7 +48,8 @@ trait CreateFromMatchesAssertionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertMatchesRegularExpression(
                         (string) $expectedValue,
                         (string) $examinedValue,
@@ -66,7 +67,7 @@ trait CreateFromMatchesAssertionDataProviderTrait
                         }'
                     );
                     EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         \Throwable::class,
                     ],
@@ -76,10 +77,15 @@ trait CreateFromMatchesAssertionDataProviderTrait
                         VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
                     ],
                 ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
             ],
             'matches comparison, attribute identifier examined value, literal string expected value' => [
-                'assertion' => $assertionParser->parse('$".selector".attribute_name matches "/^value/"', 0),
-                'expectedRenderedContent' => <<<'EOD'
+                'statement' => $assertionParser->parse('$".selector".attribute_name matches "/^value/"', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $expectedValue = "/^value/";
                         $examinedValue = (function () {
@@ -107,7 +113,8 @@ trait CreateFromMatchesAssertionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertMatchesRegularExpression(
                         (string) $expectedValue,
                         (string) $examinedValue,
@@ -125,12 +132,17 @@ trait CreateFromMatchesAssertionDataProviderTrait
                         }'
                     );
                     EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                     ],
                 ),

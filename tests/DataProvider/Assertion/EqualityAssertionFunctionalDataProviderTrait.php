@@ -12,7 +12,7 @@ trait EqualityAssertionFunctionalDataProviderTrait
     /**
      * @return array<
      *     string,
-     *     array{"fixture": string, "assertion": null, "additionalVariableIdentifiers"?: array<string, string>}
+     *     array{"fixture": string, "statement": null, "additionalVariableIdentifiers"?: array<string, string>}
      * >
      */
     public static function equalityAssertionFunctionalDataProvider(): array
@@ -20,73 +20,73 @@ trait EqualityAssertionFunctionalDataProviderTrait
         return [
             'element identifier examined value, scalar expected value' => [
                 'fixture' => '/assertions.html',
-                'assertion' => null,
+                'statement' => null,
             ],
             'attribute identifier examined value, scalar expected value' => [
                 'fixture' => '/assertions.html',
-                'assertion' => null,
+                'statement' => null,
             ],
             'environment examined value, scalar expected value' => [
                 'fixture' => '/empty.html',
-                'assertion' => null,
+                'statement' => null,
                 'additionalVariableIdentifiers' => [
                     VariableName::ENVIRONMENT_VARIABLE_ARRAY->value => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
                 ],
             ],
             'browser object examined value, scalar expected value' => [
                 'fixture' => '/empty.html',
-                'assertion' => null,
+                'statement' => null,
             ],
             'page object examined value, scalar expected value' => [
                 'fixture' => '/index.html',
-                'assertion' => null,
+                'statement' => null,
             ],
             'element identifier examined value, element identifier expected value' => [
                 'fixture' => '/assertions.html',
-                'assertion' => null,
+                'statement' => null,
             ],
             'element identifier examined value, attribute identifier expected value' => [
                 'fixture' => '/assertions.html',
-                'assertion' => null,
+                'statement' => null,
             ],
             'attribute identifier examined value, environment expected value' => [
                 'fixture' => '/assertions.html',
-                'assertion' => null,
+                'statement' => null,
                 'additionalVariableIdentifiers' => [
                     VariableName::ENVIRONMENT_VARIABLE_ARRAY->value => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
                 ],
             ],
             'attribute identifier examined value, browser object expected value' => [
                 'fixture' => '/assertions.html',
-                'assertion' => null,
+                'statement' => null,
             ],
             'attribute identifier examined value, page object expected value' => [
                 'fixture' => '/assertions.html',
-                'assertion' => null,
+                'statement' => null,
             ],
             'select element identifier examined value, scalar expected value (1)' => [
                 'fixture' => '/form.html',
-                'assertion' => null,
+                'statement' => null,
             ],
             'select element identifier examined value, scalar expected value (2)' => [
                 'fixture' => '/form.html',
-                'assertion' => null,
+                'statement' => null,
             ],
             'option collection element identifier examined value, scalar expected value (1)' => [
                 'fixture' => '/form.html',
-                'assertion' => null,
+                'statement' => null,
             ],
             'option collection element identifier examined value, scalar expected value (2)' => [
                 'fixture' => '/form.html',
-                'assertion' => null,
+                'statement' => null,
             ],
             'radio group element identifier examined value, scalar expected value (1)' => [
                 'fixture' => '/form.html',
-                'assertion' => null,
+                'statement' => null,
             ],
             'radio group element identifier examined value, scalar expected value (2)' => [
                 'fixture' => '/form.html',
-                'assertion' => null,
+                'statement' => null,
             ],
         ];
     }

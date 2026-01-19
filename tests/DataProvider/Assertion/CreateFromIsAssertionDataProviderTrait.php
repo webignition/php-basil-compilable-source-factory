@@ -19,8 +19,8 @@ trait CreateFromIsAssertionDataProviderTrait
 
         return [
             'is comparison, element identifier examined value, literal string expected value' => [
-                'assertion' => $assertionParser->parse('$".selector" is "value"', 0),
-                'expectedRenderedContent' => <<<'EOD'
+                'statement' => $assertionParser->parse('$".selector" is "value"', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $expectedValue = "value";
                         $examinedValue = (function () {
@@ -48,7 +48,8 @@ trait CreateFromIsAssertionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertEquals(
                         (string) $expectedValue,
                         (string) $examinedValue,
@@ -66,7 +67,7 @@ trait CreateFromIsAssertionDataProviderTrait
                         }'
                     );
                     EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         \Throwable::class,
                     ],
@@ -76,10 +77,15 @@ trait CreateFromIsAssertionDataProviderTrait
                         VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
                     ],
                 ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
             ],
             'is comparison, descendant identifier examined value, literal string expected value' => [
-                'assertion' => $assertionParser->parse('$".parent" >> $".child" is "value"', 0),
-                'expectedRenderedContent' => <<<'EOD'
+                'statement' => $assertionParser->parse('$".parent" >> $".child" is "value"', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $expectedValue = "value";
                         $examinedValue = (function () {
@@ -110,7 +116,8 @@ trait CreateFromIsAssertionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertEquals(
                         (string) $expectedValue,
                         (string) $examinedValue,
@@ -128,7 +135,7 @@ trait CreateFromIsAssertionDataProviderTrait
                         }'
                     );
                     EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         \Throwable::class,
                     ],
@@ -138,10 +145,15 @@ trait CreateFromIsAssertionDataProviderTrait
                         VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
                     ],
                 ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
             ],
             'is comparison, attribute identifier examined value, literal string expected value' => [
-                'assertion' => $assertionParser->parse('$".selector".attribute_name is "value"', 0),
-                'expectedRenderedContent' => <<<'EOD'
+                'statement' => $assertionParser->parse('$".selector".attribute_name is "value"', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $expectedValue = "value";
                         $examinedValue = (function () {
@@ -169,7 +181,8 @@ trait CreateFromIsAssertionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertEquals(
                         (string) $expectedValue,
                         (string) $examinedValue,
@@ -187,7 +200,7 @@ trait CreateFromIsAssertionDataProviderTrait
                         }'
                     );
                     EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         \Throwable::class,
                     ],
@@ -196,10 +209,15 @@ trait CreateFromIsAssertionDataProviderTrait
                         VariableName::PHPUNIT_TEST_CASE,
                     ],
                 ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
             ],
             'is comparison, browser object examined value, literal string expected value' => [
-                'assertion' => $assertionParser->parse('$browser.size is "value"', 0),
-                'expectedRenderedContent' => <<<'EOD'
+                'statement' => $assertionParser->parse('$browser.size is "value"', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
         try {
             $expectedValue = "value";
             $examinedValue = (function () {
@@ -225,25 +243,26 @@ trait CreateFromIsAssertionDataProviderTrait
                 }
             }');
         }
-
-        {{ PHPUNIT }}->assertEquals(
-            (string) $expectedValue,
-            (string) $examinedValue,
-            '{
-                "statement": {
-                    "statement-type": "assertion",
-                    "source": "$browser.size is \"value\"",
-                    "index": 0,
-                    "identifier": "$browser.size",
-                    "value": "\"value\"",
-                    "operator": "is"
-                },
-                "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
-                "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
-            }'
-        );
         EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedRenderedBody' => <<< 'EOD'
+                    {{ PHPUNIT }}->assertEquals(
+                        (string) $expectedValue,
+                        (string) $examinedValue,
+                        '{
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$browser.size is \"value\"",
+                                "index": 0,
+                                "identifier": "$browser.size",
+                                "value": "\"value\"",
+                                "operator": "is"
+                            },
+                            "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
+                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
+                        }'
+                    );
+                    EOD,
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         \Throwable::class,
                     ],
@@ -252,10 +271,15 @@ trait CreateFromIsAssertionDataProviderTrait
                         VariableName::PANTHER_CLIENT,
                     ],
                 ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
             ],
             'is comparison, environment examined value, literal string expected value' => [
-                'assertion' => $assertionParser->parse('$env.KEY is "value"', 0),
-                'expectedRenderedContent' => <<<'EOD'
+                'statement' => $assertionParser->parse('$env.KEY is "value"', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $expectedValue = "value";
                         $examinedValue = {{ ENV }}['KEY'] ?? null;
@@ -277,7 +301,8 @@ trait CreateFromIsAssertionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertEquals(
                         (string) $expectedValue,
                         (string) $examinedValue,
@@ -295,7 +320,7 @@ trait CreateFromIsAssertionDataProviderTrait
                         }'
                     );
                     EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         \Throwable::class,
                     ],
@@ -303,11 +328,16 @@ trait CreateFromIsAssertionDataProviderTrait
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::ENVIRONMENT_VARIABLE_ARRAY
                     ],
-                )
+                ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
             ],
             'is comparison, environment examined value with default, literal string expected value' => [
-                'assertion' => $assertionParser->parse('$env.KEY|"default value" is "value"', 0),
-                'expectedRenderedContent' => <<<'EOD'
+                'statement' => $assertionParser->parse('$env.KEY|"default value" is "value"', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $expectedValue = "value";
                         $examinedValue = {{ ENV }}['KEY'] ?? 'default value';
@@ -329,7 +359,8 @@ trait CreateFromIsAssertionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertEquals(
                         (string) $expectedValue,
                         (string) $examinedValue,
@@ -347,7 +378,7 @@ trait CreateFromIsAssertionDataProviderTrait
                         }'
                     );
                     EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         \Throwable::class,
                     ],
@@ -356,10 +387,15 @@ trait CreateFromIsAssertionDataProviderTrait
                         VariableName::ENVIRONMENT_VARIABLE_ARRAY
                     ],
                 ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
             ],
             'is comparison, environment examined value with default, environment examined value with default' => [
-                'assertion' => $assertionParser->parse('$env.KEY1|"default value 1" is $env.KEY2|"default value 2"', 0),
-                'expectedRenderedContent' => <<<'EOD'
+                'statement' => $assertionParser->parse('$env.KEY1|"default value 1" is $env.KEY2|"default value 2"', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $expectedValue = {{ ENV }}['KEY2'] ?? 'default value 2';
                         $examinedValue = {{ ENV }}['KEY1'] ?? 'default value 1';
@@ -381,7 +417,8 @@ trait CreateFromIsAssertionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertEquals(
                         (string) $expectedValue,
                         (string) $examinedValue,
@@ -399,7 +436,7 @@ trait CreateFromIsAssertionDataProviderTrait
                         }'
                     );
                     EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         \Throwable::class,
                     ],
@@ -408,10 +445,15 @@ trait CreateFromIsAssertionDataProviderTrait
                         VariableName::ENVIRONMENT_VARIABLE_ARRAY
                     ],
                 ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
             ],
             'is comparison, page object examined value, literal string expected value' => [
-                'assertion' => $assertionParser->parse('$page.title is "value"', 0),
-                'expectedRenderedContent' => <<<'EOD'
+                'statement' => $assertionParser->parse('$page.title is "value"', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $expectedValue = "value";
                         $examinedValue = {{ CLIENT }}->getTitle();
@@ -433,7 +475,8 @@ trait CreateFromIsAssertionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertEquals(
                         (string) $expectedValue,
                         (string) $examinedValue,
@@ -451,7 +494,7 @@ trait CreateFromIsAssertionDataProviderTrait
                         }'
                     );
                     EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         \Throwable::class,
                     ],
@@ -460,10 +503,15 @@ trait CreateFromIsAssertionDataProviderTrait
                         VariableName::PANTHER_CLIENT,
                     ],
                 ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
             ],
             'is comparison, browser object examined value, descendant identifier expected value' => [
-                'assertion' => $assertionParser->parse('$browser.size is $".parent" >> $".child"', 0),
-                'expectedRenderedContent' => <<<'EOD'
+                'statement' => $assertionParser->parse('$browser.size is $".parent" >> $".child"', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
         try {
             $expectedValue = (function () {
                 $element = {{ NAVIGATOR }}->find('{
@@ -498,25 +546,26 @@ trait CreateFromIsAssertionDataProviderTrait
                 }
             }');
         }
-
-        {{ PHPUNIT }}->assertEquals(
-            (string) $expectedValue,
-            (string) $examinedValue,
-            '{
-                "statement": {
-                    "statement-type": "assertion",
-                    "source": "$browser.size is $\".parent\" >> $\".child\"",
-                    "index": 0,
-                    "identifier": "$browser.size",
-                    "value": "$\".parent\" >> $\".child\"",
-                    "operator": "is"
-                },
-                "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
-                "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
-            }'
-        );
         EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedRenderedBody' => <<< 'EOD'
+                    {{ PHPUNIT }}->assertEquals(
+                        (string) $expectedValue,
+                        (string) $examinedValue,
+                        '{
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$browser.size is $\".parent\" >> $\".child\"",
+                                "index": 0,
+                                "identifier": "$browser.size",
+                                "value": "$\".parent\" >> $\".child\"",
+                                "operator": "is"
+                            },
+                            "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
+                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
+                        }'
+                    );
+                    EOD,
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         \Throwable::class,
                     ],
@@ -527,10 +576,15 @@ trait CreateFromIsAssertionDataProviderTrait
                         VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
                     ],
                 ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
             ],
             'is comparison, browser object examined value, element identifier expected value' => [
-                'assertion' => $assertionParser->parse('$browser.size is $".selector"', 0),
-                'expectedRenderedContent' => <<<'EOD'
+                'statement' => $assertionParser->parse('$browser.size is $".selector"', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
         try {
             $expectedValue = (function () {
                 $element = {{ NAVIGATOR }}->find('{
@@ -562,25 +616,26 @@ trait CreateFromIsAssertionDataProviderTrait
                 }
             }');
         }
-
-        {{ PHPUNIT }}->assertEquals(
-            (string) $expectedValue,
-            (string) $examinedValue,
-            '{
-                "statement": {
-                    "statement-type": "assertion",
-                    "source": "$browser.size is $\".selector\"",
-                    "index": 0,
-                    "identifier": "$browser.size",
-                    "value": "$\".selector\"",
-                    "operator": "is"
-                },
-                "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
-                "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
-            }'
-        );
         EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedRenderedBody' => <<< 'EOD'
+                    {{ PHPUNIT }}->assertEquals(
+                        (string) $expectedValue,
+                        (string) $examinedValue,
+                        '{
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$browser.size is $\".selector\"",
+                                "index": 0,
+                                "identifier": "$browser.size",
+                                "value": "$\".selector\"",
+                                "operator": "is"
+                            },
+                            "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
+                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
+                        }'
+                    );
+                    EOD,
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         \Throwable::class,
                     ],
@@ -591,10 +646,15 @@ trait CreateFromIsAssertionDataProviderTrait
                         VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
                     ],
                 ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
             ],
             'is comparison, browser object examined value, attribute identifier expected value' => [
-                'assertion' => $assertionParser->parse('$browser.size is $".selector".attribute_name', 0),
-                'expectedRenderedContent' => <<<'EOD'
+                'statement' => $assertionParser->parse('$browser.size is $".selector".attribute_name', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
         try {
             $expectedValue = (function () {
                 $element = {{ NAVIGATOR }}->findOne('{
@@ -626,25 +686,26 @@ trait CreateFromIsAssertionDataProviderTrait
                 }
             }');
         }
-
-        {{ PHPUNIT }}->assertEquals(
-            (string) $expectedValue,
-            (string) $examinedValue,
-            '{
-                "statement": {
-                    "statement-type": "assertion",
-                    "source": "$browser.size is $\".selector\".attribute_name",
-                    "index": 0,
-                    "identifier": "$browser.size",
-                    "value": "$\".selector\".attribute_name",
-                    "operator": "is"
-                },
-                "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
-                "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
-            }'
-        );
         EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedRenderedBody' => <<< 'EOD'
+                    {{ PHPUNIT }}->assertEquals(
+                        (string) $expectedValue,
+                        (string) $examinedValue,
+                        '{
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$browser.size is $\".selector\".attribute_name",
+                                "index": 0,
+                                "identifier": "$browser.size",
+                                "value": "$\".selector\".attribute_name",
+                                "operator": "is"
+                            },
+                            "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
+                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
+                        }'
+                    );
+                    EOD,
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         \Throwable::class,
                     ],
@@ -654,10 +715,15 @@ trait CreateFromIsAssertionDataProviderTrait
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                     ],
                 ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
             ],
             'is comparison, browser object examined value, environment expected value' => [
-                'assertion' => $assertionParser->parse('$browser.size is $env.KEY', 0),
-                'expectedRenderedContent' => <<<'EOD'
+                'statement' => $assertionParser->parse('$browser.size is $env.KEY', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
         try {
             $expectedValue = {{ ENV }}['KEY'] ?? null;
             $examinedValue = (function () {
@@ -683,25 +749,26 @@ trait CreateFromIsAssertionDataProviderTrait
                 }
             }');
         }
-
-        {{ PHPUNIT }}->assertEquals(
-            (string) $expectedValue,
-            (string) $examinedValue,
-            '{
-                "statement": {
-                    "statement-type": "assertion",
-                    "source": "$browser.size is $env.KEY",
-                    "index": 0,
-                    "identifier": "$browser.size",
-                    "value": "$env.KEY",
-                    "operator": "is"
-                },
-                "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
-                "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
-            }'
-        );
         EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedRenderedBody' => <<< 'EOD'
+                    {{ PHPUNIT }}->assertEquals(
+                        (string) $expectedValue,
+                        (string) $examinedValue,
+                        '{
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$browser.size is $env.KEY",
+                                "index": 0,
+                                "identifier": "$browser.size",
+                                "value": "$env.KEY",
+                                "operator": "is"
+                            },
+                            "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
+                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
+                        }'
+                    );
+                    EOD,
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         \Throwable::class,
                     ],
@@ -711,10 +778,15 @@ trait CreateFromIsAssertionDataProviderTrait
                         VariableName::ENVIRONMENT_VARIABLE_ARRAY
                     ],
                 ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
             ],
             'is comparison, browser object examined value, environment expected value with default' => [
-                'assertion' => $assertionParser->parse('$browser.size is $env.KEY|"default value"', 0),
-                'expectedRenderedContent' => <<<'EOD'
+                'statement' => $assertionParser->parse('$browser.size is $env.KEY|"default value"', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
         try {
             $expectedValue = {{ ENV }}['KEY'] ?? 'default value';
             $examinedValue = (function () {
@@ -740,25 +812,26 @@ trait CreateFromIsAssertionDataProviderTrait
                 }
             }');
         }
-
-        {{ PHPUNIT }}->assertEquals(
-            (string) $expectedValue,
-            (string) $examinedValue,
-            '{
-                "statement": {
-                    "statement-type": "assertion",
-                    "source": "$browser.size is $env.KEY|\"default value\"",
-                    "index": 0,
-                    "identifier": "$browser.size",
-                    "value": "$env.KEY|\"default value\"",
-                    "operator": "is"
-                },
-                "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
-                "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
-            }'
-        );
         EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedRenderedBody' => <<< 'EOD'
+                    {{ PHPUNIT }}->assertEquals(
+                        (string) $expectedValue,
+                        (string) $examinedValue,
+                        '{
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$browser.size is $env.KEY|\"default value\"",
+                                "index": 0,
+                                "identifier": "$browser.size",
+                                "value": "$env.KEY|\"default value\"",
+                                "operator": "is"
+                            },
+                            "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
+                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
+                        }'
+                    );
+                    EOD,
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         \Throwable::class,
                     ],
@@ -768,10 +841,15 @@ trait CreateFromIsAssertionDataProviderTrait
                         VariableName::ENVIRONMENT_VARIABLE_ARRAY
                     ],
                 ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
             ],
             'is comparison, browser object examined value, page object expected value' => [
-                'assertion' => $assertionParser->parse('$browser.size is $page.url', 0),
-                'expectedRenderedContent' => <<<'EOD'
+                'statement' => $assertionParser->parse('$browser.size is $page.url', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
         try {
             $expectedValue = {{ CLIENT }}->getCurrentURL();
             $examinedValue = (function () {
@@ -797,25 +875,26 @@ trait CreateFromIsAssertionDataProviderTrait
                 }
             }');
         }
-
-        {{ PHPUNIT }}->assertEquals(
-            (string) $expectedValue,
-            (string) $examinedValue,
-            '{
-                "statement": {
-                    "statement-type": "assertion",
-                    "source": "$browser.size is $page.url",
-                    "index": 0,
-                    "identifier": "$browser.size",
-                    "value": "$page.url",
-                    "operator": "is"
-                },
-                "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
-                "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
-            }'
-        );
         EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedRenderedBody' => <<< 'EOD'
+                    {{ PHPUNIT }}->assertEquals(
+                        (string) $expectedValue,
+                        (string) $examinedValue,
+                        '{
+                            "statement": {
+                                "statement-type": "assertion",
+                                "source": "$browser.size is $page.url",
+                                "index": 0,
+                                "identifier": "$browser.size",
+                                "value": "$page.url",
+                                "operator": "is"
+                            },
+                            "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
+                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
+                        }'
+                    );
+                    EOD,
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         \Throwable::class,
                     ],
@@ -824,10 +903,15 @@ trait CreateFromIsAssertionDataProviderTrait
                         VariableName::PANTHER_CLIENT,
                     ],
                 ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
             ],
             'is comparison, literal string examined value, literal string expected value' => [
-                'assertion' => $assertionParser->parse('"examined" is "expected"', 0),
-                'expectedRenderedContent' => <<<'EOD'
+                'statement' => $assertionParser->parse('"examined" is "expected"', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $expectedValue = "expected";
                         $examinedValue = "examined";
@@ -849,7 +933,8 @@ trait CreateFromIsAssertionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertEquals(
                         (string) $expectedValue,
                         (string) $examinedValue,
@@ -867,10 +952,15 @@ trait CreateFromIsAssertionDataProviderTrait
                         }'
                     );
                     EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         \Throwable::class,
                     ],
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
+                'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                     ],

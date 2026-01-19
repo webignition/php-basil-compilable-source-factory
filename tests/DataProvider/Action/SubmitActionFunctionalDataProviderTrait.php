@@ -30,13 +30,15 @@ trait SubmitActionFunctionalDataProviderTrait
         return [
             'interaction action (submit), form submit button' => [
                 'fixture' => $fixture,
-                'action' => $actionParser->parse('submit $"#form input[type=\'submit\']"', 0),
+                'statement' => $actionParser->parse('submit $"#form input[type=\'submit\']"', 0),
+                'additionalVariableIdentifiers' => [],
                 'additionalSetupStatements' => $setupStatements,
                 'teardownStatements' => $teardownStatements,
             ],
             'interaction action (submit), form' => [
                 'fixture' => $fixture,
-                'action' => $actionParser->parse('submit $"#form"', 0),
+                'statement' => $actionParser->parse('submit $"#form"', 0),
+                'additionalVariableIdentifiers' => [],
                 'additionalSetupStatements' => $setupStatements,
                 'teardownStatements' => $teardownStatements,
             ],

@@ -19,8 +19,8 @@ trait CreateFromSetActionDataProviderTrait
 
         return [
             'input action, element identifier, literal value' => [
-                'action' => $actionParser->parse('set $".selector" to "value"', 0),
-                'expectedRenderedSource' => <<<'EOD'
+                'statement' => $actionParser->parse('set $".selector" to "value"', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $setValueCollection = {{ NAVIGATOR }}->find('{
                             "locator": ".selector"
@@ -45,24 +45,30 @@ trait CreateFromSetActionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ MUTATOR }}->setValue($setValueCollection, $setValueValue);
                     {{ PHPUNIT }}->refreshCrawlerAndNavigator();
                     EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
                         VariableName::WEBDRIVER_ELEMENT_MUTATOR,
-                        VariableName::PHPUNIT_TEST_CASE
+                        VariableName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],
             'input action, element identifier, element value' => [
-                'action' => $actionParser->parse('set $".selector" to $".source"', 0),
-                'expectedRenderedSource' => <<<'EOD'
+                'statement' => $actionParser->parse('set $".selector" to $".source"', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $setValueCollection = {{ NAVIGATOR }}->find('{
                             "locator": ".selector"
@@ -93,25 +99,31 @@ trait CreateFromSetActionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ MUTATOR }}->setValue($setValueCollection, $setValueValue);
                     {{ PHPUNIT }}->refreshCrawlerAndNavigator();
                     EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::WEBDRIVER_ELEMENT_MUTATOR,
                         VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
+                        VariableName::PHPUNIT_TEST_CASE
+                    ],
+                ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
+                        VariableName::WEBDRIVER_ELEMENT_MUTATOR,
                         VariableName::PHPUNIT_TEST_CASE
                     ],
                 ),
             ],
             'input action, element identifier, attribute value' => [
-                'action' => $actionParser->parse('set $".selector" to $".source".attribute_name', 0),
-                'expectedRenderedSource' => <<<'EOD'
+                'statement' => $actionParser->parse('set $".selector" to $".source".attribute_name', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $setValueCollection = {{ NAVIGATOR }}->find('{
                             "locator": ".selector"
@@ -142,24 +154,30 @@ trait CreateFromSetActionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ MUTATOR }}->setValue($setValueCollection, $setValueValue);
                     {{ PHPUNIT }}->refreshCrawlerAndNavigator();
                     EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::PHPUNIT_TEST_CASE
+                    ],
+                ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
                         VariableName::WEBDRIVER_ELEMENT_MUTATOR,
                         VariableName::PHPUNIT_TEST_CASE
                     ],
                 ),
             ],
             'input action, browser property' => [
-                'action' => $actionParser->parse('set $".selector" to $browser.size', 0),
-                'expectedRenderedSource' => <<<'EOD'
+                'statement' => $actionParser->parse('set $".selector" to $browser.size', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
         try {
             $setValueCollection = {{ NAVIGATOR }}->find('{
                 "locator": ".selector"
@@ -188,25 +206,31 @@ trait CreateFromSetActionDataProviderTrait
                 }
             }');
         }
-
-        {{ MUTATOR }}->setValue($setValueCollection, $setValueValue);
-        {{ PHPUNIT }}->refreshCrawlerAndNavigator();
         EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedRenderedBody' => <<< 'EOD'
+                    {{ MUTATOR }}->setValue($setValueCollection, $setValueValue);
+                    {{ PHPUNIT }}->refreshCrawlerAndNavigator();
+                    EOD,
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::WEBDRIVER_ELEMENT_MUTATOR,
                         VariableName::PANTHER_CLIENT,
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
+                        VariableName::WEBDRIVER_ELEMENT_MUTATOR,
                         VariableName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],
             'input action, page property' => [
-                'action' => $actionParser->parse('set $".selector" to $page.url', 0),
-                'expectedRenderedSource' => <<<'EOD'
+                'statement' => $actionParser->parse('set $".selector" to $page.url', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $setValueCollection = {{ NAVIGATOR }}->find('{
                             "locator": ".selector"
@@ -231,25 +255,31 @@ trait CreateFromSetActionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ MUTATOR }}->setValue($setValueCollection, $setValueValue);
                     {{ PHPUNIT }}->refreshCrawlerAndNavigator();
                     EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::WEBDRIVER_ELEMENT_MUTATOR,
                         VariableName::PANTHER_CLIENT,
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
+                        VariableName::WEBDRIVER_ELEMENT_MUTATOR,
                         VariableName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],
             'input action, environment value' => [
-                'action' => $actionParser->parse('set $".selector" to $env.KEY', 0),
-                'expectedRenderedSource' => <<<'EOD'
+                'statement' => $actionParser->parse('set $".selector" to $env.KEY', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $setValueCollection = {{ NAVIGATOR }}->find('{
                             "locator": ".selector"
@@ -274,25 +304,31 @@ trait CreateFromSetActionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ MUTATOR }}->setValue($setValueCollection, $setValueValue);
                     {{ PHPUNIT }}->refreshCrawlerAndNavigator();
                     EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::WEBDRIVER_ELEMENT_MUTATOR,
                         VariableName::ENVIRONMENT_VARIABLE_ARRAY,
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
+                        VariableName::WEBDRIVER_ELEMENT_MUTATOR,
                         VariableName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],
             'input action, environment value with default' => [
-                'action' => $actionParser->parse('set $".selector" to $env.KEY|"default"', 0),
-                'expectedRenderedSource' => <<<'EOD'
+                'statement' => $actionParser->parse('set $".selector" to $env.KEY|"default"', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $setValueCollection = {{ NAVIGATOR }}->find('{
                             "locator": ".selector"
@@ -317,25 +353,31 @@ trait CreateFromSetActionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ MUTATOR }}->setValue($setValueCollection, $setValueValue);
                     {{ PHPUNIT }}->refreshCrawlerAndNavigator();
                     EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::WEBDRIVER_ELEMENT_MUTATOR,
                         VariableName::ENVIRONMENT_VARIABLE_ARRAY,
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
+                        VariableName::WEBDRIVER_ELEMENT_MUTATOR,
                         VariableName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],
             'input action, environment value with default with whitespace' => [
-                'action' => $actionParser->parse('set $".selector" to $env.KEY|"default value"', 0),
-                'expectedRenderedSource' => <<<'EOD'
+                'statement' => $actionParser->parse('set $".selector" to $env.KEY|"default value"', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $setValueCollection = {{ NAVIGATOR }}->find('{
                             "locator": ".selector"
@@ -360,25 +402,31 @@ trait CreateFromSetActionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ MUTATOR }}->setValue($setValueCollection, $setValueValue);
                     {{ PHPUNIT }}->refreshCrawlerAndNavigator();
                     EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::WEBDRIVER_ELEMENT_MUTATOR,
                         VariableName::ENVIRONMENT_VARIABLE_ARRAY,
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
+                        VariableName::WEBDRIVER_ELEMENT_MUTATOR,
                         VariableName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],
             'input action, parent > child element identifier, literal value' => [
-                'action' => $actionParser->parse('set $".parent" >> $".child" to "value"', 0),
-                'expectedRenderedSource' => <<<'EOD'
+                'statement' => $actionParser->parse('set $".parent" >> $".child" to "value"', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $setValueCollection = {{ NAVIGATOR }}->find('{
                             "locator": ".child",
@@ -406,24 +454,30 @@ trait CreateFromSetActionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ MUTATOR }}->setValue($setValueCollection, $setValueValue);
                     {{ PHPUNIT }}->refreshCrawlerAndNavigator();
                     EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::PHPUNIT_TEST_CASE
+                    ],
+                ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
                         VariableName::WEBDRIVER_ELEMENT_MUTATOR,
                         VariableName::PHPUNIT_TEST_CASE
                     ],
                 ),
             ],
             'input action, element identifier, data parameter value' => [
-                'action' => $actionParser->parse('set $".selector" to $data.key', 0),
-                'expectedRenderedSource' => <<<'EOD'
+                'statement' => $actionParser->parse('set $".selector" to $data.key', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $setValueCollection = {{ NAVIGATOR }}->find('{
                             "locator": ".selector"
@@ -448,16 +502,22 @@ trait CreateFromSetActionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ MUTATOR }}->setValue($setValueCollection, $setValueValue);
                     {{ PHPUNIT }}->refreshCrawlerAndNavigator();
                     EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::PHPUNIT_TEST_CASE
+                    ],
+                ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
                         VariableName::WEBDRIVER_ELEMENT_MUTATOR,
                         VariableName::PHPUNIT_TEST_CASE
                     ],

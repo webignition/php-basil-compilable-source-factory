@@ -22,7 +22,8 @@ trait ClickActionFunctionalDataProviderTrait
         return [
             'interaction action (click), link' => [
                 'fixture' => '/action-click-submit.html',
-                'action' => $actionParser->parse('click $"#link-to-index"', 0),
+                'statement' => $actionParser->parse('click $"#link-to-index"', 0),
+                'additionalVariableIdentifiers' => [],
                 'additionalSetupStatements' => new Body([
                     StatementFactory::createAssertBrowserTitle('Click'),
                 ]),
@@ -32,7 +33,8 @@ trait ClickActionFunctionalDataProviderTrait
             ],
             'interaction action (click), submit button' => [
                 'fixture' => '/action-click-submit.html',
-                'action' => $actionParser->parse('click $"#form input[type=\'submit\']"', 0),
+                'statement' => $actionParser->parse('click $"#form input[type=\'submit\']"', 0),
+                'additionalVariableIdentifiers' => [],
                 'additionalSetupStatements' => new Body([
                     StatementFactory::createAssertBrowserTitle('Click'),
                     StatementFactory::createCrawlerFilterCallForElement(

@@ -21,7 +21,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
         $actionParser = ActionParser::create();
         $assertionParser = AssertionParser::create();
 
-        $expectedMetadata = new Metadata(
+        $expectedSetupMetadata = new Metadata(
             classNames: [
                 InvalidLocatorException::class,
             ],
@@ -31,10 +31,16 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
             ],
         );
 
+        $expectedBodyMetadata = new Metadata(
+            variableNames: [
+                VariableName::PHPUNIT_TEST_CASE,
+            ],
+        );
+
         return [
             'exists comparison, element identifier examined value' => [
-                'assertion' => $assertionParser->parse('$".selector" exists', 0),
-                'expectedRenderedContent' => <<<'EOD'
+                'statement' => $assertionParser->parse('$".selector" exists', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $examinedValue = {{ NAVIGATOR }}->has('{
                             "locator": ".selector"
@@ -62,7 +68,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
@@ -78,11 +85,24 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         }'
                     );
                     EOD,
-                'expectedMetadata' => $expectedMetadata,
+                'expectedSetupMetadata' => new Metadata(
+                    classNames: [
+                        InvalidLocatorException::class,
+                    ],
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                    ],
+                ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
             ],
             'exists comparison, attribute identifier examined value' => [
-                'assertion' => $assertionParser->parse('$".selector".attribute_name exists', 0),
-                'expectedRenderedContent' => <<<'EOD'
+                'statement' => $assertionParser->parse('$".selector".attribute_name exists', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $examinedValue = {{ NAVIGATOR }}->hasOne('{
                             "locator": ".selector"
@@ -117,7 +137,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
@@ -179,9 +200,17 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         }'
                     );
                     EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         InvalidLocatorException::class,
+                    ],
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                    ],
+                ),
+                'expectedBodyMetadata' => new Metadata(
+                    classNames: [
                         \Throwable::class,
                     ],
                     variableNames: [
@@ -191,8 +220,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                 ),
             ],
             'exists comparison, css attribute selector containing dot' => [
-                'assertion' => $assertionParser->parse('$"a[href=foo.html]" exists', 0),
-                'expectedRenderedContent' => <<<'EOD'
+                'statement' => $assertionParser->parse('$"a[href=foo.html]" exists', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $examinedValue = {{ NAVIGATOR }}->has('{
                             "locator": "a[href=foo.html]"
@@ -220,7 +249,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
@@ -236,11 +266,24 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         }'
                     );
                     EOD,
-                'expectedMetadata' => $expectedMetadata,
+                'expectedSetupMetadata' => new Metadata(
+                    classNames: [
+                        InvalidLocatorException::class,
+                    ],
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                    ],
+                ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
             ],
             'exists comparison, css attribute selector containing single quotes' => [
-                'assertion' => $assertionParser->parse('$"[data-value=\"' . "'single quoted'" . '\"]" exists', 0),
-                'expectedRenderedContent' => <<<'EOD'
+                'statement' => $assertionParser->parse('$"[data-value=\"' . "'single quoted'" . '\"]" exists', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $examinedValue = {{ NAVIGATOR }}->has('{
                             "locator": "[data-value=\\"\'single quoted\'\\"]"
@@ -268,7 +311,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
@@ -284,11 +328,24 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         }'
                     );
                     EOD,
-                'expectedMetadata' => $expectedMetadata,
+                'expectedSetupMetadata' => new Metadata(
+                    classNames: [
+                        InvalidLocatorException::class,
+                    ],
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                    ],
+                ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
             ],
             'exists comparison, css attribute selector containing dot with attribute name' => [
-                'assertion' => $assertionParser->parse('$"a[href=foo.html]".attribute_name exists', 0),
-                'expectedRenderedContent' => <<<'EOD'
+                'statement' => $assertionParser->parse('$"a[href=foo.html]".attribute_name exists', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $examinedValue = {{ NAVIGATOR }}->hasOne('{
                             "locator": "a[href=foo.html]"
@@ -323,7 +380,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
@@ -385,9 +443,17 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         }'
                     );
                     EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         InvalidLocatorException::class,
+                    ],
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                    ],
+                ),
+                'expectedBodyMetadata' => new Metadata(
+                    classNames: [
                         \Throwable::class,
                     ],
                     variableNames: [
@@ -397,12 +463,12 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                 ),
             ],
             'derived exists comparison, click action source' => [
-                'assertion' => new DerivedValueOperationAssertion(
+                'statement' => new DerivedValueOperationAssertion(
                     $actionParser->parse('click $".selector"', 0),
                     '$".selector"',
                     'exists'
                 ),
-                'expectedRenderedContent' => <<<'EOD'
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $examinedValue = {{ NAVIGATOR }}->hasOne('{
                             "locator": ".selector"
@@ -438,7 +504,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
@@ -462,15 +529,28 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         }'
                     );
                     EOD,
-                'expectedMetadata' => $expectedMetadata,
+                'expectedSetupMetadata' => new Metadata(
+                    classNames: [
+                        InvalidLocatorException::class,
+                    ],
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                    ],
+                ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
             ],
             'derived exists comparison, submit action source' => [
-                'assertion' => new DerivedValueOperationAssertion(
+                'statement' => new DerivedValueOperationAssertion(
                     $actionParser->parse('submit $".selector"', 0),
                     '$".selector"',
                     'exists'
                 ),
-                'expectedRenderedContent' => <<<'EOD'
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $examinedValue = {{ NAVIGATOR }}->hasOne('{
                             "locator": ".selector"
@@ -506,7 +586,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
@@ -530,15 +611,28 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         }'
                     );
                     EOD,
-                'expectedMetadata' => $expectedMetadata,
+                'expectedSetupMetadata' => new Metadata(
+                    classNames: [
+                        InvalidLocatorException::class,
+                    ],
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                    ],
+                ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
             ],
             'derived exists comparison, set action source' => [
-                'assertion' => new DerivedValueOperationAssertion(
+                'statement' => new DerivedValueOperationAssertion(
                     $actionParser->parse('set $".selector" to "value"', 0),
                     '$".selector"',
                     'exists'
                 ),
-                'expectedRenderedContent' => <<<'EOD'
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $examinedValue = {{ NAVIGATOR }}->has('{
                             "locator": ".selector"
@@ -575,7 +669,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
@@ -600,15 +695,28 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         }'
                     );
                     EOD,
-                'expectedMetadata' => $expectedMetadata,
+                'expectedSetupMetadata' => new Metadata(
+                    classNames: [
+                        InvalidLocatorException::class,
+                    ],
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                    ],
+                ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
             ],
             'derived exists comparison, wait action source' => [
-                'assertion' => new DerivedValueOperationAssertion(
+                'statement' => new DerivedValueOperationAssertion(
                     $actionParser->parse('wait $".duration"', 0),
                     '$".duration"',
                     'exists'
                 ),
-                'expectedRenderedContent' => <<<'EOD'
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $examinedValue = {{ NAVIGATOR }}->has('{
                             "locator": ".duration"
@@ -644,7 +752,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
@@ -668,7 +777,20 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         }'
                     );
                     EOD,
-                'expectedMetadata' => $expectedMetadata,
+                'expectedSetupMetadata' => new Metadata(
+                    classNames: [
+                        InvalidLocatorException::class,
+                    ],
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                    ],
+                ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
             ],
         ];
     }

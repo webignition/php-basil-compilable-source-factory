@@ -20,12 +20,12 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
 
         return [
             'derived is-regexp, matches assertion with literal scalar value' => [
-                'assertion' => new DerivedValueOperationAssertion(
+                'statement' => new DerivedValueOperationAssertion(
                     $assertionParser->parse('$".selector" matches "/^value/"', 0),
                     '"/^value/"',
                     'is-regexp'
                 ),
-                'expectedRenderedContent' => <<<'EOD'
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $examinedValue = "/^value/";
                         $expectedValue = @preg_match($examinedValue, null) === false;
@@ -54,7 +54,8 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
                         '{
@@ -78,7 +79,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                         }'
                     );
                     EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         \Throwable::class,
                     ],
@@ -86,14 +87,19 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                         VariableName::PHPUNIT_TEST_CASE,
                     ],
                 ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
             ],
             'derived is-regexp, matches assertion with elemental value' => [
-                'assertion' => new DerivedValueOperationAssertion(
+                'statement' => new DerivedValueOperationAssertion(
                     $assertionParser->parse('$".selector" matches $".pattern-container"', 0),
                     '$".pattern-container"',
                     'is-regexp'
                 ),
-                'expectedRenderedContent' => <<<'EOD'
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $examinedValue = (function () {
                             $element = {{ NAVIGATOR }}->find('{
@@ -128,7 +134,8 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
                         '{
@@ -152,7 +159,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                         }'
                     );
                     EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         \Throwable::class,
                     ],
@@ -162,14 +169,19 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                         VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
                     ],
                 ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
             ],
             'derived is-regexp, matches assertion with attribute value' => [
-                'assertion' => new DerivedValueOperationAssertion(
+                'statement' => new DerivedValueOperationAssertion(
                     $assertionParser->parse('$".selector" matches $".pattern-container".attribute_name', 0),
                     '$".pattern-container".attribute_name',
                     'is-regexp'
                 ),
-                'expectedRenderedContent' => <<<'EOD'
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $examinedValue = (function () {
                             $element = {{ NAVIGATOR }}->findOne('{
@@ -204,7 +216,8 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
                         '{
@@ -228,7 +241,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                         }'
                     );
                     EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         \Throwable::class,
                     ],
@@ -237,14 +250,19 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                     ],
                 ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
             ],
             'derived is-regexp, matches assertion with data parameter scalar value' => [
-                'assertion' => new DerivedValueOperationAssertion(
+                'statement' => new DerivedValueOperationAssertion(
                     $assertionParser->parse('$page.title matches $data.pattern', 0),
                     '$data.pattern',
                     'is-regexp'
                 ),
-                'expectedRenderedContent' => <<<'EOD'
+                'expectedRenderedSetup' => <<< 'EOD'
                     try {
                         $examinedValue = $pattern;
                         $expectedValue = @preg_match($examinedValue, null) === false;
@@ -273,7 +291,8 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                             }
                         }');
                     }
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
                         '{
@@ -297,10 +316,15 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                         }'
                     );
                     EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedSetupMetadata' => new Metadata(
                     classNames: [
                         \Throwable::class,
                     ],
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                    ],
+                ),
+                'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                     ],

@@ -20,7 +20,8 @@ trait ForwardActionFunctionalDataProviderTrait
         return [
             'forward action' => [
                 'fixture' => '/index.html',
-                'action' => $actionParser->parse('forward', 0),
+                'statement' => $actionParser->parse('forward', 0),
+                'additionalVariableIdentifiers' => [],
                 'additionalSetupStatements' => new Body([
                     StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
                     StatementFactory::createCrawlerActionCallForElement('#link-to-assertions', 'click'),

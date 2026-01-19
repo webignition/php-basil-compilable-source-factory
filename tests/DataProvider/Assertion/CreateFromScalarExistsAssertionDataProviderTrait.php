@@ -19,10 +19,11 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
 
         return [
             'exists comparison, page property examined value' => [
-                'assertion' => $assertionParser->parse('$page.url exists', 0),
-                'expectedRenderedContent' => <<<'EOD'
+                'statement' => $assertionParser->parse('$page.url exists', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
                     $examinedValue = ({{ CLIENT }}->getCurrentURL() ?? null) !== null;
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
@@ -38,18 +39,23 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
                         }'
                     );
                     EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedSetupMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PANTHER_CLIENT,
+                    ],
+                ),
+                'expectedBodyMetadata' => new Metadata(
+                    variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],
             'exists comparison, data parameter value' => [
-                'assertion' => $assertionParser->parse('$data.key exists', 0),
-                'expectedRenderedContent' => <<<'EOD'
+                'statement' => $assertionParser->parse('$data.key exists', 0),
+                'expectedRenderedSetup' => <<< 'EOD'
                     $examinedValue = ($key ?? null) !== null;
-
+                    EOD,
+                'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
                         '{
@@ -65,7 +71,8 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
                         }'
                     );
                     EOD,
-                'expectedMetadata' => new Metadata(
+                'expectedSetupMetadata' => new Metadata(),
+                'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                     ],
