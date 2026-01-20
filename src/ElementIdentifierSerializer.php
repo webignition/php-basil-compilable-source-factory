@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory;
 
-use webignition\DomElementIdentifier\ElementIdentifier;
-use webignition\DomElementIdentifier\ElementIdentifierInterface;
+use SmartAssert\DomIdentifier\ElementIdentifier;
+use SmartAssert\DomIdentifier\ElementIdentifierInterface;
 
 class ElementIdentifierSerializer
 {

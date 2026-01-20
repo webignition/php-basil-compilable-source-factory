@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Statement;
 
+use SmartAssert\DomIdentifier\AttributeIdentifierInterface;
+use SmartAssert\DomIdentifier\Factory as DomIdentifierFactory;
+use SmartAssert\DomIdentifier\FactoryInterface as DomIdentifierFactoryInterface;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
@@ -12,16 +15,14 @@ use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumen
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Model\Action\ActionInterface;
 use webignition\BasilModels\Model\StatementInterface;
-use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
 class WaitForActionHandler implements StatementHandlerInterface
 {
     public function __construct(
-        private DomIdentifierFactory $domIdentifierFactory,
+        private DomIdentifierFactoryInterface $domIdentifierFactory,
         private IdentifierTypeAnalyser $identifierTypeAnalyser,
         private ArgumentFactory $argumentFactory
     ) {}

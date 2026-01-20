@@ -4,15 +4,15 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Step;
 
+use SmartAssert\DomIdentifier\ElementIdentifierInterface;
+use SmartAssert\DomIdentifier\Factory as DomIdentifierFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Model\Action\ActionInterface;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
 use webignition\BasilModels\Model\Assertion\UniqueAssertionCollection;
 use webignition\BasilModels\Model\StatementInterface as StatementModelInterface;
-use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
 class DerivedAssertionFactory
 {

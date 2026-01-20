@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Statement;
 
+use SmartAssert\DomIdentifier\AttributeIdentifierInterface;
+use SmartAssert\DomIdentifier\Factory as DomIdentifierFactory;
+use SmartAssert\DomIdentifier\FactoryInterface as DomIdentifierFactoryInterface;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
@@ -25,11 +28,9 @@ use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
-use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Model\Action\ActionInterface;
 use webignition\BasilModels\Model\StatementInterface;
-use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
 class SetActionHandler implements StatementHandlerInterface
 {
@@ -37,7 +38,7 @@ class SetActionHandler implements StatementHandlerInterface
         private ScalarValueHandler $scalarValueHandler,
         private DomIdentifierHandler $domIdentifierHandler,
         private AccessorDefaultValueFactory $accessorDefaultValueFactory,
-        private DomIdentifierFactory $domIdentifierFactory,
+        private DomIdentifierFactoryInterface $domIdentifierFactory,
         private IdentifierTypeAnalyser $identifierTypeAnalyser,
         private ElementIdentifierSerializer $elementIdentifierSerializer,
         private TryCatchBlockFactory $tryCatchBlockFactory,
