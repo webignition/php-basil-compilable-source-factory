@@ -64,7 +64,7 @@ trait CreateFromMatchesAssertionDataProviderTrait
                             },
                             "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
                             "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
-                        }'
+                        }',
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -129,7 +129,7 @@ trait CreateFromMatchesAssertionDataProviderTrait
                             },
                             "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
                             "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
-                        }'
+                        }',
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(

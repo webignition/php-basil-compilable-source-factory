@@ -36,7 +36,7 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
                             },
                             "expected": ' . (true ? 'true' : 'false') . ',
                             "examined": ' . ($examinedValue ? 'true' : 'false') . '
-                        }'
+                        }',
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -68,7 +68,7 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
                             },
                             "expected": ' . (true ? 'true' : 'false') . ',
                             "examined": ' . ($examinedValue ? 'true' : 'false') . '
-                        }'
+                        }',
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(),

@@ -86,7 +86,7 @@ class MethodInvocationTest extends AbstractResolvableTestCase
                 ),
                 'expectedString' => "methodName(\n"
                     . "    1,\n"
-                    . "    \\'single-quoted value\\'\n"
+                    . "    \\'single-quoted value\\',\n"
                     . ')',
             ],
         ];
