@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory;
 
+use SmartAssert\DomIdentifier\AttributeIdentifierInterface;
+use SmartAssert\DomIdentifier\Factory as DomIdentifierFactory;
+use SmartAssert\DomIdentifier\FactoryInterface as DomIdentifierFactoryInterface;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
@@ -12,15 +15,13 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterfac
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\NullableExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\NullCoalescerExpression;
-use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
-use webignition\DomElementIdentifier\AttributeIdentifierInterface;
 
 class ValueAccessorFactory
 {
     public function __construct(
         private IdentifierTypeAnalyser $identifierTypeAnalyser,
-        private DomIdentifierFactory $domIdentifierFactory,
+        private DomIdentifierFactoryInterface $domIdentifierFactory,
         private DomIdentifierHandler $domIdentifierHandler,
         private ElementIdentifierSerializer $elementIdentifierSerializer,
         private ScalarValueHandler $scalarValueHandler,

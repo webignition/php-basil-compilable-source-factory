@@ -5,6 +5,8 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use SmartAssert\DomIdentifier\AttributeIdentifier;
+use SmartAssert\DomIdentifier\ElementIdentifier;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
@@ -17,8 +19,6 @@ use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
-use webignition\DomElementIdentifier\AttributeIdentifier;
-use webignition\DomElementIdentifier\ElementIdentifier;
 
 class DomIdentifierHandlerTest extends AbstractBrowserTestCase
 {

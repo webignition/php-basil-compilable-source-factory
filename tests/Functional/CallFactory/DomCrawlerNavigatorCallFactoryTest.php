@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Functional\CallFactory;
 
 use Facebook\WebDriver\WebDriverElement;
 use PHPUnit\Framework\Attributes\DataProvider;
+use SmartAssert\DomIdentifier\ElementIdentifier;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
@@ -19,7 +20,6 @@ use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
-use webignition\DomElementIdentifier\ElementIdentifier;
 
 class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
 {

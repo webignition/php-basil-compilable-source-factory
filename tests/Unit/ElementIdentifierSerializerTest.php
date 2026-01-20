@@ -6,9 +6,9 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use SmartAssert\DomIdentifier\ElementIdentifier;
+use SmartAssert\DomIdentifier\ElementIdentifierInterface;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
-use webignition\DomElementIdentifier\ElementIdentifier;
-use webignition\DomElementIdentifier\ElementIdentifierInterface;
 
 class ElementIdentifierSerializerTest extends TestCase
 {

@@ -4,6 +4,10 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Statement;
 
+use SmartAssert\DomIdentifier\AttributeIdentifierInterface;
+use SmartAssert\DomIdentifier\ElementIdentifier;
+use SmartAssert\DomIdentifier\ElementIdentifierInterface;
+use SmartAssert\DomIdentifier\Factory as DomIdentifierFactory;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\AssertionArgument;
 use webignition\BasilCompilableSourceFactory\AssertionMessageFactory;
@@ -32,14 +36,10 @@ use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
-use webignition\BasilDomIdentifierFactory\Factory as DomIdentifierFactory;
 use webignition\BasilModels\Model\Action\ActionInterface;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
 use webignition\BasilModels\Model\StatementInterface as StatementModelInterface;
-use webignition\DomElementIdentifier\AttributeIdentifierInterface;
-use webignition\DomElementIdentifier\ElementIdentifier;
-use webignition\DomElementIdentifier\ElementIdentifierInterface;
 use webignition\SymfonyDomCrawlerNavigator\Exception\InvalidLocatorException;
 
 class IdentifierExistenceAssertionHandler implements StatementHandlerInterface

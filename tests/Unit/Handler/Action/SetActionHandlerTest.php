@@ -6,12 +6,12 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Action;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
+use SmartAssert\DomIdentifier\ElementIdentifier;
+use SmartAssert\DomIdentifier\FactoryInterface;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\Statement\SetActionHandler;
-use webignition\BasilDomIdentifierFactory\Factory;
 use webignition\BasilModels\Model\Action\ActionInterface;
 use webignition\BasilModels\Parser\ActionParser;
-use webignition\DomElementIdentifier\ElementIdentifier;
 use webignition\ObjectReflector\ObjectReflector;
 
 class SetActionHandlerTest extends TestCase
@@ -62,7 +62,7 @@ class SetActionHandlerTest extends TestCase
                     '$".selector"'
                 ),
                 'initializer' => function (SetActionHandler $handler) {
-                    $domIdentifierFactory = \Mockery::mock(Factory::class);
+                    $domIdentifierFactory = \Mockery::mock(FactoryInterface::class);
                     $domIdentifierFactory
                         ->shouldReceive('createFromIdentifierString')
                         ->with('$".selector"')
@@ -84,7 +84,7 @@ class SetActionHandlerTest extends TestCase
                     '$".value"'
                 ),
                 'initializer' => function (SetActionHandler $handler) {
-                    $domIdentifierFactory = \Mockery::mock(Factory::class);
+                    $domIdentifierFactory = \Mockery::mock(FactoryInterface::class);
 
                     $domIdentifierFactory
                         ->shouldReceive('createFromIdentifierString')
