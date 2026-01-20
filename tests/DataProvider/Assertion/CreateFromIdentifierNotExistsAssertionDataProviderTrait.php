@@ -73,7 +73,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                             },
                             "expected": ' . (false ? 'true' : 'false') . ',
                             "examined": ' . ($elementExists ? 'true' : 'false') . '
-                        }'
+                        }',
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -157,7 +157,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                             },
                             "expected": ' . (true ? 'true' : 'false') . ',
                             "examined": ' . ($elementExists ? 'true' : 'false') . '
-                        }'
+                        }',
                     );
                     {{ PHPUNIT }}->assertFalse(
                         $attributeExists,
@@ -171,7 +171,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                             },
                             "expected": ' . (false ? 'true' : 'false') . ',
                             "examined": ' . ($attributeExists ? 'true' : 'false') . '
-                        }'
+                        }',
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(

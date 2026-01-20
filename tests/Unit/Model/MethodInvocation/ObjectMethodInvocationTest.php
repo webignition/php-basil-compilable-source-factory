@@ -149,7 +149,7 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
                 ),
                 'expectedString' => "{{ CLIENT }}->methodName(\n"
                     . "    1,\n"
-                    . "    \\'single-quoted value\\'\n"
+                    . "    \\'single-quoted value\\',\n"
                     . ')',
             ],
             'object and method name only, resolving placeholder' => [

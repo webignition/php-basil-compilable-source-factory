@@ -118,10 +118,9 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                     new LiteralExpression('1'),
                     new LiteralExpression("\\'single-quoted value\\'"),
                 ]),
-                'expectedString' => <<< EOD
+                'expectedString' => <<< 'EOD'
                     1, \'single-quoted value\'
                     EOD,
-
             ],
             'has arguments, stacked' => [
                 'arguments' => new MethodArguments(
@@ -131,7 +130,7 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                     ],
                     MethodArgumentsInterface::FORMAT_STACKED
                 ),
-                'expectedString' => <<< EOD
+                'expectedString' => <<< 'EOD'
 
                         1,
                         \'single-quoted value\',

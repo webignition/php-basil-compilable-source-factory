@@ -76,7 +76,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                             },
                             "expected": ' . ($expectedValue ? 'true' : 'false') . ',
                             "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
-                        }'
+                        }',
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -156,7 +156,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                             },
                             "expected": ' . ($expectedValue ? 'true' : 'false') . ',
                             "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
-                        }'
+                        }',
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -238,7 +238,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                             },
                             "expected": ' . ($expectedValue ? 'true' : 'false') . ',
                             "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
-                        }'
+                        }',
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -313,7 +313,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                             },
                             "expected": ' . ($expectedValue ? 'true' : 'false') . ',
                             "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
-                        }'
+                        }',
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(

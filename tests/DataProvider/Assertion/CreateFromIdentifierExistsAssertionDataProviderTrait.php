@@ -66,7 +66,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             },
                             "expected": ' . (true ? 'true' : 'false') . ',
                             "examined": ' . ($elementExists ? 'true' : 'false') . '
-                        }'
+                        }',
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -149,7 +149,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             },
                             "expected": ' . (true ? 'true' : 'false') . ',
                             "examined": ' . ($elementExists ? 'true' : 'false') . '
-                        }'
+                        }',
                     );
                     {{ PHPUNIT }}->assertTrue(
                         $attributeExists,
@@ -163,7 +163,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             },
                             "expected": ' . (true ? 'true' : 'false') . ',
                             "examined": ' . ($attributeExists ? 'true' : 'false') . '
-                        }'
+                        }',
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -225,7 +225,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             },
                             "expected": ' . (true ? 'true' : 'false') . ',
                             "examined": ' . ($elementExists ? 'true' : 'false') . '
-                        }'
+                        }',
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -287,7 +287,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             },
                             "expected": ' . (true ? 'true' : 'false') . ',
                             "examined": ' . ($elementExists ? 'true' : 'false') . '
-                        }'
+                        }',
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -370,7 +370,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             },
                             "expected": ' . (true ? 'true' : 'false') . ',
                             "examined": ' . ($elementExists ? 'true' : 'false') . '
-                        }'
+                        }',
                     );
                     {{ PHPUNIT }}->assertTrue(
                         $attributeExists,
@@ -384,7 +384,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             },
                             "expected": ' . (true ? 'true' : 'false') . ',
                             "examined": ' . ($attributeExists ? 'true' : 'false') . '
-                        }'
+                        }',
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -466,7 +466,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             },
                             "expected": ' . (true ? 'true' : 'false') . ',
                             "examined": ' . ($elementExists ? 'true' : 'false') . '
-                        }'
+                        }',
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -548,7 +548,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             },
                             "expected": ' . (true ? 'true' : 'false') . ',
                             "examined": ' . ($elementExists ? 'true' : 'false') . '
-                        }'
+                        }',
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -632,7 +632,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             },
                             "expected": ' . (true ? 'true' : 'false') . ',
                             "examined": ' . ($elementExists ? 'true' : 'false') . '
-                        }'
+                        }',
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -714,7 +714,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             },
                             "expected": ' . (true ? 'true' : 'false') . ',
                             "examined": ' . ($elementExists ? 'true' : 'false') . '
-                        }'
+                        }',
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(

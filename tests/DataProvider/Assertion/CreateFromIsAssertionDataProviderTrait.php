@@ -64,7 +64,7 @@ trait CreateFromIsAssertionDataProviderTrait
                             },
                             "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
                             "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
-                        }'
+                        }',
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -132,7 +132,7 @@ trait CreateFromIsAssertionDataProviderTrait
                             },
                             "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
                             "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
-                        }'
+                        }',
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -197,7 +197,7 @@ trait CreateFromIsAssertionDataProviderTrait
                             },
                             "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
                             "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
-                        }'
+                        }',
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -259,7 +259,7 @@ trait CreateFromIsAssertionDataProviderTrait
                             },
                             "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
                             "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
-                        }'
+                        }',
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -317,7 +317,7 @@ trait CreateFromIsAssertionDataProviderTrait
                             },
                             "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
                             "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
-                        }'
+                        }',
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -375,7 +375,7 @@ trait CreateFromIsAssertionDataProviderTrait
                             },
                             "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
                             "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
-                        }'
+                        }',
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -433,7 +433,7 @@ trait CreateFromIsAssertionDataProviderTrait
                             },
                             "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
                             "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
-                        }'
+                        }',
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -491,7 +491,7 @@ trait CreateFromIsAssertionDataProviderTrait
                             },
                             "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
                             "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
-                        }'
+                        }',
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -562,7 +562,7 @@ trait CreateFromIsAssertionDataProviderTrait
                             },
                             "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
                             "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
-                        }'
+                        }',
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -632,7 +632,7 @@ trait CreateFromIsAssertionDataProviderTrait
                             },
                             "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
                             "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
-                        }'
+                        }',
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -702,7 +702,7 @@ trait CreateFromIsAssertionDataProviderTrait
                             },
                             "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
                             "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
-                        }'
+                        }',
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -765,7 +765,7 @@ trait CreateFromIsAssertionDataProviderTrait
                             },
                             "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
                             "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
-                        }'
+                        }',
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -828,7 +828,7 @@ trait CreateFromIsAssertionDataProviderTrait
                             },
                             "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
                             "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
-                        }'
+                        }',
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -891,7 +891,7 @@ trait CreateFromIsAssertionDataProviderTrait
                             },
                             "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
                             "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
-                        }'
+                        }',
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -949,7 +949,7 @@ trait CreateFromIsAssertionDataProviderTrait
                             },
                             "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
                             "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
-                        }'
+                        }',
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(

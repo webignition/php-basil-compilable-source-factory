@@ -105,7 +105,7 @@ class ObjectConstructorTest extends AbstractResolvableTestCase
                 ),
                 'expectedString' => "new Model(\n"
                     . "    1,\n"
-                    . "    \\'single-quoted value\\'\n"
+                    . "    \\'single-quoted value\\',\n"
                     . ')',
             ],
         ];
