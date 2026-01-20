@@ -114,7 +114,7 @@ class MethodArguments implements MethodArgumentsInterface, ResolvedTemplateMutat
 
     private function stackedResolvedTemplateMutator(string $resolvedTemplate): string
     {
-        $resolvedTemplate = rtrim($resolvedTemplate, ",\n");
+        $resolvedTemplate = rtrim($resolvedTemplate, "\n");
 
         $lines = explode("\n", $resolvedTemplate);
         array_walk($lines, function (string &$line) {

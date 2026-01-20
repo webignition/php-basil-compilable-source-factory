@@ -118,7 +118,10 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                     new LiteralExpression('1'),
                     new LiteralExpression("\\'single-quoted value\\'"),
                 ]),
-                'expectedString' => "1, \\'single-quoted value\\'",
+                'expectedString' => <<< EOD
+                    1, \'single-quoted value\'
+                    EOD,
+
             ],
             'has arguments, stacked' => [
                 'arguments' => new MethodArguments(
@@ -128,9 +131,12 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                     ],
                     MethodArgumentsInterface::FORMAT_STACKED
                 ),
-                'expectedString' => "\n"
-                    . "    1,\n"
-                    . "    \\'single-quoted value\\'\n",
+                'expectedString' => <<< EOD
+
+                        1,
+                        \'single-quoted value\',
+                    
+                    EOD,
             ],
             'indent stacked multi-line arguments' => [
                 'arguments' => new MethodArguments(
@@ -169,15 +175,18 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                     ],
                     MethodArgumentsInterface::FORMAT_STACKED
                 ),
-                'expectedString' => "\n"
-                    . '    {{ NAVIGATOR }}->find(ObjectMethodInvocation::fromJson({' . "\n"
-                    . '        "locator": ".selector"' . "\n"
-                    . '    })),' . "\n"
-                    . '    (function () {' . "\n"
-                    . '        $variable = 100;' . "\n"
-                    . "\n"
-                    . '        return $variable;' . "\n"
-                    . '    })()' . "\n",
+                'expectedString' => <<< 'EOD'
+                    
+                        {{ NAVIGATOR }}->find(ObjectMethodInvocation::fromJson({
+                            "locator": ".selector"
+                        })),
+                        (function () {
+                            $variable = 100;
+                    
+                            return $variable;
+                        })(),
+
+                    EOD,
             ],
             'single array expression, pair contains inner array' => [
                 'arguments' => new MethodArguments(
@@ -194,13 +203,15 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                         ])
                     ]
                 ),
-                'expectedString' => "[\n"
-                    . "    'name' => {{ CLIENT }}->dataName(),\n"
-                    . "    'data' => [\n"
-                    . "        'key1' => 'value1',\n"
-                    . "        'key2' => 'value2',\n"
-                    . "    ],\n"
-                    . ']',
+                'expectedString' => <<< 'EOD'
+                    [
+                        'name' => {{ CLIENT }}->dataName(),
+                        'data' => [
+                            'key1' => 'value1',
+                            'key2' => 'value2',
+                        ],
+                    ]
+                    EOD,
             ],
         ];
     }
