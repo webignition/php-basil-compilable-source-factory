@@ -5,12 +5,12 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Step;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use webignition\BaseBasilTestCase\Enum\StatementStage;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
-use webignition\BasilCompilableSourceFactory\FailureMessageFactory;
 use webignition\BasilCompilableSourceFactory\Handler\Statement\StatementHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Statement\StatementHandlerComponents;
 use webignition\BasilCompilableSourceFactory\Handler\Step\DerivedAssertionFactory;
@@ -122,31 +122,31 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     try {
                         // StatementHandler::handle(click $".selector")
                     } catch (\Throwable $exception) {
-                        {{ PHPUNIT }}->fail('{
-                            "statement": {
-                                "statement-type": "action",
-                                "source": "click $\".selector\"",
-                                "index": 0,
-                                "identifier": "$\".selector\"",
-                                "type": "click",
-                                "arguments": "$\".selector\""
-                            },
-                            "reason": "action-failed",
-                            "exception": {
-                                "class": "' . addcslashes($exception::class, '"\\') . '",
-                                "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
-                            }
-                        }');
+                        {{ PHPUNIT }}->fail(
+                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                                '{
+                                    "statement-type": "action",
+                                    "source": "click $\\".selector\\"",
+                                    "index": 0,
+                                    "identifier": "$\\".selector\\"",
+                                    "type": "click",
+                                    "arguments": "$\\".selector\\""
+                                }',
+                                StatementStage::EXECUTE,
+                                $exception,
+                            ),
+                        );
                     }
 
                     EOD,
                 'expectedMetadata' => new Metadata(
                     classNames: [
+                        StatementStage::class,
                         \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::FAILURE_MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -251,22 +251,20 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     try {
                         // StatementHandler::handle(click $".selector1")
                     } catch (\Throwable $exception) {
-                        {{ PHPUNIT }}->fail('{
-                            "statement": {
-                                "statement-type": "action",
-                                "source": "click $\".selector1\"",
-                                "index": 0,
-                                "identifier": "$\".selector1\"",
-                                "type": "click",
-                                "arguments": "$\".selector1\""
-                            },
-                            "reason": "action-failed",
-                            "exception": {
-                                "class": "' . addcslashes($exception::class, '"\\') . '",
-                                "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
-                            }
-                        }');
+                        {{ PHPUNIT }}->fail(
+                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                                '{
+                                    "statement-type": "action",
+                                    "source": "click $\\".selector1\\"",
+                                    "index": 0,
+                                    "identifier": "$\\".selector1\\"",
+                                    "type": "click",
+                                    "arguments": "$\\".selector1\\""
+                                }',
+                                StatementStage::EXECUTE,
+                                $exception,
+                            ),
+                        );
                     }
 
                     // StatementBlockFactory::create($".selector2" exists)
@@ -276,31 +274,31 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     try {
                         // StatementHandler::handle(click $".selector2")
                     } catch (\Throwable $exception) {
-                        {{ PHPUNIT }}->fail('{
-                            "statement": {
-                                "statement-type": "action",
-                                "source": "click $\".selector2\"",
-                                "index": 1,
-                                "identifier": "$\".selector2\"",
-                                "type": "click",
-                                "arguments": "$\".selector2\""
-                            },
-                            "reason": "action-failed",
-                            "exception": {
-                                "class": "' . addcslashes($exception::class, '"\\') . '",
-                                "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
-                            }
-                        }');
+                        {{ PHPUNIT }}->fail(
+                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                                '{
+                                    "statement-type": "action",
+                                    "source": "click $\\".selector2\\"",
+                                    "index": 1,
+                                    "identifier": "$\\".selector2\\"",
+                                    "type": "click",
+                                    "arguments": "$\\".selector2\\""
+                                }',
+                                StatementStage::EXECUTE,
+                                $exception,
+                            ),
+                        );
                     }
 
                     EOD,
                 'expectedMetadata' => new Metadata(
                     classNames: [
+                        StatementStage::class,
                         \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::FAILURE_MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -535,22 +533,20 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     try {
                         // StatementHandler::handle(click $".selector1")
                     } catch (\Throwable $exception) {
-                        {{ PHPUNIT }}->fail('{
-                            "statement": {
-                                "statement-type": "action",
-                                "source": "click $\".selector1\"",
-                                "index": 0,
-                                "identifier": "$\".selector1\"",
-                                "type": "click",
-                                "arguments": "$\".selector1\""
-                            },
-                            "reason": "action-failed",
-                            "exception": {
-                                "class": "' . addcslashes($exception::class, '"\\') . '",
-                                "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
-                            }
-                        }');
+                        {{ PHPUNIT }}->fail(
+                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                                '{
+                                    "statement-type": "action",
+                                    "source": "click $\\".selector1\\"",
+                                    "index": 0,
+                                    "identifier": "$\\".selector1\\"",
+                                    "type": "click",
+                                    "arguments": "$\\".selector1\\""
+                                }',
+                                StatementStage::EXECUTE,
+                                $exception,
+                            ),
+                        );
                     }
 
                     // StatementBlockFactory::create($".selector2" exists)
@@ -559,10 +555,12 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     EOD,
                 'expectedMetadata' => new Metadata(
                     classNames: [
+                        StatementStage::class,
                         \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::FAILURE_MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -872,7 +870,6 @@ class StepHandlerTest extends AbstractResolvableTestCase
             $derivedAssertionFactory,
             TryCatchBlockFactory::createFactory(),
             PhpUnitCallFactory::createFactory(),
-            FailureMessageFactory::createFactory(),
         );
     }
 }

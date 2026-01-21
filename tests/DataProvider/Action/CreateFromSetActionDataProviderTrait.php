@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
+use webignition\BaseBasilTestCase\Enum\StatementStage;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilModels\Parser\ActionParser;
@@ -27,23 +28,21 @@ trait CreateFromSetActionDataProviderTrait
                         }');
                         $setValueValue = "value";
                     } catch (\Throwable $exception) {
-                        {{ PHPUNIT }}->fail('{
-                            "statement": {
-                                "statement-type": "action",
-                                "source": "set $\".selector\" to \"value\"",
-                                "index": 0,
-                                "identifier": "$\".selector\"",
-                                "value": "\"value\"",
-                                "type": "set",
-                                "arguments": "$\".selector\" to \"value\""
-                            },
-                            "reason": "action-setup-failed",
-                            "exception": {
-                                "class": "' . addcslashes($exception::class, '"\\') . '",
-                                "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
-                            }
-                        }');
+                        {{ PHPUNIT }}->fail(
+                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                                '{
+                                    "statement-type": "action",
+                                    "source": "set $\\".selector\\" to \\"value\\"",
+                                    "index": 0,
+                                    "identifier": "$\\".selector\\"",
+                                    "value": "\\"value\\"",
+                                    "type": "set",
+                                    "arguments": "$\\".selector\\" to \\"value\\""
+                                }',
+                                StatementStage::SETUP,
+                                $exception,
+                            ),
+                        );
                     }
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
@@ -52,11 +51,13 @@ trait CreateFromSetActionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     classNames: [
+                        StatementStage::class,
                         \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::FAILURE_MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -81,23 +82,21 @@ trait CreateFromSetActionDataProviderTrait
                             return {{ INSPECTOR }}->getValue($element);
                         })();
                     } catch (\Throwable $exception) {
-                        {{ PHPUNIT }}->fail('{
-                            "statement": {
-                                "statement-type": "action",
-                                "source": "set $\".selector\" to $\".source\"",
-                                "index": 0,
-                                "identifier": "$\".selector\"",
-                                "value": "$\".source\"",
-                                "type": "set",
-                                "arguments": "$\".selector\" to $\".source\""
-                            },
-                            "reason": "action-setup-failed",
-                            "exception": {
-                                "class": "' . addcslashes($exception::class, '"\\') . '",
-                                "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
-                            }
-                        }');
+                        {{ PHPUNIT }}->fail(
+                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                                '{
+                                    "statement-type": "action",
+                                    "source": "set $\\".selector\\" to $\\".source\\"",
+                                    "index": 0,
+                                    "identifier": "$\\".selector\\"",
+                                    "value": "$\\".source\\"",
+                                    "type": "set",
+                                    "arguments": "$\\".selector\\" to $\\".source\\""
+                                }',
+                                StatementStage::SETUP,
+                                $exception,
+                            ),
+                        );
                     }
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
@@ -106,12 +105,14 @@ trait CreateFromSetActionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     classNames: [
+                        StatementStage::class,
                         \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
-                        VariableName::PHPUNIT_TEST_CASE
+                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::FAILURE_MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -136,23 +137,21 @@ trait CreateFromSetActionDataProviderTrait
                             return $element->getAttribute('attribute_name');
                         })();
                     } catch (\Throwable $exception) {
-                        {{ PHPUNIT }}->fail('{
-                            "statement": {
-                                "statement-type": "action",
-                                "source": "set $\".selector\" to $\".source\".attribute_name",
-                                "index": 0,
-                                "identifier": "$\".selector\"",
-                                "value": "$\".source\".attribute_name",
-                                "type": "set",
-                                "arguments": "$\".selector\" to $\".source\".attribute_name"
-                            },
-                            "reason": "action-setup-failed",
-                            "exception": {
-                                "class": "' . addcslashes($exception::class, '"\\') . '",
-                                "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
-                            }
-                        }');
+                        {{ PHPUNIT }}->fail(
+                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                                '{
+                                    "statement-type": "action",
+                                    "source": "set $\\".selector\\" to $\\".source\\".attribute_name",
+                                    "index": 0,
+                                    "identifier": "$\\".selector\\"",
+                                    "value": "$\\".source\\".attribute_name",
+                                    "type": "set",
+                                    "arguments": "$\\".selector\\" to $\\".source\\".attribute_name"
+                                }',
+                                StatementStage::SETUP,
+                                $exception,
+                            ),
+                        );
                     }
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
@@ -161,11 +160,13 @@ trait CreateFromSetActionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     classNames: [
+                        StatementStage::class,
                         \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::PHPUNIT_TEST_CASE
+                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::FAILURE_MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -188,23 +189,21 @@ trait CreateFromSetActionDataProviderTrait
                 return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
             })();
         } catch (\Throwable $exception) {
-            {{ PHPUNIT }}->fail('{
-                "statement": {
-                    "statement-type": "action",
-                    "source": "set $\".selector\" to $browser.size",
-                    "index": 0,
-                    "identifier": "$\".selector\"",
-                    "value": "$browser.size",
-                    "type": "set",
-                    "arguments": "$\".selector\" to $browser.size"
-                },
-                "reason": "action-setup-failed",
-                "exception": {
-                    "class": "' . addcslashes($exception::class, '"\\') . '",
-                    "code": ' . $exception->getCode() . ',
-                    "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
-                }
-            }');
+            {{ PHPUNIT }}->fail(
+                {{ FAILURE_MESSAGE_FACTORY }}->create(
+                    '{
+                        "statement-type": "action",
+                        "source": "set $\\".selector\\" to $browser.size",
+                        "index": 0,
+                        "identifier": "$\\".selector\\"",
+                        "value": "$browser.size",
+                        "type": "set",
+                        "arguments": "$\\".selector\\" to $browser.size"
+                    }',
+                    StatementStage::SETUP,
+                    $exception,
+                ),
+            );
         }
         EOD,
                 'expectedRenderedBody' => <<< 'EOD'
@@ -213,12 +212,14 @@ trait CreateFromSetActionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     classNames: [
+                        StatementStage::class,
                         \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::PANTHER_CLIENT,
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::FAILURE_MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -237,23 +238,21 @@ trait CreateFromSetActionDataProviderTrait
                         }');
                         $setValueValue = {{ CLIENT }}->getCurrentURL();
                     } catch (\Throwable $exception) {
-                        {{ PHPUNIT }}->fail('{
-                            "statement": {
-                                "statement-type": "action",
-                                "source": "set $\".selector\" to $page.url",
-                                "index": 0,
-                                "identifier": "$\".selector\"",
-                                "value": "$page.url",
-                                "type": "set",
-                                "arguments": "$\".selector\" to $page.url"
-                            },
-                            "reason": "action-setup-failed",
-                            "exception": {
-                                "class": "' . addcslashes($exception::class, '"\\') . '",
-                                "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
-                            }
-                        }');
+                        {{ PHPUNIT }}->fail(
+                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                                '{
+                                    "statement-type": "action",
+                                    "source": "set $\\".selector\\" to $page.url",
+                                    "index": 0,
+                                    "identifier": "$\\".selector\\"",
+                                    "value": "$page.url",
+                                    "type": "set",
+                                    "arguments": "$\\".selector\\" to $page.url"
+                                }',
+                                StatementStage::SETUP,
+                                $exception,
+                            ),
+                        );
                     }
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
@@ -262,12 +261,14 @@ trait CreateFromSetActionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     classNames: [
+                        StatementStage::class,
                         \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::PANTHER_CLIENT,
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::FAILURE_MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -286,23 +287,21 @@ trait CreateFromSetActionDataProviderTrait
                         }');
                         $setValueValue = {{ ENV }}['KEY'];
                     } catch (\Throwable $exception) {
-                        {{ PHPUNIT }}->fail('{
-                            "statement": {
-                                "statement-type": "action",
-                                "source": "set $\".selector\" to $env.KEY",
-                                "index": 0,
-                                "identifier": "$\".selector\"",
-                                "value": "$env.KEY",
-                                "type": "set",
-                                "arguments": "$\".selector\" to $env.KEY"
-                            },
-                            "reason": "action-setup-failed",
-                            "exception": {
-                                "class": "' . addcslashes($exception::class, '"\\') . '",
-                                "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
-                            }
-                        }');
+                        {{ PHPUNIT }}->fail(
+                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                                '{
+                                    "statement-type": "action",
+                                    "source": "set $\\".selector\\" to $env.KEY",
+                                    "index": 0,
+                                    "identifier": "$\\".selector\\"",
+                                    "value": "$env.KEY",
+                                    "type": "set",
+                                    "arguments": "$\\".selector\\" to $env.KEY"
+                                }',
+                                StatementStage::SETUP,
+                                $exception,
+                            ),
+                        );
                     }
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
@@ -311,12 +310,14 @@ trait CreateFromSetActionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     classNames: [
+                        StatementStage::class,
                         \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::ENVIRONMENT_VARIABLE_ARRAY,
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::FAILURE_MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -335,23 +336,21 @@ trait CreateFromSetActionDataProviderTrait
                         }');
                         $setValueValue = {{ ENV }}['KEY'] ?? 'default';
                     } catch (\Throwable $exception) {
-                        {{ PHPUNIT }}->fail('{
-                            "statement": {
-                                "statement-type": "action",
-                                "source": "set $\".selector\" to $env.KEY|\"default\"",
-                                "index": 0,
-                                "identifier": "$\".selector\"",
-                                "value": "$env.KEY|\"default\"",
-                                "type": "set",
-                                "arguments": "$\".selector\" to $env.KEY|\"default\""
-                            },
-                            "reason": "action-setup-failed",
-                            "exception": {
-                                "class": "' . addcslashes($exception::class, '"\\') . '",
-                                "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
-                            }
-                        }');
+                        {{ PHPUNIT }}->fail(
+                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                                '{
+                                    "statement-type": "action",
+                                    "source": "set $\\".selector\\" to $env.KEY|\\"default\\"",
+                                    "index": 0,
+                                    "identifier": "$\\".selector\\"",
+                                    "value": "$env.KEY|\\"default\\"",
+                                    "type": "set",
+                                    "arguments": "$\\".selector\\" to $env.KEY|\\"default\\""
+                                }',
+                                StatementStage::SETUP,
+                                $exception,
+                            ),
+                        );
                     }
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
@@ -360,12 +359,14 @@ trait CreateFromSetActionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     classNames: [
+                        StatementStage::class,
                         \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::ENVIRONMENT_VARIABLE_ARRAY,
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::FAILURE_MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -384,23 +385,21 @@ trait CreateFromSetActionDataProviderTrait
                         }');
                         $setValueValue = {{ ENV }}['KEY'] ?? 'default value';
                     } catch (\Throwable $exception) {
-                        {{ PHPUNIT }}->fail('{
-                            "statement": {
-                                "statement-type": "action",
-                                "source": "set $\".selector\" to $env.KEY|\"default value\"",
-                                "index": 0,
-                                "identifier": "$\".selector\"",
-                                "value": "$env.KEY|\"default value\"",
-                                "type": "set",
-                                "arguments": "$\".selector\" to $env.KEY|\"default value\""
-                            },
-                            "reason": "action-setup-failed",
-                            "exception": {
-                                "class": "' . addcslashes($exception::class, '"\\') . '",
-                                "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
-                            }
-                        }');
+                        {{ PHPUNIT }}->fail(
+                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                                '{
+                                    "statement-type": "action",
+                                    "source": "set $\\".selector\\" to $env.KEY|\\"default value\\"",
+                                    "index": 0,
+                                    "identifier": "$\\".selector\\"",
+                                    "value": "$env.KEY|\\"default value\\"",
+                                    "type": "set",
+                                    "arguments": "$\\".selector\\" to $env.KEY|\\"default value\\""
+                                }',
+                                StatementStage::SETUP,
+                                $exception,
+                            ),
+                        );
                     }
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
@@ -409,12 +408,14 @@ trait CreateFromSetActionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     classNames: [
+                        StatementStage::class,
                         \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::ENVIRONMENT_VARIABLE_ARRAY,
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::FAILURE_MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -436,23 +437,21 @@ trait CreateFromSetActionDataProviderTrait
                         }');
                         $setValueValue = "value";
                     } catch (\Throwable $exception) {
-                        {{ PHPUNIT }}->fail('{
-                            "statement": {
-                                "statement-type": "action",
-                                "source": "set $\".parent\" >> $\".child\" to \"value\"",
-                                "index": 0,
-                                "identifier": "$\".parent\" >> $\".child\"",
-                                "value": "\"value\"",
-                                "type": "set",
-                                "arguments": "$\".parent\" >> $\".child\" to \"value\""
-                            },
-                            "reason": "action-setup-failed",
-                            "exception": {
-                                "class": "' . addcslashes($exception::class, '"\\') . '",
-                                "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
-                            }
-                        }');
+                        {{ PHPUNIT }}->fail(
+                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                                '{
+                                    "statement-type": "action",
+                                    "source": "set $\\".parent\\" >> $\\".child\\" to \\"value\\"",
+                                    "index": 0,
+                                    "identifier": "$\\".parent\\" >> $\\".child\\"",
+                                    "value": "\\"value\\"",
+                                    "type": "set",
+                                    "arguments": "$\\".parent\\" >> $\\".child\\" to \\"value\\""
+                                }',
+                                StatementStage::SETUP,
+                                $exception,
+                            ),
+                        );
                     }
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
@@ -461,11 +460,13 @@ trait CreateFromSetActionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     classNames: [
+                        StatementStage::class,
                         \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::PHPUNIT_TEST_CASE
+                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::FAILURE_MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -484,23 +485,21 @@ trait CreateFromSetActionDataProviderTrait
                         }');
                         $setValueValue = $key;
                     } catch (\Throwable $exception) {
-                        {{ PHPUNIT }}->fail('{
-                            "statement": {
-                                "statement-type": "action",
-                                "source": "set $\".selector\" to $data.key",
-                                "index": 0,
-                                "identifier": "$\".selector\"",
-                                "value": "$data.key",
-                                "type": "set",
-                                "arguments": "$\".selector\" to $data.key"
-                            },
-                            "reason": "action-setup-failed",
-                            "exception": {
-                                "class": "' . addcslashes($exception::class, '"\\') . '",
-                                "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
-                            }
-                        }');
+                        {{ PHPUNIT }}->fail(
+                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                                '{
+                                    "statement-type": "action",
+                                    "source": "set $\\".selector\\" to $data.key",
+                                    "index": 0,
+                                    "identifier": "$\\".selector\\"",
+                                    "value": "$data.key",
+                                    "type": "set",
+                                    "arguments": "$\\".selector\\" to $data.key"
+                                }',
+                                StatementStage::SETUP,
+                                $exception,
+                            ),
+                        );
                     }
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
@@ -509,11 +508,13 @@ trait CreateFromSetActionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     classNames: [
+                        StatementStage::class,
                         \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::PHPUNIT_TEST_CASE
+                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::FAILURE_MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Statement;
 
 use SmartAssert\DomIdentifier\Factory as DomIdentifierFactory;
+use webignition\BaseBasilTestCase\Enum\StatementStage;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\AssertionArgument;
 use webignition\BasilCompilableSourceFactory\AssertionMessageFactory;
@@ -12,7 +13,6 @@ use webignition\BasilCompilableSourceFactory\AssertionStatementFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\FailureMessageFactory;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
@@ -40,7 +40,6 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
         private ValueTypeIdentifier $valueTypeIdentifier,
         private ValueAccessorFactory $valueAccessorFactory,
         private AssertionMessageFactory $assertionMessageFactory,
-        private FailureMessageFactory $failureMessageFactory,
         private PhpUnitCallFactory $phpUnitCallFactory,
         private TryCatchBlockFactory $tryCatchBlockFactory,
     ) {}
@@ -55,7 +54,6 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
             new ValueTypeIdentifier(),
             ValueAccessorFactory::createFactory(),
             AssertionMessageFactory::createFactory(),
-            FailureMessageFactory::createFactory(),
             PhpUnitCallFactory::createFactory(),
             TryCatchBlockFactory::createFactory(),
         );
@@ -127,9 +125,7 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
         );
 
         $catchBody = Body::createFromExpressions([
-            $this->phpUnitCallFactory->createFailCall(
-                $this->failureMessageFactory->createForAssertionSetupThrowable($assertion)
-            ),
+            $this->phpUnitCallFactory->createFailCall($assertion, StatementStage::SETUP),
         ]);
 
         return new StatementHandlerComponents(

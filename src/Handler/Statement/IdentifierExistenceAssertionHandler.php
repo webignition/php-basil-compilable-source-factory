@@ -8,6 +8,7 @@ use SmartAssert\DomIdentifier\AttributeIdentifierInterface;
 use SmartAssert\DomIdentifier\ElementIdentifier;
 use SmartAssert\DomIdentifier\ElementIdentifierInterface;
 use SmartAssert\DomIdentifier\Factory as DomIdentifierFactory;
+use webignition\BaseBasilTestCase\Enum\StatementStage;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\AssertionArgument;
 use webignition\BasilCompilableSourceFactory\AssertionMessageFactory;
@@ -16,7 +17,6 @@ use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCall
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\FailureMessageFactory;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryCatchBlock;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
@@ -30,8 +30,6 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpres
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\NullCoalescerExpression;
-use webignition\BasilCompilableSourceFactory\Model\Expression\TernaryExpression;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
@@ -40,7 +38,6 @@ use webignition\BasilModels\Model\Action\ActionInterface;
 use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
 use webignition\BasilModels\Model\StatementInterface as StatementModelInterface;
-use webignition\SymfonyDomCrawlerNavigator\Exception\InvalidLocatorException;
 
 class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
 {
@@ -53,7 +50,6 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
         private TryCatchBlockFactory $tryCatchBlockFactory,
         private PhpUnitCallFactory $phpUnitCallFactory,
         private AssertionStatementFactory $assertionStatementFactory,
-        private FailureMessageFactory $failureMessageFactory,
         private AssertionMessageFactory $assertionMessageFactory,
     ) {}
 
@@ -68,7 +64,6 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
             TryCatchBlockFactory::createFactory(),
             PhpUnitCallFactory::createFactory(),
             AssertionStatementFactory::createFactory(),
-            FailureMessageFactory::createFactory(),
             AssertionMessageFactory::createFactory(),
         );
     }
@@ -218,49 +213,13 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
         BodyInterface $tryBody,
         AssertionInterface $assertion,
     ): TryCatchBlock {
-        $exceptionVariable = new VariableName('exception');
-        $getElementIdentifierInvocation = new ObjectMethodInvocation(
-            $exceptionVariable,
-            'getElementIdentifier'
-        );
-
-        $locatorVariableExpression = new VariableName('locator');
-        $locatorAssignmentExpression = new AssignmentExpression(
-            $locatorVariableExpression,
-            new ObjectMethodInvocation(
-                $getElementIdentifierInvocation,
-                'getLocator'
-            ),
-        );
-
-        $typeVariableExpression = new VariableName('type');
-        $typeAssignmentExpression = new AssignmentExpression(
-            $typeVariableExpression,
-            new TernaryExpression(
-                new ObjectMethodInvocation(
-                    $getElementIdentifierInvocation,
-                    'isCssSelector'
-                ),
-                new LiteralExpression("'css'"),
-                new LiteralExpression("'xpath'"),
-            ),
-        );
-
         $catchBody = Body::createFromExpressions([
-            $locatorAssignmentExpression,
-            $typeAssignmentExpression,
-            $this->phpUnitCallFactory->createFailCall(
-                $this->failureMessageFactory->createForInvalidLocatorException(
-                    $assertion,
-                    $locatorVariableExpression,
-                    $typeVariableExpression,
-                )
-            ),
+            $this->phpUnitCallFactory->createFailCall($assertion, StatementStage::SETUP),
         ]);
 
         return $this->tryCatchBlockFactory->create(
             $tryBody,
-            new ClassNameCollection([new ClassName(InvalidLocatorException::class)]),
+            new ClassNameCollection([new ClassName(\Throwable::class)]),
             $catchBody,
         );
     }

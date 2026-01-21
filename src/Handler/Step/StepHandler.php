@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Step;
 
+use webignition\BaseBasilTestCase\Enum\StatementStage;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
-use webignition\BasilCompilableSourceFactory\FailureMessageFactory;
 use webignition\BasilCompilableSourceFactory\Handler\Statement\StatementHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Statement\StatementHandlerComponents;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
@@ -28,7 +28,6 @@ class StepHandler
         private DerivedAssertionFactory $derivedAssertionFactory,
         private TryCatchBlockFactory $tryCatchBlockFactory,
         private PhpUnitCallFactory $phpUnitCallFactory,
-        private FailureMessageFactory $failureMessageFactory,
     ) {}
 
     public static function createHandler(): StepHandler
@@ -39,7 +38,6 @@ class StepHandler
             DerivedAssertionFactory::createFactory(),
             TryCatchBlockFactory::createFactory(),
             PhpUnitCallFactory::createFactory(),
-            FailureMessageFactory::createFactory(),
         );
     }
 
@@ -64,9 +62,7 @@ class StepHandler
                 $actionBody = $this->createBodyFromStatementHandlerComponents($this->statementHandler->handle($action));
 
                 $failBody = Body::createFromExpressions([
-                    $this->phpUnitCallFactory->createFailCall(
-                        $this->failureMessageFactory->createForActionFailure($action)
-                    ),
+                    $this->phpUnitCallFactory->createFailCall($action, StatementStage::EXECUTE),
                 ]);
 
                 $tryCatchBlock = $this->tryCatchBlockFactory->create(

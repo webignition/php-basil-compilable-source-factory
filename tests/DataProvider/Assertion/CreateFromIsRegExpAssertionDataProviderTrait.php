@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
+use webignition\BaseBasilTestCase\Enum\StatementStage;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
@@ -30,29 +31,27 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                         $examinedValue = "/^value/";
                         $expectedValue = @preg_match($examinedValue, null) === false;
                     } catch (\Throwable $exception) {
-                        {{ PHPUNIT }}->fail('{
-                            "statement": {
-                                "container": {
-                                    "value": "\"\/^value\/\"",
-                                    "operator": "is-regexp",
-                                    "type": "derived-value-operation-assertion"
-                                },
-                                "statement": {
-                                    "statement-type": "assertion",
-                                    "source": "$\".selector\" matches \"\/^value\/\"",
-                                    "index": 0,
-                                    "identifier": "$\".selector\"",
-                                    "value": "\"\/^value\/\"",
-                                    "operator": "matches"
-                                }
-                            },
-                            "reason": "assertion-setup-failed",
-                            "exception": {
-                                "class": "' . addcslashes($exception::class, '"\\') . '",
-                                "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
-                            }
-                        }');
+                        {{ PHPUNIT }}->fail(
+                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                                '{
+                                    "container": {
+                                        "value": "\\"\\/^value\\/\\"",
+                                        "operator": "is-regexp",
+                                        "type": "derived-value-operation-assertion"
+                                    },
+                                    "statement": {
+                                        "statement-type": "assertion",
+                                        "source": "$\\".selector\\" matches \\"\\/^value\\/\\"",
+                                        "index": 0,
+                                        "identifier": "$\\".selector\\"",
+                                        "value": "\\"\\/^value\\/\\"",
+                                        "operator": "matches"
+                                    }
+                                }',
+                                StatementStage::SETUP,
+                                $exception,
+                            ),
+                        );
                     }
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
@@ -81,10 +80,12 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     classNames: [
+                        StatementStage::class,
                         \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::FAILURE_MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -110,29 +111,27 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                         })();
                         $expectedValue = @preg_match($examinedValue, null) === false;
                     } catch (\Throwable $exception) {
-                        {{ PHPUNIT }}->fail('{
-                            "statement": {
-                                "container": {
-                                    "value": "$\".pattern-container\"",
-                                    "operator": "is-regexp",
-                                    "type": "derived-value-operation-assertion"
-                                },
-                                "statement": {
-                                    "statement-type": "assertion",
-                                    "source": "$\".selector\" matches $\".pattern-container\"",
-                                    "index": 0,
-                                    "identifier": "$\".selector\"",
-                                    "value": "$\".pattern-container\"",
-                                    "operator": "matches"
-                                }
-                            },
-                            "reason": "assertion-setup-failed",
-                            "exception": {
-                                "class": "' . addcslashes($exception::class, '"\\') . '",
-                                "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
-                            }
-                        }');
+                        {{ PHPUNIT }}->fail(
+                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                                '{
+                                    "container": {
+                                        "value": "$\\".pattern-container\\"",
+                                        "operator": "is-regexp",
+                                        "type": "derived-value-operation-assertion"
+                                    },
+                                    "statement": {
+                                        "statement-type": "assertion",
+                                        "source": "$\\".selector\\" matches $\\".pattern-container\\"",
+                                        "index": 0,
+                                        "identifier": "$\\".selector\\"",
+                                        "value": "$\\".pattern-container\\"",
+                                        "operator": "matches"
+                                    }
+                                }',
+                                StatementStage::SETUP,
+                                $exception,
+                            ),
+                        );
                     }
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
@@ -161,12 +160,14 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     classNames: [
+                        StatementStage::class,
                         \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
+                        VariableName::FAILURE_MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -192,29 +193,27 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                         })();
                         $expectedValue = @preg_match($examinedValue, null) === false;
                     } catch (\Throwable $exception) {
-                        {{ PHPUNIT }}->fail('{
-                            "statement": {
-                                "container": {
-                                    "value": "$\".pattern-container\".attribute_name",
-                                    "operator": "is-regexp",
-                                    "type": "derived-value-operation-assertion"
-                                },
-                                "statement": {
-                                    "statement-type": "assertion",
-                                    "source": "$\".selector\" matches $\".pattern-container\".attribute_name",
-                                    "index": 0,
-                                    "identifier": "$\".selector\"",
-                                    "value": "$\".pattern-container\".attribute_name",
-                                    "operator": "matches"
-                                }
-                            },
-                            "reason": "assertion-setup-failed",
-                            "exception": {
-                                "class": "' . addcslashes($exception::class, '"\\') . '",
-                                "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
-                            }
-                        }');
+                        {{ PHPUNIT }}->fail(
+                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                                '{
+                                    "container": {
+                                        "value": "$\\".pattern-container\\".attribute_name",
+                                        "operator": "is-regexp",
+                                        "type": "derived-value-operation-assertion"
+                                    },
+                                    "statement": {
+                                        "statement-type": "assertion",
+                                        "source": "$\\".selector\\" matches $\\".pattern-container\\".attribute_name",
+                                        "index": 0,
+                                        "identifier": "$\\".selector\\"",
+                                        "value": "$\\".pattern-container\\".attribute_name",
+                                        "operator": "matches"
+                                    }
+                                }',
+                                StatementStage::SETUP,
+                                $exception,
+                            ),
+                        );
                     }
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
@@ -243,11 +242,13 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     classNames: [
+                        StatementStage::class,
                         \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::FAILURE_MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -267,29 +268,27 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                         $examinedValue = $pattern;
                         $expectedValue = @preg_match($examinedValue, null) === false;
                     } catch (\Throwable $exception) {
-                        {{ PHPUNIT }}->fail('{
-                            "statement": {
-                                "container": {
-                                    "value": "$data.pattern",
-                                    "operator": "is-regexp",
-                                    "type": "derived-value-operation-assertion"
-                                },
-                                "statement": {
-                                    "statement-type": "assertion",
-                                    "source": "$page.title matches $data.pattern",
-                                    "index": 0,
-                                    "identifier": "$page.title",
-                                    "value": "$data.pattern",
-                                    "operator": "matches"
-                                }
-                            },
-                            "reason": "assertion-setup-failed",
-                            "exception": {
-                                "class": "' . addcslashes($exception::class, '"\\') . '",
-                                "code": ' . $exception->getCode() . ',
-                                "message": "' . addcslashes($exception->getMessage(), '"\\') . '"
-                            }
-                        }');
+                        {{ PHPUNIT }}->fail(
+                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                                '{
+                                    "container": {
+                                        "value": "$data.pattern",
+                                        "operator": "is-regexp",
+                                        "type": "derived-value-operation-assertion"
+                                    },
+                                    "statement": {
+                                        "statement-type": "assertion",
+                                        "source": "$page.title matches $data.pattern",
+                                        "index": 0,
+                                        "identifier": "$page.title",
+                                        "value": "$data.pattern",
+                                        "operator": "matches"
+                                    }
+                                }',
+                                StatementStage::SETUP,
+                                $exception,
+                            ),
+                        );
                     }
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
@@ -318,10 +317,12 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     classNames: [
+                        StatementStage::class,
                         \Throwable::class,
                     ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::FAILURE_MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
