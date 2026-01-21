@@ -37,6 +37,7 @@ class StatementHandlerTest extends AbstractResolvableTestCase
     use AssertionDataProvider\CreateFromIdentifierNotExistsAssertionDataProviderTrait;
     use AssertionDataProvider\CreateFromIsRegExpAssertionDataProviderTrait;
     use AssertionDataProvider\CreateFromScalarExistsAssertionDataProviderTrait;
+    use AssertionDataProvider\CreateFromScalarNotExistsAssertionDataProviderTrait;
 
     #[DataProvider('createFromBackActionDataProvider')]
     #[DataProvider('createFromClickActionDataProvider')]
@@ -55,6 +56,7 @@ class StatementHandlerTest extends AbstractResolvableTestCase
     #[DataProvider('createFromIdentifierNotExistsAssertionDataProvider')]
     #[DataProvider('createFromIsRegExpAssertionDataProvider')]
     #[DataProvider('createFromScalarExistsAssertionDataProvider')]
+    #[DataProvider('createFromScalarNotExistsAssertionDataProvider')]
     public function testHandleSuccess(
         StatementInterface $statement,
         ?string $expectedRenderedSetup,
