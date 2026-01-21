@@ -26,9 +26,9 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$".selector" exists', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
                     try {
-                        $elementExists = {{ NAVIGATOR }}->has('{
+                        $elementExists = (bool) ({{ NAVIGATOR }}->has('{
                             "locator": ".selector"
-                        }');
+                        }'));
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
                             {{ FAILURE_MESSAGE_FACTORY }}->create(
@@ -82,16 +82,16 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$".selector".attribute_name exists', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
                     try {
-                        $elementExists = {{ NAVIGATOR }}->hasOne('{
+                        $elementExists = (bool) ({{ NAVIGATOR }}->hasOne('{
                             "locator": ".selector"
-                        }');
-                        $attributeExists = $elementExists && ((function () {
+                        }'));
+                        $attributeExists = $elementExists && (bool) (((function () {
                             $element = {{ NAVIGATOR }}->findOne('{
                                 "locator": ".selector"
                             }');
 
                             return $element->getAttribute('attribute_name');
-                        })() ?? null) !== null;
+                        })() ?? null) !== null);
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
                             {{ FAILURE_MESSAGE_FACTORY }}->create(
@@ -173,9 +173,9 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$"a[href=foo.html]" exists', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
                     try {
-                        $elementExists = {{ NAVIGATOR }}->has('{
+                        $elementExists = (bool) ({{ NAVIGATOR }}->has('{
                             "locator": "a[href=foo.html]"
-                        }');
+                        }'));
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
                             {{ FAILURE_MESSAGE_FACTORY }}->create(
@@ -229,9 +229,9 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$"[data-value=\"' . "'single quoted'" . '\"]" exists', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
                     try {
-                        $elementExists = {{ NAVIGATOR }}->has('{
+                        $elementExists = (bool) ({{ NAVIGATOR }}->has('{
                             "locator": "[data-value=\\"\'single quoted\'\\"]"
-                        }');
+                        }'));
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
                             {{ FAILURE_MESSAGE_FACTORY }}->create(
@@ -285,16 +285,16 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$"a[href=foo.html]".attribute_name exists', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
                     try {
-                        $elementExists = {{ NAVIGATOR }}->hasOne('{
+                        $elementExists = (bool) ({{ NAVIGATOR }}->hasOne('{
                             "locator": "a[href=foo.html]"
-                        }');
-                        $attributeExists = $elementExists && ((function () {
+                        }'));
+                        $attributeExists = $elementExists && (bool) (((function () {
                             $element = {{ NAVIGATOR }}->findOne('{
                                 "locator": "a[href=foo.html]"
                             }');
 
                             return $element->getAttribute('attribute_name');
-                        })() ?? null) !== null;
+                        })() ?? null) !== null);
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
                             {{ FAILURE_MESSAGE_FACTORY }}->create(
@@ -380,9 +380,9 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                 ),
                 'expectedRenderedSetup' => <<< 'EOD'
                     try {
-                        $elementExists = {{ NAVIGATOR }}->hasOne('{
+                        $elementExists = (bool) ({{ NAVIGATOR }}->hasOne('{
                             "locator": ".selector"
-                        }');
+                        }'));
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
                             {{ FAILURE_MESSAGE_FACTORY }}->create(
@@ -456,9 +456,9 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                 ),
                 'expectedRenderedSetup' => <<< 'EOD'
                     try {
-                        $elementExists = {{ NAVIGATOR }}->hasOne('{
+                        $elementExists = (bool) ({{ NAVIGATOR }}->hasOne('{
                             "locator": ".selector"
-                        }');
+                        }'));
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
                             {{ FAILURE_MESSAGE_FACTORY }}->create(
@@ -532,9 +532,9 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                 ),
                 'expectedRenderedSetup' => <<< 'EOD'
                     try {
-                        $elementExists = {{ NAVIGATOR }}->has('{
+                        $elementExists = (bool) ({{ NAVIGATOR }}->has('{
                             "locator": ".selector"
-                        }');
+                        }'));
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
                             {{ FAILURE_MESSAGE_FACTORY }}->create(
@@ -610,9 +610,9 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                 ),
                 'expectedRenderedSetup' => <<< 'EOD'
                     try {
-                        $elementExists = {{ NAVIGATOR }}->has('{
+                        $elementExists = (bool) ({{ NAVIGATOR }}->has('{
                             "locator": ".duration"
-                        }');
+                        }'));
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
                             {{ FAILURE_MESSAGE_FACTORY }}->create(

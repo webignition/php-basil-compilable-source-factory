@@ -28,8 +28,8 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                 ),
                 'expectedRenderedSetup' => <<< 'EOD'
                     try {
-                        $examinedValue = "/^value/";
-                        $expectedValue = @preg_match($examinedValue, null) === false;
+                        $examinedValue = (string) ("/^value/");
+                        $expectedValue = (bool) (@preg_match($examinedValue, null) === false);
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
                             {{ FAILURE_MESSAGE_FACTORY }}->create(
@@ -74,7 +74,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                                 }
                             },
                             "expected": ' . ($expectedValue ? 'true' : 'false') . ',
-                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
+                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
                         }',
                     );
                     EOD,
@@ -102,14 +102,14 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                 ),
                 'expectedRenderedSetup' => <<< 'EOD'
                     try {
-                        $examinedValue = (function () {
+                        $examinedValue = (string) ((function () {
                             $element = {{ NAVIGATOR }}->find('{
                                 "locator": ".pattern-container"
                             }');
 
                             return {{ INSPECTOR }}->getValue($element);
-                        })();
-                        $expectedValue = @preg_match($examinedValue, null) === false;
+                        })());
+                        $expectedValue = (bool) (@preg_match($examinedValue, null) === false);
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
                             {{ FAILURE_MESSAGE_FACTORY }}->create(
@@ -154,7 +154,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                                 }
                             },
                             "expected": ' . ($expectedValue ? 'true' : 'false') . ',
-                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
+                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
                         }',
                     );
                     EOD,
@@ -184,14 +184,14 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                 ),
                 'expectedRenderedSetup' => <<< 'EOD'
                     try {
-                        $examinedValue = (function () {
+                        $examinedValue = (string) ((function () {
                             $element = {{ NAVIGATOR }}->findOne('{
                                 "locator": ".pattern-container"
                             }');
 
                             return $element->getAttribute('attribute_name');
-                        })();
-                        $expectedValue = @preg_match($examinedValue, null) === false;
+                        })());
+                        $expectedValue = (bool) (@preg_match($examinedValue, null) === false);
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
                             {{ FAILURE_MESSAGE_FACTORY }}->create(
@@ -236,7 +236,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                                 }
                             },
                             "expected": ' . ($expectedValue ? 'true' : 'false') . ',
-                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
+                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
                         }',
                     );
                     EOD,
@@ -265,8 +265,8 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                 ),
                 'expectedRenderedSetup' => <<< 'EOD'
                     try {
-                        $examinedValue = $pattern;
-                        $expectedValue = @preg_match($examinedValue, null) === false;
+                        $examinedValue = (string) ($pattern);
+                        $expectedValue = (bool) (@preg_match($examinedValue, null) === false);
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
                             {{ FAILURE_MESSAGE_FACTORY }}->create(
@@ -311,7 +311,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                                 }
                             },
                             "expected": ' . ($expectedValue ? 'true' : 'false') . ',
-                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
+                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
                         }',
                     );
                     EOD,

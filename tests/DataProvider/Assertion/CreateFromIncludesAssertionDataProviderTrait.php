@@ -23,14 +23,14 @@ trait CreateFromIncludesAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$".selector" includes "value"', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
                     try {
-                        $expectedValue = "value";
-                        $examinedValue = (function () {
+                        $expectedValue = (string) ("value");
+                        $examinedValue = (string) ((function () {
                             $element = {{ NAVIGATOR }}->find('{
                                 "locator": ".selector"
                             }');
 
                             return {{ INSPECTOR }}->getValue($element);
-                        })();
+                        })());
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
                             {{ FAILURE_MESSAGE_FACTORY }}->create(
@@ -50,8 +50,8 @@ trait CreateFromIncludesAssertionDataProviderTrait
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertStringContainsString(
-                        (string) $expectedValue,
-                        (string) $examinedValue,
+                        $expectedValue,
+                        $examinedValue,
                         '{
                             "statement": {
                                 "statement-type": "assertion",
@@ -61,8 +61,8 @@ trait CreateFromIncludesAssertionDataProviderTrait
                                 "value": "\"value\"",
                                 "operator": "includes"
                             },
-                            "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
+                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
+                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
                         }',
                     );
                     EOD,
@@ -88,14 +88,14 @@ trait CreateFromIncludesAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$".selector".attribute_name includes "value"', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
                     try {
-                        $expectedValue = "value";
-                        $examinedValue = (function () {
+                        $expectedValue = (string) ("value");
+                        $examinedValue = (string) ((function () {
                             $element = {{ NAVIGATOR }}->findOne('{
                                 "locator": ".selector"
                             }');
 
                             return $element->getAttribute('attribute_name');
-                        })();
+                        })());
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
                             {{ FAILURE_MESSAGE_FACTORY }}->create(
@@ -115,8 +115,8 @@ trait CreateFromIncludesAssertionDataProviderTrait
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertStringContainsString(
-                        (string) $expectedValue,
-                        (string) $examinedValue,
+                        $expectedValue,
+                        $examinedValue,
                         '{
                             "statement": {
                                 "statement-type": "assertion",
@@ -126,8 +126,8 @@ trait CreateFromIncludesAssertionDataProviderTrait
                                 "value": "\"value\"",
                                 "operator": "includes"
                             },
-                            "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
+                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
+                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
                         }',
                     );
                     EOD,

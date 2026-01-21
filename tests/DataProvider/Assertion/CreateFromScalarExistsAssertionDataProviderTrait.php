@@ -21,7 +21,7 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
             'exists comparison, page property examined value' => [
                 'statement' => $assertionParser->parse('$page.url exists', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    $examinedValue = ({{ CLIENT }}->getCurrentURL() ?? null) !== null;
+                    $examinedValue = (bool) (({{ CLIENT }}->getCurrentURL() ?? null) !== null);
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
@@ -53,7 +53,7 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
             'exists comparison, data parameter value' => [
                 'statement' => $assertionParser->parse('$data.key exists', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    $examinedValue = ($key ?? null) !== null;
+                    $examinedValue = (bool) (($key ?? null) !== null);
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
