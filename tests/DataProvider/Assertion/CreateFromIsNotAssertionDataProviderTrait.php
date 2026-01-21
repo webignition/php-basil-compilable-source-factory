@@ -33,7 +33,7 @@ trait CreateFromIsNotAssertionDataProviderTrait
                         })());
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "statement-type": "assertion",
                                     "source": "$\\".selector\\" is-not \\"value\\"",
@@ -42,8 +42,8 @@ trait CreateFromIsNotAssertionDataProviderTrait
                                     "value": "\\"value\\"",
                                     "operator": "is-not"
                                 }',
-                                StatementStage::SETUP,
                                 $exception,
+                                StatementStage::SETUP,
                             ),
                         );
                     }
@@ -75,7 +75,7 @@ trait CreateFromIsNotAssertionDataProviderTrait
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -98,7 +98,7 @@ trait CreateFromIsNotAssertionDataProviderTrait
                         })());
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "statement-type": "assertion",
                                     "source": "$\\".selector\\".attribute_name is-not \\"value\\"",
@@ -107,8 +107,8 @@ trait CreateFromIsNotAssertionDataProviderTrait
                                     "value": "\\"value\\"",
                                     "operator": "is-not"
                                 }',
-                                StatementStage::SETUP,
                                 $exception,
+                                StatementStage::SETUP,
                             ),
                         );
                     }
@@ -139,7 +139,7 @@ trait CreateFromIsNotAssertionDataProviderTrait
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(

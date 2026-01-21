@@ -2,14 +2,13 @@
 
 declare(strict_types=1);
 
-namespace Unit\Handler\Statement;
+namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Statement;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Handler\Statement\StatementHandler;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
-// use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action as ActionDataProvider;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion as AssertionDataProvider;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTestCase;

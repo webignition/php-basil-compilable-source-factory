@@ -39,7 +39,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                         }'));
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "statement-type": "assertion",
                                     "source": "$\\".selector\\" not-exists",
@@ -47,8 +47,8 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                                     "identifier": "$\\".selector\\"",
                                     "operator": "not-exists"
                                 }',
-                                StatementStage::SETUP,
                                 $exception,
+                                StatementStage::SETUP,
                             ),
                         );
                     }
@@ -77,7 +77,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -103,7 +103,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                         })() ?? null) !== null);
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "container": {
                                         "value": "$\\".selector\\"",
@@ -118,8 +118,8 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                                         "operator": "not-exists"
                                     }
                                 }',
-                                StatementStage::SETUP,
                                 $exception,
+                                StatementStage::SETUP,
                             ),
                         );
                     }
@@ -169,7 +169,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(

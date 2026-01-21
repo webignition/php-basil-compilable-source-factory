@@ -29,7 +29,7 @@ trait CreateFromSetActionDataProviderTrait
                         $setValueValue = "value";
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "statement-type": "action",
                                     "source": "set $\\".selector\\" to \\"value\\"",
@@ -39,8 +39,8 @@ trait CreateFromSetActionDataProviderTrait
                                     "type": "set",
                                     "arguments": "$\\".selector\\" to \\"value\\""
                                 }',
-                                StatementStage::SETUP,
                                 $exception,
+                                StatementStage::SETUP,
                             ),
                         );
                     }
@@ -57,7 +57,7 @@ trait CreateFromSetActionDataProviderTrait
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -83,7 +83,7 @@ trait CreateFromSetActionDataProviderTrait
                         })();
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "statement-type": "action",
                                     "source": "set $\\".selector\\" to $\\".source\\"",
@@ -93,8 +93,8 @@ trait CreateFromSetActionDataProviderTrait
                                     "type": "set",
                                     "arguments": "$\\".selector\\" to $\\".source\\""
                                 }',
-                                StatementStage::SETUP,
                                 $exception,
+                                StatementStage::SETUP,
                             ),
                         );
                     }
@@ -112,7 +112,7 @@ trait CreateFromSetActionDataProviderTrait
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
                         VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -138,7 +138,7 @@ trait CreateFromSetActionDataProviderTrait
                         })();
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "statement-type": "action",
                                     "source": "set $\\".selector\\" to $\\".source\\".attribute_name",
@@ -148,8 +148,8 @@ trait CreateFromSetActionDataProviderTrait
                                     "type": "set",
                                     "arguments": "$\\".selector\\" to $\\".source\\".attribute_name"
                                 }',
-                                StatementStage::SETUP,
                                 $exception,
+                                StatementStage::SETUP,
                             ),
                         );
                     }
@@ -166,7 +166,7 @@ trait CreateFromSetActionDataProviderTrait
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -190,7 +190,7 @@ trait CreateFromSetActionDataProviderTrait
             })();
         } catch (\Throwable $exception) {
             {{ PHPUNIT }}->fail(
-                {{ FAILURE_MESSAGE_FACTORY }}->create(
+                {{ MESSAGE_FACTORY }}->createFailureMessage(
                     '{
                         "statement-type": "action",
                         "source": "set $\\".selector\\" to $browser.size",
@@ -200,8 +200,8 @@ trait CreateFromSetActionDataProviderTrait
                         "type": "set",
                         "arguments": "$\\".selector\\" to $browser.size"
                     }',
-                    StatementStage::SETUP,
                     $exception,
+                    StatementStage::SETUP,
                 ),
             );
         }
@@ -219,7 +219,7 @@ trait CreateFromSetActionDataProviderTrait
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::PANTHER_CLIENT,
                         VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -239,7 +239,7 @@ trait CreateFromSetActionDataProviderTrait
                         $setValueValue = {{ CLIENT }}->getCurrentURL();
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "statement-type": "action",
                                     "source": "set $\\".selector\\" to $page.url",
@@ -249,8 +249,8 @@ trait CreateFromSetActionDataProviderTrait
                                     "type": "set",
                                     "arguments": "$\\".selector\\" to $page.url"
                                 }',
-                                StatementStage::SETUP,
                                 $exception,
+                                StatementStage::SETUP,
                             ),
                         );
                     }
@@ -268,7 +268,7 @@ trait CreateFromSetActionDataProviderTrait
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::PANTHER_CLIENT,
                         VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -288,7 +288,7 @@ trait CreateFromSetActionDataProviderTrait
                         $setValueValue = {{ ENV }}['KEY'];
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "statement-type": "action",
                                     "source": "set $\\".selector\\" to $env.KEY",
@@ -298,8 +298,8 @@ trait CreateFromSetActionDataProviderTrait
                                     "type": "set",
                                     "arguments": "$\\".selector\\" to $env.KEY"
                                 }',
-                                StatementStage::SETUP,
                                 $exception,
+                                StatementStage::SETUP,
                             ),
                         );
                     }
@@ -317,7 +317,7 @@ trait CreateFromSetActionDataProviderTrait
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::ENVIRONMENT_VARIABLE_ARRAY,
                         VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -337,7 +337,7 @@ trait CreateFromSetActionDataProviderTrait
                         $setValueValue = {{ ENV }}['KEY'] ?? 'default';
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "statement-type": "action",
                                     "source": "set $\\".selector\\" to $env.KEY|\\"default\\"",
@@ -347,8 +347,8 @@ trait CreateFromSetActionDataProviderTrait
                                     "type": "set",
                                     "arguments": "$\\".selector\\" to $env.KEY|\\"default\\""
                                 }',
-                                StatementStage::SETUP,
                                 $exception,
+                                StatementStage::SETUP,
                             ),
                         );
                     }
@@ -366,7 +366,7 @@ trait CreateFromSetActionDataProviderTrait
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::ENVIRONMENT_VARIABLE_ARRAY,
                         VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -386,7 +386,7 @@ trait CreateFromSetActionDataProviderTrait
                         $setValueValue = {{ ENV }}['KEY'] ?? 'default value';
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "statement-type": "action",
                                     "source": "set $\\".selector\\" to $env.KEY|\\"default value\\"",
@@ -396,8 +396,8 @@ trait CreateFromSetActionDataProviderTrait
                                     "type": "set",
                                     "arguments": "$\\".selector\\" to $env.KEY|\\"default value\\""
                                 }',
-                                StatementStage::SETUP,
                                 $exception,
+                                StatementStage::SETUP,
                             ),
                         );
                     }
@@ -415,7 +415,7 @@ trait CreateFromSetActionDataProviderTrait
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::ENVIRONMENT_VARIABLE_ARRAY,
                         VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -438,7 +438,7 @@ trait CreateFromSetActionDataProviderTrait
                         $setValueValue = "value";
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "statement-type": "action",
                                     "source": "set $\\".parent\\" >> $\\".child\\" to \\"value\\"",
@@ -448,8 +448,8 @@ trait CreateFromSetActionDataProviderTrait
                                     "type": "set",
                                     "arguments": "$\\".parent\\" >> $\\".child\\" to \\"value\\""
                                 }',
-                                StatementStage::SETUP,
                                 $exception,
+                                StatementStage::SETUP,
                             ),
                         );
                     }
@@ -466,7 +466,7 @@ trait CreateFromSetActionDataProviderTrait
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -486,7 +486,7 @@ trait CreateFromSetActionDataProviderTrait
                         $setValueValue = $key;
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "statement-type": "action",
                                     "source": "set $\\".selector\\" to $data.key",
@@ -496,8 +496,8 @@ trait CreateFromSetActionDataProviderTrait
                                     "type": "set",
                                     "arguments": "$\\".selector\\" to $data.key"
                                 }',
-                                StatementStage::SETUP,
                                 $exception,
+                                StatementStage::SETUP,
                             ),
                         );
                     }
@@ -514,7 +514,7 @@ trait CreateFromSetActionDataProviderTrait
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(

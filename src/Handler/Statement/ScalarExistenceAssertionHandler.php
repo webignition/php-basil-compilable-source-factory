@@ -4,9 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Statement;
 
-use webignition\BasilCompilableSourceFactory\AssertionArgument;
-use webignition\BasilCompilableSourceFactory\AssertionMessageFactory;
-use webignition\BasilCompilableSourceFactory\AssertionStatementFactory;
+use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
@@ -24,17 +22,15 @@ use webignition\BasilModels\Model\StatementInterface;
 class ScalarExistenceAssertionHandler implements StatementHandlerInterface
 {
     public function __construct(
-        private AssertionStatementFactory $assertionStatementFactory,
         private ScalarValueHandler $scalarValueHandler,
-        private AssertionMessageFactory $assertionMessageFactory,
+        private PhpUnitCallFactory $phpUnitCallFactory,
     ) {}
 
     public static function createHandler(): self
     {
         return new ScalarExistenceAssertionHandler(
-            AssertionStatementFactory::createFactory(),
             ScalarValueHandler::createHandler(),
-            AssertionMessageFactory::createFactory(),
+            PhpUnitCallFactory::createFactory(),
         );
     }
 
@@ -61,23 +57,15 @@ class ScalarExistenceAssertionHandler implements StatementHandlerInterface
         );
         $examinedAccessor = EncapsulatingCastExpression::forBool($examinedAccessor);
 
-        $expectedAssertionArgument = new AssertionArgument(
-            new LiteralExpression(('exists' === $statement->getOperator()) ? 'true' : 'false'),
-            'bool'
-        );
-        $examinedAssertionArgument = new AssertionArgument($examinedValuePlaceholder, 'bool');
+        $expected = new LiteralExpression(('exists' === $statement->getOperator()) ? 'true' : 'false');
 
         return new StatementHandlerComponents(
-            $this->assertionStatementFactory->create(
+            new Statement($this->phpUnitCallFactory->createAssertionCall(
                 'exists' === $statement->getOperator() ? 'assertTrue' : 'assertFalse',
-                $this->assertionMessageFactory->create(
-                    assertion: $statement,
-                    expected: $expectedAssertionArgument,
-                    examined: $examinedAssertionArgument,
-                ),
-                expected: null,
-                examined: $examinedAssertionArgument,
-            )
+                $statement,
+                [$examinedValuePlaceholder],
+                [$expected, $examinedValuePlaceholder],
+            ))
         )->withSetup(
             new Statement(
                 new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),

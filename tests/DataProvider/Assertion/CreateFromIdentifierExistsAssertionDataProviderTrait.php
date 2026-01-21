@@ -31,7 +31,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         }'));
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "statement-type": "assertion",
                                     "source": "$\\".selector\\" exists",
@@ -39,8 +39,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                     "identifier": "$\\".selector\\"",
                                     "operator": "exists"
                                 }',
-                                StatementStage::SETUP,
                                 $exception,
+                                StatementStage::SETUP,
                             ),
                         );
                     }
@@ -69,7 +69,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -94,7 +94,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         })() ?? null) !== null);
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "container": {
                                         "value": "$\\".selector\\"",
@@ -109,8 +109,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                         "operator": "exists"
                                     }
                                 }',
-                                StatementStage::SETUP,
                                 $exception,
+                                StatementStage::SETUP,
                             ),
                         );
                     }
@@ -160,7 +160,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -178,7 +178,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         }'));
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "statement-type": "assertion",
                                     "source": "$\\"a[href=foo.html]\\" exists",
@@ -186,8 +186,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                     "identifier": "$\\"a[href=foo.html]\\"",
                                     "operator": "exists"
                                 }',
-                                StatementStage::SETUP,
                                 $exception,
+                                StatementStage::SETUP,
                             ),
                         );
                     }
@@ -216,7 +216,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -234,7 +234,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         }'));
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "statement-type": "assertion",
                                     "source": "$\\"[data-value=\\\\\\"\\\'single quoted\\\'\\\\\\"]\\" exists",
@@ -242,8 +242,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                     "identifier": "$\\"[data-value=\\\\\\"\\\'single quoted\\\'\\\\\\"]\\"",
                                     "operator": "exists"
                                 }',
-                                StatementStage::SETUP,
                                 $exception,
+                                StatementStage::SETUP,
                             ),
                         );
                     }
@@ -272,7 +272,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -297,7 +297,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         })() ?? null) !== null);
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "container": {
                                         "value": "$\\"a[href=foo.html]\\"",
@@ -312,8 +312,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                         "operator": "exists"
                                     }
                                 }',
-                                StatementStage::SETUP,
                                 $exception,
+                                StatementStage::SETUP,
                             ),
                         );
                     }
@@ -363,7 +363,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -385,7 +385,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         }'));
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "container": {
                                         "value": "$\\".selector\\"",
@@ -401,8 +401,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                         "arguments": "$\\".selector\\""
                                     }
                                 }',
-                                StatementStage::SETUP,
                                 $exception,
+                                StatementStage::SETUP,
                             ),
                         );
                     }
@@ -439,7 +439,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -461,7 +461,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         }'));
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "container": {
                                         "value": "$\\".selector\\"",
@@ -477,8 +477,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                         "arguments": "$\\".selector\\""
                                     }
                                 }',
-                                StatementStage::SETUP,
                                 $exception,
+                                StatementStage::SETUP,
                             ),
                         );
                     }
@@ -515,7 +515,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -537,7 +537,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         }'));
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "container": {
                                         "value": "$\\".selector\\"",
@@ -554,8 +554,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                         "arguments": "$\\".selector\\" to \\"value\\""
                                     }
                                 }',
-                                StatementStage::SETUP,
                                 $exception,
+                                StatementStage::SETUP,
                             ),
                         );
                     }
@@ -593,7 +593,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -615,7 +615,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                         }'));
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "container": {
                                         "value": "$\\".duration\\"",
@@ -631,8 +631,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                                         "arguments": "$\\".duration\\""
                                     }
                                 }',
-                                StatementStage::SETUP,
                                 $exception,
+                                StatementStage::SETUP,
                             ),
                         );
                     }
@@ -669,7 +669,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(

@@ -32,7 +32,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                         $expectedValue = (bool) (@preg_match($examinedValue, null) === false);
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "container": {
                                         "value": "\\"\\/^value\\/\\"",
@@ -48,8 +48,8 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                                         "operator": "matches"
                                     }
                                 }',
-                                StatementStage::SETUP,
                                 $exception,
+                                StatementStage::SETUP,
                             ),
                         );
                     }
@@ -85,7 +85,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -112,7 +112,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                         $expectedValue = (bool) (@preg_match($examinedValue, null) === false);
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "container": {
                                         "value": "$\\".pattern-container\\"",
@@ -128,8 +128,8 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                                         "operator": "matches"
                                     }
                                 }',
-                                StatementStage::SETUP,
                                 $exception,
+                                StatementStage::SETUP,
                             ),
                         );
                     }
@@ -167,7 +167,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -194,7 +194,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                         $expectedValue = (bool) (@preg_match($examinedValue, null) === false);
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "container": {
                                         "value": "$\\".pattern-container\\".attribute_name",
@@ -210,8 +210,8 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                                         "operator": "matches"
                                     }
                                 }',
-                                StatementStage::SETUP,
                                 $exception,
+                                StatementStage::SETUP,
                             ),
                         );
                     }
@@ -248,7 +248,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -269,7 +269,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                         $expectedValue = (bool) (@preg_match($examinedValue, null) === false);
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "container": {
                                         "value": "$data.pattern",
@@ -285,8 +285,8 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                                         "operator": "matches"
                                     }
                                 }',
-                                StatementStage::SETUP,
                                 $exception,
+                                StatementStage::SETUP,
                             ),
                         );
                     }
@@ -322,7 +322,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(

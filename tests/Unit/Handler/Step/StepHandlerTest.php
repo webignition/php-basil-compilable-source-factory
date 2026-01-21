@@ -123,7 +123,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         // StatementHandler::handle(click $".selector")
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "statement-type": "action",
                                     "source": "click $\\".selector\\"",
@@ -132,8 +132,8 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                     "type": "click",
                                     "arguments": "$\\".selector\\""
                                 }',
-                                StatementStage::EXECUTE,
                                 $exception,
+                                StatementStage::EXECUTE,
                             ),
                         );
                     }
@@ -146,7 +146,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -252,7 +252,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         // StatementHandler::handle(click $".selector1")
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "statement-type": "action",
                                     "source": "click $\\".selector1\\"",
@@ -261,8 +261,8 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                     "type": "click",
                                     "arguments": "$\\".selector1\\""
                                 }',
-                                StatementStage::EXECUTE,
                                 $exception,
+                                StatementStage::EXECUTE,
                             ),
                         );
                     }
@@ -275,7 +275,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         // StatementHandler::handle(click $".selector2")
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "statement-type": "action",
                                     "source": "click $\\".selector2\\"",
@@ -284,8 +284,8 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                     "type": "click",
                                     "arguments": "$\\".selector2\\""
                                 }',
-                                StatementStage::EXECUTE,
                                 $exception,
+                                StatementStage::EXECUTE,
                             ),
                         );
                     }
@@ -298,7 +298,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -534,7 +534,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         // StatementHandler::handle(click $".selector1")
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "statement-type": "action",
                                     "source": "click $\\".selector1\\"",
@@ -543,8 +543,8 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                     "type": "click",
                                     "arguments": "$\\".selector1\\""
                                 }',
-                                StatementStage::EXECUTE,
                                 $exception,
+                                StatementStage::EXECUTE,
                             ),
                         );
                     }
@@ -560,7 +560,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     ],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
