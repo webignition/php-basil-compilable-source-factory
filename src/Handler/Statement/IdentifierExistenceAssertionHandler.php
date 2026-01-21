@@ -27,6 +27,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpressi
 use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CompositeExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\NullCoalescerExpression;
@@ -103,6 +104,8 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
             $this->argumentFactory->createSingular($serializedElementIdentifier)
         );
 
+        $examinedAccessor = EncapsulatingCastExpression::forBool($examinedAccessor);
+
         $elementExistPlaceholder = new VariableName('elementExists');
         $elementAssignment = new Statement(
             new AssignmentExpression($elementExistPlaceholder, $examinedAccessor),
@@ -138,6 +141,7 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
             $attributeExistenceAssertion,
             $this->argumentFactory->createSingular($serializedAttributeIdentifier)
         );
+        $elementAccessor = EncapsulatingCastExpression::forBool($elementAccessor);
 
         $elementExistsPlaceholder = new VariableName('elementExists');
         $elementAssignment = new Statement(
@@ -157,6 +161,8 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
             new LiteralExpression('null'),
             '!=='
         );
+
+        $attributeAccessor = EncapsulatingCastExpression::forBool($attributeAccessor);
 
         $attributeExistsPlaceholder = new VariableName('attributeExists');
         $attributeAssignment = new Statement(

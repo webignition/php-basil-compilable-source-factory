@@ -13,6 +13,7 @@ use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\NullCoalescerExpression;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
@@ -58,6 +59,7 @@ class ScalarExistenceAssertionHandler implements StatementHandlerInterface
             new LiteralExpression('null'),
             '!=='
         );
+        $examinedAccessor = EncapsulatingCastExpression::forBool($examinedAccessor);
 
         $expectedAssertionArgument = new AssertionArgument(
             new LiteralExpression(('exists' === $statement->getOperator()) ? 'true' : 'false'),

@@ -15,6 +15,7 @@ use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastExpression;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
@@ -64,7 +65,10 @@ class ComparisonAssertionHandler implements StatementHandlerInterface
         }
 
         $examinedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull((string) $statement->getIdentifier());
+        $examinedAccessor = EncapsulatingCastExpression::forString($examinedAccessor);
+
         $expectedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull((string) $statement->getValue());
+        $expectedAccessor = EncapsulatingCastExpression::forString($expectedAccessor);
 
         $expectedValuePlaceholder = new VariableName(VariableNameEnum::EXPECTED_VALUE->value);
         $examinedValuePlaceholder = new VariableName(VariableNameEnum::EXAMINED_VALUE->value);

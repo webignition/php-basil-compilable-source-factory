@@ -18,6 +18,7 @@ use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
@@ -91,6 +92,7 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
         }
 
         $examinedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull($identifier);
+        $examinedAccessor = EncapsulatingCastExpression::forString($examinedAccessor);
 
         if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
             if (null === $this->domIdentifierFactory->createFromIdentifierString($identifier)) {
@@ -123,6 +125,7 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
             new LiteralExpression('false'),
             '==='
         );
+        $identityComparison = EncapsulatingCastExpression::forBool($identityComparison);
 
         $catchBody = Body::createFromExpressions([
             $this->phpUnitCallFactory->createFailCall($assertion, StatementStage::SETUP),
