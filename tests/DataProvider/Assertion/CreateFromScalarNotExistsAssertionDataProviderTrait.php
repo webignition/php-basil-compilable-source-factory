@@ -21,7 +21,7 @@ trait CreateFromScalarNotExistsAssertionDataProviderTrait
             'not-exists comparison, page property examined value' => [
                 'statement' => $assertionParser->parse('$page.url not-exists', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    $examinedValue = ({{ CLIENT }}->getCurrentURL() ?? null) !== null;
+                    $examinedValue = (bool) (({{ CLIENT }}->getCurrentURL() ?? null) !== null);
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertFalse(
@@ -53,7 +53,7 @@ trait CreateFromScalarNotExistsAssertionDataProviderTrait
             'not-exists comparison, data parameter value' => [
                 'statement' => $assertionParser->parse('$data.key not-exists', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    $examinedValue = ($key ?? null) !== null;
+                    $examinedValue = (bool) (($key ?? null) !== null);
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertFalse(

@@ -23,14 +23,14 @@ trait CreateFromIsAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$".selector" is "value"', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
                     try {
-                        $expectedValue = "value";
-                        $examinedValue = (function () {
+                        $expectedValue = (string) ("value");
+                        $examinedValue = (string) ((function () {
                             $element = {{ NAVIGATOR }}->find('{
                                 "locator": ".selector"
                             }');
 
                             return {{ INSPECTOR }}->getValue($element);
-                        })();
+                        })());
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
                             {{ FAILURE_MESSAGE_FACTORY }}->create(
@@ -50,8 +50,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertEquals(
-                        (string) $expectedValue,
-                        (string) $examinedValue,
+                        $expectedValue,
+                        $examinedValue,
                         '{
                             "statement": {
                                 "statement-type": "assertion",
@@ -61,8 +61,8 @@ trait CreateFromIsAssertionDataProviderTrait
                                 "value": "\"value\"",
                                 "operator": "is"
                             },
-                            "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
+                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
+                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
                         }',
                     );
                     EOD,
@@ -88,8 +88,8 @@ trait CreateFromIsAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$".parent" >> $".child" is "value"', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
                     try {
-                        $expectedValue = "value";
-                        $examinedValue = (function () {
+                        $expectedValue = (string) ("value");
+                        $examinedValue = (string) ((function () {
                             $element = {{ NAVIGATOR }}->find('{
                                 "locator": ".child",
                                 "parent": {
@@ -98,7 +98,7 @@ trait CreateFromIsAssertionDataProviderTrait
                             }');
 
                             return {{ INSPECTOR }}->getValue($element);
-                        })();
+                        })());
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
                             {{ FAILURE_MESSAGE_FACTORY }}->create(
@@ -118,8 +118,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertEquals(
-                        (string) $expectedValue,
-                        (string) $examinedValue,
+                        $expectedValue,
+                        $examinedValue,
                         '{
                             "statement": {
                                 "statement-type": "assertion",
@@ -129,8 +129,8 @@ trait CreateFromIsAssertionDataProviderTrait
                                 "value": "\"value\"",
                                 "operator": "is"
                             },
-                            "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
+                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
+                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
                         }',
                     );
                     EOD,
@@ -156,14 +156,14 @@ trait CreateFromIsAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$".selector".attribute_name is "value"', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
                     try {
-                        $expectedValue = "value";
-                        $examinedValue = (function () {
+                        $expectedValue = (string) ("value");
+                        $examinedValue = (string) ((function () {
                             $element = {{ NAVIGATOR }}->findOne('{
                                 "locator": ".selector"
                             }');
 
                             return $element->getAttribute('attribute_name');
-                        })();
+                        })());
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
                             {{ FAILURE_MESSAGE_FACTORY }}->create(
@@ -183,8 +183,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertEquals(
-                        (string) $expectedValue,
-                        (string) $examinedValue,
+                        $expectedValue,
+                        $examinedValue,
                         '{
                             "statement": {
                                 "statement-type": "assertion",
@@ -194,8 +194,8 @@ trait CreateFromIsAssertionDataProviderTrait
                                 "value": "\"value\"",
                                 "operator": "is"
                             },
-                            "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
+                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
+                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
                         }',
                     );
                     EOD,
@@ -220,12 +220,12 @@ trait CreateFromIsAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$browser.size is "value"', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
         try {
-            $expectedValue = "value";
-            $examinedValue = (function () {
+            $expectedValue = (string) ("value");
+            $examinedValue = (string) ((function () {
                 $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
 
                 return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
-            })();
+            })());
         } catch (\Throwable $exception) {
             {{ PHPUNIT }}->fail(
                 {{ FAILURE_MESSAGE_FACTORY }}->create(
@@ -245,8 +245,8 @@ trait CreateFromIsAssertionDataProviderTrait
         EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertEquals(
-                        (string) $expectedValue,
-                        (string) $examinedValue,
+                        $expectedValue,
+                        $examinedValue,
                         '{
                             "statement": {
                                 "statement-type": "assertion",
@@ -256,8 +256,8 @@ trait CreateFromIsAssertionDataProviderTrait
                                 "value": "\"value\"",
                                 "operator": "is"
                             },
-                            "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
+                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
+                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
                         }',
                     );
                     EOD,
@@ -282,8 +282,8 @@ trait CreateFromIsAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$env.KEY is "value"', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
                     try {
-                        $expectedValue = "value";
-                        $examinedValue = {{ ENV }}['KEY'] ?? null;
+                        $expectedValue = (string) ("value");
+                        $examinedValue = (string) ({{ ENV }}['KEY'] ?? null);
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
                             {{ FAILURE_MESSAGE_FACTORY }}->create(
@@ -303,8 +303,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertEquals(
-                        (string) $expectedValue,
-                        (string) $examinedValue,
+                        $expectedValue,
+                        $examinedValue,
                         '{
                             "statement": {
                                 "statement-type": "assertion",
@@ -314,8 +314,8 @@ trait CreateFromIsAssertionDataProviderTrait
                                 "value": "\"value\"",
                                 "operator": "is"
                             },
-                            "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
+                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
+                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
                         }',
                     );
                     EOD,
@@ -340,8 +340,8 @@ trait CreateFromIsAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$env.KEY|"default value" is "value"', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
                     try {
-                        $expectedValue = "value";
-                        $examinedValue = {{ ENV }}['KEY'] ?? 'default value';
+                        $expectedValue = (string) ("value");
+                        $examinedValue = (string) ({{ ENV }}['KEY'] ?? 'default value');
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
                             {{ FAILURE_MESSAGE_FACTORY }}->create(
@@ -361,8 +361,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertEquals(
-                        (string) $expectedValue,
-                        (string) $examinedValue,
+                        $expectedValue,
+                        $examinedValue,
                         '{
                             "statement": {
                                 "statement-type": "assertion",
@@ -372,8 +372,8 @@ trait CreateFromIsAssertionDataProviderTrait
                                 "value": "\"value\"",
                                 "operator": "is"
                             },
-                            "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
+                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
+                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
                         }',
                     );
                     EOD,
@@ -398,8 +398,8 @@ trait CreateFromIsAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$env.KEY1|"default value 1" is $env.KEY2|"default value 2"', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
                     try {
-                        $expectedValue = {{ ENV }}['KEY2'] ?? 'default value 2';
-                        $examinedValue = {{ ENV }}['KEY1'] ?? 'default value 1';
+                        $expectedValue = (string) ({{ ENV }}['KEY2'] ?? 'default value 2');
+                        $examinedValue = (string) ({{ ENV }}['KEY1'] ?? 'default value 1');
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
                             {{ FAILURE_MESSAGE_FACTORY }}->create(
@@ -419,8 +419,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertEquals(
-                        (string) $expectedValue,
-                        (string) $examinedValue,
+                        $expectedValue,
+                        $examinedValue,
                         '{
                             "statement": {
                                 "statement-type": "assertion",
@@ -430,8 +430,8 @@ trait CreateFromIsAssertionDataProviderTrait
                                 "value": "$env.KEY2|\"default value 2\"",
                                 "operator": "is"
                             },
-                            "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
+                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
+                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
                         }',
                     );
                     EOD,
@@ -456,8 +456,8 @@ trait CreateFromIsAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$page.title is "value"', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
                     try {
-                        $expectedValue = "value";
-                        $examinedValue = {{ CLIENT }}->getTitle();
+                        $expectedValue = (string) ("value");
+                        $examinedValue = (string) ({{ CLIENT }}->getTitle());
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
                             {{ FAILURE_MESSAGE_FACTORY }}->create(
@@ -477,8 +477,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertEquals(
-                        (string) $expectedValue,
-                        (string) $examinedValue,
+                        $expectedValue,
+                        $examinedValue,
                         '{
                             "statement": {
                                 "statement-type": "assertion",
@@ -488,8 +488,8 @@ trait CreateFromIsAssertionDataProviderTrait
                                 "value": "\"value\"",
                                 "operator": "is"
                             },
-                            "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
+                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
+                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
                         }',
                     );
                     EOD,
@@ -514,7 +514,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$browser.size is $".parent" >> $".child"', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
         try {
-            $expectedValue = (function () {
+            $expectedValue = (string) ((function () {
                 $element = {{ NAVIGATOR }}->find('{
                     "locator": ".child",
                     "parent": {
@@ -523,12 +523,12 @@ trait CreateFromIsAssertionDataProviderTrait
                 }');
 
                 return {{ INSPECTOR }}->getValue($element);
-            })();
-            $examinedValue = (function () {
+            })());
+            $examinedValue = (string) ((function () {
                 $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
 
                 return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
-            })();
+            })());
         } catch (\Throwable $exception) {
             {{ PHPUNIT }}->fail(
                 {{ FAILURE_MESSAGE_FACTORY }}->create(
@@ -548,8 +548,8 @@ trait CreateFromIsAssertionDataProviderTrait
         EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertEquals(
-                        (string) $expectedValue,
-                        (string) $examinedValue,
+                        $expectedValue,
+                        $examinedValue,
                         '{
                             "statement": {
                                 "statement-type": "assertion",
@@ -559,8 +559,8 @@ trait CreateFromIsAssertionDataProviderTrait
                                 "value": "$\".parent\" >> $\".child\"",
                                 "operator": "is"
                             },
-                            "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
+                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
+                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
                         }',
                     );
                     EOD,
@@ -587,18 +587,18 @@ trait CreateFromIsAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$browser.size is $".selector"', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
         try {
-            $expectedValue = (function () {
+            $expectedValue = (string) ((function () {
                 $element = {{ NAVIGATOR }}->find('{
                     "locator": ".selector"
                 }');
 
                 return {{ INSPECTOR }}->getValue($element);
-            })();
-            $examinedValue = (function () {
+            })());
+            $examinedValue = (string) ((function () {
                 $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
 
                 return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
-            })();
+            })());
         } catch (\Throwable $exception) {
             {{ PHPUNIT }}->fail(
                 {{ FAILURE_MESSAGE_FACTORY }}->create(
@@ -618,8 +618,8 @@ trait CreateFromIsAssertionDataProviderTrait
         EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertEquals(
-                        (string) $expectedValue,
-                        (string) $examinedValue,
+                        $expectedValue,
+                        $examinedValue,
                         '{
                             "statement": {
                                 "statement-type": "assertion",
@@ -629,8 +629,8 @@ trait CreateFromIsAssertionDataProviderTrait
                                 "value": "$\".selector\"",
                                 "operator": "is"
                             },
-                            "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
+                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
+                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
                         }',
                     );
                     EOD,
@@ -657,18 +657,18 @@ trait CreateFromIsAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$browser.size is $".selector".attribute_name', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
         try {
-            $expectedValue = (function () {
+            $expectedValue = (string) ((function () {
                 $element = {{ NAVIGATOR }}->findOne('{
                     "locator": ".selector"
                 }');
 
                 return $element->getAttribute('attribute_name');
-            })();
-            $examinedValue = (function () {
+            })());
+            $examinedValue = (string) ((function () {
                 $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
 
                 return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
-            })();
+            })());
         } catch (\Throwable $exception) {
             {{ PHPUNIT }}->fail(
                 {{ FAILURE_MESSAGE_FACTORY }}->create(
@@ -688,8 +688,8 @@ trait CreateFromIsAssertionDataProviderTrait
         EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertEquals(
-                        (string) $expectedValue,
-                        (string) $examinedValue,
+                        $expectedValue,
+                        $examinedValue,
                         '{
                             "statement": {
                                 "statement-type": "assertion",
@@ -699,8 +699,8 @@ trait CreateFromIsAssertionDataProviderTrait
                                 "value": "$\".selector\".attribute_name",
                                 "operator": "is"
                             },
-                            "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
+                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
+                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
                         }',
                     );
                     EOD,
@@ -726,12 +726,12 @@ trait CreateFromIsAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$browser.size is $env.KEY', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
         try {
-            $expectedValue = {{ ENV }}['KEY'] ?? null;
-            $examinedValue = (function () {
+            $expectedValue = (string) ({{ ENV }}['KEY'] ?? null);
+            $examinedValue = (string) ((function () {
                 $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
 
                 return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
-            })();
+            })());
         } catch (\Throwable $exception) {
             {{ PHPUNIT }}->fail(
                 {{ FAILURE_MESSAGE_FACTORY }}->create(
@@ -751,8 +751,8 @@ trait CreateFromIsAssertionDataProviderTrait
         EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertEquals(
-                        (string) $expectedValue,
-                        (string) $examinedValue,
+                        $expectedValue,
+                        $examinedValue,
                         '{
                             "statement": {
                                 "statement-type": "assertion",
@@ -762,8 +762,8 @@ trait CreateFromIsAssertionDataProviderTrait
                                 "value": "$env.KEY",
                                 "operator": "is"
                             },
-                            "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
+                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
+                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
                         }',
                     );
                     EOD,
@@ -789,12 +789,12 @@ trait CreateFromIsAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$browser.size is $env.KEY|"default value"', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
         try {
-            $expectedValue = {{ ENV }}['KEY'] ?? 'default value';
-            $examinedValue = (function () {
+            $expectedValue = (string) ({{ ENV }}['KEY'] ?? 'default value');
+            $examinedValue = (string) ((function () {
                 $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
 
                 return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
-            })();
+            })());
         } catch (\Throwable $exception) {
             {{ PHPUNIT }}->fail(
                 {{ FAILURE_MESSAGE_FACTORY }}->create(
@@ -814,8 +814,8 @@ trait CreateFromIsAssertionDataProviderTrait
         EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertEquals(
-                        (string) $expectedValue,
-                        (string) $examinedValue,
+                        $expectedValue,
+                        $examinedValue,
                         '{
                             "statement": {
                                 "statement-type": "assertion",
@@ -825,8 +825,8 @@ trait CreateFromIsAssertionDataProviderTrait
                                 "value": "$env.KEY|\"default value\"",
                                 "operator": "is"
                             },
-                            "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
+                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
+                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
                         }',
                     );
                     EOD,
@@ -852,12 +852,12 @@ trait CreateFromIsAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$browser.size is $page.url', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
         try {
-            $expectedValue = {{ CLIENT }}->getCurrentURL();
-            $examinedValue = (function () {
+            $expectedValue = (string) ({{ CLIENT }}->getCurrentURL());
+            $examinedValue = (string) ((function () {
                 $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
 
                 return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
-            })();
+            })());
         } catch (\Throwable $exception) {
             {{ PHPUNIT }}->fail(
                 {{ FAILURE_MESSAGE_FACTORY }}->create(
@@ -877,8 +877,8 @@ trait CreateFromIsAssertionDataProviderTrait
         EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertEquals(
-                        (string) $expectedValue,
-                        (string) $examinedValue,
+                        $expectedValue,
+                        $examinedValue,
                         '{
                             "statement": {
                                 "statement-type": "assertion",
@@ -888,8 +888,8 @@ trait CreateFromIsAssertionDataProviderTrait
                                 "value": "$page.url",
                                 "operator": "is"
                             },
-                            "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
+                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
+                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
                         }',
                     );
                     EOD,
@@ -914,8 +914,8 @@ trait CreateFromIsAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('"examined" is "expected"', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
                     try {
-                        $expectedValue = "expected";
-                        $examinedValue = "examined";
+                        $expectedValue = (string) ("expected");
+                        $examinedValue = (string) ("examined");
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
                             {{ FAILURE_MESSAGE_FACTORY }}->create(
@@ -935,8 +935,8 @@ trait CreateFromIsAssertionDataProviderTrait
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertEquals(
-                        (string) $expectedValue,
-                        (string) $examinedValue,
+                        $expectedValue,
+                        $examinedValue,
                         '{
                             "statement": {
                                 "statement-type": "assertion",
@@ -946,8 +946,8 @@ trait CreateFromIsAssertionDataProviderTrait
                                 "value": "\"expected\"",
                                 "operator": "is"
                             },
-                            "expected": "' . addcslashes((string) $expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes((string) $examinedValue, '"\\') . '"
+                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
+                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
                         }',
                     );
                     EOD,

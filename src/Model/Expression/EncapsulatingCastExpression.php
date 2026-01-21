@@ -10,4 +10,14 @@ class EncapsulatingCastExpression extends CastExpression implements ExpressionIn
     {
         parent::__construct(new EncapsulatedExpression($expression), $castTo);
     }
+
+    public static function forString(ExpressionInterface $expression): ExpressionInterface
+    {
+        return new EncapsulatingCastExpression($expression, 'string');
+    }
+
+    public static function forBool(ExpressionInterface $expression): ExpressionInterface
+    {
+        return new EncapsulatingCastExpression($expression, 'bool');
+    }
 }

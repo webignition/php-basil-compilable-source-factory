@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\AddCSlashesCallFactory;
-use webignition\BasilCompilableSourceFactory\Model\Expression\CastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\TernaryExpression;
@@ -52,9 +51,7 @@ readonly class AssertionMessageFactory
         if ('string' === $argument->type) {
             return new StringLiteral(
                 $this->variableResolver->resolveAndIgnoreUnresolvedVariables(
-                    $this->addSlashesCallFactory->create(
-                        new CastExpression($argument->expression, 'string')
-                    )
+                    $this->addSlashesCallFactory->create($argument->expression)
                 )
             );
         }

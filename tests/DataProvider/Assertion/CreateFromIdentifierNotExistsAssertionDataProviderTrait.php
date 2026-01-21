@@ -34,9 +34,9 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$".selector" not-exists', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
                     try {
-                        $elementExists = {{ NAVIGATOR }}->has('{
+                        $elementExists = (bool) ({{ NAVIGATOR }}->has('{
                             "locator": ".selector"
-                        }');
+                        }'));
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
                             {{ FAILURE_MESSAGE_FACTORY }}->create(
@@ -91,16 +91,16 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$".selector".attribute_name not-exists', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
                     try {
-                        $elementExists = {{ NAVIGATOR }}->hasOne('{
+                        $elementExists = (bool) ({{ NAVIGATOR }}->hasOne('{
                             "locator": ".selector"
-                        }');
-                        $attributeExists = $elementExists && ((function () {
+                        }'));
+                        $attributeExists = $elementExists && (bool) (((function () {
                             $element = {{ NAVIGATOR }}->findOne('{
                                 "locator": ".selector"
                             }');
 
                             return $element->getAttribute('attribute_name');
-                        })() ?? null) !== null;
+                        })() ?? null) !== null);
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
                             {{ FAILURE_MESSAGE_FACTORY }}->create(
