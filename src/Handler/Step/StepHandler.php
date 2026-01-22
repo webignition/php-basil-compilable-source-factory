@@ -18,7 +18,6 @@ use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
 use webignition\BasilModels\Model\Statement\Action\ActionInterface;
-use webignition\BasilModels\Model\Statement\Assertion\AssertionCollectionInterface;
 use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Statement\Assertion\UniqueAssertionCollection;
 use webignition\BasilModels\Model\Statement\StatementCollection;
@@ -81,7 +80,13 @@ class StepHandler
         }
 
         try {
-            $bodySources[] = $this->createDerivedAssertionsBody($derivedAssertions);
+            foreach ($derivedAssertions as $derivedAssertion) {
+                $bodySources[] = $this->statementBlockFactory->create($derivedAssertion);
+                $bodySources[] = $this->createBodyFromStatementHandlerComponents(
+                    $this->statementHandler->handle($derivedAssertion)
+                );
+                $bodySources[] = new EmptyLine();
+            }
 
             foreach ($step->getActions() as $action) {
                 if (!$action instanceof ActionInterface) {
@@ -119,26 +124,6 @@ class StepHandler
         }
 
         return new Body($bodySources);
-    }
-
-    /**
-     * @throws UnsupportedStatementException
-     */
-    private function createDerivedAssertionsBody(AssertionCollectionInterface $assertions): BodyInterface
-    {
-        $derivedAssertionBlockSources = [];
-        foreach ($assertions as $assertion) {
-            $derivedAssertionBlockSources[] = $this->statementBlockFactory->create($assertion);
-            $derivedAssertionBlockSources[] = $this->createBodyFromStatementHandlerComponents(
-                $this->statementHandler->handle($assertion)
-            );
-        }
-
-        if ([] !== $derivedAssertionBlockSources) {
-            $derivedAssertionBlockSources[] = new EmptyLine();
-        }
-
-        return new Body($derivedAssertionBlockSources);
     }
 
     private function createBodyFromStatementHandlerComponents(StatementHandlerComponents $components): BodyInterface
