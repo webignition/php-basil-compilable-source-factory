@@ -246,6 +246,8 @@ class StepHandlerTest extends AbstractResolvableTestCase
                 'expectedRenderedContent' => <<< 'EOD'
                     // StatementBlockFactory::create($".selector1" exists)
                     // StatementHandler::handle($".selector1" exists)
+                    // StatementBlockFactory::create($".selector2" exists)
+                    // StatementHandler::handle($".selector2" exists)
 
                     // StatementBlockFactory::create(click $".selector1")
                     try {
@@ -266,9 +268,6 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             ),
                         );
                     }
-
-                    // StatementBlockFactory::create($".selector2" exists)
-                    // StatementHandler::handle($".selector2" exists)
 
                     // StatementBlockFactory::create(click $".selector2")
                     try {
