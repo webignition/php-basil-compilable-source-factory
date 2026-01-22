@@ -9,7 +9,7 @@ use PHPUnit\Framework\TestCase;
 use SmartAssert\DomIdentifier\FactoryInterface;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\Statement\WaitForActionHandler;
-use webignition\BasilModels\Model\Action\ActionInterface;
+use webignition\BasilModels\Model\Statement\Action\ActionInterface;
 use webignition\BasilModels\Parser\ActionParser;
 use webignition\ObjectReflector\ObjectReflector;
 

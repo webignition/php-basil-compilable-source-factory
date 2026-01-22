@@ -7,8 +7,8 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Step;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
-use webignition\BasilModels\Model\EncapsulatingStatementInterface;
-use webignition\BasilModels\Model\StatementInterface as StatementModelInterface;
+use webignition\BasilModels\Model\Statement\EncapsulatingStatementInterface;
+use webignition\BasilModels\Model\Statement\StatementInterface as StatementModelInterface;
 
 class StatementBlockFactory
 {

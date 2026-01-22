@@ -8,7 +8,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\Statement\InteractionActionHandler;
-use webignition\BasilModels\Model\Action\ActionInterface;
+use webignition\BasilModels\Model\Statement\Action\ActionInterface;
 use webignition\BasilModels\Parser\ActionParser;
 
 class InteractionActionHandlerTest extends TestCase

@@ -32,10 +32,10 @@ use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
-use webignition\BasilModels\Model\Action\ActionInterface;
-use webignition\BasilModels\Model\Assertion\AssertionInterface;
-use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
-use webignition\BasilModels\Model\StatementInterface as StatementModelInterface;
+use webignition\BasilModels\Model\Statement\Action\ActionInterface;
+use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
+use webignition\BasilModels\Model\Statement\Assertion\DerivedValueOperationAssertion;
+use webignition\BasilModels\Model\Statement\StatementInterface as StatementModelInterface;
 
 class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
 {
