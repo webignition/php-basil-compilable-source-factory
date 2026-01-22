@@ -60,7 +60,7 @@
         "php": "^8.4",
         "ext-json": "*",
         "smartassert/dom-identifier": ">=0.2,<1",
-        "webignition/base-basil-test-case": "dev-github-227",
+        "webignition/base-basil-test-case": "^15.0",
         "webignition/basil-identifier-analyser": "^2.0",
         "webignition/basil-models": "^13.0",
         "webignition/basil-value-type-identifier": ">=0.3,<1",
