@@ -33,7 +33,7 @@ trait CreateFromIncludesAssertionDataProviderTrait
                         })());
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "statement-type": "assertion",
                                     "source": "$\\".selector\\" includes \\"value\\"",
@@ -42,8 +42,8 @@ trait CreateFromIncludesAssertionDataProviderTrait
                                     "value": "\\"value\\"",
                                     "operator": "includes"
                                 }',
-                                StatementStage::SETUP,
                                 $exception,
+                                StatementStage::SETUP,
                             ),
                         );
                     }
@@ -52,18 +52,18 @@ trait CreateFromIncludesAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertStringContainsString(
                         $expectedValue,
                         $examinedValue,
-                        '{
-                            "statement": {
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
+                            '{
                                 "statement-type": "assertion",
-                                "source": "$\".selector\" includes \"value\"",
+                                "source": "$\\".selector\\" includes \\"value\\"",
                                 "index": 0,
-                                "identifier": "$\".selector\"",
-                                "value": "\"value\"",
+                                "identifier": "$\\".selector\\"",
+                                "value": "\\"value\\"",
                                 "operator": "includes"
-                            },
-                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
-                        }',
+                            }',
+                            $expectedValue,
+                            $examinedValue,
+                        ),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -75,12 +75,13 @@ trait CreateFromIncludesAssertionDataProviderTrait
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -98,7 +99,7 @@ trait CreateFromIncludesAssertionDataProviderTrait
                         })());
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "statement-type": "assertion",
                                     "source": "$\\".selector\\".attribute_name includes \\"value\\"",
@@ -107,8 +108,8 @@ trait CreateFromIncludesAssertionDataProviderTrait
                                     "value": "\\"value\\"",
                                     "operator": "includes"
                                 }',
-                                StatementStage::SETUP,
                                 $exception,
+                                StatementStage::SETUP,
                             ),
                         );
                     }
@@ -117,18 +118,18 @@ trait CreateFromIncludesAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertStringContainsString(
                         $expectedValue,
                         $examinedValue,
-                        '{
-                            "statement": {
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
+                            '{
                                 "statement-type": "assertion",
-                                "source": "$\".selector\".attribute_name includes \"value\"",
+                                "source": "$\\".selector\\".attribute_name includes \\"value\\"",
                                 "index": 0,
-                                "identifier": "$\".selector\".attribute_name",
-                                "value": "\"value\"",
+                                "identifier": "$\\".selector\\".attribute_name",
+                                "value": "\\"value\\"",
                                 "operator": "includes"
-                            },
-                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
-                        }',
+                            }',
+                            $expectedValue,
+                            $examinedValue,
+                        ),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -139,12 +140,13 @@ trait CreateFromIncludesAssertionDataProviderTrait
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],

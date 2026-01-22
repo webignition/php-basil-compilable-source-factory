@@ -33,7 +33,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
                         })());
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "statement-type": "assertion",
                                     "source": "$\\".selector\\" excludes \\"value\\"",
@@ -42,8 +42,8 @@ trait CreateFromExcludesAssertionDataProviderTrait
                                     "value": "\\"value\\"",
                                     "operator": "excludes"
                                 }',
-                                StatementStage::SETUP,
                                 $exception,
+                                StatementStage::SETUP,
                             ),
                         );
                     }
@@ -52,18 +52,18 @@ trait CreateFromExcludesAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertStringNotContainsString(
                         $expectedValue,
                         $examinedValue,
-                        '{
-                            "statement": {
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
+                            '{
                                 "statement-type": "assertion",
-                                "source": "$\".selector\" excludes \"value\"",
+                                "source": "$\\".selector\\" excludes \\"value\\"",
                                 "index": 0,
-                                "identifier": "$\".selector\"",
-                                "value": "\"value\"",
+                                "identifier": "$\\".selector\\"",
+                                "value": "\\"value\\"",
                                 "operator": "excludes"
-                            },
-                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
-                        }',
+                            }',
+                            $expectedValue,
+                            $examinedValue,
+                        ),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -75,12 +75,13 @@ trait CreateFromExcludesAssertionDataProviderTrait
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -98,7 +99,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
                         })());
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "statement-type": "assertion",
                                     "source": "$\\".selector\\" excludes \\"\\\'value\\\'\\"",
@@ -107,8 +108,8 @@ trait CreateFromExcludesAssertionDataProviderTrait
                                     "value": "\\"\\\'value\\\'\\"",
                                     "operator": "excludes"
                                 }',
-                                StatementStage::SETUP,
                                 $exception,
+                                StatementStage::SETUP,
                             ),
                         );
                     }
@@ -117,18 +118,18 @@ trait CreateFromExcludesAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertStringNotContainsString(
                         $expectedValue,
                         $examinedValue,
-                        '{
-                            "statement": {
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
+                            '{
                                 "statement-type": "assertion",
-                                "source": "$\".selector\" excludes \"\'value\'\"",
+                                "source": "$\\".selector\\" excludes \\"\\\'value\\\'\\"",
                                 "index": 0,
-                                "identifier": "$\".selector\"",
-                                "value": "\"\'value\'\"",
+                                "identifier": "$\\".selector\\"",
+                                "value": "\\"\\\'value\\\'\\"",
                                 "operator": "excludes"
-                            },
-                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
-                        }',
+                            }',
+                            $expectedValue,
+                            $examinedValue,
+                        ),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -140,12 +141,13 @@ trait CreateFromExcludesAssertionDataProviderTrait
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -163,7 +165,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
                         })());
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "statement-type": "assertion",
                                     "source": "$\\".selector\\".attribute_name excludes \\"value\\"",
@@ -172,8 +174,8 @@ trait CreateFromExcludesAssertionDataProviderTrait
                                     "value": "\\"value\\"",
                                     "operator": "excludes"
                                 }',
-                                StatementStage::SETUP,
                                 $exception,
+                                StatementStage::SETUP,
                             ),
                         );
                     }
@@ -182,18 +184,18 @@ trait CreateFromExcludesAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertStringNotContainsString(
                         $expectedValue,
                         $examinedValue,
-                        '{
-                            "statement": {
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
+                            '{
                                 "statement-type": "assertion",
-                                "source": "$\".selector\".attribute_name excludes \"value\"",
+                                "source": "$\\".selector\\".attribute_name excludes \\"value\\"",
                                 "index": 0,
-                                "identifier": "$\".selector\".attribute_name",
-                                "value": "\"value\"",
+                                "identifier": "$\\".selector\\".attribute_name",
+                                "value": "\\"value\\"",
                                 "operator": "excludes"
-                            },
-                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
-                        }',
+                            }',
+                            $expectedValue,
+                            $examinedValue,
+                        ),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -204,12 +206,13 @@ trait CreateFromExcludesAssertionDataProviderTrait
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],

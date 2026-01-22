@@ -39,7 +39,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                         }'));
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "statement-type": "assertion",
                                     "source": "$\\".selector\\" not-exists",
@@ -47,8 +47,8 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                                     "identifier": "$\\".selector\\"",
                                     "operator": "not-exists"
                                 }',
-                                StatementStage::SETUP,
                                 $exception,
+                                StatementStage::SETUP,
                             ),
                         );
                     }
@@ -56,17 +56,17 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertFalse(
                         $elementExists,
-                        '{
-                            "statement": {
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
+                            '{
                                 "statement-type": "assertion",
-                                "source": "$\".selector\" not-exists",
+                                "source": "$\\".selector\\" not-exists",
                                 "index": 0,
-                                "identifier": "$\".selector\"",
+                                "identifier": "$\\".selector\\"",
                                 "operator": "not-exists"
-                            },
-                            "expected": ' . (false ? 'true' : 'false') . ',
-                            "examined": ' . ($elementExists ? 'true' : 'false') . '
-                        }',
+                            }',
+                            false,
+                            $elementExists,
+                        ),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -77,13 +77,13 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
-                    classNames: [],
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -103,7 +103,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                         })() ?? null) !== null);
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "container": {
                                         "value": "$\\".selector\\"",
@@ -118,8 +118,8 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                                         "operator": "not-exists"
                                     }
                                 }',
-                                StatementStage::SETUP,
                                 $exception,
+                                StatementStage::SETUP,
                             ),
                         );
                     }
@@ -127,38 +127,38 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
                         $elementExists,
-                        '{
-                            "statement": {
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
+                            '{
                                 "container": {
-                                    "value": "$\".selector\"",
+                                    "value": "$\\".selector\\"",
                                     "operator": "exists",
                                     "type": "derived-value-operation-assertion"
                                 },
                                 "statement": {
                                     "statement-type": "assertion",
-                                    "source": "$\".selector\".attribute_name not-exists",
+                                    "source": "$\\".selector\\".attribute_name not-exists",
                                     "index": 0,
-                                    "identifier": "$\".selector\".attribute_name",
+                                    "identifier": "$\\".selector\\".attribute_name",
                                     "operator": "not-exists"
                                 }
-                            },
-                            "expected": ' . (true ? 'true' : 'false') . ',
-                            "examined": ' . ($elementExists ? 'true' : 'false') . '
-                        }',
+                            }',
+                            true,
+                            $elementExists,
+                        ),
                     );
                     {{ PHPUNIT }}->assertFalse(
                         $attributeExists,
-                        '{
-                            "statement": {
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
+                            '{
                                 "statement-type": "assertion",
-                                "source": "$\".selector\".attribute_name not-exists",
+                                "source": "$\\".selector\\".attribute_name not-exists",
                                 "index": 0,
-                                "identifier": "$\".selector\".attribute_name",
+                                "identifier": "$\\".selector\\".attribute_name",
                                 "operator": "not-exists"
-                            },
-                            "expected": ' . (false ? 'true' : 'false') . ',
-                            "examined": ' . ($attributeExists ? 'true' : 'false') . '
-                        }',
+                            }',
+                            false,
+                            $attributeExists,
+                        ),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -169,12 +169,13 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],

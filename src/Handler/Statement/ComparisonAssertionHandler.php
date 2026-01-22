@@ -5,9 +5,6 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Statement;
 
 use webignition\BaseBasilTestCase\Enum\StatementStage;
-use webignition\BasilCompilableSourceFactory\AssertionArgument;
-use webignition\BasilCompilableSourceFactory\AssertionMessageFactory;
-use webignition\BasilCompilableSourceFactory\AssertionStatementFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
@@ -16,6 +13,7 @@ use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastExpression;
+use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
@@ -33,9 +31,7 @@ class ComparisonAssertionHandler implements StatementHandlerInterface
     ];
 
     public function __construct(
-        private AssertionStatementFactory $assertionStatementFactory,
         private ValueAccessorFactory $valueAccessorFactory,
-        private AssertionMessageFactory $assertionMessageFactory,
         private TryCatchBlockFactory $tryCatchBlockFactory,
         private PhpUnitCallFactory $phpUnitCallFactory,
     ) {}
@@ -43,9 +39,7 @@ class ComparisonAssertionHandler implements StatementHandlerInterface
     public static function createHandler(): self
     {
         return new ComparisonAssertionHandler(
-            AssertionStatementFactory::createFactory(),
             ValueAccessorFactory::createFactory(),
-            AssertionMessageFactory::createFactory(),
             TryCatchBlockFactory::createFactory(),
             PhpUnitCallFactory::createFactory(),
         );
@@ -73,20 +67,19 @@ class ComparisonAssertionHandler implements StatementHandlerInterface
         $expectedValuePlaceholder = new VariableName(VariableNameEnum::EXPECTED_VALUE->value);
         $examinedValuePlaceholder = new VariableName(VariableNameEnum::EXAMINED_VALUE->value);
 
-        $expected = new AssertionArgument($expectedValuePlaceholder, 'string');
-        $examined = new AssertionArgument($examinedValuePlaceholder, 'string');
-
         $catchBody = Body::createFromExpressions([
             $this->phpUnitCallFactory->createFailCall($statement, StatementStage::SETUP),
         ]);
 
         return new StatementHandlerComponents(
-            $this->assertionStatementFactory->create(
-                assertionMethod: self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP[$statement->getOperator()],
-                assertionMessage: $this->assertionMessageFactory->create($statement, $expected, $examined),
-                expected: $expected,
-                examined: $examined,
-            )
+            new Statement(
+                $this->phpUnitCallFactory->createAssertionCall(
+                    self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP[$statement->getOperator()],
+                    $statement,
+                    [$expectedValuePlaceholder, $examinedValuePlaceholder],
+                    [$expectedValuePlaceholder, $examinedValuePlaceholder],
+                )
+            ),
         )->withSetup(
             $this->tryCatchBlockFactory->create(
                 Body::createFromExpressions([

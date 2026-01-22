@@ -10,9 +10,6 @@ use SmartAssert\DomIdentifier\ElementIdentifierInterface;
 use SmartAssert\DomIdentifier\Factory as DomIdentifierFactory;
 use webignition\BaseBasilTestCase\Enum\StatementStage;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
-use webignition\BasilCompilableSourceFactory\AssertionArgument;
-use webignition\BasilCompilableSourceFactory\AssertionMessageFactory;
-use webignition\BasilCompilableSourceFactory\AssertionStatementFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
@@ -50,8 +47,6 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
         private ElementIdentifierSerializer $elementIdentifierSerializer,
         private TryCatchBlockFactory $tryCatchBlockFactory,
         private PhpUnitCallFactory $phpUnitCallFactory,
-        private AssertionStatementFactory $assertionStatementFactory,
-        private AssertionMessageFactory $assertionMessageFactory,
     ) {}
 
     public static function createHandler(): self
@@ -64,8 +59,6 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
             ElementIdentifierSerializer::createSerializer(),
             TryCatchBlockFactory::createFactory(),
             PhpUnitCallFactory::createFactory(),
-            AssertionStatementFactory::createFactory(),
-            AssertionMessageFactory::createFactory(),
         );
     }
 
@@ -234,22 +227,17 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
         AssertionInterface $assertion,
         ExpressionInterface $examinedValuePlaceholder,
     ): StatementInterface {
-        $examined = new AssertionArgument($examinedValuePlaceholder, 'bool');
-
-        $expected = new AssertionArgument(
+        $assertionArgumentExpressions = [$examinedValuePlaceholder];
+        $assertionMessageExpressions = [
             new LiteralExpression(('exists' === $assertion->getOperator()) ? 'true' : 'false'),
-            'bool'
-        );
+            $examinedValuePlaceholder,
+        ];
 
-        return $this->assertionStatementFactory->create(
-            assertionMethod: 'exists' === $assertion->getOperator() ? 'assertTrue' : 'assertFalse',
-            assertionMessage: $this->assertionMessageFactory->create(
-                assertion: $assertion,
-                expected: $expected,
-                examined: $examined,
-            ),
-            expected: null,
-            examined: $examined,
-        );
+        return new Statement($this->phpUnitCallFactory->createAssertionCall(
+            'exists' === $assertion->getOperator() ? 'assertTrue' : 'assertFalse',
+            $assertion,
+            $assertionArgumentExpressions,
+            $assertionMessageExpressions,
+        ));
     }
 }

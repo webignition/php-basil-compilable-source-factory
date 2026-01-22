@@ -7,9 +7,6 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Statement;
 use SmartAssert\DomIdentifier\Factory as DomIdentifierFactory;
 use webignition\BaseBasilTestCase\Enum\StatementStage;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
-use webignition\BasilCompilableSourceFactory\AssertionArgument;
-use webignition\BasilCompilableSourceFactory\AssertionMessageFactory;
-use webignition\BasilCompilableSourceFactory\AssertionStatementFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
@@ -23,6 +20,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterfac
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
@@ -35,12 +33,10 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
 {
     public function __construct(
         private ArgumentFactory $argumentFactory,
-        private AssertionStatementFactory $assertionStatementFactory,
         private DomIdentifierFactory $domIdentifierFactory,
         private IdentifierTypeAnalyser $identifierTypeAnalyser,
         private ValueTypeIdentifier $valueTypeIdentifier,
         private ValueAccessorFactory $valueAccessorFactory,
-        private AssertionMessageFactory $assertionMessageFactory,
         private PhpUnitCallFactory $phpUnitCallFactory,
         private TryCatchBlockFactory $tryCatchBlockFactory,
     ) {}
@@ -49,12 +45,10 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
     {
         return new IsRegExpAssertionHandler(
             ArgumentFactory::createFactory(),
-            AssertionStatementFactory::createFactory(),
             DomIdentifierFactory::createFactory(),
             IdentifierTypeAnalyser::create(),
             new ValueTypeIdentifier(),
             ValueAccessorFactory::createFactory(),
-            AssertionMessageFactory::createFactory(),
             PhpUnitCallFactory::createFactory(),
             TryCatchBlockFactory::createFactory(),
         );
@@ -132,16 +126,12 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
         ]);
 
         return new StatementHandlerComponents(
-            $this->assertionStatementFactory->create(
+            new Statement($this->phpUnitCallFactory->createAssertionCall(
                 'assertFalse',
-                $this->assertionMessageFactory->create(
-                    $assertion,
-                    new AssertionArgument($expectedValuePlaceholder, 'bool'),
-                    new AssertionArgument($examinedValuePlaceholder, 'string'),
-                ),
-                new AssertionArgument($expectedValuePlaceholder, 'bool'),
-                null,
-            )
+                $assertion,
+                [$expectedValuePlaceholder],
+                [$expectedValuePlaceholder, $examinedValuePlaceholder],
+            ))
         )->withSetup(
             $this->tryCatchBlockFactory->create(
                 Body::createFromExpressions([

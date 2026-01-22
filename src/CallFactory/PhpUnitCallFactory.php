@@ -8,14 +8,15 @@ use webignition\BaseBasilTestCase\Enum\StatementStage;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
+use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ObjectConstant;
-use webignition\BasilCompilableSourceFactory\Model\Json\AssertionMessage;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocationInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
+use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\StatementInterface;
 
 readonly class PhpUnitCallFactory
@@ -42,12 +43,44 @@ readonly class PhpUnitCallFactory
         );
     }
 
+    /**
+     * @param ExpressionInterface[] $methodExpressions
+     * @param ExpressionInterface[] $messageExpressions
+     */
     public function createAssertionCall(
         string $methodName,
-        MethodArgumentsInterface $arguments,
-        AssertionMessage $assertionMessage,
+        AssertionInterface $statement,
+        array $methodExpressions,
+        array $messageExpressions,
     ): MethodInvocationInterface {
-        $arguments = $arguments->withArgument($assertionMessage);
+        $serializedStatement = (string) json_encode($statement, JSON_PRETTY_PRINT);
+        $serializedStatement = addcslashes($serializedStatement, "'");
+
+        $messageFactoryArgumentExpressions = [
+            $this->argumentFactory->createSingular($serializedStatement),
+        ];
+
+        foreach ($messageExpressions as $expression) {
+            $messageFactoryArgumentExpressions[] = $this->argumentFactory->createSingular($expression);
+        }
+
+        $messageFactoryCall = new ObjectMethodInvocation(
+            new VariableDependency(VariableNameEnum::MESSAGE_FACTORY),
+            'createAssertionMessage',
+            new MethodArguments($messageFactoryArgumentExpressions)
+                ->withFormat(MethodArgumentsInterface::FORMAT_STACKED)
+        );
+
+        $assertionCallArgumentExpressions = [];
+        foreach ($methodExpressions as $expression) {
+            $assertionCallArgumentExpressions[] = $this->argumentFactory->createSingular($expression);
+        }
+
+        $assertionCallArgumentExpressions[] = $this->argumentFactory->createSingular($messageFactoryCall);
+
+        $arguments = new MethodArguments($assertionCallArgumentExpressions)
+            ->withFormat(MethodArgumentsInterface::FORMAT_STACKED)
+        ;
 
         return $this->createCall($methodName, $arguments);
     }
@@ -65,12 +98,12 @@ readonly class PhpUnitCallFactory
         );
 
         $failureMessageFactoryCall = new ObjectMethodInvocation(
-            new VariableDependency(VariableNameEnum::FAILURE_MESSAGE_FACTORY),
-            'create',
+            new VariableDependency(VariableNameEnum::MESSAGE_FACTORY),
+            'createFailureMessage',
             new MethodArguments([
                 $this->argumentFactory->createSingular($serializedStatement),
-                $this->argumentFactory->createSingular($statementStageEnum),
                 $this->argumentFactory->createSingular(new VariableName('exception')),
+                $this->argumentFactory->createSingular($statementStageEnum),
             ])->withFormat(MethodArgumentsInterface::FORMAT_STACKED)
         );
 

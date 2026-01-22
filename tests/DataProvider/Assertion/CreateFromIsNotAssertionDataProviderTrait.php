@@ -33,7 +33,7 @@ trait CreateFromIsNotAssertionDataProviderTrait
                         })());
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "statement-type": "assertion",
                                     "source": "$\\".selector\\" is-not \\"value\\"",
@@ -42,8 +42,8 @@ trait CreateFromIsNotAssertionDataProviderTrait
                                     "value": "\\"value\\"",
                                     "operator": "is-not"
                                 }',
-                                StatementStage::SETUP,
                                 $exception,
+                                StatementStage::SETUP,
                             ),
                         );
                     }
@@ -52,18 +52,18 @@ trait CreateFromIsNotAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertNotEquals(
                         $expectedValue,
                         $examinedValue,
-                        '{
-                            "statement": {
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
+                            '{
                                 "statement-type": "assertion",
-                                "source": "$\".selector\" is-not \"value\"",
+                                "source": "$\\".selector\\" is-not \\"value\\"",
                                 "index": 0,
-                                "identifier": "$\".selector\"",
-                                "value": "\"value\"",
+                                "identifier": "$\\".selector\\"",
+                                "value": "\\"value\\"",
                                 "operator": "is-not"
-                            },
-                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
-                        }',
+                            }',
+                            $expectedValue,
+                            $examinedValue,
+                        ),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -75,12 +75,13 @@ trait CreateFromIsNotAssertionDataProviderTrait
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::PHPUNIT_TEST_CASE,
                         VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -98,7 +99,7 @@ trait CreateFromIsNotAssertionDataProviderTrait
                         })());
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
-                            {{ FAILURE_MESSAGE_FACTORY }}->create(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
                                 '{
                                     "statement-type": "assertion",
                                     "source": "$\\".selector\\".attribute_name is-not \\"value\\"",
@@ -107,8 +108,8 @@ trait CreateFromIsNotAssertionDataProviderTrait
                                     "value": "\\"value\\"",
                                     "operator": "is-not"
                                 }',
-                                StatementStage::SETUP,
                                 $exception,
+                                StatementStage::SETUP,
                             ),
                         );
                     }
@@ -117,18 +118,18 @@ trait CreateFromIsNotAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertNotEquals(
                         $expectedValue,
                         $examinedValue,
-                        '{
-                            "statement": {
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
+                            '{
                                 "statement-type": "assertion",
-                                "source": "$\".selector\".attribute_name is-not \"value\"",
+                                "source": "$\\".selector\\".attribute_name is-not \\"value\\"",
                                 "index": 0,
-                                "identifier": "$\".selector\".attribute_name",
-                                "value": "\"value\"",
+                                "identifier": "$\\".selector\\".attribute_name",
+                                "value": "\\"value\\"",
                                 "operator": "is-not"
-                            },
-                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
-                        }',
+                            }',
+                            $expectedValue,
+                            $examinedValue,
+                        ),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -139,12 +140,13 @@ trait CreateFromIsNotAssertionDataProviderTrait
                     variableNames: [
                         VariableName::DOM_CRAWLER_NAVIGATOR,
                         VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::FAILURE_MESSAGE_FACTORY,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],

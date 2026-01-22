@@ -166,6 +166,7 @@ class StatementHandlerTest extends AbstractBrowserTestCase
                             "identifier": "$\".selector\"",
                             "operator": "exists"
                         },
+                        "stage": "execute",
                         "expected": true,
                         "examined": false
                     }
@@ -190,6 +191,7 @@ class StatementHandlerTest extends AbstractBrowserTestCase
                                 "operator": "exists"
                             }
                         },
+                        "stage": "execute",
                         "expected": true,
                         "examined": false
                     }
@@ -207,6 +209,7 @@ class StatementHandlerTest extends AbstractBrowserTestCase
                             "identifier": "$\"h1\".attribute_name",
                             "operator": "exists"
                         },
+                        "stage": "execute",
                         "expected": true,
                         "examined": false
                     }
@@ -224,6 +227,7 @@ class StatementHandlerTest extends AbstractBrowserTestCase
                             "identifier": "$env.FOO",
                             "operator": "exists"
                         },
+                        "stage": "execute",
                         "expected": true,
                         "examined": false
                     }
@@ -253,6 +257,7 @@ class StatementHandlerTest extends AbstractBrowserTestCase
                                 "operator": "matches"
                             }
                         },
+                        "stage": "execute",
                         "expected": true,
                         "examined": "pattern"
                     }
@@ -282,6 +287,7 @@ class StatementHandlerTest extends AbstractBrowserTestCase
                                 "operator": "matches"
                             }
                         },
+                        "stage": "execute",
                         "expected": true,
                         "examined": "Test fixture web server default document"
                     }
