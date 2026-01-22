@@ -17,7 +17,9 @@ use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
-use webignition\BasilModels\Model\Assertion\UniqueAssertionCollection;
+use webignition\BasilModels\Model\Statement\Action\ActionInterface;
+use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
+use webignition\BasilModels\Model\Statement\Assertion\UniqueAssertionCollection;
 use webignition\BasilModels\Model\Step\StepInterface;
 
 class StepHandler
@@ -50,8 +52,16 @@ class StepHandler
 
         try {
             foreach ($step->getActions() as $action) {
+                if (!$action instanceof ActionInterface) {
+                    continue;
+                }
+
                 try {
-                    $derivedActionAssertions = $this->derivedAssertionFactory->createForAction($action);
+                    $derivedActionAssertions = new UniqueAssertionCollection([]);
+                    $derivedActionAssertions = $derivedActionAssertions->append(
+                        $this->derivedAssertionFactory->createForAction($action)
+                    );
+
                     $bodySources[] = $this->createDerivedAssertionsBody($derivedActionAssertions);
                 } catch (UnsupportedContentException $unsupportedContentException) {
                     throw new UnsupportedStatementException($action, $unsupportedContentException);
@@ -80,8 +90,12 @@ class StepHandler
             $derivedAssertionAssertions = new UniqueAssertionCollection();
 
             foreach ($step->getAssertions() as $assertion) {
+                if (!$assertion instanceof AssertionInterface) {
+                    continue;
+                }
+
                 try {
-                    $derivedAssertionAssertions = $derivedAssertionAssertions->merge(
+                    $derivedAssertionAssertions = $derivedAssertionAssertions->append(
                         $this->derivedAssertionFactory->createForAssertion($assertion)
                     );
                 } catch (UnsupportedContentException $unsupportedContentException) {

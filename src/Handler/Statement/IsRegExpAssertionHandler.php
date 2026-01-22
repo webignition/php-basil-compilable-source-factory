@@ -25,8 +25,8 @@ use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
-use webignition\BasilModels\Model\Assertion\AssertionInterface;
-use webignition\BasilModels\Model\StatementInterface;
+use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
+use webignition\BasilModels\Model\Statement\StatementInterface;
 use webignition\BasilValueTypeIdentifier\ValueTypeIdentifier;
 
 class IsRegExpAssertionHandler implements StatementHandlerInterface

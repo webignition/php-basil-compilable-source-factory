@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Statement;
 
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilModels\Model\StatementInterface;
+use webignition\BasilModels\Model\Statement\StatementInterface;
 
 interface StatementHandlerInterface
 {

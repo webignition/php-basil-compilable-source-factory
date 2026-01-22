@@ -12,8 +12,8 @@ use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
-use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
-use webignition\BasilModels\Model\StatementInterface;
+use webignition\BasilModels\Model\Statement\Assertion\DerivedValueOperationAssertion;
+use webignition\BasilModels\Model\Statement\StatementInterface;
 use webignition\BasilModels\Parser\AssertionParser;
 
 class StatementHandlerTest extends AbstractBrowserTestCase

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Exception;
 
-use webignition\BasilModels\Model\StatementInterface;
+use webignition\BasilModels\Model\Statement\StatementInterface;
 
 class UnsupportedStatementException extends \Exception
 {

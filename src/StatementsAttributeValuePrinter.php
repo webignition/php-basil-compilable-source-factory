@@ -4,7 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory;
 
-use webignition\BasilModels\Model\StatementInterface;
+use webignition\BasilModels\Model\Statement\StatementCollectionInterface;
+use webignition\BasilModels\Model\Statement\StatementInterface;
 
 readonly class StatementsAttributeValuePrinter
 {
@@ -14,13 +15,11 @@ readonly class StatementsAttributeValuePrinter
     }
 
     /**
-     * @param StatementInterface[] $statements
-     *
      * @return non-empty-string
      */
-    public function print(array $statements): string
+    public function print(StatementCollectionInterface $statements): string
     {
-        if ([] === $statements) {
+        if (0 === count($statements)) {
             return '[]';
         }
 

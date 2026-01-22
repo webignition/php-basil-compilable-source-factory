@@ -12,8 +12,8 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action as ActionDataProvider;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion as AssertionDataProvider;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTestCase;
-use webignition\BasilModels\Model\Assertion\Assertion;
-use webignition\BasilModels\Model\StatementInterface;
+use webignition\BasilModels\Model\Statement\Assertion\Assertion;
+use webignition\BasilModels\Model\Statement\StatementInterface;
 use webignition\BasilModels\Parser\ActionParser;
 use webignition\BasilModels\Parser\AssertionParser;
 

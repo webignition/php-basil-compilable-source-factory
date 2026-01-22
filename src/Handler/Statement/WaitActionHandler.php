@@ -17,8 +17,8 @@ use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvoca
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
-use webignition\BasilModels\Model\Action\ActionInterface;
-use webignition\BasilModels\Model\StatementInterface;
+use webignition\BasilModels\Model\Statement\Action\ActionInterface;
+use webignition\BasilModels\Model\Statement\StatementInterface;
 
 class WaitActionHandler implements StatementHandlerInterface
 {

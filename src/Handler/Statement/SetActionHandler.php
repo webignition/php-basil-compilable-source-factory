@@ -29,8 +29,8 @@ use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
-use webignition\BasilModels\Model\Action\ActionInterface;
-use webignition\BasilModels\Model\StatementInterface;
+use webignition\BasilModels\Model\Statement\Action\ActionInterface;
+use webignition\BasilModels\Model\Statement\StatementInterface;
 
 class SetActionHandler implements StatementHandlerInterface
 {

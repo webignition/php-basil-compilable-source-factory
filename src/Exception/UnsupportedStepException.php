@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Exception;
 
-use webignition\BasilModels\Model\Action\ActionInterface;
+use webignition\BasilModels\Model\Statement\Action\ActionInterface;
 use webignition\BasilModels\Model\Step\StepInterface;
 
 class UnsupportedStepException extends \Exception

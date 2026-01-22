@@ -16,8 +16,8 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\NullCoalescerExpression;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
-use webignition\BasilModels\Model\Assertion\AssertionInterface;
-use webignition\BasilModels\Model\StatementInterface;
+use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
+use webignition\BasilModels\Model\Statement\StatementInterface;
 
 class ScalarExistenceAssertionHandler implements StatementHandlerInterface
 {

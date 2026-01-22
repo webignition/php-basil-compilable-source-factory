@@ -13,10 +13,11 @@ use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\DataProviderMethodDefinition;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinition;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinitionInterface;
-use webignition\BasilModels\Model\Action\ActionInterface;
-use webignition\BasilModels\Model\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\DataSet\DataSetCollection;
 use webignition\BasilModels\Model\DataSet\DataSetCollectionInterface;
+use webignition\BasilModels\Model\Statement\Action\ActionInterface;
+use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
+use webignition\BasilModels\Model\Statement\StatementCollection;
 use webignition\BasilModels\Model\Step\StepInterface;
 
 /**
@@ -64,9 +65,14 @@ class StepMethodFactory
             new StepNameAttribute($this->singleQuotedStringEscaper->escape($stepName))
         );
 
+        $statements = new StatementCollection([])
+            ->append($step->getActions())
+            ->append($step->getAssertions())
+        ;
+
         $testMethod = $testMethod->withAttribute(
             new StatementsAttribute(
-                $this->statementsAttributeValuePrinter->print(array_merge($step->getActions(), $step->getAssertions()))
+                $this->statementsAttributeValuePrinter->print($statements)
             )
         );
 

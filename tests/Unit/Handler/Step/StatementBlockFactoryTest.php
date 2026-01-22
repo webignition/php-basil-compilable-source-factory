@@ -9,10 +9,10 @@ use webignition\BasilCompilableSourceFactory\Handler\Step\StatementBlockFactory;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTestCase;
-use webignition\BasilModels\Model\Action\ActionInterface;
-use webignition\BasilModels\Model\Assertion\AssertionInterface;
-use webignition\BasilModels\Model\Assertion\DerivedValueOperationAssertion;
-use webignition\BasilModels\Model\StatementInterface as StatementModelInterface;
+use webignition\BasilModels\Model\Statement\Action\ActionInterface;
+use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
+use webignition\BasilModels\Model\Statement\Assertion\DerivedValueOperationAssertion;
+use webignition\BasilModels\Model\Statement\StatementInterface as StatementModelInterface;
 
 class StatementBlockFactoryTest extends AbstractResolvableTestCase
 {
