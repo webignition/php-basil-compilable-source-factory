@@ -26,17 +26,17 @@ trait CreateFromScalarNotExistsAssertionDataProviderTrait
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertFalse(
                         $examinedValue,
-                        '{
-                            "statement": {
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
+                            '{
                                 "statement-type": "assertion",
                                 "source": "$page.url not-exists",
                                 "index": 0,
                                 "identifier": "$page.url",
                                 "operator": "not-exists"
-                            },
-                            "expected": ' . (false ? 'true' : 'false') . ',
-                            "examined": ' . ($examinedValue ? 'true' : 'false') . '
-                        }',
+                            }',
+                            false,
+                            $examinedValue,
+                        ),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -47,6 +47,7 @@ trait CreateFromScalarNotExistsAssertionDataProviderTrait
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -58,23 +59,24 @@ trait CreateFromScalarNotExistsAssertionDataProviderTrait
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertFalse(
                         $examinedValue,
-                        '{
-                            "statement": {
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
+                            '{
                                 "statement-type": "assertion",
                                 "source": "$data.key not-exists",
                                 "index": 0,
                                 "identifier": "$data.key",
                                 "operator": "not-exists"
-                            },
-                            "expected": ' . (false ? 'true' : 'false') . ',
-                            "examined": ' . ($examinedValue ? 'true' : 'false') . '
-                        }',
+                            }',
+                            false,
+                            $examinedValue,
+                        ),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],

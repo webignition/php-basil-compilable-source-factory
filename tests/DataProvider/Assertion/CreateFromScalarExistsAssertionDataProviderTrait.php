@@ -26,17 +26,17 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
-                        '{
-                            "statement": {
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
+                            '{
                                 "statement-type": "assertion",
                                 "source": "$page.url exists",
                                 "index": 0,
                                 "identifier": "$page.url",
                                 "operator": "exists"
-                            },
-                            "expected": ' . (true ? 'true' : 'false') . ',
-                            "examined": ' . ($examinedValue ? 'true' : 'false') . '
-                        }',
+                            }',
+                            true,
+                            $examinedValue,
+                        ),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -47,6 +47,7 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -58,23 +59,24 @@ trait CreateFromScalarExistsAssertionDataProviderTrait
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
                         $examinedValue,
-                        '{
-                            "statement": {
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
+                            '{
                                 "statement-type": "assertion",
                                 "source": "$data.key exists",
                                 "index": 0,
                                 "identifier": "$data.key",
                                 "operator": "exists"
-                            },
-                            "expected": ' . (true ? 'true' : 'false') . ',
-                            "examined": ' . ($examinedValue ? 'true' : 'false') . '
-                        }',
+                            }',
+                            true,
+                            $examinedValue,
+                        ),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],

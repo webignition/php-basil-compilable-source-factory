@@ -57,25 +57,25 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
-                        '{
-                            "statement": {
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
+                            '{
                                 "container": {
-                                    "value": "\"\/^value\/\"",
+                                    "value": "\\"\\/^value\\/\\"",
                                     "operator": "is-regexp",
                                     "type": "derived-value-operation-assertion"
                                 },
                                 "statement": {
                                     "statement-type": "assertion",
-                                    "source": "$\".selector\" matches \"\/^value\/\"",
+                                    "source": "$\\".selector\\" matches \\"\\/^value\\/\\"",
                                     "index": 0,
-                                    "identifier": "$\".selector\"",
-                                    "value": "\"\/^value\/\"",
+                                    "identifier": "$\\".selector\\"",
+                                    "value": "\\"\\/^value\\/\\"",
                                     "operator": "matches"
                                 }
-                            },
-                            "expected": ' . ($expectedValue ? 'true' : 'false') . ',
-                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
-                        }',
+                            }',
+                            $expectedValue,
+                            $examinedValue,
+                        ),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -91,6 +91,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -137,25 +138,25 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
-                        '{
-                            "statement": {
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
+                            '{
                                 "container": {
-                                    "value": "$\".pattern-container\"",
+                                    "value": "$\\".pattern-container\\"",
                                     "operator": "is-regexp",
                                     "type": "derived-value-operation-assertion"
                                 },
                                 "statement": {
                                     "statement-type": "assertion",
-                                    "source": "$\".selector\" matches $\".pattern-container\"",
+                                    "source": "$\\".selector\\" matches $\\".pattern-container\\"",
                                     "index": 0,
-                                    "identifier": "$\".selector\"",
-                                    "value": "$\".pattern-container\"",
+                                    "identifier": "$\\".selector\\"",
+                                    "value": "$\\".pattern-container\\"",
                                     "operator": "matches"
                                 }
-                            },
-                            "expected": ' . ($expectedValue ? 'true' : 'false') . ',
-                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
-                        }',
+                            }',
+                            $expectedValue,
+                            $examinedValue,
+                        ),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -173,6 +174,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -219,25 +221,25 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
-                        '{
-                            "statement": {
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
+                            '{
                                 "container": {
-                                    "value": "$\".pattern-container\".attribute_name",
+                                    "value": "$\\".pattern-container\\".attribute_name",
                                     "operator": "is-regexp",
                                     "type": "derived-value-operation-assertion"
                                 },
                                 "statement": {
                                     "statement-type": "assertion",
-                                    "source": "$\".selector\" matches $\".pattern-container\".attribute_name",
+                                    "source": "$\\".selector\\" matches $\\".pattern-container\\".attribute_name",
                                     "index": 0,
-                                    "identifier": "$\".selector\"",
-                                    "value": "$\".pattern-container\".attribute_name",
+                                    "identifier": "$\\".selector\\"",
+                                    "value": "$\\".pattern-container\\".attribute_name",
                                     "operator": "matches"
                                 }
-                            },
-                            "expected": ' . ($expectedValue ? 'true' : 'false') . ',
-                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
-                        }',
+                            }',
+                            $expectedValue,
+                            $examinedValue,
+                        ),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -254,6 +256,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -294,8 +297,8 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
-                        '{
-                            "statement": {
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
+                            '{
                                 "container": {
                                     "value": "$data.pattern",
                                     "operator": "is-regexp",
@@ -309,10 +312,10 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                                     "value": "$data.pattern",
                                     "operator": "matches"
                                 }
-                            },
-                            "expected": ' . ($expectedValue ? 'true' : 'false') . ',
-                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
-                        }',
+                            }',
+                            $expectedValue,
+                            $examinedValue,
+                        ),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -328,6 +331,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],

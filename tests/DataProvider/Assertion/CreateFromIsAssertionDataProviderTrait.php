@@ -52,18 +52,18 @@ trait CreateFromIsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertEquals(
                         $expectedValue,
                         $examinedValue,
-                        '{
-                            "statement": {
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
+                            '{
                                 "statement-type": "assertion",
-                                "source": "$\".selector\" is \"value\"",
+                                "source": "$\\".selector\\" is \\"value\\"",
                                 "index": 0,
-                                "identifier": "$\".selector\"",
-                                "value": "\"value\"",
+                                "identifier": "$\\".selector\\"",
+                                "value": "\\"value\\"",
                                 "operator": "is"
-                            },
-                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
-                        }',
+                            }',
+                            $expectedValue,
+                            $examinedValue,
+                        ),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -81,6 +81,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -120,18 +121,18 @@ trait CreateFromIsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertEquals(
                         $expectedValue,
                         $examinedValue,
-                        '{
-                            "statement": {
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
+                            '{
                                 "statement-type": "assertion",
-                                "source": "$\".parent\" >> $\".child\" is \"value\"",
+                                "source": "$\\".parent\\" >> $\\".child\\" is \\"value\\"",
                                 "index": 0,
-                                "identifier": "$\".parent\" >> $\".child\"",
-                                "value": "\"value\"",
+                                "identifier": "$\\".parent\\" >> $\\".child\\"",
+                                "value": "\\"value\\"",
                                 "operator": "is"
-                            },
-                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
-                        }',
+                            }',
+                            $expectedValue,
+                            $examinedValue,
+                        ),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -149,6 +150,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -185,18 +187,18 @@ trait CreateFromIsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertEquals(
                         $expectedValue,
                         $examinedValue,
-                        '{
-                            "statement": {
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
+                            '{
                                 "statement-type": "assertion",
-                                "source": "$\".selector\".attribute_name is \"value\"",
+                                "source": "$\\".selector\\".attribute_name is \\"value\\"",
                                 "index": 0,
-                                "identifier": "$\".selector\".attribute_name",
-                                "value": "\"value\"",
+                                "identifier": "$\\".selector\\".attribute_name",
+                                "value": "\\"value\\"",
                                 "operator": "is"
-                            },
-                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
-                        }',
+                            }',
+                            $expectedValue,
+                            $examinedValue,
+                        ),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -213,6 +215,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -247,18 +250,18 @@ trait CreateFromIsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertEquals(
                         $expectedValue,
                         $examinedValue,
-                        '{
-                            "statement": {
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
+                            '{
                                 "statement-type": "assertion",
-                                "source": "$browser.size is \"value\"",
+                                "source": "$browser.size is \\"value\\"",
                                 "index": 0,
                                 "identifier": "$browser.size",
-                                "value": "\"value\"",
+                                "value": "\\"value\\"",
                                 "operator": "is"
-                            },
-                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
-                        }',
+                            }',
+                            $expectedValue,
+                            $examinedValue,
+                        ),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -275,6 +278,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -305,18 +309,18 @@ trait CreateFromIsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertEquals(
                         $expectedValue,
                         $examinedValue,
-                        '{
-                            "statement": {
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
+                            '{
                                 "statement-type": "assertion",
-                                "source": "$env.KEY is \"value\"",
+                                "source": "$env.KEY is \\"value\\"",
                                 "index": 0,
                                 "identifier": "$env.KEY",
-                                "value": "\"value\"",
+                                "value": "\\"value\\"",
                                 "operator": "is"
-                            },
-                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
-                        }',
+                            }',
+                            $expectedValue,
+                            $examinedValue,
+                        ),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -333,6 +337,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -363,18 +368,18 @@ trait CreateFromIsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertEquals(
                         $expectedValue,
                         $examinedValue,
-                        '{
-                            "statement": {
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
+                            '{
                                 "statement-type": "assertion",
-                                "source": "$env.KEY|\"default value\" is \"value\"",
+                                "source": "$env.KEY|\\"default value\\" is \\"value\\"",
                                 "index": 0,
-                                "identifier": "$env.KEY|\"default value\"",
-                                "value": "\"value\"",
+                                "identifier": "$env.KEY|\\"default value\\"",
+                                "value": "\\"value\\"",
                                 "operator": "is"
-                            },
-                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
-                        }',
+                            }',
+                            $expectedValue,
+                            $examinedValue,
+                        ),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -391,6 +396,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -421,18 +427,18 @@ trait CreateFromIsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertEquals(
                         $expectedValue,
                         $examinedValue,
-                        '{
-                            "statement": {
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
+                            '{
                                 "statement-type": "assertion",
-                                "source": "$env.KEY1|\"default value 1\" is $env.KEY2|\"default value 2\"",
+                                "source": "$env.KEY1|\\"default value 1\\" is $env.KEY2|\\"default value 2\\"",
                                 "index": 0,
-                                "identifier": "$env.KEY1|\"default value 1\"",
-                                "value": "$env.KEY2|\"default value 2\"",
+                                "identifier": "$env.KEY1|\\"default value 1\\"",
+                                "value": "$env.KEY2|\\"default value 2\\"",
                                 "operator": "is"
-                            },
-                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
-                        }',
+                            }',
+                            $expectedValue,
+                            $examinedValue,
+                        ),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -449,6 +455,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -479,18 +486,18 @@ trait CreateFromIsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertEquals(
                         $expectedValue,
                         $examinedValue,
-                        '{
-                            "statement": {
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
+                            '{
                                 "statement-type": "assertion",
-                                "source": "$page.title is \"value\"",
+                                "source": "$page.title is \\"value\\"",
                                 "index": 0,
                                 "identifier": "$page.title",
-                                "value": "\"value\"",
+                                "value": "\\"value\\"",
                                 "operator": "is"
-                            },
-                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
-                        }',
+                            }',
+                            $expectedValue,
+                            $examinedValue,
+                        ),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -507,6 +514,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -550,18 +558,18 @@ trait CreateFromIsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertEquals(
                         $expectedValue,
                         $examinedValue,
-                        '{
-                            "statement": {
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
+                            '{
                                 "statement-type": "assertion",
-                                "source": "$browser.size is $\".parent\" >> $\".child\"",
+                                "source": "$browser.size is $\\".parent\\" >> $\\".child\\"",
                                 "index": 0,
                                 "identifier": "$browser.size",
-                                "value": "$\".parent\" >> $\".child\"",
+                                "value": "$\\".parent\\" >> $\\".child\\"",
                                 "operator": "is"
-                            },
-                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
-                        }',
+                            }',
+                            $expectedValue,
+                            $examinedValue,
+                        ),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -580,6 +588,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -620,18 +629,18 @@ trait CreateFromIsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertEquals(
                         $expectedValue,
                         $examinedValue,
-                        '{
-                            "statement": {
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
+                            '{
                                 "statement-type": "assertion",
-                                "source": "$browser.size is $\".selector\"",
+                                "source": "$browser.size is $\\".selector\\"",
                                 "index": 0,
                                 "identifier": "$browser.size",
-                                "value": "$\".selector\"",
+                                "value": "$\\".selector\\"",
                                 "operator": "is"
-                            },
-                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
-                        }',
+                            }',
+                            $expectedValue,
+                            $examinedValue,
+                        ),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -650,6 +659,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -690,18 +700,18 @@ trait CreateFromIsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertEquals(
                         $expectedValue,
                         $examinedValue,
-                        '{
-                            "statement": {
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
+                            '{
                                 "statement-type": "assertion",
-                                "source": "$browser.size is $\".selector\".attribute_name",
+                                "source": "$browser.size is $\\".selector\\".attribute_name",
                                 "index": 0,
                                 "identifier": "$browser.size",
-                                "value": "$\".selector\".attribute_name",
+                                "value": "$\\".selector\\".attribute_name",
                                 "operator": "is"
-                            },
-                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
-                        }',
+                            }',
+                            $expectedValue,
+                            $examinedValue,
+                        ),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -719,6 +729,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -753,18 +764,18 @@ trait CreateFromIsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertEquals(
                         $expectedValue,
                         $examinedValue,
-                        '{
-                            "statement": {
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
+                            '{
                                 "statement-type": "assertion",
                                 "source": "$browser.size is $env.KEY",
                                 "index": 0,
                                 "identifier": "$browser.size",
                                 "value": "$env.KEY",
                                 "operator": "is"
-                            },
-                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
-                        }',
+                            }',
+                            $expectedValue,
+                            $examinedValue,
+                        ),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -782,6 +793,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -816,18 +828,18 @@ trait CreateFromIsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertEquals(
                         $expectedValue,
                         $examinedValue,
-                        '{
-                            "statement": {
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
+                            '{
                                 "statement-type": "assertion",
-                                "source": "$browser.size is $env.KEY|\"default value\"",
+                                "source": "$browser.size is $env.KEY|\\"default value\\"",
                                 "index": 0,
                                 "identifier": "$browser.size",
-                                "value": "$env.KEY|\"default value\"",
+                                "value": "$env.KEY|\\"default value\\"",
                                 "operator": "is"
-                            },
-                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
-                        }',
+                            }',
+                            $expectedValue,
+                            $examinedValue,
+                        ),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -845,6 +857,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -879,18 +892,18 @@ trait CreateFromIsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertEquals(
                         $expectedValue,
                         $examinedValue,
-                        '{
-                            "statement": {
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
+                            '{
                                 "statement-type": "assertion",
                                 "source": "$browser.size is $page.url",
                                 "index": 0,
                                 "identifier": "$browser.size",
                                 "value": "$page.url",
                                 "operator": "is"
-                            },
-                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
-                        }',
+                            }',
+                            $expectedValue,
+                            $examinedValue,
+                        ),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -907,6 +920,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -937,18 +951,18 @@ trait CreateFromIsAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertEquals(
                         $expectedValue,
                         $examinedValue,
-                        '{
-                            "statement": {
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
+                            '{
                                 "statement-type": "assertion",
-                                "source": "\"examined\" is \"expected\"",
+                                "source": "\\"examined\\" is \\"expected\\"",
                                 "index": 0,
-                                "identifier": "\"examined\"",
-                                "value": "\"expected\"",
+                                "identifier": "\\"examined\\"",
+                                "value": "\\"expected\\"",
                                 "operator": "is"
-                            },
-                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
-                        }',
+                            }',
+                            $expectedValue,
+                            $examinedValue,
+                        ),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -964,6 +978,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],

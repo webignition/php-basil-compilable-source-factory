@@ -37,7 +37,7 @@ trait CreateFromSubmitActionDataProviderTrait
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
-                    ],
+                      ],
                 ),
             ],
         ];

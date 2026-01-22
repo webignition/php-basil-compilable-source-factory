@@ -52,18 +52,18 @@ trait CreateFromMatchesAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertMatchesRegularExpression(
                         $expectedValue,
                         $examinedValue,
-                        '{
-                            "statement": {
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
+                            '{
                                 "statement-type": "assertion",
-                                "source": "$\".selector\" matches \"\/^value\/\"",
+                                "source": "$\\".selector\\" matches \\"\\/^value\\/\\"",
                                 "index": 0,
-                                "identifier": "$\".selector\"",
-                                "value": "\"\/^value\/\"",
+                                "identifier": "$\\".selector\\"",
+                                "value": "\\"\\/^value\\/\\"",
                                 "operator": "matches"
-                            },
-                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
-                        }',
+                            }',
+                            $expectedValue,
+                            $examinedValue,
+                        ),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -81,6 +81,7 @@ trait CreateFromMatchesAssertionDataProviderTrait
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -117,18 +118,18 @@ trait CreateFromMatchesAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertMatchesRegularExpression(
                         $expectedValue,
                         $examinedValue,
-                        '{
-                            "statement": {
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
+                            '{
                                 "statement-type": "assertion",
-                                "source": "$\".selector\".attribute_name matches \"\/^value\/\"",
+                                "source": "$\\".selector\\".attribute_name matches \\"\\/^value\\/\\"",
                                 "index": 0,
-                                "identifier": "$\".selector\".attribute_name",
-                                "value": "\"\/^value\/\"",
+                                "identifier": "$\\".selector\\".attribute_name",
+                                "value": "\\"\\/^value\\/\\"",
                                 "operator": "matches"
-                            },
-                            "expected": "' . addcslashes($expectedValue, '"\\') . '",
-                            "examined": "' . addcslashes($examinedValue, '"\\') . '"
-                        }',
+                            }',
+                            $expectedValue,
+                            $examinedValue,
+                        ),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -145,6 +146,7 @@ trait CreateFromMatchesAssertionDataProviderTrait
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
                         VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
