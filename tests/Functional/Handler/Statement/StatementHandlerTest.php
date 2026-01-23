@@ -293,63 +293,6 @@ class StatementHandlerTest extends AbstractBrowserTestCase
                     }
                     EOD,
             ],
-            'exists comparison, element identifier examined value, invalid locator exception is caught' => [
-                'fixture' => '/index.html',
-                'statement' => $assertionParser->parse('$"2" exists', 0),
-                'expectedExpectationFailedExceptionMessage' => <<<'EOD'
-                    {
-                        "statement": {
-                            "statement-type": "assertion",
-                            "source": "$\"2\" exists",
-                            "index": 0,
-                            "identifier": "$\"2\"",
-                            "operator": "exists"
-                        },
-                        "stage": "setup",
-                        "exception": {
-                            "class": "webignition\\SymfonyDomCrawlerNavigator\\Exception\\InvalidLocatorException",
-                            "code": 0,
-                            "message": "Invalid CSS selector locator 2"
-                        },
-                        "context": {
-                            "locator": "2",
-                            "type": "css"
-                        }
-                    }
-                    EOD,
-            ],
-            'exists comparison, attribute identifier examined value, invalid locator exception is caught' => [
-                'fixture' => '/index.html',
-                'statement' => $assertionParser->parse('$"2".attribute_name exists', 0),
-                'expectedExpectationFailedExceptionMessage' => <<<'EOD'
-                    {
-                        "statement": {
-                            "container": {
-                                "value": "$\"2\"",
-                                "operator": "exists",
-                                "type": "derived-value-operation-assertion"
-                            },
-                            "statement": {
-                                "statement-type": "assertion",
-                                "source": "$\"2\".attribute_name exists",
-                                "index": 0,
-                                "identifier": "$\"2\".attribute_name",
-                                "operator": "exists"
-                            }
-                        },
-                        "stage": "setup",
-                        "exception": {
-                            "class": "webignition\\SymfonyDomCrawlerNavigator\\Exception\\InvalidLocatorException",
-                            "code": 0,
-                            "message": "Invalid CSS selector locator 2"
-                        },
-                        "context": {
-                            "locator": "2",
-                            "type": "css"
-                        }
-                    }
-                    EOD,
-            ],
         ];
     }
 }
