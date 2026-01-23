@@ -2,9 +2,11 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSourceFactory\Model\Expression;
+namespace webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression;
 
 use webignition\BasilCompilableSourceFactory\Model\DeferredResolvableCreationTrait;
+use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
+use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\Stubble\Resolvable\ResolvableCollection;

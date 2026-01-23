@@ -6,9 +6,9 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
-use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression;
-use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayKey;
-use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayPair;
+use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression\ArrayExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression\ArrayKey;
+use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression\ArrayPair;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;

@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSourceFactory\Model\Expression;
+namespace webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression;
 
 class ArrayKey implements \Stringable
 {

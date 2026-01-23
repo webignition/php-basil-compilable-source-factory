@@ -6,7 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayKey;
+use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression\ArrayKey;
 
 class ArrayKeyTest extends TestCase
 {
