@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Statement;
 
 use SmartAssert\DomIdentifier\Factory as DomIdentifierFactory;
-use webignition\BaseBasilTestCase\Enum\StatementStage;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
@@ -20,7 +19,6 @@ use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumen
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
-use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
@@ -36,7 +34,6 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
         private ValueTypeIdentifier $valueTypeIdentifier,
         private ValueAccessorFactory $valueAccessorFactory,
         private PhpUnitCallFactory $phpUnitCallFactory,
-        private TryCatchBlockFactory $tryCatchBlockFactory,
     ) {}
 
     public static function createHandler(): self
@@ -48,7 +45,6 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
             new ValueTypeIdentifier(),
             ValueAccessorFactory::createFactory(),
             PhpUnitCallFactory::createFactory(),
-            TryCatchBlockFactory::createFactory(),
         );
     }
 
@@ -119,10 +115,6 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
         );
         $identityComparison = EncapsulatingCastExpression::forBool($identityComparison);
 
-        $catchBody = Body::createFromExpressions([
-            $this->phpUnitCallFactory->createFailCall($assertion, StatementStage::SETUP),
-        ]);
-
         return new StatementHandlerComponents(
             new Statement($this->phpUnitCallFactory->createAssertionCall(
                 'assertFalse',
@@ -131,13 +123,10 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
                 [$expectedValuePlaceholder, $examinedValuePlaceholder],
             ))
         )->withSetup(
-            $this->tryCatchBlockFactory->createForThrowable(
-                Body::createFromExpressions([
-                    new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
-                    new AssignmentExpression($expectedValuePlaceholder, $identityComparison),
-                ]),
-                $catchBody,
-            )
+            Body::createFromExpressions([
+                new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
+                new AssignmentExpression($expectedValuePlaceholder, $identityComparison),
+            ]),
         );
     }
 }
