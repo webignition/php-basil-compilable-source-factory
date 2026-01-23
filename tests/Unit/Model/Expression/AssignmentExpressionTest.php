@@ -9,7 +9,6 @@ use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEn
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
-use webignition\BasilCompilableSourceFactory\Model\Expression\ObjectPropertyAccessExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\StaticObjectProperty;
 use webignition\BasilCompilableSourceFactory\Model\IsAssigneeInterface;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
@@ -78,16 +77,6 @@ class AssignmentExpressionTest extends AbstractResolvableTestCase
                     new LiteralExpression('rhs')
                 ),
                 'expectedString' => '$lhs = rhs',
-            ],
-            'object property access, literal' => [
-                'expression' => new AssignmentExpression(
-                    new ObjectPropertyAccessExpression(
-                        new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
-                        'propertyName'
-                    ),
-                    new LiteralExpression('value')
-                ),
-                'expectedString' => '{{ CLIENT }}->propertyName = value',
             ],
             'variable dependency, literal' => [
                 'expression' => new AssignmentExpression(
