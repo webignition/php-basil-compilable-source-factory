@@ -18,8 +18,6 @@ use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryCatchBlock;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
-use webignition\BasilCompilableSourceFactory\Model\ClassName;
-use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CompositeExpression;
@@ -216,11 +214,7 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
             $this->phpUnitCallFactory->createFailCall($assertion, StatementStage::SETUP),
         ]);
 
-        return $this->tryCatchBlockFactory->create(
-            $tryBody,
-            new ClassNameCollection([new ClassName(\Throwable::class)]),
-            $catchBody,
-        );
+        return $this->tryCatchBlockFactory->createForThrowable($tryBody, $catchBody);
     }
 
     private function createAssertionStatement(

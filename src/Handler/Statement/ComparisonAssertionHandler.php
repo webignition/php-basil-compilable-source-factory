@@ -9,8 +9,6 @@ use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
-use webignition\BasilCompilableSourceFactory\Model\ClassName;
-use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
@@ -81,12 +79,11 @@ class ComparisonAssertionHandler implements StatementHandlerInterface
                 )
             ),
         )->withSetup(
-            $this->tryCatchBlockFactory->create(
+            $this->tryCatchBlockFactory->createForThrowable(
                 Body::createFromExpressions([
                     new AssignmentExpression($expectedValuePlaceholder, $expectedAccessor),
                     new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
                 ]),
-                new ClassNameCollection([new ClassName(\Throwable::class)]),
                 $catchBody,
             ),
         );

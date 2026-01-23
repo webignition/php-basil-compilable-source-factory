@@ -11,8 +11,6 @@ use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
-use webignition\BasilCompilableSourceFactory\Model\ClassName;
-use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastExpression;
@@ -133,12 +131,11 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
                 [$expectedValuePlaceholder, $examinedValuePlaceholder],
             ))
         )->withSetup(
-            $this->tryCatchBlockFactory->create(
+            $this->tryCatchBlockFactory->createForThrowable(
                 Body::createFromExpressions([
                     new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
                     new AssignmentExpression($expectedValuePlaceholder, $identityComparison),
                 ]),
-                new ClassNameCollection([new ClassName(\Throwable::class)]),
                 $catchBody,
             )
         );

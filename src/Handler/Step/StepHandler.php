@@ -13,8 +13,6 @@ use webignition\BasilCompilableSourceFactory\Handler\Statement\StatementHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Statement\StatementHandlerComponents;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
-use webignition\BasilCompilableSourceFactory\Model\ClassName;
-use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
 use webignition\BasilModels\Model\Statement\Action\ActionInterface;
@@ -102,11 +100,7 @@ class StepHandler
                     $this->phpUnitCallFactory->createFailCall($action, StatementStage::EXECUTE),
                 ]);
 
-                $tryCatchBlock = $this->tryCatchBlockFactory->create(
-                    $actionBody,
-                    new ClassNameCollection([new ClassName(\Throwable::class)]),
-                    $failBody,
-                );
+                $tryCatchBlock = $this->tryCatchBlockFactory->createForThrowable($actionBody, $failBody);
 
                 $bodySources[] = $tryCatchBlock;
                 $bodySources[] = new EmptyLine();
