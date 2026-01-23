@@ -494,7 +494,9 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             'statement' => $assertionParser->parse('$".parent" >> $".child" exists', 0),
                             'return' => new StatementHandlerComponents(
                                 new Body([
-                                    new SingleLineComment('StatementHandler::handle($".parent" >> $".child" exists)::body'),
+                                    new SingleLineComment(
+                                        'StatementHandler::handle($".parent" >> $".child" exists)::body'
+                                    ),
                                 ]),
                             ),
                         ],
@@ -730,7 +732,9 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             'statement' => $assertionParser->parse('$".parent" >> $".child1" exists', 0),
                             'return' => new StatementHandlerComponents(
                                 new Body([
-                                    new SingleLineComment('StatementHandler::handle($".parent" >> $".child1" exists)::body'),
+                                    new SingleLineComment(
+                                        'StatementHandler::handle($".parent" >> $".child1" exists)::body'
+                                    ),
                                 ]),
                             ),
                         ],
@@ -738,7 +742,9 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             'statement' => $assertionParser->parse('$".parent" >> $".child2" exists', 1),
                             'return' => new StatementHandlerComponents(
                                 new Body([
-                                    new SingleLineComment('StatementHandler::handle($".parent" >> $".child2" exists)::body'),
+                                    new SingleLineComment(
+                                        'StatementHandler::handle($".parent" >> $".child2" exists)::body'
+                                    ),
                                 ]),
                             ),
                         ],
@@ -805,7 +811,9 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             'statement' => $assertionParser->parse('$page.title matches "/pattern/"', 0),
                             'return' => new StatementHandlerComponents(
                                 new Body([
-                                    new SingleLineComment('StatementHandler::handle($page.title matches "/pattern/")::body'),
+                                    new SingleLineComment(
+                                        'StatementHandler::handle($page.title matches "/pattern/")::body'
+                                    ),
                                 ]),
                             ),
                         ],
