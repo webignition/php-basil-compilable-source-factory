@@ -10,7 +10,6 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentExcepti
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\Handler\Statement\StatementHandler;
-use webignition\BasilCompilableSourceFactory\Handler\Statement\StatementHandlerComponents;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
@@ -58,15 +57,9 @@ class StepHandler
 
         $derivedAssertions = $this->createDerivedAssertionsCollection($step, $statements);
 
-        try {
-            foreach ($derivedAssertions as $derivedAssertion) {
-                $bodySources[] = $this->statementBlockFactory->create($derivedAssertion);
-                $bodySources[] = $this->createBodyFromStatementHandlerComponents(
-                    $this->statementHandler->handle($derivedAssertion)
-                );
-                $bodySources[] = new EmptyLine();
-            }
+        $statements = $statements->prepend($derivedAssertions);
 
+        try {
             foreach ($statements as $statement) {
                 $bodySources[] = $this->statementBlockFactory->create($statement);
 
@@ -103,20 +96,6 @@ class StepHandler
         }
 
         return new Body($bodySources);
-    }
-
-    private function createBodyFromStatementHandlerComponents(StatementHandlerComponents $components): BodyInterface
-    {
-        $parts = [];
-        $setup = $components->getSetup();
-        if ($setup instanceof BodyInterface) {
-            $parts[] = $setup;
-            $parts[] = new EmptyLine();
-        }
-
-        $parts[] = $components->getBody();
-
-        return new Body($parts);
     }
 
     /**
