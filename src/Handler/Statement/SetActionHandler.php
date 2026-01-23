@@ -7,7 +7,6 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Statement;
 use SmartAssert\DomIdentifier\AttributeIdentifierInterface;
 use SmartAssert\DomIdentifier\Factory as DomIdentifierFactory;
 use SmartAssert\DomIdentifier\FactoryInterface as DomIdentifierFactoryInterface;
-use webignition\BaseBasilTestCase\Enum\StatementStage;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
@@ -25,7 +24,6 @@ use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethod
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
-use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Model\Statement\Action\ActionInterface;
 use webignition\BasilModels\Model\Statement\StatementInterface;
@@ -39,7 +37,6 @@ class SetActionHandler implements StatementHandlerInterface
         private DomIdentifierFactoryInterface $domIdentifierFactory,
         private IdentifierTypeAnalyser $identifierTypeAnalyser,
         private ElementIdentifierSerializer $elementIdentifierSerializer,
-        private TryCatchBlockFactory $tryCatchBlockFactory,
         private PhpUnitCallFactory $phpUnitCallFactory,
     ) {}
 
@@ -52,7 +49,6 @@ class SetActionHandler implements StatementHandlerInterface
             DomIdentifierFactory::createFactory(),
             IdentifierTypeAnalyser::create(),
             ElementIdentifierSerializer::createSerializer(),
-            TryCatchBlockFactory::createFactory(),
             PhpUnitCallFactory::createFactory(),
         );
     }
@@ -133,10 +129,6 @@ class SetActionHandler implements StatementHandlerInterface
             )
         );
 
-        $catchBody = Body::createFromExpressions([
-            $this->phpUnitCallFactory->createFailCall($statement, StatementStage::SETUP),
-        ]);
-
         return new StatementHandlerComponents(
             new Body([
                 new Statement($mutationInvocation),
@@ -145,13 +137,10 @@ class SetActionHandler implements StatementHandlerInterface
                 ),
             ])
         )->withSetup(
-            $this->tryCatchBlockFactory->createForThrowable(
-                Body::createFromExpressions([
-                    new AssignmentExpression($setValueCollectionPlaceholder, $collectionAccessor),
-                    new AssignmentExpression($setValueValuePlaceholder, $valueAccessor),
-                ]),
-                $catchBody,
-            ),
+            Body::createFromExpressions([
+                new AssignmentExpression($setValueCollectionPlaceholder, $collectionAccessor),
+                new AssignmentExpression($setValueValuePlaceholder, $valueAccessor),
+            ]),
         );
     }
 }
