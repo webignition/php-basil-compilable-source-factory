@@ -92,15 +92,27 @@ class StepHandler
                 }
 
                 $bodySources[] = $this->statementBlockFactory->create($action);
-                $actionBody = $this->createBodyFromStatementHandlerComponents(
-                    $this->statementHandler->handle($action)
+
+                $handlerComponents = $this->statementHandler->handle($action);
+                $setupBlock = $handlerComponents->getSetup();
+                if (null !== $setupBlock) {
+                    $setupTryCatchBlock = $this->tryCatchBlockFactory->createForThrowable(
+                        $setupBlock,
+                        Body::createFromExpressions([
+                            $this->phpUnitCallFactory->createFailCall($action, StatementStage::SETUP),
+                        ]),
+                    );
+
+                    $bodySources[] = $setupTryCatchBlock;
+                    $bodySources[] = new EmptyLine();
+                }
+
+                $tryCatchBlock = $this->tryCatchBlockFactory->createForThrowable(
+                    $handlerComponents->getBody(),
+                    Body::createFromExpressions([
+                        $this->phpUnitCallFactory->createFailCall($action, StatementStage::EXECUTE),
+                    ])
                 );
-
-                $failBody = Body::createFromExpressions([
-                    $this->phpUnitCallFactory->createFailCall($action, StatementStage::EXECUTE),
-                ]);
-
-                $tryCatchBlock = $this->tryCatchBlockFactory->createForThrowable($actionBody, $failBody);
 
                 $bodySources[] = $tryCatchBlock;
                 $bodySources[] = new EmptyLine();
