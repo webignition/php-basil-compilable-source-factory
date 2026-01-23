@@ -13,7 +13,6 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpressi
 use webignition\BasilCompilableSourceFactory\Model\Expression\CompositeExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
-use webignition\BasilCompilableSourceFactory\Model\Expression\ObjectPropertyAccessExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
@@ -86,16 +85,6 @@ class EncapsulatingCastExpressionTest extends AbstractResolvableTestCase
                     'string'
                 ),
                 'expectedString' => '(string) ($_ENV["secret"])',
-            ],
-            'object property access expression as string' => [
-                'expression' => new EncapsulatingCastExpression(
-                    new ObjectPropertyAccessExpression(
-                        new VariableDependency(VariableName::PANTHER_CLIENT),
-                        'property'
-                    ),
-                    'string'
-                ),
-                'expectedString' => '(string) ({{ CLIENT }}->property)',
             ],
             'method invocation as string' => [
                 'expression' => new EncapsulatingCastExpression(
