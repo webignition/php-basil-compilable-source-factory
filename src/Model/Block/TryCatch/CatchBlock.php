@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Block\TryCatch;
 
-use webignition\BasilCompilableSourceFactory\Model\Block\AbstractBlock;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CatchExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
