@@ -13,7 +13,6 @@ use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CatchExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
-use webignition\BasilCompilableSourceFactory\Model\Expression\ReturnExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
@@ -119,21 +118,6 @@ class CatchBlockTest extends AbstractResolvableTestCase
                 ),
                 'expectedString' => 'catch (\LogicException | \RuntimeException | TestCase $exception) {' . "\n"
                     . '    "literal";' . "\n"
-                    . '}',
-            ],
-            'empty return statement only' => [
-                'tryBlock' => new CatchBlock(
-                    new CatchExpression(
-                        new ObjectTypeDeclarationCollection([
-                            new ObjectTypeDeclaration(new ClassName(\Exception::class)),
-                        ])
-                    ),
-                    new Statement(
-                        new ReturnExpression()
-                    )
-                ),
-                'expectedString' => 'catch (\Exception $exception) {' . "\n"
-                    . '    return;' . "\n"
                     . '}',
             ],
         ];

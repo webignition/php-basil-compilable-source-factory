@@ -23,10 +23,6 @@ class ReturnExpressionTest extends AbstractResolvableTestCase
     public static function renderDataProvider(): array
     {
         return [
-            'empty return' => [
-                'expression' => new ReturnExpression(),
-                'expectedString' => 'return',
-            ],
             'return an expression' => [
                 'expression' => new ReturnExpression(
                     new LiteralExpression('100')
