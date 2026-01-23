@@ -137,14 +137,7 @@ class StepHandler
                     $bodySources[] = new EmptyLine();
                 }
 
-                $tryCatchBlock = $this->tryCatchBlockFactory->createForThrowable(
-                    $handlerComponents->getBody(),
-                    Body::createFromExpressions([
-                        $this->phpUnitCallFactory->createFailCall($assertion, StatementStage::EXECUTE),
-                    ])
-                );
-
-                $bodySources[] = $tryCatchBlock;
+                $bodySources[] = $handlerComponents->getBody();
                 $bodySources[] = new EmptyLine();
             }
         } catch (UnsupportedStatementException $unsupportedStatementException) {
