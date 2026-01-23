@@ -16,9 +16,11 @@ use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
 use webignition\BasilModels\Model\Statement\Action\ActionInterface;
+use webignition\BasilModels\Model\Statement\Assertion\AssertionCollectionInterface;
 use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Statement\Assertion\UniqueAssertionCollection;
 use webignition\BasilModels\Model\Statement\StatementCollection;
+use webignition\BasilModels\Model\Statement\StatementCollectionInterface;
 use webignition\BasilModels\Model\Step\StepInterface;
 
 class StepHandler
@@ -54,28 +56,7 @@ class StepHandler
             ->append($step->getAssertions())
         ;
 
-        $derivedAssertions = new UniqueAssertionCollection([]);
-
-        foreach ($statements as $statement) {
-            try {
-                if ($statement instanceof ActionInterface) {
-                    $derivedAssertions = $derivedAssertions->append(
-                        $this->derivedAssertionFactory->createForAction($statement)
-                    );
-                }
-
-                if ($statement instanceof AssertionInterface) {
-                    $derivedAssertions = $derivedAssertions->append(
-                        $this->derivedAssertionFactory->createForAssertion($statement)
-                    );
-                }
-            } catch (UnsupportedContentException $unsupportedContentException) {
-                throw new UnsupportedStepException(
-                    $step,
-                    new UnsupportedStatementException($statement, $unsupportedContentException)
-                );
-            }
-        }
+        $derivedAssertions = $this->createDerivedAssertionsCollection($step, $statements);
 
         try {
             foreach ($derivedAssertions as $derivedAssertion) {
@@ -136,5 +117,38 @@ class StepHandler
         $parts[] = $components->getBody();
 
         return new Body($parts);
+    }
+
+    /**
+     * @throws UnsupportedStepException
+     */
+    private function createDerivedAssertionsCollection(
+        StepInterface $step,
+        StatementCollectionInterface $statements
+    ): AssertionCollectionInterface {
+        $derivedAssertions = new UniqueAssertionCollection([]);
+
+        foreach ($statements as $statement) {
+            try {
+                if ($statement instanceof ActionInterface) {
+                    $derivedAssertions = $derivedAssertions->append(
+                        $this->derivedAssertionFactory->createForAction($statement)
+                    );
+                }
+
+                if ($statement instanceof AssertionInterface) {
+                    $derivedAssertions = $derivedAssertions->append(
+                        $this->derivedAssertionFactory->createForAssertion($statement)
+                    );
+                }
+            } catch (UnsupportedContentException $unsupportedContentException) {
+                throw new UnsupportedStepException(
+                    $step,
+                    new UnsupportedStatementException($statement, $unsupportedContentException)
+                );
+            }
+        }
+
+        return $derivedAssertions;
     }
 }
