@@ -87,10 +87,6 @@ class StepHandler
             }
 
             foreach ($step->getActions() as $action) {
-                if (!$action instanceof ActionInterface) {
-                    continue;
-                }
-
                 $bodySources[] = $this->statementBlockFactory->create($action);
 
                 $handlerComponents = $this->statementHandler->handle($action);
