@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 
+use webignition\BasilCompilableSourceFactory\Model\IsAssigneeInterface;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\VariablePlaceholderInterface;
 
-class ObjectPropertyAccessExpression implements ExpressionInterface
+class ObjectPropertyAccessExpression implements ExpressionInterface, IsAssigneeInterface
 {
     private const RENDER_TEMPLATE = '{{ object }}->{{ property }}';
 

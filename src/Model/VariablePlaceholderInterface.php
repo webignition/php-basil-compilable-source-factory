@@ -6,7 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Model;
 
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 
-interface VariablePlaceholderInterface extends ExpressionInterface
+interface VariablePlaceholderInterface extends ExpressionInterface, IsAssigneeInterface
 {
     public function getName(): string;
 }

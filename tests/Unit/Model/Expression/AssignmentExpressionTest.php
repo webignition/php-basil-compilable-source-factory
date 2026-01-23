@@ -5,30 +5,32 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ObjectPropertyAccessExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\StaticObjectProperty;
+use webignition\BasilCompilableSourceFactory\Model\IsAssigneeInterface;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
+use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
 class AssignmentExpressionTest extends AbstractResolvableTestCase
 {
     #[DataProvider('createDataProvider')]
     public function testCreate(
-        ExpressionInterface $variable,
+        IsAssigneeInterface $assignee,
         ExpressionInterface $value,
         string $operator,
         MetadataInterface $expectedMetadata
     ): void {
-        $expression = new AssignmentExpression($variable, $value, $operator);
+        $expression = new AssignmentExpression($assignee, $value, $operator);
 
         $this->assertEquals($expectedMetadata, $expression->getMetadata());
-        $this->assertSame($variable, $expression->getVariable());
+        $this->assertSame($assignee, $expression->getAssignee());
         $this->assertSame($value, $expression->getValue());
         $this->assertSame($operator, $expression->getOperator());
     }
@@ -40,21 +42,18 @@ class AssignmentExpressionTest extends AbstractResolvableTestCase
     {
         return [
             'no metadata' => [
-                'variable' => new LiteralExpression('5'),
+                'assignee' => new VariableName('lhs'),
                 'value' => new LiteralExpression('6'),
                 'operator' => '===',
                 'expectedMetadata' => new Metadata(),
             ],
             'has metadata' => [
-                'variable' => new ObjectMethodInvocation(
-                    new VariableDependency(VariableName::PANTHER_CLIENT),
-                    'methodName'
-                ),
+                'assignee' => new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                 'value' => new LiteralExpression('literal'),
                 'operator' => '!==',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PANTHER_CLIENT,
+                        VariableNameEnum::PANTHER_CLIENT,
                     ]
                 ),
             ],
@@ -73,22 +72,39 @@ class AssignmentExpressionTest extends AbstractResolvableTestCase
     public static function renderDataProvider(): array
     {
         return [
-            'literals, assignment' => [
+            'variable name, literal' => [
                 'expression' => new AssignmentExpression(
-                    new LiteralExpression('lhs'),
+                    new VariableName('lhs'),
                     new LiteralExpression('rhs')
                 ),
-                'expectedString' => 'lhs = rhs',
+                'expectedString' => '$lhs = rhs',
             ],
-            'object property access and literal, assignment' => [
+            'object property access, literal' => [
                 'expression' => new AssignmentExpression(
                     new ObjectPropertyAccessExpression(
-                        new VariableDependency(VariableName::PANTHER_CLIENT),
+                        new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                         'propertyName'
                     ),
                     new LiteralExpression('value')
                 ),
                 'expectedString' => '{{ CLIENT }}->propertyName = value',
+            ],
+            'variable dependency, literal' => [
+                'expression' => new AssignmentExpression(
+                    new VariableDependency(VariableNameEnum::PANTHER_CRAWLER),
+                    new LiteralExpression('rhs')
+                ),
+                'expectedString' => '{{ CRAWLER }} = rhs',
+            ],
+            'static object property as assignee' => [
+                'expression' => new AssignmentExpression(
+                    new StaticObjectProperty(
+                        new VariableDependency(VariableNameEnum::DOM_CRAWLER_NAVIGATOR),
+                        'property'
+                    ),
+                    new LiteralExpression('rhs')
+                ),
+                'expectedString' => '{{ NAVIGATOR }}::property = rhs',
             ],
         ];
     }
