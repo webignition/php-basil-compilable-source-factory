@@ -16,8 +16,6 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentExcepti
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
-use webignition\BasilCompilableSourceFactory\Model\ClassName;
-use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\NullCoalescerExpression;
@@ -147,12 +145,11 @@ class SetActionHandler implements StatementHandlerInterface
                 ),
             ])
         )->withSetup(
-            $this->tryCatchBlockFactory->create(
+            $this->tryCatchBlockFactory->createForThrowable(
                 Body::createFromExpressions([
                     new AssignmentExpression($setValueCollectionPlaceholder, $collectionAccessor),
                     new AssignmentExpression($setValueValuePlaceholder, $valueAccessor),
                 ]),
-                new ClassNameCollection([new ClassName(\Throwable::class)]),
                 $catchBody,
             ),
         );
