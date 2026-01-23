@@ -95,6 +95,7 @@ class StepHandler
 
                 $handlerComponents = $this->statementHandler->handle($action);
                 $setupBlock = $handlerComponents->getSetup();
+
                 if (null !== $setupBlock) {
                     $setupTryCatchBlock = $this->tryCatchBlockFactory->createForThrowable(
                         $setupBlock,
