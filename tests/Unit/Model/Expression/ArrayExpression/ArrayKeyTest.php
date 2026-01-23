@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression;
+namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression\ArrayExpression;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayKey;
+use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression\ArrayKey;
 
 class ArrayKeyTest extends TestCase
 {
