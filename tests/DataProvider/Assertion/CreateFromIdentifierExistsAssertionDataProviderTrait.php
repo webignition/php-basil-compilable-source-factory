@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
-use webignition\BaseBasilTestCase\Enum\StatementStage;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilModels\Model\Statement\Assertion\DerivedValueOperationAssertion;
@@ -25,25 +24,9 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
             'exists comparison, element identifier examined value' => [
                 'statement' => $assertionParser->parse('$".selector" exists', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    try {
-                        $elementExists = (bool) ({{ NAVIGATOR }}->has('{
-                            "locator": ".selector"
-                        }'));
-                    } catch (\Throwable $exception) {
-                        {{ PHPUNIT }}->fail(
-                            {{ MESSAGE_FACTORY }}->createFailureMessage(
-                                '{
-                                    "statement-type": "assertion",
-                                    "source": "$\\".selector\\" exists",
-                                    "index": 0,
-                                    "identifier": "$\\".selector\\"",
-                                    "operator": "exists"
-                                }',
-                                $exception,
-                                StatementStage::SETUP,
-                            ),
-                        );
-                    }
+                    $elementExists = (bool) ({{ NAVIGATOR }}->has('{
+                        "locator": ".selector"
+                    }'));
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
@@ -62,14 +45,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
-                    classNames: [
-                        StatementStage::class,
-                        \Throwable::class,
-                    ],
                     variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -82,39 +59,16 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
             'exists comparison, attribute identifier examined value' => [
                 'statement' => $assertionParser->parse('$".selector".attribute_name exists', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    try {
-                        $elementExists = (bool) ({{ NAVIGATOR }}->hasOne('{
+                    $elementExists = (bool) ({{ NAVIGATOR }}->hasOne('{
+                        "locator": ".selector"
+                    }'));
+                    $attributeExists = $elementExists && (bool) (((function () {
+                        $element = {{ NAVIGATOR }}->findOne('{
                             "locator": ".selector"
-                        }'));
-                        $attributeExists = $elementExists && (bool) (((function () {
-                            $element = {{ NAVIGATOR }}->findOne('{
-                                "locator": ".selector"
-                            }');
+                        }');
 
-                            return $element->getAttribute('attribute_name');
-                        })() ?? null) !== null);
-                    } catch (\Throwable $exception) {
-                        {{ PHPUNIT }}->fail(
-                            {{ MESSAGE_FACTORY }}->createFailureMessage(
-                                '{
-                                    "container": {
-                                        "value": "$\\".selector\\"",
-                                        "operator": "exists",
-                                        "type": "derived-value-operation-assertion"
-                                    },
-                                    "statement": {
-                                        "statement-type": "assertion",
-                                        "source": "$\\".selector\\".attribute_name exists",
-                                        "index": 0,
-                                        "identifier": "$\\".selector\\".attribute_name",
-                                        "operator": "exists"
-                                    }
-                                }',
-                                $exception,
-                                StatementStage::SETUP,
-                            ),
-                        );
-                    }
+                        return $element->getAttribute('attribute_name');
+                    })() ?? null) !== null);
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
@@ -154,14 +108,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
-                    classNames: [
-                        StatementStage::class,
-                        \Throwable::class,
-                    ],
                     variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -174,25 +122,9 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
             'exists comparison, css attribute selector containing dot' => [
                 'statement' => $assertionParser->parse('$"a[href=foo.html]" exists', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    try {
-                        $elementExists = (bool) ({{ NAVIGATOR }}->has('{
-                            "locator": "a[href=foo.html]"
-                        }'));
-                    } catch (\Throwable $exception) {
-                        {{ PHPUNIT }}->fail(
-                            {{ MESSAGE_FACTORY }}->createFailureMessage(
-                                '{
-                                    "statement-type": "assertion",
-                                    "source": "$\\"a[href=foo.html]\\" exists",
-                                    "index": 0,
-                                    "identifier": "$\\"a[href=foo.html]\\"",
-                                    "operator": "exists"
-                                }',
-                                $exception,
-                                StatementStage::SETUP,
-                            ),
-                        );
-                    }
+                    $elementExists = (bool) ({{ NAVIGATOR }}->has('{
+                        "locator": "a[href=foo.html]"
+                    }'));
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
@@ -211,14 +143,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
-                    classNames: [
-                        StatementStage::class,
-                        \Throwable::class,
-                    ],
                     variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -231,25 +157,9 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
             'exists comparison, css attribute selector containing single quotes' => [
                 'statement' => $assertionParser->parse('$"[data-value=\"' . "'single quoted'" . '\"]" exists', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    try {
-                        $elementExists = (bool) ({{ NAVIGATOR }}->has('{
-                            "locator": "[data-value=\\"\'single quoted\'\\"]"
-                        }'));
-                    } catch (\Throwable $exception) {
-                        {{ PHPUNIT }}->fail(
-                            {{ MESSAGE_FACTORY }}->createFailureMessage(
-                                '{
-                                    "statement-type": "assertion",
-                                    "source": "$\\"[data-value=\\\\\\"\\\'single quoted\\\'\\\\\\"]\\" exists",
-                                    "index": 0,
-                                    "identifier": "$\\"[data-value=\\\\\\"\\\'single quoted\\\'\\\\\\"]\\"",
-                                    "operator": "exists"
-                                }',
-                                $exception,
-                                StatementStage::SETUP,
-                            ),
-                        );
-                    }
+                    $elementExists = (bool) ({{ NAVIGATOR }}->has('{
+                        "locator": "[data-value=\\"\'single quoted\'\\"]"
+                    }'));
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
@@ -268,14 +178,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
-                    classNames: [
-                        StatementStage::class,
-                        \Throwable::class,
-                    ],
                     variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -288,39 +192,16 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
             'exists comparison, css attribute selector containing dot with attribute name' => [
                 'statement' => $assertionParser->parse('$"a[href=foo.html]".attribute_name exists', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    try {
-                        $elementExists = (bool) ({{ NAVIGATOR }}->hasOne('{
+                    $elementExists = (bool) ({{ NAVIGATOR }}->hasOne('{
+                        "locator": "a[href=foo.html]"
+                    }'));
+                    $attributeExists = $elementExists && (bool) (((function () {
+                        $element = {{ NAVIGATOR }}->findOne('{
                             "locator": "a[href=foo.html]"
-                        }'));
-                        $attributeExists = $elementExists && (bool) (((function () {
-                            $element = {{ NAVIGATOR }}->findOne('{
-                                "locator": "a[href=foo.html]"
-                            }');
+                        }');
 
-                            return $element->getAttribute('attribute_name');
-                        })() ?? null) !== null);
-                    } catch (\Throwable $exception) {
-                        {{ PHPUNIT }}->fail(
-                            {{ MESSAGE_FACTORY }}->createFailureMessage(
-                                '{
-                                    "container": {
-                                        "value": "$\\"a[href=foo.html]\\"",
-                                        "operator": "exists",
-                                        "type": "derived-value-operation-assertion"
-                                    },
-                                    "statement": {
-                                        "statement-type": "assertion",
-                                        "source": "$\\"a[href=foo.html]\\".attribute_name exists",
-                                        "index": 0,
-                                        "identifier": "$\\"a[href=foo.html]\\".attribute_name",
-                                        "operator": "exists"
-                                    }
-                                }',
-                                $exception,
-                                StatementStage::SETUP,
-                            ),
-                        );
-                    }
+                        return $element->getAttribute('attribute_name');
+                    })() ?? null) !== null);
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
@@ -360,14 +241,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
-                    classNames: [
-                        StatementStage::class,
-                        \Throwable::class,
-                    ],
                     variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -384,33 +259,9 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     'exists'
                 ),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    try {
-                        $elementExists = (bool) ({{ NAVIGATOR }}->hasOne('{
-                            "locator": ".selector"
-                        }'));
-                    } catch (\Throwable $exception) {
-                        {{ PHPUNIT }}->fail(
-                            {{ MESSAGE_FACTORY }}->createFailureMessage(
-                                '{
-                                    "container": {
-                                        "value": "$\\".selector\\"",
-                                        "operator": "exists",
-                                        "type": "derived-value-operation-assertion"
-                                    },
-                                    "statement": {
-                                        "statement-type": "action",
-                                        "source": "click $\\".selector\\"",
-                                        "index": 0,
-                                        "identifier": "$\\".selector\\"",
-                                        "type": "click",
-                                        "arguments": "$\\".selector\\""
-                                    }
-                                }',
-                                $exception,
-                                StatementStage::SETUP,
-                            ),
-                        );
-                    }
+                    $elementExists = (bool) ({{ NAVIGATOR }}->hasOne('{
+                        "locator": ".selector"
+                    }'));
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
@@ -437,14 +288,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
-                    classNames: [
-                        StatementStage::class,
-                        \Throwable::class,
-                    ],
                     variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -461,33 +306,9 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     'exists'
                 ),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    try {
-                        $elementExists = (bool) ({{ NAVIGATOR }}->hasOne('{
-                            "locator": ".selector"
-                        }'));
-                    } catch (\Throwable $exception) {
-                        {{ PHPUNIT }}->fail(
-                            {{ MESSAGE_FACTORY }}->createFailureMessage(
-                                '{
-                                    "container": {
-                                        "value": "$\\".selector\\"",
-                                        "operator": "exists",
-                                        "type": "derived-value-operation-assertion"
-                                    },
-                                    "statement": {
-                                        "statement-type": "action",
-                                        "source": "submit $\\".selector\\"",
-                                        "index": 0,
-                                        "identifier": "$\\".selector\\"",
-                                        "type": "submit",
-                                        "arguments": "$\\".selector\\""
-                                    }
-                                }',
-                                $exception,
-                                StatementStage::SETUP,
-                            ),
-                        );
-                    }
+                    $elementExists = (bool) ({{ NAVIGATOR }}->hasOne('{
+                        "locator": ".selector"
+                    }'));
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
@@ -514,14 +335,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
-                    classNames: [
-                        StatementStage::class,
-                        \Throwable::class,
-                    ],
                     variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -538,34 +353,9 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     'exists'
                 ),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    try {
-                        $elementExists = (bool) ({{ NAVIGATOR }}->has('{
-                            "locator": ".selector"
-                        }'));
-                    } catch (\Throwable $exception) {
-                        {{ PHPUNIT }}->fail(
-                            {{ MESSAGE_FACTORY }}->createFailureMessage(
-                                '{
-                                    "container": {
-                                        "value": "$\\".selector\\"",
-                                        "operator": "exists",
-                                        "type": "derived-value-operation-assertion"
-                                    },
-                                    "statement": {
-                                        "statement-type": "action",
-                                        "source": "set $\\".selector\\" to \\"value\\"",
-                                        "index": 0,
-                                        "identifier": "$\\".selector\\"",
-                                        "value": "\\"value\\"",
-                                        "type": "set",
-                                        "arguments": "$\\".selector\\" to \\"value\\""
-                                    }
-                                }',
-                                $exception,
-                                StatementStage::SETUP,
-                            ),
-                        );
-                    }
+                    $elementExists = (bool) ({{ NAVIGATOR }}->has('{
+                        "locator": ".selector"
+                    }'));
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
@@ -593,14 +383,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
-                    classNames: [
-                        StatementStage::class,
-                        \Throwable::class,
-                    ],
                     variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
@@ -617,33 +401,9 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     'exists'
                 ),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    try {
-                        $elementExists = (bool) ({{ NAVIGATOR }}->has('{
-                            "locator": ".duration"
-                        }'));
-                    } catch (\Throwable $exception) {
-                        {{ PHPUNIT }}->fail(
-                            {{ MESSAGE_FACTORY }}->createFailureMessage(
-                                '{
-                                    "container": {
-                                        "value": "$\\".duration\\"",
-                                        "operator": "exists",
-                                        "type": "derived-value-operation-assertion"
-                                    },
-                                    "statement": {
-                                        "statement-type": "action",
-                                        "source": "wait $\\".duration\\"",
-                                        "index": 0,
-                                        "value": "$\\".duration\\"",
-                                        "type": "wait",
-                                        "arguments": "$\\".duration\\""
-                                    }
-                                }',
-                                $exception,
-                                StatementStage::SETUP,
-                            ),
-                        );
-                    }
+                    $elementExists = (bool) ({{ NAVIGATOR }}->has('{
+                        "locator": ".duration"
+                    }'));
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
@@ -670,14 +430,8 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
-                    classNames: [
-                        StatementStage::class,
-                        \Throwable::class,
-                    ],
                     variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE,
                         VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::MESSAGE_FACTORY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(

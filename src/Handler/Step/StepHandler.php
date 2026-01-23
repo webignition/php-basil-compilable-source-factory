@@ -10,15 +10,16 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentExcepti
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\Handler\Statement\StatementHandler;
-use webignition\BasilCompilableSourceFactory\Handler\Statement\StatementHandlerComponents;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
 use webignition\BasilModels\Model\Statement\Action\ActionInterface;
+use webignition\BasilModels\Model\Statement\Assertion\AssertionCollectionInterface;
 use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Statement\Assertion\UniqueAssertionCollection;
 use webignition\BasilModels\Model\Statement\StatementCollection;
+use webignition\BasilModels\Model\Statement\StatementCollectionInterface;
 use webignition\BasilModels\Model\Step\StepInterface;
 
 class StepHandler
@@ -54,6 +55,55 @@ class StepHandler
             ->append($step->getAssertions())
         ;
 
+        $derivedAssertions = $this->createDerivedAssertionsCollection($step, $statements);
+        $statements = $statements->prepend($derivedAssertions);
+
+        try {
+            foreach ($statements as $statement) {
+                $bodySources[] = $this->statementBlockFactory->create($statement);
+
+                $handlerComponents = $this->statementHandler->handle($statement);
+                $setupBlock = $handlerComponents->getSetup();
+
+                if (null !== $setupBlock) {
+                    $setupTryCatchBlock = $this->tryCatchBlockFactory->createForThrowable(
+                        $setupBlock,
+                        Body::createFromExpressions([
+                            $this->phpUnitCallFactory->createFailCall($statement, StatementStage::SETUP),
+                        ]),
+                    );
+
+                    $bodySources[] = $setupTryCatchBlock;
+                    $bodySources[] = new EmptyLine();
+                }
+
+                $bodyBlock = $handlerComponents->getBody();
+                if ($statement instanceof ActionInterface) {
+                    $bodyBlock = $this->tryCatchBlockFactory->createForThrowable(
+                        $handlerComponents->getBody(),
+                        Body::createFromExpressions([
+                            $this->phpUnitCallFactory->createFailCall($statement, StatementStage::EXECUTE),
+                        ])
+                    );
+                }
+
+                $bodySources[] = $bodyBlock;
+                $bodySources[] = new EmptyLine();
+            }
+        } catch (UnsupportedStatementException $unsupportedStatementException) {
+            throw new UnsupportedStepException($step, $unsupportedStatementException);
+        }
+
+        return new Body($bodySources);
+    }
+
+    /**
+     * @throws UnsupportedStepException
+     */
+    private function createDerivedAssertionsCollection(
+        StepInterface $step,
+        StatementCollectionInterface $statements
+    ): AssertionCollectionInterface {
         $derivedAssertions = new UniqueAssertionCollection([]);
 
         foreach ($statements as $statement) {
@@ -77,73 +127,6 @@ class StepHandler
             }
         }
 
-        try {
-            foreach ($derivedAssertions as $derivedAssertion) {
-                $bodySources[] = $this->statementBlockFactory->create($derivedAssertion);
-                $bodySources[] = $this->createBodyFromStatementHandlerComponents(
-                    $this->statementHandler->handle($derivedAssertion)
-                );
-                $bodySources[] = new EmptyLine();
-            }
-
-            foreach ($step->getActions() as $action) {
-                if (!$action instanceof ActionInterface) {
-                    continue;
-                }
-
-                $bodySources[] = $this->statementBlockFactory->create($action);
-
-                $handlerComponents = $this->statementHandler->handle($action);
-                $setupBlock = $handlerComponents->getSetup();
-
-                if (null !== $setupBlock) {
-                    $setupTryCatchBlock = $this->tryCatchBlockFactory->createForThrowable(
-                        $setupBlock,
-                        Body::createFromExpressions([
-                            $this->phpUnitCallFactory->createFailCall($action, StatementStage::SETUP),
-                        ]),
-                    );
-
-                    $bodySources[] = $setupTryCatchBlock;
-                    $bodySources[] = new EmptyLine();
-                }
-
-                $tryCatchBlock = $this->tryCatchBlockFactory->createForThrowable(
-                    $handlerComponents->getBody(),
-                    Body::createFromExpressions([
-                        $this->phpUnitCallFactory->createFailCall($action, StatementStage::EXECUTE),
-                    ])
-                );
-
-                $bodySources[] = $tryCatchBlock;
-                $bodySources[] = new EmptyLine();
-            }
-
-            foreach ($step->getAssertions() as $assertion) {
-                $bodySources[] = $this->statementBlockFactory->create($assertion);
-                $bodySources[] = $this->createBodyFromStatementHandlerComponents(
-                    $this->statementHandler->handle($assertion)
-                );
-                $bodySources[] = new EmptyLine();
-            }
-        } catch (UnsupportedStatementException $unsupportedStatementException) {
-            throw new UnsupportedStepException($step, $unsupportedStatementException);
-        }
-
-        return new Body($bodySources);
-    }
-
-    private function createBodyFromStatementHandlerComponents(StatementHandlerComponents $components): BodyInterface
-    {
-        $parts = [];
-        $setup = $components->getSetup();
-        if ($setup instanceof BodyInterface) {
-            $parts[] = $setup;
-            $parts[] = new EmptyLine();
-        }
-
-        $parts[] = $components->getBody();
-
-        return new Body($parts);
+        return $derivedAssertions;
     }
 }

@@ -127,8 +127,8 @@ class StepHandlerTest extends AbstractBrowserTestCase
         ];
     }
 
-    #[DataProvider('handleForFailingActionsDataProvider')]
-    public function testHandleForFailingActions(
+    #[DataProvider('handleForFailingStatementsDataProvider')]
+    public function testHandleForFailingStatements(
         string $fixture,
         StepInterface $step,
         string $expectedExpectationFailedExceptionMessage,
@@ -146,26 +146,33 @@ class StepHandlerTest extends AbstractBrowserTestCase
 
         $testRunJob = $this->testRunner->createTestRunJob($classCode, 1);
 
-        if ($testRunJob instanceof TestRunJob) {
-            $this->testRunner->run($testRunJob);
-
-            $this->assertSame(
-                $testRunJob->getExpectedExitCode(),
-                $testRunJob->getExitCode(),
-                $testRunJob->getOutputAsString()
-            );
-
-            $this->assertStringContainsString(
-                $expectedExpectationFailedExceptionMessage,
-                $testRunJob->getOutputAsString()
-            );
+        if (!$testRunJob instanceof TestRunJob) {
+            return;
         }
+
+        $this->testRunner->run($testRunJob);
+
+        $this->assertSame(
+            $testRunJob->getExpectedExitCode(),
+            $testRunJob->getExitCode(),
+            $testRunJob->getOutputAsString()
+        );
+
+        $output = $testRunJob->getOutputAsString();
+
+        $firstBracePosition = (int) strpos($output, '{');
+        $json = substr($output, $firstBracePosition);
+
+        $lastBracePosition = (int) strrpos($json, '}');
+        $json = substr($json, 0, $lastBracePosition + 1);
+
+        $this->assertJsonStringEqualsJsonString($expectedExpectationFailedExceptionMessage, $json);
     }
 
     /**
      * @return array<mixed>
      */
-    public static function handleForFailingActionsDataProvider(): array
+    public static function handleForFailingStatementsDataProvider(): array
     {
         $stepParser = StepParser::create();
 
@@ -177,7 +184,28 @@ class StepHandlerTest extends AbstractBrowserTestCase
                         'wait $".non-existent"',
                     ],
                 ]),
-                'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
+                'expectedExpectationFailedExceptionMessage' => <<< 'EOD'
+                    {
+                        "examined": false,
+                        "expected": true,
+                        "stage": "execute",
+                        "statement": {
+                            "container": {
+                                "operator": "exists",
+                                "type": "derived-value-operation-assertion",
+                                "value": "$\".non-existent\""
+                            },
+                            "statement": {
+                                "arguments": "$\".non-existent\"",
+                                "index": 0,
+                                "source": "wait $\".non-existent\"",
+                                "statement-type": "action",
+                                "type": "wait",
+                                "value": "$\".non-existent\""
+                            }
+                        }
+                    }
+                    EOD,
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
             ],
@@ -188,9 +216,97 @@ class StepHandlerTest extends AbstractBrowserTestCase
                         'wait $".non-existent".attribute_name',
                     ],
                 ]),
-                'expectedExpectationFailedExceptionMessage' => 'Failed asserting that false is true.',
+                'expectedExpectationFailedExceptionMessage' => <<< 'EOD'
+                    {
+                        "examined": false,
+                        "expected": true,
+                        "stage": "execute",
+                        "statement": {
+                            "container": {
+                                "operator": "exists",
+                                "type": "derived-value-operation-assertion",
+                                "value": "$\".non-existent\""
+                            },
+                            "statement": {
+                                "container": {
+                                    "operator": "exists",
+                                    "type": "derived-value-operation-assertion",
+                                    "value": "$\".non-existent\".attribute_name"
+                                },
+                                "statement": {
+                                    "arguments": "$\".non-existent\".attribute_name",
+                                    "index": 0,
+                                    "source": "wait $\".non-existent\".attribute_name",
+                                    "statement-type": "action",
+                                    "type": "wait",
+                                    "value": "$\".non-existent\".attribute_name"
+                                }
+                            }
+                        }
+                    }
+                    EOD,
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
+            ],
+            'exists comparison, element identifier examined value, invalid locator exception is caught' => [
+                'fixture' => '/index.html',
+                'step' => $stepParser->parse([
+                    'assertions' => [
+                        '$"2" exists',
+                    ],
+                ]),
+                'expectedExpectationFailedExceptionMessage' => <<< 'EOD'
+                    {
+                        "context": {
+                            "locator": "2",
+                            "type": "css"
+                        },
+                        "exception": {
+                            "class": "webignition\\SymfonyDomCrawlerNavigator\\Exception\\InvalidLocatorException",
+                            "code": 0,
+                            "message": "Invalid CSS selector locator 2"
+                        },
+                        "stage": "setup",
+                        "statement": {
+                            "identifier": "$\"2\"",
+                            "index": 0,
+                            "operator": "exists",
+                            "source": "$\"2\" exists",
+                            "statement-type": "assertion"
+                        }
+                    }
+                    EOD,
+                'additionalSetupStatements' => null,
+                'teardownStatements' => null,
+            ],
+            'exists comparison, attribute identifier examined value, invalid locator exception is caught' => [
+                'fixture' => '/index.html',
+                'step' => $stepParser->parse([
+                    'assertions' => [
+                        '$"2".attribute_name exists',
+                    ],
+                ]),
+                'expectedExpectationFailedExceptionMessage' => <<<'EOD'
+                    {
+                        "context": {
+                            "locator": "2",
+                            "type": "css"
+                        },
+                        "exception": {
+                            "class": "webignition\\SymfonyDomCrawlerNavigator\\Exception\\InvalidLocatorException",
+                            "code": 0,
+                            "message": "Invalid CSS selector locator 2"
+                        },
+                        "stage": "setup",
+                        "statement": {
+                            "identifier": "$\"2\".attribute_name",
+                            "index": 0,
+                            "operator": "exists",
+                            "source": "$\"2\".attribute_name exists",
+                            "statement-type": "assertion"
+                        }
+                    }
+                    EOD,
             ],
         ];
     }

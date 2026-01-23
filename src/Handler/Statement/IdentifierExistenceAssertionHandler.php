@@ -8,16 +8,13 @@ use SmartAssert\DomIdentifier\AttributeIdentifierInterface;
 use SmartAssert\DomIdentifier\ElementIdentifier;
 use SmartAssert\DomIdentifier\ElementIdentifierInterface;
 use SmartAssert\DomIdentifier\Factory as DomIdentifierFactory;
-use webignition\BaseBasilTestCase\Enum\StatementStage;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
-use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryCatchBlock;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
-use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CompositeExpression;
@@ -29,7 +26,6 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\NullCoalescerExpre
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
-use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
 use webignition\BasilModels\Model\Statement\Action\ActionInterface;
 use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Statement\Assertion\DerivedValueOperationAssertion;
@@ -43,7 +39,6 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
         private DomIdentifierFactory $domIdentifierFactory,
         private DomIdentifierHandler $domIdentifierHandler,
         private ElementIdentifierSerializer $elementIdentifierSerializer,
-        private TryCatchBlockFactory $tryCatchBlockFactory,
         private PhpUnitCallFactory $phpUnitCallFactory,
     ) {}
 
@@ -55,7 +50,6 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
             DomIdentifierFactory::createFactory(),
             DomIdentifierHandler::createHandler(),
             ElementIdentifierSerializer::createSerializer(),
-            TryCatchBlockFactory::createFactory(),
             PhpUnitCallFactory::createFactory(),
         );
     }
@@ -108,10 +102,7 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
                 $elementExistPlaceholder,
             )
         )->withSetup(
-            $this->createNavigatorHasCallTryCatchBlock(
-                $elementAssignment,
-                $elementExistenceAssertion
-            )
+            $elementAssignment,
         );
     }
 
@@ -179,10 +170,10 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
                 ),
             ])
         )->withSetup(
-            $this->createNavigatorHasCallTryCatchBlock(
-                new Body([$elementAssignment, $attributeAssignment]),
-                $elementExistsAssertion
-            )
+            new Body([
+                $elementAssignment,
+                $attributeAssignment
+            ]),
         );
     }
 
@@ -204,17 +195,6 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
         return $isAttributeIdentifier || $isDerivedFromInteractionAction
                 ? $this->domCrawlerNavigatorCallFactory->createHasOneCall($expression)
                 : $this->domCrawlerNavigatorCallFactory->createHasCall($expression);
-    }
-
-    private function createNavigatorHasCallTryCatchBlock(
-        BodyInterface $tryBody,
-        AssertionInterface $assertion,
-    ): TryCatchBlock {
-        $catchBody = Body::createFromExpressions([
-            $this->phpUnitCallFactory->createFailCall($assertion, StatementStage::SETUP),
-        ]);
-
-        return $this->tryCatchBlockFactory->createForThrowable($tryBody, $catchBody);
     }
 
     private function createAssertionStatement(

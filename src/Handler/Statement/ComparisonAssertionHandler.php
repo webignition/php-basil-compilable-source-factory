@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Statement;
 
-use webignition\BaseBasilTestCase\Enum\StatementStage;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
@@ -13,7 +12,6 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpressi
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
-use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
 use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Statement\StatementInterface;
@@ -30,7 +28,6 @@ class ComparisonAssertionHandler implements StatementHandlerInterface
 
     public function __construct(
         private ValueAccessorFactory $valueAccessorFactory,
-        private TryCatchBlockFactory $tryCatchBlockFactory,
         private PhpUnitCallFactory $phpUnitCallFactory,
     ) {}
 
@@ -38,7 +35,6 @@ class ComparisonAssertionHandler implements StatementHandlerInterface
     {
         return new ComparisonAssertionHandler(
             ValueAccessorFactory::createFactory(),
-            TryCatchBlockFactory::createFactory(),
             PhpUnitCallFactory::createFactory(),
         );
     }
@@ -65,10 +61,6 @@ class ComparisonAssertionHandler implements StatementHandlerInterface
         $expectedValuePlaceholder = new VariableName(VariableNameEnum::EXPECTED_VALUE->value);
         $examinedValuePlaceholder = new VariableName(VariableNameEnum::EXAMINED_VALUE->value);
 
-        $catchBody = Body::createFromExpressions([
-            $this->phpUnitCallFactory->createFailCall($statement, StatementStage::SETUP),
-        ]);
-
         return new StatementHandlerComponents(
             new Statement(
                 $this->phpUnitCallFactory->createAssertionCall(
@@ -79,13 +71,10 @@ class ComparisonAssertionHandler implements StatementHandlerInterface
                 )
             ),
         )->withSetup(
-            $this->tryCatchBlockFactory->createForThrowable(
-                Body::createFromExpressions([
-                    new AssignmentExpression($expectedValuePlaceholder, $expectedAccessor),
-                    new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
-                ]),
-                $catchBody,
-            ),
+            Body::createFromExpressions([
+                new AssignmentExpression($expectedValuePlaceholder, $expectedAccessor),
+                new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
+            ]),
         );
     }
 }
