@@ -9,7 +9,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterfac
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 
-class VariableDependency implements ExpressionInterface, VariableDependencyInterface
+class VariableDependency implements ExpressionInterface, VariableDependencyInterface, IsAssigneeInterface
 {
     private const RENDER_TEMPLATE = '{{ {{ name }} }}';
 

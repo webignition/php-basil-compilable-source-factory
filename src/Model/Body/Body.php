@@ -9,6 +9,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpressi
 use webignition\BasilCompilableSourceFactory\Model\Expression\ClosureExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\HasMetadataInterface;
+use webignition\BasilCompilableSourceFactory\Model\IsAssigneeInterface;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
@@ -68,12 +69,12 @@ class Body implements BodyInterface, ResolvableCollectionInterface
     }
 
     public static function createForSingleAssignmentStatement(
-        ExpressionInterface $variable,
+        IsAssigneeInterface $assignee,
         ExpressionInterface $value
     ): self {
         return new Body([
             new Statement(
-                new AssignmentExpression($variable, $value)
+                new AssignmentExpression($assignee, $value)
             )
         ]);
     }

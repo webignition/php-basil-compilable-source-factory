@@ -4,30 +4,33 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 
+use webignition\BasilCompilableSourceFactory\Model\HasMetadataInterface;
+use webignition\BasilCompilableSourceFactory\Model\IsAssigneeInterface;
+use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 
 class AssignmentExpression implements AssignmentExpressionInterface
 {
     public const OPERATOR_ASSIGMENT_EQUALS = '=';
-    private const RENDER_TEMPLATE = '{{ variable }} {{ operator }} {{ value }}';
+    private const RENDER_TEMPLATE = '{{ assignee }} {{ operator }} {{ value }}';
 
-    private ExpressionInterface $variable;
+    private IsAssigneeInterface $assignee;
     private ExpressionInterface $value;
     private string $operator;
 
     public function __construct(
-        ExpressionInterface $variable,
+        IsAssigneeInterface $assignee,
         ExpressionInterface $value,
         string $operator = self::OPERATOR_ASSIGMENT_EQUALS
     ) {
-        $this->variable = $variable;
+        $this->assignee = $assignee;
         $this->value = $value;
         $this->operator = $operator;
     }
 
-    public function getVariable(): ExpressionInterface
+    public function getAssignee(): IsAssigneeInterface
     {
-        return $this->variable;
+        return $this->assignee;
     }
 
     public function getValue(): ExpressionInterface
@@ -42,7 +45,11 @@ class AssignmentExpression implements AssignmentExpressionInterface
 
     public function getMetadata(): MetadataInterface
     {
-        $metadata = $this->variable->getMetadata();
+        $metadata = new Metadata();
+
+        if ($this->assignee instanceof HasMetadataInterface) {
+            $metadata = $metadata->merge($this->assignee->getMetadata());
+        }
 
         return $metadata->merge($this->value->getMetadata());
     }
@@ -55,7 +62,7 @@ class AssignmentExpression implements AssignmentExpressionInterface
     public function getContext(): array
     {
         return [
-            'variable' => $this->variable,
+            'assignee' => $this->assignee,
             'operator' => $this->operator,
             'value' => $this->value,
         ];
