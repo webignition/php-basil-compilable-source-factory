@@ -95,10 +95,7 @@ class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationIn
         return ResolvableCollection::create($resolvablePairs);
     }
 
-    /**
-     * @param mixed $value
-     */
-    private static function createArrayPair(string $key, $value): ?ArrayPair
+    private static function createArrayPair(string $key, mixed $value): ?ArrayPair
     {
         $valueExpression = self::createExpression($value);
         if ($valueExpression instanceof ExpressionInterface) {
@@ -108,10 +105,7 @@ class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationIn
         return null;
     }
 
-    /**
-     * @param mixed $value
-     */
-    private static function createExpression($value): ?ExpressionInterface
+    private static function createExpression(mixed $value): ?ExpressionInterface
     {
         if ($value instanceof ExpressionInterface) {
             return $value;
