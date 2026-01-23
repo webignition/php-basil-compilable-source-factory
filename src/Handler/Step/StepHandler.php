@@ -56,7 +56,6 @@ class StepHandler
         ;
 
         $derivedAssertions = $this->createDerivedAssertionsCollection($step, $statements);
-
         $statements = $statements->prepend($derivedAssertions);
 
         try {
