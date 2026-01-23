@@ -86,17 +86,17 @@ class StepHandler
                 $bodySources[] = new EmptyLine();
             }
 
-            foreach ($step->getActions() as $action) {
-                $bodySources[] = $this->statementBlockFactory->create($action);
+            foreach ($statements as $statement) {
+                $bodySources[] = $this->statementBlockFactory->create($statement);
 
-                $handlerComponents = $this->statementHandler->handle($action);
+                $handlerComponents = $this->statementHandler->handle($statement);
                 $setupBlock = $handlerComponents->getSetup();
 
                 if (null !== $setupBlock) {
                     $setupTryCatchBlock = $this->tryCatchBlockFactory->createForThrowable(
                         $setupBlock,
                         Body::createFromExpressions([
-                            $this->phpUnitCallFactory->createFailCall($action, StatementStage::SETUP),
+                            $this->phpUnitCallFactory->createFailCall($statement, StatementStage::SETUP),
                         ]),
                     );
 
@@ -104,36 +104,17 @@ class StepHandler
                     $bodySources[] = new EmptyLine();
                 }
 
-                $tryCatchBlock = $this->tryCatchBlockFactory->createForThrowable(
-                    $handlerComponents->getBody(),
-                    Body::createFromExpressions([
-                        $this->phpUnitCallFactory->createFailCall($action, StatementStage::EXECUTE),
-                    ])
-                );
-
-                $bodySources[] = $tryCatchBlock;
-                $bodySources[] = new EmptyLine();
-            }
-
-            foreach ($step->getAssertions() as $assertion) {
-                $bodySources[] = $this->statementBlockFactory->create($assertion);
-
-                $handlerComponents = $this->statementHandler->handle($assertion);
-                $setupBlock = $handlerComponents->getSetup();
-
-                if (null !== $setupBlock) {
-                    $setupTryCatchBlock = $this->tryCatchBlockFactory->createForThrowable(
-                        $setupBlock,
+                $bodyBlock = $handlerComponents->getBody();
+                if ($statement instanceof ActionInterface) {
+                    $bodyBlock = $this->tryCatchBlockFactory->createForThrowable(
+                        $handlerComponents->getBody(),
                         Body::createFromExpressions([
-                            $this->phpUnitCallFactory->createFailCall($assertion, StatementStage::SETUP),
-                        ]),
+                            $this->phpUnitCallFactory->createFailCall($statement, StatementStage::EXECUTE),
+                        ])
                     );
-
-                    $bodySources[] = $setupTryCatchBlock;
-                    $bodySources[] = new EmptyLine();
                 }
 
-                $bodySources[] = $handlerComponents->getBody();
+                $bodySources[] = $bodyBlock;
                 $bodySources[] = new EmptyLine();
             }
         } catch (UnsupportedStatementException $unsupportedStatementException) {
