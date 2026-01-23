@@ -121,9 +121,30 @@ class StepHandler
 
             foreach ($step->getAssertions() as $assertion) {
                 $bodySources[] = $this->statementBlockFactory->create($assertion);
-                $bodySources[] = $this->createBodyFromStatementHandlerComponents(
-                    $this->statementHandler->handle($assertion)
+
+                $handlerComponents = $this->statementHandler->handle($assertion);
+                $setupBlock = $handlerComponents->getSetup();
+
+                if (null !== $setupBlock) {
+                    $setupTryCatchBlock = $this->tryCatchBlockFactory->createForThrowable(
+                        $setupBlock,
+                        Body::createFromExpressions([
+                            $this->phpUnitCallFactory->createFailCall($assertion, StatementStage::SETUP),
+                        ]),
+                    );
+
+                    $bodySources[] = $setupTryCatchBlock;
+                    $bodySources[] = new EmptyLine();
+                }
+
+                $tryCatchBlock = $this->tryCatchBlockFactory->createForThrowable(
+                    $handlerComponents->getBody(),
+                    Body::createFromExpressions([
+                        $this->phpUnitCallFactory->createFailCall($assertion, StatementStage::EXECUTE),
+                    ])
                 );
+
+                $bodySources[] = $tryCatchBlock;
                 $bodySources[] = new EmptyLine();
             }
         } catch (UnsupportedStatementException $unsupportedStatementException) {
