@@ -413,7 +413,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     ],
                 ),
             ],
-            'single exists assertion' => [
+            'single exists assertion, no setup' => [
                 'step' => $stepParser->parse([
                     'assertions' => [
                         '$".selector" exists',
@@ -447,6 +447,72 @@ class StepHandlerTest extends AbstractResolvableTestCase
 
                     EOD,
                 'expectedMetadata' => new Metadata(),
+            ],
+            'single exists assertion, has setup' => [
+                'step' => $stepParser->parse([
+                    'assertions' => [
+                        '$".selector" exists',
+                    ],
+                ]),
+                'handler' => self::createStepHandler([
+                    StatementBlockFactory::class => self::createMockStatementBlockFactory([
+                        '$".selector" exists' => [
+                            'statement' => $assertionParser->parse('$".selector" exists', 0),
+                            'return' => new Body([
+                                new SingleLineComment(
+                                    'StatementBlockFactory::create($".selector" exists)'
+                                ),
+                            ]),
+                        ],
+                    ]),
+                    StatementHandler::class => self::createMockStatementHandler([
+                        '$".selector" exists' => [
+                            'statement' => $assertionParser->parse('$".selector" exists', 0),
+                            'return' => new StatementHandlerComponents(
+                                new Body([
+                                    new SingleLineComment('StatementHandler::handle($".selector" exists)::body'),
+                                ]),
+                            )->withSetup(
+                                new Body([
+                                    new SingleLineComment('StatementHandler::handle($".selector" exists)::setup'),
+                                ])
+                            ),
+                        ],
+                    ]),
+                ]),
+                'expectedRenderedContent' => <<< 'EOD'
+                    // StatementBlockFactory::create($".selector" exists)
+                    try {
+                        // StatementHandler::handle($".selector" exists)::setup
+                    } catch (\Throwable $exception) {
+                        {{ PHPUNIT }}->fail(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
+                                '{
+                                    "statement-type": "assertion",
+                                    "source": "$\\".selector\\" exists",
+                                    "index": 0,
+                                    "identifier": "$\\".selector\\"",
+                                    "operator": "exists"
+                                }',
+                                $exception,
+                                StatementStage::SETUP,
+                            ),
+                        );
+                    }
+                    
+                    // StatementHandler::handle($".selector" exists)::body
+
+                    EOD,
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        StatementStage::class,
+                        \Throwable::class,
+                    ],
+                    variableNames: [
+                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::MESSAGE_FACTORY,
+                    ],
+                ),
             ],
             'single exists assertion, descendant identifier' => [
                 'step' => $stepParser->parse([
