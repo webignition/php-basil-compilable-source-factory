@@ -10,7 +10,6 @@ use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryBlock;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
-use webignition\BasilCompilableSourceFactory\Model\Expression\ReturnExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
@@ -68,16 +67,6 @@ class TryBlockTest extends AbstractResolvableTestCase
                 ),
                 'expectedString' => 'try {' . "\n"
                     . '    "literal expression";' . "\n"
-                    . '}',
-            ],
-            'empty return only' => [
-                'tryBlock' => new TryBlock(
-                    new Statement(
-                        new ReturnExpression()
-                    )
-                ),
-                'expectedString' => 'try {' . "\n"
-                    . '    return;' . "\n"
                     . '}',
             ],
         ];

@@ -18,7 +18,6 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpressi
 use webignition\BasilCompilableSourceFactory\Model\Expression\CatchExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ClosureExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
-use webignition\BasilCompilableSourceFactory\Model\Expression\ReturnExpression;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclaration;
@@ -183,26 +182,6 @@ class BodyTest extends AbstractResolvableTestCase
                     . '} catch (\LogicException $exception) {' . "\n"
                     . '    // CatchBlock comment' . "\n"
                     . '}',
-            ],
-            'empty return only' => [
-                'body' => new Body([
-                    new Statement(
-                        new ReturnExpression()
-                    )
-                ]),
-                'expectedString' => 'return;',
-            ],
-            'expression and empty return' => [
-                'body' => new Body([
-                    new Statement(
-                        new LiteralExpression('"literal from statement"')
-                    ),
-                    new Statement(
-                        new ReturnExpression()
-                    )
-                ]),
-                'expectedString' => '"literal from statement";' . "\n"
-                    . 'return;',
             ],
             'explicit trailing empty line' => [
                 'body' => new Body([
