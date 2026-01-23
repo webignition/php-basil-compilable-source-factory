@@ -7,7 +7,6 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression\A
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression\ArrayExpression;
-use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression\ArrayKey;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression\ArrayPair;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
@@ -38,7 +37,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
             'no metadata' => [
                 'expression' => new ArrayExpression([
                     new ArrayPair(
-                        new ArrayKey('key1'),
+                        'key1',
                         new LiteralExpression('\'value1\'')
                     ),
                 ]),
@@ -47,7 +46,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
             'has metadata' => [
                 'expression' => new ArrayExpression([
                     new ArrayPair(
-                        new ArrayKey('key3'),
+                        'key3',
                         new ObjectMethodInvocation(
                             new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                             'methodName'
@@ -82,7 +81,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
             'single pair' => [
                 'expression' => new ArrayExpression([
                     new ArrayPair(
-                        new ArrayKey('key1'),
+                        'key1',
                         new LiteralExpression('\'value1\'')
                     ),
                 ]),
@@ -93,15 +92,15 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
             'multiple pairs' => [
                 'expression' => new ArrayExpression([
                     new ArrayPair(
-                        new ArrayKey('key1'),
+                        'key1',
                         new LiteralExpression('\'value1\'')
                     ),
                     new ArrayPair(
-                        new ArrayKey('key2'),
+                        'key2',
                         new VariableName('variableName')
                     ),
                     new ArrayPair(
-                        new ArrayKey('key3'),
+                        'key3',
                         new ObjectMethodInvocation(
                             new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                             'methodName'
@@ -117,10 +116,10 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
             'single data set with single key:value numerical name' => [
                 'expression' => new ArrayExpression([
                     new ArrayPair(
-                        new ArrayKey('0'),
+                        '0',
                         new ArrayExpression([
                             new ArrayPair(
-                                new ArrayKey('key1'),
+                                'key1',
                                 new LiteralExpression('\'value1\'')
                             ),
                         ])
@@ -135,10 +134,10 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
             'single data set with single key:value string name' => [
                 'expression' => new ArrayExpression([
                     new ArrayPair(
-                        new ArrayKey('data-set-one'),
+                        'data-set-one',
                         new ArrayExpression([
                             new ArrayPair(
-                                new ArrayKey('key1'),
+                                'key1',
                                 new LiteralExpression('\'value1\'')
                             ),
                         ])
@@ -153,14 +152,14 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
             'single data set with multiple key:value numerical name' => [
                 'expression' => new ArrayExpression([
                     new ArrayPair(
-                        new ArrayKey('0'),
+                        '0',
                         new ArrayExpression([
                             new ArrayPair(
-                                new ArrayKey('key1'),
+                                'key1',
                                 new LiteralExpression('\'value1\'')
                             ),
                             new ArrayPair(
-                                new ArrayKey('key2'),
+                                'key2',
                                 new LiteralExpression('\'value2\'')
                             ),
                         ])
@@ -176,27 +175,27 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
             'multiple data sets with multiple key:value numerical name' => [
                 'expression' => new ArrayExpression([
                     new ArrayPair(
-                        new ArrayKey('0'),
+                        '0',
                         new ArrayExpression([
                             new ArrayPair(
-                                new ArrayKey('key1'),
+                                'key1',
                                 new LiteralExpression('\'value1\'')
                             ),
                             new ArrayPair(
-                                new ArrayKey('key2'),
+                                'key2',
                                 new LiteralExpression('\'value2\'')
                             ),
                         ])
                     ),
                     new ArrayPair(
-                        new ArrayKey('1'),
+                        '1',
                         new ArrayExpression([
                             new ArrayPair(
-                                new ArrayKey('key1'),
+                                'key1',
                                 new LiteralExpression('\'value3\'')
                             ),
                             new ArrayPair(
-                                new ArrayKey('key2'),
+                                'key2',
                                 new LiteralExpression('\'value4\'')
                             ),
                         ])
@@ -217,10 +216,10 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
             'single data set with VariableName value' => [
                 'expression' => new ArrayExpression([
                     new ArrayPair(
-                        new ArrayKey('data-set-one'),
+                        'data-set-one',
                         new ArrayExpression([
                             new ArrayPair(
-                                new ArrayKey('key1'),
+                                'key1',
                                 new VariableName('variableName')
                             ),
                         ])
@@ -235,10 +234,10 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
             'single data set with ObjectMethodInvocation value' => [
                 'expression' => new ArrayExpression([
                     new ArrayPair(
-                        new ArrayKey('data-set-one'),
+                        'data-set-one',
                         new ArrayExpression([
                             new ArrayPair(
-                                new ArrayKey('key1'),
+                                'key1',
                                 new ObjectMethodInvocation(
                                     new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                                     'methodName'
@@ -280,10 +279,10 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                 ]),
                 'expectedExpression' => new ArrayExpression([
                     new ArrayPair(
-                        new ArrayKey('0'),
+                        '0',
                         new ArrayExpression([
                             new ArrayPair(
-                                new ArrayKey('key1'),
+                                'key1',
                                 new LiteralExpression('\'value1\'')
                             ),
                         ])
@@ -298,10 +297,10 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                 ]),
                 'expectedExpression' => new ArrayExpression([
                     new ArrayPair(
-                        new ArrayKey('data-set-one'),
+                        'data-set-one',
                         new ArrayExpression([
                             new ArrayPair(
-                                new ArrayKey('key1'),
+                                'key1',
                                 new LiteralExpression('\'value1\'')
                             ),
                         ])
@@ -317,14 +316,14 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                 ]),
                 'expectedExpression' => new ArrayExpression([
                     new ArrayPair(
-                        new ArrayKey('0'),
+                        '0',
                         new ArrayExpression([
                             new ArrayPair(
-                                new ArrayKey('key1'),
+                                'key1',
                                 new LiteralExpression('\'value1\'')
                             ),
                             new ArrayPair(
-                                new ArrayKey('key2'),
+                                'key2',
                                 new LiteralExpression('\'value2\'')
                             ),
                         ])
@@ -344,27 +343,27 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                 ]),
                 'expectedExpression' => new ArrayExpression([
                     new ArrayPair(
-                        new ArrayKey('0'),
+                        '0',
                         new ArrayExpression([
                             new ArrayPair(
-                                new ArrayKey('key1'),
+                                'key1',
                                 new LiteralExpression('\'value1\'')
                             ),
                             new ArrayPair(
-                                new ArrayKey('key2'),
+                                'key2',
                                 new LiteralExpression('\'value2\'')
                             ),
                         ])
                     ),
                     new ArrayPair(
-                        new ArrayKey('1'),
+                        '1',
                         new ArrayExpression([
                             new ArrayPair(
-                                new ArrayKey('key1'),
+                                'key1',
                                 new LiteralExpression('\'value3\'')
                             ),
                             new ArrayPair(
-                                new ArrayKey('key2'),
+                                'key2',
                                 new LiteralExpression('\'value4\'')
                             ),
                         ])
@@ -379,10 +378,10 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                 ]),
                 'expectedExpression' => new ArrayExpression([
                     new ArrayPair(
-                        new ArrayKey('data-set-one'),
+                        'data-set-one',
                         new ArrayExpression([
                             new ArrayPair(
-                                new ArrayKey('key1'),
+                                'key1',
                                 new VariableName('variableName')
                             ),
                         ])
@@ -400,10 +399,10 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                 ]),
                 'expectedExpression' => new ArrayExpression([
                     new ArrayPair(
-                        new ArrayKey('data-set-one'),
+                        'data-set-one',
                         new ArrayExpression([
                             new ArrayPair(
-                                new ArrayKey('key1'),
+                                'key1',
                                 new ObjectMethodInvocation(
                                     new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                                     'methodName'
@@ -422,7 +421,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                 ]),
                 'expectedExpression' => new ArrayExpression([
                     new ArrayPair(
-                        new ArrayKey('data'),
+                        'data',
                         ArrayExpression::fromArray([
                             'key1' => 'value1',
                             'key2' => 'value2',
@@ -443,14 +442,14 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                 ]),
                 'expectedExpression' => new ArrayExpression([
                     new ArrayPair(
-                        new ArrayKey('name'),
+                        'name',
                         new ObjectMethodInvocation(
                             new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                             'dataName'
                         )
                     ),
                     new ArrayPair(
-                        new ArrayKey('data'),
+                        'data',
                         ArrayExpression::fromArray([
                             'key1' => 'value1',
                             'key2' => 'value2',

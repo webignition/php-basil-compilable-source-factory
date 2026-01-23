@@ -7,7 +7,6 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression\A
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression\ArrayExpression;
-use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression\ArrayKey;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression\ArrayPair;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
@@ -32,14 +31,14 @@ class ArrayPairTest extends AbstractResolvableTestCase
         return [
             'no metadata' => [
                 'pair' => new ArrayPair(
-                    new ArrayKey(''),
+                    '',
                     new LiteralExpression('\'\'')
                 ),
                 'expectedMetadata' => new Metadata(),
             ],
             'has metadata' => [
                 'pair' => new ArrayPair(
-                    new ArrayKey(''),
+                    '',
                     new ObjectMethodInvocation(
                         new VariableDependency(VariableName::PANTHER_CLIENT),
                         'methodName'
@@ -68,53 +67,53 @@ class ArrayPairTest extends AbstractResolvableTestCase
         return [
             'empty key, empty string value' => [
                 'pair' => new ArrayPair(
-                    new ArrayKey(''),
+                    '',
                     new LiteralExpression('\'\'')
                 ),
                 'expectedString' => "'' => '',",
             ],
             'empty key, string value' => [
                 'pair' => new ArrayPair(
-                    new ArrayKey(''),
+                    '',
                     new LiteralExpression('\'value\'')
                 ),
                 'expectedString' => "'' => 'value',",
             ],
             'empty key, integer value' => [
                 'pair' => new ArrayPair(
-                    new ArrayKey(''),
+                    '',
                     new LiteralExpression('2')
                 ),
                 'expectedString' => "'' => 2,",
             ],
             'string value' => [
                 'pair' => new ArrayPair(
-                    new ArrayKey('key'),
+                    'key',
                     new LiteralExpression('\'value\'')
                 ),
                 'expectedString' => "'key' => 'value',",
             ],
             'array value, empty' => [
                 'pair' => new ArrayPair(
-                    new ArrayKey('key'),
+                    'key',
                     new ArrayExpression([]),
                 ),
                 'expectedString' => "'key' => [],",
             ],
             'array value, non-empty' => [
                 'pair' => new ArrayPair(
-                    new ArrayKey('key'),
+                    'key',
                     new ArrayExpression([
                         new ArrayPair(
-                            new ArrayKey('sub-key-1'),
+                            'sub-key-1',
                             new LiteralExpression('\'sub value 1\'')
                         ),
                         new ArrayPair(
-                            new ArrayKey('sub-key-2'),
+                            'sub-key-2',
                             new LiteralExpression('\'sub value 2\'')
                         ),
                         new ArrayPair(
-                            new ArrayKey('sub-key-3'),
+                            'sub-key-3',
                             new LiteralExpression('\'sub value 3\'')
                         ),
                     ]),
