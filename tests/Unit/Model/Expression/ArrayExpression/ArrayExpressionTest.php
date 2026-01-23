@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression;
+namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression\ArrayExpression;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
