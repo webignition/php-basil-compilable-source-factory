@@ -11,13 +11,13 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpressi
 use webignition\BasilCompilableSourceFactory\Model\Expression\ClosureExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ReturnExpression;
+use webignition\BasilCompilableSourceFactory\Model\IsAssigneeInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
-use webignition\BasilCompilableSourceFactory\Model\VariablePlaceholderInterface;
 
 class StatementFactory
 {
@@ -44,7 +44,7 @@ class StatementFactory
 
     public static function createCrawlerFilterCallForElement(
         string $selector,
-        VariablePlaceholderInterface $placeholder
+        IsAssigneeInterface $placeholder
     ): StatementInterface {
         $elementPlaceholder = new VariableName('element');
         $argumentFactory = ArgumentFactory::createFactory();
@@ -136,7 +136,7 @@ class StatementFactory
 
     public static function createCrawlerFilterCall(
         string $selector,
-        VariablePlaceholderInterface $placeholder
+        IsAssigneeInterface $placeholder
     ): StatementInterface {
         $argumentFactory = ArgumentFactory::createFactory();
 

@@ -8,7 +8,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterfac
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 
-class VariableName implements \Stringable, ExpressionInterface, VariablePlaceholderInterface, IsAssigneeInterface
+class VariableName implements \Stringable, ExpressionInterface, IsAssigneeInterface
 {
     use ResolvableStringableTrait;
 
