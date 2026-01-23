@@ -13,10 +13,10 @@ class ArrayPair implements ResolvableInterface, HasMetadataInterface
 {
     private const RENDER_TEMPLATE = '{{ key }} => {{ value }},';
 
-    private ArrayKey $key;
+    private string $key;
     private ExpressionInterface $value;
 
-    public function __construct(ArrayKey $key, ExpressionInterface $value)
+    public function __construct(string $key, ExpressionInterface $value)
     {
         $this->key = $key;
         $this->value = $value;
@@ -30,7 +30,7 @@ class ArrayPair implements ResolvableInterface, HasMetadataInterface
     public function getContext(): array
     {
         return [
-            'key' => (string) $this->key,
+            'key' => '\'' . $this->key . '\'',
             'value' => $this->value,
         ];
     }

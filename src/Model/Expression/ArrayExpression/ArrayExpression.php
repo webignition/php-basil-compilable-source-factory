@@ -102,10 +102,7 @@ class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationIn
     {
         $valueExpression = self::createExpression($value);
         if ($valueExpression instanceof ExpressionInterface) {
-            return new ArrayPair(
-                new ArrayKey((string) $key),
-                $valueExpression
-            );
+            return new ArrayPair($key, $valueExpression);
         }
 
         return null;
