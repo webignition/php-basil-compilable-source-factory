@@ -71,4 +71,19 @@ class TryCatchBlock implements BodyInterface
     {
         return ' ' . $resolvedTemplate;
     }
+
+    public function mightThrow(): bool
+    {
+        if ($this->tryBlock->mightThrow()) {
+            return true;
+        }
+
+        foreach ($this->catchBlocks as $catchBlock) {
+            if ($catchBlock->mightThrow()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
