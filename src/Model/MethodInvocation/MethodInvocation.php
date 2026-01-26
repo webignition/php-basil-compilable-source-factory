@@ -17,6 +17,8 @@ class MethodInvocation implements MethodInvocationInterface
 
     private bool $isErrorSuppressed = false;
 
+    private bool $mightThrow = false;
+
     public function __construct(string $methodName, ?MethodArgumentsInterface $arguments = null)
     {
         $this->methodName = $methodName;
@@ -61,6 +63,19 @@ class MethodInvocation implements MethodInvocationInterface
     {
         $new = clone $this;
         $new->isErrorSuppressed = $isErrorSuppressed;
+
+        return $new;
+    }
+
+    public function mightThrow(): bool
+    {
+        return $this->mightThrow;
+    }
+
+    public function withMightThrow(bool $mightThrow): self
+    {
+        $new = clone $this;
+        $new->mightThrow = $mightThrow;
 
         return $new;
     }
