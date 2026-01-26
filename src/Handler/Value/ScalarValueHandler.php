@@ -143,8 +143,10 @@ class ScalarValueHandler
 
         if (is_string($methodName)) {
             return new ObjectMethodInvocation(
-                new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
-                $methodName
+                object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                methodName: $methodName,
+                arguments: new MethodArguments(),
+                mightThrow: true,
             );
         }
 
