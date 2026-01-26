@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ObjectConstant;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
@@ -60,14 +60,14 @@ class ObjectConstantTest extends AbstractResolvableTestCase
                 ),
             ],
             'enum' => [
-                'className' => new ClassName(VariableNameEnum::class),
-                'property' => VariableNameEnum::PANTHER_CLIENT->value,
+                'className' => new ClassName(VariableName::class),
+                'property' => VariableName::PANTHER_CLIENT->value,
                 'expectedContext' => [
                     'class' => 'VariableName',
                     'property' => 'CLIENT',
                 ],
                 'expectedMetadata' => new Metadata(
-                    classNames: [VariableNameEnum::class],
+                    classNames: [VariableName::class],
                 ),
             ],
         ];
@@ -101,8 +101,8 @@ class ObjectConstantTest extends AbstractResolvableTestCase
             ],
             'enum' => [
                 'expression' => new ObjectConstant(
-                    new ClassName(VariableNameEnum::class),
-                    VariableNameEnum::PANTHER_CLIENT->value
+                    new ClassName(VariableName::class),
+                    VariableName::PANTHER_CLIENT->value
                 ),
                 'expectedString' => 'VariableName::CLIENT',
             ],

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ClosureExpression;
@@ -14,10 +14,10 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ReturnExpression;
 use webignition\BasilCompilableSourceFactory\Model\IsAssigneeInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\Model\VariableName;
 
 class StatementFactory
 {
@@ -27,13 +27,13 @@ class StatementFactory
 
         return new Statement(
             new ObjectMethodInvocation(
-                object: new VariableDependency(VariableNameEnum::PHPUNIT_TEST_CASE->value),
+                object: new VariableDependency(VariableName::PHPUNIT_TEST_CASE->value),
                 methodName: 'assertSame',
                 arguments: new MethodArguments(
                     $argumentFactory->create(
                         $expectedTitle,
                         new ObjectMethodInvocation(
-                            object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT->value),
+                            object: new VariableDependency(VariableName::PANTHER_CLIENT->value),
                             methodName: 'getTitle',
                             arguments: new MethodArguments(),
                             mightThrow: false,
@@ -49,7 +49,7 @@ class StatementFactory
         string $selector,
         IsAssigneeInterface $placeholder
     ): StatementInterface {
-        $elementPlaceholder = new VariableName('element');
+        $elementVariable = new Property('element');
         $argumentFactory = ArgumentFactory::createFactory();
 
         return new Statement(
@@ -58,9 +58,9 @@ class StatementFactory
                 new ClosureExpression(new Body([
                     new Statement(
                         new AssignmentExpression(
-                            $elementPlaceholder,
+                            $elementVariable,
                             new ObjectMethodInvocation(
-                                object: new VariableDependency(VariableNameEnum::PANTHER_CRAWLER->value),
+                                object: new VariableDependency(VariableName::PANTHER_CRAWLER->value),
                                 methodName: 'filter',
                                 arguments: new MethodArguments($argumentFactory->create($selector)),
                                 mightThrow: false,
@@ -70,7 +70,7 @@ class StatementFactory
                     new Statement(
                         new ReturnExpression(
                             new ObjectMethodInvocation(
-                                object: $elementPlaceholder,
+                                object: $elementVariable,
                                 methodName: 'getElement',
                                 arguments: new MethodArguments($argumentFactory->create(0)),
                                 mightThrow: false,
@@ -94,16 +94,16 @@ class StatementFactory
 
     public static function createCrawlerActionCallForElement(string $selector, string $action): StatementInterface
     {
-        $elementPlaceholder = new VariableName('element');
+        $elementVariable = new Property('element');
         $argumentFactory = ArgumentFactory::createFactory();
 
         return new Statement(
             new ClosureExpression(new Body([
                 new Statement(
                     new AssignmentExpression(
-                        $elementPlaceholder,
+                        $elementVariable,
                         new ObjectMethodInvocation(
-                            object: new VariableDependency(VariableNameEnum::PANTHER_CRAWLER->value),
+                            object: new VariableDependency(VariableName::PANTHER_CRAWLER->value),
                             methodName: 'filter',
                             arguments: new MethodArguments($argumentFactory->create($selector)),
                             mightThrow: false,
@@ -112,9 +112,9 @@ class StatementFactory
                 ),
                 new Statement(
                     new AssignmentExpression(
-                        $elementPlaceholder,
+                        $elementVariable,
                         new ObjectMethodInvocation(
-                            object: $elementPlaceholder,
+                            object: $elementVariable,
                             methodName: 'getElement',
                             arguments: new MethodArguments($argumentFactory->create(0)),
                             mightThrow: false,
@@ -123,7 +123,7 @@ class StatementFactory
                 ),
                 new Statement(
                     new ObjectMethodInvocation(
-                        object: $elementPlaceholder,
+                        object: $elementVariable,
                         methodName: $action,
                         arguments: new MethodArguments(),
                         mightThrow: false,
@@ -137,7 +137,7 @@ class StatementFactory
     {
         return new Statement(
             new ObjectMethodInvocation(
-                object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT->value),
+                object: new VariableDependency(VariableName::PANTHER_CLIENT->value),
                 methodName: $action,
                 arguments: new MethodArguments(),
                 mightThrow: false,
@@ -155,7 +155,7 @@ class StatementFactory
             new AssignmentExpression(
                 $placeholder,
                 new ObjectMethodInvocation(
-                    object: new VariableDependency(VariableNameEnum::PANTHER_CRAWLER->value),
+                    object: new VariableDependency(VariableName::PANTHER_CRAWLER->value),
                     methodName: 'filter',
                     arguments: new MethodArguments($argumentFactory->create($selector)),
                     mightThrow: false,
@@ -168,7 +168,7 @@ class StatementFactory
     {
         return new Statement(
             new ObjectMethodInvocation(
-                object: new VariableDependency(VariableNameEnum::PHPUNIT_TEST_CASE->value),
+                object: new VariableDependency(VariableName::PHPUNIT_TEST_CASE->value),
                 methodName: 'assertFalse',
                 arguments: new MethodArguments([
                     new LiteralExpression($actual)
@@ -182,7 +182,7 @@ class StatementFactory
     {
         return new Statement(
             new ObjectMethodInvocation(
-                object: new VariableDependency(VariableNameEnum::PHPUNIT_TEST_CASE->value),
+                object: new VariableDependency(VariableName::PHPUNIT_TEST_CASE->value),
                 methodName: 'assertTrue',
                 arguments: new MethodArguments([
                     new LiteralExpression($actual)
@@ -209,7 +209,7 @@ class StatementFactory
     ): StatementInterface {
         return new Statement(
             new ObjectMethodInvocation(
-                object: new VariableDependency(VariableNameEnum::PHPUNIT_TEST_CASE->value),
+                object: new VariableDependency(VariableName::PHPUNIT_TEST_CASE->value),
                 methodName: $methodName,
                 arguments: new MethodArguments([
                     new LiteralExpression($expected),

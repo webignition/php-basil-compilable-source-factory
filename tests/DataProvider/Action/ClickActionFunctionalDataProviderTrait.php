@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
-use webignition\BasilCompilableSourceFactory\Model\VariableName;
+use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilModels\Parser\ActionParser;
 
@@ -17,7 +17,7 @@ trait ClickActionFunctionalDataProviderTrait
     public static function clickActionFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
-        $submitButtonPlaceholder = new VariableName('submitButton');
+        $submitButtonVariable = new Property('submitButton');
 
         return [
             'interaction action (click), link' => [
@@ -39,14 +39,14 @@ trait ClickActionFunctionalDataProviderTrait
                     StatementFactory::createAssertBrowserTitle('Click'),
                     StatementFactory::createCrawlerFilterCallForElement(
                         '#form input[type="submit"]',
-                        $submitButtonPlaceholder
+                        $submitButtonVariable
                     ),
                     StatementFactory::createAssertSame('"false"', '$submitButton->getAttribute(\'data-clicked\')'),
                 ]),
                 'teardownStatements' => new Body([
                     StatementFactory::createCrawlerFilterCallForElement(
                         '#form input[type="submit"]',
-                        $submitButtonPlaceholder
+                        $submitButtonVariable
                     ),
                     StatementFactory::createAssertSame('"true"', '$submitButton->getAttribute(\'data-clicked\')'),
                 ]),

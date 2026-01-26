@@ -15,8 +15,8 @@ use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
+use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
-use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
@@ -40,11 +40,11 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
     ): void {
         $source = $this->factory->createFindCall($expression);
 
-        $collectionPlaceholder = new VariableName('collection');
+        $collectionVariable = new Property('collection');
 
         $instrumentedSource = new Body([
             new Statement(
-                new AssignmentExpression($collectionPlaceholder, $source)
+                new AssignmentExpression($collectionVariable, $source)
             ),
         ]);
 
