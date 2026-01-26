@@ -63,4 +63,9 @@ class AssignmentExpression implements AssignmentExpressionInterface
             'value' => $this->value,
         ];
     }
+
+    public function mightThrow(): bool
+    {
+        return $this->assignee->mightThrow() || $this->value->mightThrow();
+    }
 }
