@@ -14,8 +14,8 @@ use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
-use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilModels\Model\Statement\Action\ActionInterface;
 use webignition\BasilModels\Model\Statement\StatementInterface;
 
@@ -62,13 +62,13 @@ class InteractionActionHandler implements StatementHandlerInterface
             throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }
 
-        $elementPlaceholder = new VariableName('element');
+        $elementVariable = new Property('element');
 
         return new StatementHandlerComponents(
             new Body([
                 new Statement(
                     new ObjectMethodInvocation(
-                        object: $elementPlaceholder,
+                        object: $elementVariable,
                         methodName: $statement->getType(),
                         arguments: new MethodArguments(),
                         mightThrow: true
@@ -81,7 +81,7 @@ class InteractionActionHandler implements StatementHandlerInterface
         )->withSetup(
             new Statement(
                 new AssignmentExpression(
-                    $elementPlaceholder,
+                    $elementVariable,
                     $this->domIdentifierHandler->handleElement(
                         $this->elementIdentifierSerializer->serialize($domIdentifier)
                     )

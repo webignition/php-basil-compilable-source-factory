@@ -10,7 +10,7 @@ use SmartAssert\DomIdentifier\FactoryInterface as DomIdentifierFactoryInterface;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
@@ -21,9 +21,9 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\NullCoalescerExpre
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Model\Statement\Action\ActionInterface;
 use webignition\BasilModels\Model\Statement\StatementInterface;
@@ -114,16 +114,16 @@ class SetActionHandler implements StatementHandlerInterface
             );
         }
 
-        $setValueCollectionPlaceholder = new VariableName('setValueCollection');
-        $setValueValuePlaceholder = new VariableName('setValueValue');
+        $setValueCollectionVariable = new Property('setValueCollection');
+        $setValueValueVariable = new Property('setValueValue');
 
         $mutationInvocation = new ObjectMethodInvocation(
-            object: new VariableDependency(VariableNameEnum::WEBDRIVER_ELEMENT_MUTATOR->value),
+            object: new VariableDependency(VariableName::WEBDRIVER_ELEMENT_MUTATOR->value),
             methodName: 'setValue',
             arguments: new MethodArguments(
                 [
-                    $setValueCollectionPlaceholder,
-                    $setValueValuePlaceholder,
+                    $setValueCollectionVariable,
+                    $setValueValueVariable,
                 ],
                 MethodArgumentsInterface::FORMAT_INLINE
             ),
@@ -139,8 +139,8 @@ class SetActionHandler implements StatementHandlerInterface
             ])
         )->withSetup(
             Body::createFromExpressions([
-                new AssignmentExpression($setValueCollectionPlaceholder, $collectionAccessor),
-                new AssignmentExpression($setValueValuePlaceholder, $valueAccessor),
+                new AssignmentExpression($setValueCollectionVariable, $collectionAccessor),
+                new AssignmentExpression($setValueValueVariable, $valueAccessor),
             ]),
         );
     }

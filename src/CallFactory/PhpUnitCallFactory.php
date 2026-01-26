@@ -14,8 +14,8 @@ use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumen
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocationInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Statement\StatementInterface;
 
@@ -114,7 +114,7 @@ readonly class PhpUnitCallFactory
             methodName: 'createFailureMessage',
             arguments: new MethodArguments([
                 $this->argumentFactory->createSingular($serializedStatement),
-                $this->argumentFactory->createSingular(new VariableName('exception')),
+                $this->argumentFactory->createSingular(new Property('exception')),
                 $this->argumentFactory->createSingular($statementStageEnum),
             ])->withFormat(MethodArgumentsInterface::FORMAT_STACKED),
             mightThrow: false

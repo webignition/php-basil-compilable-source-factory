@@ -15,9 +15,9 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterfac
 use webignition\BasilCompilableSourceFactory\Model\Expression\ReturnExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\Model\VariableName;
 
 class DomIdentifierHandler
 {
@@ -56,17 +56,17 @@ class DomIdentifierHandler
             $this->argumentFactory->createSingular($serializedElementIdentifier)
         );
 
-        $elementPlaceholder = new VariableName('element');
+        $elementVariable = new Property('element');
 
         $closureExpressionStatements = [
             new Statement(
-                new AssignmentExpression($elementPlaceholder, $findCall)
+                new AssignmentExpression($elementVariable, $findCall)
             ),
             new EmptyLine(),
             new Statement(
                 new ReturnExpression(
                     new ObjectMethodInvocation(
-                        object: $elementPlaceholder,
+                        object: $elementVariable,
                         methodName: 'getAttribute',
                         arguments: new MethodArguments($this->argumentFactory->create($attributeName)),
                         mightThrow: true,
@@ -84,11 +84,11 @@ class DomIdentifierHandler
             $this->argumentFactory->createSingular($serializedElementIdentifier)
         );
 
-        $elementPlaceholder = new VariableName('element');
+        $elementVariable = new Property('element');
 
         $closureExpressionStatements = [
             new Statement(
-                new AssignmentExpression($elementPlaceholder, $findCall)
+                new AssignmentExpression($elementVariable, $findCall)
             ),
             new EmptyLine(),
             new Statement(
@@ -97,7 +97,7 @@ class DomIdentifierHandler
                         object: new VariableDependency(VariableNameEnum::WEBDRIVER_ELEMENT_INSPECTOR->value),
                         methodName: 'getValue',
                         arguments: new MethodArguments([
-                            $elementPlaceholder,
+                            $elementVariable,
                         ]),
                         mightThrow: false,
                     )
