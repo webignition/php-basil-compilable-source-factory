@@ -99,13 +99,14 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
         $expectedValuePlaceholder = new VariableName(VariableNameEnum::EXPECTED_VALUE->value);
 
         $pregMatchInvocation = new MethodInvocation(
-            'preg_match',
-            new MethodArguments(
+            methodName: 'preg_match',
+            arguments: new MethodArguments(
                 $this->argumentFactory->create(
                     $examinedValuePlaceholder,
                     null,
                 )
-            )
+            ),
+            mightThrow: false
         )->setIsErrorSuppressed(true);
 
         $identityComparison = new ComparisonExpression(

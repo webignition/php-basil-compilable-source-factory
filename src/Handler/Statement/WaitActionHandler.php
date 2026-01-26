@@ -61,8 +61,8 @@ class WaitActionHandler implements StatementHandlerInterface
         $durationVariable = new VariableName('duration');
 
         $sleepInvocation = new MethodInvocation(
-            'usleep',
-            new MethodArguments(
+            methodName: 'usleep',
+            arguments: new MethodArguments(
                 [
                     new CompositeExpression([
                         $durationVariable,
@@ -70,7 +70,8 @@ class WaitActionHandler implements StatementHandlerInterface
                         new LiteralExpression((string) self::MICROSECONDS_PER_MILLISECOND)
                     ]),
                 ]
-            )
+            ),
+            mightThrow: false
         );
 
         return new StatementHandlerComponents(

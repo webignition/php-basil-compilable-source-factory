@@ -10,20 +10,15 @@ use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumen
 
 class MethodInvocation implements MethodInvocationInterface
 {
-    private const RENDER_TEMPLATE = '{{ call }}({{ arguments }})';
-
-    private string $methodName;
-    private MethodArgumentsInterface $arguments;
+    private const string RENDER_TEMPLATE = '{{ call }}({{ arguments }})';
 
     private bool $isErrorSuppressed = false;
 
-    private bool $mightThrow = false;
-
-    public function __construct(string $methodName, ?MethodArgumentsInterface $arguments = null)
-    {
-        $this->methodName = $methodName;
-        $this->arguments = $arguments ?? new MethodArguments([]);
-    }
+    public function __construct(
+        private string $methodName,
+        private MethodArgumentsInterface $arguments,
+        private bool $mightThrow
+    ) {}
 
     public function getCall(): string
     {
@@ -70,13 +65,5 @@ class MethodInvocation implements MethodInvocationInterface
     public function mightThrow(): bool
     {
         return $this->mightThrow;
-    }
-
-    public function withMightThrow(bool $mightThrow): self
-    {
-        $new = clone $this;
-        $new->mightThrow = $mightThrow;
-
-        return $new;
     }
 }

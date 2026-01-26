@@ -23,9 +23,10 @@ class ObjectMethodInvocation extends AbstractMethodInvocationEncapsulator implem
     public function __construct(
         ExpressionInterface $object,
         string $methodName,
-        ?MethodArgumentsInterface $arguments = null
+        MethodArgumentsInterface $arguments,
+        bool $mightThrow,
     ) {
-        parent::__construct($methodName, $arguments);
+        parent::__construct($methodName, $arguments, $mightThrow);
         $this->object = $object;
     }
 
