@@ -29,8 +29,10 @@ class MethodDefinitionFactory
     public static function createSetUpBeforeClassMethodDefinition(string $fixture): MethodDefinitionInterface
     {
         $requestBaseUri = new ObjectMethodInvocation(
-            new StaticObject(Options::class),
-            'getBaseUri'
+            object: new StaticObject(Options::class),
+            methodName: 'getBaseUri',
+            arguments: new MethodArguments(),
+            mightThrow: false,
         );
 
         $requestUriExpression = new CompositeExpression([
@@ -43,23 +45,26 @@ class MethodDefinitionFactory
         $body = new Body([
             new Statement(
                 new ObjectMethodInvocation(
-                    new StaticObject('self'),
-                    'setClientManager',
-                    new MethodArguments([
+                    object: new StaticObject('self'),
+                    methodName: 'setClientManager',
+                    arguments: new MethodArguments([
                         new ObjectConstructor(
-                            new ClassName(ClientManager::class),
-                            new MethodArguments($argumentFactory->create('chrome'))
+                            class: new ClassName(ClientManager::class),
+                            arguments: new MethodArguments($argumentFactory->create('chrome')),
+                            mightThrow: false,
                         ),
                     ]),
+                    mightThrow: false,
                 )
             ),
             new SingleLineComment('Test harness lines'),
             new Statement(new LiteralExpression('parent::setUpBeforeClass()')),
             new Statement(
                 new ObjectMethodInvocation(
-                    new VariableDependency(VariableName::PANTHER_CLIENT),
-                    'request',
-                    new MethodArguments($argumentFactory->create('GET', $requestUriExpression))
+                    object: new VariableDependency(VariableName::PANTHER_CLIENT),
+                    methodName: 'request',
+                    arguments: new MethodArguments($argumentFactory->create('GET', $requestUriExpression)),
+                    mightThrow: false,
                 )
             ),
         ]);
