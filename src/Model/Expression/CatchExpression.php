@@ -11,7 +11,6 @@ use webignition\BasilCompilableSourceFactory\Model\NeverThrowsTrait;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclarationCollection;
 
-
 class CatchExpression implements ExpressionInterface
 {
     use NeverThrowsTrait;
