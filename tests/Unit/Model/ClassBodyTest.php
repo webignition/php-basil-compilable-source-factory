@@ -53,11 +53,12 @@ class ClassBodyTest extends AbstractResolvableTestCase
                             new AssignmentExpression(
                                 new VariableName('statement'),
                                 new ObjectMethodInvocation(
-                                    new StaticObject('Acme\Statement'),
-                                    'createAction',
-                                    new MethodArguments([
+                                    object: new StaticObject('Acme\Statement'),
+                                    methodName: 'createAction',
+                                    arguments: new MethodArguments([
                                         new LiteralExpression('\'$"a" exists\''),
-                                    ])
+                                    ]),
+                                    mightThrow: false,
                                 )
                             )
                         ),
@@ -74,11 +75,12 @@ class ClassBodyTest extends AbstractResolvableTestCase
                             new AssignmentExpression(
                                 new VariableName('statement'),
                                 new ObjectMethodInvocation(
-                                    new StaticObject('Acme\Statement'),
-                                    'createAction',
-                                    new MethodArguments([
+                                    object: new StaticObject('Acme\Statement'),
+                                    methodName: 'createAction',
+                                    arguments: new MethodArguments([
                                         new LiteralExpression('\'$"b" exists\''),
-                                    ])
+                                    ]),
+                                    mightThrow: false,
                                 )
                             )
                         ),
@@ -115,11 +117,12 @@ class ClassBodyTest extends AbstractResolvableTestCase
                                     new AssignmentExpression(
                                         new VariableName('statement'),
                                         new ObjectMethodInvocation(
-                                            new StaticObject('Acme\Statement'),
-                                            'createAction',
-                                            new MethodArguments([
+                                            object: new StaticObject('Acme\Statement'),
+                                            methodName: 'createAction',
+                                            arguments: new MethodArguments([
                                                 new LiteralExpression('\'$"a" exists\''),
-                                            ])
+                                            ]),
+                                            mightThrow: false,
                                         )
                                     )
                                 ),
@@ -155,11 +158,12 @@ class ClassBodyTest extends AbstractResolvableTestCase
                             new AssignmentExpression(
                                 new VariableName('statement'),
                                 new ObjectMethodInvocation(
-                                    new StaticObject('Acme\Statement'),
-                                    'createAction',
-                                    new MethodArguments([
+                                    object: new StaticObject('Acme\Statement'),
+                                    methodName: 'createAction',
+                                    arguments: new MethodArguments([
                                         new LiteralExpression('\'$"b" exists\''),
-                                    ])
+                                    ]),
+                                    mightThrow: false,
                                 )
                             )
                         ),
