@@ -118,15 +118,16 @@ class SetActionHandler implements StatementHandlerInterface
         $setValueValuePlaceholder = new VariableName('setValueValue');
 
         $mutationInvocation = new ObjectMethodInvocation(
-            new VariableDependency(VariableNameEnum::WEBDRIVER_ELEMENT_MUTATOR),
-            'setValue',
-            new MethodArguments(
+            object: new VariableDependency(VariableNameEnum::WEBDRIVER_ELEMENT_MUTATOR),
+            methodName: 'setValue',
+            arguments: new MethodArguments(
                 [
                     $setValueCollectionPlaceholder,
                     $setValueValuePlaceholder,
                 ],
                 MethodArgumentsInterface::FORMAT_INLINE
-            )
+            ),
+            mightThrow: true,
         );
 
         return new StatementHandlerComponents(
