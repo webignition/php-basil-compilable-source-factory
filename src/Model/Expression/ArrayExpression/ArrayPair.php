@@ -39,4 +39,9 @@ class ArrayPair implements ResolvableInterface, HasMetadataInterface
     {
         return $this->value->getMetadata();
     }
+
+    public function getValue(): ExpressionInterface
+    {
+        return $this->value;
+    }
 }

@@ -35,4 +35,9 @@ class ReturnExpression implements ExpressionInterface
             'expression_content' => $this->expression,
         ];
     }
+
+    public function mightThrow(): bool
+    {
+        return $this->expression->mightThrow();
+    }
 }

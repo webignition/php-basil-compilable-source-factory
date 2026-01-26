@@ -34,4 +34,9 @@ readonly class StaticObjectProperty implements ExpressionInterface, IsAssigneeIn
     {
         return new Metadata();
     }
+
+    public function mightThrow(): bool
+    {
+        return $this->object->mightThrow();
+    }
 }

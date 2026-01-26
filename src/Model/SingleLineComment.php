@@ -9,6 +9,7 @@ use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentInterface;
 class SingleLineComment implements \Stringable, BodyContentInterface
 {
     use ResolvableStringableTrait;
+    use NeverThrowsTrait;
 
     private string $content;
 

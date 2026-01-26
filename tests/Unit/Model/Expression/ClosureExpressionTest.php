@@ -23,6 +23,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ReturnExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
+use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
@@ -65,8 +66,10 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                         new AssignmentExpression(
                             new VariableName('variable'),
                             new ObjectMethodInvocation(
-                                new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
-                                'dependencyMethodName'
+                                object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                                methodName: 'dependencyMethodName',
+                                arguments: new MethodArguments(),
+                                mightThrow: false,
                             )
                         )
                     ),
@@ -75,16 +78,20 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                             new CompositeExpression([
                                 new CastExpression(
                                     new ObjectMethodInvocation(
-                                        new VariableName('variable'),
-                                        'getWidth'
+                                        object: new VariableName('variable'),
+                                        methodName: 'getWidth',
+                                        arguments: new MethodArguments(),
+                                        mightThrow: false,
                                     ),
                                     'string'
                                 ),
                                 new LiteralExpression(' . \'x\' . '),
                                 new CastExpression(
                                     new ObjectMethodInvocation(
-                                        new VariableName('variable'),
-                                        'getHeight'
+                                        object: new VariableName('variable'),
+                                        methodName: 'getHeight',
+                                        arguments: new MethodArguments(),
+                                        mightThrow: false,
                                     ),
                                     'string'
                                 ),
@@ -173,8 +180,10 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                             new AssignmentExpression(
                                 new VariableName('variable'),
                                 new ObjectMethodInvocation(
-                                    new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
-                                    'dependencyMethodName'
+                                    object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                                    methodName: 'dependencyMethodName',
+                                    arguments: new MethodArguments(),
+                                    mightThrow: false,
                                 )
                             )
                         ),
@@ -184,16 +193,20 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                                 new CompositeExpression([
                                     new EncapsulatingCastExpression(
                                         new ObjectMethodInvocation(
-                                            new VariableName('variable'),
-                                            'getWidth'
+                                            object: new VariableName('variable'),
+                                            methodName: 'getWidth',
+                                            arguments: new MethodArguments(),
+                                            mightThrow: false,
                                         ),
                                         'string'
                                     ),
                                     new LiteralExpression(' . \'x\' . '),
                                     new EncapsulatingCastExpression(
                                         new ObjectMethodInvocation(
-                                            new VariableName('variable'),
-                                            'getHeight'
+                                            object: new VariableName('variable'),
+                                            methodName: 'getHeight',
+                                            arguments: new MethodArguments(),
+                                            mightThrow: false,
                                         ),
                                         'string'
                                     ),

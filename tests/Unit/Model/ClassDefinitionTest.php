@@ -17,6 +17,7 @@ use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
+use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinition;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
@@ -78,14 +79,20 @@ class ClassDefinitionTest extends AbstractResolvableTestCase
                         new MethodDefinition('name', new Body([
                             new Statement(
                                 new ObjectMethodInvocation(
-                                    new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
-                                    'methodName'
+                                    object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                                    methodName: 'methodName',
+                                    arguments: new MethodArguments(),
+                                    mightThrow: false,
                                 )
                             ),
                             new Statement(
                                 new AssignmentExpression(
                                     new VariableName('variable'),
-                                    new MethodInvocation('methodName')
+                                    new MethodInvocation(
+                                        methodName: 'methodName',
+                                        arguments: new MethodArguments(),
+                                        mightThrow: false,
+                                    )
                                 )
                             )
                         ])),

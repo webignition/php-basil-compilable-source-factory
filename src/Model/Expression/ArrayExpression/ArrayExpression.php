@@ -79,6 +79,17 @@ class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationIn
         ];
     }
 
+    public function mightThrow(): bool
+    {
+        foreach ($this->pairs as $pair) {
+            if ($pair->getValue()->mightThrow()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     protected function createResolvable(): ResolvableInterface
     {
         $resolvablePairs = [];

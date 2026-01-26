@@ -27,40 +27,45 @@ trait ReloadActionFunctionalDataProviderTrait
         $setupTeardownStatements = new Body([
             new Statement(
                 new ObjectMethodInvocation(
-                    new VariableDependency(VariableName::PHPUNIT_TEST_CASE),
-                    'assertCount',
-                    new MethodArguments(
+                    object: new VariableDependency(VariableName::PHPUNIT_TEST_CASE),
+                    methodName: 'assertCount',
+                    arguments: new MethodArguments(
                         $argumentFactory->create(
                             0,
                             new ObjectMethodInvocation(
-                                new VariableDependency(VariableName::PANTHER_CRAWLER),
-                                'filter',
-                                new MethodArguments($argumentFactory->create('#hello'))
+                                object: new VariableDependency(VariableName::PANTHER_CRAWLER),
+                                methodName: 'filter',
+                                arguments: new MethodArguments($argumentFactory->create('#hello')),
+                                mightThrow: true,
                             ),
                         )
-                    )
+                    ),
+                    mightThrow: false,
                 )
             ),
             new Statement(
                 new MethodInvocation(
-                    'usleep',
-                    new MethodArguments($argumentFactory->create(100000))
+                    methodName: 'usleep',
+                    arguments: new MethodArguments($argumentFactory->create(100000)),
+                    mightThrow: false,
                 )
             ),
             new Statement(
                 new ObjectMethodInvocation(
-                    new VariableDependency(VariableName::PHPUNIT_TEST_CASE),
-                    'assertCount',
-                    new MethodArguments(
+                    object: new VariableDependency(VariableName::PHPUNIT_TEST_CASE),
+                    methodName: 'assertCount',
+                    arguments: new MethodArguments(
                         $argumentFactory->create(
                             1,
                             new ObjectMethodInvocation(
-                                new VariableDependency(VariableName::PANTHER_CRAWLER),
-                                'filter',
-                                new MethodArguments($argumentFactory->create('#hello'))
+                                object: new VariableDependency(VariableName::PANTHER_CRAWLER),
+                                methodName: 'filter',
+                                arguments: new MethodArguments($argumentFactory->create('#hello')),
+                                mightThrow: true,
                             )
                         )
-                    )
+                    ),
+                    mightThrow: false,
                 )
             ),
         ]);

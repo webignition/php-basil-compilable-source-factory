@@ -40,4 +40,9 @@ class Statement implements ResolvableInterface, StatementInterface
             'expression' => $this->expression,
         ];
     }
+
+    public function mightThrow(): bool
+    {
+        return $this->expression->mightThrow();
+    }
 }

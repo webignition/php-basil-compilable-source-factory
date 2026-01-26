@@ -11,6 +11,8 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 
 class VariableDependency implements ExpressionInterface, VariableDependencyInterface, IsAssigneeInterface
 {
+    use NeverThrowsTrait;
+
     private const RENDER_TEMPLATE = '{{ {{ name }} }}';
 
     public function __construct(

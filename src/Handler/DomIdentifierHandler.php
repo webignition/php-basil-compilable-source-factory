@@ -66,9 +66,10 @@ class DomIdentifierHandler
             new Statement(
                 new ReturnExpression(
                     new ObjectMethodInvocation(
-                        $elementPlaceholder,
-                        'getAttribute',
-                        new MethodArguments($this->argumentFactory->create($attributeName))
+                        object: $elementPlaceholder,
+                        methodName: 'getAttribute',
+                        arguments: new MethodArguments($this->argumentFactory->create($attributeName)),
+                        mightThrow: true,
                     )
                 )
             ),
@@ -93,11 +94,12 @@ class DomIdentifierHandler
             new Statement(
                 new ReturnExpression(
                     new ObjectMethodInvocation(
-                        new VariableDependency(VariableNameEnum::WEBDRIVER_ELEMENT_INSPECTOR),
-                        'getValue',
-                        new MethodArguments([
+                        object: new VariableDependency(VariableNameEnum::WEBDRIVER_ELEMENT_INSPECTOR),
+                        methodName: 'getValue',
+                        arguments: new MethodArguments([
                             $elementPlaceholder,
-                        ])
+                        ]),
+                        mightThrow: false,
                     )
                 )
             )

@@ -44,6 +44,17 @@ class CompositeExpression implements ExpressionInterface
         return $metadata;
     }
 
+    public function mightThrow(): bool
+    {
+        foreach ($this->expressions as $expression) {
+            if ($expression->mightThrow()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     protected function createResolvable(): ResolvableInterface
     {
         if (null === $this->resolvable) {

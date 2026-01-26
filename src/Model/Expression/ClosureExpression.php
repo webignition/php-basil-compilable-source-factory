@@ -47,4 +47,9 @@ EOD;
             ),
         ];
     }
+
+    public function mightThrow(): bool
+    {
+        return $this->body->mightThrow();
+    }
 }

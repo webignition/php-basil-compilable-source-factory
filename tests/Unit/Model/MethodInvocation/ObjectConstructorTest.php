@@ -19,10 +19,14 @@ class ObjectConstructorTest extends AbstractResolvableTestCase
     #[DataProvider('createDataProvider')]
     public function testCreate(
         ClassName $class,
-        ?MethodArgumentsInterface $arguments,
+        MethodArgumentsInterface $arguments,
         MetadataInterface $expectedMetadata
     ): void {
-        $constructor = new ObjectConstructor($class, $arguments);
+        $constructor = new ObjectConstructor(
+            class: $class,
+            arguments: $arguments,
+            mightThrow: false,
+        );
 
         $this->assertSame($class->getClass(), $constructor->getCall());
         $this->assertSame($arguments, $constructor->getArguments());
@@ -73,35 +77,43 @@ class ObjectConstructorTest extends AbstractResolvableTestCase
 
         return [
             'no arguments' => [
-                'constructor' => new ObjectConstructor($classDependency),
+                'constructor' => new ObjectConstructor(
+                    class: $classDependency,
+                    arguments: new MethodArguments(),
+                    mightThrow: false,
+                ),
                 'expectedString' => 'new Model()',
             ],
             'no arguments, class in root namespace' => [
                 'constructor' => new ObjectConstructor(
-                    new ClassName(\Exception::class)
+                    class: new ClassName(\Exception::class),
+                    arguments: new MethodArguments(),
+                    mightThrow: false,
                 ),
                 'expectedString' => 'new \Exception()',
             ],
             'has arguments, inline' => [
                 'constructor' => new ObjectConstructor(
-                    $classDependency,
-                    new MethodArguments([
+                    class: $classDependency,
+                    arguments: new MethodArguments([
                         new LiteralExpression('1'),
                         new LiteralExpression("\\'single-quoted value\\'"),
-                    ])
+                    ]),
+                    mightThrow: false,
                 ),
                 'expectedString' => "new Model(1, \\'single-quoted value\\')",
             ],
             'has arguments, stacked' => [
                 'constructor' => new ObjectConstructor(
-                    $classDependency,
-                    new MethodArguments(
+                    class: $classDependency,
+                    arguments: new MethodArguments(
                         [
                             new LiteralExpression('1'),
                             new LiteralExpression("\\'single-quoted value\\'"),
                         ],
                         MethodArgumentsInterface::FORMAT_STACKED
-                    )
+                    ),
+                    mightThrow: false,
                 ),
                 'expectedString' => "new Model(\n"
                     . "    1,\n"

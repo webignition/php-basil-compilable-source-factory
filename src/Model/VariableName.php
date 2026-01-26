@@ -11,6 +11,7 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 class VariableName implements \Stringable, ExpressionInterface, IsAssigneeInterface
 {
     use ResolvableStringableTrait;
+    use NeverThrowsTrait;
 
     private string $name;
     private MetadataInterface $metadata;

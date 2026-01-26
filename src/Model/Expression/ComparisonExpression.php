@@ -61,4 +61,9 @@ class ComparisonExpression implements ExpressionInterface
 
         return $metadata->merge($this->rightHandSide->getMetadata());
     }
+
+    public function mightThrow(): bool
+    {
+        return $this->leftHandSide->mightThrow() || $this->rightHandSide->mightThrow();
+    }
 }

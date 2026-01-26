@@ -15,9 +15,12 @@ class ObjectConstructor extends AbstractMethodInvocationEncapsulator
 
     private ClassName $class;
 
-    public function __construct(ClassName $class, ?MethodArgumentsInterface $arguments = null)
-    {
-        parent::__construct($class->renderClassName(), $arguments);
+    public function __construct(
+        ClassName $class,
+        MethodArgumentsInterface $arguments,
+        bool $mightThrow
+    ) {
+        parent::__construct($class->renderClassName(), $arguments, $mightThrow);
 
         $this->class = $class;
     }

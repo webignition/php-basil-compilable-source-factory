@@ -11,6 +11,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterfac
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
+use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
@@ -46,8 +47,10 @@ class ComparisonExpressionTest extends AbstractResolvableTestCase
             ],
             'has metadata' => [
                 'leftHandSide' => new ObjectMethodInvocation(
-                    new VariableDependency(VariableName::PANTHER_CLIENT),
-                    'methodName'
+                    object: new VariableDependency(VariableName::PANTHER_CLIENT),
+                    methodName: 'methodName',
+                    arguments: new MethodArguments(),
+                    mightThrow: false,
                 ),
                 'rightHandSide' => new LiteralExpression('literal'),
                 'comparison' => '!==',
@@ -83,8 +86,10 @@ class ComparisonExpressionTest extends AbstractResolvableTestCase
             'object method invocation and literal, null coalesce' => [
                 'expression' => new ComparisonExpression(
                     new ObjectMethodInvocation(
-                        new VariableDependency(VariableName::PANTHER_CLIENT),
-                        'methodName'
+                        object: new VariableDependency(VariableName::PANTHER_CLIENT),
+                        methodName: 'methodName',
+                        arguments: new MethodArguments(),
+                        mightThrow: false,
                     ),
                     new LiteralExpression('value'),
                     '??'

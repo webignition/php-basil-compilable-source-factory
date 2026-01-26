@@ -9,6 +9,7 @@ use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
+use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
@@ -42,13 +43,19 @@ class StatementTest extends AbstractResolvableTestCase
                 ),
             ],
             'method invocation' => [
-                'expression' => new MethodInvocation('methodName'),
+                'expression' => new MethodInvocation(
+                    methodName: 'methodName',
+                    arguments: new MethodArguments(),
+                    mightThrow: false,
+                ),
                 'expectedMetadata' => new Metadata(),
             ],
             'object method invocation' => [
                 'expression' => new ObjectMethodInvocation(
-                    new VariableDependency(VariableName::PHPUNIT_TEST_CASE),
-                    'methodName'
+                    object: new VariableDependency(VariableName::PHPUNIT_TEST_CASE),
+                    methodName: 'methodName',
+                    arguments: new MethodArguments(),
+                    mightThrow: false,
                 ),
                 'expectedMetadata' => new Metadata(
                     variableNames: [
@@ -79,15 +86,21 @@ class StatementTest extends AbstractResolvableTestCase
             ],
             'statement encapsulating method invocation' => [
                 'statement' => new Statement(
-                    new MethodInvocation('methodName')
+                    new MethodInvocation(
+                        methodName: 'methodName',
+                        arguments: new MethodArguments(),
+                        mightThrow: false,
+                    )
                 ),
                 'expectedString' => 'methodName();',
             ],
             'statement encapsulating object method invocation' => [
                 'statement' => new Statement(
                     new ObjectMethodInvocation(
-                        new VariableDependency(VariableName::PHPUNIT_TEST_CASE),
-                        'methodName'
+                        object: new VariableDependency(VariableName::PHPUNIT_TEST_CASE),
+                        methodName: 'methodName',
+                        arguments: new MethodArguments(),
+                        mightThrow: false,
                     )
                 ),
                 'expectedString' => '{{ PHPUNIT }}->methodName();',

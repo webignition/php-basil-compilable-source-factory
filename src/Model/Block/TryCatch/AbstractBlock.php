@@ -8,10 +8,11 @@ use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\HasMetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\IndentTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
+use webignition\BasilCompilableSourceFactory\Model\MightThrowInterface;
 use webignition\Stubble\Resolvable\ResolvableInterface;
 use webignition\Stubble\Resolvable\ResolvedTemplateMutatorResolvable;
 
-abstract class AbstractBlock implements HasMetadataInterface, ResolvableInterface
+abstract class AbstractBlock implements HasMetadataInterface, ResolvableInterface, MightThrowInterface
 {
     use IndentTrait;
 
@@ -25,6 +26,11 @@ abstract class AbstractBlock implements HasMetadataInterface, ResolvableInterfac
     public function getMetadata(): MetadataInterface
     {
         return $this->body->getMetadata();
+    }
+
+    public function mightThrow(): bool
+    {
+        return $this->body->mightThrow();
     }
 
     protected function createResolvableBody(): ResolvableInterface

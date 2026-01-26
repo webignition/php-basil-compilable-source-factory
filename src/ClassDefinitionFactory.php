@@ -79,31 +79,36 @@ class ClassDefinitionFactory
         $setupBeforeClassBody = new Body([
             new Statement(
                 new ObjectMethodInvocation(
-                    new StaticObject('self'),
-                    'setClientManager',
-                    new MethodArguments(
+                    object: new StaticObject('self'),
+                    methodName: 'setClientManager',
+                    arguments: new MethodArguments(
                         [
                             new ObjectConstructor(
-                                new ClassName(ClientManager::class),
-                                new MethodArguments($this->argumentFactory->create($test->getBrowser()))
+                                class: new ClassName(ClientManager::class),
+                                arguments: new MethodArguments($this->argumentFactory->create($test->getBrowser())),
+                                mightThrow: true,
                             ),
                         ]
                     ),
+                    mightThrow: false,
                 )
             ),
             new Statement(
                 new ObjectMethodInvocation(
-                    new StaticObject('parent'),
-                    'setUpBeforeClass'
+                    object: new StaticObject('parent'),
+                    methodName: 'setUpBeforeClass',
+                    arguments: new MethodArguments(),
+                    mightThrow: true,
                 )
             ),
             new Statement(
                 new ObjectMethodInvocation(
-                    new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
-                    'request',
-                    new MethodArguments(
+                    object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                    methodName: 'request',
+                    arguments: new MethodArguments(
                         $this->argumentFactory->create('GET', $test->getUrl())
-                    )
+                    ),
+                    mightThrow: true,
                 )
             ),
         ]);

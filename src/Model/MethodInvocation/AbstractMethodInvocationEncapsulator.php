@@ -11,9 +11,12 @@ abstract class AbstractMethodInvocationEncapsulator implements InvocableInterfac
 {
     protected MethodInvocation $invocation;
 
-    public function __construct(string $methodName, ?MethodArgumentsInterface $arguments = null)
-    {
-        $this->invocation = new MethodInvocation($methodName, $arguments);
+    public function __construct(
+        string $methodName,
+        MethodArgumentsInterface $arguments,
+        bool $mightThrow,
+    ) {
+        $this->invocation = new MethodInvocation($methodName, $arguments, $mightThrow);
     }
 
     public function getMetadata(): MetadataInterface
@@ -31,6 +34,11 @@ abstract class AbstractMethodInvocationEncapsulator implements InvocableInterfac
     public function getArguments(): MethodArgumentsInterface
     {
         return $this->invocation->getArguments();
+    }
+
+    public function mightThrow(): bool
+    {
+        return $this->invocation->mightThrow();
     }
 
     abstract protected function getAdditionalMetadata(): MetadataInterface;

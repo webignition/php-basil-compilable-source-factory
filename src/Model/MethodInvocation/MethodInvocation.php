@@ -5,23 +5,19 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Model\MethodInvocation;
 
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
-use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 
 class MethodInvocation implements MethodInvocationInterface
 {
-    private const RENDER_TEMPLATE = '{{ call }}({{ arguments }})';
-
-    private string $methodName;
-    private MethodArgumentsInterface $arguments;
+    private const string RENDER_TEMPLATE = '{{ call }}({{ arguments }})';
 
     private bool $isErrorSuppressed = false;
 
-    public function __construct(string $methodName, ?MethodArgumentsInterface $arguments = null)
-    {
-        $this->methodName = $methodName;
-        $this->arguments = $arguments ?? new MethodArguments([]);
-    }
+    public function __construct(
+        private string $methodName,
+        private MethodArgumentsInterface $arguments,
+        private bool $mightThrow
+    ) {}
 
     public function getCall(): string
     {
@@ -63,5 +59,10 @@ class MethodInvocation implements MethodInvocationInterface
         $new->isErrorSuppressed = $isErrorSuppressed;
 
         return $new;
+    }
+
+    public function mightThrow(): bool
+    {
+        return $this->mightThrow;
     }
 }

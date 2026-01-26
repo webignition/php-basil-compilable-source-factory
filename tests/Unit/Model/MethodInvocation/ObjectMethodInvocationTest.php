@@ -26,10 +26,15 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
     public function testCreate(
         ExpressionInterface $object,
         string $methodName,
-        ?MethodArgumentsInterface $arguments,
+        MethodArgumentsInterface $arguments,
         MetadataInterface $expectedMetadata
     ): void {
-        $invocation = new ObjectMethodInvocation($object, $methodName, $arguments);
+        $invocation = new ObjectMethodInvocation(
+            object: $object,
+            methodName: $methodName,
+            arguments: $arguments,
+            mightThrow: false
+        );
 
         $this->assertSame($methodName, $invocation->getCall());
         $this->assertSame($arguments, $invocation->getArguments());
@@ -69,8 +74,10 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
                 'methodName' => 'method',
                 'arguments' => new MethodArguments([
                     new ObjectMethodInvocation(
-                        new StaticObject(ClassName::class),
-                        'staticMethodName'
+                        object: new StaticObject(ClassName::class),
+                        methodName: 'staticMethodName',
+                        arguments: new MethodArguments(),
+                        mightThrow: false,
                     )
                 ]),
                 'expectedMetadata' => new Metadata(
@@ -105,47 +112,55 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
         return [
             'object and method name only' => [
                 'invocation' => new ObjectMethodInvocation(
-                    new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
-                    'methodName'
+                    object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                    methodName: 'methodName',
+                    arguments: new MethodArguments(),
+                    mightThrow: false,
                 ),
                 'expectedString' => '{{ CLIENT }}->methodName()',
             ],
             'static object and method name only' => [
                 'invocation' => new ObjectMethodInvocation(
-                    new StaticObject('parent'),
-                    'methodName'
+                    object: new StaticObject('parent'),
+                    methodName: 'methodName',
+                    arguments: new MethodArguments(),
+                    mightThrow: false,
                 ),
                 'expectedString' => 'parent::methodName()',
             ],
             'object and method name only, error-suppressed' => [
                 'invocation' => new ObjectMethodInvocation(
-                    new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
-                    'methodName'
+                    object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                    methodName: 'methodName',
+                    arguments: new MethodArguments(),
+                    mightThrow: false,
                 )->setIsErrorSuppressed(true),
                 'expectedString' => '@{{ CLIENT }}->methodName()',
             ],
             'has arguments, inline' => [
                 'invocation' => new ObjectMethodInvocation(
-                    new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
-                    'methodName',
-                    new MethodArguments([
+                    object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                    methodName: 'methodName',
+                    arguments: new MethodArguments([
                         new LiteralExpression('1'),
                         new LiteralExpression("\\'single-quoted value\\'"),
-                    ])
+                    ]),
+                    mightThrow: false,
                 ),
                 'expectedString' => "{{ CLIENT }}->methodName(1, \\'single-quoted value\\')",
             ],
             'has arguments, stacked' => [
                 'invocation' => new ObjectMethodInvocation(
-                    new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
-                    'methodName',
-                    new MethodArguments(
+                    object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                    methodName: 'methodName',
+                    arguments: new MethodArguments(
                         [
                             new LiteralExpression('1'),
                             new LiteralExpression("\\'single-quoted value\\'"),
                         ],
                         MethodArgumentsInterface::FORMAT_STACKED
-                    )
+                    ),
+                    mightThrow: false,
                 ),
                 'expectedString' => "{{ CLIENT }}->methodName(\n"
                     . "    1,\n"
@@ -154,27 +169,37 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
             ],
             'object and method name only, resolving placeholder' => [
                 'invocation' => new ObjectMethodInvocation(
-                    new VariableName('object'),
-                    'methodName'
+                    object: new VariableName('object'),
+                    methodName: 'methodName',
+                    arguments: new MethodArguments(),
+                    mightThrow: false,
                 ),
                 'expectedString' => '$object->methodName()',
             ],
             'object returned from method call' => [
                 'invocation' => new ObjectMethodInvocation(
                     new MethodInvocation(
-                        'literalMethodName'
+                        methodName: 'literalMethodName',
+                        arguments: new MethodArguments(),
+                        mightThrow: false,
                     ),
-                    'objectMethodName'
+                    methodName: 'objectMethodName',
+                    arguments: new MethodArguments(),
+                    mightThrow: false,
                 ),
                 'expectedString' => 'literalMethodName()->objectMethodName()',
             ],
             'object returned from object method call' => [
                 'invocation' => new ObjectMethodInvocation(
-                    new ObjectMethodInvocation(
-                        new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
-                        'innerMethodName'
+                    object: new ObjectMethodInvocation(
+                        object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                        methodName: 'innerMethodName',
+                        arguments: new MethodArguments(),
+                        mightThrow: false,
                     ),
-                    'outerMethodName'
+                    methodName: 'outerMethodName',
+                    arguments: new MethodArguments(),
+                    mightThrow: false,
                 ),
                 'expectedString' => '{{ CLIENT }}->innerMethodName()->outerMethodName()',
             ],

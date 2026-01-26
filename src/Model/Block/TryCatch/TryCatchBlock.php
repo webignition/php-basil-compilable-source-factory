@@ -37,6 +37,21 @@ class TryCatchBlock implements BodyInterface
         return $this->metadata;
     }
 
+    public function mightThrow(): bool
+    {
+        if ($this->tryBlock->mightThrow()) {
+            return true;
+        }
+
+        foreach ($this->catchBlocks as $catchBlock) {
+            if ($catchBlock->mightThrow()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     protected function createResolvable(): ResolvableInterface
     {
         $resolvableItems = [
