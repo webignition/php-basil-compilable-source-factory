@@ -45,6 +45,15 @@ readonly class PhpUnitCallFactory
         );
     }
 
+    public function createRefreshCrawlerAndNavigatorCall(): MethodInvocationInterface
+    {
+        return $this->createCall(
+            methodName: 'refreshCrawlerAndNavigator',
+            arguments: new MethodArguments(),
+            mightThrow: false,
+        );
+    }
+
     /**
      * @param ExpressionInterface[] $methodExpressions
      * @param ExpressionInterface[] $messageExpressions

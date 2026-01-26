@@ -134,7 +134,7 @@ class SetActionHandler implements StatementHandlerInterface
             new Body([
                 new Statement($mutationInvocation),
                 new Statement(
-                    $this->phpUnitCallFactory->createCall('refreshCrawlerAndNavigator'),
+                    $this->phpUnitCallFactory->createRefreshCrawlerAndNavigatorCall(),
                 ),
             ])
         )->withSetup(

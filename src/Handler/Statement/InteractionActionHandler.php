@@ -75,11 +75,7 @@ class InteractionActionHandler implements StatementHandlerInterface
                     )
                 ),
                 new Statement(
-                    $this->phpUnitCallFactory->createCall(
-                        methodName: 'refreshCrawlerAndNavigator',
-                        arguments: new MethodArguments(),
-                        mightThrow: false,
-                    ),
+                    $this->phpUnitCallFactory->createRefreshCrawlerAndNavigatorCall(),
                 ),
             ])
         )->withSetup(
