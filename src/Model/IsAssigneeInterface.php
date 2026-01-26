@@ -4,6 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model;
 
-use webignition\Stubble\Resolvable\ResolvableInterface;
+use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 
-interface IsAssigneeInterface extends ResolvableInterface {}
+interface IsAssigneeInterface extends ExpressionInterface {}

@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 
-use webignition\BasilCompilableSourceFactory\Model\HasMetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\IsAssigneeInterface;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
@@ -45,13 +44,10 @@ class AssignmentExpression implements AssignmentExpressionInterface
 
     public function getMetadata(): MetadataInterface
     {
-        $metadata = new Metadata();
-
-        if ($this->assignee instanceof HasMetadataInterface) {
-            $metadata = $metadata->merge($this->assignee->getMetadata());
-        }
-
-        return $metadata->merge($this->value->getMetadata());
+        return new Metadata()
+            ->merge($this->assignee->getMetadata())
+            ->merge($this->value->getMetadata())
+        ;
     }
 
     public function getTemplate(): string
