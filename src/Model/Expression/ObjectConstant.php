@@ -7,9 +7,12 @@ namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
+use webignition\BasilCompilableSourceFactory\Model\NeverThrowsTrait;
 
 readonly class ObjectConstant implements ExpressionInterface
 {
+    use NeverThrowsTrait;
+
     private const RENDER_TEMPLATE = '{{ class }}::{{ property }}';
 
     public function __construct(
