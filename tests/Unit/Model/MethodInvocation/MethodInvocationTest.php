@@ -22,7 +22,11 @@ class MethodInvocationTest extends AbstractResolvableTestCase
     {
         $methodName = 'methodName';
 
-        $invocation = new MethodInvocation($methodName);
+        $invocation = new MethodInvocation(
+            methodName: $methodName,
+            arguments: new MethodArguments(),
+            mightThrow: false,
+        );
         self::assertSame($methodName, $invocation->getCall());
         self::assertEquals(new Metadata(), $invocation->getMetadata());
     }
@@ -32,12 +36,18 @@ class MethodInvocationTest extends AbstractResolvableTestCase
         $methodName = 'methodName';
         $arguments = new MethodArguments([
             new ObjectMethodInvocation(
-                new StaticObject(ClassName::class),
-                'staticMethodName'
+                object: new StaticObject(ClassName::class),
+                methodName: 'staticMethodName',
+                arguments: new MethodArguments(),
+                mightThrow: false,
             )
         ]);
 
-        $invocation = new MethodInvocation($methodName, $arguments);
+        $invocation = new MethodInvocation(
+            methodName: $methodName,
+            arguments: $arguments,
+            mightThrow: false,
+        );
         self::assertSame($methodName, $invocation->getCall());
         self::assertSame($arguments, $invocation->getArguments());
         self::assertEquals($arguments->getMetadata(), $invocation->getMetadata());
@@ -56,33 +66,43 @@ class MethodInvocationTest extends AbstractResolvableTestCase
     {
         return [
             'no arguments' => [
-                'invocation' => new MethodInvocation('methodName'),
+                'invocation' => new MethodInvocation(
+                    methodName: 'methodName',
+                    arguments: new MethodArguments(),
+                    mightThrow: false,
+                ),
                 'expectedString' => 'methodName()',
             ],
             'no arguments, error-suppressed' => [
-                'invocation' => new MethodInvocation('methodName')->setIsErrorSuppressed(true),
+                'invocation' => new MethodInvocation(
+                    methodName: 'methodName',
+                    arguments: new MethodArguments(),
+                    mightThrow: false,
+                )->setIsErrorSuppressed(true),
                 'expectedString' => '@methodName()',
             ],
             'has arguments, inline' => [
                 'invocation' => new MethodInvocation(
-                    'methodName',
-                    new MethodArguments([
+                    methodName: 'methodName',
+                    arguments: new MethodArguments([
                         new LiteralExpression('1'),
                         new LiteralExpression("\\'single-quoted value\\'"),
-                    ])
+                    ]),
+                    mightThrow: false,
                 ),
                 'expectedString' => "methodName(1, \\'single-quoted value\\')",
             ],
             'has arguments, stacked' => [
                 'invocation' => new MethodInvocation(
-                    'methodName',
-                    new MethodArguments(
+                    methodName: 'methodName',
+                    arguments: new MethodArguments(
                         [
                             new LiteralExpression('1'),
                             new LiteralExpression("\\'single-quoted value\\'"),
                         ],
                         MethodArgumentsInterface::FORMAT_STACKED
-                    )
+                    ),
+                    mightThrow: false,
                 ),
                 'expectedString' => "methodName(\n"
                     . "    1,\n"
