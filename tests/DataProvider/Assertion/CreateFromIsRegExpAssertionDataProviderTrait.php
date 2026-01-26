@@ -56,8 +56,8 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                 'expectedSetupMetadata' => new Metadata(),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::MESSAGE_FACTORY,
+                        VariableName::PHPUNIT_TEST_CASE->value,
+                        VariableName::MESSAGE_FACTORY->value,
                     ],
                 ),
             ],
@@ -103,14 +103,14 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
+                        VariableName::DOM_CRAWLER_NAVIGATOR->value,
+                        VariableName::WEBDRIVER_ELEMENT_INSPECTOR->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::MESSAGE_FACTORY,
+                        VariableName::PHPUNIT_TEST_CASE->value,
+                        VariableName::MESSAGE_FACTORY->value,
                     ],
                 ),
             ],
@@ -156,13 +156,13 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::DOM_CRAWLER_NAVIGATOR->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::MESSAGE_FACTORY,
+                        VariableName::PHPUNIT_TEST_CASE->value,
+                        VariableName::MESSAGE_FACTORY->value,
                     ],
                 ),
             ],
@@ -203,8 +203,8 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                 'expectedSetupMetadata' => new Metadata(),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::MESSAGE_FACTORY,
+                        VariableName::PHPUNIT_TEST_CASE->value,
+                        VariableName::MESSAGE_FACTORY->value,
                     ],
                 ),
             ],

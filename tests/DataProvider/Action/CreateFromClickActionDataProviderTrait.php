@@ -19,13 +19,13 @@ trait CreateFromClickActionDataProviderTrait
 
         $expectedSetupMetadata = new Metadata(
             variableNames: [
-                VariableName::DOM_CRAWLER_NAVIGATOR,
+                VariableName::DOM_CRAWLER_NAVIGATOR->value,
             ],
         );
 
         $expectedBodyMetadata = new Metadata(
             variableNames: [
-                VariableName::PHPUNIT_TEST_CASE,
+                VariableName::PHPUNIT_TEST_CASE->value,
             ],
         );
 

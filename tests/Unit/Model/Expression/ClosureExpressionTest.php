@@ -66,7 +66,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                         new AssignmentExpression(
                             new VariableName('variable'),
                             new ObjectMethodInvocation(
-                                object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                                object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT->value),
                                 methodName: 'dependencyMethodName',
                                 arguments: new MethodArguments(),
                                 mightThrow: false,
@@ -101,7 +101,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                 ]),
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNameEnum::PANTHER_CLIENT,
+                        VariableNameEnum::PANTHER_CLIENT->value,
                     ]
                 ),
             ],
@@ -180,7 +180,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                             new AssignmentExpression(
                                 new VariableName('variable'),
                                 new ObjectMethodInvocation(
-                                    object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                                    object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT->value),
                                     methodName: 'dependencyMethodName',
                                     arguments: new MethodArguments(),
                                     mightThrow: false,

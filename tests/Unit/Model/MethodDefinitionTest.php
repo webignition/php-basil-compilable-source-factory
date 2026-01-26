@@ -110,7 +110,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                 'methodDefinition' => new MethodDefinition('name', new Body([
                     new Statement(
                         new ObjectMethodInvocation(
-                            object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                            object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT->value),
                             methodName: 'methodName',
                             arguments: new MethodArguments(),
                             mightThrow: false,
@@ -129,7 +129,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                 ])),
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNameEnum::PANTHER_CLIENT,
+                        VariableNameEnum::PANTHER_CLIENT->value,
                     ]
                 ),
             ],
@@ -137,7 +137,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                 'methodDefinition' => new MethodDefinition('name', new Body([
                     new Statement(
                         new ObjectMethodInvocation(
-                            object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                            object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT->value),
                             methodName: 'methodName',
                             arguments: new MethodArguments(),
                             mightThrow: false,
@@ -159,7 +159,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                         DataProvider::class,
                     ],
                     variableNames: [
-                        VariableNameEnum::PANTHER_CLIENT,
+                        VariableNameEnum::PANTHER_CLIENT->value,
                     ]
                 ),
             ],
@@ -288,7 +288,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                             new AssignmentExpression(
                                 new VariableName('value'),
                                 new ObjectMethodInvocation(
-                                    object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                                    object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT->value),
                                     methodName: 'methodName',
                                     arguments: new MethodArguments([
                                         new LiteralExpression('$x'),

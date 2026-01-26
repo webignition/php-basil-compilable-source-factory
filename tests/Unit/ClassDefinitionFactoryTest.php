@@ -78,7 +78,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                         ClientManager::class,
                     ],
                     variableNames: [
-                        VariableName::PANTHER_CLIENT,
+                        VariableName::PANTHER_CLIENT->value,
                     ],
                 ),
             ],
@@ -115,7 +115,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                         ClientManager::class,
                     ],
                     variableNames: [
-                        VariableName::PANTHER_CLIENT,
+                        VariableName::PANTHER_CLIENT->value,
                     ],
                 ),
             ],
@@ -152,7 +152,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                         ClientManager::class,
                     ],
                     variableNames: [
-                        VariableName::PANTHER_CLIENT,
+                        VariableName::PANTHER_CLIENT->value,
                     ],
                 ),
             ],
@@ -201,7 +201,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                         Statements::class,
                     ],
                     variableNames: [
-                        VariableName::PANTHER_CLIENT,
+                        VariableName::PANTHER_CLIENT->value,
                     ],
                 ),
             ],
@@ -258,7 +258,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                         Statements::class,
                     ],
                     variableNames: [
-                        VariableName::PANTHER_CLIENT,
+                        VariableName::PANTHER_CLIENT->value,
                     ],
                 ),
             ],

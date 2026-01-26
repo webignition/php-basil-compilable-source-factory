@@ -56,7 +56,7 @@ class ScalarValueHandlerTest extends AbstractResolvableTestCase
                 'expectedRenderedSource' => '{{ ENV }}[\'KEY\']',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::ENVIRONMENT_VARIABLE_ARRAY,
+                        VariableName::ENVIRONMENT_VARIABLE_ARRAY->value,
                     ],
                 ),
             ],
@@ -70,7 +70,7 @@ class ScalarValueHandlerTest extends AbstractResolvableTestCase
                     . '})()',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PANTHER_CLIENT,
+                        VariableName::PANTHER_CLIENT->value,
                     ],
                 ),
             ],
@@ -79,7 +79,7 @@ class ScalarValueHandlerTest extends AbstractResolvableTestCase
                 'expectedRenderedSource' => '{{ CLIENT }}->getCurrentURL()',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PANTHER_CLIENT,
+                        VariableName::PANTHER_CLIENT->value,
                     ],
                 ),
             ],
@@ -88,7 +88,7 @@ class ScalarValueHandlerTest extends AbstractResolvableTestCase
                 'expectedRenderedSource' => '{{ CLIENT }}->getTitle()',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PANTHER_CLIENT,
+                        VariableName::PANTHER_CLIENT->value,
                     ],
                 ),
             ],

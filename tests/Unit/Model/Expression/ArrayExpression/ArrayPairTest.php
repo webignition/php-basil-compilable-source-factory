@@ -41,7 +41,7 @@ class ArrayPairTest extends AbstractResolvableTestCase
                 'pair' => new ArrayPair(
                     '',
                     new ObjectMethodInvocation(
-                        object: new VariableDependency(VariableName::PANTHER_CLIENT),
+                        object: new VariableDependency(VariableName::PANTHER_CLIENT->value),
                         methodName: 'methodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
@@ -49,7 +49,7 @@ class ArrayPairTest extends AbstractResolvableTestCase
                 ),
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PANTHER_CLIENT,
+                        VariableName::PANTHER_CLIENT->value,
                     ]
                 ),
             ],

@@ -103,7 +103,7 @@ class ClassDefinitionFactory
             ),
             new Statement(
                 new ObjectMethodInvocation(
-                    object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                    object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT->value),
                     methodName: 'request',
                     arguments: new MethodArguments(
                         $this->argumentFactory->create('GET', $test->getUrl())

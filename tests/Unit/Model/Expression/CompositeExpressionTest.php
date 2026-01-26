@@ -39,22 +39,22 @@ class CompositeExpressionTest extends AbstractResolvableTestCase
             ],
             'variable dependency' => [
                 'expressions' => [
-                    new VariableDependency(VariableName::PANTHER_CLIENT),
+                    new VariableDependency(VariableName::PANTHER_CLIENT->value),
                 ],
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PANTHER_CLIENT,
+                        VariableName::PANTHER_CLIENT->value,
                     ]
                 ),
             ],
             'variable dependency and array access' => [
                 'expressions' => [
-                    new VariableDependency(VariableName::ENVIRONMENT_VARIABLE_ARRAY),
+                    new VariableDependency(VariableName::ENVIRONMENT_VARIABLE_ARRAY->value),
                     new LiteralExpression('[\'KEY\']')
                 ],
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::ENVIRONMENT_VARIABLE_ARRAY,
+                        VariableName::ENVIRONMENT_VARIABLE_ARRAY->value,
                     ]
                 ),
             ],
@@ -93,13 +93,13 @@ class CompositeExpressionTest extends AbstractResolvableTestCase
             ],
             'variable dependency' => [
                 'expression' => new CompositeExpression([
-                    new VariableDependency(VariableName::PANTHER_CLIENT),
+                    new VariableDependency(VariableName::PANTHER_CLIENT->value),
                 ]),
                 'expectedString' => '{{ CLIENT }}',
             ],
             'variable dependency and array access' => [
                 'expression' => new CompositeExpression([
-                    new VariableDependency(VariableName::ENVIRONMENT_VARIABLE_ARRAY),
+                    new VariableDependency(VariableName::ENVIRONMENT_VARIABLE_ARRAY->value),
                     new LiteralExpression('[\'KEY\']')
                 ]),
                 'expectedString' => '{{ ENV }}[\'KEY\']',

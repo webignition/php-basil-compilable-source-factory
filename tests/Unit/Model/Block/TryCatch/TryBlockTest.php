@@ -25,7 +25,7 @@ class TryBlockTest extends AbstractResolvableTestCase
         $body = new Body([
             new Statement(
                 new AssignmentExpression(
-                    new VariableDependency(VariableName::PANTHER_CLIENT),
+                    new VariableDependency(VariableName::PANTHER_CLIENT->value),
                     new ObjectMethodInvocation(
                         object: new StaticObject(\RuntimeException::class),
                         methodName: 'staticMethodName',
@@ -43,7 +43,7 @@ class TryBlockTest extends AbstractResolvableTestCase
                 \RuntimeException::class,
             ],
             variableNames: [
-                VariableName::PANTHER_CLIENT,
+                VariableName::PANTHER_CLIENT->value,
             ]
         );
 

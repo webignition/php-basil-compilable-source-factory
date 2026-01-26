@@ -67,9 +67,9 @@ class WaitForActionHandler implements StatementHandlerInterface
         return new StatementHandlerComponents(
             new Statement(
                 new AssignmentExpression(
-                    new VariableDependency(VariableName::PANTHER_CRAWLER),
+                    new VariableDependency(VariableName::PANTHER_CRAWLER->value),
                     new ObjectMethodInvocation(
-                        object: new VariableDependency(VariableName::PANTHER_CLIENT),
+                        object: new VariableDependency(VariableName::PANTHER_CLIENT->value),
                         methodName: 'waitFor',
                         arguments: new MethodArguments(
                             $this->argumentFactory->create($domIdentifier->getLocator())

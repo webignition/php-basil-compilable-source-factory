@@ -40,7 +40,7 @@ class DomCrawlerNavigatorCallFactory
     private function createElementCall(string $methodName, ExpressionInterface $expression): ExpressionInterface
     {
         return new ObjectMethodInvocation(
-            object: new VariableDependency(VariableName::DOM_CRAWLER_NAVIGATOR),
+            object: new VariableDependency(VariableName::DOM_CRAWLER_NAVIGATOR->value),
             methodName: $methodName,
             arguments: new MethodArguments([$expression]),
             mightThrow: true,

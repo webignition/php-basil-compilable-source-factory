@@ -78,7 +78,7 @@ class ScalarValueHandler
                 new AssignmentExpression(
                     $webDriverDimensionPlaceholder,
                     new ObjectMethodInvocation(
-                        object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                        object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT->value),
                         methodName: 'getWebDriver()->manage()->window()->getSize',
                         arguments: new MethodArguments(),
                         mightThrow: true,
@@ -120,7 +120,7 @@ class ScalarValueHandler
         $property = $environmentValue->getProperty();
 
         return new ArrayAccessExpression(
-            new VariableDependency(VariableNameEnum::ENVIRONMENT_VARIABLE_ARRAY),
+            new VariableDependency(VariableNameEnum::ENVIRONMENT_VARIABLE_ARRAY->value),
             $property
         );
     }
@@ -143,7 +143,7 @@ class ScalarValueHandler
 
         if (is_string($methodName)) {
             return new ObjectMethodInvocation(
-                object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT->value),
                 methodName: $methodName,
                 arguments: new MethodArguments(),
                 mightThrow: true,

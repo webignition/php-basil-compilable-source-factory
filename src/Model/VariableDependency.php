@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model;
 
-use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
@@ -16,13 +15,16 @@ class VariableDependency implements ExpressionInterface, VariableDependencyInter
 
     private const RENDER_TEMPLATE = '{{ {{ name }} }}';
 
+    /**
+     * @param non-empty-string $name
+     */
     public function __construct(
-        private readonly VariableNameEnum $name
+        private readonly string $name
     ) {}
 
     public function getName(): string
     {
-        return $this->name->value;
+        return $this->name;
     }
 
     public function getMetadata(): MetadataInterface

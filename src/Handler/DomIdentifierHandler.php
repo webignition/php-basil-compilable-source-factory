@@ -94,7 +94,7 @@ class DomIdentifierHandler
             new Statement(
                 new ReturnExpression(
                     new ObjectMethodInvocation(
-                        object: new VariableDependency(VariableNameEnum::WEBDRIVER_ELEMENT_INSPECTOR),
+                        object: new VariableDependency(VariableNameEnum::WEBDRIVER_ELEMENT_INSPECTOR->value),
                         methodName: 'getValue',
                         arguments: new MethodArguments([
                             $elementPlaceholder,

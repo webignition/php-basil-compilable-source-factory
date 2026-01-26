@@ -101,7 +101,7 @@ class EncapsulatingCastExpressionTest extends AbstractResolvableTestCase
             'object method invocation as string' => [
                 'expression' => new EncapsulatingCastExpression(
                     new ObjectMethodInvocation(
-                        object: new VariableDependency(VariableName::PANTHER_CLIENT),
+                        object: new VariableDependency(VariableName::PANTHER_CLIENT->value),
                         methodName: 'methodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,

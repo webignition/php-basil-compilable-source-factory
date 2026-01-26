@@ -23,8 +23,8 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                 InvalidLocatorException::class,
             ],
             variableNames: [
-                VariableName::PHPUNIT_TEST_CASE,
-                VariableName::DOM_CRAWLER_NAVIGATOR,
+                VariableName::PHPUNIT_TEST_CASE->value,
+                VariableName::DOM_CRAWLER_NAVIGATOR->value,
             ],
         );
 
@@ -54,13 +54,13 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::DOM_CRAWLER_NAVIGATOR->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::MESSAGE_FACTORY,
+                        VariableName::PHPUNIT_TEST_CASE->value,
+                        VariableName::MESSAGE_FACTORY->value,
                     ],
                 ),
             ],
@@ -117,13 +117,13 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::DOM_CRAWLER_NAVIGATOR->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::MESSAGE_FACTORY,
+                        VariableName::PHPUNIT_TEST_CASE->value,
+                        VariableName::MESSAGE_FACTORY->value,
                     ],
                 ),
             ],

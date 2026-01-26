@@ -27,9 +27,9 @@ trait CreateFromForwardActionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => null,
                 'expectedBodyMetadata' => new Metadata(variableNames: [
-                    VariableName::PANTHER_CRAWLER,
-                    VariableName::PANTHER_CLIENT,
-                    VariableName::PHPUNIT_TEST_CASE,
+                    VariableName::PANTHER_CRAWLER->value,
+                    VariableName::PANTHER_CLIENT->value,
+                    VariableName::PHPUNIT_TEST_CASE->value,
                 ]),
             ],
         ];

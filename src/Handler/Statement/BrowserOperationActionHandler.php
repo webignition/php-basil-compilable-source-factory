@@ -43,9 +43,9 @@ class BrowserOperationActionHandler implements StatementHandlerInterface
             new Body([
                 new Statement(
                     new AssignmentExpression(
-                        new VariableDependency(VariableName::PANTHER_CRAWLER),
+                        new VariableDependency(VariableName::PANTHER_CRAWLER->value),
                         new ObjectMethodInvocation(
-                            object: new VariableDependency(VariableName::PANTHER_CLIENT),
+                            object: new VariableDependency(VariableName::PANTHER_CLIENT->value),
                             methodName: $statement->getType(),
                             arguments: new MethodArguments(),
                             mightThrow: false,

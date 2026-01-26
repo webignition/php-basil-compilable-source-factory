@@ -32,13 +32,13 @@ trait CreateFromSetActionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::DOM_CRAWLER_NAVIGATOR->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::WEBDRIVER_ELEMENT_MUTATOR,
-                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::WEBDRIVER_ELEMENT_MUTATOR->value,
+                        VariableName::PHPUNIT_TEST_CASE->value,
                     ],
                 ),
             ],
@@ -62,14 +62,14 @@ trait CreateFromSetActionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
+                        VariableName::DOM_CRAWLER_NAVIGATOR->value,
+                        VariableName::WEBDRIVER_ELEMENT_INSPECTOR->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::WEBDRIVER_ELEMENT_MUTATOR,
-                        VariableName::PHPUNIT_TEST_CASE
+                        VariableName::WEBDRIVER_ELEMENT_MUTATOR->value,
+                        VariableName::PHPUNIT_TEST_CASE->value,
                     ],
                 ),
             ],
@@ -93,13 +93,13 @@ trait CreateFromSetActionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::DOM_CRAWLER_NAVIGATOR->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::WEBDRIVER_ELEMENT_MUTATOR,
-                        VariableName::PHPUNIT_TEST_CASE
+                        VariableName::WEBDRIVER_ELEMENT_MUTATOR->value,
+                        VariableName::PHPUNIT_TEST_CASE->value,
                     ],
                 ),
             ],
@@ -121,14 +121,14 @@ trait CreateFromSetActionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::PANTHER_CLIENT,
+                        VariableName::DOM_CRAWLER_NAVIGATOR->value,
+                        VariableName::PANTHER_CLIENT->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::WEBDRIVER_ELEMENT_MUTATOR,
-                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::WEBDRIVER_ELEMENT_MUTATOR->value,
+                        VariableName::PHPUNIT_TEST_CASE->value,
                     ],
                 ),
             ],
@@ -146,14 +146,14 @@ trait CreateFromSetActionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::PANTHER_CLIENT,
+                        VariableName::DOM_CRAWLER_NAVIGATOR->value,
+                        VariableName::PANTHER_CLIENT->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::WEBDRIVER_ELEMENT_MUTATOR,
-                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::WEBDRIVER_ELEMENT_MUTATOR->value,
+                        VariableName::PHPUNIT_TEST_CASE->value,
                     ],
                 ),
             ],
@@ -171,14 +171,14 @@ trait CreateFromSetActionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::ENVIRONMENT_VARIABLE_ARRAY,
+                        VariableName::DOM_CRAWLER_NAVIGATOR->value,
+                        VariableName::ENVIRONMENT_VARIABLE_ARRAY->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::WEBDRIVER_ELEMENT_MUTATOR,
-                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::WEBDRIVER_ELEMENT_MUTATOR->value,
+                        VariableName::PHPUNIT_TEST_CASE->value,
                     ],
                 ),
             ],
@@ -196,14 +196,14 @@ trait CreateFromSetActionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::ENVIRONMENT_VARIABLE_ARRAY,
+                        VariableName::DOM_CRAWLER_NAVIGATOR->value,
+                        VariableName::ENVIRONMENT_VARIABLE_ARRAY->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::WEBDRIVER_ELEMENT_MUTATOR,
-                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::WEBDRIVER_ELEMENT_MUTATOR->value,
+                        VariableName::PHPUNIT_TEST_CASE->value,
                     ],
                 ),
             ],
@@ -221,14 +221,14 @@ trait CreateFromSetActionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::ENVIRONMENT_VARIABLE_ARRAY,
+                        VariableName::DOM_CRAWLER_NAVIGATOR->value,
+                        VariableName::ENVIRONMENT_VARIABLE_ARRAY->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::WEBDRIVER_ELEMENT_MUTATOR,
-                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::WEBDRIVER_ELEMENT_MUTATOR->value,
+                        VariableName::PHPUNIT_TEST_CASE->value,
                     ],
                 ),
             ],
@@ -249,13 +249,13 @@ trait CreateFromSetActionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::DOM_CRAWLER_NAVIGATOR->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::WEBDRIVER_ELEMENT_MUTATOR,
-                        VariableName::PHPUNIT_TEST_CASE
+                        VariableName::WEBDRIVER_ELEMENT_MUTATOR->value,
+                        VariableName::PHPUNIT_TEST_CASE->value,
                     ],
                 ),
             ],
@@ -273,13 +273,13 @@ trait CreateFromSetActionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::DOM_CRAWLER_NAVIGATOR->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::WEBDRIVER_ELEMENT_MUTATOR,
-                        VariableName::PHPUNIT_TEST_CASE
+                        VariableName::WEBDRIVER_ELEMENT_MUTATOR->value,
+                        VariableName::PHPUNIT_TEST_CASE->value,
                     ],
                 ),
             ],

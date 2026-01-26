@@ -17,7 +17,7 @@ class MetadataTest extends TestCase
 {
     /**
      * @param non-empty-string[] $classNames
-     * @param VariableName::*[]  $variableNames
+     * @param non-empty-string[] $variableNames
      */
     #[DataProvider('createDataProvider')]
     public function testCreate(
@@ -40,14 +40,14 @@ class MetadataTest extends TestCase
         return [
             'components set, correct types' => [
                 'classNames' => [ClassName::class],
-                'variableNames' => [VariableName::PANTHER_CLIENT],
+                'variableNames' => [VariableName::PANTHER_CLIENT->value],
                 'expectedClassDependencies' => new ClassDependencyCollection(
                     new ClassNameCollection([
                         new ClassName(ClassName::class),
                     ])
                 ),
                 'expectedVariableDependencies' => new VariableDependencyCollection([
-                    VariableName::PANTHER_CLIENT,
+                    VariableName::PANTHER_CLIENT->value,
                 ]),
             ],
         ];
@@ -60,8 +60,8 @@ class MetadataTest extends TestCase
                 ClassName::class,
             ],
             variableNames: [
-                VariableName::PANTHER_CLIENT,
-                VariableName::PHPUNIT_TEST_CASE,
+                VariableName::PANTHER_CLIENT->value,
+                VariableName::PHPUNIT_TEST_CASE->value,
             ],
         );
 
@@ -71,8 +71,8 @@ class MetadataTest extends TestCase
                 Metadata::class
             ],
             variableNames: [
-                VariableName::PHPUNIT_TEST_CASE,
-                VariableName::DOM_CRAWLER_NAVIGATOR,
+                VariableName::PHPUNIT_TEST_CASE->value,
+                VariableName::DOM_CRAWLER_NAVIGATOR->value,
             ],
         );
 
@@ -84,9 +84,9 @@ class MetadataTest extends TestCase
                 Metadata::class,
             ],
             variableNames: [
-                VariableName::PANTHER_CLIENT,
-                VariableName::PHPUNIT_TEST_CASE,
-                VariableName::DOM_CRAWLER_NAVIGATOR,
+                VariableName::PANTHER_CLIENT->value,
+                VariableName::PHPUNIT_TEST_CASE->value,
+                VariableName::DOM_CRAWLER_NAVIGATOR->value,
             ],
         );
 

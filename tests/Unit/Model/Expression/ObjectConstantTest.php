@@ -61,10 +61,10 @@ class ObjectConstantTest extends AbstractResolvableTestCase
             ],
             'enum' => [
                 'className' => new ClassName(VariableNameEnum::class),
-                'property' => VariableNameEnum::PANTHER_CLIENT->name,
+                'property' => VariableNameEnum::PANTHER_CLIENT->value,
                 'expectedContext' => [
                     'class' => 'VariableName',
-                    'property' => 'PANTHER_CLIENT',
+                    'property' => 'CLIENT',
                 ],
                 'expectedMetadata' => new Metadata(
                     classNames: [VariableNameEnum::class],
@@ -102,9 +102,9 @@ class ObjectConstantTest extends AbstractResolvableTestCase
             'enum' => [
                 'expression' => new ObjectConstant(
                     new ClassName(VariableNameEnum::class),
-                    VariableNameEnum::PANTHER_CLIENT->name
+                    VariableNameEnum::PANTHER_CLIENT->value
                 ),
-                'expectedString' => 'VariableName::PANTHER_CLIENT',
+                'expectedString' => 'VariableName::CLIENT',
             ],
         ];
     }

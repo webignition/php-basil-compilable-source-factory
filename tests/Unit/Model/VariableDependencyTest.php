@@ -25,10 +25,10 @@ class VariableDependencyTest extends AbstractResolvableTestCase
     {
         return [
             'variable dependency' => [
-                'dependency' => new VariableDependency(VariableName::PANTHER_CLIENT),
+                'dependency' => new VariableDependency(VariableName::PANTHER_CLIENT->value),
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PANTHER_CLIENT,
+                        VariableName::PANTHER_CLIENT->value,
                     ]
                 ),
             ],
@@ -48,7 +48,7 @@ class VariableDependencyTest extends AbstractResolvableTestCase
     {
         return [
             'non-empty' => [
-                'dependency' => new VariableDependency(VariableName::ENVIRONMENT_VARIABLE_ARRAY),
+                'dependency' => new VariableDependency(VariableName::ENVIRONMENT_VARIABLE_ARRAY->value),
                 'expectedString' => '{{ ENV }}',
             ],
         ];

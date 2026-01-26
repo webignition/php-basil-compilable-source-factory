@@ -47,12 +47,12 @@ class AssignmentExpressionTest extends AbstractResolvableTestCase
                 'expectedMetadata' => new Metadata(),
             ],
             'has metadata' => [
-                'assignee' => new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                'assignee' => new VariableDependency(VariableNameEnum::PANTHER_CLIENT->value),
                 'value' => new LiteralExpression('literal'),
                 'operator' => '!==',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNameEnum::PANTHER_CLIENT,
+                        VariableNameEnum::PANTHER_CLIENT->value,
                     ]
                 ),
             ],
@@ -80,7 +80,7 @@ class AssignmentExpressionTest extends AbstractResolvableTestCase
             ],
             'variable dependency, literal' => [
                 'expression' => new AssignmentExpression(
-                    new VariableDependency(VariableNameEnum::PANTHER_CRAWLER),
+                    new VariableDependency(VariableNameEnum::PANTHER_CRAWLER->value),
                     new LiteralExpression('rhs')
                 ),
                 'expectedString' => '{{ CRAWLER }} = rhs',
@@ -88,7 +88,7 @@ class AssignmentExpressionTest extends AbstractResolvableTestCase
             'static object property as assignee' => [
                 'expression' => new AssignmentExpression(
                     new StaticObjectProperty(
-                        new VariableDependency(VariableNameEnum::DOM_CRAWLER_NAVIGATOR),
+                        new VariableDependency(VariableNameEnum::DOM_CRAWLER_NAVIGATOR->value),
                         'property'
                     ),
                     new LiteralExpression('rhs')

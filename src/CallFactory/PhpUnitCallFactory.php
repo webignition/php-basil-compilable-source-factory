@@ -38,7 +38,7 @@ readonly class PhpUnitCallFactory
         bool $mightThrow,
     ): MethodInvocationInterface {
         return new ObjectMethodInvocation(
-            object: new VariableDependency(VariableNameEnum::PHPUNIT_TEST_CASE),
+            object: new VariableDependency(VariableNameEnum::PHPUNIT_TEST_CASE->value),
             methodName: $methodName,
             arguments: $arguments,
             mightThrow: $mightThrow,
@@ -76,7 +76,7 @@ readonly class PhpUnitCallFactory
         }
 
         $messageFactoryCall = new ObjectMethodInvocation(
-            object: new VariableDependency(VariableNameEnum::MESSAGE_FACTORY),
+            object: new VariableDependency(VariableNameEnum::MESSAGE_FACTORY->value),
             methodName: 'createAssertionMessage',
             arguments: new MethodArguments($messageFactoryArgumentExpressions)
                 ->withFormat(MethodArgumentsInterface::FORMAT_STACKED),
@@ -110,7 +110,7 @@ readonly class PhpUnitCallFactory
         );
 
         $failureMessageFactoryCall = new ObjectMethodInvocation(
-            object: new VariableDependency(VariableNameEnum::MESSAGE_FACTORY),
+            object: new VariableDependency(VariableNameEnum::MESSAGE_FACTORY->value),
             methodName: 'createFailureMessage',
             arguments: new MethodArguments([
                 $this->argumentFactory->createSingular($serializedStatement),

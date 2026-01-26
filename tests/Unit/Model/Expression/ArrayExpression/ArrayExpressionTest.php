@@ -49,7 +49,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                     new ArrayPair(
                         'key3',
                         new ObjectMethodInvocation(
-                            object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                            object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT->value),
                             methodName: 'methodName',
                             arguments: new MethodArguments(),
                             mightThrow: false,
@@ -58,7 +58,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                 ]),
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableNameEnum::PANTHER_CLIENT,
+                        VariableNameEnum::PANTHER_CLIENT->value,
                     ]
                 ),
             ],
@@ -105,7 +105,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                     new ArrayPair(
                         'key3',
                         new ObjectMethodInvocation(
-                            object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                            object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT->value),
                             methodName: 'methodName',
                             arguments: new MethodArguments(),
                             mightThrow: false,
@@ -244,7 +244,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                             new ArrayPair(
                                 'key1',
                                 new ObjectMethodInvocation(
-                                    object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                                    object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT->value),
                                     methodName: 'methodName',
                                     arguments: new MethodArguments(),
                                     mightThrow: false,
@@ -399,7 +399,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                 'expression' => ArrayExpression::fromArray([
                     'data-set-one' => [
                         'key1' => new ObjectMethodInvocation(
-                            object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                            object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT->value),
                             methodName: 'methodName',
                             arguments: new MethodArguments(),
                             mightThrow: false,
@@ -413,7 +413,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                             new ArrayPair(
                                 'key1',
                                 new ObjectMethodInvocation(
-                                    object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                                    object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT->value),
                                     methodName: 'methodName',
                                     arguments: new MethodArguments(),
                                     mightThrow: false,
@@ -443,7 +443,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
             'array with nested array' => [
                 'expression' => ArrayExpression::fromArray([
                     'name' => new ObjectMethodInvocation(
-                        object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                        object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT->value),
                         methodName: 'dataName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
@@ -457,7 +457,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                     new ArrayPair(
                         'name',
                         new ObjectMethodInvocation(
-                            object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                            object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT->value),
                             methodName: 'dataName',
                             arguments: new MethodArguments(),
                             mightThrow: false,

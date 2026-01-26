@@ -47,7 +47,7 @@ class ComparisonExpressionTest extends AbstractResolvableTestCase
             ],
             'has metadata' => [
                 'leftHandSide' => new ObjectMethodInvocation(
-                    object: new VariableDependency(VariableName::PANTHER_CLIENT),
+                    object: new VariableDependency(VariableName::PANTHER_CLIENT->value),
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
@@ -56,7 +56,7 @@ class ComparisonExpressionTest extends AbstractResolvableTestCase
                 'comparison' => '!==',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PANTHER_CLIENT,
+                        VariableName::PANTHER_CLIENT->value,
                     ]
                 ),
             ],
@@ -86,7 +86,7 @@ class ComparisonExpressionTest extends AbstractResolvableTestCase
             'object method invocation and literal, null coalesce' => [
                 'expression' => new ComparisonExpression(
                     new ObjectMethodInvocation(
-                        object: new VariableDependency(VariableName::PANTHER_CLIENT),
+                        object: new VariableDependency(VariableName::PANTHER_CLIENT->value),
                         methodName: 'methodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,

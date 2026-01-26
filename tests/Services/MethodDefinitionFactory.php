@@ -61,7 +61,7 @@ class MethodDefinitionFactory
             new Statement(new LiteralExpression('parent::setUpBeforeClass()')),
             new Statement(
                 new ObjectMethodInvocation(
-                    object: new VariableDependency(VariableName::PANTHER_CLIENT),
+                    object: new VariableDependency(VariableName::PANTHER_CLIENT->value),
                     methodName: 'request',
                     arguments: new MethodArguments($argumentFactory->create('GET', $requestUriExpression)),
                     mightThrow: false,

@@ -27,13 +27,13 @@ trait ReloadActionFunctionalDataProviderTrait
         $setupTeardownStatements = new Body([
             new Statement(
                 new ObjectMethodInvocation(
-                    object: new VariableDependency(VariableName::PHPUNIT_TEST_CASE),
+                    object: new VariableDependency(VariableName::PHPUNIT_TEST_CASE->value),
                     methodName: 'assertCount',
                     arguments: new MethodArguments(
                         $argumentFactory->create(
                             0,
                             new ObjectMethodInvocation(
-                                object: new VariableDependency(VariableName::PANTHER_CRAWLER),
+                                object: new VariableDependency(VariableName::PANTHER_CRAWLER->value),
                                 methodName: 'filter',
                                 arguments: new MethodArguments($argumentFactory->create('#hello')),
                                 mightThrow: true,
@@ -52,13 +52,13 @@ trait ReloadActionFunctionalDataProviderTrait
             ),
             new Statement(
                 new ObjectMethodInvocation(
-                    object: new VariableDependency(VariableName::PHPUNIT_TEST_CASE),
+                    object: new VariableDependency(VariableName::PHPUNIT_TEST_CASE->value),
                     methodName: 'assertCount',
                     arguments: new MethodArguments(
                         $argumentFactory->create(
                             1,
                             new ObjectMethodInvocation(
-                                object: new VariableDependency(VariableName::PANTHER_CRAWLER),
+                                object: new VariableDependency(VariableName::PANTHER_CRAWLER->value),
                                 methodName: 'filter',
                                 arguments: new MethodArguments($argumentFactory->create('#hello')),
                                 mightThrow: true,

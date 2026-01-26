@@ -35,10 +35,10 @@ class StatementTest extends AbstractResolvableTestCase
     {
         return [
             'variable dependency' => [
-                'expression' => new VariableDependency(VariableName::PANTHER_CLIENT),
+                'expression' => new VariableDependency(VariableName::PANTHER_CLIENT->value),
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PANTHER_CLIENT,
+                        VariableName::PANTHER_CLIENT->value,
                     ],
                 ),
             ],
@@ -52,14 +52,14 @@ class StatementTest extends AbstractResolvableTestCase
             ],
             'object method invocation' => [
                 'expression' => new ObjectMethodInvocation(
-                    object: new VariableDependency(VariableName::PHPUNIT_TEST_CASE),
+                    object: new VariableDependency(VariableName::PHPUNIT_TEST_CASE->value),
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
                 ),
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE,
+                        VariableName::PHPUNIT_TEST_CASE->value,
                     ],
                 ),
             ],
@@ -80,7 +80,7 @@ class StatementTest extends AbstractResolvableTestCase
         return [
             'statement encapsulating variable dependency' => [
                 'statement' => new Statement(
-                    new VariableDependency(VariableName::PANTHER_CLIENT)
+                    new VariableDependency(VariableName::PANTHER_CLIENT->value)
                 ),
                 'expectedString' => '{{ CLIENT }};',
             ],
@@ -97,7 +97,7 @@ class StatementTest extends AbstractResolvableTestCase
             'statement encapsulating object method invocation' => [
                 'statement' => new Statement(
                     new ObjectMethodInvocation(
-                        object: new VariableDependency(VariableName::PHPUNIT_TEST_CASE),
+                        object: new VariableDependency(VariableName::PHPUNIT_TEST_CASE->value),
                         methodName: 'methodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,

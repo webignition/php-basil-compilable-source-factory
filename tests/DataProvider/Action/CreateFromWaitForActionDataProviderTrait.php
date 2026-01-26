@@ -18,8 +18,8 @@ trait CreateFromWaitForActionDataProviderTrait
         $actionParser = ActionParser::create();
         $expectedMetadata = new Metadata(
             variableNames: [
-                VariableName::PANTHER_CRAWLER,
-                VariableName::PANTHER_CLIENT,
+                VariableName::PANTHER_CRAWLER->value,
+                VariableName::PANTHER_CLIENT->value,
             ],
         );
 

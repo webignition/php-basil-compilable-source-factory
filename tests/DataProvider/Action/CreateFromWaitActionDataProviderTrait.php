@@ -51,8 +51,8 @@ trait CreateFromWaitActionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
+                        VariableName::DOM_CRAWLER_NAVIGATOR->value,
+                        VariableName::WEBDRIVER_ELEMENT_INSPECTOR->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(),
@@ -79,8 +79,8 @@ trait CreateFromWaitActionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
+                        VariableName::DOM_CRAWLER_NAVIGATOR->value,
+                        VariableName::WEBDRIVER_ELEMENT_INSPECTOR->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(),
@@ -104,8 +104,8 @@ trait CreateFromWaitActionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
+                        VariableName::DOM_CRAWLER_NAVIGATOR->value,
+                        VariableName::WEBDRIVER_ELEMENT_INSPECTOR->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(),
@@ -129,7 +129,7 @@ trait CreateFromWaitActionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                        VariableName::DOM_CRAWLER_NAVIGATOR->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(),
@@ -151,7 +151,7 @@ trait CreateFromWaitActionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PANTHER_CLIENT,
+                        VariableName::PANTHER_CLIENT->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(),
@@ -169,7 +169,7 @@ trait CreateFromWaitActionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PANTHER_CLIENT,
+                        VariableName::PANTHER_CLIENT->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(),
@@ -187,7 +187,7 @@ trait CreateFromWaitActionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::ENVIRONMENT_VARIABLE_ARRAY,
+                        VariableName::ENVIRONMENT_VARIABLE_ARRAY->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(),
@@ -205,7 +205,7 @@ trait CreateFromWaitActionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::ENVIRONMENT_VARIABLE_ARRAY,
+                        VariableName::ENVIRONMENT_VARIABLE_ARRAY->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(),

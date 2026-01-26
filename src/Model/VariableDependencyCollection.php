@@ -4,8 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model;
 
-use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
-
 /**
  * @implements \IteratorAggregate<string, VariableDependencyInterface>
  */
@@ -17,7 +15,7 @@ class VariableDependencyCollection implements \IteratorAggregate
     private array $dependencies = [];
 
     /**
-     * @param VariableNameEnum[] $names
+     * @param non-empty-string[] $names
      */
     public function __construct(array $names = [])
     {

@@ -143,7 +143,7 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                 'arguments' => new MethodArguments(
                     [
                         new ObjectMethodInvocation(
-                            object: new VariableDependency(VariableNameEnum::DOM_CRAWLER_NAVIGATOR),
+                            object: new VariableDependency(VariableNameEnum::DOM_CRAWLER_NAVIGATOR->value),
                             methodName: 'find',
                             arguments: new MethodArguments([
                                 new ObjectMethodInvocation(
@@ -196,7 +196,7 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                     [
                         ArrayExpression::fromArray([
                             'name' => new ObjectMethodInvocation(
-                                object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                                object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT->value),
                                 methodName: 'dataName',
                                 arguments: new MethodArguments(),
                                 mightThrow: false,
