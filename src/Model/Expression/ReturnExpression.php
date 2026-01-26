@@ -5,10 +5,13 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 
 use webignition\BasilCompilableSourceFactory\Model\Construct\ReturnConstruct;
+use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 
 class ReturnExpression implements ExpressionInterface
 {
+    use IsNotStaticTrait;
+
     private const string RENDER_TEMPLATE = '{{ return_construct }} {{ expression_content }}';
 
     private ExpressionInterface $expression;

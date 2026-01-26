@@ -13,6 +13,7 @@ use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 class DataProviderMethodDefinition extends MethodDefinition implements DataProviderMethodDefinitionInterface
 {
     use HasMetadataTrait;
+    use IsNotStaticTrait;
 
     /**
      * @var array<mixed>
@@ -55,10 +56,5 @@ class DataProviderMethodDefinition extends MethodDefinition implements DataProvi
     public function getVisibility(): string
     {
         return 'public';
-    }
-
-    public function isStatic(): bool
-    {
-        return false;
     }
 }

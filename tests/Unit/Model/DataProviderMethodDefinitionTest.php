@@ -23,7 +23,6 @@ class DataProviderMethodDefinitionTest extends AbstractResolvableTestCase
         $this->assertSame([], $methodDefinition->getArguments());
         $this->assertsame(MethodDefinition::VISIBILITY_PUBLIC, $methodDefinition->getVisibility());
         $this->assertSame('array', $methodDefinition->getReturnType());
-        $this->assertFalse($methodDefinition->isStatic());
         $this->assertSame($data, $methodDefinition->getData());
     }
 

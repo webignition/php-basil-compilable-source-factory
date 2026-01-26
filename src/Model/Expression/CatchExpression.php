@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 
+use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\NeverThrowsTrait;
@@ -13,6 +14,7 @@ use webignition\BasilCompilableSourceFactory\Model\VariableName;
 class CatchExpression implements ExpressionInterface
 {
     use NeverThrowsTrait;
+    use IsNotStaticTrait;
 
     private const RENDER_TEMPLATE = '{{ class_list }} {{ variable }}';
 

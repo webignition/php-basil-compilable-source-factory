@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpress
 use webignition\BasilCompilableSourceFactory\Model\DeferredResolvableCreationTrait;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
+use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\Stubble\Resolvable\ResolvableCollection;
@@ -17,6 +18,7 @@ use webignition\Stubble\Resolvable\ResolvedTemplateMutatorResolvable;
 class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationInterface
 {
     use DeferredResolvableCreationTrait;
+    use IsNotStaticTrait;
 
     private const INDENT = '    ';
 

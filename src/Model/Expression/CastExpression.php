@@ -4,10 +4,13 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 
+use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 
 class CastExpression implements ExpressionInterface
 {
+    use IsNotStaticTrait;
+
     private const string RENDER_TEMPLATE = '({{ cast_type }}) {{ expression }}';
 
     public function __construct(

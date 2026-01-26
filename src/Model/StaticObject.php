@@ -39,4 +39,9 @@ class StaticObject implements \Stringable, ExpressionInterface
 
         return new Metadata();
     }
+
+    public function isStatic(): true
+    {
+        return true;
+    }
 }
