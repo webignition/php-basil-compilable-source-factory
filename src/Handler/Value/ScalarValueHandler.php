@@ -17,6 +17,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastE
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ReturnExpression;
+use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
@@ -77,8 +78,10 @@ class ScalarValueHandler
                 new AssignmentExpression(
                     $webDriverDimensionPlaceholder,
                     new ObjectMethodInvocation(
-                        new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
-                        'getWebDriver()->manage()->window()->getSize'
+                        object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                        methodName: 'getWebDriver()->manage()->window()->getSize',
+                        arguments: new MethodArguments(),
+                        mightThrow: true,
                     )
                 )
             ),
@@ -87,12 +90,22 @@ class ScalarValueHandler
                 new ReturnExpression(
                     new CompositeExpression([
                         new EncapsulatingCastExpression(
-                            new ObjectMethodInvocation($webDriverDimensionPlaceholder, 'getWidth'),
+                            new ObjectMethodInvocation(
+                                object: $webDriverDimensionPlaceholder,
+                                methodName: 'getWidth',
+                                arguments: new MethodArguments(),
+                                mightThrow: true,
+                            ),
                             'string'
                         ),
                         new LiteralExpression(' . \'x\' . '),
                         new EncapsulatingCastExpression(
-                            new ObjectMethodInvocation($webDriverDimensionPlaceholder, 'getHeight'),
+                            new ObjectMethodInvocation(
+                                object: $webDriverDimensionPlaceholder,
+                                methodName: 'getHeight',
+                                arguments: new MethodArguments(),
+                                mightThrow: true,
+                            ),
                             'string'
                         ),
                     ])
