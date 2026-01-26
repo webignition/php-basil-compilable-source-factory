@@ -13,6 +13,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ClosureExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CompositeExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
+use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
@@ -88,7 +89,11 @@ class CastExpressionTest extends AbstractResolvableTestCase
             ],
             'method invocation as string' => [
                 'expression' => new CastExpression(
-                    new MethodInvocation('methodName'),
+                    new MethodInvocation(
+                        methodName: 'methodName',
+                        arguments: new MethodArguments(),
+                        mightThrow: false,
+                    ),
                     'string'
                 ),
                 'expectedString' => '(string) methodName()',
@@ -96,8 +101,10 @@ class CastExpressionTest extends AbstractResolvableTestCase
             'object method invocation as string' => [
                 'expression' => new CastExpression(
                     new ObjectMethodInvocation(
-                        new VariableDependency(VariableName::PANTHER_CLIENT),
-                        'methodName'
+                        object: new VariableDependency(VariableName::PANTHER_CLIENT),
+                        methodName: 'methodName',
+                        arguments: new MethodArguments(),
+                        mightThrow: false,
                     ),
                     'string'
                 ),
@@ -106,8 +113,10 @@ class CastExpressionTest extends AbstractResolvableTestCase
             'static object method invocation as string, class in root namespace' => [
                 'expression' => new CastExpression(
                     new ObjectMethodInvocation(
-                        new StaticObject('Object'),
-                        'methodName'
+                        object: new StaticObject('Object'),
+                        methodName: 'methodName',
+                        arguments: new MethodArguments(),
+                        mightThrow: false,
                     ),
                     'string'
                 ),
@@ -116,8 +125,10 @@ class CastExpressionTest extends AbstractResolvableTestCase
             'static object method invocation as string, class not in root namespace' => [
                 'expression' => new CastExpression(
                     new ObjectMethodInvocation(
-                        new StaticObject('Acme\Object'),
-                        'methodName'
+                        object: new StaticObject('Acme\Object'),
+                        methodName: 'methodName',
+                        arguments: new MethodArguments(),
+                        mightThrow: false,
                     ),
                     'string'
                 ),
