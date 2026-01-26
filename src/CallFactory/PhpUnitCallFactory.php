@@ -34,12 +34,14 @@ readonly class PhpUnitCallFactory
 
     public function createCall(
         string $methodName,
-        ?MethodArgumentsInterface $arguments = null
+        MethodArgumentsInterface $arguments,
+        bool $mightThrow,
     ): MethodInvocationInterface {
         return new ObjectMethodInvocation(
-            new VariableDependency(VariableNameEnum::PHPUNIT_TEST_CASE),
-            $methodName,
-            $arguments
+            object: new VariableDependency(VariableNameEnum::PHPUNIT_TEST_CASE),
+            methodName: $methodName,
+            arguments: $arguments,
+            mightThrow: $mightThrow,
         );
     }
 
@@ -65,10 +67,11 @@ readonly class PhpUnitCallFactory
         }
 
         $messageFactoryCall = new ObjectMethodInvocation(
-            new VariableDependency(VariableNameEnum::MESSAGE_FACTORY),
-            'createAssertionMessage',
-            new MethodArguments($messageFactoryArgumentExpressions)
-                ->withFormat(MethodArgumentsInterface::FORMAT_STACKED)
+            object: new VariableDependency(VariableNameEnum::MESSAGE_FACTORY),
+            methodName: 'createAssertionMessage',
+            arguments: new MethodArguments($messageFactoryArgumentExpressions)
+                ->withFormat(MethodArgumentsInterface::FORMAT_STACKED),
+            mightThrow: false,
         );
 
         $assertionCallArgumentExpressions = [];
@@ -82,7 +85,7 @@ readonly class PhpUnitCallFactory
             ->withFormat(MethodArgumentsInterface::FORMAT_STACKED)
         ;
 
-        return $this->createCall($methodName, $arguments);
+        return $this->createCall($methodName, $arguments, false);
     }
 
     public function createFailCall(
@@ -98,20 +101,22 @@ readonly class PhpUnitCallFactory
         );
 
         $failureMessageFactoryCall = new ObjectMethodInvocation(
-            new VariableDependency(VariableNameEnum::MESSAGE_FACTORY),
-            'createFailureMessage',
-            new MethodArguments([
+            object: new VariableDependency(VariableNameEnum::MESSAGE_FACTORY),
+            methodName: 'createFailureMessage',
+            arguments: new MethodArguments([
                 $this->argumentFactory->createSingular($serializedStatement),
                 $this->argumentFactory->createSingular(new VariableName('exception')),
                 $this->argumentFactory->createSingular($statementStageEnum),
-            ])->withFormat(MethodArgumentsInterface::FORMAT_STACKED)
+            ])->withFormat(MethodArgumentsInterface::FORMAT_STACKED),
+            mightThrow: false
         );
 
         return $this->createCall(
-            'fail',
-            new MethodArguments([
+            methodName: 'fail',
+            arguments: new MethodArguments([
                 $failureMessageFactoryCall,
-            ])->withFormat(MethodArgumentsInterface::FORMAT_STACKED)
+            ])->withFormat(MethodArgumentsInterface::FORMAT_STACKED),
+            mightThrow: false,
         );
     }
 }
