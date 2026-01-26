@@ -12,6 +12,7 @@ class VariableName implements \Stringable, ExpressionInterface, IsAssigneeInterf
 {
     use ResolvableStringableTrait;
     use NeverThrowsTrait;
+    use IsMutableStaticTrait;
 
     private string $name;
     private MetadataInterface $metadata;

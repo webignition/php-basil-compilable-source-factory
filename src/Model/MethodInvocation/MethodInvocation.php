@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\MethodInvocation;
 
+use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 
 class MethodInvocation implements MethodInvocationInterface
 {
+    use IsNotStaticTrait;
+
     private const string RENDER_TEMPLATE = '{{ call }}({{ arguments }})';
 
     private bool $isErrorSuppressed = false;

@@ -62,6 +62,11 @@ class ObjectMethodInvocation extends AbstractMethodInvocationEncapsulator implem
         return $new;
     }
 
+    public function isStatic(): bool
+    {
+        return $this->object->isStatic();
+    }
+
     protected function getAdditionalMetadata(): MetadataInterface
     {
         return $this->object->getMetadata();

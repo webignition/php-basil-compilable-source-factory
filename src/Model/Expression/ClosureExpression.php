@@ -6,12 +6,14 @@ namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\IndentTrait;
+use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\Stubble\Resolvable\ResolvedTemplateMutatorResolvable;
 
 class ClosureExpression implements ExpressionInterface
 {
     use IndentTrait;
+    use IsNotStaticTrait;
 
     private const RENDER_TEMPLATE = <<<'EOD'
 (function () {

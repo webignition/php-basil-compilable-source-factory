@@ -4,11 +4,14 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 
+use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 
 readonly class TernaryExpression implements ExpressionInterface
 {
+    use IsNotStaticTrait;
+
     public function __construct(
         private ExpressionInterface $expression,
         private ExpressionInterface $trueExpression,

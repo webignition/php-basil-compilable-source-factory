@@ -5,12 +5,15 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Model\MethodInvocation;
 
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
+use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 
 class ObjectConstructor extends AbstractMethodInvocationEncapsulator
 {
+    use IsNotStaticTrait;
+
     private const RENDER_TEMPLATE = 'new {{ method_invocation }}';
 
     private ClassName $class;
