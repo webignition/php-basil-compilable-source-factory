@@ -8,6 +8,7 @@ use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
+use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
@@ -44,13 +45,19 @@ class BrowserOperationActionHandler implements StatementHandlerInterface
                     new AssignmentExpression(
                         new VariableDependency(VariableName::PANTHER_CRAWLER),
                         new ObjectMethodInvocation(
-                            new VariableDependency(VariableName::PANTHER_CLIENT),
-                            $statement->getType()
+                            object: new VariableDependency(VariableName::PANTHER_CLIENT),
+                            methodName: $statement->getType(),
+                            arguments: new MethodArguments(),
+                            mightThrow: false,
                         )
                     )
                 ),
                 new Statement(
-                    $this->phpUnitCallFactory->createCall('refreshCrawlerAndNavigator'),
+                    $this->phpUnitCallFactory->createCall(
+                        methodName: 'refreshCrawlerAndNavigator',
+                        arguments: new MethodArguments(),
+                        mightThrow: false,
+                    ),
                 ),
             ])
         );
