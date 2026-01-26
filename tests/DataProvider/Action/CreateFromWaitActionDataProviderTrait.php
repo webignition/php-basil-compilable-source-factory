@@ -24,6 +24,7 @@ trait CreateFromWaitActionDataProviderTrait
                     $duration = "30";
                     $duration = $duration ?? 0;
                     $duration = (int) $duration;
+                    $duration = $duration < 0 ? 0 : $duration;
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     usleep($duration * 1000);
@@ -43,6 +44,7 @@ trait CreateFromWaitActionDataProviderTrait
                     })();
                     $duration = $duration ?? 0;
                     $duration = (int) $duration;
+                    $duration = $duration < 0 ? 0 : $duration;
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     usleep($duration * 1000);
@@ -70,6 +72,7 @@ trait CreateFromWaitActionDataProviderTrait
                     })();
                     $duration = $duration ?? 0;
                     $duration = (int) $duration;
+                    $duration = $duration < 0 ? 0 : $duration;
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     usleep($duration * 1000);
@@ -94,6 +97,7 @@ trait CreateFromWaitActionDataProviderTrait
                     })();
                     $duration = $duration ?? 0;
                     $duration = (int) $duration;
+                    $duration = $duration < 0 ? 0 : $duration;
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     usleep($duration * 1000);
@@ -118,6 +122,7 @@ trait CreateFromWaitActionDataProviderTrait
                     })();
                     $duration = $duration ?? 0;
                     $duration = (int) $duration;
+                    $duration = $duration < 0 ? 0 : $duration;
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     usleep($duration * 1000);
@@ -139,6 +144,7 @@ trait CreateFromWaitActionDataProviderTrait
             })();
             $duration = $duration ?? 0;
             $duration = (int) $duration;
+            $duration = $duration < 0 ? 0 : $duration;
             EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     usleep($duration * 1000);
@@ -156,6 +162,7 @@ trait CreateFromWaitActionDataProviderTrait
                     $duration = {{ CLIENT }}->getTitle();
                     $duration = $duration ?? 0;
                     $duration = (int) $duration;
+                    $duration = $duration < 0 ? 0 : $duration;
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     usleep($duration * 1000);
@@ -173,6 +180,7 @@ trait CreateFromWaitActionDataProviderTrait
                     $duration = {{ ENV }}['DURATION'];
                     $duration = $duration ?? 0;
                     $duration = (int) $duration;
+                    $duration = $duration < 0 ? 0 : $duration;
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     usleep($duration * 1000);
@@ -190,6 +198,7 @@ trait CreateFromWaitActionDataProviderTrait
                     $duration = {{ ENV }}['DURATION'];
                     $duration = $duration ?? 3;
                     $duration = (int) $duration;
+                    $duration = $duration < 0 ? 0 : $duration;
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     usleep($duration * 1000);
@@ -207,6 +216,7 @@ trait CreateFromWaitActionDataProviderTrait
                     $duration = $key;
                     $duration = $duration ?? 0;
                     $duration = (int) $duration;
+                    $duration = $duration < 0 ? 0 : $duration;
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     usleep($duration * 1000);
