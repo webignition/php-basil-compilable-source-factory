@@ -164,4 +164,15 @@ class Body implements BodyInterface, ResolvableCollectionInterface
 
         return $metadata;
     }
+
+    public function mightThrow(): bool
+    {
+        foreach ($this->content as $content) {
+            if ($content->mightThrow()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
 }
