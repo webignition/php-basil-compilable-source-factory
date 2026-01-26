@@ -26,7 +26,7 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
     public function testCreate(
         ExpressionInterface $object,
         string $methodName,
-        ?MethodArgumentsInterface $arguments,
+        MethodArgumentsInterface $arguments,
         MetadataInterface $expectedMetadata
     ): void {
         $invocation = new ObjectMethodInvocation(
