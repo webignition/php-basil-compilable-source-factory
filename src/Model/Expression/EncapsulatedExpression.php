@@ -33,4 +33,9 @@ class EncapsulatedExpression implements ExpressionInterface
     {
         return $this->expression->getMetadata();
     }
+
+    public function mightThrow(): bool
+    {
+        return $this->expression->mightThrow();
+    }
 }
