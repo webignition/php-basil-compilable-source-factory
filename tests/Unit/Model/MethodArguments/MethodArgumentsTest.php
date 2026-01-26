@@ -79,8 +79,10 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
             'has metadata' => [
                 'arguments' => [
                     new ObjectMethodInvocation(
-                        new StaticObject(ClassName::class),
-                        'staticMethodName'
+                        object: new StaticObject(ClassName::class),
+                        methodName: 'staticMethodName',
+                        arguments: new MethodArguments(),
+                        mightThrow: false,
                     )
                 ],
                 'format' => MethodArgumentsInterface::FORMAT_INLINE,
@@ -141,19 +143,21 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                 'arguments' => new MethodArguments(
                     [
                         new ObjectMethodInvocation(
-                            new VariableDependency(VariableNameEnum::DOM_CRAWLER_NAVIGATOR),
-                            'find',
-                            new MethodArguments([
+                            object: new VariableDependency(VariableNameEnum::DOM_CRAWLER_NAVIGATOR),
+                            methodName: 'find',
+                            arguments: new MethodArguments([
                                 new ObjectMethodInvocation(
-                                    new StaticObject(ObjectMethodInvocation::class),
-                                    'fromJson',
-                                    new MethodArguments([
+                                    object: new StaticObject(ObjectMethodInvocation::class),
+                                    methodName: 'fromJson',
+                                    arguments: new MethodArguments([
                                         new LiteralExpression(
                                             '{' . "\n" . '    "locator": ".selector"' . "\n" . '}'
                                         ),
-                                    ])
+                                    ]),
+                                    mightThrow: false,
                                 )
-                            ])
+                            ]),
+                            mightThrow: false,
                         ),
                         new ClosureExpression(
                             new Body([
@@ -192,8 +196,10 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                     [
                         ArrayExpression::fromArray([
                             'name' => new ObjectMethodInvocation(
-                                new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
-                                'dataName'
+                                object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                                methodName: 'dataName',
+                                arguments: new MethodArguments(),
+                                mightThrow: false,
                             ),
                             'data' => [
                                 'key1' => 'value1',
