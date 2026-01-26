@@ -110,14 +110,20 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                 'methodDefinition' => new MethodDefinition('name', new Body([
                     new Statement(
                         new ObjectMethodInvocation(
-                            new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
-                            'methodName'
+                            object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                            methodName: 'methodName',
+                            arguments: new MethodArguments(),
+                            mightThrow: false,
                         )
                     ),
                     new Statement(
                         new AssignmentExpression(
                             new VariableName('variable'),
-                            new MethodInvocation('methodName')
+                            new MethodInvocation(
+                                methodName: 'methodName',
+                                arguments: new MethodArguments(),
+                                mightThrow: false,
+                            ),
                         )
                     ),
                 ])),
@@ -131,14 +137,20 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                 'methodDefinition' => new MethodDefinition('name', new Body([
                     new Statement(
                         new ObjectMethodInvocation(
-                            new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
-                            'methodName'
+                            object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                            methodName: 'methodName',
+                            arguments: new MethodArguments(),
+                            mightThrow: false,
                         )
                     ),
                     new Statement(
                         new AssignmentExpression(
                             new VariableName('variable'),
-                            new MethodInvocation('methodName')
+                            new MethodInvocation(
+                                methodName: 'methodName',
+                                arguments: new MethodArguments(),
+                                mightThrow: false,
+                            )
                         )
                     ),
                 ]))->withAttribute(new DataProviderAttribute('dataProviderMethod')),
@@ -276,12 +288,13 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                             new AssignmentExpression(
                                 new VariableName('value'),
                                 new ObjectMethodInvocation(
-                                    new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
-                                    'methodName',
-                                    new MethodArguments([
+                                    object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                                    methodName: 'methodName',
+                                    arguments:  new MethodArguments([
                                         new LiteralExpression('$x'),
                                         new LiteralExpression('$y'),
-                                    ])
+                                    ]),
+                                    mightThrow: false,
                                 )
                             )
                         ),
