@@ -47,7 +47,7 @@ class CompositeExpression implements ExpressionInterface
     public function mightThrow(): bool
     {
         foreach ($this->expressions as $expression) {
-            if ($expression->getMetadata()) {
+            if ($expression->mightThrow()) {
                 return true;
             }
         }
