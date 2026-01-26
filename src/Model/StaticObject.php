@@ -11,6 +11,7 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 class StaticObject implements \Stringable, ExpressionInterface
 {
     use ResolvableStringableTrait;
+    use NeverThrowsTrait;
 
     /**
      * @param non-empty-string $object
