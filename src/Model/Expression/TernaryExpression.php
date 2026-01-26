@@ -37,4 +37,12 @@ readonly class TernaryExpression implements ExpressionInterface
             ->merge($this->falseExpression->getMetadata())
         ;
     }
+
+    public function mightThrow(): bool
+    {
+        return $this->expression->mightThrow()
+            || $this->trueExpression->mightThrow()
+            || $this->falseExpression->mightThrow()
+            ;
+    }
 }
