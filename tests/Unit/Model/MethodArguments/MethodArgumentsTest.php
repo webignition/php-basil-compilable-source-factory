@@ -20,10 +20,10 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
 class MethodArgumentsTest extends AbstractResolvableTestCase
@@ -163,14 +163,14 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                             new Body([
                                 new Statement(
                                     new AssignmentExpression(
-                                        new VariableName('variable'),
+                                        new Property('variable'),
                                         new LiteralExpression('100')
                                     )
                                 ),
                                 new EmptyLine(),
                                 new Statement(
                                     new ReturnExpression(
-                                        new VariableName('variable'),
+                                        new Property('variable'),
                                     )
                                 ),
                             ])

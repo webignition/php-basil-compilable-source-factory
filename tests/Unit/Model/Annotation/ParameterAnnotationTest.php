@@ -6,7 +6,6 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Annotation;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Model\Annotation\ParameterAnnotation;
-use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
 class ParameterAnnotationTest extends AbstractResolvableTestCase
@@ -24,7 +23,7 @@ class ParameterAnnotationTest extends AbstractResolvableTestCase
     {
         return [
             'default' => [
-                'annotation' => new ParameterAnnotation('string', new VariableName('name')),
+                'annotation' => new ParameterAnnotation('string', '$name'),
                 'expectedString' => '@param string $name',
             ],
         ];

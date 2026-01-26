@@ -13,8 +13,8 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
 class ArrayExpressionTest extends AbstractResolvableTestCase
@@ -100,7 +100,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                     ),
                     new ArrayPair(
                         'key2',
-                        new VariableName('variableName')
+                        new Property('variableName')
                     ),
                     new ArrayPair(
                         'key3',
@@ -225,7 +225,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         new ArrayExpression([
                             new ArrayPair(
                                 'key1',
-                                new VariableName('variableName')
+                                new Property('variableName')
                             ),
                         ])
                     ),
@@ -380,7 +380,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
             'single data set with VariableName value' => [
                 'expression' => ArrayExpression::fromArray([
                     'data-set-one' => [
-                        'key1' => new VariableName('variableName'),
+                        'key1' => new Property('variableName'),
                     ],
                 ]),
                 'expectedExpression' => new ArrayExpression([
@@ -389,7 +389,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         new ArrayExpression([
                             new ArrayPair(
                                 'key1',
-                                new VariableName('variableName')
+                                new Property('variableName')
                             ),
                         ])
                     ),

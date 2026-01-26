@@ -25,12 +25,12 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclaration;
 use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclarationCollection;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
 class ClosureExpressionTest extends AbstractResolvableTestCase
@@ -64,7 +64,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                 'body' => new Body([
                     new Statement(
                         new AssignmentExpression(
-                            new VariableName('variable'),
+                            new Property('variable'),
                             new ObjectMethodInvocation(
                                 object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT->value),
                                 methodName: 'dependencyMethodName',
@@ -78,7 +78,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                             new CompositeExpression([
                                 new CastExpression(
                                     new ObjectMethodInvocation(
-                                        object: new VariableName('variable'),
+                                        object: new Property('variable'),
                                         methodName: 'getWidth',
                                         arguments: new MethodArguments(),
                                         mightThrow: false,
@@ -88,7 +88,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                                 new LiteralExpression(' . \'x\' . '),
                                 new CastExpression(
                                     new ObjectMethodInvocation(
-                                        object: new VariableName('variable'),
+                                        object: new Property('variable'),
                                         methodName: 'getHeight',
                                         arguments: new MethodArguments(),
                                         mightThrow: false,
@@ -178,7 +178,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                     new Body([
                         new Statement(
                             new AssignmentExpression(
-                                new VariableName('variable'),
+                                new Property('variable'),
                                 new ObjectMethodInvocation(
                                     object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT->value),
                                     methodName: 'dependencyMethodName',
@@ -193,7 +193,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                                 new CompositeExpression([
                                     new EncapsulatingCastExpression(
                                         new ObjectMethodInvocation(
-                                            object: new VariableName('variable'),
+                                            object: new Property('variable'),
                                             methodName: 'getWidth',
                                             arguments: new MethodArguments(),
                                             mightThrow: false,
@@ -203,7 +203,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                                     new LiteralExpression(' . \'x\' . '),
                                     new EncapsulatingCastExpression(
                                         new ObjectMethodInvocation(
-                                            object: new VariableName('variable'),
+                                            object: new Property('variable'),
                                             methodName: 'getHeight',
                                             arguments: new MethodArguments(),
                                             mightThrow: false,
@@ -254,14 +254,14 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                     new Body([
                         new Statement(
                             new AssignmentExpression(
-                                new VariableName('variableName'),
+                                new Property('variableName'),
                                 new LiteralExpression('"literal value"')
                             )
                         ),
                         new EmptyLine(),
                         new Statement(
                             new ReturnExpression(
-                                new VariableName('variableName')
+                                new Property('variableName')
                             )
                         ),
                     ])

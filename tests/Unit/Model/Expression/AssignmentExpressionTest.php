@@ -13,8 +13,8 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\StaticObjectProper
 use webignition\BasilCompilableSourceFactory\Model\IsAssigneeInterface;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
+use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
 class AssignmentExpressionTest extends AbstractResolvableTestCase
@@ -41,7 +41,7 @@ class AssignmentExpressionTest extends AbstractResolvableTestCase
     {
         return [
             'no metadata' => [
-                'assignee' => new VariableName('lhs'),
+                'assignee' => new Property('lhs'),
                 'value' => new LiteralExpression('6'),
                 'operator' => '===',
                 'expectedMetadata' => new Metadata(),
@@ -73,7 +73,7 @@ class AssignmentExpressionTest extends AbstractResolvableTestCase
         return [
             'variable name, literal' => [
                 'expression' => new AssignmentExpression(
-                    new VariableName('lhs'),
+                    new Property('lhs'),
                     new LiteralExpression('rhs')
                 ),
                 'expectedString' => '$lhs = rhs',

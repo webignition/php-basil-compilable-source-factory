@@ -15,9 +15,9 @@ use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumen
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
 class ObjectMethodInvocationTest extends AbstractResolvableTestCase
@@ -90,7 +90,7 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
                 ),
             ],
             'no arguments, resolving placeholder' => [
-                'object' => new VariableName('object'),
+                'object' => new Property('object'),
                 'methodName' => 'method',
                 'arguments' => new MethodArguments(),
                 'expectedMetadata' => new Metadata(),
@@ -169,7 +169,7 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
             ],
             'object and method name only, resolving placeholder' => [
                 'invocation' => new ObjectMethodInvocation(
-                    object: new VariableName('object'),
+                    object: new Property('object'),
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,

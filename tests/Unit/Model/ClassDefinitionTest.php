@@ -21,10 +21,10 @@ use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumen
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinition;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\Model\VariableName;
 
 class ClassDefinitionTest extends AbstractResolvableTestCase
 {
@@ -87,7 +87,7 @@ class ClassDefinitionTest extends AbstractResolvableTestCase
                             ),
                             new Statement(
                                 new AssignmentExpression(
-                                    new VariableName('variable'),
+                                    new Property('variable'),
                                     new MethodInvocation(
                                         methodName: 'methodName',
                                         arguments: new MethodArguments(),
