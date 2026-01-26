@@ -28,6 +28,11 @@ abstract class AbstractBlock implements HasMetadataInterface, ResolvableInterfac
         return $this->body->getMetadata();
     }
 
+    public function mightThrow(): bool
+    {
+        return $this->body->mightThrow();
+    }
+
     protected function createResolvableBody(): ResolvableInterface
     {
         return new ResolvedTemplateMutatorResolvable(
@@ -36,10 +41,5 @@ abstract class AbstractBlock implements HasMetadataInterface, ResolvableInterfac
                 return rtrim($this->indent($resolvedTemplate));
             }
         );
-    }
-
-    public function mightThrow(): bool
-    {
-        return $this->body->mightThrow();
     }
 }

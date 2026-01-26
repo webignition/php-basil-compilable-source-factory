@@ -36,10 +36,10 @@ abstract class AbstractMethodInvocationEncapsulator implements InvocableInterfac
         return $this->invocation->getArguments();
     }
 
-    abstract protected function getAdditionalMetadata(): MetadataInterface;
-
     public function mightThrow(): bool
     {
         return $this->invocation->mightThrow();
     }
+
+    abstract protected function getAdditionalMetadata(): MetadataInterface;
 }

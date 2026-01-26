@@ -141,7 +141,7 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
                 'invocation' => new ObjectMethodInvocation(
                     object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                     methodName: 'methodName',
-                    arguments:  new MethodArguments([
+                    arguments: new MethodArguments([
                         new LiteralExpression('1'),
                         new LiteralExpression("\\'single-quoted value\\'"),
                     ]),

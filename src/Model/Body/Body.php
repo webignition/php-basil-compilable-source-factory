@@ -92,6 +92,17 @@ class Body implements BodyInterface, ResolvableCollectionInterface
         return $this->metadata;
     }
 
+    public function mightThrow(): bool
+    {
+        foreach ($this->content as $content) {
+            if ($content->mightThrow()) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
     protected function createResolvable(): ResolvableInterface
     {
         $resolvables = [];
@@ -163,16 +174,5 @@ class Body implements BodyInterface, ResolvableCollectionInterface
         }
 
         return $metadata;
-    }
-
-    public function mightThrow(): bool
-    {
-        foreach ($this->content as $content) {
-            if ($content->mightThrow()) {
-                return true;
-            }
-        }
-
-        return false;
     }
 }

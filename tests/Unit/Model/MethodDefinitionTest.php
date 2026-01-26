@@ -290,7 +290,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                                 new ObjectMethodInvocation(
                                     object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
                                     methodName: 'methodName',
-                                    arguments:  new MethodArguments([
+                                    arguments: new MethodArguments([
                                         new LiteralExpression('$x'),
                                         new LiteralExpression('$y'),
                                     ]),
