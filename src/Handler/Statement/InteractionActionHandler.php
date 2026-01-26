@@ -12,6 +12,7 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentExcepti
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
+use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\VariableName;
@@ -65,12 +66,20 @@ class InteractionActionHandler implements StatementHandlerInterface
 
         return new StatementHandlerComponents(
             new Body([
-                new Statement(new ObjectMethodInvocation(
-                    $elementPlaceholder,
-                    $statement->getType()
-                )),
                 new Statement(
-                    $this->phpUnitCallFactory->createCall('refreshCrawlerAndNavigator'),
+                    new ObjectMethodInvocation(
+                        object: $elementPlaceholder,
+                        methodName: $statement->getType(),
+                        arguments: new MethodArguments(),
+                        mightThrow: true
+                    )
+                ),
+                new Statement(
+                    $this->phpUnitCallFactory->createCall(
+                        methodName: 'refreshCrawlerAndNavigator',
+                        arguments: new MethodArguments(),
+                        mightThrow: false,
+                    ),
                 ),
             ])
         )->withSetup(
