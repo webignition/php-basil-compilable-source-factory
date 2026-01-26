@@ -9,9 +9,11 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentExcepti
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CastExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CompositeExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\NullCoalescerExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\TernaryExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
@@ -100,7 +102,17 @@ class WaitActionHandler implements StatementHandlerInterface
                             'int'
                         )
                     )
-                )
+                ),
+                'duration = duration < 0 ? 0 : duration' => new Statement(
+                    new AssignmentExpression(
+                        $durationVariable,
+                        new TernaryExpression(
+                            new ComparisonExpression($durationVariable, new LiteralExpression('0'), '<'),
+                            new LiteralExpression('0'),
+                            $durationVariable,
+                        ),
+                    ),
+                ),
             ]),
         );
     }
