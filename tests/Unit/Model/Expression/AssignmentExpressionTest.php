@@ -9,7 +9,6 @@ use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
-use webignition\BasilCompilableSourceFactory\Model\Expression\StaticObjectProperty;
 use webignition\BasilCompilableSourceFactory\Model\IsAssigneeInterface;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
@@ -86,9 +85,9 @@ class AssignmentExpressionTest extends AbstractResolvableTestCase
             ],
             'static object property as assignee' => [
                 'expression' => new AssignmentExpression(
-                    new StaticObjectProperty(
-                        Property::asDependency(DependencyName::DOM_CRAWLER_NAVIGATOR),
-                        'property'
+                    new Property(
+                        'property',
+                        Property::asDependency(DependencyName::DOM_CRAWLER_NAVIGATOR)->setIsStatic(true)
                     ),
                     new LiteralExpression('rhs')
                 ),
