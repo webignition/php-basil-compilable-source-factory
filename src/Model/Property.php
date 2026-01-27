@@ -18,7 +18,7 @@ class Property implements ExpressionInterface, IsAssigneeInterface
     public function __construct(
         private readonly string $name,
         private readonly ?ExpressionInterface $parent = null,
-        private readonly bool $isPlaceholder = false,
+        private readonly bool $isDependency = false,
     ) {}
 
     public function mightThrow(): bool
@@ -33,7 +33,7 @@ class Property implements ExpressionInterface, IsAssigneeInterface
     public function getMetadata(): MetadataInterface
     {
         if (null === $this->parent) {
-            return $this->isPlaceholder
+            return $this->isDependency
                 ? new Metadata(variableNames: [$this->name])
                 : new Metadata();
         }
@@ -43,11 +43,11 @@ class Property implements ExpressionInterface, IsAssigneeInterface
 
     public function getTemplate(): string
     {
-        if (null === $this->parent && false === $this->isPlaceholder) {
+        if (null === $this->parent && false === $this->isDependency) {
             return '${{ name }}';
         }
 
-        if (null === $this->parent && true === $this->isPlaceholder) {
+        if (null === $this->parent && true === $this->isDependency) {
             return '{{ {{ name }} }}';
         }
 
@@ -68,12 +68,17 @@ class Property implements ExpressionInterface, IsAssigneeInterface
         return $context;
     }
 
-    public function setIsPlaceholder(): Property
+    public function setIsDependency(): Property
     {
         return new Property(
             $this->name,
             $this->parent,
             true,
         );
+    }
+
+    public function getIsDependency(): bool
+    {
+        return $this->isDependency;
     }
 }

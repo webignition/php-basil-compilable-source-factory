@@ -36,7 +36,7 @@ class PropertyTest extends AbstractResolvableTestCase
             'variable placeholder' => [
                 'property' => new Property(
                     VariableName::ENVIRONMENT_VARIABLE_ARRAY->value,
-                )->setIsPlaceholder(),
+                )->setIsDependency(),
                 'expected' => new Metadata(
                     classNames: [],
                     variableNames: [
@@ -66,7 +66,7 @@ class PropertyTest extends AbstractResolvableTestCase
             'variable placeholder' => [
                 'property' => new Property(
                     VariableName::ENVIRONMENT_VARIABLE_ARRAY->value,
-                )->setIsPlaceholder(),
+                )->setIsDependency(),
                 'expected' => '{{ ENV }}',
             ],
             'static object constant access (or enum), no alias' => [
