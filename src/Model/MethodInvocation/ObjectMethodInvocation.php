@@ -54,10 +54,10 @@ class ObjectMethodInvocation extends AbstractMethodInvocationEncapsulator implem
         ];
     }
 
-    public function setIsErrorSuppressed(bool $isErrorSuppressed): static
+    public function setIsErrorSuppressed(): self
     {
         $new = clone $this;
-        $new->isErrorSuppressed = $isErrorSuppressed;
+        $new->isErrorSuppressed = true;
 
         return $new;
     }

@@ -8,5 +8,5 @@ interface MethodInvocationInterface extends InvocableInterface
 {
     public const string ERROR_SUPPRESSION_PREFIX = '@';
 
-    public function setIsErrorSuppressed(bool $isErrorSuppressed): static;
+    public function setIsErrorSuppressed(): self;
 }

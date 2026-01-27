@@ -131,7 +131,7 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
-                )->setIsErrorSuppressed(true),
+                )->setIsErrorSuppressed(),
                 'expectedString' => '@{{ CLIENT }}->methodName()',
             ],
             'has arguments, inline' => [

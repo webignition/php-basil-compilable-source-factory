@@ -107,7 +107,7 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
                 )
             ),
             mightThrow: false
-        )->setIsErrorSuppressed(true);
+        )->setIsErrorSuppressed();
 
         $identityComparison = new ComparisonExpression(
             $pregMatchInvocation,
