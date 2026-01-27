@@ -27,11 +27,6 @@ class MethodInvocation implements MethodInvocationInterface
         return $this->methodName;
     }
 
-    public function getArguments(): MethodArgumentsInterface
-    {
-        return $this->arguments;
-    }
-
     public function getMetadata(): MetadataInterface
     {
         return $this->arguments->getMetadata();

@@ -31,11 +31,6 @@ abstract class AbstractMethodInvocationEncapsulator implements InvocableInterfac
         return $this->invocation->getCall();
     }
 
-    public function getArguments(): MethodArgumentsInterface
-    {
-        return $this->invocation->getArguments();
-    }
-
     public function mightThrow(): bool
     {
         return $this->invocation->mightThrow();

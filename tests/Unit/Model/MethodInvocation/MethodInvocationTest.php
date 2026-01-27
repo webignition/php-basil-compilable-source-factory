@@ -49,7 +49,6 @@ class MethodInvocationTest extends AbstractResolvableTestCase
             mightThrow: false,
         );
         self::assertSame($methodName, $invocation->getCall());
-        self::assertSame($arguments, $invocation->getArguments());
         self::assertEquals($arguments->getMetadata(), $invocation->getMetadata());
     }
 
