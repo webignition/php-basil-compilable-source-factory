@@ -11,7 +11,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastE
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
+use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
 class CompositeExpressionTest extends AbstractResolvableTestCase
@@ -39,22 +39,22 @@ class CompositeExpressionTest extends AbstractResolvableTestCase
             ],
             'variable dependency' => [
                 'expressions' => [
-                    new VariableDependency(DependencyName::PANTHER_CLIENT->value),
+                    Property::asDependency(DependencyName::PANTHER_CLIENT),
                 ],
                 'expectedMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::PANTHER_CLIENT->value,
+                    dependencyNames: [
+                        DependencyName::PANTHER_CLIENT,
                     ]
                 ),
             ],
             'variable dependency and array access' => [
                 'expressions' => [
-                    new VariableDependency(DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value),
+                    Property::asDependency(DependencyName::ENVIRONMENT_VARIABLE_ARRAY),
                     new LiteralExpression('[\'KEY\']')
                 ],
                 'expectedMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value,
+                    dependencyNames: [
+                        DependencyName::ENVIRONMENT_VARIABLE_ARRAY,
                     ]
                 ),
             ],
@@ -93,13 +93,13 @@ class CompositeExpressionTest extends AbstractResolvableTestCase
             ],
             'variable dependency' => [
                 'expression' => new CompositeExpression([
-                    new VariableDependency(DependencyName::PANTHER_CLIENT->value),
+                    Property::asDependency(DependencyName::PANTHER_CLIENT),
                 ]),
                 'expectedString' => '{{ CLIENT }}',
             ],
             'variable dependency and array access' => [
                 'expression' => new CompositeExpression([
-                    new VariableDependency(DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value),
+                    Property::asDependency(DependencyName::ENVIRONMENT_VARIABLE_ARRAY),
                     new LiteralExpression('[\'KEY\']')
                 ]),
                 'expectedString' => '{{ ENV }}[\'KEY\']',

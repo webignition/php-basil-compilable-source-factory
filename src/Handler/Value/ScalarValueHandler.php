@@ -21,7 +21,6 @@ use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumen
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilValueTypeIdentifier\ValueTypeIdentifier;
 
 class ScalarValueHandler
@@ -78,7 +77,7 @@ class ScalarValueHandler
                 new AssignmentExpression(
                     $webDriverDimensionVariable,
                     new ObjectMethodInvocation(
-                        object: new VariableDependency(DependencyName::PANTHER_CLIENT->value),
+                        object: Property::asDependency(DependencyName::PANTHER_CLIENT),
                         methodName: 'getWebDriver()->manage()->window()->getSize',
                         arguments: new MethodArguments(),
                         mightThrow: true,
@@ -120,7 +119,7 @@ class ScalarValueHandler
         $property = $environmentValue->getProperty();
 
         return new ArrayAccessExpression(
-            new VariableDependency(DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value),
+            Property::asDependency(DependencyName::ENVIRONMENT_VARIABLE_ARRAY),
             $property
         );
     }
@@ -143,7 +142,7 @@ class ScalarValueHandler
 
         if (is_string($methodName)) {
             return new ObjectMethodInvocation(
-                object: new VariableDependency(DependencyName::PANTHER_CLIENT->value),
+                object: Property::asDependency(DependencyName::PANTHER_CLIENT),
                 methodName: $methodName,
                 arguments: new MethodArguments(),
                 mightThrow: true,

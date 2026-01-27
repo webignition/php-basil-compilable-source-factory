@@ -36,8 +36,8 @@ class PropertyTest extends AbstractResolvableTestCase
                 'property' => Property::asDependency(DependencyName::ENVIRONMENT_VARIABLE_ARRAY),
                 'expected' => new Metadata(
                     classNames: [],
-                    variableNames: [
-                        DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value,
+                    dependencyNames: [
+                        DependencyName::ENVIRONMENT_VARIABLE_ARRAY,
                     ],
                 ),
             ]

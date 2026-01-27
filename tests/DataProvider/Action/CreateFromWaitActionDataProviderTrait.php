@@ -50,9 +50,9 @@ trait CreateFromWaitActionDataProviderTrait
                     usleep($duration * 1000);
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
-                        DependencyName::WEBDRIVER_ELEMENT_INSPECTOR->value,
+                    dependencyNames: [
+                        DependencyName::DOM_CRAWLER_NAVIGATOR,
+                        DependencyName::WEBDRIVER_ELEMENT_INSPECTOR,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(),
@@ -78,9 +78,9 @@ trait CreateFromWaitActionDataProviderTrait
                     usleep($duration * 1000);
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
-                        DependencyName::WEBDRIVER_ELEMENT_INSPECTOR->value,
+                    dependencyNames: [
+                        DependencyName::DOM_CRAWLER_NAVIGATOR,
+                        DependencyName::WEBDRIVER_ELEMENT_INSPECTOR,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(),
@@ -103,9 +103,9 @@ trait CreateFromWaitActionDataProviderTrait
                     usleep($duration * 1000);
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
-                        DependencyName::WEBDRIVER_ELEMENT_INSPECTOR->value,
+                    dependencyNames: [
+                        DependencyName::DOM_CRAWLER_NAVIGATOR,
+                        DependencyName::WEBDRIVER_ELEMENT_INSPECTOR,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(),
@@ -128,8 +128,8 @@ trait CreateFromWaitActionDataProviderTrait
                     usleep($duration * 1000);
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
+                    dependencyNames: [
+                        DependencyName::DOM_CRAWLER_NAVIGATOR,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(),
@@ -150,8 +150,8 @@ trait CreateFromWaitActionDataProviderTrait
                     usleep($duration * 1000);
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::PANTHER_CLIENT->value,
+                    dependencyNames: [
+                        DependencyName::PANTHER_CLIENT,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(),
@@ -168,8 +168,8 @@ trait CreateFromWaitActionDataProviderTrait
                     usleep($duration * 1000);
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::PANTHER_CLIENT->value,
+                    dependencyNames: [
+                        DependencyName::PANTHER_CLIENT,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(),
@@ -186,8 +186,8 @@ trait CreateFromWaitActionDataProviderTrait
                     usleep($duration * 1000);
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value,
+                    dependencyNames: [
+                        DependencyName::ENVIRONMENT_VARIABLE_ARRAY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(),
@@ -204,8 +204,8 @@ trait CreateFromWaitActionDataProviderTrait
                     usleep($duration * 1000);
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value,
+                    dependencyNames: [
+                        DependencyName::ENVIRONMENT_VARIABLE_ARRAY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(),

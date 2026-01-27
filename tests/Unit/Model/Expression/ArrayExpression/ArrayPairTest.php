@@ -13,7 +13,7 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
+use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
 class ArrayPairTest extends AbstractResolvableTestCase
@@ -41,15 +41,15 @@ class ArrayPairTest extends AbstractResolvableTestCase
                 'pair' => new ArrayPair(
                     '',
                     new ObjectMethodInvocation(
-                        object: new VariableDependency(DependencyName::PANTHER_CLIENT->value),
+                        object: Property::asDependency(DependencyName::PANTHER_CLIENT),
                         methodName: 'methodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
                     )
                 ),
                 'expectedMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::PANTHER_CLIENT->value,
+                    dependencyNames: [
+                        DependencyName::PANTHER_CLIENT,
                     ]
                 ),
             ],

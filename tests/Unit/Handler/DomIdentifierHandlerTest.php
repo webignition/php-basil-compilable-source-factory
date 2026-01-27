@@ -55,8 +55,8 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     }')
                     EOD,
                 'expectedMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
+                    dependencyNames: [
+                        DependencyName::DOM_CRAWLER_NAVIGATOR,
                     ],
                 ),
             ],
@@ -74,8 +74,8 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     }')
                     EOD,
                 'expectedMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
+                    dependencyNames: [
+                        DependencyName::DOM_CRAWLER_NAVIGATOR,
                     ],
                 ),
             ],
@@ -112,8 +112,8 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     }')
                     EOD,
                 'expectedMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
+                    dependencyNames: [
+                        DependencyName::DOM_CRAWLER_NAVIGATOR,
                     ],
                 ),
             ],
@@ -131,8 +131,8 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     }')
                     EOD,
                 'expectedMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
+                    dependencyNames: [
+                        DependencyName::DOM_CRAWLER_NAVIGATOR,
                     ],
                 ),
             ],
@@ -175,8 +175,8 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     })()
                     EOD,
                 'expectedMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
+                    dependencyNames: [
+                        DependencyName::DOM_CRAWLER_NAVIGATOR,
                     ],
                 ),
             ],
@@ -199,8 +199,8 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     })()
                     EOD,
                 'expectedMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
+                    dependencyNames: [
+                        DependencyName::DOM_CRAWLER_NAVIGATOR,
                     ],
                 ),
             ],
@@ -241,9 +241,9 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     })()
                     EOD,
                 'expectedMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
-                        DependencyName::WEBDRIVER_ELEMENT_INSPECTOR->value,
+                    dependencyNames: [
+                        DependencyName::DOM_CRAWLER_NAVIGATOR,
+                        DependencyName::WEBDRIVER_ELEMENT_INSPECTOR,
                     ],
                 ),
             ],
@@ -265,9 +265,9 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     })()
                     EOD,
                 'expectedMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
-                        DependencyName::WEBDRIVER_ELEMENT_INSPECTOR->value,
+                    dependencyNames: [
+                        DependencyName::DOM_CRAWLER_NAVIGATOR,
+                        DependencyName::WEBDRIVER_ELEMENT_INSPECTOR,
                     ],
                 ),
             ],

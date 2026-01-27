@@ -13,7 +13,7 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
+use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
 class ComparisonExpressionTest extends AbstractResolvableTestCase
@@ -47,7 +47,7 @@ class ComparisonExpressionTest extends AbstractResolvableTestCase
             ],
             'has metadata' => [
                 'leftHandSide' => new ObjectMethodInvocation(
-                    object: new VariableDependency(DependencyName::PANTHER_CLIENT->value),
+                    object: Property::asDependency(DependencyName::PANTHER_CLIENT),
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
@@ -55,8 +55,8 @@ class ComparisonExpressionTest extends AbstractResolvableTestCase
                 'rightHandSide' => new LiteralExpression('literal'),
                 'comparison' => '!==',
                 'expectedMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::PANTHER_CLIENT->value,
+                    dependencyNames: [
+                        DependencyName::PANTHER_CLIENT,
                     ]
                 ),
             ],
@@ -86,7 +86,7 @@ class ComparisonExpressionTest extends AbstractResolvableTestCase
             'object method invocation and literal, null coalesce' => [
                 'expression' => new ComparisonExpression(
                     new ObjectMethodInvocation(
-                        object: new VariableDependency(DependencyName::PANTHER_CLIENT->value),
+                        object: Property::asDependency(DependencyName::PANTHER_CLIENT),
                         methodName: 'methodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,

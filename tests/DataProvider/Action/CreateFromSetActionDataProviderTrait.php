@@ -31,14 +31,14 @@ trait CreateFromSetActionDataProviderTrait
                     {{ PHPUNIT }}->refreshCrawlerAndNavigator();
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
+                    dependencyNames: [
+                        DependencyName::DOM_CRAWLER_NAVIGATOR,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::WEBDRIVER_ELEMENT_MUTATOR->value,
-                        DependencyName::PHPUNIT_TEST_CASE->value,
+                    dependencyNames: [
+                        DependencyName::WEBDRIVER_ELEMENT_MUTATOR,
+                        DependencyName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],
@@ -61,15 +61,15 @@ trait CreateFromSetActionDataProviderTrait
                     {{ PHPUNIT }}->refreshCrawlerAndNavigator();
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
-                        DependencyName::WEBDRIVER_ELEMENT_INSPECTOR->value,
+                    dependencyNames: [
+                        DependencyName::DOM_CRAWLER_NAVIGATOR,
+                        DependencyName::WEBDRIVER_ELEMENT_INSPECTOR,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::WEBDRIVER_ELEMENT_MUTATOR->value,
-                        DependencyName::PHPUNIT_TEST_CASE->value,
+                    dependencyNames: [
+                        DependencyName::WEBDRIVER_ELEMENT_MUTATOR,
+                        DependencyName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],
@@ -92,14 +92,14 @@ trait CreateFromSetActionDataProviderTrait
                     {{ PHPUNIT }}->refreshCrawlerAndNavigator();
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
+                    dependencyNames: [
+                        DependencyName::DOM_CRAWLER_NAVIGATOR,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::WEBDRIVER_ELEMENT_MUTATOR->value,
-                        DependencyName::PHPUNIT_TEST_CASE->value,
+                    dependencyNames: [
+                        DependencyName::WEBDRIVER_ELEMENT_MUTATOR,
+                        DependencyName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],
@@ -120,15 +120,15 @@ trait CreateFromSetActionDataProviderTrait
                     {{ PHPUNIT }}->refreshCrawlerAndNavigator();
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
-                        DependencyName::PANTHER_CLIENT->value,
+                    dependencyNames: [
+                        DependencyName::DOM_CRAWLER_NAVIGATOR,
+                        DependencyName::PANTHER_CLIENT,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::WEBDRIVER_ELEMENT_MUTATOR->value,
-                        DependencyName::PHPUNIT_TEST_CASE->value,
+                    dependencyNames: [
+                        DependencyName::WEBDRIVER_ELEMENT_MUTATOR,
+                        DependencyName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],
@@ -145,15 +145,15 @@ trait CreateFromSetActionDataProviderTrait
                     {{ PHPUNIT }}->refreshCrawlerAndNavigator();
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
-                        DependencyName::PANTHER_CLIENT->value,
+                    dependencyNames: [
+                        DependencyName::DOM_CRAWLER_NAVIGATOR,
+                        DependencyName::PANTHER_CLIENT,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::WEBDRIVER_ELEMENT_MUTATOR->value,
-                        DependencyName::PHPUNIT_TEST_CASE->value,
+                    dependencyNames: [
+                        DependencyName::WEBDRIVER_ELEMENT_MUTATOR,
+                        DependencyName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],
@@ -170,15 +170,15 @@ trait CreateFromSetActionDataProviderTrait
                     {{ PHPUNIT }}->refreshCrawlerAndNavigator();
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
-                        DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value,
+                    dependencyNames: [
+                        DependencyName::DOM_CRAWLER_NAVIGATOR,
+                        DependencyName::ENVIRONMENT_VARIABLE_ARRAY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::WEBDRIVER_ELEMENT_MUTATOR->value,
-                        DependencyName::PHPUNIT_TEST_CASE->value,
+                    dependencyNames: [
+                        DependencyName::WEBDRIVER_ELEMENT_MUTATOR,
+                        DependencyName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],
@@ -195,15 +195,15 @@ trait CreateFromSetActionDataProviderTrait
                     {{ PHPUNIT }}->refreshCrawlerAndNavigator();
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
-                        DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value,
+                    dependencyNames: [
+                        DependencyName::DOM_CRAWLER_NAVIGATOR,
+                        DependencyName::ENVIRONMENT_VARIABLE_ARRAY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::WEBDRIVER_ELEMENT_MUTATOR->value,
-                        DependencyName::PHPUNIT_TEST_CASE->value,
+                    dependencyNames: [
+                        DependencyName::WEBDRIVER_ELEMENT_MUTATOR,
+                        DependencyName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],
@@ -220,15 +220,15 @@ trait CreateFromSetActionDataProviderTrait
                     {{ PHPUNIT }}->refreshCrawlerAndNavigator();
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
-                        DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value,
+                    dependencyNames: [
+                        DependencyName::DOM_CRAWLER_NAVIGATOR,
+                        DependencyName::ENVIRONMENT_VARIABLE_ARRAY,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::WEBDRIVER_ELEMENT_MUTATOR->value,
-                        DependencyName::PHPUNIT_TEST_CASE->value,
+                    dependencyNames: [
+                        DependencyName::WEBDRIVER_ELEMENT_MUTATOR,
+                        DependencyName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],
@@ -248,14 +248,14 @@ trait CreateFromSetActionDataProviderTrait
                     {{ PHPUNIT }}->refreshCrawlerAndNavigator();
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
+                    dependencyNames: [
+                        DependencyName::DOM_CRAWLER_NAVIGATOR,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::WEBDRIVER_ELEMENT_MUTATOR->value,
-                        DependencyName::PHPUNIT_TEST_CASE->value,
+                    dependencyNames: [
+                        DependencyName::WEBDRIVER_ELEMENT_MUTATOR,
+                        DependencyName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],
@@ -272,14 +272,14 @@ trait CreateFromSetActionDataProviderTrait
                     {{ PHPUNIT }}->refreshCrawlerAndNavigator();
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
+                    dependencyNames: [
+                        DependencyName::DOM_CRAWLER_NAVIGATOR,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::WEBDRIVER_ELEMENT_MUTATOR->value,
-                        DependencyName::PHPUNIT_TEST_CASE->value,
+                    dependencyNames: [
+                        DependencyName::WEBDRIVER_ELEMENT_MUTATOR,
+                        DependencyName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],

@@ -49,15 +49,15 @@ trait CreateFromExcludesAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
-                        DependencyName::WEBDRIVER_ELEMENT_INSPECTOR->value,
+                    dependencyNames: [
+                        DependencyName::DOM_CRAWLER_NAVIGATOR,
+                        DependencyName::WEBDRIVER_ELEMENT_INSPECTOR,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::PHPUNIT_TEST_CASE->value,
-                        DependencyName::MESSAGE_FACTORY->value,
+                    dependencyNames: [
+                        DependencyName::PHPUNIT_TEST_CASE,
+                        DependencyName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -92,15 +92,15 @@ trait CreateFromExcludesAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
-                        DependencyName::WEBDRIVER_ELEMENT_INSPECTOR->value,
+                    dependencyNames: [
+                        DependencyName::DOM_CRAWLER_NAVIGATOR,
+                        DependencyName::WEBDRIVER_ELEMENT_INSPECTOR,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::PHPUNIT_TEST_CASE->value,
-                        DependencyName::MESSAGE_FACTORY->value,
+                    dependencyNames: [
+                        DependencyName::PHPUNIT_TEST_CASE,
+                        DependencyName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -135,14 +135,14 @@ trait CreateFromExcludesAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
+                    dependencyNames: [
+                        DependencyName::DOM_CRAWLER_NAVIGATOR,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::PHPUNIT_TEST_CASE->value,
-                        DependencyName::MESSAGE_FACTORY->value,
+                    dependencyNames: [
+                        DependencyName::PHPUNIT_TEST_CASE,
+                        DependencyName::MESSAGE_FACTORY,
                     ],
                 ),
             ],

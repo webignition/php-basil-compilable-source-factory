@@ -40,14 +40,14 @@ trait CreateFromScalarNotExistsAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::PANTHER_CLIENT->value,
+                    dependencyNames: [
+                        DependencyName::PANTHER_CLIENT,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::PHPUNIT_TEST_CASE->value,
-                        DependencyName::MESSAGE_FACTORY->value,
+                    dependencyNames: [
+                        DependencyName::PHPUNIT_TEST_CASE,
+                        DependencyName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -74,9 +74,9 @@ trait CreateFromScalarNotExistsAssertionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(),
                 'expectedBodyMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::PHPUNIT_TEST_CASE->value,
-                        DependencyName::MESSAGE_FACTORY->value,
+                    dependencyNames: [
+                        DependencyName::PHPUNIT_TEST_CASE,
+                        DependencyName::MESSAGE_FACTORY,
                     ],
                 ),
             ],

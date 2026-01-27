@@ -77,8 +77,8 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                     classNames: [
                         ClientManager::class,
                     ],
-                    variableNames: [
-                        DependencyName::PANTHER_CLIENT->value,
+                    dependencyNames: [
+                        DependencyName::PANTHER_CLIENT,
                     ],
                 ),
             ],
@@ -114,8 +114,8 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                     classNames: [
                         ClientManager::class,
                     ],
-                    variableNames: [
-                        DependencyName::PANTHER_CLIENT->value,
+                    dependencyNames: [
+                        DependencyName::PANTHER_CLIENT,
                     ],
                 ),
             ],
@@ -151,8 +151,8 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                     classNames: [
                         ClientManager::class,
                     ],
-                    variableNames: [
-                        DependencyName::PANTHER_CLIENT->value,
+                    dependencyNames: [
+                        DependencyName::PANTHER_CLIENT,
                     ],
                 ),
             ],
@@ -200,8 +200,8 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                         StepName::class,
                         Statements::class,
                     ],
-                    variableNames: [
-                        DependencyName::PANTHER_CLIENT->value,
+                    dependencyNames: [
+                        DependencyName::PANTHER_CLIENT,
                     ],
                 ),
             ],
@@ -257,8 +257,8 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                         StepName::class,
                         Statements::class,
                     ],
-                    variableNames: [
-                        DependencyName::PANTHER_CLIENT->value,
+                    dependencyNames: [
+                        DependencyName::PANTHER_CLIENT,
                     ],
                 ),
             ],

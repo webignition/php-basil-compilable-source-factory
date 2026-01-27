@@ -74,13 +74,16 @@ class Property implements ExpressionInterface, IsAssigneeInterface
 
     public function getMetadata(): MetadataInterface
     {
-        if (null === $this->parent) {
-            return $this->isDependency
-                ? new Metadata(variableNames: [$this->name])
-                : new Metadata();
+        if (null !== $this->parent) {
+            return $this->parent->getMetadata();
         }
 
-        return $this->parent->getMetadata();
+        $dependencyName = $this->getDependencyName();
+        if (null === $dependencyName) {
+            return new Metadata();
+        }
+
+        return new Metadata(dependencyNames: [$dependencyName]);
     }
 
     public function getTemplate(): string
@@ -122,5 +125,21 @@ class Property implements ExpressionInterface, IsAssigneeInterface
     public function getIsDependency(): bool
     {
         return $this->isDependency;
+    }
+
+    public function getName(): string
+    {
+        return $this->name;
+    }
+
+    private function getDependencyName(): ?DependencyName
+    {
+        foreach (DependencyName::cases() as $dependencyName) {
+            if ($this->name === $dependencyName->value) {
+                return $dependencyName;
+            }
+        }
+
+        return null;
     }
 }

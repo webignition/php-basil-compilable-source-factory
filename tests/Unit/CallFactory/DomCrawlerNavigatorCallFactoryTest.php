@@ -114,8 +114,8 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTestCase
                 'elementIdentifierExpression' => new LiteralExpression('"literal expression"'),
                 'expectedRenderedExpression' => '{{ NAVIGATOR }}->{{ METHOD }}("literal expression")',
                 'expectedMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
+                    dependencyNames: [
+                        DependencyName::DOM_CRAWLER_NAVIGATOR,
                     ],
                 ),
             ],

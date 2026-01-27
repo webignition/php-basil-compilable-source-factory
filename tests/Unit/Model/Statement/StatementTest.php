@@ -12,9 +12,9 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
 class StatementTest extends AbstractResolvableTestCase
@@ -35,10 +35,10 @@ class StatementTest extends AbstractResolvableTestCase
     {
         return [
             'variable dependency' => [
-                'expression' => new VariableDependency(DependencyName::PANTHER_CLIENT->value),
+                'expression' => Property::asDependency(DependencyName::PANTHER_CLIENT),
                 'expectedMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::PANTHER_CLIENT->value,
+                    dependencyNames: [
+                        DependencyName::PANTHER_CLIENT,
                     ],
                 ),
             ],
@@ -52,14 +52,14 @@ class StatementTest extends AbstractResolvableTestCase
             ],
             'object method invocation' => [
                 'expression' => new ObjectMethodInvocation(
-                    object: new VariableDependency(DependencyName::PHPUNIT_TEST_CASE->value),
+                    object: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
                 ),
                 'expectedMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::PHPUNIT_TEST_CASE->value,
+                    dependencyNames: [
+                        DependencyName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],
@@ -80,7 +80,7 @@ class StatementTest extends AbstractResolvableTestCase
         return [
             'statement encapsulating variable dependency' => [
                 'statement' => new Statement(
-                    new VariableDependency(DependencyName::PANTHER_CLIENT->value)
+                    Property::asDependency(DependencyName::PANTHER_CLIENT)
                 ),
                 'expectedString' => '{{ CLIENT }};',
             ],
@@ -97,7 +97,7 @@ class StatementTest extends AbstractResolvableTestCase
             'statement encapsulating object method invocation' => [
                 'statement' => new Statement(
                     new ObjectMethodInvocation(
-                        object: new VariableDependency(DependencyName::PHPUNIT_TEST_CASE->value),
+                        object: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
                         methodName: 'methodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,

@@ -30,7 +30,6 @@ use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclaration;
 use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclarationCollection;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
 class ClosureExpressionTest extends AbstractResolvableTestCase
@@ -66,7 +65,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                         new AssignmentExpression(
                             Property::asVariable('variable'),
                             new ObjectMethodInvocation(
-                                object: new VariableDependency(DependencyName::PANTHER_CLIENT->value),
+                                object: Property::asDependency(DependencyName::PANTHER_CLIENT),
                                 methodName: 'dependencyMethodName',
                                 arguments: new MethodArguments(),
                                 mightThrow: false,
@@ -100,8 +99,8 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                     ),
                 ]),
                 'expectedMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::PANTHER_CLIENT->value,
+                    dependencyNames: [
+                        DependencyName::PANTHER_CLIENT,
                     ]
                 ),
             ],
@@ -180,7 +179,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                             new AssignmentExpression(
                                 Property::asVariable('variable'),
                                 new ObjectMethodInvocation(
-                                    object: new VariableDependency(DependencyName::PANTHER_CLIENT->value),
+                                    object: Property::asDependency(DependencyName::PANTHER_CLIENT),
                                     methodName: 'dependencyMethodName',
                                     arguments: new MethodArguments(),
                                     mightThrow: false,

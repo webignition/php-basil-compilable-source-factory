@@ -18,9 +18,9 @@ use webignition\BasilCompilableSourceFactory\Model\MethodDefinition;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinitionInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectConstructor;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilModels\Model\Test\NamedTestInterface;
 use webignition\BasilModels\Model\Test\TestInterface;
 
@@ -103,7 +103,7 @@ class ClassDefinitionFactory
             ),
             new Statement(
                 new ObjectMethodInvocation(
-                    object: new VariableDependency(DependencyName::PANTHER_CLIENT->value),
+                    object: Property::asDependency(DependencyName::PANTHER_CLIENT),
                     methodName: 'request',
                     arguments: new MethodArguments(
                         $this->argumentFactory->create('GET', $test->getUrl())

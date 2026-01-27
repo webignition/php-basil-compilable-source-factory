@@ -23,7 +23,6 @@ use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumen
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Model\Statement\Action\ActionInterface;
 use webignition\BasilModels\Model\Statement\StatementInterface;
@@ -118,7 +117,7 @@ class SetActionHandler implements StatementHandlerInterface
         $setValueValueVariable = Property::asVariable('setValueValue');
 
         $mutationInvocation = new ObjectMethodInvocation(
-            object: new VariableDependency(DependencyName::WEBDRIVER_ELEMENT_MUTATOR->value),
+            object: Property::asDependency(DependencyName::WEBDRIVER_ELEMENT_MUTATOR),
             methodName: 'setValue',
             arguments: new MethodArguments(
                 [

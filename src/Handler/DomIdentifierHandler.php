@@ -17,7 +17,6 @@ use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumen
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 
 class DomIdentifierHandler
 {
@@ -94,7 +93,7 @@ class DomIdentifierHandler
             new Statement(
                 new ReturnExpression(
                     new ObjectMethodInvocation(
-                        object: new VariableDependency(DependencyName::WEBDRIVER_ELEMENT_INSPECTOR->value),
+                        object: Property::asDependency(DependencyName::WEBDRIVER_ELEMENT_INSPECTOR),
                         methodName: 'getValue',
                         arguments: new MethodArguments([
                             $elementVariable,

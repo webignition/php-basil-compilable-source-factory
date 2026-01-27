@@ -18,14 +18,14 @@ trait CreateFromClickActionDataProviderTrait
         $actionParser = ActionParser::create();
 
         $expectedSetupMetadata = new Metadata(
-            variableNames: [
-                DependencyName::DOM_CRAWLER_NAVIGATOR->value,
+            dependencyNames: [
+                DependencyName::DOM_CRAWLER_NAVIGATOR,
             ],
         );
 
         $expectedBodyMetadata = new Metadata(
-            variableNames: [
-                DependencyName::PHPUNIT_TEST_CASE->value,
+            dependencyNames: [
+                DependencyName::PHPUNIT_TEST_CASE,
             ],
         );
 

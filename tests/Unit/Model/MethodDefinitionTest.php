@@ -22,7 +22,6 @@ use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethod
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 
 class MethodDefinitionTest extends AbstractResolvableTestCase
 {
@@ -110,7 +109,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                 'methodDefinition' => new MethodDefinition('name', new Body([
                     new Statement(
                         new ObjectMethodInvocation(
-                            object: new VariableDependency(DependencyName::PANTHER_CLIENT->value),
+                            object: Property::asDependency(DependencyName::PANTHER_CLIENT),
                             methodName: 'methodName',
                             arguments: new MethodArguments(),
                             mightThrow: false,
@@ -128,8 +127,8 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                     ),
                 ])),
                 'expectedMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::PANTHER_CLIENT->value,
+                    dependencyNames: [
+                        DependencyName::PANTHER_CLIENT,
                     ]
                 ),
             ],
@@ -137,7 +136,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                 'methodDefinition' => new MethodDefinition('name', new Body([
                     new Statement(
                         new ObjectMethodInvocation(
-                            object: new VariableDependency(DependencyName::PANTHER_CLIENT->value),
+                            object: Property::asDependency(DependencyName::PANTHER_CLIENT),
                             methodName: 'methodName',
                             arguments: new MethodArguments(),
                             mightThrow: false,
@@ -158,8 +157,8 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                     classNames: [
                         DataProvider::class,
                     ],
-                    variableNames: [
-                        DependencyName::PANTHER_CLIENT->value,
+                    dependencyNames: [
+                        DependencyName::PANTHER_CLIENT,
                     ]
                 ),
             ],
@@ -288,7 +287,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                             new AssignmentExpression(
                                 Property::asVariable('value'),
                                 new ObjectMethodInvocation(
-                                    object: new VariableDependency(DependencyName::PANTHER_CLIENT->value),
+                                    object: Property::asDependency(DependencyName::PANTHER_CLIENT),
                                     methodName: 'methodName',
                                     arguments: new MethodArguments([
                                         new LiteralExpression('$x'),

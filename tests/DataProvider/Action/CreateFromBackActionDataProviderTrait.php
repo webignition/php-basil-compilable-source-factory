@@ -24,10 +24,10 @@ trait CreateFromBackActionDataProviderTrait
                 'expectedRenderedBody' => '{{ CRAWLER }} = {{ CLIENT }}->back();' . "\n"
                     . '{{ PHPUNIT }}->refreshCrawlerAndNavigator();',
                 'expectedSetupMetadata' => null,
-                'expectedBodyMetadata' => new Metadata(variableNames: [
-                    DependencyName::PANTHER_CRAWLER->value,
-                    DependencyName::PANTHER_CLIENT->value,
-                    DependencyName::PHPUNIT_TEST_CASE->value,
+                'expectedBodyMetadata' => new Metadata(dependencyNames: [
+                    DependencyName::PANTHER_CRAWLER,
+                    DependencyName::PANTHER_CLIENT,
+                    DependencyName::PHPUNIT_TEST_CASE,
                 ]),
             ],
         ];

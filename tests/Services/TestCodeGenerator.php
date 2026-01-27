@@ -7,7 +7,6 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\ClassDefinitionInterface;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\Stubble\Resolvable\Resolvable;
 
@@ -102,7 +101,6 @@ class TestCodeGenerator
         $variableIdentifiers = [];
 
         foreach ($variableDependencies as $variableDependency) {
-            /** @var VariableDependency $variableDependency */
             $name = $variableDependency->getName();
             $variableIdentifiers[$variableDependency->getName()] = $externalVariables[$name];
         }

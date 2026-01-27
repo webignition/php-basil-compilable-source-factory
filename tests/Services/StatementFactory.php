@@ -17,7 +17,6 @@ use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethod
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 
 class StatementFactory
 {
@@ -27,13 +26,13 @@ class StatementFactory
 
         return new Statement(
             new ObjectMethodInvocation(
-                object: new VariableDependency(DependencyName::PHPUNIT_TEST_CASE->value),
+                object: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
                 methodName: 'assertSame',
                 arguments: new MethodArguments(
                     $argumentFactory->create(
                         $expectedTitle,
                         new ObjectMethodInvocation(
-                            object: new VariableDependency(DependencyName::PANTHER_CLIENT->value),
+                            object: Property::asDependency(DependencyName::PANTHER_CLIENT),
                             methodName: 'getTitle',
                             arguments: new MethodArguments(),
                             mightThrow: false,
@@ -60,7 +59,7 @@ class StatementFactory
                         new AssignmentExpression(
                             $elementVariable,
                             new ObjectMethodInvocation(
-                                object: new VariableDependency(DependencyName::PANTHER_CRAWLER->value),
+                                object: Property::asDependency(DependencyName::PANTHER_CRAWLER),
                                 methodName: 'filter',
                                 arguments: new MethodArguments($argumentFactory->create($selector)),
                                 mightThrow: false,
@@ -103,7 +102,7 @@ class StatementFactory
                     new AssignmentExpression(
                         $elementVariable,
                         new ObjectMethodInvocation(
-                            object: new VariableDependency(DependencyName::PANTHER_CRAWLER->value),
+                            object: Property::asDependency(DependencyName::PANTHER_CRAWLER),
                             methodName: 'filter',
                             arguments: new MethodArguments($argumentFactory->create($selector)),
                             mightThrow: false,
@@ -137,7 +136,7 @@ class StatementFactory
     {
         return new Statement(
             new ObjectMethodInvocation(
-                object: new VariableDependency(DependencyName::PANTHER_CLIENT->value),
+                object: Property::asDependency(DependencyName::PANTHER_CLIENT),
                 methodName: $action,
                 arguments: new MethodArguments(),
                 mightThrow: false,
@@ -155,7 +154,7 @@ class StatementFactory
             new AssignmentExpression(
                 $placeholder,
                 new ObjectMethodInvocation(
-                    object: new VariableDependency(DependencyName::PANTHER_CRAWLER->value),
+                    object: Property::asDependency(DependencyName::PANTHER_CRAWLER),
                     methodName: 'filter',
                     arguments: new MethodArguments($argumentFactory->create($selector)),
                     mightThrow: false,
@@ -168,7 +167,7 @@ class StatementFactory
     {
         return new Statement(
             new ObjectMethodInvocation(
-                object: new VariableDependency(DependencyName::PHPUNIT_TEST_CASE->value),
+                object: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
                 methodName: 'assertFalse',
                 arguments: new MethodArguments([
                     new LiteralExpression($actual)
@@ -182,7 +181,7 @@ class StatementFactory
     {
         return new Statement(
             new ObjectMethodInvocation(
-                object: new VariableDependency(DependencyName::PHPUNIT_TEST_CASE->value),
+                object: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
                 methodName: 'assertTrue',
                 arguments: new MethodArguments([
                     new LiteralExpression($actual)
@@ -209,7 +208,7 @@ class StatementFactory
     ): StatementInterface {
         return new Statement(
             new ObjectMethodInvocation(
-                object: new VariableDependency(DependencyName::PHPUNIT_TEST_CASE->value),
+                object: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
                 methodName: $methodName,
                 arguments: new MethodArguments([
                     new LiteralExpression($expected),

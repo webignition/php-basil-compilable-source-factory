@@ -14,7 +14,6 @@ use webignition\BasilCompilableSourceFactory\Model\IsAssigneeInterface;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\Property;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
 class AssignmentExpressionTest extends AbstractResolvableTestCase
@@ -47,12 +46,12 @@ class AssignmentExpressionTest extends AbstractResolvableTestCase
                 'expectedMetadata' => new Metadata(),
             ],
             'has metadata' => [
-                'assignee' => new VariableDependency(DependencyName::PANTHER_CLIENT->value),
+                'assignee' => Property::asDependency(DependencyName::PANTHER_CLIENT),
                 'value' => new LiteralExpression('literal'),
                 'operator' => '!==',
                 'expectedMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::PANTHER_CLIENT->value,
+                    dependencyNames: [
+                        DependencyName::PANTHER_CLIENT,
                     ]
                 ),
             ],
@@ -80,7 +79,7 @@ class AssignmentExpressionTest extends AbstractResolvableTestCase
             ],
             'variable dependency, literal' => [
                 'expression' => new AssignmentExpression(
-                    new VariableDependency(DependencyName::PANTHER_CRAWLER->value),
+                    Property::asDependency(DependencyName::PANTHER_CRAWLER),
                     new LiteralExpression('rhs')
                 ),
                 'expectedString' => '{{ CRAWLER }} = rhs',
@@ -88,7 +87,7 @@ class AssignmentExpressionTest extends AbstractResolvableTestCase
             'static object property as assignee' => [
                 'expression' => new AssignmentExpression(
                     new StaticObjectProperty(
-                        new VariableDependency(DependencyName::DOM_CRAWLER_NAVIGATOR->value),
+                        Property::asDependency(DependencyName::DOM_CRAWLER_NAVIGATOR),
                         'property'
                     ),
                     new LiteralExpression('rhs')

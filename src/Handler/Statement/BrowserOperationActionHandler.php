@@ -10,8 +10,8 @@ use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilModels\Model\Statement\Action\ActionInterface;
 use webignition\BasilModels\Model\Statement\StatementInterface;
 
@@ -43,9 +43,9 @@ class BrowserOperationActionHandler implements StatementHandlerInterface
             new Body([
                 new Statement(
                     new AssignmentExpression(
-                        new VariableDependency(DependencyName::PANTHER_CRAWLER->value),
+                        Property::asDependency(DependencyName::PANTHER_CRAWLER),
                         new ObjectMethodInvocation(
-                            object: new VariableDependency(DependencyName::PANTHER_CLIENT->value),
+                            object: Property::asDependency(DependencyName::PANTHER_CLIENT),
                             methodName: $statement->getType(),
                             arguments: new MethodArguments(),
                             mightThrow: false,

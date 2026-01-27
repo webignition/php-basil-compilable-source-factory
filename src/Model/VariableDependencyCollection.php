@@ -4,23 +4,25 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model;
 
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
+
 /**
- * @implements \IteratorAggregate<string, VariableDependencyInterface>
+ * @implements \IteratorAggregate<string, Property>
  */
 class VariableDependencyCollection implements \IteratorAggregate
 {
     /**
-     * @var array<string, VariableDependencyInterface>
+     * @var array<string, Property>
      */
     private array $dependencies = [];
 
     /**
-     * @param non-empty-string[] $names
+     * @param DependencyName[] $names
      */
     public function __construct(array $names = [])
     {
         foreach ($names as $name) {
-            $this->add(new VariableDependency($name));
+            $this->add(Property::asDependency($name));
         }
     }
 
@@ -35,20 +37,25 @@ class VariableDependencyCollection implements \IteratorAggregate
         return $new;
     }
 
-    public function add(VariableDependencyInterface $dependency): void
-    {
-        $name = $dependency->getName();
-
-        if (!array_key_exists($name, $this->dependencies)) {
-            $this->dependencies[$name] = $dependency;
-        }
-    }
-
     /**
-     * @return \Traversable<string, VariableDependencyInterface>
+     * @return \Traversable<string, Property>
      */
     public function getIterator(): \Traversable
     {
         return new \ArrayIterator($this->dependencies);
+    }
+
+    private function add(Property $dependency): void
+    {
+        if (false === $dependency->getIsDependency()) {
+            return;
+        }
+
+        $name = $dependency->getName();
+        if (array_key_exists($name, $this->dependencies)) {
+            return;
+        }
+
+        $this->dependencies[$name] = $dependency;
     }
 }

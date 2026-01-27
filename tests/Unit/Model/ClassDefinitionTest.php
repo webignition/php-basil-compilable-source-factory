@@ -24,7 +24,6 @@ use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethod
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 
 class ClassDefinitionTest extends AbstractResolvableTestCase
 {
@@ -79,7 +78,7 @@ class ClassDefinitionTest extends AbstractResolvableTestCase
                         new MethodDefinition('name', new Body([
                             new Statement(
                                 new ObjectMethodInvocation(
-                                    object: new VariableDependency(DependencyName::PANTHER_CLIENT->value),
+                                    object: Property::asDependency(DependencyName::PANTHER_CLIENT),
                                     methodName: 'methodName',
                                     arguments: new MethodArguments(),
                                     mightThrow: false,
@@ -99,8 +98,8 @@ class ClassDefinitionTest extends AbstractResolvableTestCase
                     ])
                 ),
                 'expectedMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::PANTHER_CLIENT->value,
+                    dependencyNames: [
+                        DependencyName::PANTHER_CLIENT,
                     ],
                 ),
             ],

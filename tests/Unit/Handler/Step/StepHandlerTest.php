@@ -144,9 +144,9 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         StatementStage::class,
                         \Throwable::class,
                     ],
-                    variableNames: [
-                        DependencyName::PHPUNIT_TEST_CASE->value,
-                        DependencyName::MESSAGE_FACTORY->value,
+                    dependencyNames: [
+                        DependencyName::PHPUNIT_TEST_CASE,
+                        DependencyName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -255,9 +255,9 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         StatementStage::class,
                         \Throwable::class,
                     ],
-                    variableNames: [
-                        DependencyName::PHPUNIT_TEST_CASE->value,
-                        DependencyName::MESSAGE_FACTORY->value,
+                    dependencyNames: [
+                        DependencyName::PHPUNIT_TEST_CASE,
+                        DependencyName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -407,9 +407,9 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         StatementStage::class,
                         \Throwable::class,
                     ],
-                    variableNames: [
-                        DependencyName::PHPUNIT_TEST_CASE->value,
-                        DependencyName::MESSAGE_FACTORY->value,
+                    dependencyNames: [
+                        DependencyName::PHPUNIT_TEST_CASE,
+                        DependencyName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -508,9 +508,9 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         StatementStage::class,
                         \Throwable::class,
                     ],
-                    variableNames: [
-                        DependencyName::PHPUNIT_TEST_CASE->value,
-                        DependencyName::MESSAGE_FACTORY->value,
+                    dependencyNames: [
+                        DependencyName::PHPUNIT_TEST_CASE,
+                        DependencyName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -737,9 +737,9 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         StatementStage::class,
                         \Throwable::class,
                     ],
-                    variableNames: [
-                        DependencyName::PHPUNIT_TEST_CASE->value,
-                        DependencyName::MESSAGE_FACTORY->value,
+                    dependencyNames: [
+                        DependencyName::PHPUNIT_TEST_CASE,
+                        DependencyName::MESSAGE_FACTORY,
                     ],
                 ),
             ],

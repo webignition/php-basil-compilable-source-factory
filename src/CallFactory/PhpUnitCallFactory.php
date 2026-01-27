@@ -15,7 +15,6 @@ use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumen
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocationInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Statement\StatementInterface;
 
@@ -38,7 +37,7 @@ readonly class PhpUnitCallFactory
         bool $mightThrow,
     ): MethodInvocationInterface {
         return new ObjectMethodInvocation(
-            object: new VariableDependency(DependencyName::PHPUNIT_TEST_CASE->value),
+            object: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
             methodName: $methodName,
             arguments: $arguments,
             mightThrow: $mightThrow,
@@ -76,7 +75,7 @@ readonly class PhpUnitCallFactory
         }
 
         $messageFactoryCall = new ObjectMethodInvocation(
-            object: new VariableDependency(DependencyName::MESSAGE_FACTORY->value),
+            object: Property::asDependency(DependencyName::MESSAGE_FACTORY),
             methodName: 'createAssertionMessage',
             arguments: new MethodArguments($messageFactoryArgumentExpressions)
                 ->withFormat(MethodArgumentsInterface::FORMAT_STACKED),
@@ -110,7 +109,7 @@ readonly class PhpUnitCallFactory
         );
 
         $failureMessageFactoryCall = new ObjectMethodInvocation(
-            object: new VariableDependency(DependencyName::MESSAGE_FACTORY->value),
+            object: Property::asDependency(DependencyName::MESSAGE_FACTORY),
             methodName: 'createFailureMessage',
             arguments: new MethodArguments([
                 $this->argumentFactory->createSingular($serializedStatement),

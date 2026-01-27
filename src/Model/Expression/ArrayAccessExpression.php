@@ -8,7 +8,6 @@ use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\NeverThrowsTrait;
 use webignition\BasilCompilableSourceFactory\Model\Property;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 
 readonly class ArrayAccessExpression implements NullableExpressionInterface
 {
@@ -16,7 +15,7 @@ readonly class ArrayAccessExpression implements NullableExpressionInterface
     use IsNotStaticTrait;
 
     public function __construct(
-        private Property|VariableDependency $variable,
+        private Property $variable,
         private string $key
     ) {}
 

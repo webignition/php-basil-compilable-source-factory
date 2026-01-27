@@ -23,7 +23,6 @@ use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethod
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
 class MethodArgumentsTest extends AbstractResolvableTestCase
@@ -143,7 +142,7 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                 'arguments' => new MethodArguments(
                     [
                         new ObjectMethodInvocation(
-                            object: new VariableDependency(DependencyName::DOM_CRAWLER_NAVIGATOR->value),
+                            object: Property::asDependency(DependencyName::DOM_CRAWLER_NAVIGATOR),
                             methodName: 'find',
                             arguments: new MethodArguments([
                                 new ObjectMethodInvocation(
@@ -196,7 +195,7 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                     [
                         ArrayExpression::fromArray([
                             'name' => new ObjectMethodInvocation(
-                                object: new VariableDependency(DependencyName::PANTHER_CLIENT->value),
+                                object: Property::asDependency(DependencyName::PANTHER_CLIENT),
                                 methodName: 'dataName',
                                 arguments: new MethodArguments(),
                                 mightThrow: false,

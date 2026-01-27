@@ -55,8 +55,8 @@ class ScalarValueHandlerTest extends AbstractResolvableTestCase
                 'value' => '$env.KEY',
                 'expectedRenderedSource' => '{{ ENV }}[\'KEY\']',
                 'expectedMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value,
+                    dependencyNames: [
+                        DependencyName::ENVIRONMENT_VARIABLE_ARRAY,
                     ],
                 ),
             ],
@@ -69,8 +69,8 @@ class ScalarValueHandlerTest extends AbstractResolvableTestCase
                     . '(string) ($webDriverDimension->getHeight());' . "\n"
                     . '})()',
                 'expectedMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::PANTHER_CLIENT->value,
+                    dependencyNames: [
+                        DependencyName::PANTHER_CLIENT,
                     ],
                 ),
             ],
@@ -78,8 +78,8 @@ class ScalarValueHandlerTest extends AbstractResolvableTestCase
                 'value' => '$page.url',
                 'expectedRenderedSource' => '{{ CLIENT }}->getCurrentURL()',
                 'expectedMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::PANTHER_CLIENT->value,
+                    dependencyNames: [
+                        DependencyName::PANTHER_CLIENT,
                     ],
                 ),
             ],
@@ -87,8 +87,8 @@ class ScalarValueHandlerTest extends AbstractResolvableTestCase
                 'value' => '$page.title',
                 'expectedRenderedSource' => '{{ CLIENT }}->getTitle()',
                 'expectedMetadata' => new Metadata(
-                    variableNames: [
-                        DependencyName::PANTHER_CLIENT->value,
+                    dependencyNames: [
+                        DependencyName::PANTHER_CLIENT,
                     ],
                 ),
             ],
