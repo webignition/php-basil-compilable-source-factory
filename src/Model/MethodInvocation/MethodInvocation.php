@@ -9,7 +9,7 @@ use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 
-readonly class FooMethodInvocation implements MethodInvocationInterface
+readonly class MethodInvocation implements MethodInvocationInterface
 {
     use IsNotStaticTrait;
 
@@ -64,7 +64,7 @@ readonly class FooMethodInvocation implements MethodInvocationInterface
 
     public function setIsErrorSuppressed(): self
     {
-        return new FooMethodInvocation(
+        return new MethodInvocation(
             $this->methodName,
             $this->arguments,
             $this->mightThrow,

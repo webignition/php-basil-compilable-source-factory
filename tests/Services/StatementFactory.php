@@ -13,7 +13,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ReturnExpression;
 use webignition\BasilCompilableSourceFactory\Model\IsAssigneeInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\FooMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
@@ -25,12 +25,12 @@ class StatementFactory
         $argumentFactory = ArgumentFactory::createFactory();
 
         return new Statement(
-            new FooMethodInvocation(
+            new MethodInvocation(
                 methodName: 'assertSame',
                 arguments: new MethodArguments(
                     $argumentFactory->create(
                         $expectedTitle,
-                        new FooMethodInvocation(
+                        new MethodInvocation(
                             methodName: 'getTitle',
                             arguments: new MethodArguments(),
                             mightThrow: false,
@@ -58,7 +58,7 @@ class StatementFactory
                     new Statement(
                         new AssignmentExpression(
                             $elementVariable,
-                            new FooMethodInvocation(
+                            new MethodInvocation(
                                 methodName: 'filter',
                                 arguments: new MethodArguments($argumentFactory->create($selector)),
                                 mightThrow: false,
@@ -68,7 +68,7 @@ class StatementFactory
                     ),
                     new Statement(
                         new ReturnExpression(
-                            new FooMethodInvocation(
+                            new MethodInvocation(
                                 methodName: 'getElement',
                                 arguments: new MethodArguments($argumentFactory->create(0)),
                                 mightThrow: false,
@@ -101,7 +101,7 @@ class StatementFactory
                 new Statement(
                     new AssignmentExpression(
                         $elementVariable,
-                        new FooMethodInvocation(
+                        new MethodInvocation(
                             methodName: 'filter',
                             arguments: new MethodArguments($argumentFactory->create($selector)),
                             mightThrow: false,
@@ -112,7 +112,7 @@ class StatementFactory
                 new Statement(
                     new AssignmentExpression(
                         $elementVariable,
-                        new FooMethodInvocation(
+                        new MethodInvocation(
                             methodName: 'getElement',
                             arguments: new MethodArguments($argumentFactory->create(0)),
                             mightThrow: false,
@@ -121,7 +121,7 @@ class StatementFactory
                     )
                 ),
                 new Statement(
-                    new FooMethodInvocation(
+                    new MethodInvocation(
                         methodName: $action,
                         arguments: new MethodArguments(),
                         mightThrow: false,
@@ -135,7 +135,7 @@ class StatementFactory
     public static function createClientAction(string $action): StatementInterface
     {
         return new Statement(
-            new FooMethodInvocation(
+            new MethodInvocation(
                 methodName: $action,
                 arguments: new MethodArguments(),
                 mightThrow: false,
@@ -153,7 +153,7 @@ class StatementFactory
         return new Statement(
             new AssignmentExpression(
                 $placeholder,
-                new FooMethodInvocation(
+                new MethodInvocation(
                     methodName: 'filter',
                     arguments: new MethodArguments($argumentFactory->create($selector)),
                     mightThrow: false,
@@ -166,7 +166,7 @@ class StatementFactory
     public static function createAssertFalse(string $actual): StatementInterface
     {
         return new Statement(
-            new FooMethodInvocation(
+            new MethodInvocation(
                 methodName: 'assertFalse',
                 arguments: new MethodArguments([
                     new LiteralExpression($actual)
@@ -180,7 +180,7 @@ class StatementFactory
     public static function createAssertTrue(string $actual): StatementInterface
     {
         return new Statement(
-            new FooMethodInvocation(
+            new MethodInvocation(
                 methodName: 'assertTrue',
                 arguments: new MethodArguments([
                     new LiteralExpression($actual)
@@ -207,7 +207,7 @@ class StatementFactory
         string $actual
     ): StatementInterface {
         return new Statement(
-            new FooMethodInvocation(
+            new MethodInvocation(
                 methodName: $methodName,
                 arguments: new MethodArguments([
                     new LiteralExpression($expected),

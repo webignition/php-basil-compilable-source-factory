@@ -12,7 +12,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\FooMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
@@ -46,7 +46,7 @@ class ComparisonExpressionTest extends AbstractResolvableTestCase
                 'expectedMetadata' => new Metadata(),
             ],
             'has metadata' => [
-                'leftHandSide' => new FooMethodInvocation(
+                'leftHandSide' => new MethodInvocation(
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
@@ -85,7 +85,7 @@ class ComparisonExpressionTest extends AbstractResolvableTestCase
             ],
             'object method invocation and literal, null coalesce' => [
                 'expression' => new ComparisonExpression(
-                    new FooMethodInvocation(
+                    new MethodInvocation(
                         methodName: 'methodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,

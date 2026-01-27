@@ -12,7 +12,7 @@ use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\FooMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
@@ -68,7 +68,7 @@ class WaitForActionHandler implements StatementHandlerInterface
             new Statement(
                 new AssignmentExpression(
                     Property::asDependency(DependencyName::PANTHER_CRAWLER),
-                    new FooMethodInvocation(
+                    new MethodInvocation(
                         methodName: 'waitFor',
                         arguments: new MethodArguments(
                             $this->argumentFactory->create($domIdentifier->getLocator())

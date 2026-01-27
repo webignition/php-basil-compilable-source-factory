@@ -16,7 +16,7 @@ use webignition\BasilCompilableSourceFactory\Model\ClassSignature;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinition;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinitionInterface;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\FooMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectConstructor;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
@@ -78,7 +78,7 @@ class ClassDefinitionFactory
     {
         $setupBeforeClassBody = new Body([
             new Statement(
-                new FooMethodInvocation(
+                new MethodInvocation(
                     methodName: 'setClientManager',
                     arguments: new MethodArguments(
                         [
@@ -94,7 +94,7 @@ class ClassDefinitionFactory
                 ),
             ),
             new Statement(
-                new FooMethodInvocation(
+                new MethodInvocation(
                     methodName: 'setUpBeforeClass',
                     arguments: new MethodArguments(),
                     mightThrow: true,
@@ -102,7 +102,7 @@ class ClassDefinitionFactory
                 )
             ),
             new Statement(
-                new FooMethodInvocation(
+                new MethodInvocation(
                     methodName: 'request',
                     arguments: new MethodArguments(
                         $this->argumentFactory->create('GET', $test->getUrl())

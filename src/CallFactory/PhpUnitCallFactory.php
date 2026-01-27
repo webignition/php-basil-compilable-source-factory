@@ -11,7 +11,7 @@ use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\FooMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocationInterface;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
@@ -35,7 +35,7 @@ readonly class PhpUnitCallFactory
         MethodArgumentsInterface $arguments,
         bool $mightThrow,
     ): MethodInvocationInterface {
-        return new FooMethodInvocation(
+        return new MethodInvocation(
             methodName: $methodName,
             arguments: $arguments,
             mightThrow: $mightThrow,
@@ -73,7 +73,7 @@ readonly class PhpUnitCallFactory
             $messageFactoryArgumentExpressions[] = $this->argumentFactory->createSingular($expression);
         }
 
-        $messageFactoryCall = new FooMethodInvocation(
+        $messageFactoryCall = new MethodInvocation(
             methodName: 'createAssertionMessage',
             arguments: new MethodArguments($messageFactoryArgumentExpressions)
                 ->withFormat(MethodArgumentsInterface::FORMAT_STACKED),
@@ -107,7 +107,7 @@ readonly class PhpUnitCallFactory
             $statementStage->name
         );
 
-        $failureMessageFactoryCall = new FooMethodInvocation(
+        $failureMessageFactoryCall = new MethodInvocation(
             methodName: 'createFailureMessage',
             arguments: new MethodArguments([
                 $this->argumentFactory->createSingular($serializedStatement),

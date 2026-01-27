@@ -12,7 +12,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\FooMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
@@ -47,7 +47,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                 'expression' => new ArrayExpression([
                     new ArrayPair(
                         'key3',
-                        new FooMethodInvocation(
+                        new MethodInvocation(
                             methodName: 'methodName',
                             arguments: new MethodArguments(),
                             mightThrow: false,
@@ -103,7 +103,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                     ),
                     new ArrayPair(
                         'key3',
-                        new FooMethodInvocation(
+                        new MethodInvocation(
                             methodName: 'methodName',
                             arguments: new MethodArguments(),
                             mightThrow: false,
@@ -242,7 +242,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         new ArrayExpression([
                             new ArrayPair(
                                 'key1',
-                                new FooMethodInvocation(
+                                new MethodInvocation(
                                     methodName: 'methodName',
                                     arguments: new MethodArguments(),
                                     mightThrow: false,
@@ -397,7 +397,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
             'single data set with ObjectMethodInvocation value' => [
                 'expression' => ArrayExpression::fromArray([
                     'data-set-one' => [
-                        'key1' => new FooMethodInvocation(
+                        'key1' => new MethodInvocation(
                             methodName: 'methodName',
                             arguments: new MethodArguments(),
                             mightThrow: false,
@@ -411,7 +411,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         new ArrayExpression([
                             new ArrayPair(
                                 'key1',
-                                new FooMethodInvocation(
+                                new MethodInvocation(
                                     methodName: 'methodName',
                                     arguments: new MethodArguments(),
                                     mightThrow: false,
@@ -441,7 +441,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
             ],
             'array with nested array' => [
                 'expression' => ArrayExpression::fromArray([
-                    'name' => new FooMethodInvocation(
+                    'name' => new MethodInvocation(
                         methodName: 'dataName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
@@ -455,7 +455,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                 'expectedExpression' => new ArrayExpression([
                     new ArrayPair(
                         'name',
-                        new FooMethodInvocation(
+                        new MethodInvocation(
                             methodName: 'dataName',
                             arguments: new MethodArguments(),
                             mightThrow: false,

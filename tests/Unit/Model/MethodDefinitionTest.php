@@ -17,7 +17,7 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinition;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinitionInterface;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\FooMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
@@ -107,7 +107,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
             'lines with metadata without data provider attribute' => [
                 'methodDefinition' => new MethodDefinition('name', new Body([
                     new Statement(
-                        new FooMethodInvocation(
+                        new MethodInvocation(
                             methodName: 'methodName',
                             arguments: new MethodArguments(),
                             mightThrow: false,
@@ -117,7 +117,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                     new Statement(
                         new AssignmentExpression(
                             Property::asVariable('variable'),
-                            new FooMethodInvocation(
+                            new MethodInvocation(
                                 methodName: 'methodName',
                                 arguments: new MethodArguments(),
                                 mightThrow: false,
@@ -134,7 +134,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
             'lines with metadata with data provider attribute' => [
                 'methodDefinition' => new MethodDefinition('name', new Body([
                     new Statement(
-                        new FooMethodInvocation(
+                        new MethodInvocation(
                             methodName: 'methodName',
                             arguments: new MethodArguments(),
                             mightThrow: false,
@@ -144,7 +144,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                     new Statement(
                         new AssignmentExpression(
                             Property::asVariable('variable'),
-                            new FooMethodInvocation(
+                            new MethodInvocation(
                                 methodName: 'methodName',
                                 arguments: new MethodArguments(),
                                 mightThrow: false,
@@ -285,7 +285,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                         new Statement(
                             new AssignmentExpression(
                                 Property::asVariable('value'),
-                                new FooMethodInvocation(
+                                new MethodInvocation(
                                     methodName: 'methodName',
                                     arguments: new MethodArguments([
                                         new LiteralExpression('$x'),

@@ -10,7 +10,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterfac
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\FooMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
@@ -42,7 +42,7 @@ class StatementTest extends AbstractResolvableTestCase
                 ),
             ],
             'method invocation' => [
-                'expression' => new FooMethodInvocation(
+                'expression' => new MethodInvocation(
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
@@ -50,7 +50,7 @@ class StatementTest extends AbstractResolvableTestCase
                 'expectedMetadata' => new Metadata(),
             ],
             'object method invocation' => [
-                'expression' => new FooMethodInvocation(
+                'expression' => new MethodInvocation(
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
@@ -85,7 +85,7 @@ class StatementTest extends AbstractResolvableTestCase
             ],
             'statement encapsulating method invocation' => [
                 'statement' => new Statement(
-                    new FooMethodInvocation(
+                    new MethodInvocation(
                         methodName: 'methodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
@@ -95,7 +95,7 @@ class StatementTest extends AbstractResolvableTestCase
             ],
             'statement encapsulating object method invocation' => [
                 'statement' => new Statement(
-                    new FooMethodInvocation(
+                    new MethodInvocation(
                         methodName: 'methodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,

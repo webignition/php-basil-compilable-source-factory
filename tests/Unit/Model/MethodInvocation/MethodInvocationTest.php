@@ -12,15 +12,15 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\FooMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
-class FooMethodInvocationTest extends AbstractResolvableTestCase
+class MethodInvocationTest extends AbstractResolvableTestCase
 {
     #[DataProvider('getMetadataDataProvider')]
-    public function testGetMetadata(FooMethodInvocation $methodInvocation, Metadata $expected): void
+    public function testGetMetadata(MethodInvocation $methodInvocation, Metadata $expected): void
     {
         self::assertEquals($expected, $methodInvocation->getMetadata());
     }
@@ -32,7 +32,7 @@ class FooMethodInvocationTest extends AbstractResolvableTestCase
     {
         return [
             'no parent, no arguments' => [
-                'methodInvocation' => new FooMethodInvocation(
+                'methodInvocation' => new MethodInvocation(
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
@@ -40,7 +40,7 @@ class FooMethodInvocationTest extends AbstractResolvableTestCase
                 'expected' => new Metadata(),
             ],
             'no parent, has arguments, no arguments have metadata' => [
-                'methodInvocation' => new FooMethodInvocation(
+                'methodInvocation' => new MethodInvocation(
                     methodName: 'methodName',
                     arguments: new MethodArguments([
                         new LiteralExpression('"literal string"')
@@ -50,7 +50,7 @@ class FooMethodInvocationTest extends AbstractResolvableTestCase
                 'expected' => new Metadata(),
             ],
             'no parent, has arguments, arguments have metadata' => [
-                'methodInvocation' => new FooMethodInvocation(
+                'methodInvocation' => new MethodInvocation(
                     methodName: 'methodName',
                     arguments: new MethodArguments([
                         Property::asEnum(
@@ -71,7 +71,7 @@ class FooMethodInvocationTest extends AbstractResolvableTestCase
                 ),
             ],
             'has parent without metadata, no arguments' => [
-                'methodInvocation' => new FooMethodInvocation(
+                'methodInvocation' => new MethodInvocation(
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
@@ -80,11 +80,11 @@ class FooMethodInvocationTest extends AbstractResolvableTestCase
                 'expected' => new Metadata(),
             ],
             'has parent with metadata, no arguments' => [
-                'methodInvocation' => new FooMethodInvocation(
+                'methodInvocation' => new MethodInvocation(
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
-                    parent: new FooMethodInvocation(
+                    parent: new MethodInvocation(
                         methodName: 'parentMethodName',
                         arguments: new MethodArguments([
                             Property::asEnum(
@@ -106,7 +106,7 @@ class FooMethodInvocationTest extends AbstractResolvableTestCase
                 ),
             ],
             'has parent with metadata, has arguments with different metadata' => [
-                'methodInvocation' => new FooMethodInvocation(
+                'methodInvocation' => new MethodInvocation(
                     methodName: 'methodName',
                     arguments: new MethodArguments([
                         Property::asClassConstant(
@@ -116,7 +116,7 @@ class FooMethodInvocationTest extends AbstractResolvableTestCase
                         Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
                     ]),
                     mightThrow: false,
-                    parent: new FooMethodInvocation(
+                    parent: new MethodInvocation(
                         methodName: 'parentMethodName',
                         arguments: new MethodArguments([
                             Property::asEnum(
@@ -143,7 +143,7 @@ class FooMethodInvocationTest extends AbstractResolvableTestCase
     }
 
     #[DataProvider('renderDataProvider')]
-    public function testRender(FooMethodInvocation $methodInvocation, string $expected): void
+    public function testRender(MethodInvocation $methodInvocation, string $expected): void
     {
         self::assertRenderResolvable($expected, $methodInvocation);
     }
@@ -155,7 +155,7 @@ class FooMethodInvocationTest extends AbstractResolvableTestCase
     {
         return [
             'no parent, no arguments' => [
-                'methodInvocation' => new FooMethodInvocation(
+                'methodInvocation' => new MethodInvocation(
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
@@ -163,7 +163,7 @@ class FooMethodInvocationTest extends AbstractResolvableTestCase
                 'expected' => 'methodName()',
             ],
             'no parent, no arguments, error-suppressed' => [
-                'methodInvocation' => new FooMethodInvocation(
+                'methodInvocation' => new MethodInvocation(
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
@@ -171,7 +171,7 @@ class FooMethodInvocationTest extends AbstractResolvableTestCase
                 'expected' => '@methodName()',
             ],
             'no parent, has arguments, inline' => [
-                'methodInvocation' => new FooMethodInvocation(
+                'methodInvocation' => new MethodInvocation(
                     methodName: 'methodName',
                     arguments: new MethodArguments([
                         new LiteralExpression('1'),
@@ -182,7 +182,7 @@ class FooMethodInvocationTest extends AbstractResolvableTestCase
                 'expected' => "methodName(1, \\'single-quoted value\\')",
             ],
             'no parent, has arguments, stacked' => [
-                'methodInvocation' => new FooMethodInvocation(
+                'methodInvocation' => new MethodInvocation(
                     methodName: 'methodName',
                     arguments: new MethodArguments(
                         [
@@ -199,7 +199,7 @@ class FooMethodInvocationTest extends AbstractResolvableTestCase
                     . ')',
             ],
             'has dependency as parent, no arguments' => [
-                'methodInvocation' => new FooMethodInvocation(
+                'methodInvocation' => new MethodInvocation(
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
@@ -208,7 +208,7 @@ class FooMethodInvocationTest extends AbstractResolvableTestCase
                 'expected' => '{{ CLIENT }}->methodName()',
             ],
             'has dependency as parent, no arguments, error-suppressed' => [
-                'methodInvocation' => new FooMethodInvocation(
+                'methodInvocation' => new MethodInvocation(
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
@@ -217,7 +217,7 @@ class FooMethodInvocationTest extends AbstractResolvableTestCase
                 'expected' => '@{{ CLIENT }}->methodName()',
             ],
             'has static object as parent, no arguments' => [
-                'methodInvocation' => new FooMethodInvocation(
+                'methodInvocation' => new MethodInvocation(
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
@@ -226,7 +226,7 @@ class FooMethodInvocationTest extends AbstractResolvableTestCase
                 'expected' => 'parent::methodName()',
             ],
             'has dependency as parent, has arguments inline' => [
-                'methodInvocation' => new FooMethodInvocation(
+                'methodInvocation' => new MethodInvocation(
                     methodName: 'methodName',
                     arguments: new MethodArguments([
                         new LiteralExpression('1'),
@@ -240,7 +240,7 @@ class FooMethodInvocationTest extends AbstractResolvableTestCase
                     EOD
             ],
             'has dependency as parent,has arguments, stacked' => [
-                'methodInvocation' => new FooMethodInvocation(
+                'methodInvocation' => new MethodInvocation(
                     methodName: 'methodName',
                     arguments: new MethodArguments(
                         [
@@ -260,7 +260,7 @@ class FooMethodInvocationTest extends AbstractResolvableTestCase
                     EOD
             ],
             'variable name as parent' => [
-                'methodInvocation' => new FooMethodInvocation(
+                'methodInvocation' => new MethodInvocation(
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
@@ -269,11 +269,11 @@ class FooMethodInvocationTest extends AbstractResolvableTestCase
                 'expected' => '$object->methodName()',
             ],
             'method invocation as parent' => [
-                'methodInvocation' => new FooMethodInvocation(
+                'methodInvocation' => new MethodInvocation(
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
-                    parent: new FooMethodInvocation(
+                    parent: new MethodInvocation(
                         methodName: 'parentMethodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
@@ -282,11 +282,11 @@ class FooMethodInvocationTest extends AbstractResolvableTestCase
                 'expected' => 'parentMethodName()->methodName()',
             ],
             'object returned from object method call' => [
-                'methodInvocation' => new FooMethodInvocation(
+                'methodInvocation' => new MethodInvocation(
                     methodName: 'outerMethodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
-                    parent: new FooMethodInvocation(
+                    parent: new MethodInvocation(
                         methodName: 'innerMethodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,

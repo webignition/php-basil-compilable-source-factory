@@ -13,7 +13,7 @@ use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\FooMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilModels\Model\Statement\Action\ActionInterface;
@@ -67,7 +67,7 @@ class InteractionActionHandler implements StatementHandlerInterface
         return new StatementHandlerComponents(
             new Body([
                 new Statement(
-                    new FooMethodInvocation(
+                    new MethodInvocation(
                         methodName: $statement->getType(),
                         arguments: new MethodArguments(),
                         mightThrow: true,

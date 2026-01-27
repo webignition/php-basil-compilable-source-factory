@@ -11,7 +11,7 @@ use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\FooMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 
 class PropertyTest extends AbstractResolvableTestCase
@@ -75,7 +75,7 @@ class PropertyTest extends AbstractResolvableTestCase
             'method invocation object property access, no alias' => [
                 'property' => new Property(
                     'property',
-                    new FooMethodInvocation(
+                    new MethodInvocation(
                         'methodName',
                         new MethodArguments(),
                         false,

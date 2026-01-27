@@ -13,7 +13,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpressi
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinition;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\FooMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
@@ -52,7 +52,7 @@ class ClassBodyTest extends AbstractResolvableTestCase
                         new Statement(
                             new AssignmentExpression(
                                 Property::asVariable('statement'),
-                                new FooMethodInvocation(
+                                new MethodInvocation(
                                     methodName: 'createAction',
                                     arguments: new MethodArguments([
                                         new LiteralExpression('\'$"a" exists\''),
@@ -74,7 +74,7 @@ class ClassBodyTest extends AbstractResolvableTestCase
                         new Statement(
                             new AssignmentExpression(
                                 Property::asVariable('statement'),
-                                new FooMethodInvocation(
+                                new MethodInvocation(
                                     methodName: 'createAction',
                                     arguments: new MethodArguments([
                                         new LiteralExpression('\'$"b" exists\''),
@@ -116,7 +116,7 @@ class ClassBodyTest extends AbstractResolvableTestCase
                                 new Statement(
                                     new AssignmentExpression(
                                         Property::asVariable('statement'),
-                                        new FooMethodInvocation(
+                                        new MethodInvocation(
                                             methodName: 'createAction',
                                             arguments: new MethodArguments([
                                                 new LiteralExpression('\'$"a" exists\''),
@@ -157,7 +157,7 @@ class ClassBodyTest extends AbstractResolvableTestCase
                         new Statement(
                             new AssignmentExpression(
                                 Property::asVariable('statement'),
-                                new FooMethodInvocation(
+                                new MethodInvocation(
                                     methodName: 'createAction',
                                     arguments: new MethodArguments([
                                         new LiteralExpression('\'$"b" exists\''),

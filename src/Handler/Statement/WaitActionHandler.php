@@ -15,7 +15,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\NullCoalescerExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\TernaryExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\FooMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
@@ -60,7 +60,7 @@ class WaitActionHandler implements StatementHandlerInterface
         $durationAccessor = $this->valueAccessorFactory->create($duration);
         $durationVariable = Property::asVariable('duration');
 
-        $sleepInvocation = new FooMethodInvocation(
+        $sleepInvocation = new MethodInvocation(
             methodName: 'usleep',
             arguments: new MethodArguments(
                 [

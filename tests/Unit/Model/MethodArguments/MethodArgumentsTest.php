@@ -19,7 +19,7 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\FooMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
@@ -77,7 +77,7 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
             ],
             'has metadata' => [
                 'arguments' => [
-                    new FooMethodInvocation(
+                    new MethodInvocation(
                         methodName: 'staticMethodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
@@ -141,10 +141,10 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
             'indent stacked multi-line arguments' => [
                 'arguments' => new MethodArguments(
                     [
-                        new FooMethodInvocation(
+                        new MethodInvocation(
                             methodName: 'find',
                             arguments: new MethodArguments([
-                                new FooMethodInvocation(
+                                new MethodInvocation(
                                     methodName: 'fromJson',
                                     arguments: new MethodArguments([
                                         new LiteralExpression(
@@ -194,7 +194,7 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                 'arguments' => new MethodArguments(
                     [
                         ArrayExpression::fromArray([
-                            'name' => new FooMethodInvocation(
+                            'name' => new MethodInvocation(
                                 methodName: 'dataName',
                                 arguments: new MethodArguments(),
                                 mightThrow: false,

@@ -16,7 +16,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinition;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinitionInterface;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\FooMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectConstructor;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
@@ -28,7 +28,7 @@ class MethodDefinitionFactory
 {
     public static function createSetUpBeforeClassMethodDefinition(string $fixture): MethodDefinitionInterface
     {
-        $requestBaseUri = new FooMethodInvocation(
+        $requestBaseUri = new MethodInvocation(
             methodName: 'getBaseUri',
             arguments: new MethodArguments(),
             mightThrow: false,
@@ -44,7 +44,7 @@ class MethodDefinitionFactory
 
         $body = new Body([
             new Statement(
-                new FooMethodInvocation(
+                new MethodInvocation(
                     methodName: 'setClientManager',
                     arguments: new MethodArguments([
                         new ObjectConstructor(
@@ -60,7 +60,7 @@ class MethodDefinitionFactory
             new SingleLineComment('Test harness lines'),
             new Statement(new LiteralExpression('parent::setUpBeforeClass()')),
             new Statement(
-                new FooMethodInvocation(
+                new MethodInvocation(
                     methodName: 'request',
                     arguments: new MethodArguments($argumentFactory->create('GET', $requestUriExpression)),
                     mightThrow: false,

@@ -18,7 +18,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterfac
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ReturnExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\FooMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilValueTypeIdentifier\ValueTypeIdentifier;
@@ -76,7 +76,7 @@ class ScalarValueHandler
             new Statement(
                 new AssignmentExpression(
                     $webDriverDimensionVariable,
-                    new FooMethodInvocation(
+                    new MethodInvocation(
                         methodName: 'getWebDriver()->manage()->window()->getSize',
                         arguments: new MethodArguments(),
                         mightThrow: true,
@@ -89,7 +89,7 @@ class ScalarValueHandler
                 new ReturnExpression(
                     new CompositeExpression([
                         new EncapsulatingCastExpression(
-                            new FooMethodInvocation(
+                            new MethodInvocation(
                                 methodName: 'getWidth',
                                 arguments: new MethodArguments(),
                                 mightThrow: true,
@@ -99,7 +99,7 @@ class ScalarValueHandler
                         ),
                         new LiteralExpression(' . \'x\' . '),
                         new EncapsulatingCastExpression(
-                            new FooMethodInvocation(
+                            new MethodInvocation(
                                 methodName: 'getHeight',
                                 arguments: new MethodArguments(),
                                 mightThrow: true,
@@ -139,7 +139,7 @@ class ScalarValueHandler
         $methodName = $methodNameMap[$property] ?? null;
 
         if (is_string($methodName)) {
-            return new FooMethodInvocation(
+            return new MethodInvocation(
                 methodName: $methodName,
                 arguments: new MethodArguments(),
                 mightThrow: true,

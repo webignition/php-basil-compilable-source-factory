@@ -12,7 +12,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpressi
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\FooMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
@@ -26,7 +26,7 @@ class TryBlockTest extends AbstractResolvableTestCase
             new Statement(
                 new AssignmentExpression(
                     Property::asDependency(DependencyName::PANTHER_CLIENT),
-                    new FooMethodInvocation(
+                    new MethodInvocation(
                         methodName: 'staticMethodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,

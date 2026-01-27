@@ -24,7 +24,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ReturnExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\FooMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
@@ -64,7 +64,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                     new Statement(
                         new AssignmentExpression(
                             Property::asVariable('variable'),
-                            new FooMethodInvocation(
+                            new MethodInvocation(
                                 methodName: 'dependencyMethodName',
                                 arguments: new MethodArguments(),
                                 mightThrow: false,
@@ -76,7 +76,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                         new ReturnExpression(
                             new CompositeExpression([
                                 new CastExpression(
-                                    new FooMethodInvocation(
+                                    new MethodInvocation(
                                         methodName: 'getWidth',
                                         arguments: new MethodArguments(),
                                         mightThrow: false,
@@ -86,7 +86,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                                 ),
                                 new LiteralExpression(' . \'x\' . '),
                                 new CastExpression(
-                                    new FooMethodInvocation(
+                                    new MethodInvocation(
                                         methodName: 'getHeight',
                                         arguments: new MethodArguments(),
                                         mightThrow: false,
@@ -178,7 +178,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                         new Statement(
                             new AssignmentExpression(
                                 Property::asVariable('variable'),
-                                new FooMethodInvocation(
+                                new MethodInvocation(
                                     methodName: 'dependencyMethodName',
                                     arguments: new MethodArguments(),
                                     mightThrow: false,
@@ -191,7 +191,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                             new ReturnExpression(
                                 new CompositeExpression([
                                     new EncapsulatingCastExpression(
-                                        new FooMethodInvocation(
+                                        new MethodInvocation(
                                             methodName: 'getWidth',
                                             arguments: new MethodArguments(),
                                             mightThrow: false,
@@ -201,7 +201,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                                     ),
                                     new LiteralExpression(' . \'x\' . '),
                                     new EncapsulatingCastExpression(
-                                        new FooMethodInvocation(
+                                        new MethodInvocation(
                                             methodName: 'getHeight',
                                             arguments: new MethodArguments(),
                                             mightThrow: false,

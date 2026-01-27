@@ -8,7 +8,7 @@ use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\FooMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilModels\Parser\ActionParser;
@@ -25,12 +25,12 @@ trait ReloadActionFunctionalDataProviderTrait
 
         $setupTeardownStatements = new Body([
             new Statement(
-                new FooMethodInvocation(
+                new MethodInvocation(
                     methodName: 'assertCount',
                     arguments: new MethodArguments(
                         $argumentFactory->create(
                             0,
-                            new FooMethodInvocation(
+                            new MethodInvocation(
                                 methodName: 'filter',
                                 arguments: new MethodArguments($argumentFactory->create('#hello')),
                                 mightThrow: true,
@@ -43,19 +43,19 @@ trait ReloadActionFunctionalDataProviderTrait
                 )
             ),
             new Statement(
-                new FooMethodInvocation(
+                new MethodInvocation(
                     methodName: 'usleep',
                     arguments: new MethodArguments($argumentFactory->create(100000)),
                     mightThrow: false,
                 )
             ),
             new Statement(
-                new FooMethodInvocation(
+                new MethodInvocation(
                     methodName: 'assertCount',
                     arguments: new MethodArguments(
                         $argumentFactory->create(
                             1,
-                            new FooMethodInvocation(
+                            new MethodInvocation(
                                 methodName: 'filter',
                                 arguments: new MethodArguments($argumentFactory->create('#hello')),
                                 mightThrow: true,
