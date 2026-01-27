@@ -81,9 +81,9 @@ class StepHandler
                     $bodySources[] = new EmptyLine();
                 }
 
-                $bodyBlock = $handlerComponents->getBody();
-                if ($statement instanceof ActionInterface) {
-                    $bodyBlock = $this->tryCatchBlockFactory->createForThrowable(
+                $body = $handlerComponents->getBody();
+                if ($body->mightThrow()) {
+                    $body = $this->tryCatchBlockFactory->createForThrowable(
                         $handlerComponents->getBody(),
                         Body::createFromExpressions([
                             $this->phpUnitCallFactory->createFailCall($statement, StatementStage::EXECUTE),
@@ -91,7 +91,7 @@ class StepHandler
                     );
                 }
 
-                $bodySources[] = $bodyBlock;
+                $bodySources[] = $body;
                 $bodySources[] = new EmptyLine();
             }
         } catch (UnsupportedStatementException $unsupportedStatementException) {
