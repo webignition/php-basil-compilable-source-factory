@@ -14,6 +14,7 @@ use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumen
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\FooMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
+use webignition\BasilCompilableSourceFactory\Model\StaticObject;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
 class FooMethodInvocationTest extends AbstractResolvableTestCase
@@ -142,9 +143,9 @@ class FooMethodInvocationTest extends AbstractResolvableTestCase
     }
 
     #[DataProvider('renderDataProvider')]
-    public function testRender(FooMethodInvocation $invocation, string $expectedString): void
+    public function testRender(FooMethodInvocation $methodInvocation, string $expected): void
     {
-        self::assertRenderResolvable($expectedString, $invocation);
+        self::assertRenderResolvable($expected, $methodInvocation);
     }
 
     /**
@@ -153,24 +154,24 @@ class FooMethodInvocationTest extends AbstractResolvableTestCase
     public static function renderDataProvider(): array
     {
         return [
-            'no arguments' => [
-                'invocation' => new FooMethodInvocation(
+            'no parent, no arguments' => [
+                'methodInvocation' => new FooMethodInvocation(
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
                 ),
-                'expectedString' => 'methodName()',
+                'expected' => 'methodName()',
             ],
-            'no arguments, error-suppressed' => [
-                'invocation' => new FooMethodInvocation(
+            'no parent, no arguments, error-suppressed' => [
+                'methodInvocation' => new FooMethodInvocation(
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
                 )->setIsErrorSuppressed(),
-                'expectedString' => '@methodName()',
+                'expected' => '@methodName()',
             ],
-            'has arguments, inline' => [
-                'invocation' => new FooMethodInvocation(
+            'no parent, has arguments, inline' => [
+                'methodInvocation' => new FooMethodInvocation(
                     methodName: 'methodName',
                     arguments: new MethodArguments([
                         new LiteralExpression('1'),
@@ -178,10 +179,10 @@ class FooMethodInvocationTest extends AbstractResolvableTestCase
                     ]),
                     mightThrow: false,
                 ),
-                'expectedString' => "methodName(1, \\'single-quoted value\\')",
+                'expected' => "methodName(1, \\'single-quoted value\\')",
             ],
-            'has arguments, stacked' => [
-                'invocation' => new FooMethodInvocation(
+            'no parent, has arguments, stacked' => [
+                'methodInvocation' => new FooMethodInvocation(
                     methodName: 'methodName',
                     arguments: new MethodArguments(
                         [
@@ -192,10 +193,107 @@ class FooMethodInvocationTest extends AbstractResolvableTestCase
                     ),
                     mightThrow: false,
                 ),
-                'expectedString' => "methodName(\n"
+                'expected' => "methodName(\n"
                     . "    1,\n"
                     . "    \\'single-quoted value\\',\n"
                     . ')',
+            ],
+            'has dependency as parent, no arguments' => [
+                'methodInvocation' => new FooMethodInvocation(
+                    methodName: 'methodName',
+                    arguments: new MethodArguments(),
+                    mightThrow: false,
+                    parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
+                ),
+                'expected' => '{{ CLIENT }}->methodName()',
+            ],
+            'has dependency as parent, no arguments, error-suppressed' => [
+                'methodInvocation' => new FooMethodInvocation(
+                    methodName: 'methodName',
+                    arguments: new MethodArguments(),
+                    mightThrow: false,
+                    parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
+                )->setIsErrorSuppressed(),
+                'expected' => '@{{ CLIENT }}->methodName()',
+            ],
+            'has static object as parent, no arguments' => [
+                'methodInvocation' => new FooMethodInvocation(
+                    methodName: 'methodName',
+                    arguments: new MethodArguments(),
+                    mightThrow: false,
+                    parent: new StaticObject('parent'),
+                ),
+                'expected' => 'parent::methodName()',
+            ],
+            'has dependency as parent, has arguments inline' => [
+                'methodInvocation' => new FooMethodInvocation(
+                    methodName: 'methodName',
+                    arguments: new MethodArguments([
+                        new LiteralExpression('1'),
+                        new LiteralExpression("\\'single-quoted value\\'"),
+                    ]),
+                    mightThrow: false,
+                    parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
+                ),
+                'expected' => <<<'EOD'
+                    {{ CLIENT }}->methodName(1, \'single-quoted value\')
+                    EOD
+            ],
+            'has dependency as parent,has arguments, stacked' => [
+                'methodInvocation' => new FooMethodInvocation(
+                    methodName: 'methodName',
+                    arguments: new MethodArguments(
+                        [
+                            new LiteralExpression('1'),
+                            new LiteralExpression("\\'single-quoted value\\'"),
+                        ],
+                        MethodArgumentsInterface::FORMAT_STACKED,
+                    ),
+                    mightThrow: false,
+                    parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
+                ),
+                'expected' => <<<'EOD'
+                    {{ CLIENT }}->methodName(
+                        1,
+                        \'single-quoted value\',
+                    )
+                    EOD
+            ],
+            'variable name as parent' => [
+                'methodInvocation' => new FooMethodInvocation(
+                    methodName: 'methodName',
+                    arguments: new MethodArguments(),
+                    mightThrow: false,
+                    parent: Property::asVariable('object'),
+                ),
+                'expected' => '$object->methodName()',
+            ],
+            'method invocation as parent' => [
+                'methodInvocation' => new FooMethodInvocation(
+                    methodName: 'methodName',
+                    arguments: new MethodArguments(),
+                    mightThrow: false,
+                    parent: new FooMethodInvocation(
+                        methodName: 'parentMethodName',
+                        arguments: new MethodArguments(),
+                        mightThrow: false,
+                    ),
+                ),
+                'expected' => 'parentMethodName()->methodName()',
+            ],
+            'object returned from object method call' => [
+                'methodInvocation' => new FooMethodInvocation(
+                    methodName: 'outerMethodName',
+                    arguments: new MethodArguments(),
+                    mightThrow: false,
+                    parent: new FooMethodInvocation(
+                        methodName: 'innerMethodName',
+                        arguments: new MethodArguments(),
+                        mightThrow: false,
+                        parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
+                    ),
+                ),
+                'expected' => '{{ CLIENT }}->innerMethodName()->outerMethodName()',
             ],
         ];
     }
