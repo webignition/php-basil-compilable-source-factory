@@ -9,7 +9,6 @@ use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
-use webignition\BasilCompilableSourceFactory\Model\Expression\ObjectConstant;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocationInterface;
@@ -103,7 +102,7 @@ readonly class PhpUnitCallFactory
         $serializedStatement = (string) json_encode($statement, JSON_PRETTY_PRINT);
         $serializedStatement = addcslashes($serializedStatement, "'");
 
-        $statementStageEnum = new ObjectConstant(
+        $statementStageEnum = Property::asEnum(
             new ClassName(StatementStage::class),
             $statementStage->name
         );
