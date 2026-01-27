@@ -20,7 +20,6 @@ class Property implements ExpressionInterface, IsAssigneeInterface
     public function __construct(
         private readonly string $name,
         private readonly ?ExpressionInterface $parent = null,
-        private readonly bool $isDependency = false,
     ) {}
 
     /**
@@ -33,7 +32,7 @@ class Property implements ExpressionInterface, IsAssigneeInterface
 
     public static function asDependency(DependencyName $name): self
     {
-        return new Property($name->value)->setIsDependency();
+        return new Property($name->value);
     }
 
     /**
@@ -88,11 +87,13 @@ class Property implements ExpressionInterface, IsAssigneeInterface
 
     public function getTemplate(): string
     {
-        if (null === $this->parent && false === $this->isDependency) {
+        $isDependency = $this->getIsDependency();
+
+        if (null === $this->parent && false === $isDependency) {
             return '${{ name }}';
         }
 
-        if (null === $this->parent && true === $this->isDependency) {
+        if (null === $this->parent && true === $isDependency) {
             return '{{ {{ name }} }}';
         }
 
@@ -113,18 +114,9 @@ class Property implements ExpressionInterface, IsAssigneeInterface
         return $context;
     }
 
-    public function setIsDependency(): Property
-    {
-        return new Property(
-            $this->name,
-            $this->parent,
-            true,
-        );
-    }
-
     public function getIsDependency(): bool
     {
-        return $this->isDependency;
+        return $this->getDependencyName() instanceof DependencyName;
     }
 
     public function getName(): string
