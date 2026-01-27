@@ -11,12 +11,10 @@ use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryBlock;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryCatchBlock;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentInterface;
-use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CatchExpression;
-use webignition\BasilCompilableSourceFactory\Model\Expression\ClosureExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
@@ -209,39 +207,6 @@ class BodyTest extends AbstractResolvableTestCase
                 'expectedString' => '// comment 1' . "\n"
                     . "\n"
                     . '// comment 2',
-            ],
-        ];
-    }
-
-    #[DataProvider('createEnclosingBodyDataProvider')]
-    public function testCreateEnclosingBody(BodyInterface $body, BodyInterface $expectedBody): void
-    {
-        $this->assertEquals($expectedBody, Body::createEnclosingBody($body));
-    }
-
-    /**
-     * @return array<mixed>
-     */
-    public static function createEnclosingBodyDataProvider(): array
-    {
-        return [
-            'enclose a code block' => [
-                'body' => new Body([
-                    new Statement(
-                        new LiteralExpression('"literal')
-                    ),
-                ]),
-                'expectedBody' => new Body([
-                    new Statement(
-                        new ClosureExpression(
-                            new Body([
-                                new Statement(
-                                    new LiteralExpression('"literal')
-                                ),
-                            ])
-                        )
-                    ),
-                ]),
             ],
         ];
     }

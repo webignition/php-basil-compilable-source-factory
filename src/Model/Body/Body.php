@@ -6,7 +6,6 @@ namespace webignition\BasilCompilableSourceFactory\Model\Body;
 
 use webignition\BasilCompilableSourceFactory\Model\DeferredResolvableCollectionTrait;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
-use webignition\BasilCompilableSourceFactory\Model\Expression\ClosureExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\HasMetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\IsAssigneeInterface;
@@ -37,15 +36,6 @@ class Body implements BodyInterface, ResolvableCollectionInterface
     {
         $this->content = $this->filterContent($content);
         $this->metadata = $this->buildMetadata();
-    }
-
-    public static function createEnclosingBody(BodyInterface $body): self
-    {
-        return new Body([
-            new Statement(
-                new ClosureExpression($body)
-            ),
-        ]);
     }
 
     /**
