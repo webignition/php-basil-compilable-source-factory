@@ -10,27 +10,33 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 
-class ObjectConstructor extends AbstractMethodInvocationEncapsulator
+class ObjectConstructor implements InvocableInterface
 {
     use IsNotStaticTrait;
 
-    private const RENDER_TEMPLATE = 'new {{ method_invocation }}';
+    private MethodInvocation $invocation;
 
-    private ClassName $class;
+    private MetadataInterface $metadata;
 
     public function __construct(
         ClassName $class,
         MethodArgumentsInterface $arguments,
-        bool $mightThrow
+        bool $mightThrow,
     ) {
-        parent::__construct($class->renderClassName(), $arguments, $mightThrow);
+        $this->invocation = new MethodInvocation($class->renderClassName(), $arguments, $mightThrow);
+        $this->metadata = $this->invocation->getMetadata()->merge(
+            new Metadata(classNames: [$class->getClassName()])
+        );
+    }
 
-        $this->class = $class;
+    public function getMetadata(): MetadataInterface
+    {
+        return $this->metadata;
     }
 
     public function getTemplate(): string
     {
-        return self::RENDER_TEMPLATE;
+        return 'new {{ method_invocation }}';
     }
 
     public function getContext(): array
@@ -40,8 +46,8 @@ class ObjectConstructor extends AbstractMethodInvocationEncapsulator
         ];
     }
 
-    protected function getAdditionalMetadata(): MetadataInterface
+    public function mightThrow(): bool
     {
-        return new Metadata(classNames: [$this->class->getClassName()]);
+        return $this->invocation->mightThrow();
     }
 }

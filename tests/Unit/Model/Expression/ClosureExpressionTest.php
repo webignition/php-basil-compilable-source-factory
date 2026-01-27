@@ -24,7 +24,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ReturnExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
@@ -64,11 +64,11 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                     new Statement(
                         new AssignmentExpression(
                             Property::asVariable('variable'),
-                            new ObjectMethodInvocation(
-                                object: Property::asDependency(DependencyName::PANTHER_CLIENT),
+                            new MethodInvocation(
                                 methodName: 'dependencyMethodName',
                                 arguments: new MethodArguments(),
                                 mightThrow: false,
+                                parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                             )
                         )
                     ),
@@ -76,21 +76,21 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                         new ReturnExpression(
                             new CompositeExpression([
                                 new CastExpression(
-                                    new ObjectMethodInvocation(
-                                        object: Property::asVariable('variable'),
+                                    new MethodInvocation(
                                         methodName: 'getWidth',
                                         arguments: new MethodArguments(),
                                         mightThrow: false,
+                                        parent: Property::asVariable('variable'),
                                     ),
                                     'string'
                                 ),
                                 new LiteralExpression(' . \'x\' . '),
                                 new CastExpression(
-                                    new ObjectMethodInvocation(
-                                        object: Property::asVariable('variable'),
+                                    new MethodInvocation(
                                         methodName: 'getHeight',
                                         arguments: new MethodArguments(),
                                         mightThrow: false,
+                                        parent: Property::asVariable('variable'),
                                     ),
                                     'string'
                                 ),
@@ -178,11 +178,11 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                         new Statement(
                             new AssignmentExpression(
                                 Property::asVariable('variable'),
-                                new ObjectMethodInvocation(
-                                    object: Property::asDependency(DependencyName::PANTHER_CLIENT),
+                                new MethodInvocation(
                                     methodName: 'dependencyMethodName',
                                     arguments: new MethodArguments(),
                                     mightThrow: false,
+                                    parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                                 )
                             )
                         ),
@@ -191,21 +191,21 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                             new ReturnExpression(
                                 new CompositeExpression([
                                     new EncapsulatingCastExpression(
-                                        new ObjectMethodInvocation(
-                                            object: Property::asVariable('variable'),
+                                        new MethodInvocation(
                                             methodName: 'getWidth',
                                             arguments: new MethodArguments(),
                                             mightThrow: false,
+                                            parent: Property::asVariable('variable'),
                                         ),
                                         'string'
                                     ),
                                     new LiteralExpression(' . \'x\' . '),
                                     new EncapsulatingCastExpression(
-                                        new ObjectMethodInvocation(
-                                            object: Property::asVariable('variable'),
+                                        new MethodInvocation(
                                             methodName: 'getHeight',
                                             arguments: new MethodArguments(),
                                             mightThrow: false,
+                                            parent: Property::asVariable('variable'),
                                         ),
                                         'string'
                                     ),

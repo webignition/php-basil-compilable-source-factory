@@ -13,7 +13,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpressi
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinition;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
@@ -52,13 +52,13 @@ class ClassBodyTest extends AbstractResolvableTestCase
                         new Statement(
                             new AssignmentExpression(
                                 Property::asVariable('statement'),
-                                new ObjectMethodInvocation(
-                                    object: new StaticObject('Acme\Statement'),
+                                new MethodInvocation(
                                     methodName: 'createAction',
                                     arguments: new MethodArguments([
                                         new LiteralExpression('\'$"a" exists\''),
                                     ]),
                                     mightThrow: false,
+                                    parent: new StaticObject('Acme\Statement'),
                                 )
                             )
                         ),
@@ -74,13 +74,13 @@ class ClassBodyTest extends AbstractResolvableTestCase
                         new Statement(
                             new AssignmentExpression(
                                 Property::asVariable('statement'),
-                                new ObjectMethodInvocation(
-                                    object: new StaticObject('Acme\Statement'),
+                                new MethodInvocation(
                                     methodName: 'createAction',
                                     arguments: new MethodArguments([
                                         new LiteralExpression('\'$"b" exists\''),
                                     ]),
                                     mightThrow: false,
+                                    parent: new StaticObject('Acme\Statement'),
                                 )
                             )
                         ),
@@ -116,13 +116,13 @@ class ClassBodyTest extends AbstractResolvableTestCase
                                 new Statement(
                                     new AssignmentExpression(
                                         Property::asVariable('statement'),
-                                        new ObjectMethodInvocation(
-                                            object: new StaticObject('Acme\Statement'),
+                                        new MethodInvocation(
                                             methodName: 'createAction',
                                             arguments: new MethodArguments([
                                                 new LiteralExpression('\'$"a" exists\''),
                                             ]),
                                             mightThrow: false,
+                                            parent: new StaticObject('Acme\Statement'),
                                         )
                                     )
                                 ),
@@ -157,13 +157,13 @@ class ClassBodyTest extends AbstractResolvableTestCase
                         new Statement(
                             new AssignmentExpression(
                                 Property::asVariable('statement'),
-                                new ObjectMethodInvocation(
-                                    object: new StaticObject('Acme\Statement'),
+                                new MethodInvocation(
                                     methodName: 'createAction',
                                     arguments: new MethodArguments([
                                         new LiteralExpression('\'$"b" exists\''),
                                     ]),
                                     mightThrow: false,
+                                    parent: new StaticObject('Acme\Statement'),
                                 )
                             )
                         ),

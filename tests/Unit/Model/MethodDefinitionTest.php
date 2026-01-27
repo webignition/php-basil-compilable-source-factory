@@ -18,7 +18,6 @@ use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumen
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinition;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinitionInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
@@ -108,11 +107,11 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
             'lines with metadata without data provider attribute' => [
                 'methodDefinition' => new MethodDefinition('name', new Body([
                     new Statement(
-                        new ObjectMethodInvocation(
-                            object: Property::asDependency(DependencyName::PANTHER_CLIENT),
+                        new MethodInvocation(
                             methodName: 'methodName',
                             arguments: new MethodArguments(),
                             mightThrow: false,
+                            parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                         )
                     ),
                     new Statement(
@@ -135,11 +134,11 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
             'lines with metadata with data provider attribute' => [
                 'methodDefinition' => new MethodDefinition('name', new Body([
                     new Statement(
-                        new ObjectMethodInvocation(
-                            object: Property::asDependency(DependencyName::PANTHER_CLIENT),
+                        new MethodInvocation(
                             methodName: 'methodName',
                             arguments: new MethodArguments(),
                             mightThrow: false,
+                            parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                         )
                     ),
                     new Statement(
@@ -286,14 +285,14 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                         new Statement(
                             new AssignmentExpression(
                                 Property::asVariable('value'),
-                                new ObjectMethodInvocation(
-                                    object: Property::asDependency(DependencyName::PANTHER_CLIENT),
+                                new MethodInvocation(
                                     methodName: 'methodName',
                                     arguments: new MethodArguments([
                                         new LiteralExpression('$x'),
                                         new LiteralExpression('$y'),
                                     ]),
                                     mightThrow: false,
+                                    parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                                 )
                             )
                         ),

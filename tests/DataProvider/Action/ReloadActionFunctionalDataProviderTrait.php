@@ -9,7 +9,6 @@ use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilModels\Parser\ActionParser;
@@ -26,21 +25,21 @@ trait ReloadActionFunctionalDataProviderTrait
 
         $setupTeardownStatements = new Body([
             new Statement(
-                new ObjectMethodInvocation(
-                    object: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
+                new MethodInvocation(
                     methodName: 'assertCount',
                     arguments: new MethodArguments(
                         $argumentFactory->create(
                             0,
-                            new ObjectMethodInvocation(
-                                object: Property::asDependency(DependencyName::PANTHER_CRAWLER),
+                            new MethodInvocation(
                                 methodName: 'filter',
                                 arguments: new MethodArguments($argumentFactory->create('#hello')),
                                 mightThrow: true,
+                                parent: Property::asDependency(DependencyName::PANTHER_CRAWLER),
                             ),
                         )
                     ),
                     mightThrow: false,
+                    parent: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
                 )
             ),
             new Statement(
@@ -51,21 +50,21 @@ trait ReloadActionFunctionalDataProviderTrait
                 )
             ),
             new Statement(
-                new ObjectMethodInvocation(
-                    object: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
+                new MethodInvocation(
                     methodName: 'assertCount',
                     arguments: new MethodArguments(
                         $argumentFactory->create(
                             1,
-                            new ObjectMethodInvocation(
-                                object: Property::asDependency(DependencyName::PANTHER_CRAWLER),
+                            new MethodInvocation(
                                 methodName: 'filter',
                                 arguments: new MethodArguments($argumentFactory->create('#hello')),
                                 mightThrow: true,
+                                parent: Property::asDependency(DependencyName::PANTHER_CRAWLER),
                             )
                         )
                     ),
                     mightThrow: false,
+                    parent: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
                 )
             ),
         ]);

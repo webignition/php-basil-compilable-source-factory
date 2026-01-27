@@ -12,7 +12,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
@@ -47,11 +47,11 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                 'expression' => new ArrayExpression([
                     new ArrayPair(
                         'key3',
-                        new ObjectMethodInvocation(
-                            object: Property::asDependency(DependencyName::PANTHER_CLIENT),
+                        new MethodInvocation(
                             methodName: 'methodName',
                             arguments: new MethodArguments(),
                             mightThrow: false,
+                            parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                         )
                     ),
                 ]),
@@ -103,11 +103,11 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                     ),
                     new ArrayPair(
                         'key3',
-                        new ObjectMethodInvocation(
-                            object: Property::asDependency(DependencyName::PANTHER_CLIENT),
+                        new MethodInvocation(
                             methodName: 'methodName',
                             arguments: new MethodArguments(),
                             mightThrow: false,
+                            parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                         )
                     ),
                 ]),
@@ -242,11 +242,11 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         new ArrayExpression([
                             new ArrayPair(
                                 'key1',
-                                new ObjectMethodInvocation(
-                                    object: Property::asDependency(DependencyName::PANTHER_CLIENT),
+                                new MethodInvocation(
                                     methodName: 'methodName',
                                     arguments: new MethodArguments(),
                                     mightThrow: false,
+                                    parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                                 )
                             ),
                         ])
@@ -397,11 +397,11 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
             'single data set with ObjectMethodInvocation value' => [
                 'expression' => ArrayExpression::fromArray([
                     'data-set-one' => [
-                        'key1' => new ObjectMethodInvocation(
-                            object: Property::asDependency(DependencyName::PANTHER_CLIENT),
+                        'key1' => new MethodInvocation(
                             methodName: 'methodName',
                             arguments: new MethodArguments(),
                             mightThrow: false,
+                            parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                         ),
                     ],
                 ]),
@@ -411,11 +411,11 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         new ArrayExpression([
                             new ArrayPair(
                                 'key1',
-                                new ObjectMethodInvocation(
-                                    object: Property::asDependency(DependencyName::PANTHER_CLIENT),
+                                new MethodInvocation(
                                     methodName: 'methodName',
                                     arguments: new MethodArguments(),
                                     mightThrow: false,
+                                    parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                                 )
                             ),
                         ])
@@ -441,11 +441,11 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
             ],
             'array with nested array' => [
                 'expression' => ArrayExpression::fromArray([
-                    'name' => new ObjectMethodInvocation(
-                        object: Property::asDependency(DependencyName::PANTHER_CLIENT),
+                    'name' => new MethodInvocation(
                         methodName: 'dataName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
+                        parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                     ),
                     'data' => [
                         'key1' => 'value1',
@@ -455,11 +455,11 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                 'expectedExpression' => new ArrayExpression([
                     new ArrayPair(
                         'name',
-                        new ObjectMethodInvocation(
-                            object: Property::asDependency(DependencyName::PANTHER_CLIENT),
+                        new MethodInvocation(
                             methodName: 'dataName',
                             arguments: new MethodArguments(),
                             mightThrow: false,
+                            parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                         )
                     ),
                     new ArrayPair(

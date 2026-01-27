@@ -11,8 +11,8 @@ use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocationInterface;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Statement\StatementInterface;
@@ -35,11 +35,11 @@ readonly class PhpUnitCallFactory
         MethodArgumentsInterface $arguments,
         bool $mightThrow,
     ): MethodInvocationInterface {
-        return new ObjectMethodInvocation(
-            object: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
+        return new MethodInvocation(
             methodName: $methodName,
             arguments: $arguments,
             mightThrow: $mightThrow,
+            parent: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
         );
     }
 
@@ -73,12 +73,12 @@ readonly class PhpUnitCallFactory
             $messageFactoryArgumentExpressions[] = $this->argumentFactory->createSingular($expression);
         }
 
-        $messageFactoryCall = new ObjectMethodInvocation(
-            object: Property::asDependency(DependencyName::MESSAGE_FACTORY),
+        $messageFactoryCall = new MethodInvocation(
             methodName: 'createAssertionMessage',
             arguments: new MethodArguments($messageFactoryArgumentExpressions)
                 ->withFormat(MethodArgumentsInterface::FORMAT_STACKED),
             mightThrow: false,
+            parent: Property::asDependency(DependencyName::MESSAGE_FACTORY),
         );
 
         $assertionCallArgumentExpressions = [];
@@ -107,15 +107,15 @@ readonly class PhpUnitCallFactory
             $statementStage->name
         );
 
-        $failureMessageFactoryCall = new ObjectMethodInvocation(
-            object: Property::asDependency(DependencyName::MESSAGE_FACTORY),
+        $failureMessageFactoryCall = new MethodInvocation(
             methodName: 'createFailureMessage',
             arguments: new MethodArguments([
                 $this->argumentFactory->createSingular($serializedStatement),
                 $this->argumentFactory->createSingular(Property::asVariable('exception')),
                 $this->argumentFactory->createSingular($statementStageEnum),
             ])->withFormat(MethodArgumentsInterface::FORMAT_STACKED),
-            mightThrow: false
+            mightThrow: false,
+            parent: Property::asDependency(DependencyName::MESSAGE_FACTORY),
         );
 
         return $this->createCall(

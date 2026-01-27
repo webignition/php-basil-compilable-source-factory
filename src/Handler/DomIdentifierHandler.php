@@ -14,7 +14,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ClosureExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ReturnExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 
@@ -64,11 +64,11 @@ class DomIdentifierHandler
             new EmptyLine(),
             new Statement(
                 new ReturnExpression(
-                    new ObjectMethodInvocation(
-                        object: $elementVariable,
+                    new MethodInvocation(
                         methodName: 'getAttribute',
                         arguments: new MethodArguments($this->argumentFactory->create($attributeName)),
                         mightThrow: true,
+                        parent: $elementVariable,
                     )
                 )
             ),
@@ -92,13 +92,13 @@ class DomIdentifierHandler
             new EmptyLine(),
             new Statement(
                 new ReturnExpression(
-                    new ObjectMethodInvocation(
-                        object: Property::asDependency(DependencyName::WEBDRIVER_ELEMENT_INSPECTOR),
+                    new MethodInvocation(
                         methodName: 'getValue',
                         arguments: new MethodArguments([
                             $elementVariable,
                         ]),
                         mightThrow: false,
+                        parent: Property::asDependency(DependencyName::WEBDRIVER_ELEMENT_INSPECTOR),
                     )
                 )
             )

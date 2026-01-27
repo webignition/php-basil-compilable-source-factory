@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\CallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 
 class DomCrawlerNavigatorCallFactory
@@ -39,11 +39,11 @@ class DomCrawlerNavigatorCallFactory
 
     private function createElementCall(string $methodName, ExpressionInterface $expression): ExpressionInterface
     {
-        return new ObjectMethodInvocation(
-            object: Property::asDependency(DependencyName::DOM_CRAWLER_NAVIGATOR),
+        return new MethodInvocation(
             methodName: $methodName,
             arguments: new MethodArguments([$expression]),
             mightThrow: true,
+            parent: Property::asDependency(DependencyName::DOM_CRAWLER_NAVIGATOR),
         );
     }
 }

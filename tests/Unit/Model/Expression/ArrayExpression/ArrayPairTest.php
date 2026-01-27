@@ -12,7 +12,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
@@ -40,11 +40,11 @@ class ArrayPairTest extends AbstractResolvableTestCase
             'has metadata' => [
                 'pair' => new ArrayPair(
                     '',
-                    new ObjectMethodInvocation(
-                        object: Property::asDependency(DependencyName::PANTHER_CLIENT),
+                    new MethodInvocation(
                         methodName: 'methodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
+                        parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                     )
                 ),
                 'expectedMetadata' => new Metadata(

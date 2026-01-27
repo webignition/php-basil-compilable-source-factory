@@ -13,7 +13,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ReturnExpression;
 use webignition\BasilCompilableSourceFactory\Model\IsAssigneeInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
@@ -25,21 +25,21 @@ class StatementFactory
         $argumentFactory = ArgumentFactory::createFactory();
 
         return new Statement(
-            new ObjectMethodInvocation(
-                object: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
+            new MethodInvocation(
                 methodName: 'assertSame',
                 arguments: new MethodArguments(
                     $argumentFactory->create(
                         $expectedTitle,
-                        new ObjectMethodInvocation(
-                            object: Property::asDependency(DependencyName::PANTHER_CLIENT),
+                        new MethodInvocation(
                             methodName: 'getTitle',
                             arguments: new MethodArguments(),
                             mightThrow: false,
+                            parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                         ),
                     )
                 ),
                 mightThrow: false,
+                parent: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
             )
         );
     }
@@ -58,21 +58,21 @@ class StatementFactory
                     new Statement(
                         new AssignmentExpression(
                             $elementVariable,
-                            new ObjectMethodInvocation(
-                                object: Property::asDependency(DependencyName::PANTHER_CRAWLER),
+                            new MethodInvocation(
                                 methodName: 'filter',
                                 arguments: new MethodArguments($argumentFactory->create($selector)),
                                 mightThrow: false,
+                                parent: Property::asDependency(DependencyName::PANTHER_CRAWLER),
                             )
                         )
                     ),
                     new Statement(
                         new ReturnExpression(
-                            new ObjectMethodInvocation(
-                                object: $elementVariable,
+                            new MethodInvocation(
                                 methodName: 'getElement',
                                 arguments: new MethodArguments($argumentFactory->create(0)),
                                 mightThrow: false,
+                                parent: $elementVariable,
                             )
                         )
                     ),
@@ -101,31 +101,31 @@ class StatementFactory
                 new Statement(
                     new AssignmentExpression(
                         $elementVariable,
-                        new ObjectMethodInvocation(
-                            object: Property::asDependency(DependencyName::PANTHER_CRAWLER),
+                        new MethodInvocation(
                             methodName: 'filter',
                             arguments: new MethodArguments($argumentFactory->create($selector)),
                             mightThrow: false,
+                            parent: Property::asDependency(DependencyName::PANTHER_CRAWLER),
                         )
                     )
                 ),
                 new Statement(
                     new AssignmentExpression(
                         $elementVariable,
-                        new ObjectMethodInvocation(
-                            object: $elementVariable,
+                        new MethodInvocation(
                             methodName: 'getElement',
                             arguments: new MethodArguments($argumentFactory->create(0)),
                             mightThrow: false,
+                            parent: $elementVariable,
                         )
                     )
                 ),
                 new Statement(
-                    new ObjectMethodInvocation(
-                        object: $elementVariable,
+                    new MethodInvocation(
                         methodName: $action,
                         arguments: new MethodArguments(),
                         mightThrow: false,
+                        parent: $elementVariable,
                     )
                 ),
             ]))
@@ -135,11 +135,11 @@ class StatementFactory
     public static function createClientAction(string $action): StatementInterface
     {
         return new Statement(
-            new ObjectMethodInvocation(
-                object: Property::asDependency(DependencyName::PANTHER_CLIENT),
+            new MethodInvocation(
                 methodName: $action,
                 arguments: new MethodArguments(),
                 mightThrow: false,
+                parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
             )
         );
     }
@@ -153,11 +153,11 @@ class StatementFactory
         return new Statement(
             new AssignmentExpression(
                 $placeholder,
-                new ObjectMethodInvocation(
-                    object: Property::asDependency(DependencyName::PANTHER_CRAWLER),
+                new MethodInvocation(
                     methodName: 'filter',
                     arguments: new MethodArguments($argumentFactory->create($selector)),
                     mightThrow: false,
+                    parent: Property::asDependency(DependencyName::PANTHER_CRAWLER),
                 )
             )
         );
@@ -166,13 +166,13 @@ class StatementFactory
     public static function createAssertFalse(string $actual): StatementInterface
     {
         return new Statement(
-            new ObjectMethodInvocation(
-                object: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
+            new MethodInvocation(
                 methodName: 'assertFalse',
                 arguments: new MethodArguments([
                     new LiteralExpression($actual)
                 ]),
                 mightThrow: false,
+                parent: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
             )
         );
     }
@@ -180,13 +180,13 @@ class StatementFactory
     public static function createAssertTrue(string $actual): StatementInterface
     {
         return new Statement(
-            new ObjectMethodInvocation(
-                object: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
+            new MethodInvocation(
                 methodName: 'assertTrue',
                 arguments: new MethodArguments([
                     new LiteralExpression($actual)
                 ]),
                 mightThrow: false,
+                parent: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
             )
         );
     }
@@ -207,14 +207,14 @@ class StatementFactory
         string $actual
     ): StatementInterface {
         return new Statement(
-            new ObjectMethodInvocation(
-                object: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
+            new MethodInvocation(
                 methodName: $methodName,
                 arguments: new MethodArguments([
                     new LiteralExpression($expected),
                     new LiteralExpression($actual)
                 ]),
                 mightThrow: false,
+                parent: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
             )
         );
     }

@@ -20,7 +20,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\NullCoalescerExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
@@ -116,8 +116,7 @@ class SetActionHandler implements StatementHandlerInterface
         $setValueCollectionVariable = Property::asVariable('setValueCollection');
         $setValueValueVariable = Property::asVariable('setValueValue');
 
-        $mutationInvocation = new ObjectMethodInvocation(
-            object: Property::asDependency(DependencyName::WEBDRIVER_ELEMENT_MUTATOR),
+        $mutationInvocation = new MethodInvocation(
             methodName: 'setValue',
             arguments: new MethodArguments(
                 [
@@ -127,6 +126,7 @@ class SetActionHandler implements StatementHandlerInterface
                 MethodArgumentsInterface::FORMAT_INLINE
             ),
             mightThrow: true,
+            parent: Property::asDependency(DependencyName::WEBDRIVER_ELEMENT_MUTATOR),
         );
 
         return new StatementHandlerComponents(
