@@ -17,9 +17,13 @@ use webignition\BasilCompilableSourceFactory\Handler\Step\DerivedAssertionFactor
 use webignition\BasilCompilableSourceFactory\Handler\Step\StatementBlockFactory;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
+use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
+use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
+use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTestCase;
 use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
 use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
@@ -150,7 +154,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     ],
                 ),
             ],
-            'single click action, has setup' => [
+            'single click action, has setup, setup will not throw' => [
                 'step' => $stepParser->parse([
                     'actions' => [
                         'click $".selector"',
@@ -211,8 +215,112 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     // StatementHandler::handle($".selector" exists)
 
                     // StatementBlockFactory::create(click $".selector")
+                    // StatementHandler::handle(click $".selector")::setup
+
                     try {
-                        // StatementHandler::handle(click $".selector")::setup
+                        // StatementHandler::handle(click $".selector")::body
+                    } catch (\Throwable $exception) {
+                        {{ PHPUNIT }}->fail(
+                            {{ MESSAGE_FACTORY }}->createFailureMessage(
+                                '{
+                                    "statement-type": "action",
+                                    "source": "click $\\".selector\\"",
+                                    "index": 0,
+                                    "identifier": "$\\".selector\\"",
+                                    "type": "click",
+                                    "arguments": "$\\".selector\\""
+                                }',
+                                $exception,
+                                StatementStage::EXECUTE,
+                            ),
+                        );
+                    }
+
+                    EOD,
+                'expectedMetadata' => new Metadata(
+                    classNames: [
+                        StatementStage::class,
+                        \Throwable::class,
+                    ],
+                    dependencyNames: [
+                        DependencyName::PHPUNIT_TEST_CASE,
+                        DependencyName::MESSAGE_FACTORY,
+                    ],
+                ),
+            ],
+            'single click action, has setup, setup might throw' => [
+                'step' => $stepParser->parse([
+                    'actions' => [
+                        'click $".selector"',
+                    ],
+                ]),
+                'handler' => self::createStepHandler([
+                    StatementBlockFactory::class => self::createMockStatementBlockFactory([
+                        '$".selector" exists' => [
+                            'statement' => new DerivedValueOperationAssertion(
+                                $actionParser->parse('click $".selector"', 0),
+                                '$".selector"',
+                                'exists'
+                            ),
+                            'return' => new Body([
+                                new SingleLineComment(
+                                    'StatementBlockFactory::create($".selector" exists)'
+                                ),
+                            ]),
+                        ],
+                        'click $".selector"' => [
+                            'statement' => $actionParser->parse('click $".selector"', 0),
+                            'return' => new Body([
+                                new SingleLineComment(
+                                    'StatementBlockFactory::create(click $".selector")'
+                                ),
+                            ]),
+                        ],
+                    ]),
+                    StatementHandler::class => self::createMockStatementHandler([
+                        'click $".selector"' => [
+                            'statement' => $actionParser->parse('click $".selector"', 0),
+                            'return' => new StatementHandlerComponents(
+                                new Body([
+                                    new Body([
+                                        new SingleLineComment('StatementHandler::handle(click $".selector")::body'),
+                                    ]),
+                                ])
+                            )->withSetup(
+                                new Statement(
+                                    new MethodInvocation(
+                                        methodName: 'method',
+                                        arguments: new MethodArguments([
+                                            new LiteralExpression(
+                                                '"StatementHandler::handle(click $\".selector\")::setup"'
+                                            ),
+                                        ]),
+                                        mightThrow: true,
+                                    )
+                                ),
+                            ),
+                        ],
+                        '$".selector" exists' => [
+                            'statement' => new DerivedValueOperationAssertion(
+                                $actionParser->parse('click $".selector"', 0),
+                                '$".selector"',
+                                'exists'
+                            ),
+                            'return' => new StatementHandlerComponents(
+                                new Body([
+                                    new SingleLineComment('StatementHandler::handle($".selector" exists)'),
+                                ])
+                            ),
+                        ],
+                    ]),
+                ]),
+                'expectedRenderedContent' => <<< 'EOD'
+                    // StatementBlockFactory::create($".selector" exists)
+                    // StatementHandler::handle($".selector" exists)
+
+                    // StatementBlockFactory::create(click $".selector")
+                    try {
+                        method("StatementHandler::handle(click $\".selector\")::setup");
                     } catch (\Throwable $exception) {
                         {{ PHPUNIT }}->fail(
                             {{ MESSAGE_FACTORY }}->createFailureMessage(
@@ -448,7 +556,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     EOD,
                 'expectedMetadata' => new Metadata(),
             ],
-            'single exists assertion, has setup' => [
+            'single exists assertion, has setup, will not throw' => [
                 'step' => $stepParser->parse([
                     'assertions' => [
                         '$".selector" exists',
@@ -482,37 +590,12 @@ class StepHandlerTest extends AbstractResolvableTestCase
                 ]),
                 'expectedRenderedContent' => <<< 'EOD'
                     // StatementBlockFactory::create($".selector" exists)
-                    try {
-                        // StatementHandler::handle($".selector" exists)::setup
-                    } catch (\Throwable $exception) {
-                        {{ PHPUNIT }}->fail(
-                            {{ MESSAGE_FACTORY }}->createFailureMessage(
-                                '{
-                                    "statement-type": "assertion",
-                                    "source": "$\\".selector\\" exists",
-                                    "index": 0,
-                                    "identifier": "$\\".selector\\"",
-                                    "operator": "exists"
-                                }',
-                                $exception,
-                                StatementStage::SETUP,
-                            ),
-                        );
-                    }
+                    // StatementHandler::handle($".selector" exists)::setup
                     
                     // StatementHandler::handle($".selector" exists)::body
 
                     EOD,
-                'expectedMetadata' => new Metadata(
-                    classNames: [
-                        StatementStage::class,
-                        \Throwable::class,
-                    ],
-                    dependencyNames: [
-                        DependencyName::PHPUNIT_TEST_CASE,
-                        DependencyName::MESSAGE_FACTORY,
-                    ],
-                ),
+                'expectedMetadata' => new Metadata(),
             ],
             'single exists assertion, descendant identifier' => [
                 'step' => $stepParser->parse([

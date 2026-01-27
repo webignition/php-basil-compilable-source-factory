@@ -66,14 +66,18 @@ class StepHandler
                 $setupBlock = $handlerComponents->getSetup();
 
                 if (null !== $setupBlock) {
-                    $setupTryCatchBlock = $this->tryCatchBlockFactory->createForThrowable(
-                        $setupBlock,
-                        Body::createFromExpressions([
-                            $this->phpUnitCallFactory->createFailCall($statement, StatementStage::SETUP),
-                        ]),
-                    );
+                    $setup = $setupBlock;
 
-                    $bodySources[] = $setupTryCatchBlock;
+                    if ($setup->mightThrow()) {
+                        $setup = $this->tryCatchBlockFactory->createForThrowable(
+                            $setup,
+                            Body::createFromExpressions([
+                                $this->phpUnitCallFactory->createFailCall($statement, StatementStage::SETUP),
+                            ]),
+                        );
+                    }
+
+                    $bodySources[] = $setup;
                     $bodySources[] = new EmptyLine();
                 }
 
