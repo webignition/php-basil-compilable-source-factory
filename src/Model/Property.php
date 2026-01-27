@@ -41,14 +41,20 @@ class Property implements ExpressionInterface, IsAssigneeInterface
     /**
      * @param non-empty-string $constant
      */
-    public static function asClassConstant(
-        ClassName $className,
-        string $constant
-    ): self {
+    public static function asClassConstant(ClassName $className, string $constant): self
+    {
         return new Property(
             $constant,
             new ClassObject($className, true),
         );
+    }
+
+    /**
+     * @param non-empty-string $caseName
+     */
+    public static function asEnum(ClassName $enum, string $caseName): self
+    {
+        return self::asClassConstant($enum, $caseName);
     }
 
     public function mightThrow(): bool
