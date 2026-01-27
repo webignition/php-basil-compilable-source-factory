@@ -22,11 +22,6 @@ class MethodInvocation implements MethodInvocationInterface
         private bool $mightThrow
     ) {}
 
-    public function getCall(): string
-    {
-        return $this->methodName;
-    }
-
     public function getMetadata(): MetadataInterface
     {
         return $this->arguments->getMetadata();
@@ -46,7 +41,7 @@ class MethodInvocation implements MethodInvocationInterface
     public function getContext(): array
     {
         return [
-            'call' => $this->getCall(),
+            'call' => $this->methodName,
             'arguments' => $this->arguments,
         ];
     }

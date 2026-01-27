@@ -26,11 +26,6 @@ abstract class AbstractMethodInvocationEncapsulator implements InvocableInterfac
         return $metadata->merge($this->getAdditionalMetadata());
     }
 
-    public function getCall(): string
-    {
-        return $this->invocation->getCall();
-    }
-
     public function mightThrow(): bool
     {
         return $this->invocation->mightThrow();

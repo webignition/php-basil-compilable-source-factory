@@ -27,7 +27,6 @@ class MethodInvocationTest extends AbstractResolvableTestCase
             arguments: new MethodArguments(),
             mightThrow: false,
         );
-        self::assertSame($methodName, $invocation->getCall());
         self::assertEquals(new Metadata(), $invocation->getMetadata());
     }
 
@@ -48,7 +47,6 @@ class MethodInvocationTest extends AbstractResolvableTestCase
             arguments: $arguments,
             mightThrow: false,
         );
-        self::assertSame($methodName, $invocation->getCall());
         self::assertEquals($arguments->getMetadata(), $invocation->getMetadata());
     }
 

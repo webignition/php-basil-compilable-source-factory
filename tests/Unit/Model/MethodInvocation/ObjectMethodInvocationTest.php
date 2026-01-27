@@ -35,7 +35,6 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
             mightThrow: false
         );
 
-        $this->assertSame($methodName, $invocation->getCall());
         $this->assertEquals($expectedMetadata, $invocation->getMetadata());
     }
 

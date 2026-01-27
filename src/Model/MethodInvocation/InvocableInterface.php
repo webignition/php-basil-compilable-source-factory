@@ -8,5 +8,4 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterfac
 
 interface InvocableInterface extends ExpressionInterface
 {
-    public function getCall(): string;
 }

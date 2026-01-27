@@ -28,7 +28,6 @@ class ObjectConstructorTest extends AbstractResolvableTestCase
             mightThrow: false,
         );
 
-        $this->assertSame($class->getClass(), $constructor->getCall());
         $this->assertEquals($expectedMetadata, $constructor->getMetadata());
     }
 
