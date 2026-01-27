@@ -11,7 +11,6 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\FooMethodInvocation;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
@@ -51,11 +50,11 @@ class StatementTest extends AbstractResolvableTestCase
                 'expectedMetadata' => new Metadata(),
             ],
             'object method invocation' => [
-                'expression' => new ObjectMethodInvocation(
-                    object: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
+                'expression' => new FooMethodInvocation(
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
+                    parent: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
                 ),
                 'expectedMetadata' => new Metadata(
                     dependencyNames: [
@@ -96,11 +95,11 @@ class StatementTest extends AbstractResolvableTestCase
             ],
             'statement encapsulating object method invocation' => [
                 'statement' => new Statement(
-                    new ObjectMethodInvocation(
-                        object: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
+                    new FooMethodInvocation(
                         methodName: 'methodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
+                        parent: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
                     )
                 ),
                 'expectedString' => '{{ PHPUNIT }}->methodName();',

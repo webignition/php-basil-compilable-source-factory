@@ -16,8 +16,8 @@ use webignition\BasilCompilableSourceFactory\Model\ClassSignature;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinition;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinitionInterface;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\FooMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectConstructor;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
@@ -78,8 +78,7 @@ class ClassDefinitionFactory
     {
         $setupBeforeClassBody = new Body([
             new Statement(
-                new ObjectMethodInvocation(
-                    object: new StaticObject('self'),
+                new FooMethodInvocation(
                     methodName: 'setClientManager',
                     arguments: new MethodArguments(
                         [
@@ -91,24 +90,25 @@ class ClassDefinitionFactory
                         ]
                     ),
                     mightThrow: false,
-                )
+                    parent: new StaticObject('self'),
+                ),
             ),
             new Statement(
-                new ObjectMethodInvocation(
-                    object: new StaticObject('parent'),
+                new FooMethodInvocation(
                     methodName: 'setUpBeforeClass',
                     arguments: new MethodArguments(),
                     mightThrow: true,
+                    parent: new StaticObject('parent'),
                 )
             ),
             new Statement(
-                new ObjectMethodInvocation(
-                    object: Property::asDependency(DependencyName::PANTHER_CLIENT),
+                new FooMethodInvocation(
                     methodName: 'request',
                     arguments: new MethodArguments(
                         $this->argumentFactory->create('GET', $test->getUrl())
                     ),
                     mightThrow: true,
+                    parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                 )
             ),
         ]);

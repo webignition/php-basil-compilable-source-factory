@@ -9,7 +9,7 @@ use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\FooMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilModels\Model\Statement\Action\ActionInterface;
@@ -44,11 +44,11 @@ class BrowserOperationActionHandler implements StatementHandlerInterface
                 new Statement(
                     new AssignmentExpression(
                         Property::asDependency(DependencyName::PANTHER_CRAWLER),
-                        new ObjectMethodInvocation(
-                            object: Property::asDependency(DependencyName::PANTHER_CLIENT),
+                        new FooMethodInvocation(
                             methodName: $statement->getType(),
                             arguments: new MethodArguments(),
                             mightThrow: false,
+                            parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                         )
                     )
                 ),

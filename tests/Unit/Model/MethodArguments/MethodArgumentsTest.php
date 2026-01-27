@@ -19,7 +19,7 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\FooMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
@@ -77,11 +77,11 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
             ],
             'has metadata' => [
                 'arguments' => [
-                    new ObjectMethodInvocation(
-                        object: new StaticObject(ClassName::class),
+                    new FooMethodInvocation(
                         methodName: 'staticMethodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
+                        parent: new StaticObject(ClassName::class),
                     )
                 ],
                 'format' => MethodArgumentsInterface::FORMAT_INLINE,
@@ -141,12 +141,10 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
             'indent stacked multi-line arguments' => [
                 'arguments' => new MethodArguments(
                     [
-                        new ObjectMethodInvocation(
-                            object: Property::asDependency(DependencyName::DOM_CRAWLER_NAVIGATOR),
+                        new FooMethodInvocation(
                             methodName: 'find',
                             arguments: new MethodArguments([
-                                new ObjectMethodInvocation(
-                                    object: new StaticObject(ObjectMethodInvocation::class),
+                                new FooMethodInvocation(
                                     methodName: 'fromJson',
                                     arguments: new MethodArguments([
                                         new LiteralExpression(
@@ -154,9 +152,11 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                                         ),
                                     ]),
                                     mightThrow: false,
+                                    parent: new StaticObject(MethodArguments::class),
                                 )
                             ]),
                             mightThrow: false,
+                            parent: Property::asDependency(DependencyName::DOM_CRAWLER_NAVIGATOR),
                         ),
                         new ClosureExpression(
                             new Body([
@@ -179,7 +179,7 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                 ),
                 'expectedString' => <<< 'EOD'
                     
-                        {{ NAVIGATOR }}->find(ObjectMethodInvocation::fromJson({
+                        {{ NAVIGATOR }}->find(MethodArguments::fromJson({
                             "locator": ".selector"
                         })),
                         (function () {
@@ -194,11 +194,11 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                 'arguments' => new MethodArguments(
                     [
                         ArrayExpression::fromArray([
-                            'name' => new ObjectMethodInvocation(
-                                object: Property::asDependency(DependencyName::PANTHER_CLIENT),
+                            'name' => new FooMethodInvocation(
                                 methodName: 'dataName',
                                 arguments: new MethodArguments(),
                                 mightThrow: false,
+                                parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                             ),
                             'data' => [
                                 'key1' => 'value1',

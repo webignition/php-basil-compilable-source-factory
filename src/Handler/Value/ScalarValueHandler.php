@@ -18,7 +18,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterfac
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ReturnExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\FooMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilValueTypeIdentifier\ValueTypeIdentifier;
@@ -76,11 +76,11 @@ class ScalarValueHandler
             new Statement(
                 new AssignmentExpression(
                     $webDriverDimensionVariable,
-                    new ObjectMethodInvocation(
-                        object: Property::asDependency(DependencyName::PANTHER_CLIENT),
+                    new FooMethodInvocation(
                         methodName: 'getWebDriver()->manage()->window()->getSize',
                         arguments: new MethodArguments(),
                         mightThrow: true,
+                        parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                     )
                 )
             ),
@@ -89,21 +89,21 @@ class ScalarValueHandler
                 new ReturnExpression(
                     new CompositeExpression([
                         new EncapsulatingCastExpression(
-                            new ObjectMethodInvocation(
-                                object: $webDriverDimensionVariable,
+                            new FooMethodInvocation(
                                 methodName: 'getWidth',
                                 arguments: new MethodArguments(),
                                 mightThrow: true,
+                                parent: $webDriverDimensionVariable,
                             ),
                             'string'
                         ),
                         new LiteralExpression(' . \'x\' . '),
                         new EncapsulatingCastExpression(
-                            new ObjectMethodInvocation(
-                                object: $webDriverDimensionVariable,
+                            new FooMethodInvocation(
                                 methodName: 'getHeight',
                                 arguments: new MethodArguments(),
                                 mightThrow: true,
+                                parent: $webDriverDimensionVariable,
                             ),
                             'string'
                         ),
@@ -125,8 +125,6 @@ class ScalarValueHandler
     }
 
     /**
-     * @return ObjectMethodInvocation
-     *
      * @throws UnsupportedContentException
      */
     private function handlePageProperty(string $value): ExpressionInterface
@@ -141,11 +139,11 @@ class ScalarValueHandler
         $methodName = $methodNameMap[$property] ?? null;
 
         if (is_string($methodName)) {
-            return new ObjectMethodInvocation(
-                object: Property::asDependency(DependencyName::PANTHER_CLIENT),
+            return new FooMethodInvocation(
                 methodName: $methodName,
                 arguments: new MethodArguments(),
                 mightThrow: true,
+                parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
             );
         }
 

@@ -15,7 +15,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\CatchExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\FooMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
@@ -31,11 +31,11 @@ class CatchBlockTest extends AbstractResolvableTestCase
             new Statement(
                 new AssignmentExpression(
                     Property::asDependency(DependencyName::PANTHER_CLIENT),
-                    new ObjectMethodInvocation(
-                        object: new StaticObject(\RuntimeException::class),
+                    new FooMethodInvocation(
                         methodName: 'staticMethodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
+                        parent: new StaticObject(\RuntimeException::class),
                     )
                 )
             )

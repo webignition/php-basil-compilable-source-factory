@@ -16,8 +16,8 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinition;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinitionInterface;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\FooMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectConstructor;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
@@ -28,11 +28,11 @@ class MethodDefinitionFactory
 {
     public static function createSetUpBeforeClassMethodDefinition(string $fixture): MethodDefinitionInterface
     {
-        $requestBaseUri = new ObjectMethodInvocation(
-            object: new StaticObject(Options::class),
+        $requestBaseUri = new FooMethodInvocation(
             methodName: 'getBaseUri',
             arguments: new MethodArguments(),
             mightThrow: false,
+            parent: new StaticObject(Options::class),
         );
 
         $requestUriExpression = new CompositeExpression([
@@ -44,8 +44,7 @@ class MethodDefinitionFactory
 
         $body = new Body([
             new Statement(
-                new ObjectMethodInvocation(
-                    object: new StaticObject('self'),
+                new FooMethodInvocation(
                     methodName: 'setClientManager',
                     arguments: new MethodArguments([
                         new ObjectConstructor(
@@ -55,16 +54,17 @@ class MethodDefinitionFactory
                         ),
                     ]),
                     mightThrow: false,
+                    parent: new StaticObject('self'),
                 )
             ),
             new SingleLineComment('Test harness lines'),
             new Statement(new LiteralExpression('parent::setUpBeforeClass()')),
             new Statement(
-                new ObjectMethodInvocation(
-                    object: Property::asDependency(DependencyName::PANTHER_CLIENT),
+                new FooMethodInvocation(
                     methodName: 'request',
                     arguments: new MethodArguments($argumentFactory->create('GET', $requestUriExpression)),
                     mightThrow: false,
+                    parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                 )
             ),
         ]);

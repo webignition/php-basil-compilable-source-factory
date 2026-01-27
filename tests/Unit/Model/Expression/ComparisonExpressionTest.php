@@ -12,7 +12,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\FooMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
@@ -46,11 +46,11 @@ class ComparisonExpressionTest extends AbstractResolvableTestCase
                 'expectedMetadata' => new Metadata(),
             ],
             'has metadata' => [
-                'leftHandSide' => new ObjectMethodInvocation(
-                    object: Property::asDependency(DependencyName::PANTHER_CLIENT),
+                'leftHandSide' => new FooMethodInvocation(
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
+                    parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                 ),
                 'rightHandSide' => new LiteralExpression('literal'),
                 'comparison' => '!==',
@@ -85,11 +85,11 @@ class ComparisonExpressionTest extends AbstractResolvableTestCase
             ],
             'object method invocation and literal, null coalesce' => [
                 'expression' => new ComparisonExpression(
-                    new ObjectMethodInvocation(
-                        object: Property::asDependency(DependencyName::PANTHER_CLIENT),
+                    new FooMethodInvocation(
                         methodName: 'methodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
+                        parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                     ),
                     new LiteralExpression('value'),
                     '??'
