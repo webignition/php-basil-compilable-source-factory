@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames as ResolvedNames;
@@ -126,7 +126,7 @@ trait SetActionFunctionalDataProviderTrait
                     'fixture' => '/form.html',
                     'statement' => $actionParser->parse('set $"input[name=input-without-value]" to $env.TEST1', 0),
                     'additionalVariableIdentifiers' => [
-                        VariableName::ENVIRONMENT_VARIABLE_ARRAY->value => ResolvedNames::ENV_ARRAY_VARIABLE_NAME,
+                        DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value => ResolvedNames::ENV_ARRAY_VARIABLE_NAME,
                     ],
                     'additionalSetupStatements' => new Body([
                         StatementFactory::createCrawlerFilterCallForElement(

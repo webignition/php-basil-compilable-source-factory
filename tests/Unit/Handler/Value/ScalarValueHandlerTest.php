@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Value;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
@@ -56,7 +56,7 @@ class ScalarValueHandlerTest extends AbstractResolvableTestCase
                 'expectedRenderedSource' => '{{ ENV }}[\'KEY\']',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::ENVIRONMENT_VARIABLE_ARRAY->value,
+                        DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value,
                     ],
                 ),
             ],
@@ -70,7 +70,7 @@ class ScalarValueHandlerTest extends AbstractResolvableTestCase
                     . '})()',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PANTHER_CLIENT->value,
+                        DependencyName::PANTHER_CLIENT->value,
                     ],
                 ),
             ],
@@ -79,7 +79,7 @@ class ScalarValueHandlerTest extends AbstractResolvableTestCase
                 'expectedRenderedSource' => '{{ CLIENT }}->getCurrentURL()',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PANTHER_CLIENT->value,
+                        DependencyName::PANTHER_CLIENT->value,
                     ],
                 ),
             ],
@@ -88,7 +88,7 @@ class ScalarValueHandlerTest extends AbstractResolvableTestCase
                 'expectedRenderedSource' => '{{ CLIENT }}->getTitle()',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PANTHER_CLIENT->value,
+                        DependencyName::PANTHER_CLIENT->value,
                     ],
                 ),
             ],

@@ -11,7 +11,7 @@ use webignition\BaseBasilTestCase\ClientManager;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\ClassDefinitionFactory;
 use webignition\BasilCompilableSourceFactory\ClassNameFactory;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\StepMethodFactory;
@@ -78,7 +78,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                         ClientManager::class,
                     ],
                     variableNames: [
-                        VariableName::PANTHER_CLIENT->value,
+                        DependencyName::PANTHER_CLIENT->value,
                     ],
                 ),
             ],
@@ -115,7 +115,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                         ClientManager::class,
                     ],
                     variableNames: [
-                        VariableName::PANTHER_CLIENT->value,
+                        DependencyName::PANTHER_CLIENT->value,
                     ],
                 ),
             ],
@@ -152,7 +152,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                         ClientManager::class,
                     ],
                     variableNames: [
-                        VariableName::PANTHER_CLIENT->value,
+                        DependencyName::PANTHER_CLIENT->value,
                     ],
                 ),
             ],
@@ -201,7 +201,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                         Statements::class,
                     ],
                     variableNames: [
-                        VariableName::PANTHER_CLIENT->value,
+                        DependencyName::PANTHER_CLIENT->value,
                     ],
                 ),
             ],
@@ -258,7 +258,7 @@ class ClassDefinitionFactoryTest extends AbstractResolvableTestCase
                         Statements::class,
                     ],
                     variableNames: [
-                        VariableName::PANTHER_CLIENT->value,
+                        DependencyName::PANTHER_CLIENT->value,
                     ],
                 ),
             ],

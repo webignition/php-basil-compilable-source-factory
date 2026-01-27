@@ -6,7 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
 use webignition\BaseBasilTestCase\ClientManager;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
@@ -61,7 +61,7 @@ class MethodDefinitionFactory
             new Statement(new LiteralExpression('parent::setUpBeforeClass()')),
             new Statement(
                 new ObjectMethodInvocation(
-                    object: new VariableDependency(VariableName::PANTHER_CLIENT->value),
+                    object: new VariableDependency(DependencyName::PANTHER_CLIENT->value),
                     methodName: 'request',
                     arguments: new MethodArguments($argumentFactory->create('GET', $requestUriExpression)),
                     mightThrow: false,

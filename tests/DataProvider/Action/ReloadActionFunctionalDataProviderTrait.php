@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
@@ -27,13 +27,13 @@ trait ReloadActionFunctionalDataProviderTrait
         $setupTeardownStatements = new Body([
             new Statement(
                 new ObjectMethodInvocation(
-                    object: new VariableDependency(VariableName::PHPUNIT_TEST_CASE->value),
+                    object: new VariableDependency(DependencyName::PHPUNIT_TEST_CASE->value),
                     methodName: 'assertCount',
                     arguments: new MethodArguments(
                         $argumentFactory->create(
                             0,
                             new ObjectMethodInvocation(
-                                object: new VariableDependency(VariableName::PANTHER_CRAWLER->value),
+                                object: new VariableDependency(DependencyName::PANTHER_CRAWLER->value),
                                 methodName: 'filter',
                                 arguments: new MethodArguments($argumentFactory->create('#hello')),
                                 mightThrow: true,
@@ -52,13 +52,13 @@ trait ReloadActionFunctionalDataProviderTrait
             ),
             new Statement(
                 new ObjectMethodInvocation(
-                    object: new VariableDependency(VariableName::PHPUNIT_TEST_CASE->value),
+                    object: new VariableDependency(DependencyName::PHPUNIT_TEST_CASE->value),
                     methodName: 'assertCount',
                     arguments: new MethodArguments(
                         $argumentFactory->create(
                             1,
                             new ObjectMethodInvocation(
-                                object: new VariableDependency(VariableName::PANTHER_CRAWLER->value),
+                                object: new VariableDependency(DependencyName::PANTHER_CRAWLER->value),
                                 methodName: 'filter',
                                 arguments: new MethodArguments($argumentFactory->create('#hello')),
                                 mightThrow: true,

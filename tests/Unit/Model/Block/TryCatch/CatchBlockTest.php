@@ -6,7 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Block\TryCat
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\CatchBlock;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
@@ -30,7 +30,7 @@ class CatchBlockTest extends AbstractResolvableTestCase
         $body = new Body([
             new Statement(
                 new AssignmentExpression(
-                    new VariableDependency(VariableName::PANTHER_CLIENT->value),
+                    new VariableDependency(DependencyName::PANTHER_CLIENT->value),
                     new ObjectMethodInvocation(
                         object: new StaticObject(\RuntimeException::class),
                         methodName: 'staticMethodName',
@@ -56,7 +56,7 @@ class CatchBlockTest extends AbstractResolvableTestCase
                 \Exception::class,
             ],
             variableNames: [
-                VariableName::PANTHER_CLIENT->value,
+                DependencyName::PANTHER_CLIENT->value,
             ]
         );
 

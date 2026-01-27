@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
@@ -25,10 +25,10 @@ class VariableDependencyTest extends AbstractResolvableTestCase
     {
         return [
             'variable dependency' => [
-                'dependency' => new VariableDependency(VariableName::PANTHER_CLIENT->value),
+                'dependency' => new VariableDependency(DependencyName::PANTHER_CLIENT->value),
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PANTHER_CLIENT->value,
+                        DependencyName::PANTHER_CLIENT->value,
                     ]
                 ),
             ],
@@ -48,7 +48,7 @@ class VariableDependencyTest extends AbstractResolvableTestCase
     {
         return [
             'non-empty' => [
-                'dependency' => new VariableDependency(VariableName::ENVIRONMENT_VARIABLE_ARRAY->value),
+                'dependency' => new VariableDependency(DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value),
                 'expectedString' => '{{ ENV }}',
             ],
         ];

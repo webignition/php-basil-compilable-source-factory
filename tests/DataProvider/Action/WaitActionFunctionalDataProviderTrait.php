@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilModels\Parser\ActionParser;
 
@@ -65,7 +65,7 @@ trait WaitActionFunctionalDataProviderTrait
                 'fixture' => $fixture,
                 'statement' => $actionParser->parse('wait $env.DURATION', 0),
                 'additionalVariableIdentifiers' => [
-                    VariableName::ENVIRONMENT_VARIABLE_ARRAY->value => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
+                    DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
                 ],
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,
@@ -74,7 +74,7 @@ trait WaitActionFunctionalDataProviderTrait
                 'fixture' => $fixture,
                 'statement' => $actionParser->parse('wait $env.NON_EXISTENT', 0),
                 'additionalVariableIdentifiers' => [
-                    VariableName::ENVIRONMENT_VARIABLE_ARRAY->value => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
+                    DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
                 ],
                 'additionalSetupStatements' => null,
                 'teardownStatements' => null,

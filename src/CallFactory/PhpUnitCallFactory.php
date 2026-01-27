@@ -6,7 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
 use webignition\BaseBasilTestCase\Enum\StatementStage;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ObjectConstant;
@@ -38,7 +38,7 @@ readonly class PhpUnitCallFactory
         bool $mightThrow,
     ): MethodInvocationInterface {
         return new ObjectMethodInvocation(
-            object: new VariableDependency(VariableName::PHPUNIT_TEST_CASE->value),
+            object: new VariableDependency(DependencyName::PHPUNIT_TEST_CASE->value),
             methodName: $methodName,
             arguments: $arguments,
             mightThrow: $mightThrow,
@@ -76,7 +76,7 @@ readonly class PhpUnitCallFactory
         }
 
         $messageFactoryCall = new ObjectMethodInvocation(
-            object: new VariableDependency(VariableName::MESSAGE_FACTORY->value),
+            object: new VariableDependency(DependencyName::MESSAGE_FACTORY->value),
             methodName: 'createAssertionMessage',
             arguments: new MethodArguments($messageFactoryArgumentExpressions)
                 ->withFormat(MethodArgumentsInterface::FORMAT_STACKED),
@@ -110,7 +110,7 @@ readonly class PhpUnitCallFactory
         );
 
         $failureMessageFactoryCall = new ObjectMethodInvocation(
-            object: new VariableDependency(VariableName::MESSAGE_FACTORY->value),
+            object: new VariableDependency(DependencyName::MESSAGE_FACTORY->value),
             methodName: 'createFailureMessage',
             arguments: new MethodArguments([
                 $this->argumentFactory->createSingular($serializedStatement),

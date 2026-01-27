@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\MethodArguments;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
@@ -143,7 +143,7 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                 'arguments' => new MethodArguments(
                     [
                         new ObjectMethodInvocation(
-                            object: new VariableDependency(VariableName::DOM_CRAWLER_NAVIGATOR->value),
+                            object: new VariableDependency(DependencyName::DOM_CRAWLER_NAVIGATOR->value),
                             methodName: 'find',
                             arguments: new MethodArguments([
                                 new ObjectMethodInvocation(
@@ -196,7 +196,7 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                     [
                         ArrayExpression::fromArray([
                             'name' => new ObjectMethodInvocation(
-                                object: new VariableDependency(VariableName::PANTHER_CLIENT->value),
+                                object: new VariableDependency(DependencyName::PANTHER_CLIENT->value),
                                 methodName: 'dataName',
                                 arguments: new MethodArguments(),
                                 mightThrow: false,

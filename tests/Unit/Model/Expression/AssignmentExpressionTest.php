@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
@@ -47,12 +47,12 @@ class AssignmentExpressionTest extends AbstractResolvableTestCase
                 'expectedMetadata' => new Metadata(),
             ],
             'has metadata' => [
-                'assignee' => new VariableDependency(VariableName::PANTHER_CLIENT->value),
+                'assignee' => new VariableDependency(DependencyName::PANTHER_CLIENT->value),
                 'value' => new LiteralExpression('literal'),
                 'operator' => '!==',
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PANTHER_CLIENT->value,
+                        DependencyName::PANTHER_CLIENT->value,
                     ]
                 ),
             ],
@@ -80,7 +80,7 @@ class AssignmentExpressionTest extends AbstractResolvableTestCase
             ],
             'variable dependency, literal' => [
                 'expression' => new AssignmentExpression(
-                    new VariableDependency(VariableName::PANTHER_CRAWLER->value),
+                    new VariableDependency(DependencyName::PANTHER_CRAWLER->value),
                     new LiteralExpression('rhs')
                 ),
                 'expectedString' => '{{ CRAWLER }} = rhs',
@@ -88,7 +88,7 @@ class AssignmentExpressionTest extends AbstractResolvableTestCase
             'static object property as assignee' => [
                 'expression' => new AssignmentExpression(
                     new StaticObjectProperty(
-                        new VariableDependency(VariableName::DOM_CRAWLER_NAVIGATOR->value),
+                        new VariableDependency(DependencyName::DOM_CRAWLER_NAVIGATOR->value),
                         'property'
                     ),
                     new LiteralExpression('rhs')

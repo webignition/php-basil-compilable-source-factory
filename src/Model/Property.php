@@ -4,11 +4,9 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model;
 
-use webignition\BaseBasilTestCase\Enum\StatementStage;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ClassObject;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
-use webignition\BasilCompilableSourceFactory\Model\Expression\NullableExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 
@@ -33,7 +31,7 @@ class Property implements ExpressionInterface, IsAssigneeInterface
         return new Property($name);
     }
 
-    public static function asDependency(VariableName $name): self
+    public static function asDependency(DependencyName $name): self
     {
         return new Property($name->value)->setIsDependency();
     }

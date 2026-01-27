@@ -6,7 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 
@@ -33,15 +33,15 @@ class VariableDependencyCollectionTest extends TestCase
         return [
             'default' => [
                 'names' => [
-                    VariableName::DOM_CRAWLER_NAVIGATOR->value,
-                    VariableName::PANTHER_CRAWLER->value,
-                    VariableName::PHPUNIT_TEST_CASE->value,
-                    VariableName::PHPUNIT_TEST_CASE->value,
+                    DependencyName::DOM_CRAWLER_NAVIGATOR->value,
+                    DependencyName::PANTHER_CRAWLER->value,
+                    DependencyName::PHPUNIT_TEST_CASE->value,
+                    DependencyName::PHPUNIT_TEST_CASE->value,
                 ],
                 'expectedPlaceholders' => [
-                    'NAVIGATOR' => new VariableDependency(VariableName::DOM_CRAWLER_NAVIGATOR->value),
-                    'CRAWLER' => new VariableDependency(VariableName::PANTHER_CRAWLER->value),
-                    'PHPUNIT' => new VariableDependency(VariableName::PHPUNIT_TEST_CASE->value),
+                    'NAVIGATOR' => new VariableDependency(DependencyName::DOM_CRAWLER_NAVIGATOR->value),
+                    'CRAWLER' => new VariableDependency(DependencyName::PANTHER_CRAWLER->value),
+                    'PHPUNIT' => new VariableDependency(DependencyName::PHPUNIT_TEST_CASE->value),
                 ],
             ],
         ];
@@ -49,16 +49,16 @@ class VariableDependencyCollectionTest extends TestCase
 
     public function testMerge(): void
     {
-        $collection = new VariableDependencyCollection([VariableName::PANTHER_CLIENT->value]);
+        $collection = new VariableDependencyCollection([DependencyName::PANTHER_CLIENT->value]);
 
         $collection = $collection->merge(new VariableDependencyCollection([
-            VariableName::PANTHER_CRAWLER->value,
-            VariableName::ENVIRONMENT_VARIABLE_ARRAY->value,
+            DependencyName::PANTHER_CRAWLER->value,
+            DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value,
         ]));
         $collection = $collection->merge(
             new VariableDependencyCollection([
-                VariableName::ENVIRONMENT_VARIABLE_ARRAY->value,
-                VariableName::DOM_CRAWLER_NAVIGATOR->value,
+                DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value,
+                DependencyName::DOM_CRAWLER_NAVIGATOR->value,
             ])
         );
 
@@ -66,10 +66,10 @@ class VariableDependencyCollectionTest extends TestCase
 
         $this->assertEquals(
             [
-                'CLIENT' => new VariableDependency(VariableName::PANTHER_CLIENT->value),
-                'CRAWLER' => new VariableDependency(VariableName::PANTHER_CRAWLER->value),
-                'ENV' => new VariableDependency(VariableName::ENVIRONMENT_VARIABLE_ARRAY->value),
-                'NAVIGATOR' => new VariableDependency(VariableName::DOM_CRAWLER_NAVIGATOR->value),
+                'CLIENT' => new VariableDependency(DependencyName::PANTHER_CLIENT->value),
+                'CRAWLER' => new VariableDependency(DependencyName::PANTHER_CRAWLER->value),
+                'ENV' => new VariableDependency(DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value),
+                'NAVIGATOR' => new VariableDependency(DependencyName::DOM_CRAWLER_NAVIGATOR->value),
             ],
             $this->getCollectionVariablePlaceholders($collection)
         );
@@ -78,9 +78,9 @@ class VariableDependencyCollectionTest extends TestCase
     public function testIterator(): void
     {
         $collectionValues = [
-            'CRAWLER' => VariableName::PANTHER_CRAWLER->value,
-            'ENV' => VariableName::ENVIRONMENT_VARIABLE_ARRAY->value,
-            'NAVIGATOR' => VariableName::DOM_CRAWLER_NAVIGATOR->value,
+            'CRAWLER' => DependencyName::PANTHER_CRAWLER->value,
+            'ENV' => DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value,
+            'NAVIGATOR' => DependencyName::DOM_CRAWLER_NAVIGATOR->value,
         ];
 
         $collection = new VariableDependencyCollection(array_values($collectionValues));

@@ -8,7 +8,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use SmartAssert\DomIdentifier\AttributeIdentifier;
 use SmartAssert\DomIdentifier\ElementIdentifier;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
@@ -56,7 +56,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     EOD,
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::DOM_CRAWLER_NAVIGATOR->value,
+                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
                     ],
                 ),
             ],
@@ -75,7 +75,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     EOD,
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::DOM_CRAWLER_NAVIGATOR->value,
+                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
                     ],
                 ),
             ],
@@ -113,7 +113,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     EOD,
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::DOM_CRAWLER_NAVIGATOR->value,
+                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
                     ],
                 ),
             ],
@@ -132,7 +132,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     EOD,
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::DOM_CRAWLER_NAVIGATOR->value,
+                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
                     ],
                 ),
             ],
@@ -176,7 +176,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     EOD,
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::DOM_CRAWLER_NAVIGATOR->value,
+                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
                     ],
                 ),
             ],
@@ -200,7 +200,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     EOD,
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::DOM_CRAWLER_NAVIGATOR->value,
+                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
                     ],
                 ),
             ],
@@ -242,8 +242,8 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     EOD,
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::DOM_CRAWLER_NAVIGATOR->value,
-                        VariableName::WEBDRIVER_ELEMENT_INSPECTOR->value,
+                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
+                        DependencyName::WEBDRIVER_ELEMENT_INSPECTOR->value,
                     ],
                 ),
             ],
@@ -266,8 +266,8 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     EOD,
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::DOM_CRAWLER_NAVIGATOR->value,
-                        VariableName::WEBDRIVER_ELEMENT_INSPECTOR->value,
+                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
+                        DependencyName::WEBDRIVER_ELEMENT_INSPECTOR->value,
                     ],
                 ),
             ],

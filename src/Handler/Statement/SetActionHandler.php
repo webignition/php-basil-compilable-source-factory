@@ -10,7 +10,7 @@ use SmartAssert\DomIdentifier\FactoryInterface as DomIdentifierFactoryInterface;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
@@ -118,7 +118,7 @@ class SetActionHandler implements StatementHandlerInterface
         $setValueValueVariable = Property::asVariable('setValueValue');
 
         $mutationInvocation = new ObjectMethodInvocation(
-            object: new VariableDependency(VariableName::WEBDRIVER_ELEMENT_MUTATOR->value),
+            object: new VariableDependency(DependencyName::WEBDRIVER_ELEMENT_MUTATOR->value),
             methodName: 'setValue',
             arguments: new MethodArguments(
                 [

@@ -6,9 +6,8 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BaseBasilTestCase\Enum\StatementStage;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
-use webignition\BasilCompilableSourceFactory\Model\Expression\ClassObject;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
@@ -34,11 +33,11 @@ class PropertyTest extends AbstractResolvableTestCase
                 'expected' => new Metadata(),
             ],
             'variable placeholder' => [
-                'property' => Property::asDependency(VariableName::ENVIRONMENT_VARIABLE_ARRAY),
+                'property' => Property::asDependency(DependencyName::ENVIRONMENT_VARIABLE_ARRAY),
                 'expected' => new Metadata(
                     classNames: [],
                     variableNames: [
-                        VariableName::ENVIRONMENT_VARIABLE_ARRAY->value,
+                        DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value,
                     ],
                 ),
             ]
@@ -62,7 +61,7 @@ class PropertyTest extends AbstractResolvableTestCase
                 'expected' => '$variable',
             ],
             'variable placeholder' => [
-                'property' => Property::asDependency(VariableName::ENVIRONMENT_VARIABLE_ARRAY),
+                'property' => Property::asDependency(DependencyName::ENVIRONMENT_VARIABLE_ARRAY),
                 'expected' => '{{ ENV }}',
             ],
             'static object constant access (or enum), no alias' => [

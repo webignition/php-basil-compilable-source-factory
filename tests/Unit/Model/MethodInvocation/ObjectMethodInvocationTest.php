@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\MethodInvocation;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
@@ -48,29 +48,29 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
     {
         return [
             'no arguments' => [
-                'object' => new VariableDependency(VariableName::PANTHER_CLIENT->value),
+                'object' => new VariableDependency(DependencyName::PANTHER_CLIENT->value),
                 'methodName' => 'method',
                 'arguments' => new MethodArguments(),
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PANTHER_CLIENT->value,
+                        DependencyName::PANTHER_CLIENT->value,
                     ],
                 ),
             ],
             'has arguments' => [
-                'object' => new VariableDependency(VariableName::PANTHER_CLIENT->value),
+                'object' => new VariableDependency(DependencyName::PANTHER_CLIENT->value),
                 'methodName' => 'method',
                 'arguments' => new MethodArguments([
                     new LiteralExpression('1'),
                 ]),
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PANTHER_CLIENT->value,
+                        DependencyName::PANTHER_CLIENT->value,
                     ],
                 ),
             ],
             'argument expressions contain additional metadata' => [
-                'object' => new VariableDependency(VariableName::PANTHER_CLIENT->value),
+                'object' => new VariableDependency(DependencyName::PANTHER_CLIENT->value),
                 'methodName' => 'method',
                 'arguments' => new MethodArguments([
                     new ObjectMethodInvocation(
@@ -85,7 +85,7 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
                         ClassName::class,
                     ],
                     variableNames: [
-                        VariableName::PANTHER_CLIENT->value,
+                        DependencyName::PANTHER_CLIENT->value,
                     ],
                 ),
             ],
@@ -112,7 +112,7 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
         return [
             'object and method name only' => [
                 'invocation' => new ObjectMethodInvocation(
-                    object: new VariableDependency(VariableName::PANTHER_CLIENT->value),
+                    object: new VariableDependency(DependencyName::PANTHER_CLIENT->value),
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
@@ -130,7 +130,7 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
             ],
             'object and method name only, error-suppressed' => [
                 'invocation' => new ObjectMethodInvocation(
-                    object: new VariableDependency(VariableName::PANTHER_CLIENT->value),
+                    object: new VariableDependency(DependencyName::PANTHER_CLIENT->value),
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
@@ -139,7 +139,7 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
             ],
             'has arguments, inline' => [
                 'invocation' => new ObjectMethodInvocation(
-                    object: new VariableDependency(VariableName::PANTHER_CLIENT->value),
+                    object: new VariableDependency(DependencyName::PANTHER_CLIENT->value),
                     methodName: 'methodName',
                     arguments: new MethodArguments([
                         new LiteralExpression('1'),
@@ -151,7 +151,7 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
             ],
             'has arguments, stacked' => [
                 'invocation' => new ObjectMethodInvocation(
-                    object: new VariableDependency(VariableName::PANTHER_CLIENT->value),
+                    object: new VariableDependency(DependencyName::PANTHER_CLIENT->value),
                     methodName: 'methodName',
                     arguments: new MethodArguments(
                         [
@@ -192,7 +192,7 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
             'object returned from object method call' => [
                 'invocation' => new ObjectMethodInvocation(
                     object: new ObjectMethodInvocation(
-                        object: new VariableDependency(VariableName::PANTHER_CLIENT->value),
+                        object: new VariableDependency(DependencyName::PANTHER_CLIENT->value),
                         methodName: 'innerMethodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,

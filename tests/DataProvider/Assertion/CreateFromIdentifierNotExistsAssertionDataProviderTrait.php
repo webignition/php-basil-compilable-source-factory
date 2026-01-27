@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilModels\Parser\AssertionParser;
 use webignition\SymfonyDomCrawlerNavigator\Exception\InvalidLocatorException;
@@ -23,8 +23,8 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                 InvalidLocatorException::class,
             ],
             variableNames: [
-                VariableName::PHPUNIT_TEST_CASE->value,
-                VariableName::DOM_CRAWLER_NAVIGATOR->value,
+                DependencyName::PHPUNIT_TEST_CASE->value,
+                DependencyName::DOM_CRAWLER_NAVIGATOR->value,
             ],
         );
 
@@ -54,13 +54,13 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::DOM_CRAWLER_NAVIGATOR->value,
+                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE->value,
-                        VariableName::MESSAGE_FACTORY->value,
+                        DependencyName::PHPUNIT_TEST_CASE->value,
+                        DependencyName::MESSAGE_FACTORY->value,
                     ],
                 ),
             ],
@@ -117,13 +117,13 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::DOM_CRAWLER_NAVIGATOR->value,
+                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE->value,
-                        VariableName::MESSAGE_FACTORY->value,
+                        DependencyName::PHPUNIT_TEST_CASE->value,
+                        DependencyName::MESSAGE_FACTORY->value,
                     ],
                 ),
             ],

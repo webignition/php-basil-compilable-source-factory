@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilModels\Parser\AssertionParser;
 
@@ -50,14 +50,14 @@ trait CreateFromIsAssertionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::DOM_CRAWLER_NAVIGATOR->value,
-                        VariableName::WEBDRIVER_ELEMENT_INSPECTOR->value,
+                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
+                        DependencyName::WEBDRIVER_ELEMENT_INSPECTOR->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE->value,
-                        VariableName::MESSAGE_FACTORY->value,
+                        DependencyName::PHPUNIT_TEST_CASE->value,
+                        DependencyName::MESSAGE_FACTORY->value,
                     ],
                 ),
             ],
@@ -96,14 +96,14 @@ trait CreateFromIsAssertionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::DOM_CRAWLER_NAVIGATOR->value,
-                        VariableName::WEBDRIVER_ELEMENT_INSPECTOR->value,
+                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
+                        DependencyName::WEBDRIVER_ELEMENT_INSPECTOR->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE->value,
-                        VariableName::MESSAGE_FACTORY->value,
+                        DependencyName::PHPUNIT_TEST_CASE->value,
+                        DependencyName::MESSAGE_FACTORY->value,
                     ],
                 ),
             ],
@@ -139,13 +139,13 @@ trait CreateFromIsAssertionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::DOM_CRAWLER_NAVIGATOR->value,
+                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE->value,
-                        VariableName::MESSAGE_FACTORY->value,
+                        DependencyName::PHPUNIT_TEST_CASE->value,
+                        DependencyName::MESSAGE_FACTORY->value,
                     ],
                 ),
             ],
@@ -179,13 +179,13 @@ trait CreateFromIsAssertionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PANTHER_CLIENT->value,
+                        DependencyName::PANTHER_CLIENT->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE->value,
-                        VariableName::MESSAGE_FACTORY->value,
+                        DependencyName::PHPUNIT_TEST_CASE->value,
+                        DependencyName::MESSAGE_FACTORY->value,
                     ],
                 ),
             ],
@@ -215,13 +215,13 @@ trait CreateFromIsAssertionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::ENVIRONMENT_VARIABLE_ARRAY->value,
+                        DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE->value,
-                        VariableName::MESSAGE_FACTORY->value,
+                        DependencyName::PHPUNIT_TEST_CASE->value,
+                        DependencyName::MESSAGE_FACTORY->value,
                     ],
                 ),
             ],
@@ -251,13 +251,13 @@ trait CreateFromIsAssertionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::ENVIRONMENT_VARIABLE_ARRAY->value,
+                        DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE->value,
-                        VariableName::MESSAGE_FACTORY->value,
+                        DependencyName::PHPUNIT_TEST_CASE->value,
+                        DependencyName::MESSAGE_FACTORY->value,
                     ],
                 ),
             ],
@@ -287,13 +287,13 @@ trait CreateFromIsAssertionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::ENVIRONMENT_VARIABLE_ARRAY->value,
+                        DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE->value,
-                        VariableName::MESSAGE_FACTORY->value,
+                        DependencyName::PHPUNIT_TEST_CASE->value,
+                        DependencyName::MESSAGE_FACTORY->value,
                     ],
                 ),
             ],
@@ -323,13 +323,13 @@ trait CreateFromIsAssertionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PANTHER_CLIENT->value,
+                        DependencyName::PANTHER_CLIENT->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE->value,
-                        VariableName::MESSAGE_FACTORY->value,
+                        DependencyName::PHPUNIT_TEST_CASE->value,
+                        DependencyName::MESSAGE_FACTORY->value,
                     ],
                 ),
             ],
@@ -372,15 +372,15 @@ trait CreateFromIsAssertionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PANTHER_CLIENT->value,
-                        VariableName::DOM_CRAWLER_NAVIGATOR->value,
-                        VariableName::WEBDRIVER_ELEMENT_INSPECTOR->value,
+                        DependencyName::PANTHER_CLIENT->value,
+                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
+                        DependencyName::WEBDRIVER_ELEMENT_INSPECTOR->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE->value,
-                        VariableName::MESSAGE_FACTORY->value,
+                        DependencyName::PHPUNIT_TEST_CASE->value,
+                        DependencyName::MESSAGE_FACTORY->value,
                     ],
                 ),
             ],
@@ -420,15 +420,15 @@ trait CreateFromIsAssertionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PANTHER_CLIENT->value,
-                        VariableName::DOM_CRAWLER_NAVIGATOR->value,
-                        VariableName::WEBDRIVER_ELEMENT_INSPECTOR->value,
+                        DependencyName::PANTHER_CLIENT->value,
+                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
+                        DependencyName::WEBDRIVER_ELEMENT_INSPECTOR->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE->value,
-                        VariableName::MESSAGE_FACTORY->value,
+                        DependencyName::PHPUNIT_TEST_CASE->value,
+                        DependencyName::MESSAGE_FACTORY->value,
                     ],
                 ),
             ],
@@ -468,14 +468,14 @@ trait CreateFromIsAssertionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PANTHER_CLIENT->value,
-                        VariableName::DOM_CRAWLER_NAVIGATOR->value,
+                        DependencyName::PANTHER_CLIENT->value,
+                        DependencyName::DOM_CRAWLER_NAVIGATOR->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE->value,
-                        VariableName::MESSAGE_FACTORY->value,
+                        DependencyName::PHPUNIT_TEST_CASE->value,
+                        DependencyName::MESSAGE_FACTORY->value,
                     ],
                 ),
             ],
@@ -509,14 +509,14 @@ trait CreateFromIsAssertionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PANTHER_CLIENT->value,
-                        VariableName::ENVIRONMENT_VARIABLE_ARRAY->value,
+                        DependencyName::PANTHER_CLIENT->value,
+                        DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE->value,
-                        VariableName::MESSAGE_FACTORY->value,
+                        DependencyName::PHPUNIT_TEST_CASE->value,
+                        DependencyName::MESSAGE_FACTORY->value,
                     ],
                 ),
             ],
@@ -550,14 +550,14 @@ trait CreateFromIsAssertionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PANTHER_CLIENT->value,
-                        VariableName::ENVIRONMENT_VARIABLE_ARRAY->value,
+                        DependencyName::PANTHER_CLIENT->value,
+                        DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE->value,
-                        VariableName::MESSAGE_FACTORY->value,
+                        DependencyName::PHPUNIT_TEST_CASE->value,
+                        DependencyName::MESSAGE_FACTORY->value,
                     ],
                 ),
             ],
@@ -591,13 +591,13 @@ trait CreateFromIsAssertionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PANTHER_CLIENT->value,
+                        DependencyName::PANTHER_CLIENT->value,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE->value,
-                        VariableName::MESSAGE_FACTORY->value,
+                        DependencyName::PHPUNIT_TEST_CASE->value,
+                        DependencyName::MESSAGE_FACTORY->value,
                     ],
                 ),
             ],
@@ -628,8 +628,8 @@ trait CreateFromIsAssertionDataProviderTrait
                 'expectedSetupMetadata' => new Metadata(),
                 'expectedBodyMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE->value,
-                        VariableName::MESSAGE_FACTORY->value,
+                        DependencyName::PHPUNIT_TEST_CASE->value,
+                        DependencyName::MESSAGE_FACTORY->value,
                     ],
                 ),
             ],

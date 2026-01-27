@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\CatchBlock;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryBlock;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryCatchBlock;
@@ -66,7 +66,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                         new AssignmentExpression(
                             Property::asVariable('variable'),
                             new ObjectMethodInvocation(
-                                object: new VariableDependency(VariableName::PANTHER_CLIENT->value),
+                                object: new VariableDependency(DependencyName::PANTHER_CLIENT->value),
                                 methodName: 'dependencyMethodName',
                                 arguments: new MethodArguments(),
                                 mightThrow: false,
@@ -101,7 +101,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                 ]),
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PANTHER_CLIENT->value,
+                        DependencyName::PANTHER_CLIENT->value,
                     ]
                 ),
             ],
@@ -180,7 +180,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                             new AssignmentExpression(
                                 Property::asVariable('variable'),
                                 new ObjectMethodInvocation(
-                                    object: new VariableDependency(VariableName::PANTHER_CLIENT->value),
+                                    object: new VariableDependency(DependencyName::PANTHER_CLIENT->value),
                                     methodName: 'dependencyMethodName',
                                     arguments: new MethodArguments(),
                                     mightThrow: false,

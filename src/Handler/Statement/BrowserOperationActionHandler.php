@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Statement;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
@@ -43,9 +43,9 @@ class BrowserOperationActionHandler implements StatementHandlerInterface
             new Body([
                 new Statement(
                     new AssignmentExpression(
-                        new VariableDependency(VariableName::PANTHER_CRAWLER->value),
+                        new VariableDependency(DependencyName::PANTHER_CRAWLER->value),
                         new ObjectMethodInvocation(
-                            object: new VariableDependency(VariableName::PANTHER_CLIENT->value),
+                            object: new VariableDependency(DependencyName::PANTHER_CLIENT->value),
                             methodName: $statement->getType(),
                             arguments: new MethodArguments(),
                             mightThrow: false,

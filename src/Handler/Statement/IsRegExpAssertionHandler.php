@@ -95,8 +95,8 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
         ExpressionInterface $examinedAccessor,
         AssertionInterface $assertion,
     ): StatementHandlerComponents {
-        $examinedValueVariable = Property::asVariable(VariableName::EXAMINED_VALUE->value);
-        $expectedValueVariable = Property::asVariable(VariableName::EXPECTED_VALUE->value);
+        $examinedValueVariable = Property::asVariable(VariableName::EXAMINED_VALUE);
+        $expectedValueVariable = Property::asVariable(VariableName::EXPECTED_VALUE);
 
         $pregMatchInvocation = new MethodInvocation(
             methodName: 'preg_match',

@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CompositeExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
@@ -39,22 +39,22 @@ class CompositeExpressionTest extends AbstractResolvableTestCase
             ],
             'variable dependency' => [
                 'expressions' => [
-                    new VariableDependency(VariableName::PANTHER_CLIENT->value),
+                    new VariableDependency(DependencyName::PANTHER_CLIENT->value),
                 ],
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::PANTHER_CLIENT->value,
+                        DependencyName::PANTHER_CLIENT->value,
                     ]
                 ),
             ],
             'variable dependency and array access' => [
                 'expressions' => [
-                    new VariableDependency(VariableName::ENVIRONMENT_VARIABLE_ARRAY->value),
+                    new VariableDependency(DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value),
                     new LiteralExpression('[\'KEY\']')
                 ],
                 'expectedMetadata' => new Metadata(
                     variableNames: [
-                        VariableName::ENVIRONMENT_VARIABLE_ARRAY->value,
+                        DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value,
                     ]
                 ),
             ],
@@ -93,13 +93,13 @@ class CompositeExpressionTest extends AbstractResolvableTestCase
             ],
             'variable dependency' => [
                 'expression' => new CompositeExpression([
-                    new VariableDependency(VariableName::PANTHER_CLIENT->value),
+                    new VariableDependency(DependencyName::PANTHER_CLIENT->value),
                 ]),
                 'expectedString' => '{{ CLIENT }}',
             ],
             'variable dependency and array access' => [
                 'expression' => new CompositeExpression([
-                    new VariableDependency(VariableName::ENVIRONMENT_VARIABLE_ARRAY->value),
+                    new VariableDependency(DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value),
                     new LiteralExpression('[\'KEY\']')
                 ]),
                 'expectedString' => '{{ ENV }}[\'KEY\']',

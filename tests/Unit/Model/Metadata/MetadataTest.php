@@ -6,7 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Metadata;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
@@ -40,14 +40,14 @@ class MetadataTest extends TestCase
         return [
             'components set, correct types' => [
                 'classNames' => [ClassName::class],
-                'variableNames' => [VariableName::PANTHER_CLIENT->value],
+                'variableNames' => [DependencyName::PANTHER_CLIENT->value],
                 'expectedClassDependencies' => new ClassDependencyCollection(
                     new ClassNameCollection([
                         new ClassName(ClassName::class),
                     ])
                 ),
                 'expectedVariableDependencies' => new VariableDependencyCollection([
-                    VariableName::PANTHER_CLIENT->value,
+                    DependencyName::PANTHER_CLIENT->value,
                 ]),
             ],
         ];
@@ -60,8 +60,8 @@ class MetadataTest extends TestCase
                 ClassName::class,
             ],
             variableNames: [
-                VariableName::PANTHER_CLIENT->value,
-                VariableName::PHPUNIT_TEST_CASE->value,
+                DependencyName::PANTHER_CLIENT->value,
+                DependencyName::PHPUNIT_TEST_CASE->value,
             ],
         );
 
@@ -71,8 +71,8 @@ class MetadataTest extends TestCase
                 Metadata::class
             ],
             variableNames: [
-                VariableName::PHPUNIT_TEST_CASE->value,
-                VariableName::DOM_CRAWLER_NAVIGATOR->value,
+                DependencyName::PHPUNIT_TEST_CASE->value,
+                DependencyName::DOM_CRAWLER_NAVIGATOR->value,
             ],
         );
 
@@ -84,9 +84,9 @@ class MetadataTest extends TestCase
                 Metadata::class,
             ],
             variableNames: [
-                VariableName::PANTHER_CLIENT->value,
-                VariableName::PHPUNIT_TEST_CASE->value,
-                VariableName::DOM_CRAWLER_NAVIGATOR->value,
+                DependencyName::PANTHER_CLIENT->value,
+                DependencyName::PHPUNIT_TEST_CASE->value,
+                DependencyName::DOM_CRAWLER_NAVIGATOR->value,
             ],
         );
 

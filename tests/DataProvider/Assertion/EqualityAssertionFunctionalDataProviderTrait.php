@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 
 trait EqualityAssertionFunctionalDataProviderTrait
@@ -30,7 +30,7 @@ trait EqualityAssertionFunctionalDataProviderTrait
                 'fixture' => '/empty.html',
                 'statement' => null,
                 'additionalVariableIdentifiers' => [
-                    VariableName::ENVIRONMENT_VARIABLE_ARRAY->value => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
+                    DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
                 ],
             ],
             'browser object examined value, scalar expected value' => [
@@ -53,7 +53,7 @@ trait EqualityAssertionFunctionalDataProviderTrait
                 'fixture' => '/assertions.html',
                 'statement' => null,
                 'additionalVariableIdentifiers' => [
-                    VariableName::ENVIRONMENT_VARIABLE_ARRAY->value => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
+                    DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
                 ],
             ],
             'attribute identifier examined value, browser object expected value' => [

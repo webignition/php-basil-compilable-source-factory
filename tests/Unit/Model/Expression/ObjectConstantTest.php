@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ObjectConstant;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
@@ -60,14 +60,14 @@ class ObjectConstantTest extends AbstractResolvableTestCase
                 ),
             ],
             'enum' => [
-                'className' => new ClassName(VariableName::class),
-                'property' => VariableName::PANTHER_CLIENT->value,
+                'className' => new ClassName(DependencyName::class),
+                'property' => DependencyName::PANTHER_CLIENT->value,
                 'expectedContext' => [
-                    'class' => 'VariableName',
+                    'class' => 'DependencyName',
                     'property' => 'CLIENT',
                 ],
                 'expectedMetadata' => new Metadata(
-                    classNames: [VariableName::class],
+                    classNames: [DependencyName::class],
                 ),
             ],
         ];
@@ -101,10 +101,10 @@ class ObjectConstantTest extends AbstractResolvableTestCase
             ],
             'enum' => [
                 'expression' => new ObjectConstant(
-                    new ClassName(VariableName::class),
-                    VariableName::PANTHER_CLIENT->value
+                    new ClassName(DependencyName::class),
+                    DependencyName::PANTHER_CLIENT->value
                 ),
-                'expectedString' => 'VariableName::CLIENT',
+                'expectedString' => 'DependencyName::CLIENT',
             ],
         ];
     }

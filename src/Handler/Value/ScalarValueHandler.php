@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Value;
 
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\EnvironmentValueFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
@@ -78,7 +78,7 @@ class ScalarValueHandler
                 new AssignmentExpression(
                     $webDriverDimensionVariable,
                     new ObjectMethodInvocation(
-                        object: new VariableDependency(VariableName::PANTHER_CLIENT->value),
+                        object: new VariableDependency(DependencyName::PANTHER_CLIENT->value),
                         methodName: 'getWebDriver()->manage()->window()->getSize',
                         arguments: new MethodArguments(),
                         mightThrow: true,
@@ -120,7 +120,7 @@ class ScalarValueHandler
         $property = $environmentValue->getProperty();
 
         return new ArrayAccessExpression(
-            new VariableDependency(VariableName::ENVIRONMENT_VARIABLE_ARRAY->value),
+            new VariableDependency(DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value),
             $property
         );
     }
@@ -143,7 +143,7 @@ class ScalarValueHandler
 
         if (is_string($methodName)) {
             return new ObjectMethodInvocation(
-                object: new VariableDependency(VariableName::PANTHER_CLIENT->value),
+                object: new VariableDependency(DependencyName::PANTHER_CLIENT->value),
                 methodName: $methodName,
                 arguments: new MethodArguments(),
                 mightThrow: true,

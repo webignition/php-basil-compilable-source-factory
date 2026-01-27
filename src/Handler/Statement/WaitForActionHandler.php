@@ -8,7 +8,7 @@ use SmartAssert\DomIdentifier\AttributeIdentifierInterface;
 use SmartAssert\DomIdentifier\Factory as DomIdentifierFactory;
 use SmartAssert\DomIdentifier\FactoryInterface as DomIdentifierFactoryInterface;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
@@ -67,9 +67,9 @@ class WaitForActionHandler implements StatementHandlerInterface
         return new StatementHandlerComponents(
             new Statement(
                 new AssignmentExpression(
-                    new VariableDependency(VariableName::PANTHER_CRAWLER->value),
+                    new VariableDependency(DependencyName::PANTHER_CRAWLER->value),
                     new ObjectMethodInvocation(
-                        object: new VariableDependency(VariableName::PANTHER_CLIENT->value),
+                        object: new VariableDependency(DependencyName::PANTHER_CLIENT->value),
                         methodName: 'waitFor',
                         arguments: new MethodArguments(
                             $this->argumentFactory->create($domIdentifier->getLocator())
