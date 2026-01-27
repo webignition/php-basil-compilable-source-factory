@@ -34,9 +34,7 @@ class PropertyTest extends AbstractResolvableTestCase
                 'expected' => new Metadata(),
             ],
             'variable placeholder' => [
-                'property' => new Property(
-                    VariableName::ENVIRONMENT_VARIABLE_ARRAY->value,
-                )->setIsDependency(),
+                'property' => Property::asDependency(VariableName::ENVIRONMENT_VARIABLE_ARRAY),
                 'expected' => new Metadata(
                     classNames: [],
                     variableNames: [
@@ -64,9 +62,7 @@ class PropertyTest extends AbstractResolvableTestCase
                 'expected' => '$variable',
             ],
             'variable placeholder' => [
-                'property' => new Property(
-                    VariableName::ENVIRONMENT_VARIABLE_ARRAY->value,
-                )->setIsDependency(),
+                'property' => Property::asDependency(VariableName::ENVIRONMENT_VARIABLE_ARRAY),
                 'expected' => '{{ ENV }}',
             ],
             'static object constant access (or enum), no alias' => [
