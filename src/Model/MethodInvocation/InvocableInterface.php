@@ -6,6 +6,4 @@ namespace webignition\BasilCompilableSourceFactory\Model\MethodInvocation;
 
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 
-interface InvocableInterface extends ExpressionInterface
-{
-}
+interface InvocableInterface extends ExpressionInterface {}
