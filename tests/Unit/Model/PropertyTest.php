@@ -66,13 +66,7 @@ class PropertyTest extends AbstractResolvableTestCase
                 'expected' => '{{ ENV }}',
             ],
             'static object constant access (or enum), no alias' => [
-                'property' => new Property(
-                    'CONSTANT_NAME',
-                    new ClassObject(
-                        new ClassName(StatementStage::class),
-                        true,
-                    ),
-                ),
+                'property' => Property::asClassConstant(new ClassName(StatementStage::class), 'CONSTANT_NAME'),
                 'expected' => 'StatementStage::CONSTANT_NAME',
             ],
             'object property access, no alias' => [
