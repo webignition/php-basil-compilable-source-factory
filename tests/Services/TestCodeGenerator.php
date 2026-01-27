@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\ClassDefinitionInterface;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Model\VariableDependencyCollection;
 use webignition\Stubble\Resolvable\Resolvable;
 
@@ -89,20 +88,19 @@ class TestCodeGenerator
         VariableDependencyCollection $variableDependencies
     ): array {
         $externalVariables = [
-            VariableName::DOM_CRAWLER_NAVIGATOR->value => self::DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME,
-            VariableName::ENVIRONMENT_VARIABLE_ARRAY->value => self::ENVIRONMENT_VARIABLE_ARRAY_VARIABLE_NAME,
-            VariableName::PANTHER_CLIENT->value => self::PANTHER_CLIENT_VARIABLE_NAME,
-            VariableName::PANTHER_CRAWLER->value => self::PANTHER_CRAWLER_VARIABLE_NAME,
-            VariableName::PHPUNIT_TEST_CASE->value => self::PHPUNIT_TEST_CASE_VARIABLE_NAME,
-            VariableName::WEBDRIVER_ELEMENT_INSPECTOR->value => self::WEBDRIVER_ELEMENT_INSPECTOR_VARIABLE_NAME,
-            VariableName::WEBDRIVER_ELEMENT_MUTATOR->value => self::WEBDRIVER_ELEMENT_MUTATOR_VARIABLE_NAME,
-            VariableName::MESSAGE_FACTORY->value => self::MESSAGE_FACTORY_VARIABLE_NAME,
+            DependencyName::DOM_CRAWLER_NAVIGATOR->value => self::DOM_CRAWLER_NAVIGATOR_VARIABLE_NAME,
+            DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value => self::ENVIRONMENT_VARIABLE_ARRAY_VARIABLE_NAME,
+            DependencyName::PANTHER_CLIENT->value => self::PANTHER_CLIENT_VARIABLE_NAME,
+            DependencyName::PANTHER_CRAWLER->value => self::PANTHER_CRAWLER_VARIABLE_NAME,
+            DependencyName::PHPUNIT_TEST_CASE->value => self::PHPUNIT_TEST_CASE_VARIABLE_NAME,
+            DependencyName::WEBDRIVER_ELEMENT_INSPECTOR->value => self::WEBDRIVER_ELEMENT_INSPECTOR_VARIABLE_NAME,
+            DependencyName::WEBDRIVER_ELEMENT_MUTATOR->value => self::WEBDRIVER_ELEMENT_MUTATOR_VARIABLE_NAME,
+            DependencyName::MESSAGE_FACTORY->value => self::MESSAGE_FACTORY_VARIABLE_NAME,
         ];
 
         $variableIdentifiers = [];
 
         foreach ($variableDependencies as $variableDependency) {
-            /** @var VariableDependency $variableDependency */
             $name = $variableDependency->getName();
             $variableIdentifiers[$variableDependency->getName()] = $externalVariables[$name];
         }

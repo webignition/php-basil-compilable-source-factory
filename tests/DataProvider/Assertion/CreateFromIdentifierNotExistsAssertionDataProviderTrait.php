@@ -4,10 +4,9 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilModels\Parser\AssertionParser;
-use webignition\SymfonyDomCrawlerNavigator\Exception\InvalidLocatorException;
 
 trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
 {
@@ -17,16 +16,6 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
     public static function createFromIdentifierNotExistsAssertionDataProvider(): array
     {
         $assertionParser = AssertionParser::create();
-
-        $expectedMetadata = new Metadata(
-            classNames: [
-                InvalidLocatorException::class,
-            ],
-            variableNames: [
-                VariableName::PHPUNIT_TEST_CASE,
-                VariableName::DOM_CRAWLER_NAVIGATOR,
-            ],
-        );
 
         return [
             'not-exists comparison, element identifier examined value' => [
@@ -53,14 +42,14 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
-                    variableNames: [
-                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                    dependencyNames: [
+                        DependencyName::DOM_CRAWLER_NAVIGATOR,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
-                    variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::MESSAGE_FACTORY,
+                    dependencyNames: [
+                        DependencyName::PHPUNIT_TEST_CASE,
+                        DependencyName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -116,14 +105,14 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
-                    variableNames: [
-                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                    dependencyNames: [
+                        DependencyName::DOM_CRAWLER_NAVIGATOR,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
-                    variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::MESSAGE_FACTORY,
+                    dependencyNames: [
+                        DependencyName::PHPUNIT_TEST_CASE,
+                        DependencyName::MESSAGE_FACTORY,
                     ],
                 ),
             ],

@@ -8,8 +8,8 @@ use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\NeverThrowsTrait;
+use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclarationCollection;
-use webignition\BasilCompilableSourceFactory\Model\VariableName;
 
 class CatchExpression implements ExpressionInterface
 {
@@ -41,12 +41,7 @@ class CatchExpression implements ExpressionInterface
     {
         return [
             'class_list' => $this->classes,
-            'variable' => self::getVariableName(),
+            'variable' => Property::asVariable('exception'),
         ];
-    }
-
-    public static function getVariableName(): VariableName
-    {
-        return new VariableName('exception');
     }
 }

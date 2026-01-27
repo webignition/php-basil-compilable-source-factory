@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Body;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\CatchBlock;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryBlock;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryCatchBlock;
@@ -18,11 +18,11 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpressi
 use webignition\BasilCompilableSourceFactory\Model\Expression\CatchExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ClosureExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
+use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclaration;
 use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclarationCollection;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 use webignition\ObjectReflector\ObjectReflector;
 
@@ -295,7 +295,7 @@ class BodyTest extends AbstractResolvableTestCase
 
     public function testCreateForSingleAssignmentStatement(): void
     {
-        $variable = new VariableDependency(VariableName::PANTHER_CLIENT);
+        $variable = Property::asDependency(DependencyName::PANTHER_CLIENT);
         $value = new LiteralExpression('"value"');
 
         $expectedBody = new Body([

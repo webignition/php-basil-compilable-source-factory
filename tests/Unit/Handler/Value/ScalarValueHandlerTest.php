@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Value;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
@@ -55,8 +55,8 @@ class ScalarValueHandlerTest extends AbstractResolvableTestCase
                 'value' => '$env.KEY',
                 'expectedRenderedSource' => '{{ ENV }}[\'KEY\']',
                 'expectedMetadata' => new Metadata(
-                    variableNames: [
-                        VariableName::ENVIRONMENT_VARIABLE_ARRAY,
+                    dependencyNames: [
+                        DependencyName::ENVIRONMENT_VARIABLE_ARRAY,
                     ],
                 ),
             ],
@@ -69,8 +69,8 @@ class ScalarValueHandlerTest extends AbstractResolvableTestCase
                     . '(string) ($webDriverDimension->getHeight());' . "\n"
                     . '})()',
                 'expectedMetadata' => new Metadata(
-                    variableNames: [
-                        VariableName::PANTHER_CLIENT,
+                    dependencyNames: [
+                        DependencyName::PANTHER_CLIENT,
                     ],
                 ),
             ],
@@ -78,8 +78,8 @@ class ScalarValueHandlerTest extends AbstractResolvableTestCase
                 'value' => '$page.url',
                 'expectedRenderedSource' => '{{ CLIENT }}->getCurrentURL()',
                 'expectedMetadata' => new Metadata(
-                    variableNames: [
-                        VariableName::PANTHER_CLIENT,
+                    dependencyNames: [
+                        DependencyName::PANTHER_CLIENT,
                     ],
                 ),
             ],
@@ -87,8 +87,8 @@ class ScalarValueHandlerTest extends AbstractResolvableTestCase
                 'value' => '$page.title',
                 'expectedRenderedSource' => '{{ CLIENT }}->getTitle()',
                 'expectedMetadata' => new Metadata(
-                    variableNames: [
-                        VariableName::PANTHER_CLIENT,
+                    dependencyNames: [
+                        DependencyName::PANTHER_CLIENT,
                     ],
                 ),
             ],

@@ -5,13 +5,13 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CompositeExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
+use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
 class CompositeExpressionTest extends AbstractResolvableTestCase
@@ -39,22 +39,22 @@ class CompositeExpressionTest extends AbstractResolvableTestCase
             ],
             'variable dependency' => [
                 'expressions' => [
-                    new VariableDependency(VariableName::PANTHER_CLIENT),
+                    Property::asDependency(DependencyName::PANTHER_CLIENT),
                 ],
                 'expectedMetadata' => new Metadata(
-                    variableNames: [
-                        VariableName::PANTHER_CLIENT,
+                    dependencyNames: [
+                        DependencyName::PANTHER_CLIENT,
                     ]
                 ),
             ],
             'variable dependency and array access' => [
                 'expressions' => [
-                    new VariableDependency(VariableName::ENVIRONMENT_VARIABLE_ARRAY),
+                    Property::asDependency(DependencyName::ENVIRONMENT_VARIABLE_ARRAY),
                     new LiteralExpression('[\'KEY\']')
                 ],
                 'expectedMetadata' => new Metadata(
-                    variableNames: [
-                        VariableName::ENVIRONMENT_VARIABLE_ARRAY,
+                    dependencyNames: [
+                        DependencyName::ENVIRONMENT_VARIABLE_ARRAY,
                     ]
                 ),
             ],
@@ -93,13 +93,13 @@ class CompositeExpressionTest extends AbstractResolvableTestCase
             ],
             'variable dependency' => [
                 'expression' => new CompositeExpression([
-                    new VariableDependency(VariableName::PANTHER_CLIENT),
+                    Property::asDependency(DependencyName::PANTHER_CLIENT),
                 ]),
                 'expectedString' => '{{ CLIENT }}',
             ],
             'variable dependency and array access' => [
                 'expression' => new CompositeExpression([
-                    new VariableDependency(VariableName::ENVIRONMENT_VARIABLE_ARRAY),
+                    Property::asDependency(DependencyName::ENVIRONMENT_VARIABLE_ARRAY),
                     new LiteralExpression('[\'KEY\']')
                 ]),
                 'expectedString' => '{{ ENV }}[\'KEY\']',

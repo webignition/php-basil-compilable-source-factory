@@ -13,8 +13,10 @@ trait IsMutableStaticTrait
         return $this->isStatic;
     }
 
-    public function setIsStatic(bool $isStatic): void
+    public function setIsStatic(bool $isStatic): self
     {
         $this->isStatic = $isStatic;
+
+        return $this;
     }
 }

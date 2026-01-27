@@ -5,16 +5,16 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Statement;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
 class StatementTest extends AbstractResolvableTestCase
@@ -35,10 +35,10 @@ class StatementTest extends AbstractResolvableTestCase
     {
         return [
             'variable dependency' => [
-                'expression' => new VariableDependency(VariableName::PANTHER_CLIENT),
+                'expression' => Property::asDependency(DependencyName::PANTHER_CLIENT),
                 'expectedMetadata' => new Metadata(
-                    variableNames: [
-                        VariableName::PANTHER_CLIENT,
+                    dependencyNames: [
+                        DependencyName::PANTHER_CLIENT,
                     ],
                 ),
             ],
@@ -52,14 +52,14 @@ class StatementTest extends AbstractResolvableTestCase
             ],
             'object method invocation' => [
                 'expression' => new ObjectMethodInvocation(
-                    object: new VariableDependency(VariableName::PHPUNIT_TEST_CASE),
+                    object: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
                 ),
                 'expectedMetadata' => new Metadata(
-                    variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE,
+                    dependencyNames: [
+                        DependencyName::PHPUNIT_TEST_CASE,
                     ],
                 ),
             ],
@@ -80,7 +80,7 @@ class StatementTest extends AbstractResolvableTestCase
         return [
             'statement encapsulating variable dependency' => [
                 'statement' => new Statement(
-                    new VariableDependency(VariableName::PANTHER_CLIENT)
+                    Property::asDependency(DependencyName::PANTHER_CLIENT)
                 ),
                 'expectedString' => '{{ CLIENT }};',
             ],
@@ -97,7 +97,7 @@ class StatementTest extends AbstractResolvableTestCase
             'statement encapsulating object method invocation' => [
                 'statement' => new Statement(
                     new ObjectMethodInvocation(
-                        object: new VariableDependency(VariableName::PHPUNIT_TEST_CASE),
+                        object: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
                         methodName: 'methodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,

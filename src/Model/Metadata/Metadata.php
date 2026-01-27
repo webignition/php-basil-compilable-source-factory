@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Metadata;
 
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
@@ -17,9 +17,9 @@ class Metadata implements MetadataInterface
 
     /**
      * @param non-empty-string[] $classNames
-     * @param VariableName[]     $variableNames
+     * @param DependencyName[]   $dependencyNames
      */
-    public function __construct(array $classNames = [], array $variableNames = [])
+    public function __construct(array $classNames = [], array $dependencyNames = [])
     {
         $classNameObjects = [];
         foreach ($classNames as $className) {
@@ -27,7 +27,7 @@ class Metadata implements MetadataInterface
         }
 
         $this->classDependencies = new ClassDependencyCollection(new ClassNameCollection($classNameObjects));
-        $this->variableDependencies = new VariableDependencyCollection($variableNames);
+        $this->variableDependencies = new VariableDependencyCollection($dependencyNames);
     }
 
     public function getClassDependencies(): ClassDependencyCollection

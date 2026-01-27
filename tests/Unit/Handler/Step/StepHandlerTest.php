@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Step;
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BaseBasilTestCase\Enum\StatementStage;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
@@ -144,9 +144,9 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         StatementStage::class,
                         \Throwable::class,
                     ],
-                    variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::MESSAGE_FACTORY,
+                    dependencyNames: [
+                        DependencyName::PHPUNIT_TEST_CASE,
+                        DependencyName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -255,9 +255,9 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         StatementStage::class,
                         \Throwable::class,
                     ],
-                    variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::MESSAGE_FACTORY,
+                    dependencyNames: [
+                        DependencyName::PHPUNIT_TEST_CASE,
+                        DependencyName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -407,9 +407,9 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         StatementStage::class,
                         \Throwable::class,
                     ],
-                    variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::MESSAGE_FACTORY,
+                    dependencyNames: [
+                        DependencyName::PHPUNIT_TEST_CASE,
+                        DependencyName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -508,9 +508,9 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         StatementStage::class,
                         \Throwable::class,
                     ],
-                    variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::MESSAGE_FACTORY,
+                    dependencyNames: [
+                        DependencyName::PHPUNIT_TEST_CASE,
+                        DependencyName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -737,9 +737,9 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         StatementStage::class,
                         \Throwable::class,
                     ],
-                    variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::MESSAGE_FACTORY,
+                    dependencyNames: [
+                        DependencyName::PHPUNIT_TEST_CASE,
+                        DependencyName::MESSAGE_FACTORY,
                     ],
                 ),
             ],

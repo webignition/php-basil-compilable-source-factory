@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression\ArrayExpression;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression\ArrayExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression\ArrayPair;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
@@ -13,7 +13,7 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
+use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
 class ArrayPairTest extends AbstractResolvableTestCase
@@ -41,15 +41,15 @@ class ArrayPairTest extends AbstractResolvableTestCase
                 'pair' => new ArrayPair(
                     '',
                     new ObjectMethodInvocation(
-                        object: new VariableDependency(VariableName::PANTHER_CLIENT),
+                        object: Property::asDependency(DependencyName::PANTHER_CLIENT),
                         methodName: 'methodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
                     )
                 ),
                 'expectedMetadata' => new Metadata(
-                    variableNames: [
-                        VariableName::PANTHER_CLIENT,
+                    dependencyNames: [
+                        DependencyName::PANTHER_CLIENT,
                     ]
                 ),
             ],

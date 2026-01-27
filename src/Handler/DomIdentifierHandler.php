@@ -6,7 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler;
 
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
@@ -15,9 +15,8 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterfac
 use webignition\BasilCompilableSourceFactory\Model\Expression\ReturnExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\Model\VariableName;
 
 class DomIdentifierHandler
 {
@@ -56,17 +55,17 @@ class DomIdentifierHandler
             $this->argumentFactory->createSingular($serializedElementIdentifier)
         );
 
-        $elementPlaceholder = new VariableName('element');
+        $elementVariable = Property::asVariable('element');
 
         $closureExpressionStatements = [
             new Statement(
-                new AssignmentExpression($elementPlaceholder, $findCall)
+                new AssignmentExpression($elementVariable, $findCall)
             ),
             new EmptyLine(),
             new Statement(
                 new ReturnExpression(
                     new ObjectMethodInvocation(
-                        object: $elementPlaceholder,
+                        object: $elementVariable,
                         methodName: 'getAttribute',
                         arguments: new MethodArguments($this->argumentFactory->create($attributeName)),
                         mightThrow: true,
@@ -84,20 +83,20 @@ class DomIdentifierHandler
             $this->argumentFactory->createSingular($serializedElementIdentifier)
         );
 
-        $elementPlaceholder = new VariableName('element');
+        $elementVariable = Property::asVariable('element');
 
         $closureExpressionStatements = [
             new Statement(
-                new AssignmentExpression($elementPlaceholder, $findCall)
+                new AssignmentExpression($elementVariable, $findCall)
             ),
             new EmptyLine(),
             new Statement(
                 new ReturnExpression(
                     new ObjectMethodInvocation(
-                        object: new VariableDependency(VariableNameEnum::WEBDRIVER_ELEMENT_INSPECTOR),
+                        object: Property::asDependency(DependencyName::WEBDRIVER_ELEMENT_INSPECTOR),
                         methodName: 'getValue',
                         arguments: new MethodArguments([
-                            $elementPlaceholder,
+                            $elementVariable,
                         ]),
                         mightThrow: false,
                     )

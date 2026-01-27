@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilModels\Model\Statement\Assertion\DerivedValueOperationAssertion;
 use webignition\BasilModels\Parser\AssertionParser;
@@ -55,9 +55,9 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(),
                 'expectedBodyMetadata' => new Metadata(
-                    variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::MESSAGE_FACTORY,
+                    dependencyNames: [
+                        DependencyName::PHPUNIT_TEST_CASE,
+                        DependencyName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -102,15 +102,15 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
-                    variableNames: [
-                        VariableName::DOM_CRAWLER_NAVIGATOR,
-                        VariableName::WEBDRIVER_ELEMENT_INSPECTOR,
+                    dependencyNames: [
+                        DependencyName::DOM_CRAWLER_NAVIGATOR,
+                        DependencyName::WEBDRIVER_ELEMENT_INSPECTOR,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
-                    variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::MESSAGE_FACTORY,
+                    dependencyNames: [
+                        DependencyName::PHPUNIT_TEST_CASE,
+                        DependencyName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -155,14 +155,14 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
-                    variableNames: [
-                        VariableName::DOM_CRAWLER_NAVIGATOR,
+                    dependencyNames: [
+                        DependencyName::DOM_CRAWLER_NAVIGATOR,
                     ],
                 ),
                 'expectedBodyMetadata' => new Metadata(
-                    variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::MESSAGE_FACTORY,
+                    dependencyNames: [
+                        DependencyName::PHPUNIT_TEST_CASE,
+                        DependencyName::MESSAGE_FACTORY,
                     ],
                 ),
             ],
@@ -202,9 +202,9 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     EOD,
                 'expectedSetupMetadata' => new Metadata(),
                 'expectedBodyMetadata' => new Metadata(
-                    variableNames: [
-                        VariableName::PHPUNIT_TEST_CASE,
-                        VariableName::MESSAGE_FACTORY,
+                    dependencyNames: [
+                        DependencyName::PHPUNIT_TEST_CASE,
+                        DependencyName::MESSAGE_FACTORY,
                     ],
                 ),
             ],

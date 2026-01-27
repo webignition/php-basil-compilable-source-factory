@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilModels\Parser\ActionParser;
 
@@ -17,9 +17,9 @@ trait CreateFromWaitForActionDataProviderTrait
     {
         $actionParser = ActionParser::create();
         $expectedMetadata = new Metadata(
-            variableNames: [
-                VariableName::PANTHER_CRAWLER,
-                VariableName::PANTHER_CLIENT,
+            dependencyNames: [
+                DependencyName::PANTHER_CRAWLER,
+                DependencyName::PANTHER_CLIENT,
             ],
         );
 

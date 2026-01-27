@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Value;
 
-use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\EnvironmentValueFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
@@ -19,9 +19,8 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ReturnExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilValueTypeIdentifier\ValueTypeIdentifier;
 
 class ScalarValueHandler
@@ -71,14 +70,14 @@ class ScalarValueHandler
 
     private function handleBrowserProperty(): ExpressionInterface
     {
-        $webDriverDimensionPlaceholder = new VariableName('webDriverDimension');
+        $webDriverDimensionVariable = Property::asVariable('webDriverDimension');
 
         return new ClosureExpression(new Body([
             new Statement(
                 new AssignmentExpression(
-                    $webDriverDimensionPlaceholder,
+                    $webDriverDimensionVariable,
                     new ObjectMethodInvocation(
-                        object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                        object: Property::asDependency(DependencyName::PANTHER_CLIENT),
                         methodName: 'getWebDriver()->manage()->window()->getSize',
                         arguments: new MethodArguments(),
                         mightThrow: true,
@@ -91,7 +90,7 @@ class ScalarValueHandler
                     new CompositeExpression([
                         new EncapsulatingCastExpression(
                             new ObjectMethodInvocation(
-                                object: $webDriverDimensionPlaceholder,
+                                object: $webDriverDimensionVariable,
                                 methodName: 'getWidth',
                                 arguments: new MethodArguments(),
                                 mightThrow: true,
@@ -101,7 +100,7 @@ class ScalarValueHandler
                         new LiteralExpression(' . \'x\' . '),
                         new EncapsulatingCastExpression(
                             new ObjectMethodInvocation(
-                                object: $webDriverDimensionPlaceholder,
+                                object: $webDriverDimensionVariable,
                                 methodName: 'getHeight',
                                 arguments: new MethodArguments(),
                                 mightThrow: true,
@@ -120,7 +119,7 @@ class ScalarValueHandler
         $property = $environmentValue->getProperty();
 
         return new ArrayAccessExpression(
-            new VariableDependency(VariableNameEnum::ENVIRONMENT_VARIABLE_ARRAY),
+            Property::asDependency(DependencyName::ENVIRONMENT_VARIABLE_ARRAY),
             $property
         );
     }
@@ -143,7 +142,7 @@ class ScalarValueHandler
 
         if (is_string($methodName)) {
             return new ObjectMethodInvocation(
-                object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                object: Property::asDependency(DependencyName::PANTHER_CLIENT),
                 methodName: $methodName,
                 arguments: new MethodArguments(),
                 mightThrow: true,

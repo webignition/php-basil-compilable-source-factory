@@ -6,16 +6,14 @@ namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
 use webignition\BaseBasilTestCase\Enum\StatementStage;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
-use webignition\BasilCompilableSourceFactory\Model\Expression\ObjectConstant;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocationInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\Model\VariableName;
+use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Statement\StatementInterface;
 
@@ -38,7 +36,7 @@ readonly class PhpUnitCallFactory
         bool $mightThrow,
     ): MethodInvocationInterface {
         return new ObjectMethodInvocation(
-            object: new VariableDependency(VariableNameEnum::PHPUNIT_TEST_CASE),
+            object: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
             methodName: $methodName,
             arguments: $arguments,
             mightThrow: $mightThrow,
@@ -76,7 +74,7 @@ readonly class PhpUnitCallFactory
         }
 
         $messageFactoryCall = new ObjectMethodInvocation(
-            object: new VariableDependency(VariableNameEnum::MESSAGE_FACTORY),
+            object: Property::asDependency(DependencyName::MESSAGE_FACTORY),
             methodName: 'createAssertionMessage',
             arguments: new MethodArguments($messageFactoryArgumentExpressions)
                 ->withFormat(MethodArgumentsInterface::FORMAT_STACKED),
@@ -104,17 +102,17 @@ readonly class PhpUnitCallFactory
         $serializedStatement = (string) json_encode($statement, JSON_PRETTY_PRINT);
         $serializedStatement = addcslashes($serializedStatement, "'");
 
-        $statementStageEnum = new ObjectConstant(
+        $statementStageEnum = Property::asEnum(
             new ClassName(StatementStage::class),
             $statementStage->name
         );
 
         $failureMessageFactoryCall = new ObjectMethodInvocation(
-            object: new VariableDependency(VariableNameEnum::MESSAGE_FACTORY),
+            object: Property::asDependency(DependencyName::MESSAGE_FACTORY),
             methodName: 'createFailureMessage',
             arguments: new MethodArguments([
                 $this->argumentFactory->createSingular($serializedStatement),
-                $this->argumentFactory->createSingular(new VariableName('exception')),
+                $this->argumentFactory->createSingular(Property::asVariable('exception')),
                 $this->argumentFactory->createSingular($statementStageEnum),
             ])->withFormat(MethodArgumentsInterface::FORMAT_STACKED),
             mightThrow: false

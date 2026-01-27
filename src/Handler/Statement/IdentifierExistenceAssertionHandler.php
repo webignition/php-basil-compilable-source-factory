@@ -23,9 +23,9 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastE
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\NullCoalescerExpression;
+use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
-use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilModels\Model\Statement\Action\ActionInterface;
 use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Statement\Assertion\DerivedValueOperationAssertion;
@@ -91,15 +91,15 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
 
         $examinedAccessor = EncapsulatingCastExpression::forBool($examinedAccessor);
 
-        $elementExistPlaceholder = new VariableName('elementExists');
+        $elementExistsVariable = Property::asVariable('elementExists');
         $elementAssignment = new Statement(
-            new AssignmentExpression($elementExistPlaceholder, $examinedAccessor),
+            new AssignmentExpression($elementExistsVariable, $examinedAccessor),
         );
 
         return new StatementHandlerComponents(
             $this->createAssertionStatement(
                 $elementExistenceAssertion,
-                $elementExistPlaceholder,
+                $elementExistsVariable,
             )
         )->withSetup(
             $elementAssignment,
@@ -125,9 +125,9 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
         );
         $elementAccessor = EncapsulatingCastExpression::forBool($elementAccessor);
 
-        $elementExistsPlaceholder = new VariableName('elementExists');
+        $elementExistsVariable = Property::asVariable('elementExists');
         $elementAssignment = new Statement(
-            new AssignmentExpression($elementExistsPlaceholder, $elementAccessor),
+            new AssignmentExpression($elementExistsVariable, $elementAccessor),
         );
 
         $attributeNullComparisonExpression = new NullCoalescerExpression(
@@ -146,12 +146,12 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
 
         $attributeAccessor = EncapsulatingCastExpression::forBool($attributeAccessor);
 
-        $attributeExistsPlaceholder = new VariableName('attributeExists');
+        $attributeExistsVariable = Property::asVariable('attributeExists');
         $attributeAssignment = new Statement(
             new AssignmentExpression(
-                $attributeExistsPlaceholder,
+                $attributeExistsVariable,
                 new CompositeExpression([
-                    $elementExistsPlaceholder,
+                    $elementExistsVariable,
                     new LiteralExpression(' && '),
                     $attributeAccessor,
                 ])
@@ -162,11 +162,11 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
             new Body([
                 'element existence assertion' => $this->createAssertionStatement(
                     $elementExistsAssertion,
-                    $elementExistsPlaceholder,
+                    $elementExistsVariable,
                 ),
                 'attribute existence assertion' => $this->createAssertionStatement(
                     $attributeExistenceAssertion,
-                    $attributeExistsPlaceholder,
+                    $attributeExistsVariable,
                 ),
             ])
         )->withSetup(

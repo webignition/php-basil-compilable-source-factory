@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Statement;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
@@ -14,8 +13,8 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpres
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\NullCoalescerExpression;
+use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
-use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Statement\StatementInterface;
 
@@ -48,7 +47,7 @@ class ScalarExistenceAssertionHandler implements StatementHandlerInterface
             new LiteralExpression('null'),
         );
 
-        $examinedValuePlaceholder = new VariableName(VariableNameEnum::EXAMINED_VALUE->value);
+        $examinedValueVariable = Property::asVariable('examinedValue');
 
         $examinedAccessor = new ComparisonExpression(
             new EncapsulatedExpression($nullComparisonExpression),
@@ -63,12 +62,12 @@ class ScalarExistenceAssertionHandler implements StatementHandlerInterface
             new Statement($this->phpUnitCallFactory->createAssertionCall(
                 'exists' === $statement->getOperator() ? 'assertTrue' : 'assertFalse',
                 $statement,
-                [$examinedValuePlaceholder],
-                [$expected, $examinedValuePlaceholder],
+                [$examinedValueVariable],
+                [$expected, $examinedValueVariable],
             ))
         )->withSetup(
             new Statement(
-                new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
+                new AssignmentExpression($examinedValueVariable, $examinedAccessor),
             )
         );
     }

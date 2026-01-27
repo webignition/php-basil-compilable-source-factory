@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Attribute\DataProviderAttribute;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
@@ -19,10 +19,9 @@ use webignition\BasilCompilableSourceFactory\Model\MethodDefinition;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinitionInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\Model\VariableName;
 
 class MethodDefinitionTest extends AbstractResolvableTestCase
 {
@@ -110,7 +109,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                 'methodDefinition' => new MethodDefinition('name', new Body([
                     new Statement(
                         new ObjectMethodInvocation(
-                            object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                            object: Property::asDependency(DependencyName::PANTHER_CLIENT),
                             methodName: 'methodName',
                             arguments: new MethodArguments(),
                             mightThrow: false,
@@ -118,7 +117,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                     ),
                     new Statement(
                         new AssignmentExpression(
-                            new VariableName('variable'),
+                            Property::asVariable('variable'),
                             new MethodInvocation(
                                 methodName: 'methodName',
                                 arguments: new MethodArguments(),
@@ -128,8 +127,8 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                     ),
                 ])),
                 'expectedMetadata' => new Metadata(
-                    variableNames: [
-                        VariableNameEnum::PANTHER_CLIENT,
+                    dependencyNames: [
+                        DependencyName::PANTHER_CLIENT,
                     ]
                 ),
             ],
@@ -137,7 +136,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                 'methodDefinition' => new MethodDefinition('name', new Body([
                     new Statement(
                         new ObjectMethodInvocation(
-                            object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                            object: Property::asDependency(DependencyName::PANTHER_CLIENT),
                             methodName: 'methodName',
                             arguments: new MethodArguments(),
                             mightThrow: false,
@@ -145,7 +144,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                     ),
                     new Statement(
                         new AssignmentExpression(
-                            new VariableName('variable'),
+                            Property::asVariable('variable'),
                             new MethodInvocation(
                                 methodName: 'methodName',
                                 arguments: new MethodArguments(),
@@ -158,8 +157,8 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                     classNames: [
                         DataProvider::class,
                     ],
-                    variableNames: [
-                        VariableNameEnum::PANTHER_CLIENT,
+                    dependencyNames: [
+                        DependencyName::PANTHER_CLIENT,
                     ]
                 ),
             ],
@@ -286,9 +285,9 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                         new EmptyLine(),
                         new Statement(
                             new AssignmentExpression(
-                                new VariableName('value'),
+                                Property::asVariable('value'),
                                 new ObjectMethodInvocation(
-                                    object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                                    object: Property::asDependency(DependencyName::PANTHER_CLIENT),
                                     methodName: 'methodName',
                                     arguments: new MethodArguments([
                                         new LiteralExpression('$x'),

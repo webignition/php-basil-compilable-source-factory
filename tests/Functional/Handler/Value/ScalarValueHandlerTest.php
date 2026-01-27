@@ -9,8 +9,8 @@ use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
+use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
-use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
@@ -31,11 +31,11 @@ class ScalarValueHandlerTest extends AbstractBrowserTestCase
     {
         $source = $this->handler->handle($value);
 
-        $valuePlaceholder = new VariableName('value');
+        $valueVariable = Property::asVariable('value');
 
         $instrumentedSource = new Body([
             new Statement(
-                new AssignmentExpression($valuePlaceholder, $source)
+                new AssignmentExpression($valueVariable, $source)
             ),
         ]);
 

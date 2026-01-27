@@ -5,7 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\MethodArguments;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
@@ -20,10 +20,9 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
-use webignition\BasilCompilableSourceFactory\Model\VariableDependency;
-use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
 class MethodArgumentsTest extends AbstractResolvableTestCase
@@ -143,7 +142,7 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                 'arguments' => new MethodArguments(
                     [
                         new ObjectMethodInvocation(
-                            object: new VariableDependency(VariableNameEnum::DOM_CRAWLER_NAVIGATOR),
+                            object: Property::asDependency(DependencyName::DOM_CRAWLER_NAVIGATOR),
                             methodName: 'find',
                             arguments: new MethodArguments([
                                 new ObjectMethodInvocation(
@@ -163,14 +162,14 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                             new Body([
                                 new Statement(
                                     new AssignmentExpression(
-                                        new VariableName('variable'),
+                                        Property::asVariable('variable'),
                                         new LiteralExpression('100')
                                     )
                                 ),
                                 new EmptyLine(),
                                 new Statement(
                                     new ReturnExpression(
-                                        new VariableName('variable'),
+                                        Property::asVariable('variable'),
                                     )
                                 ),
                             ])
@@ -196,7 +195,7 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                     [
                         ArrayExpression::fromArray([
                             'name' => new ObjectMethodInvocation(
-                                object: new VariableDependency(VariableNameEnum::PANTHER_CLIENT),
+                                object: Property::asDependency(DependencyName::PANTHER_CLIENT),
                                 methodName: 'dataName',
                                 arguments: new MethodArguments(),
                                 mightThrow: false,

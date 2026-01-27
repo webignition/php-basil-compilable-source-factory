@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
 use webignition\BasilModels\Parser\AssertionParser;
 
@@ -30,7 +30,7 @@ trait NotExistsAssertionFunctionalDataProviderTrait
                 'fixture' => '/empty.html',
                 'statement' => $assertionParser->parse('$env.NON-EXISTENT not-exists', 0),
                 'additionalVariableIdentifiers' => [
-                    VariableName::ENVIRONMENT_VARIABLE_ARRAY->value => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
+                    DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
                 ],
             ],
         ];

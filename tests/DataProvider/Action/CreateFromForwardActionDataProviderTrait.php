@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilModels\Parser\ActionParser;
 
@@ -26,10 +26,10 @@ trait CreateFromForwardActionDataProviderTrait
                     {{ PHPUNIT }}->refreshCrawlerAndNavigator();
                     EOD,
                 'expectedSetupMetadata' => null,
-                'expectedBodyMetadata' => new Metadata(variableNames: [
-                    VariableName::PANTHER_CRAWLER,
-                    VariableName::PANTHER_CLIENT,
-                    VariableName::PHPUNIT_TEST_CASE,
+                'expectedBodyMetadata' => new Metadata(dependencyNames: [
+                    DependencyName::PANTHER_CRAWLER,
+                    DependencyName::PANTHER_CLIENT,
+                    DependencyName::PHPUNIT_TEST_CASE,
                 ]),
             ],
         ];

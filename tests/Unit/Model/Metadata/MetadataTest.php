@@ -6,7 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Metadata;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName;
+use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Block\ClassDependencyCollection;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\ClassNameCollection;
@@ -17,16 +17,16 @@ class MetadataTest extends TestCase
 {
     /**
      * @param non-empty-string[] $classNames
-     * @param VariableName::*[]  $variableNames
+     * @param DependencyName[]   $dependencyNames
      */
     #[DataProvider('createDataProvider')]
     public function testCreate(
         array $classNames,
-        array $variableNames,
+        array $dependencyNames,
         ClassDependencyCollection $expectedClassDependencies,
         VariableDependencyCollection $expectedVariableDependencies
     ): void {
-        $metadata = new Metadata($classNames, $variableNames);
+        $metadata = new Metadata($classNames, $dependencyNames);
 
         $this->assertEquals($expectedClassDependencies, $metadata->getClassDependencies());
         $this->assertEquals($expectedVariableDependencies, $metadata->getVariableDependencies());
@@ -40,14 +40,14 @@ class MetadataTest extends TestCase
         return [
             'components set, correct types' => [
                 'classNames' => [ClassName::class],
-                'variableNames' => [VariableName::PANTHER_CLIENT],
+                'dependencyNames' => [DependencyName::PANTHER_CLIENT],
                 'expectedClassDependencies' => new ClassDependencyCollection(
                     new ClassNameCollection([
                         new ClassName(ClassName::class),
                     ])
                 ),
                 'expectedVariableDependencies' => new VariableDependencyCollection([
-                    VariableName::PANTHER_CLIENT,
+                    DependencyName::PANTHER_CLIENT,
                 ]),
             ],
         ];
@@ -59,9 +59,9 @@ class MetadataTest extends TestCase
             classNames: [
                 ClassName::class,
             ],
-            variableNames: [
-                VariableName::PANTHER_CLIENT,
-                VariableName::PHPUNIT_TEST_CASE,
+            dependencyNames: [
+                DependencyName::PANTHER_CLIENT,
+                DependencyName::PHPUNIT_TEST_CASE,
             ],
         );
 
@@ -70,9 +70,9 @@ class MetadataTest extends TestCase
                 ClassName::class,
                 Metadata::class
             ],
-            variableNames: [
-                VariableName::PHPUNIT_TEST_CASE,
-                VariableName::DOM_CRAWLER_NAVIGATOR,
+            dependencyNames: [
+                DependencyName::PHPUNIT_TEST_CASE,
+                DependencyName::DOM_CRAWLER_NAVIGATOR,
             ],
         );
 
@@ -83,10 +83,10 @@ class MetadataTest extends TestCase
                 ClassName::class,
                 Metadata::class,
             ],
-            variableNames: [
-                VariableName::PANTHER_CLIENT,
-                VariableName::PHPUNIT_TEST_CASE,
-                VariableName::DOM_CRAWLER_NAVIGATOR,
+            dependencyNames: [
+                DependencyName::PANTHER_CLIENT,
+                DependencyName::PHPUNIT_TEST_CASE,
+                DependencyName::DOM_CRAWLER_NAVIGATOR,
             ],
         );
 

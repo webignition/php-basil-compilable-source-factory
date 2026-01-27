@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Statement;
 use SmartAssert\DomIdentifier\Factory as DomIdentifierFactory;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
-use webignition\BasilCompilableSourceFactory\Enum\VariableName as VariableNameEnum;
+use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
@@ -17,8 +17,8 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterfac
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
-use webignition\BasilCompilableSourceFactory\Model\VariableName;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
@@ -95,14 +95,14 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
         ExpressionInterface $examinedAccessor,
         AssertionInterface $assertion,
     ): StatementHandlerComponents {
-        $examinedValuePlaceholder = new VariableName(VariableNameEnum::EXAMINED_VALUE->value);
-        $expectedValuePlaceholder = new VariableName(VariableNameEnum::EXPECTED_VALUE->value);
+        $examinedValueVariable = Property::asVariable(VariableName::EXAMINED_VALUE);
+        $expectedValueVariable = Property::asVariable(VariableName::EXPECTED_VALUE);
 
         $pregMatchInvocation = new MethodInvocation(
             methodName: 'preg_match',
             arguments: new MethodArguments(
                 $this->argumentFactory->create(
-                    $examinedValuePlaceholder,
+                    $examinedValueVariable,
                     null,
                 )
             ),
@@ -120,13 +120,13 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
             new Statement($this->phpUnitCallFactory->createAssertionCall(
                 'assertFalse',
                 $assertion,
-                [$expectedValuePlaceholder],
-                [$expectedValuePlaceholder, $examinedValuePlaceholder],
+                [$expectedValueVariable],
+                [$expectedValueVariable, $examinedValueVariable],
             ))
         )->withSetup(
             Body::createFromExpressions([
-                new AssignmentExpression($examinedValuePlaceholder, $examinedAccessor),
-                new AssignmentExpression($expectedValuePlaceholder, $identityComparison),
+                new AssignmentExpression($examinedValueVariable, $examinedAccessor),
+                new AssignmentExpression($expectedValueVariable, $identityComparison),
             ]),
         );
     }
