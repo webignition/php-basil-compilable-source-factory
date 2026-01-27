@@ -70,12 +70,7 @@ class PropertyTest extends AbstractResolvableTestCase
                 'expected' => 'StatementStage::CONSTANT_NAME',
             ],
             'object property access, no alias' => [
-                'property' => new Property(
-                    'property',
-                    new Property(
-                        'parent'
-                    ),
-                ),
+                'property' => Property::asObjectProperty(new Property('parent'), 'property'),
                 'expected' => '$parent->property',
             ],
             'method invocation object property access, no alias' => [

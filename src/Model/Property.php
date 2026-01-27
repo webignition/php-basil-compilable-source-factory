@@ -57,6 +57,14 @@ class Property implements ExpressionInterface, IsAssigneeInterface
         return self::asClassConstant($enum, $caseName);
     }
 
+    /**
+     * @param non-empty-string $name
+     */
+    public static function asObjectProperty(Property $parent, string $name): self
+    {
+        return new Property($name, $parent);
+    }
+
     public function mightThrow(): bool
     {
         if (null === $this->parent) {
