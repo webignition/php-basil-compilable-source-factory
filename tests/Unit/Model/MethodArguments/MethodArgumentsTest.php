@@ -163,14 +163,14 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                             new Body([
                                 new Statement(
                                     new AssignmentExpression(
-                                        new Property('variable'),
+                                        Property::asVariable('variable'),
                                         new LiteralExpression('100')
                                     )
                                 ),
                                 new EmptyLine(),
                                 new Statement(
                                     new ReturnExpression(
-                                        new Property('variable'),
+                                        Property::asVariable('variable'),
                                     )
                                 ),
                             ])

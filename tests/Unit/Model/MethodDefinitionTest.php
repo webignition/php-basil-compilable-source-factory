@@ -118,7 +118,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                     ),
                     new Statement(
                         new AssignmentExpression(
-                            new Property('variable'),
+                            Property::asVariable('variable'),
                             new MethodInvocation(
                                 methodName: 'methodName',
                                 arguments: new MethodArguments(),
@@ -145,7 +145,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                     ),
                     new Statement(
                         new AssignmentExpression(
-                            new Property('variable'),
+                            Property::asVariable('variable'),
                             new MethodInvocation(
                                 methodName: 'methodName',
                                 arguments: new MethodArguments(),
@@ -286,7 +286,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                         new EmptyLine(),
                         new Statement(
                             new AssignmentExpression(
-                                new Property('value'),
+                                Property::asVariable('value'),
                                 new ObjectMethodInvocation(
                                     object: new VariableDependency(VariableName::PANTHER_CLIENT->value),
                                     methodName: 'methodName',

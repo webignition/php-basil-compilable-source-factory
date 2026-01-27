@@ -58,8 +58,8 @@ class ComparisonAssertionHandler implements StatementHandlerInterface
         $expectedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull((string) $statement->getValue());
         $expectedAccessor = EncapsulatingCastExpression::forString($expectedAccessor);
 
-        $expectedValueVariable = new Property(VariableName::EXPECTED_VALUE->value);
-        $examinedValueVariable = new Property(VariableName::EXAMINED_VALUE->value);
+        $expectedValueVariable = Property::asVariable(VariableName::EXPECTED_VALUE->value);
+        $examinedValueVariable = Property::asVariable(VariableName::EXAMINED_VALUE->value);
 
         return new StatementHandlerComponents(
             new Statement(

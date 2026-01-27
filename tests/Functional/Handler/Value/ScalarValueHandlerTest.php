@@ -31,7 +31,7 @@ class ScalarValueHandlerTest extends AbstractBrowserTestCase
     {
         $source = $this->handler->handle($value);
 
-        $valueVariable = new Property('value');
+        $valueVariable = Property::asVariable('value');
 
         $instrumentedSource = new Body([
             new Statement(

@@ -56,7 +56,7 @@ class DomIdentifierHandler
             $this->argumentFactory->createSingular($serializedElementIdentifier)
         );
 
-        $elementVariable = new Property('element');
+        $elementVariable = Property::asVariable('element');
 
         $closureExpressionStatements = [
             new Statement(
@@ -84,7 +84,7 @@ class DomIdentifierHandler
             $this->argumentFactory->createSingular($serializedElementIdentifier)
         );
 
-        $elementVariable = new Property('element');
+        $elementVariable = Property::asVariable('element');
 
         $closureExpressionStatements = [
             new Statement(

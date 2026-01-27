@@ -21,6 +21,14 @@ class Property implements ExpressionInterface, IsAssigneeInterface
         private readonly bool $isDependency = false,
     ) {}
 
+    /**
+     * @param non-empty-string $name
+     */
+    public static function asVariable(string $name): self
+    {
+        return new Property($name);
+    }
+
     public function mightThrow(): bool
     {
         if (null === $this->parent) {

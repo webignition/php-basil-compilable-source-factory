@@ -114,7 +114,7 @@ readonly class PhpUnitCallFactory
             methodName: 'createFailureMessage',
             arguments: new MethodArguments([
                 $this->argumentFactory->createSingular($serializedStatement),
-                $this->argumentFactory->createSingular(new Property('exception')),
+                $this->argumentFactory->createSingular(Property::asVariable('exception')),
                 $this->argumentFactory->createSingular($statementStageEnum),
             ])->withFormat(MethodArgumentsInterface::FORMAT_STACKED),
             mightThrow: false

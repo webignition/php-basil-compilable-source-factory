@@ -71,7 +71,7 @@ class ScalarValueHandler
 
     private function handleBrowserProperty(): ExpressionInterface
     {
-        $webDriverDimensionVariable = new Property('webDriverDimension');
+        $webDriverDimensionVariable = Property::asVariable('webDriverDimension');
 
         return new ClosureExpression(new Body([
             new Statement(

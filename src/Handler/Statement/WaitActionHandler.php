@@ -58,7 +58,7 @@ class WaitActionHandler implements StatementHandlerInterface
         }
 
         $durationAccessor = $this->valueAccessorFactory->create($duration);
-        $durationVariable = new Property('duration');
+        $durationVariable = Property::asVariable('duration');
 
         $sleepInvocation = new MethodInvocation(
             methodName: 'usleep',

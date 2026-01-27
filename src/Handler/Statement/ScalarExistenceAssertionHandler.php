@@ -48,7 +48,7 @@ class ScalarExistenceAssertionHandler implements StatementHandlerInterface
             new LiteralExpression('null'),
         );
 
-        $examinedValueVariable = new Property(VariableName::EXAMINED_VALUE->value);
+        $examinedValueVariable = Property::asVariable(VariableName::EXAMINED_VALUE->value);
 
         $examinedAccessor = new ComparisonExpression(
             new EncapsulatedExpression($nullComparisonExpression),

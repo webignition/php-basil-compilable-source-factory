@@ -114,8 +114,8 @@ class SetActionHandler implements StatementHandlerInterface
             );
         }
 
-        $setValueCollectionVariable = new Property('setValueCollection');
-        $setValueValueVariable = new Property('setValueValue');
+        $setValueCollectionVariable = Property::asVariable('setValueCollection');
+        $setValueValueVariable = Property::asVariable('setValueValue');
 
         $mutationInvocation = new ObjectMethodInvocation(
             object: new VariableDependency(VariableName::WEBDRIVER_ELEMENT_MUTATOR->value),

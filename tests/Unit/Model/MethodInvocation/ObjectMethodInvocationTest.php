@@ -90,7 +90,7 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
                 ),
             ],
             'no arguments, resolving placeholder' => [
-                'object' => new Property('object'),
+                'object' => Property::asVariable('object'),
                 'methodName' => 'method',
                 'arguments' => new MethodArguments(),
                 'expectedMetadata' => new Metadata(),
@@ -169,7 +169,7 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
             ],
             'object and method name only, resolving placeholder' => [
                 'invocation' => new ObjectMethodInvocation(
-                    object: new Property('object'),
+                    object: Property::asVariable('object'),
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,

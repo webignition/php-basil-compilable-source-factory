@@ -64,7 +64,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                 'body' => new Body([
                     new Statement(
                         new AssignmentExpression(
-                            new Property('variable'),
+                            Property::asVariable('variable'),
                             new ObjectMethodInvocation(
                                 object: new VariableDependency(VariableName::PANTHER_CLIENT->value),
                                 methodName: 'dependencyMethodName',
@@ -78,7 +78,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                             new CompositeExpression([
                                 new CastExpression(
                                     new ObjectMethodInvocation(
-                                        object: new Property('variable'),
+                                        object: Property::asVariable('variable'),
                                         methodName: 'getWidth',
                                         arguments: new MethodArguments(),
                                         mightThrow: false,
@@ -88,7 +88,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                                 new LiteralExpression(' . \'x\' . '),
                                 new CastExpression(
                                     new ObjectMethodInvocation(
-                                        object: new Property('variable'),
+                                        object: Property::asVariable('variable'),
                                         methodName: 'getHeight',
                                         arguments: new MethodArguments(),
                                         mightThrow: false,
@@ -178,7 +178,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                     new Body([
                         new Statement(
                             new AssignmentExpression(
-                                new Property('variable'),
+                                Property::asVariable('variable'),
                                 new ObjectMethodInvocation(
                                     object: new VariableDependency(VariableName::PANTHER_CLIENT->value),
                                     methodName: 'dependencyMethodName',
@@ -193,7 +193,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                                 new CompositeExpression([
                                     new EncapsulatingCastExpression(
                                         new ObjectMethodInvocation(
-                                            object: new Property('variable'),
+                                            object: Property::asVariable('variable'),
                                             methodName: 'getWidth',
                                             arguments: new MethodArguments(),
                                             mightThrow: false,
@@ -203,7 +203,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                                     new LiteralExpression(' . \'x\' . '),
                                     new EncapsulatingCastExpression(
                                         new ObjectMethodInvocation(
-                                            object: new Property('variable'),
+                                            object: Property::asVariable('variable'),
                                             methodName: 'getHeight',
                                             arguments: new MethodArguments(),
                                             mightThrow: false,
@@ -254,14 +254,14 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                     new Body([
                         new Statement(
                             new AssignmentExpression(
-                                new Property('variableName'),
+                                Property::asVariable('variableName'),
                                 new LiteralExpression('"literal value"')
                             )
                         ),
                         new EmptyLine(),
                         new Statement(
                             new ReturnExpression(
-                                new Property('variableName')
+                                Property::asVariable('variableName')
                             )
                         ),
                     ])

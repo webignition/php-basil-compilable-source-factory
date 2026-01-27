@@ -19,7 +19,7 @@ trait SetActionFunctionalDataProviderTrait
     public static function setActionFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
-        $inputVariable = new Property('input');
+        $inputVariable = Property::asVariable('input');
 
         return array_merge(
             self::setActionForTextInputFunctionalDataProvider(),
@@ -156,7 +156,7 @@ trait SetActionFunctionalDataProviderTrait
     private static function setActionForTextInputFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
-        $inputVariable = new Property('input');
+        $inputVariable = Property::asVariable('input');
 
         return [
             'input action, literal value: empty text input, empty value' => [
@@ -244,7 +244,7 @@ trait SetActionFunctionalDataProviderTrait
     private static function setActionForTextareaFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
-        $textareaVariable = new Property('textarea');
+        $textareaVariable = Property::asVariable('textarea');
 
         return [
             'input action, literal value: empty textarea, empty value' => [
@@ -308,7 +308,7 @@ trait SetActionFunctionalDataProviderTrait
     private static function setActionForSelectFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
-        $selectVariable = new Property('select');
+        $selectVariable = Property::asVariable('select');
 
         return [
             'input action, literal value: select none selected, empty value' => [
@@ -398,7 +398,7 @@ trait SetActionFunctionalDataProviderTrait
     private static function setActionForOptionCollectionFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
-        $selectVariable = new Property('select');
+        $selectVariable = Property::asVariable('select');
 
         return [
             'input action, literal value: option group none selected, empty value' => [
@@ -488,7 +488,7 @@ trait SetActionFunctionalDataProviderTrait
     private static function setActionForRadioGroupFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
-        $radioGroupVariable = new Property('radioGroup');
+        $radioGroupVariable = Property::asVariable('radioGroup');
 
         return [
             'input action, literal value: radio group none checked, empty value' => [

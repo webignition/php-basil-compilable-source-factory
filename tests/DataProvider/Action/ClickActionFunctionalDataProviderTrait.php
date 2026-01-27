@@ -17,7 +17,7 @@ trait ClickActionFunctionalDataProviderTrait
     public static function clickActionFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
-        $submitButtonVariable = new Property('submitButton');
+        $submitButtonVariable = Property::asVariable('submitButton');
 
         return [
             'interaction action (click), link' => [

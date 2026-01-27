@@ -40,7 +40,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
     ): void {
         $source = $this->factory->createFindCall($expression);
 
-        $collectionVariable = new Property('collection');
+        $collectionVariable = Property::asVariable('collection');
 
         $instrumentedSource = new Body([
             new Statement(

@@ -167,7 +167,7 @@ class DomIdentifierHandlerTest extends AbstractBrowserTestCase
         BodyInterface $teardownStatements
     ): void {
         $instrumentedSource = new Statement(
-            new AssignmentExpression(new Property('value'), $source)
+            new AssignmentExpression(Property::asVariable('value'), $source)
         );
 
         $classCode = $this->testCodeGenerator->createBrowserTestForBlock(

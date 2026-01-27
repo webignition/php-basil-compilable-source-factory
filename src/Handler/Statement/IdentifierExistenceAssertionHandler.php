@@ -91,7 +91,7 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
 
         $examinedAccessor = EncapsulatingCastExpression::forBool($examinedAccessor);
 
-        $elementExistsVariable = new Property('elementExists');
+        $elementExistsVariable = Property::asVariable('elementExists');
         $elementAssignment = new Statement(
             new AssignmentExpression($elementExistsVariable, $examinedAccessor),
         );
@@ -125,7 +125,7 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
         );
         $elementAccessor = EncapsulatingCastExpression::forBool($elementAccessor);
 
-        $elementExistsVariable = new Property('elementExists');
+        $elementExistsVariable = Property::asVariable('elementExists');
         $elementAssignment = new Statement(
             new AssignmentExpression($elementExistsVariable, $elementAccessor),
         );
@@ -146,7 +146,7 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
 
         $attributeAccessor = EncapsulatingCastExpression::forBool($attributeAccessor);
 
-        $attributeExistsVariable = new Property('attributeExists');
+        $attributeExistsVariable = Property::asVariable('attributeExists');
         $attributeAssignment = new Statement(
             new AssignmentExpression(
                 $attributeExistsVariable,

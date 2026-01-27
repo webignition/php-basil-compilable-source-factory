@@ -49,7 +49,7 @@ class StatementFactory
         string $selector,
         IsAssigneeInterface $placeholder
     ): StatementInterface {
-        $elementVariable = new Property('element');
+        $elementVariable = Property::asVariable('element');
         $argumentFactory = ArgumentFactory::createFactory();
 
         return new Statement(
@@ -94,7 +94,7 @@ class StatementFactory
 
     public static function createCrawlerActionCallForElement(string $selector, string $action): StatementInterface
     {
-        $elementVariable = new Property('element');
+        $elementVariable = Property::asVariable('element');
         $argumentFactory = ArgumentFactory::createFactory();
 
         return new Statement(
