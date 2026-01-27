@@ -14,7 +14,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\CompositeExpressio
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\FooMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
@@ -89,7 +89,7 @@ class EncapsulatingCastExpressionTest extends AbstractResolvableTestCase
             ],
             'method invocation as string' => [
                 'expression' => new EncapsulatingCastExpression(
-                    new MethodInvocation(
+                    new FooMethodInvocation(
                         methodName: 'methodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,

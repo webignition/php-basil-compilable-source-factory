@@ -16,7 +16,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastE
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\FooMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
@@ -98,7 +98,7 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
         $examinedValueVariable = Property::asVariable(VariableName::EXAMINED_VALUE);
         $expectedValueVariable = Property::asVariable(VariableName::EXPECTED_VALUE);
 
-        $pregMatchInvocation = new MethodInvocation(
+        $pregMatchInvocation = new FooMethodInvocation(
             methodName: 'preg_match',
             arguments: new MethodArguments(
                 $this->argumentFactory->create(

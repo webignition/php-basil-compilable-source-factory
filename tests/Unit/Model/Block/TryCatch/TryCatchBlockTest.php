@@ -12,7 +12,7 @@ use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CatchExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\FooMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclaration;
@@ -36,7 +36,7 @@ class TryCatchBlockTest extends AbstractResolvableTestCase
             'default' => [
                 'tryCatch' => new TryCatchBlock(
                     new TryBlock(
-                        new Statement(new MethodInvocation(
+                        new Statement(new FooMethodInvocation(
                             methodName: 'methodName',
                             arguments: new MethodArguments(),
                             mightThrow: false,

@@ -17,7 +17,7 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinition;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinitionInterface;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\FooMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
@@ -118,7 +118,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                     new Statement(
                         new AssignmentExpression(
                             Property::asVariable('variable'),
-                            new MethodInvocation(
+                            new FooMethodInvocation(
                                 methodName: 'methodName',
                                 arguments: new MethodArguments(),
                                 mightThrow: false,
@@ -145,7 +145,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                     new Statement(
                         new AssignmentExpression(
                             Property::asVariable('variable'),
-                            new MethodInvocation(
+                            new FooMethodInvocation(
                                 methodName: 'methodName',
                                 arguments: new MethodArguments(),
                                 mightThrow: false,

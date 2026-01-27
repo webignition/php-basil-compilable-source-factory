@@ -13,7 +13,7 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\FooMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
@@ -175,7 +175,7 @@ class ObjectMethodInvocationTest extends AbstractResolvableTestCase
             ],
             'object returned from method call' => [
                 'invocation' => new ObjectMethodInvocation(
-                    new MethodInvocation(
+                    new FooMethodInvocation(
                         methodName: 'literalMethodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,

@@ -10,7 +10,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterfac
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\FooMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
@@ -43,7 +43,7 @@ class StatementTest extends AbstractResolvableTestCase
                 ),
             ],
             'method invocation' => [
-                'expression' => new MethodInvocation(
+                'expression' => new FooMethodInvocation(
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
@@ -86,7 +86,7 @@ class StatementTest extends AbstractResolvableTestCase
             ],
             'statement encapsulating method invocation' => [
                 'statement' => new Statement(
-                    new MethodInvocation(
+                    new FooMethodInvocation(
                         methodName: 'methodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,

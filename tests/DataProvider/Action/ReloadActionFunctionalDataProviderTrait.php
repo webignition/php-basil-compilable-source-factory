@@ -8,7 +8,7 @@ use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\FooMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectMethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
@@ -44,7 +44,7 @@ trait ReloadActionFunctionalDataProviderTrait
                 )
             ),
             new Statement(
-                new MethodInvocation(
+                new FooMethodInvocation(
                     methodName: 'usleep',
                     arguments: new MethodArguments($argumentFactory->create(100000)),
                     mightThrow: false,

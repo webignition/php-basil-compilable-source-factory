@@ -9,14 +9,14 @@ use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumen
 
 abstract class AbstractMethodInvocationEncapsulator implements InvocableInterface
 {
-    protected MethodInvocation $invocation;
+    protected FooMethodInvocation $invocation;
 
     public function __construct(
         string $methodName,
         MethodArgumentsInterface $arguments,
         bool $mightThrow,
     ) {
-        $this->invocation = new MethodInvocation($methodName, $arguments, $mightThrow);
+        $this->invocation = new FooMethodInvocation($methodName, $arguments, $mightThrow);
     }
 
     public function getMetadata(): MetadataInterface
