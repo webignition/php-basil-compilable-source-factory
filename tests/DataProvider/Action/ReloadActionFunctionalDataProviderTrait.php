@@ -28,11 +28,11 @@ trait ReloadActionFunctionalDataProviderTrait
                 new MethodInvocation(
                     methodName: 'assertCount',
                     arguments: new MethodArguments([
-                        $argumentFactory->createSingular(0),
-                        $argumentFactory->createSingular(
+                        $argumentFactory->create(0),
+                        $argumentFactory->create(
                             new MethodInvocation(
                                 methodName: 'filter',
-                                arguments: new MethodArguments([$argumentFactory->createSingular('#hello')]),
+                                arguments: new MethodArguments([$argumentFactory->create('#hello')]),
                                 mightThrow: true,
                                 parent: Property::asDependency(DependencyName::PANTHER_CRAWLER),
                             ),
@@ -45,7 +45,7 @@ trait ReloadActionFunctionalDataProviderTrait
             new Statement(
                 new MethodInvocation(
                     methodName: 'usleep',
-                    arguments: new MethodArguments([$argumentFactory->createSingular(100000)]),
+                    arguments: new MethodArguments([$argumentFactory->create(100000)]),
                     mightThrow: false,
                 )
             ),
@@ -53,11 +53,11 @@ trait ReloadActionFunctionalDataProviderTrait
                 new MethodInvocation(
                     methodName: 'assertCount',
                     arguments: new MethodArguments([
-                        $argumentFactory->createSingular(1),
-                        $argumentFactory->createSingular(
+                        $argumentFactory->create(1),
+                        $argumentFactory->create(
                             new MethodInvocation(
                                 methodName: 'filter',
-                                arguments: new MethodArguments([$argumentFactory->createSingular('#hello')]),
+                                arguments: new MethodArguments([$argumentFactory->create('#hello')]),
                                 mightThrow: true,
                                 parent: Property::asDependency(DependencyName::PANTHER_CRAWLER),
                             )

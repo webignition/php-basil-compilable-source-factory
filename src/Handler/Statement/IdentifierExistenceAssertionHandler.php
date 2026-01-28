@@ -86,7 +86,7 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
         $examinedAccessor = $this->createDomCrawlerNavigatorCall(
             $domIdentifier,
             $elementExistenceAssertion,
-            $this->argumentFactory->createSingular($serializedElementIdentifier)
+            $this->argumentFactory->create($serializedElementIdentifier)
         );
 
         $examinedAccessor = EncapsulatingCastExpression::forBool($examinedAccessor);
@@ -121,7 +121,7 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
         $elementAccessor = $this->createDomCrawlerNavigatorCall(
             $domIdentifier,
             $attributeExistenceAssertion,
-            $this->argumentFactory->createSingular($serializedAttributeIdentifier)
+            $this->argumentFactory->create($serializedAttributeIdentifier)
         );
         $elementAccessor = EncapsulatingCastExpression::forBool($elementAccessor);
 

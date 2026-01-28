@@ -22,16 +22,16 @@ class ArgumentFactoryTest extends TestCase
         $this->factory = ArgumentFactory::createFactory();
     }
 
-    #[DataProvider('createSingularDataProvider')]
-    public function testCreateSingular(mixed $argument, ExpressionInterface $expected): void
+    #[DataProvider('createDataProvider')]
+    public function testCreate(mixed $argument, ExpressionInterface $expected): void
     {
-        self::assertEquals($expected, $this->factory->createSingular($argument));
+        self::assertEquals($expected, $this->factory->create($argument));
     }
 
     /**
      * @return array<mixed>
      */
-    public static function createSingularDataProvider(): array
+    public static function createDataProvider(): array
     {
         return [
             'integer' => [

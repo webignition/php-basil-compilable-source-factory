@@ -36,14 +36,14 @@ class DomIdentifierHandler
     public function handleElement(string $serializedElementIdentifier): ExpressionInterface
     {
         return $this->domCrawlerNavigatorCallFactory->createFindOneCall(
-            $this->argumentFactory->createSingular($serializedElementIdentifier)
+            $this->argumentFactory->create($serializedElementIdentifier)
         );
     }
 
     public function handleElementCollection(string $serializedElementIdentifier): ExpressionInterface
     {
         return $this->domCrawlerNavigatorCallFactory->createFindCall(
-            $this->argumentFactory->createSingular($serializedElementIdentifier)
+            $this->argumentFactory->create($serializedElementIdentifier)
         );
     }
 
@@ -52,7 +52,7 @@ class DomIdentifierHandler
         string $attributeName
     ): ExpressionInterface {
         $findCall = $this->domCrawlerNavigatorCallFactory->createFindOneCall(
-            $this->argumentFactory->createSingular($serializedElementIdentifier)
+            $this->argumentFactory->create($serializedElementIdentifier)
         );
 
         $elementVariable = Property::asVariable('element');
@@ -66,7 +66,7 @@ class DomIdentifierHandler
                 new ReturnExpression(
                     new MethodInvocation(
                         methodName: 'getAttribute',
-                        arguments: new MethodArguments([$this->argumentFactory->createSingular($attributeName)]),
+                        arguments: new MethodArguments([$this->argumentFactory->create($attributeName)]),
                         mightThrow: true,
                         parent: $elementVariable,
                     )
@@ -80,7 +80,7 @@ class DomIdentifierHandler
     public function handleElementValue(string $serializedElementIdentifier): ExpressionInterface
     {
         $findCall = $this->domCrawlerNavigatorCallFactory->createFindCall(
-            $this->argumentFactory->createSingular($serializedElementIdentifier)
+            $this->argumentFactory->create($serializedElementIdentifier)
         );
 
         $elementVariable = Property::asVariable('element');

@@ -71,7 +71,7 @@ class WaitForActionHandler implements StatementHandlerInterface
                     new MethodInvocation(
                         methodName: 'waitFor',
                         arguments: new MethodArguments([
-                            $this->argumentFactory->createSingular($domIdentifier->getLocator())
+                            $this->argumentFactory->create($domIdentifier->getLocator())
                         ]),
                         mightThrow: true,
                         parent: Property::asDependency(DependencyName::PANTHER_CLIENT),

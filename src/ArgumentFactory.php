@@ -20,47 +20,27 @@ class ArgumentFactory
         );
     }
 
-    public function createSingular(mixed $argument): ExpressionInterface
+    public function create(mixed $argument): ExpressionInterface
     {
-        $expressionArguments = $this->create($argument);
-
-        return $expressionArguments[0];
-    }
-
-    /**
-     * @param mixed ...$arguments
-     *
-     * @return ExpressionInterface[]
-     */
-    public function create(...$arguments): array
-    {
-        $expressionArguments = [];
-
-        foreach ($arguments as $argument) {
-            if (null === $argument) {
-                $expressionArguments[] = new LiteralExpression('null');
-            }
-
-            if (is_bool($argument)) {
-                $expressionArguments[] = new LiteralExpression($argument ? 'true' : 'false');
-            }
-
-            if (is_float($argument) || is_int($argument)) {
-                $expressionArguments[] = new LiteralExpression((string) $argument);
-            }
-
-            if (is_string($argument)) {
-                $expressionArguments[] = new LiteralExpression(sprintf(
-                    '\'%s\'',
-                    $this->singleQuotedStringEscaper->escape($argument)
-                ));
-            }
-
-            if ($argument instanceof ExpressionInterface) {
-                $expressionArguments[] = $argument;
-            }
+        if (is_bool($argument)) {
+            return new LiteralExpression($argument ? 'true' : 'false');
         }
 
-        return $expressionArguments;
+        if (is_float($argument) || is_int($argument)) {
+            return new LiteralExpression((string) $argument);
+        }
+
+        if (is_string($argument)) {
+            return new LiteralExpression(sprintf(
+                '\'%s\'',
+                $this->singleQuotedStringEscaper->escape($argument)
+            ));
+        }
+
+        if ($argument instanceof ExpressionInterface) {
+            return $argument;
+        }
+
+        return new LiteralExpression('null');
     }
 }
