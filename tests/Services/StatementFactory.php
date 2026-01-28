@@ -29,14 +29,12 @@ class StatementFactory
                 methodName: 'assertSame',
                 arguments: new MethodArguments([
                     $argumentFactory->create($expectedTitle),
-                    $argumentFactory->create(
-                        new MethodInvocation(
-                            methodName: 'getTitle',
-                            arguments: new MethodArguments(),
-                            mightThrow: false,
-                            parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
-                        ),
-                    )
+                    new MethodInvocation(
+                        methodName: 'getTitle',
+                        arguments: new MethodArguments(),
+                        mightThrow: false,
+                        parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
+                    ),
                 ]),
                 mightThrow: false,
                 parent: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
@@ -70,7 +68,7 @@ class StatementFactory
                         new ReturnExpression(
                             new MethodInvocation(
                                 methodName: 'getElement',
-                                arguments: new MethodArguments([$argumentFactory->create(0)]),
+                                arguments: new MethodArguments([$argumentFactory->create('0')]),
                                 mightThrow: false,
                                 parent: $elementVariable,
                             )
@@ -114,7 +112,7 @@ class StatementFactory
                         $elementVariable,
                         new MethodInvocation(
                             methodName: 'getElement',
-                            arguments: new MethodArguments([$argumentFactory->create(0)]),
+                            arguments: new MethodArguments([$argumentFactory->create('0')]),
                             mightThrow: false,
                             parent: $elementVariable,
                         )

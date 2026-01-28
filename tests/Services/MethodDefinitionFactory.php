@@ -64,7 +64,7 @@ class MethodDefinitionFactory
                     methodName: 'request',
                     arguments: new MethodArguments([
                         $argumentFactory->create('GET'),
-                        $argumentFactory->create($requestUriExpression)
+                        $requestUriExpression,
                     ]),
                     mightThrow: false,
                     parent: Property::asDependency(DependencyName::PANTHER_CLIENT),

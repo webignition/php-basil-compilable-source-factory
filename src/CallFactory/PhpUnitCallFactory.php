@@ -70,7 +70,7 @@ readonly class PhpUnitCallFactory
         ];
 
         foreach ($messageExpressions as $expression) {
-            $messageFactoryArgumentExpressions[] = $this->argumentFactory->create($expression);
+            $messageFactoryArgumentExpressions[] = $expression;
         }
 
         $messageFactoryCall = new MethodInvocation(
@@ -83,10 +83,10 @@ readonly class PhpUnitCallFactory
 
         $assertionCallArgumentExpressions = [];
         foreach ($methodExpressions as $expression) {
-            $assertionCallArgumentExpressions[] = $this->argumentFactory->create($expression);
+            $assertionCallArgumentExpressions[] = $expression;
         }
 
-        $assertionCallArgumentExpressions[] = $this->argumentFactory->create($messageFactoryCall);
+        $assertionCallArgumentExpressions[] = $messageFactoryCall;
 
         $arguments = new MethodArguments($assertionCallArgumentExpressions)
             ->withFormat(MethodArgumentsInterface::FORMAT_STACKED)
@@ -111,8 +111,8 @@ readonly class PhpUnitCallFactory
             methodName: 'createFailureMessage',
             arguments: new MethodArguments([
                 $this->argumentFactory->create($serializedStatement),
-                $this->argumentFactory->create(Property::asVariable('exception')),
-                $this->argumentFactory->create($statementStageEnum),
+                Property::asVariable('exception'),
+                $statementStageEnum,
             ])->withFormat(MethodArgumentsInterface::FORMAT_STACKED),
             mightThrow: false,
             parent: Property::asDependency(DependencyName::MESSAGE_FACTORY),

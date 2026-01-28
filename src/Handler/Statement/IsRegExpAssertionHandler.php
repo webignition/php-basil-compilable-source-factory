@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Statement;
 
 use SmartAssert\DomIdentifier\Factory as DomIdentifierFactory;
-use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
@@ -28,7 +27,6 @@ use webignition\BasilValueTypeIdentifier\ValueTypeIdentifier;
 class IsRegExpAssertionHandler implements StatementHandlerInterface
 {
     public function __construct(
-        private ArgumentFactory $argumentFactory,
         private DomIdentifierFactory $domIdentifierFactory,
         private IdentifierTypeAnalyser $identifierTypeAnalyser,
         private ValueTypeIdentifier $valueTypeIdentifier,
@@ -39,7 +37,6 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
     public static function createHandler(): self
     {
         return new IsRegExpAssertionHandler(
-            ArgumentFactory::createFactory(),
             DomIdentifierFactory::createFactory(),
             IdentifierTypeAnalyser::create(),
             new ValueTypeIdentifier(),
@@ -101,8 +98,8 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
         $pregMatchInvocation = new MethodInvocation(
             methodName: 'preg_match',
             arguments: new MethodArguments([
-                $this->argumentFactory->create($examinedValueVariable),
-                $this->argumentFactory->create(null)
+                $examinedValueVariable,
+                new LiteralExpression('null'),
             ]),
             mightThrow: false
         )->setIsErrorSuppressed();
