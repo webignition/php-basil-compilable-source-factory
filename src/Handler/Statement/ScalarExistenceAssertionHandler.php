@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Statement;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
-use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
@@ -48,7 +47,7 @@ class ScalarExistenceAssertionHandler implements StatementHandlerInterface
             LiteralExpression::null(),
         );
 
-        $examinedValueVariable = Property::asVariable('examinedValue', Type::BOOLEAN);
+        $examinedValueVariable = Property::asBooleanVariable('examinedValue');
 
         $examinedAccessor = new ComparisonExpression(
             new EncapsulatedExpression($nullComparisonExpression),

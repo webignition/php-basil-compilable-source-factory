@@ -117,7 +117,7 @@ readonly class PhpUnitCallFactory
             methodName: 'createFailureMessage',
             arguments: new MethodArguments([
                 $this->argumentFactory->create($serializedStatement),
-                Property::asVariable('exception', Type::OBJECT),
+                Property::asObjectVariable('exception'),
                 $statementStageEnum,
             ])->withFormat(MethodArgumentsInterface::FORMAT_STACKED),
             mightThrow: false,

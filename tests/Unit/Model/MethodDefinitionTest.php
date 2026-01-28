@@ -118,7 +118,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                     ),
                     new Statement(
                         new AssignmentExpression(
-                            Property::asVariable('variable', Type::STRING),
+                            Property::asStringVariable('variable'),
                             new MethodInvocation(
                                 methodName: 'methodName',
                                 arguments: new MethodArguments(),
@@ -147,7 +147,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                     ),
                     new Statement(
                         new AssignmentExpression(
-                            Property::asVariable('variable', Type::STRING),
+                            Property::asStringVariable('variable'),
                             new MethodInvocation(
                                 methodName: 'methodName',
                                 arguments: new MethodArguments(),
@@ -289,7 +289,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                         new EmptyLine(),
                         new Statement(
                             new AssignmentExpression(
-                                Property::asVariable('value', Type::STRING),
+                                Property::asStringVariable('value'),
                                 new MethodInvocation(
                                     methodName: 'methodName',
                                     arguments: new MethodArguments([

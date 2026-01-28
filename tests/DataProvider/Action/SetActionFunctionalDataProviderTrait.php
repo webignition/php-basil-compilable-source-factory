@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
-use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames as ResolvedNames;
@@ -20,7 +19,7 @@ trait SetActionFunctionalDataProviderTrait
     public static function setActionFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
-        $inputVariable = Property::asVariable('input', Type::OBJECT);
+        $inputVariable = Property::asObjectVariable('input');
 
         return array_merge(
             self::setActionForTextInputFunctionalDataProvider(),
@@ -157,7 +156,7 @@ trait SetActionFunctionalDataProviderTrait
     private static function setActionForTextInputFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
-        $inputVariable = Property::asVariable('input', Type::OBJECT);
+        $inputVariable = Property::asObjectVariable('input');
 
         return [
             'input action, literal value: empty text input, empty value' => [
@@ -245,7 +244,7 @@ trait SetActionFunctionalDataProviderTrait
     private static function setActionForTextareaFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
-        $textareaVariable = Property::asVariable('textarea', Type::OBJECT);
+        $textareaVariable = Property::asObjectVariable('textarea');
 
         return [
             'input action, literal value: empty textarea, empty value' => [
@@ -309,7 +308,7 @@ trait SetActionFunctionalDataProviderTrait
     private static function setActionForSelectFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
-        $selectVariable = Property::asVariable('select', Type::OBJECT);
+        $selectVariable = Property::asObjectVariable('select');
 
         return [
             'input action, literal value: select none selected, empty value' => [
@@ -399,7 +398,7 @@ trait SetActionFunctionalDataProviderTrait
     private static function setActionForOptionCollectionFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
-        $selectVariable = Property::asVariable('select', Type::OBJECT);
+        $selectVariable = Property::asObjectVariable('select');
 
         return [
             'input action, literal value: option group none selected, empty value' => [
@@ -489,7 +488,7 @@ trait SetActionFunctionalDataProviderTrait
     private static function setActionForRadioGroupFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
-        $radioGroupVariable = Property::asVariable('radioGroup', Type::OBJECT);
+        $radioGroupVariable = Property::asObjectVariable('radioGroup');
 
         return [
             'input action, literal value: radio group none checked, empty value' => [

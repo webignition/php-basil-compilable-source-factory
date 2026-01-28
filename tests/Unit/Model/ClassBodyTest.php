@@ -52,7 +52,7 @@ class ClassBodyTest extends AbstractResolvableTestCase
                         new SingleLineComment('click $"a"'),
                         new Statement(
                             new AssignmentExpression(
-                                Property::asVariable('statement', Type::STRING),
+                                Property::asStringVariable('statement'),
                                 new MethodInvocation(
                                     methodName: 'createAction',
                                     arguments: new MethodArguments([
@@ -66,8 +66,8 @@ class ClassBodyTest extends AbstractResolvableTestCase
                         ),
                         new Statement(
                             new AssignmentExpression(
-                                Property::asVariable('currentStatement', Type::STRING),
-                                Property::asVariable('statement', Type::STRING)
+                                Property::asStringVariable('currentStatement'),
+                                Property::asStringVariable('statement')
                             )
                         ),
                     ])),
@@ -75,7 +75,7 @@ class ClassBodyTest extends AbstractResolvableTestCase
                         new SingleLineComment('click $"b"'),
                         new Statement(
                             new AssignmentExpression(
-                                Property::asVariable('statement', Type::STRING),
+                                Property::asStringVariable('statement'),
                                 new MethodInvocation(
                                     methodName: 'createAction',
                                     arguments: new MethodArguments([
@@ -89,8 +89,8 @@ class ClassBodyTest extends AbstractResolvableTestCase
                         ),
                         new Statement(
                             new AssignmentExpression(
-                                Property::asVariable('currentStatement', Type::STRING),
-                                Property::asVariable('statement', Type::STRING)
+                                Property::asStringVariable('currentStatement'),
+                                Property::asStringVariable('statement')
                             )
                         ),
                     ])),
@@ -118,7 +118,7 @@ class ClassBodyTest extends AbstractResolvableTestCase
                                 new SingleLineComment('click $"a"'),
                                 new Statement(
                                     new AssignmentExpression(
-                                        Property::asVariable('statement', Type::STRING),
+                                        Property::asStringVariable('statement'),
                                         new MethodInvocation(
                                             methodName: 'createAction',
                                             arguments: new MethodArguments([
@@ -132,8 +132,8 @@ class ClassBodyTest extends AbstractResolvableTestCase
                                 ),
                                 new Statement(
                                     new AssignmentExpression(
-                                        Property::asVariable('currentStatement', Type::STRING),
-                                        Property::asVariable('statement', Type::STRING)
+                                        Property::asStringVariable('currentStatement'),
+                                        Property::asStringVariable('statement')
                                     )
                                 ),
                             ]),
@@ -160,7 +160,7 @@ class ClassBodyTest extends AbstractResolvableTestCase
                         new SingleLineComment('click $"b"'),
                         new Statement(
                             new AssignmentExpression(
-                                Property::asVariable('statement', Type::STRING),
+                                Property::asStringVariable('statement'),
                                 new MethodInvocation(
                                     methodName: 'createAction',
                                     arguments: new MethodArguments([
@@ -174,8 +174,8 @@ class ClassBodyTest extends AbstractResolvableTestCase
                         ),
                         new Statement(
                             new AssignmentExpression(
-                                Property::asVariable('currentStatement', Type::STRING),
-                                Property::asVariable('statement', Type::STRING)
+                                Property::asStringVariable('currentStatement'),
+                                Property::asStringVariable('statement')
                             )
                         ),
                     ])),

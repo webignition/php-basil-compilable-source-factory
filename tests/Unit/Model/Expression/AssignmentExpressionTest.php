@@ -40,7 +40,7 @@ class AssignmentExpressionTest extends AbstractResolvableTestCase
     {
         return [
             'no metadata' => [
-                'assignee' => Property::asVariable('lhs', Type::STRING),
+                'assignee' => Property::asStringVariable('lhs'),
                 'value' => LiteralExpression::integer(6),
                 'operator' => '===',
                 'expectedMetadata' => new Metadata(),
@@ -72,7 +72,7 @@ class AssignmentExpressionTest extends AbstractResolvableTestCase
         return [
             'variable name, literal' => [
                 'expression' => new AssignmentExpression(
-                    Property::asVariable('lhs', Type::STRING),
+                    Property::asStringVariable('lhs'),
                     LiteralExpression::string('"rhs"')
                 ),
                 'expectedString' => '$lhs = "rhs"',

@@ -87,7 +87,7 @@ class ClassDefinitionTest extends AbstractResolvableTestCase
                             ),
                             new Statement(
                                 new AssignmentExpression(
-                                    Property::asVariable('variable', Type::STRING),
+                                    Property::asStringVariable('variable'),
                                     new MethodInvocation(
                                         methodName: 'methodName',
                                         arguments: new MethodArguments(),
