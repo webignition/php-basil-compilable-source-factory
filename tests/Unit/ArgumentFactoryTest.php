@@ -22,48 +22,49 @@ class ArgumentFactoryTest extends TestCase
         $this->factory = ArgumentFactory::createFactory();
     }
 
-    /**
-     * @param array<mixed>          $arguments
-     * @param ExpressionInterface[] $expectedArguments
-     */
-    #[DataProvider('createDataProvider')]
-    public function testCreate(array $arguments, array $expectedArguments): void
+    #[DataProvider('createSingularDataProvider')]
+    public function testCreateSingular(mixed $argument, ExpressionInterface $expected): void
     {
-        self::assertEquals($expectedArguments, $this->factory->create(...$arguments));
+        self::assertEquals($expected, $this->factory->createSingular($argument));
     }
 
     /**
      * @return array<mixed>
      */
-    public static function createDataProvider(): array
+    public static function createSingularDataProvider(): array
     {
         return [
-            'empty' => [
-                'arguments' => [],
-                'expectedArguments' => [],
+            'integer' => [
+                'argument' => 100,
+                'expected' => new LiteralExpression('100'),
             ],
-            'non-empty' => [
-                'arguments' => [
-                    100,
-                    M_PI,
-                    'string without single quotes',
-                    'string with \'single\' quotes',
-                    true,
-                    false,
-                    new \stdClass(),
-                    new StaticObject('self'),
-                    null,
-                ],
-                'expectedArguments' => [
-                    new LiteralExpression('100'),
-                    new LiteralExpression((string) M_PI),
-                    new LiteralExpression('\'string without single quotes\''),
-                    new LiteralExpression('\'string with \\\'single\\\' quotes\''),
-                    new LiteralExpression('true'),
-                    new LiteralExpression('false'),
-                    new StaticObject('self'),
-                    new LiteralExpression('null'),
-                ],
+            'float' => [
+                'argument' => M_PI,
+                'expected' => new LiteralExpression((string) M_PI),
+            ],
+            'string without single quotes' => [
+                'argument' => 'string without single quotes',
+                'expected' => new LiteralExpression('\'string without single quotes\''),
+            ],
+            'string with \'single\' quotes' => [
+                'argument' => 'string with \'single\' quotes',
+                'expected' => new LiteralExpression('\'string with \\\'single\\\' quotes\''),
+            ],
+            'boolean true' => [
+                'argument' => true,
+                'expected' => new LiteralExpression('true'),
+            ],
+            'boolean false' => [
+                'argument' => false,
+                'expected' => new LiteralExpression('false'),
+            ],
+            'static object expression' => [
+                'argument' => new StaticObject('self'),
+                'expected' => new StaticObject('self'),
+            ],
+            'null' => [
+                'argument' => null,
+                'expected' => new LiteralExpression('null'),
             ],
         ];
     }

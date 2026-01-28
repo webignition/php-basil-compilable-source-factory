@@ -66,7 +66,7 @@ class DomIdentifierHandler
                 new ReturnExpression(
                     new MethodInvocation(
                         methodName: 'getAttribute',
-                        arguments: new MethodArguments($this->argumentFactory->create($attributeName)),
+                        arguments: new MethodArguments([$this->argumentFactory->createSingular($attributeName)]),
                         mightThrow: true,
                         parent: $elementVariable,
                     )

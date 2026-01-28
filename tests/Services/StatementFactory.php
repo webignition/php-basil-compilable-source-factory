@@ -27,9 +27,9 @@ class StatementFactory
         return new Statement(
             new MethodInvocation(
                 methodName: 'assertSame',
-                arguments: new MethodArguments(
-                    $argumentFactory->create(
-                        $expectedTitle,
+                arguments: new MethodArguments([
+                    $argumentFactory->createSingular($expectedTitle),
+                    $argumentFactory->createSingular(
                         new MethodInvocation(
                             methodName: 'getTitle',
                             arguments: new MethodArguments(),
@@ -37,7 +37,7 @@ class StatementFactory
                             parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                         ),
                     )
-                ),
+                ]),
                 mightThrow: false,
                 parent: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
             )
@@ -60,7 +60,7 @@ class StatementFactory
                             $elementVariable,
                             new MethodInvocation(
                                 methodName: 'filter',
-                                arguments: new MethodArguments($argumentFactory->create($selector)),
+                                arguments: new MethodArguments([$argumentFactory->createSingular($selector)]),
                                 mightThrow: false,
                                 parent: Property::asDependency(DependencyName::PANTHER_CRAWLER),
                             )
@@ -70,7 +70,7 @@ class StatementFactory
                         new ReturnExpression(
                             new MethodInvocation(
                                 methodName: 'getElement',
-                                arguments: new MethodArguments($argumentFactory->create(0)),
+                                arguments: new MethodArguments([$argumentFactory->createSingular(0)]),
                                 mightThrow: false,
                                 parent: $elementVariable,
                             )
@@ -103,7 +103,7 @@ class StatementFactory
                         $elementVariable,
                         new MethodInvocation(
                             methodName: 'filter',
-                            arguments: new MethodArguments($argumentFactory->create($selector)),
+                            arguments: new MethodArguments([$argumentFactory->createSingular($selector)]),
                             mightThrow: false,
                             parent: Property::asDependency(DependencyName::PANTHER_CRAWLER),
                         )
@@ -114,7 +114,7 @@ class StatementFactory
                         $elementVariable,
                         new MethodInvocation(
                             methodName: 'getElement',
-                            arguments: new MethodArguments($argumentFactory->create(0)),
+                            arguments: new MethodArguments([$argumentFactory->createSingular(0)]),
                             mightThrow: false,
                             parent: $elementVariable,
                         )
@@ -155,7 +155,7 @@ class StatementFactory
                 $placeholder,
                 new MethodInvocation(
                     methodName: 'filter',
-                    arguments: new MethodArguments($argumentFactory->create($selector)),
+                    arguments: new MethodArguments([$argumentFactory->createSingular($selector)]),
                     mightThrow: false,
                     parent: Property::asDependency(DependencyName::PANTHER_CRAWLER),
                 )
