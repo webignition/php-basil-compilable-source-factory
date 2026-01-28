@@ -12,6 +12,7 @@ use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
@@ -91,7 +92,7 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
 
         $examinedAccessor = EncapsulatingCastExpression::forBool($examinedAccessor);
 
-        $elementExistsVariable = Property::asVariable('elementExists');
+        $elementExistsVariable = Property::asVariable('elementExists', Type::BOOLEAN);
         $elementAssignment = new Statement(
             new AssignmentExpression($elementExistsVariable, $examinedAccessor),
         );
@@ -125,7 +126,7 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
         );
         $elementAccessor = EncapsulatingCastExpression::forBool($elementAccessor);
 
-        $elementExistsVariable = Property::asVariable('elementExists');
+        $elementExistsVariable = Property::asVariable('elementExists', Type::BOOLEAN);
         $elementAssignment = new Statement(
             new AssignmentExpression($elementExistsVariable, $elementAccessor),
         );
@@ -135,26 +136,29 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
                 $serializedAttributeIdentifier,
                 $domIdentifier->getAttributeName()
             ),
-            new LiteralExpression('null'),
+            new LiteralExpression('null', Type::NULL),
         );
 
         $attributeAccessor = new ComparisonExpression(
             new EncapsulatedExpression($attributeNullComparisonExpression),
-            new LiteralExpression('null'),
+            new LiteralExpression('null', Type::NULL),
             '!=='
         );
 
         $attributeAccessor = EncapsulatingCastExpression::forBool($attributeAccessor);
 
-        $attributeExistsVariable = Property::asVariable('attributeExists');
+        $attributeExistsVariable = Property::asVariable('attributeExists', Type::BOOLEAN);
         $attributeAssignment = new Statement(
             new AssignmentExpression(
                 $attributeExistsVariable,
-                new CompositeExpression([
-                    $elementExistsVariable,
-                    new LiteralExpression(' && '),
-                    $attributeAccessor,
-                ])
+                new CompositeExpression(
+                    [
+                        $elementExistsVariable,
+                        new LiteralExpression(' && ', Type::STRING),
+                        $attributeAccessor,
+                    ],
+                    Type::BOOLEAN,
+                )
             )
         );
 
@@ -203,7 +207,7 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
     ): StatementInterface {
         $assertionArgumentExpressions = [$examinedValuePlaceholder];
         $assertionMessageExpressions = [
-            new LiteralExpression(('exists' === $assertion->getOperator()) ? 'true' : 'false'),
+            new LiteralExpression(('exists' === $assertion->getOperator()) ? 'true' : 'false', Type::BOOLEAN),
             $examinedValuePlaceholder,
         ];
 

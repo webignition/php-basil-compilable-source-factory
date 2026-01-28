@@ -41,4 +41,9 @@ class EncapsulatedExpression implements ExpressionInterface
     {
         return $this->expression->mightThrow();
     }
+
+    public function getType(): array
+    {
+        return $this->expression->getType();
+    }
 }

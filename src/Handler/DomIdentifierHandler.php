@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
@@ -55,7 +56,7 @@ class DomIdentifierHandler
             $this->argumentFactory->create($serializedElementIdentifier)
         );
 
-        $elementVariable = Property::asVariable('element');
+        $elementVariable = Property::asVariable('element', Type::OBJECT);
 
         $closureExpressionStatements = [
             new Statement(
@@ -68,13 +69,17 @@ class DomIdentifierHandler
                         methodName: 'getAttribute',
                         arguments: new MethodArguments([$this->argumentFactory->create($attributeName)]),
                         mightThrow: true,
+                        type: Type::STRING,
                         parent: $elementVariable,
                     )
                 )
             ),
         ];
 
-        return new ClosureExpression(new Body($closureExpressionStatements));
+        return new ClosureExpression(
+            new Body($closureExpressionStatements),
+            Type::STRING,
+        );
     }
 
     public function handleElementValue(string $serializedElementIdentifier): ExpressionInterface
@@ -83,7 +88,7 @@ class DomIdentifierHandler
             $this->argumentFactory->create($serializedElementIdentifier)
         );
 
-        $elementVariable = Property::asVariable('element');
+        $elementVariable = Property::asVariable('element', Type::OBJECT);
 
         $closureExpressionStatements = [
             new Statement(
@@ -98,12 +103,16 @@ class DomIdentifierHandler
                             $elementVariable,
                         ]),
                         mightThrow: false,
+                        type: Type::STRING,
                         parent: Property::asDependency(DependencyName::WEBDRIVER_ELEMENT_INSPECTOR),
                     )
                 )
             )
         ];
 
-        return new ClosureExpression(new Body($closureExpressionStatements));
+        return new ClosureExpression(
+            new Body($closureExpressionStatements),
+            Type::STRING,
+        );
     }
 }

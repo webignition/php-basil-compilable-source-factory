@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
@@ -40,5 +41,10 @@ readonly class ClassObject implements ExpressionInterface
     public function isStatic(): bool
     {
         return $this->isStatic;
+    }
+
+    public function getType(): array
+    {
+        return [Type::OBJECT];
     }
 }

@@ -71,4 +71,9 @@ class AssignmentExpression implements AssignmentExpressionInterface
     {
         return $this->assignee->mightThrow() || $this->value->mightThrow();
     }
+
+    public function getType(): array
+    {
+        return $this->value->getType();
+    }
 }

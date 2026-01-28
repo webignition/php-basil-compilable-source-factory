@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
@@ -46,5 +47,10 @@ readonly class TernaryExpression implements ExpressionInterface
         return $this->expression->mightThrow()
             || $this->trueExpression->mightThrow()
             || $this->falseExpression->mightThrow();
+    }
+
+    public function getType(): array
+    {
+        return $this->expression->getType();
     }
 }

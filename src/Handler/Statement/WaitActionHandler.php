@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Statement;
 
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
@@ -58,20 +59,24 @@ class WaitActionHandler implements StatementHandlerInterface
         }
 
         $durationAccessor = $this->valueAccessorFactory->create($duration);
-        $durationVariable = Property::asVariable('duration');
+        $durationVariable = Property::asVariable('duration', Type::INTEGER);
 
         $sleepInvocation = new MethodInvocation(
             methodName: 'usleep',
             arguments: new MethodArguments(
                 [
-                    new CompositeExpression([
-                        $durationVariable,
-                        new LiteralExpression(' * '),
-                        new LiteralExpression((string) self::MICROSECONDS_PER_MILLISECOND)
-                    ]),
+                    new CompositeExpression(
+                        [
+                            $durationVariable,
+                            new LiteralExpression(' * ', Type::STRING),
+                            new LiteralExpression((string) self::MICROSECONDS_PER_MILLISECOND, Type::INTEGER)
+                        ],
+                        Type::INTEGER,
+                    ),
                 ]
             ),
-            mightThrow: false
+            mightThrow: false,
+            type: Type::VOID,
         );
 
         return new StatementHandlerComponents(
@@ -90,7 +95,8 @@ class WaitActionHandler implements StatementHandlerInterface
                         new NullCoalescerExpression(
                             $durationVariable,
                             new LiteralExpression(
-                                (string) ($this->accessorDefaultValueFactory->createInteger($duration) ?? 0)
+                                (string) ($this->accessorDefaultValueFactory->createInteger($duration) ?? 0),
+                                Type::INTEGER,
                             )
                         ),
                     )
@@ -100,7 +106,7 @@ class WaitActionHandler implements StatementHandlerInterface
                         $durationVariable,
                         new CastExpression(
                             $durationVariable,
-                            'int'
+                            Type::INTEGER,
                         )
                     )
                 ),
@@ -108,8 +114,12 @@ class WaitActionHandler implements StatementHandlerInterface
                     new AssignmentExpression(
                         $durationVariable,
                         new TernaryExpression(
-                            new ComparisonExpression($durationVariable, new LiteralExpression('0'), '<'),
-                            new LiteralExpression('0'),
+                            new ComparisonExpression(
+                                $durationVariable,
+                                new LiteralExpression('0', Type::INTEGER),
+                                '<'
+                            ),
+                            new LiteralExpression('0', Type::INTEGER),
                             $durationVariable,
                         ),
                     ),

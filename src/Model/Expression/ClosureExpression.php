@@ -4,13 +4,14 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\IndentTrait;
 use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\Stubble\Resolvable\ResolvedTemplateMutatorResolvable;
 
-class ClosureExpression implements ExpressionInterface
+readonly class ClosureExpression implements ExpressionInterface
 {
     use IndentTrait;
     use IsNotStaticTrait;
@@ -21,12 +22,10 @@ class ClosureExpression implements ExpressionInterface
 })()
 EOD;
 
-    private BodyInterface $body;
-
-    public function __construct(BodyInterface $body)
-    {
-        $this->body = $body;
-    }
+    public function __construct(
+        private BodyInterface $body,
+        private Type $type,
+    ) {}
 
     public function getMetadata(): MetadataInterface
     {
@@ -53,5 +52,10 @@ EOD;
     public function mightThrow(): bool
     {
         return $this->body->mightThrow();
+    }
+
+    public function getType(): array
+    {
+        return [$this->type];
     }
 }

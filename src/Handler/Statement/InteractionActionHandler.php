@@ -8,6 +8,7 @@ use SmartAssert\DomIdentifier\AttributeIdentifierInterface;
 use SmartAssert\DomIdentifier\Factory as DomIdentifierFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
@@ -62,7 +63,7 @@ class InteractionActionHandler implements StatementHandlerInterface
             throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }
 
-        $elementVariable = Property::asVariable('element');
+        $elementVariable = Property::asVariable('element', Type::OBJECT);
 
         return new StatementHandlerComponents(
             new Body([
@@ -71,6 +72,7 @@ class InteractionActionHandler implements StatementHandlerInterface
                         methodName: $statement->getType(),
                         arguments: new MethodArguments(),
                         mightThrow: true,
+                        type: Type::VOID,
                         parent: $elementVariable,
                     )
                 ),

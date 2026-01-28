@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\NeverThrowsTrait;
@@ -16,7 +17,8 @@ readonly class ArrayAccessExpression implements NullableExpressionInterface
 
     public function __construct(
         private Property $variable,
-        private string $key
+        private string $key,
+        private Type $type,
     ) {}
 
     public function getTemplate(): string
@@ -35,5 +37,10 @@ readonly class ArrayAccessExpression implements NullableExpressionInterface
     public function getMetadata(): MetadataInterface
     {
         return $this->variable->getMetadata();
+    }
+
+    public function getType(): array
+    {
+        return [$this->type];
     }
 }

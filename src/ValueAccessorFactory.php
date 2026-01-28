@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory;
 use SmartAssert\DomIdentifier\AttributeIdentifierInterface;
 use SmartAssert\DomIdentifier\Factory as DomIdentifierFactory;
 use SmartAssert\DomIdentifier\FactoryInterface as DomIdentifierFactoryInterface;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
@@ -82,7 +83,10 @@ class ValueAccessorFactory
         }
 
         if (null !== $defaultValue) {
-            $accessor = new NullCoalescerExpression($accessor, new LiteralExpression($defaultValue));
+            $accessor = new NullCoalescerExpression(
+                $accessor,
+                new LiteralExpression($defaultValue, Type::STRING)
+            );
         }
 
         return $accessor;

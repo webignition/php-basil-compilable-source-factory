@@ -8,5 +8,8 @@ use webignition\BasilCompilableSourceFactory\Enum\Type;
 
 interface HasTypeInterface
 {
-    public function getType(): Type;
+    /**
+     * @return Type[]
+     */
+    public function getType(): array;
 }
