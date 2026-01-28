@@ -24,7 +24,7 @@ class CastExpressionTest extends AbstractResolvableTestCase
 {
     public function testCreate(): void
     {
-        $expression = new LiteralExpression('"literal"', Type::STRING);
+        $expression = LiteralExpression::string('"literal"');
         $castExpression = new CastExpression($expression, Type::STRING);
 
         $this->assertEquals($expression->getMetadata(), $castExpression->getMetadata());
@@ -44,14 +44,14 @@ class CastExpressionTest extends AbstractResolvableTestCase
         return [
             'literal int as int' => [
                 'expression' => new CastExpression(
-                    new LiteralExpression('100', Type::INTEGER),
+                    LiteralExpression::integer(100),
                     Type::INTEGER
                 ),
                 'expectedString' => '(int) 100',
             ],
             'literal int as string' => [
                 'expression' => new CastExpression(
-                    new LiteralExpression('100', Type::INTEGER),
+                    LiteralExpression::integer(100),
                     Type::STRING
                 ),
                 'expectedString' => '(string) 100',
@@ -72,8 +72,8 @@ class CastExpressionTest extends AbstractResolvableTestCase
             'comparison expression as int' => [
                 'expression' => new CastExpression(
                     new ComparisonExpression(
-                        new LiteralExpression('"x"', Type::STRING),
-                        new LiteralExpression('"y"', Type::STRING),
+                        LiteralExpression::string('"x"'),
+                        LiteralExpression::string('"y"'),
                         '==='
                     ),
                     Type::INTEGER
@@ -84,8 +84,8 @@ class CastExpressionTest extends AbstractResolvableTestCase
                 'expression' => new CastExpression(
                     new CompositeExpression(
                         [
-                            new LiteralExpression('$_ENV', Type::ARRAY),
-                            new LiteralExpression('["secret"]', Type::VOID),
+                            LiteralExpression::void('$_ENV'),
+                            LiteralExpression::void('["secret"]'),
                         ],
                         Type::STRING,
                     ),

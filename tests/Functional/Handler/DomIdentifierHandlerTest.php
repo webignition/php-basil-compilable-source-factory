@@ -143,19 +143,19 @@ class DomIdentifierHandlerTest extends AbstractBrowserTestCase
                 ),
                 'teardownStatements' => new Body([
                     StatementFactory::createAssertCount('1', '$value'),
-                    new Statement(new LiteralExpression('$element = $value->current()', Type::STRING)),
+                    new Statement(LiteralExpression::string('$element = $value->current()')),
                     StatementFactory::createAssertSame('""', '$element->getAttribute(\'value\')'),
                 ]),
             ],
             'element, has parent' => [
                 'fixture' => '/form.html',
                 'serializedElementIdentifier' => $elementIdentifierSerializer->serialize(
-                    (new ElementIdentifier('input', 1))
+                    new ElementIdentifier('input', 1)
                         ->withParentIdentifier(new ElementIdentifier('form[action="/action2"]'))
                 ),
                 'teardownStatements' => new Body([
                     StatementFactory::createAssertCount('1', '$value'),
-                    new Statement(new LiteralExpression('$element = $value->current()', Type::STRING)),
+                    new Statement(LiteralExpression::string('$element = $value->current()')),
                     StatementFactory::createAssertSame('null', '$element->getAttribute(\'test\')'),
                 ]),
             ],

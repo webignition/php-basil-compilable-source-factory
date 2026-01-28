@@ -47,7 +47,7 @@ class ValueAccessorFactoryTest extends TestCase
         return [
             'scalar, literal' => [
                 'value' => '"literal"',
-                'expectedExpression' => new LiteralExpression('"literal"', Type::STRING),
+                'expectedExpression' => LiteralExpression::string('"literal"'),
             ],
             'scalar, page property' => [
                 'value' => '$page.title',
@@ -90,7 +90,7 @@ class ValueAccessorFactoryTest extends TestCase
         return [
             'scalar, literal' => [
                 'value' => '"literal"',
-                'expectedExpression' => new LiteralExpression('"literal"', Type::STRING),
+                'expectedExpression' => LiteralExpression::string('"literal"'),
             ],
             'element identifier' => [
                 'value' => '$".selector"',

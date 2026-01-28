@@ -62,16 +62,16 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
             ],
             'single argument' => [
                 'arguments' => [
-                    new LiteralExpression('1', Type::INTEGER),
+                    LiteralExpression::integer(1),
                 ],
                 'format' => MethodArgumentsInterface::FORMAT_INLINE,
                 'expectedMetadata' => new Metadata(),
             ],
             'multiple arguments' => [
                 'arguments' => [
-                    new LiteralExpression('2', Type::INTEGER),
-                    new LiteralExpression("\\'single-quoted value\\'", Type::STRING),
-                    new LiteralExpression('"double-quoted value"', Type::STRING),
+                    LiteralExpression::integer(2),
+                    LiteralExpression::string("\\'single-quoted value\\'"),
+                    LiteralExpression::string('"double-quoted value"'),
                 ],
                 'format' => MethodArgumentsInterface::FORMAT_INLINE,
                 'expectedMetadata' => new Metadata(),
@@ -118,8 +118,8 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
             ],
             'has arguments, inline' => [
                 'arguments' => new MethodArguments([
-                    new LiteralExpression('1', Type::INTEGER),
-                    new LiteralExpression("\\'single-quoted value\\'", Type::STRING),
+                    LiteralExpression::integer(1),
+                    LiteralExpression::string("\\'single-quoted value\\'"),
                 ]),
                 'expectedString' => <<< 'EOD'
                     1, \'single-quoted value\'
@@ -128,8 +128,8 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
             'has arguments, stacked' => [
                 'arguments' => new MethodArguments(
                     [
-                        new LiteralExpression('1', Type::INTEGER),
-                        new LiteralExpression("\\'single-quoted value\\'", Type::STRING),
+                        LiteralExpression::integer(1),
+                        LiteralExpression::string("\\'single-quoted value\\'"),
                     ],
                     MethodArgumentsInterface::FORMAT_STACKED
                 ),
@@ -149,9 +149,8 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                                 new MethodInvocation(
                                     methodName: 'fromJson',
                                     arguments: new MethodArguments([
-                                        new LiteralExpression(
+                                        LiteralExpression::string(
                                             '{' . "\n" . '    "locator": ".selector"' . "\n" . '}',
-                                            Type::STRING,
                                         ),
                                     ]),
                                     mightThrow: false,
@@ -168,7 +167,7 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                                 new Statement(
                                     new AssignmentExpression(
                                         Property::asVariable('variable', Type::STRING),
-                                        new LiteralExpression('100', Type::INTEGER)
+                                        LiteralExpression::integer(100)
                                     )
                                 ),
                                 new EmptyLine(),

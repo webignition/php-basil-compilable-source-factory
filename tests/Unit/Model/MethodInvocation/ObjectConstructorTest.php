@@ -50,7 +50,7 @@ class ObjectConstructorTest extends AbstractResolvableTestCase
             'single argument' => [
                 'class' => new ClassName(ObjectConstructor::class),
                 'arguments' => new MethodArguments([
-                    new LiteralExpression('1', Type::INTEGER),
+                    LiteralExpression::integer(1),
                 ]),
                 'expectedMetadata' => new Metadata(
                     classNames: [
@@ -95,8 +95,8 @@ class ObjectConstructorTest extends AbstractResolvableTestCase
                 'constructor' => new ObjectConstructor(
                     class: $classDependency,
                     arguments: new MethodArguments([
-                        new LiteralExpression('1', Type::INTEGER),
-                        new LiteralExpression("\\'single-quoted value\\'", Type::STRING),
+                        LiteralExpression::integer(1),
+                        LiteralExpression::string("\\'single-quoted value\\'"),
                     ]),
                     mightThrow: false,
                 ),
@@ -107,8 +107,8 @@ class ObjectConstructorTest extends AbstractResolvableTestCase
                     class: $classDependency,
                     arguments: new MethodArguments(
                         [
-                            new LiteralExpression('1', Type::INTEGER),
-                            new LiteralExpression("\\'single-quoted value\\'", Type::STRING),
+                            LiteralExpression::integer(1),
+                            LiteralExpression::string("\\'single-quoted value\\'"),
                         ],
                         MethodArgumentsInterface::FORMAT_STACKED
                     ),

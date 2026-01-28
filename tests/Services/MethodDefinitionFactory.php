@@ -40,7 +40,7 @@ class MethodDefinitionFactory
         $requestUriExpression = new CompositeExpression(
             [
                 $requestBaseUri,
-                new LiteralExpression(' . \'' . $fixture . '\'', Type::STRING),
+                LiteralExpression::string(' . \'' . $fixture . '\''),
             ],
             Type::STRING,
         );
@@ -64,7 +64,7 @@ class MethodDefinitionFactory
                 )
             ),
             new SingleLineComment('Test harness lines'),
-            new Statement(new LiteralExpression('parent::setUpBeforeClass()', Type::STRING)),
+            new Statement(LiteralExpression::string('parent::setUpBeforeClass()')),
             new Statement(
                 new MethodInvocation(
                     methodName: 'request',
@@ -95,7 +95,7 @@ class MethodDefinitionFactory
 
         $body = new Body([
             new SingleLineComment('Test harness lines'),
-            new Statement(new LiteralExpression('parent::setUp()', Type::STRING)),
+            new Statement(LiteralExpression::string('parent::setUp()')),
             new EmptyLine(),
             new SingleLineComment('Additional setup statements'),
             $additionalSetupStatements,

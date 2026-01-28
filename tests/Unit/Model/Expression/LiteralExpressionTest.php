@@ -12,35 +12,6 @@ use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvable
 
 class LiteralExpressionTest extends AbstractResolvableTestCase
 {
-    #[DataProvider('createDataProvider')]
-    public function testCreate(string $content, Type $type): void
-    {
-        $expression = new LiteralExpression($content, $type);
-
-        $this->assertEquals(new Metadata(), $expression->getMetadata());
-    }
-
-    /**
-     * @return array<mixed>
-     */
-    public static function createDataProvider(): array
-    {
-        return [
-            'empty' => [
-                'content' => '',
-                'type' => Type::STRING,
-            ],
-            'string' => [
-                'content' => '"value"',
-                'type' => Type::STRING,
-            ],
-            'int' => [
-                'content' => '1',
-                'type' => Type::INTEGER,
-            ],
-        ];
-    }
-
     #[DataProvider('renderDataProvider')]
     public function testRender(LiteralExpression $expression, string $expectedString): void
     {
@@ -54,15 +25,15 @@ class LiteralExpressionTest extends AbstractResolvableTestCase
     {
         return [
             'empty' => [
-                'expression' => new LiteralExpression('', Type::STRING),
+                'expression' => LiteralExpression::string(''),
                 'expectedString' => '',
             ],
             'string' => [
-                'expression' => new LiteralExpression('"value"', Type::STRING),
+                'expression' => LiteralExpression::string('"value"'),
                 'expectedString' => '"value"',
             ],
             'int' => [
-                'expression' => new LiteralExpression('2', Type::INTEGER),
+                'expression' => LiteralExpression::integer(2),
                 'expectedString' => '2',
             ],
         ];

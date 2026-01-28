@@ -51,7 +51,7 @@ class CompositeExpressionTest extends AbstractResolvableTestCase
             'variable dependency and array access' => [
                 'expressions' => [
                     Property::asDependency(DependencyName::ENVIRONMENT_VARIABLE_ARRAY),
-                    new LiteralExpression('[\'KEY\']', Type::VOID)
+                    LiteralExpression::void('[\'KEY\']')
                 ],
                 'expectedMetadata' => new Metadata(
                     dependencyNames: [
@@ -81,22 +81,22 @@ class CompositeExpressionTest extends AbstractResolvableTestCase
             'single literal' => [
                 'expression' => new CompositeExpression(
                     [
-                        new LiteralExpression('literal1', Type::STRING),
+                        LiteralExpression::string('"literal1"'),
                     ],
                     Type::STRING,
                 ),
-                'expectedString' => 'literal1',
+                'expectedString' => '"literal1"',
             ],
             'multiple literals' => [
                 'expression' => new CompositeExpression(
                     [
-                        new LiteralExpression('literal1', Type::STRING),
-                        new LiteralExpression('literal2', Type::STRING),
-                        new LiteralExpression('literal3', Type::STRING),
+                        LiteralExpression::string('"literal1"'),
+                        LiteralExpression::string('"literal2"'),
+                        LiteralExpression::string('"literal3"'),
                     ],
                     Type::STRING,
                 ),
-                'expectedString' => 'literal1literal2literal3',
+                'expectedString' => '"literal1""literal2""literal3"',
             ],
             'variable dependency' => [
                 'expression' => new CompositeExpression(
@@ -111,7 +111,7 @@ class CompositeExpressionTest extends AbstractResolvableTestCase
                 'expression' => new CompositeExpression(
                     [
                         Property::asDependency(DependencyName::ENVIRONMENT_VARIABLE_ARRAY),
-                        new LiteralExpression('[\'KEY\']', Type::VOID)
+                        LiteralExpression::void('[\'KEY\']')
                     ],
                     Type::STRING,
                 ),
@@ -121,12 +121,12 @@ class CompositeExpressionTest extends AbstractResolvableTestCase
                 'expression' => new CompositeExpression(
                     [
                         new EncapsulatingCastExpression(
-                            new LiteralExpression('1', Type::INTEGER),
+                            LiteralExpression::integer(1),
                             Type::STRING,
                         ),
-                        new LiteralExpression(' . \'x\' . ', Type::STRING),
+                        LiteralExpression::void(' . \'x\' . '),
                         new EncapsulatingCastExpression(
-                            new LiteralExpression('2', Type::INTEGER),
+                            LiteralExpression::integer(2),
                             Type::STRING,
                         ),
                     ],

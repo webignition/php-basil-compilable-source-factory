@@ -183,7 +183,7 @@ class StatementFactory
             new MethodInvocation(
                 methodName: 'assertFalse',
                 arguments: new MethodArguments([
-                    new LiteralExpression($actual, Type::STRING),
+                    LiteralExpression::string($actual),
                 ]),
                 mightThrow: false,
                 type: Type::VOID,
@@ -198,7 +198,7 @@ class StatementFactory
             new MethodInvocation(
                 methodName: 'assertTrue',
                 arguments: new MethodArguments([
-                    new LiteralExpression($actual, Type::STRING)
+                    LiteralExpression::string($actual)
                 ]),
                 mightThrow: false,
                 type: Type::VOID,
@@ -226,8 +226,8 @@ class StatementFactory
             new MethodInvocation(
                 methodName: $methodName,
                 arguments: new MethodArguments([
-                    new LiteralExpression($expected, Type::STRING),
-                    new LiteralExpression($actual, Type::STRING),
+                    LiteralExpression::string($expected),
+                    LiteralExpression::string($actual),
                 ]),
                 mightThrow: false,
                 type: Type::VOID,

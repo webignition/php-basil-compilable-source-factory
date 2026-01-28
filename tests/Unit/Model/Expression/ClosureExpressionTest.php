@@ -55,8 +55,8 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
             ],
             'non-empty, no metadata' => [
                 'body' => new Body([
-                    new Statement(new LiteralExpression('5', Type::INTEGER)),
-                    new Statement(new LiteralExpression('"string"', Type::STRING)),
+                    new Statement(LiteralExpression::integer(5)),
+                    new Statement(LiteralExpression::string('"string"')),
                 ]),
                 'expectedMetadata' => new Metadata(),
             ],
@@ -88,7 +88,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                                         ),
                                         Type::STRING
                                     ),
-                                    new LiteralExpression(' . \'x\' . ', Type::STRING),
+                                    LiteralExpression::void(' . \'x\' . '),
                                     new CastExpression(
                                         new MethodInvocation(
                                             methodName: 'getHeight',
@@ -136,7 +136,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                 'expression' => new ClosureExpression(
                     new Body([
                         new Statement(
-                            new ReturnExpression(new LiteralExpression('5', Type::INTEGER))
+                            new ReturnExpression(LiteralExpression::integer(5))
                         ),
                     ]),
                     Type::INTEGER,
@@ -151,7 +151,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                         new Statement(
                             new ReturnExpression(
                                 new CastExpression(
-                                    new LiteralExpression('5', Type::INTEGER),
+                                    LiteralExpression::integer(5),
                                     Type::STRING
                                 )
                             )
@@ -166,11 +166,11 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
             'multiple literal statements' => [
                 'expression' => new ClosureExpression(
                     new Body([
-                        new Statement(new LiteralExpression('3', Type::INTEGER)),
-                        new Statement(new LiteralExpression('4', Type::STRING)),
+                        new Statement(LiteralExpression::integer(3)),
+                        new Statement(LiteralExpression::integer(4)),
                         new EmptyLine(),
                         new Statement(
-                            new ReturnExpression(new LiteralExpression('5', Type::INTEGER))
+                            new ReturnExpression(LiteralExpression::integer(5))
                         ),
                     ]),
                     Type::INTEGER,
@@ -212,7 +212,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                                             ),
                                             Type::STRING,
                                         ),
-                                        new LiteralExpression(' . \'x\' . ', Type::STRING),
+                                        LiteralExpression::void(' . \'x\' . '),
                                         new EncapsulatingCastExpression(
                                             new MethodInvocation(
                                                 methodName: 'getHeight',
@@ -272,7 +272,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                         new Statement(
                             new AssignmentExpression(
                                 Property::asVariable('variableName', Type::STRING),
-                                new LiteralExpression('"literal value"', Type::STRING)
+                                LiteralExpression::string('"literal value"')
                             )
                         ),
                         new EmptyLine(),

@@ -61,11 +61,11 @@ class BodyTest extends AbstractResolvableTestCase
                     new EmptyLine(),
                     1,
                     new Statement(
-                        new LiteralExpression('"literal from statement"', Type::STRING)
+                        LiteralExpression::string('"literal from statement"')
                     ),
                     new Body([
                         new Statement(
-                            new LiteralExpression('"literal from statement from body"', Type::STRING)
+                            LiteralExpression::string('"literal from statement from body"')
                         )
                     ]),
                     new TryCatchBlock(
@@ -93,11 +93,11 @@ class BodyTest extends AbstractResolvableTestCase
                     new SingleLineComment('singe line comment'),
                     new EmptyLine(),
                     new Statement(
-                        new LiteralExpression('"literal from statement"', Type::STRING)
+                        LiteralExpression::string('"literal from statement"')
                     ),
                     new Body([
                         new Statement(
-                            new LiteralExpression('"literal from statement from body"', Type::STRING)
+                            LiteralExpression::string('"literal from statement from body"')
                         )
                     ]),
                     new TryCatchBlock(
@@ -145,11 +145,11 @@ class BodyTest extends AbstractResolvableTestCase
                     new SingleLineComment('single line comment'),
                     new EmptyLine(),
                     new Statement(
-                        new LiteralExpression('"literal from statement"', Type::STRING)
+                        LiteralExpression::string('"literal from statement"')
                     ),
                     new Body([
                         new Statement(
-                            new LiteralExpression('"literal from statement from body"', Type::STRING)
+                            LiteralExpression::string('"literal from statement from body"')
                         )
                     ]),
                     new TryCatchBlock(
@@ -217,9 +217,9 @@ class BodyTest extends AbstractResolvableTestCase
         self::expectExceptionObject(new \InvalidArgumentException('Non-expression at index 1'));
 
         Body::createFromExpressions([
-            new LiteralExpression('"literal one"', Type::STRING),
+            LiteralExpression::string('"literal one"'),
             true,
-            new LiteralExpression('"literal two"', Type::STRING),
+            LiteralExpression::string('"literal two"'),
         ]);
     }
 
@@ -244,15 +244,15 @@ class BodyTest extends AbstractResolvableTestCase
             ],
             'non-empty' => [
                 'expressions' => [
-                    new LiteralExpression('"literal one"', Type::STRING),
-                    new LiteralExpression('"literal two"', Type::STRING),
+                    LiteralExpression::string('"literal one"'),
+                    LiteralExpression::string('"literal two"'),
                 ],
                 'expectedBody' => new Body([
                     new Statement(
-                        new LiteralExpression('"literal one"', Type::STRING)
+                        LiteralExpression::string('"literal one"')
                     ),
                     new Statement(
-                        new LiteralExpression('"literal two"', Type::STRING)
+                        LiteralExpression::string('"literal two"')
                     ),
                 ]),
             ],
@@ -262,7 +262,7 @@ class BodyTest extends AbstractResolvableTestCase
     public function testCreateForSingleAssignmentStatement(): void
     {
         $variable = Property::asDependency(DependencyName::PANTHER_CLIENT);
-        $value = new LiteralExpression('"value"', Type::STRING);
+        $value = LiteralExpression::string('"value"');
 
         $expectedBody = new Body([
             new Statement(

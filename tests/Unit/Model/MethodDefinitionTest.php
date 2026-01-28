@@ -293,8 +293,8 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                                 new MethodInvocation(
                                     methodName: 'methodName',
                                     arguments: new MethodArguments([
-                                        new LiteralExpression('$x', Type::STRING),
-                                        new LiteralExpression('$y', Type::STRING),
+                                        LiteralExpression::string('$x'),
+                                        LiteralExpression::string('$y'),
                                     ]),
                                     mightThrow: false,
                                     type: Type::STRING,

@@ -26,7 +26,7 @@ class ReturnExpressionTest extends AbstractResolvableTestCase
         return [
             'return an expression' => [
                 'expression' => new ReturnExpression(
-                    new LiteralExpression('100', Type::INTEGER)
+                    LiteralExpression::integer(100)
                 ),
                 'expectedString' => 'return 100',
             ],

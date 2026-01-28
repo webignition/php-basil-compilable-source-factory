@@ -105,9 +105,8 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                         new MethodInvocation(
                                             methodName: 'method',
                                             arguments: new MethodArguments([
-                                                new LiteralExpression(
+                                                LiteralExpression::string(
                                                     'StatementHandler::handle(click $".selector")::body',
-                                                    Type::STRING,
                                                 ),
                                             ]),
                                             mightThrow: true,
@@ -340,9 +339,8 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                     new MethodInvocation(
                                         methodName: 'method',
                                         arguments: new MethodArguments([
-                                            new LiteralExpression(
+                                            LiteralExpression::string(
                                                 '"StatementHandler::handle(click $\".selector\")::setup"',
-                                                Type::STRING,
                                             ),
                                         ]),
                                         mightThrow: true,

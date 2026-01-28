@@ -45,7 +45,7 @@ class MethodInvocationTest extends AbstractResolvableTestCase
                 'methodInvocation' => new MethodInvocation(
                     methodName: 'methodName',
                     arguments: new MethodArguments([
-                        new LiteralExpression('"literal string"', Type::STRING)
+                        LiteralExpression::string('"literal string"')
                     ]),
                     mightThrow: false,
                     type: Type::STRING,
@@ -189,8 +189,8 @@ class MethodInvocationTest extends AbstractResolvableTestCase
                 'methodInvocation' => new MethodInvocation(
                     methodName: 'methodName',
                     arguments: new MethodArguments([
-                        new LiteralExpression('1', Type::INTEGER),
-                        new LiteralExpression("\\'single-quoted value\\'", Type::STRING),
+                        LiteralExpression::integer(1),
+                        LiteralExpression::string("\\'single-quoted value\\'"),
                     ]),
                     mightThrow: false,
                     type: Type::STRING,
@@ -202,8 +202,8 @@ class MethodInvocationTest extends AbstractResolvableTestCase
                     methodName: 'methodName',
                     arguments: new MethodArguments(
                         [
-                            new LiteralExpression('1', Type::INTEGER),
-                            new LiteralExpression("\\'single-quoted value\\'", Type::STRING),
+                            LiteralExpression::integer(1),
+                            LiteralExpression::string("\\'single-quoted value\\'"),
                         ],
                         MethodArgumentsInterface::FORMAT_STACKED
                     ),
@@ -249,8 +249,8 @@ class MethodInvocationTest extends AbstractResolvableTestCase
                 'methodInvocation' => new MethodInvocation(
                     methodName: 'methodName',
                     arguments: new MethodArguments([
-                        new LiteralExpression('1', Type::INTEGER),
-                        new LiteralExpression("\\'single-quoted value\\'", Type::STRING),
+                        LiteralExpression::integer(1),
+                        LiteralExpression::string("\\'single-quoted value\\'"),
                     ]),
                     mightThrow: false,
                     type: Type::STRING,
@@ -265,8 +265,8 @@ class MethodInvocationTest extends AbstractResolvableTestCase
                     methodName: 'methodName',
                     arguments: new MethodArguments(
                         [
-                            new LiteralExpression('1', Type::INTEGER),
-                            new LiteralExpression("\\'single-quoted value\\'", Type::STRING),
+                            LiteralExpression::integer(1),
+                            LiteralExpression::string("\\'single-quoted value\\'"),
                         ],
                         MethodArgumentsInterface::FORMAT_STACKED,
                     ),
