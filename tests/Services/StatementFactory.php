@@ -68,7 +68,7 @@ class StatementFactory
                         new ReturnExpression(
                             new MethodInvocation(
                                 methodName: 'getElement',
-                                arguments: new MethodArguments([$argumentFactory->create(0)]),
+                                arguments: new MethodArguments([$argumentFactory->create('0')]),
                                 mightThrow: false,
                                 parent: $elementVariable,
                             )
@@ -112,7 +112,7 @@ class StatementFactory
                         $elementVariable,
                         new MethodInvocation(
                             methodName: 'getElement',
-                            arguments: new MethodArguments([$argumentFactory->create(0)]),
+                            arguments: new MethodArguments([$argumentFactory->create('0')]),
                             mightThrow: false,
                             parent: $elementVariable,
                         )

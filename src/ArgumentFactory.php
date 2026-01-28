@@ -7,10 +7,10 @@ namespace webignition\BasilCompilableSourceFactory;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 
-class ArgumentFactory
+readonly class ArgumentFactory
 {
     public function __construct(
-        private readonly SingleQuotedStringEscaper $singleQuotedStringEscaper
+        private SingleQuotedStringEscaper $singleQuotedStringEscaper
     ) {}
 
     public static function createFactory(): self
@@ -20,23 +20,11 @@ class ArgumentFactory
         );
     }
 
-    public function create(mixed $argument): ExpressionInterface
+    public function create(string $argument): ExpressionInterface
     {
-        if (is_bool($argument)) {
-            return new LiteralExpression($argument ? 'true' : 'false');
-        }
-
-        if (is_float($argument) || is_int($argument)) {
-            return new LiteralExpression((string) $argument);
-        }
-
-        if (is_string($argument)) {
-            return new LiteralExpression(sprintf(
-                '\'%s\'',
-                $this->singleQuotedStringEscaper->escape($argument)
-            ));
-        }
-
-        return new LiteralExpression('null');
+        return new LiteralExpression(sprintf(
+            '\'%s\'',
+            $this->singleQuotedStringEscaper->escape($argument)
+        ));
     }
 }
