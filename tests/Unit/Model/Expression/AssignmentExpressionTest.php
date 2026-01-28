@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
@@ -39,14 +40,14 @@ class AssignmentExpressionTest extends AbstractResolvableTestCase
     {
         return [
             'no metadata' => [
-                'assignee' => Property::asVariable('lhs'),
-                'value' => new LiteralExpression('6'),
+                'assignee' => Property::asVariable('lhs', Type::STRING),
+                'value' => new LiteralExpression('6', Type::INTEGER),
                 'operator' => '===',
                 'expectedMetadata' => new Metadata(),
             ],
             'has metadata' => [
                 'assignee' => Property::asDependency(DependencyName::PANTHER_CLIENT),
-                'value' => new LiteralExpression('literal'),
+                'value' => new LiteralExpression('literal', Type::STRING),
                 'operator' => '!==',
                 'expectedMetadata' => new Metadata(
                     dependencyNames: [
@@ -71,15 +72,15 @@ class AssignmentExpressionTest extends AbstractResolvableTestCase
         return [
             'variable name, literal' => [
                 'expression' => new AssignmentExpression(
-                    Property::asVariable('lhs'),
-                    new LiteralExpression('rhs')
+                    Property::asVariable('lhs', Type::STRING),
+                    new LiteralExpression('rhs', Type::STRING)
                 ),
                 'expectedString' => '$lhs = rhs',
             ],
             'variable dependency, literal' => [
                 'expression' => new AssignmentExpression(
                     Property::asDependency(DependencyName::PANTHER_CRAWLER),
-                    new LiteralExpression('rhs')
+                    new LiteralExpression('rhs', Type::STRING)
                 ),
                 'expectedString' => '{{ CRAWLER }} = rhs',
             ],
@@ -87,9 +88,10 @@ class AssignmentExpressionTest extends AbstractResolvableTestCase
                 'expression' => new AssignmentExpression(
                     new Property(
                         'property',
+                        Type::STRING,
                         Property::asDependency(DependencyName::DOM_CRAWLER_NAVIGATOR)->setIsStatic(true)
                     ),
-                    new LiteralExpression('rhs')
+                    new LiteralExpression('rhs', Type::STRING)
                 ),
                 'expectedString' => '{{ NAVIGATOR }}::property = rhs',
             ],

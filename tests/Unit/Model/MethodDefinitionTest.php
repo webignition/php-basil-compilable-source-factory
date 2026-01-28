@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Attribute\DataProviderAttribute;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
@@ -111,16 +112,18 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                             methodName: 'methodName',
                             arguments: new MethodArguments(),
                             mightThrow: false,
+                            type: Type::STRING,
                             parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                         )
                     ),
                     new Statement(
                         new AssignmentExpression(
-                            Property::asVariable('variable'),
+                            Property::asVariable('variable', Type::STRING),
                             new MethodInvocation(
                                 methodName: 'methodName',
                                 arguments: new MethodArguments(),
                                 mightThrow: false,
+                                type: Type::STRING,
                             ),
                         )
                     ),
@@ -138,16 +141,18 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                             methodName: 'methodName',
                             arguments: new MethodArguments(),
                             mightThrow: false,
+                            type: Type::STRING,
                             parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                         )
                     ),
                     new Statement(
                         new AssignmentExpression(
-                            Property::asVariable('variable'),
+                            Property::asVariable('variable', Type::STRING),
                             new MethodInvocation(
                                 methodName: 'methodName',
                                 arguments: new MethodArguments(),
                                 mightThrow: false,
+                                type: Type::STRING,
                             )
                         )
                     ),
@@ -284,14 +289,15 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                         new EmptyLine(),
                         new Statement(
                             new AssignmentExpression(
-                                Property::asVariable('value'),
+                                Property::asVariable('value', Type::STRING),
                                 new MethodInvocation(
                                     methodName: 'methodName',
                                     arguments: new MethodArguments([
-                                        new LiteralExpression('$x'),
-                                        new LiteralExpression('$y'),
+                                        new LiteralExpression('$x', Type::STRING),
+                                        new LiteralExpression('$y', Type::STRING),
                                     ]),
                                     mightThrow: false,
+                                    type: Type::STRING,
                                     parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                                 )
                             )

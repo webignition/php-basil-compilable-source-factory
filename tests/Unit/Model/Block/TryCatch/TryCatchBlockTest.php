@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Block\TryCatch;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\CatchBlock;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryBlock;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryCatchBlock;
@@ -40,6 +41,7 @@ class TryCatchBlockTest extends AbstractResolvableTestCase
                             methodName: 'methodName',
                             arguments: new MethodArguments(),
                             mightThrow: false,
+                            type: Type::STRING,
                         )),
                     ),
                     new CatchBlock(

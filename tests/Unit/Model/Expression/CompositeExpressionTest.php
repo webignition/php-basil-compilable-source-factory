@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CompositeExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
@@ -22,7 +23,7 @@ class CompositeExpressionTest extends AbstractResolvableTestCase
     #[DataProvider('createDataProvider')]
     public function testCreate(array $expressions, MetadataInterface $expectedMetadata): void
     {
-        $expression = new CompositeExpression($expressions);
+        $expression = new CompositeExpression($expressions, Type::STRING);
 
         $this->assertEquals($expectedMetadata, $expression->getMetadata());
     }
@@ -50,7 +51,7 @@ class CompositeExpressionTest extends AbstractResolvableTestCase
             'variable dependency and array access' => [
                 'expressions' => [
                     Property::asDependency(DependencyName::ENVIRONMENT_VARIABLE_ARRAY),
-                    new LiteralExpression('[\'KEY\']')
+                    new LiteralExpression('[\'KEY\']', Type::VOID)
                 ],
                 'expectedMetadata' => new Metadata(
                     dependencyNames: [
@@ -74,48 +75,63 @@ class CompositeExpressionTest extends AbstractResolvableTestCase
     {
         return [
             'empty' => [
-                'expression' => new CompositeExpression([]),
+                'expression' => new CompositeExpression([], Type::VOID),
                 'expectedString' => '',
             ],
             'single literal' => [
-                'expression' => new CompositeExpression([
-                    new LiteralExpression('literal1'),
-                ]),
+                'expression' => new CompositeExpression(
+                    [
+                        new LiteralExpression('literal1', Type::STRING),
+                    ],
+                    Type::STRING,
+                ),
                 'expectedString' => 'literal1',
             ],
             'multiple literals' => [
-                'expression' => new CompositeExpression([
-                    new LiteralExpression('literal1'),
-                    new LiteralExpression('literal2'),
-                    new LiteralExpression('literal3'),
-                ]),
+                'expression' => new CompositeExpression(
+                    [
+                        new LiteralExpression('literal1', Type::STRING),
+                        new LiteralExpression('literal2', Type::STRING),
+                        new LiteralExpression('literal3', Type::STRING),
+                    ],
+                    Type::STRING,
+                ),
                 'expectedString' => 'literal1literal2literal3',
             ],
             'variable dependency' => [
-                'expression' => new CompositeExpression([
-                    Property::asDependency(DependencyName::PANTHER_CLIENT),
-                ]),
+                'expression' => new CompositeExpression(
+                    [
+                        Property::asDependency(DependencyName::PANTHER_CLIENT),
+                    ],
+                    Type::STRING,
+                ),
                 'expectedString' => '{{ CLIENT }}',
             ],
             'variable dependency and array access' => [
-                'expression' => new CompositeExpression([
-                    Property::asDependency(DependencyName::ENVIRONMENT_VARIABLE_ARRAY),
-                    new LiteralExpression('[\'KEY\']')
-                ]),
+                'expression' => new CompositeExpression(
+                    [
+                        Property::asDependency(DependencyName::ENVIRONMENT_VARIABLE_ARRAY),
+                        new LiteralExpression('[\'KEY\']', Type::VOID)
+                    ],
+                    Type::STRING,
+                ),
                 'expectedString' => '{{ ENV }}[\'KEY\']',
             ],
             'resolvable expression, stringable expression, resolvable expression' => [
-                'expression' => new CompositeExpression([
-                    new EncapsulatingCastExpression(
-                        new LiteralExpression('1'),
-                        'string'
-                    ),
-                    new LiteralExpression(' . \'x\' . '),
-                    new EncapsulatingCastExpression(
-                        new LiteralExpression('2'),
-                        'string'
-                    ),
-                ]),
+                'expression' => new CompositeExpression(
+                    [
+                        new EncapsulatingCastExpression(
+                            new LiteralExpression('1', Type::INTEGER),
+                            Type::STRING,
+                        ),
+                        new LiteralExpression(' . \'x\' . ', Type::STRING),
+                        new EncapsulatingCastExpression(
+                            new LiteralExpression('2', Type::INTEGER),
+                            Type::STRING,
+                        ),
+                    ],
+                    Type::STRING,
+                ),
                 'expectedString' => '(string) (1) . \'x\' . (string) (2)',
             ],
         ];

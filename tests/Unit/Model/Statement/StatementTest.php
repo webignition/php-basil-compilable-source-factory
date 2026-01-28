@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Statement;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
@@ -46,6 +47,7 @@ class StatementTest extends AbstractResolvableTestCase
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
+                    type: Type::STRING,
                 ),
                 'expectedMetadata' => new Metadata(),
             ],
@@ -54,6 +56,7 @@ class StatementTest extends AbstractResolvableTestCase
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
+                    type: Type::STRING,
                     parent: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
                 ),
                 'expectedMetadata' => new Metadata(
@@ -89,6 +92,7 @@ class StatementTest extends AbstractResolvableTestCase
                         methodName: 'methodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
+                        type: Type::STRING,
                     )
                 ),
                 'expectedString' => 'methodName();',
@@ -99,6 +103,7 @@ class StatementTest extends AbstractResolvableTestCase
                         methodName: 'methodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
+                        type: Type::STRING,
                         parent: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
                     )
                 ),

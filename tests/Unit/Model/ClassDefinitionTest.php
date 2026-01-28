@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\ClassBody;
 use webignition\BasilCompilableSourceFactory\Model\ClassDefinition;
@@ -80,16 +81,18 @@ class ClassDefinitionTest extends AbstractResolvableTestCase
                                     methodName: 'methodName',
                                     arguments: new MethodArguments(),
                                     mightThrow: false,
+                                    type: Type::STRING,
                                     parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                                 )
                             ),
                             new Statement(
                                 new AssignmentExpression(
-                                    Property::asVariable('variable'),
+                                    Property::asVariable('variable', Type::STRING),
                                     new MethodInvocation(
                                         methodName: 'methodName',
                                         arguments: new MethodArguments(),
                                         mightThrow: false,
+                                        type: Type::STRING,
                                     )
                                 )
                             )

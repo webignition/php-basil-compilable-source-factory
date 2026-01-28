@@ -20,7 +20,7 @@ class DomCrawlerNavigatorCallFactory
 
     public function createFindCall(ExpressionInterface $expression): ExpressionInterface
     {
-        return $this->createElementCall('find', $expression, Type::ARRAY);
+        return $this->createElementCall('find', $expression, Type::OBJECT);
     }
 
     public function createFindOneCall(ExpressionInterface $expression): ExpressionInterface

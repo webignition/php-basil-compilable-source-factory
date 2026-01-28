@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\MethodInvoca
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
@@ -36,6 +37,7 @@ class MethodInvocationTest extends AbstractResolvableTestCase
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
+                    type: Type::STRING,
                 ),
                 'expected' => new Metadata(),
             ],
@@ -43,9 +45,10 @@ class MethodInvocationTest extends AbstractResolvableTestCase
                 'methodInvocation' => new MethodInvocation(
                     methodName: 'methodName',
                     arguments: new MethodArguments([
-                        new LiteralExpression('"literal string"')
+                        new LiteralExpression('"literal string"', Type::STRING)
                     ]),
                     mightThrow: false,
+                    type: Type::STRING,
                 ),
                 'expected' => new Metadata(),
             ],
@@ -56,10 +59,12 @@ class MethodInvocationTest extends AbstractResolvableTestCase
                         Property::asEnum(
                             new ClassName(DependencyName::class),
                             DependencyName::ENVIRONMENT_VARIABLE_ARRAY->name,
+                            Type::STRING,
                         ),
                         Property::asDependency(DependencyName::MESSAGE_FACTORY),
                     ]),
                     mightThrow: false,
+                    type: Type::STRING,
                 ),
                 'expected' => new Metadata(
                     classNames: [
@@ -75,7 +80,8 @@ class MethodInvocationTest extends AbstractResolvableTestCase
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
-                    parent: Property::asVariable('parent')
+                    type: Type::STRING,
+                    parent: Property::asVariable('parent', Type::STRING)
                 ),
                 'expected' => new Metadata(),
             ],
@@ -84,16 +90,19 @@ class MethodInvocationTest extends AbstractResolvableTestCase
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
+                    type: Type::STRING,
                     parent: new MethodInvocation(
                         methodName: 'parentMethodName',
                         arguments: new MethodArguments([
                             Property::asEnum(
                                 new ClassName(DependencyName::class),
                                 DependencyName::ENVIRONMENT_VARIABLE_ARRAY->name,
+                                type: Type::STRING,
                             ),
                             Property::asDependency(DependencyName::MESSAGE_FACTORY),
                         ]),
                         mightThrow: true,
+                        type: Type::STRING,
                     ),
                 ),
                 'expected' => new Metadata(
@@ -111,21 +120,25 @@ class MethodInvocationTest extends AbstractResolvableTestCase
                     arguments: new MethodArguments([
                         Property::asClassConstant(
                             new ClassName(VariableName::class),
-                            'EXPECTED_VALUE'
+                            'EXPECTED_VALUE',
+                            Type::STRING
                         ),
                         Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
                     ]),
                     mightThrow: false,
+                    type: Type::STRING,
                     parent: new MethodInvocation(
                         methodName: 'parentMethodName',
                         arguments: new MethodArguments([
                             Property::asEnum(
                                 new ClassName(DependencyName::class),
                                 DependencyName::ENVIRONMENT_VARIABLE_ARRAY->name,
+                                Type::STRING,
                             ),
                             Property::asDependency(DependencyName::MESSAGE_FACTORY),
                         ]),
                         mightThrow: true,
+                        type: Type::STRING,
                     ),
                 ),
                 'expected' => new Metadata(
@@ -159,6 +172,7 @@ class MethodInvocationTest extends AbstractResolvableTestCase
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
+                    type: Type::STRING,
                 ),
                 'expected' => 'methodName()',
             ],
@@ -167,6 +181,7 @@ class MethodInvocationTest extends AbstractResolvableTestCase
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
+                    type: Type::STRING,
                 )->setIsErrorSuppressed(),
                 'expected' => '@methodName()',
             ],
@@ -174,10 +189,11 @@ class MethodInvocationTest extends AbstractResolvableTestCase
                 'methodInvocation' => new MethodInvocation(
                     methodName: 'methodName',
                     arguments: new MethodArguments([
-                        new LiteralExpression('1'),
-                        new LiteralExpression("\\'single-quoted value\\'"),
+                        new LiteralExpression('1', Type::INTEGER),
+                        new LiteralExpression("\\'single-quoted value\\'", Type::STRING),
                     ]),
                     mightThrow: false,
+                    type: Type::STRING,
                 ),
                 'expected' => "methodName(1, \\'single-quoted value\\')",
             ],
@@ -186,12 +202,13 @@ class MethodInvocationTest extends AbstractResolvableTestCase
                     methodName: 'methodName',
                     arguments: new MethodArguments(
                         [
-                            new LiteralExpression('1'),
-                            new LiteralExpression("\\'single-quoted value\\'"),
+                            new LiteralExpression('1', Type::INTEGER),
+                            new LiteralExpression("\\'single-quoted value\\'", Type::STRING),
                         ],
                         MethodArgumentsInterface::FORMAT_STACKED
                     ),
                     mightThrow: false,
+                    type: Type::STRING,
                 ),
                 'expected' => "methodName(\n"
                     . "    1,\n"
@@ -203,6 +220,7 @@ class MethodInvocationTest extends AbstractResolvableTestCase
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
+                    type: Type::STRING,
                     parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                 ),
                 'expected' => '{{ CLIENT }}->methodName()',
@@ -212,6 +230,7 @@ class MethodInvocationTest extends AbstractResolvableTestCase
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
+                    type: Type::STRING,
                     parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                 )->setIsErrorSuppressed(),
                 'expected' => '@{{ CLIENT }}->methodName()',
@@ -221,6 +240,7 @@ class MethodInvocationTest extends AbstractResolvableTestCase
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
+                    type: Type::STRING,
                     parent: new StaticObject('parent'),
                 ),
                 'expected' => 'parent::methodName()',
@@ -229,10 +249,11 @@ class MethodInvocationTest extends AbstractResolvableTestCase
                 'methodInvocation' => new MethodInvocation(
                     methodName: 'methodName',
                     arguments: new MethodArguments([
-                        new LiteralExpression('1'),
-                        new LiteralExpression("\\'single-quoted value\\'"),
+                        new LiteralExpression('1', Type::INTEGER),
+                        new LiteralExpression("\\'single-quoted value\\'", Type::STRING),
                     ]),
                     mightThrow: false,
+                    type: Type::STRING,
                     parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                 ),
                 'expected' => <<<'EOD'
@@ -244,12 +265,13 @@ class MethodInvocationTest extends AbstractResolvableTestCase
                     methodName: 'methodName',
                     arguments: new MethodArguments(
                         [
-                            new LiteralExpression('1'),
-                            new LiteralExpression("\\'single-quoted value\\'"),
+                            new LiteralExpression('1', Type::INTEGER),
+                            new LiteralExpression("\\'single-quoted value\\'", Type::STRING),
                         ],
                         MethodArgumentsInterface::FORMAT_STACKED,
                     ),
                     mightThrow: false,
+                    type: Type::STRING,
                     parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                 ),
                 'expected' => <<<'EOD'
@@ -264,7 +286,8 @@ class MethodInvocationTest extends AbstractResolvableTestCase
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
-                    parent: Property::asVariable('object'),
+                    type: Type::STRING,
+                    parent: Property::asVariable('object', Type::OBJECT),
                 ),
                 'expected' => '$object->methodName()',
             ],
@@ -273,10 +296,12 @@ class MethodInvocationTest extends AbstractResolvableTestCase
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
+                    type: Type::STRING,
                     parent: new MethodInvocation(
                         methodName: 'parentMethodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
+                        type: Type::STRING,
                     ),
                 ),
                 'expected' => 'parentMethodName()->methodName()',
@@ -286,10 +311,12 @@ class MethodInvocationTest extends AbstractResolvableTestCase
                     methodName: 'outerMethodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
+                    type: Type::STRING,
                     parent: new MethodInvocation(
                         methodName: 'innerMethodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
+                        type: Type::STRING,
                         parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                     ),
                 ),

@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\MethodArgume
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
@@ -61,16 +62,16 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
             ],
             'single argument' => [
                 'arguments' => [
-                    new LiteralExpression('1'),
+                    new LiteralExpression('1', Type::INTEGER),
                 ],
                 'format' => MethodArgumentsInterface::FORMAT_INLINE,
                 'expectedMetadata' => new Metadata(),
             ],
             'multiple arguments' => [
                 'arguments' => [
-                    new LiteralExpression('2'),
-                    new LiteralExpression("\\'single-quoted value\\'"),
-                    new LiteralExpression('"double-quoted value"'),
+                    new LiteralExpression('2', Type::INTEGER),
+                    new LiteralExpression("\\'single-quoted value\\'", Type::STRING),
+                    new LiteralExpression('"double-quoted value"', Type::STRING),
                 ],
                 'format' => MethodArgumentsInterface::FORMAT_INLINE,
                 'expectedMetadata' => new Metadata(),
@@ -81,6 +82,7 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                         methodName: 'staticMethodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
+                        type: Type::STRING,
                         parent: new StaticObject(ClassName::class),
                     )
                 ],
@@ -116,8 +118,8 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
             ],
             'has arguments, inline' => [
                 'arguments' => new MethodArguments([
-                    new LiteralExpression('1'),
-                    new LiteralExpression("\\'single-quoted value\\'"),
+                    new LiteralExpression('1', Type::INTEGER),
+                    new LiteralExpression("\\'single-quoted value\\'", Type::STRING),
                 ]),
                 'expectedString' => <<< 'EOD'
                     1, \'single-quoted value\'
@@ -126,8 +128,8 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
             'has arguments, stacked' => [
                 'arguments' => new MethodArguments(
                     [
-                        new LiteralExpression('1'),
-                        new LiteralExpression("\\'single-quoted value\\'"),
+                        new LiteralExpression('1', Type::INTEGER),
+                        new LiteralExpression("\\'single-quoted value\\'", Type::STRING),
                     ],
                     MethodArgumentsInterface::FORMAT_STACKED
                 ),
@@ -148,31 +150,35 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                                     methodName: 'fromJson',
                                     arguments: new MethodArguments([
                                         new LiteralExpression(
-                                            '{' . "\n" . '    "locator": ".selector"' . "\n" . '}'
+                                            '{' . "\n" . '    "locator": ".selector"' . "\n" . '}',
+                                            Type::STRING,
                                         ),
                                     ]),
                                     mightThrow: false,
+                                    type: Type::STRING,
                                     parent: new StaticObject(MethodArguments::class),
                                 )
                             ]),
                             mightThrow: false,
+                            type: Type::STRING,
                             parent: Property::asDependency(DependencyName::DOM_CRAWLER_NAVIGATOR),
                         ),
                         new ClosureExpression(
                             new Body([
                                 new Statement(
                                     new AssignmentExpression(
-                                        Property::asVariable('variable'),
-                                        new LiteralExpression('100')
+                                        Property::asVariable('variable', Type::STRING),
+                                        new LiteralExpression('100', Type::INTEGER)
                                     )
                                 ),
                                 new EmptyLine(),
                                 new Statement(
                                     new ReturnExpression(
-                                        Property::asVariable('variable'),
+                                        Property::asVariable('variable', Type::STRING),
                                     )
                                 ),
-                            ])
+                            ]),
+                            Type::STRING,
                         ),
                     ],
                     MethodArgumentsInterface::FORMAT_STACKED
@@ -198,6 +204,7 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                                 methodName: 'dataName',
                                 arguments: new MethodArguments(),
                                 mightThrow: false,
+                                type: Type::STRING,
                                 parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                             ),
                             'data' => [

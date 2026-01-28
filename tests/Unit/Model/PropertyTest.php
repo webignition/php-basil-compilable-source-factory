@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BaseBasilTestCase\Enum\StatementStage;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
@@ -29,7 +30,7 @@ class PropertyTest extends AbstractResolvableTestCase
     {
         return [
             'variable name' => [
-                'property' => Property::asVariable('variable'),
+                'property' => Property::asVariable('variable', Type::STRING),
                 'expected' => new Metadata(),
             ],
             'variable placeholder' => [
@@ -57,7 +58,7 @@ class PropertyTest extends AbstractResolvableTestCase
     {
         return [
             'variable name' => [
-                'property' => Property::asVariable('variable'),
+                'property' => Property::asVariable('variable', Type::STRING),
                 'expected' => '$variable',
             ],
             'variable placeholder' => [
@@ -65,20 +66,30 @@ class PropertyTest extends AbstractResolvableTestCase
                 'expected' => '{{ ENV }}',
             ],
             'static object constant access (or enum), no alias' => [
-                'property' => Property::asClassConstant(new ClassName(StatementStage::class), 'CONSTANT_NAME'),
+                'property' => Property::asClassConstant(
+                    new ClassName(StatementStage::class),
+                    'CONSTANT_NAME',
+                    Type::STRING,
+                ),
                 'expected' => 'StatementStage::CONSTANT_NAME',
             ],
             'object property access, no alias' => [
-                'property' => Property::asObjectProperty(new Property('parent'), 'property'),
+                'property' => Property::asObjectProperty(
+                    new Property('parent', Type::OBJECT),
+                    'property',
+                    Type::STRING,
+                ),
                 'expected' => '$parent->property',
             ],
             'method invocation object property access, no alias' => [
                 'property' => new Property(
                     'property',
+                    Type::STRING,
                     new MethodInvocation(
-                        'methodName',
-                        new MethodArguments(),
-                        false,
+                        methodName: 'methodName',
+                        arguments: new MethodArguments(),
+                        mightThrow: false,
+                        type: Type::STRING,
                     ),
                 ),
                 'expected' => 'methodName()->property',

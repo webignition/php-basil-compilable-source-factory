@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use SmartAssert\DomIdentifier\AttributeIdentifier;
 use SmartAssert\DomIdentifier\ElementIdentifier;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
@@ -142,7 +143,7 @@ class DomIdentifierHandlerTest extends AbstractBrowserTestCase
                 ),
                 'teardownStatements' => new Body([
                     StatementFactory::createAssertCount('1', '$value'),
-                    new Statement(new LiteralExpression('$element = $value->current()')),
+                    new Statement(new LiteralExpression('$element = $value->current()', Type::STRING)),
                     StatementFactory::createAssertSame('""', '$element->getAttribute(\'value\')'),
                 ]),
             ],
@@ -154,7 +155,7 @@ class DomIdentifierHandlerTest extends AbstractBrowserTestCase
                 ),
                 'teardownStatements' => new Body([
                     StatementFactory::createAssertCount('1', '$value'),
-                    new Statement(new LiteralExpression('$element = $value->current()')),
+                    new Statement(new LiteralExpression('$element = $value->current()', Type::STRING)),
                     StatementFactory::createAssertSame('null', '$element->getAttribute(\'test\')'),
                 ]),
             ],
@@ -167,7 +168,7 @@ class DomIdentifierHandlerTest extends AbstractBrowserTestCase
         BodyInterface $teardownStatements
     ): void {
         $instrumentedSource = new Statement(
-            new AssignmentExpression(Property::asVariable('value'), $source)
+            new AssignmentExpression(Property::asVariable('value', Type::STRING), $source)
         );
 
         $classCode = $this->testCodeGenerator->createBrowserTestForBlock(

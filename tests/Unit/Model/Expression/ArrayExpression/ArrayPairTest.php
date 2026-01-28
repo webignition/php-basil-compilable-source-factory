@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression\A
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression\ArrayExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression\ArrayPair;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
@@ -33,7 +34,7 @@ class ArrayPairTest extends AbstractResolvableTestCase
             'no metadata' => [
                 'pair' => new ArrayPair(
                     '',
-                    new LiteralExpression('\'\'')
+                    new LiteralExpression('\'\'', Type::STRING)
                 ),
                 'expectedMetadata' => new Metadata(),
             ],
@@ -44,6 +45,7 @@ class ArrayPairTest extends AbstractResolvableTestCase
                         methodName: 'methodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
+                        type: Type::STRING,
                         parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                     )
                 ),
@@ -71,28 +73,28 @@ class ArrayPairTest extends AbstractResolvableTestCase
             'empty key, empty string value' => [
                 'pair' => new ArrayPair(
                     '',
-                    new LiteralExpression('\'\'')
+                    new LiteralExpression('\'\'', Type::STRING)
                 ),
                 'expectedString' => "'' => '',",
             ],
             'empty key, string value' => [
                 'pair' => new ArrayPair(
                     '',
-                    new LiteralExpression('\'value\'')
+                    new LiteralExpression('\'value\'', Type::STRING)
                 ),
                 'expectedString' => "'' => 'value',",
             ],
             'empty key, integer value' => [
                 'pair' => new ArrayPair(
                     '',
-                    new LiteralExpression('2')
+                    new LiteralExpression('2', Type::INTEGER)
                 ),
                 'expectedString' => "'' => 2,",
             ],
             'string value' => [
                 'pair' => new ArrayPair(
                     'key',
-                    new LiteralExpression('\'value\'')
+                    new LiteralExpression('\'value\'', Type::STRING)
                 ),
                 'expectedString' => "'key' => 'value',",
             ],
@@ -109,15 +111,15 @@ class ArrayPairTest extends AbstractResolvableTestCase
                     new ArrayExpression([
                         new ArrayPair(
                             'sub-key-1',
-                            new LiteralExpression('\'sub value 1\'')
+                            new LiteralExpression('\'sub value 1\'', Type::STRING)
                         ),
                         new ArrayPair(
                             'sub-key-2',
-                            new LiteralExpression('\'sub value 2\'')
+                            new LiteralExpression('\'sub value 2\'', Type::STRING)
                         ),
                         new ArrayPair(
                             'sub-key-3',
-                            new LiteralExpression('\'sub value 3\'')
+                            new LiteralExpression('\'sub value 3\'', Type::STRING)
                         ),
                     ]),
                 ),

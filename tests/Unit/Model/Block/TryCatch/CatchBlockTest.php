@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Block\TryCat
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\CatchBlock;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
@@ -35,6 +36,7 @@ class CatchBlockTest extends AbstractResolvableTestCase
                         methodName: 'staticMethodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
+                        type: Type::STRING,
                         parent: new StaticObject(\RuntimeException::class),
                     )
                 )
@@ -83,7 +85,7 @@ class CatchBlockTest extends AbstractResolvableTestCase
                         ])
                     ),
                     new Statement(
-                        new LiteralExpression('"literal"')
+                        new LiteralExpression('"literal"', Type::STRING)
                     )
                 ),
                 'expectedString' => 'catch (\Exception $exception) {' . "\n"
@@ -99,7 +101,7 @@ class CatchBlockTest extends AbstractResolvableTestCase
                         ])
                     ),
                     new Statement(
-                        new LiteralExpression('"literal"')
+                        new LiteralExpression('"literal"', Type::STRING)
                     )
                 ),
                 'expectedString' => 'catch (\LogicException | \RuntimeException $exception) {' . "\n"
@@ -116,7 +118,7 @@ class CatchBlockTest extends AbstractResolvableTestCase
                         ])
                     ),
                     new Statement(
-                        new LiteralExpression('"literal"')
+                        new LiteralExpression('"literal"', Type::STRING)
                     )
                 ),
                 'expectedString' => 'catch (\LogicException | \RuntimeException | TestCase $exception) {' . "\n"

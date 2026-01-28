@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression\ArrayExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CastExpression;
@@ -23,8 +24,8 @@ class CastExpressionTest extends AbstractResolvableTestCase
 {
     public function testCreate(): void
     {
-        $expression = new LiteralExpression('"literal"');
-        $castExpression = new CastExpression($expression, 'string');
+        $expression = new LiteralExpression('"literal"', Type::STRING);
+        $castExpression = new CastExpression($expression, Type::STRING);
 
         $this->assertEquals($expression->getMetadata(), $castExpression->getMetadata());
     }
@@ -43,24 +44,27 @@ class CastExpressionTest extends AbstractResolvableTestCase
         return [
             'literal int as int' => [
                 'expression' => new CastExpression(
-                    new LiteralExpression('100'),
-                    'int'
+                    new LiteralExpression('100', Type::INTEGER),
+                    Type::INTEGER
                 ),
                 'expectedString' => '(int) 100',
             ],
             'literal int as string' => [
                 'expression' => new CastExpression(
-                    new LiteralExpression('100'),
-                    'string'
+                    new LiteralExpression('100', Type::INTEGER),
+                    Type::STRING
                 ),
                 'expectedString' => '(string) 100',
             ],
             'empty array expression as object' => [
-                'expression' => new CastExpression(new ArrayExpression([]), 'object'),
+                'expression' => new CastExpression(new ArrayExpression([]), Type::OBJECT),
                 'expectedString' => '(object) []',
             ],
             'empty closure expression as string' => [
-                'expression' => new CastExpression(new ClosureExpression(new Body([])), 'string'),
+                'expression' => new CastExpression(
+                    new ClosureExpression(new Body([]), Type::STRING),
+                    Type::STRING
+                ),
                 'expectedString' => '(string) (function () {' . "\n"
                     . "\n"
                     . '})()',
@@ -68,21 +72,24 @@ class CastExpressionTest extends AbstractResolvableTestCase
             'comparison expression as int' => [
                 'expression' => new CastExpression(
                     new ComparisonExpression(
-                        new LiteralExpression('"x"'),
-                        new LiteralExpression('"y"'),
+                        new LiteralExpression('"x"', Type::STRING),
+                        new LiteralExpression('"y"', Type::STRING),
                         '==='
                     ),
-                    'int'
+                    Type::INTEGER
                 ),
                 'expectedString' => '(int) "x" === "y"',
             ],
             'composite expression as string' => [
                 'expression' => new CastExpression(
-                    new CompositeExpression([
-                        new LiteralExpression('$_ENV'),
-                        new LiteralExpression('["secret"]'),
-                    ]),
-                    'string'
+                    new CompositeExpression(
+                        [
+                            new LiteralExpression('$_ENV', Type::ARRAY),
+                            new LiteralExpression('["secret"]', Type::VOID),
+                        ],
+                        Type::STRING,
+                    ),
+                    Type::STRING
                 ),
                 'expectedString' => '(string) $_ENV["secret"]',
             ],
@@ -92,8 +99,9 @@ class CastExpressionTest extends AbstractResolvableTestCase
                         methodName: 'methodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
+                        type: Type::STRING,
                     ),
-                    'string'
+                    Type::STRING,
                 ),
                 'expectedString' => '(string) methodName()',
             ],
@@ -103,9 +111,10 @@ class CastExpressionTest extends AbstractResolvableTestCase
                         methodName: 'methodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
+                        type: Type::STRING,
                         parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                     ),
-                    'string'
+                    Type::STRING
                 ),
                 'expectedString' => '(string) {{ CLIENT }}->methodName()',
             ],
@@ -115,9 +124,10 @@ class CastExpressionTest extends AbstractResolvableTestCase
                         methodName: 'methodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
+                        type: Type::STRING,
                         parent: new StaticObject('Object'),
                     ),
-                    'string'
+                    Type::STRING
                 ),
                 'expectedString' => '(string) \Object::methodName()',
             ],
@@ -127,9 +137,10 @@ class CastExpressionTest extends AbstractResolvableTestCase
                         methodName: 'methodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
+                        type: Type::STRING,
                         parent: new StaticObject('Acme\Object'),
                     ),
-                    'string'
+                    Type::STRING,
                 ),
                 'expectedString' => '(string) Object::methodName()',
             ],

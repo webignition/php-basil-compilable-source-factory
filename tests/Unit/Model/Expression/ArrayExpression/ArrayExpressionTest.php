@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression\A
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression\ArrayExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression\ArrayPair;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
@@ -38,7 +39,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                 'expression' => new ArrayExpression([
                     new ArrayPair(
                         'key1',
-                        new LiteralExpression('\'value1\'')
+                        new LiteralExpression('\'value1\'', Type::STRING)
                     ),
                 ]),
                 'expectedMetadata' => new Metadata(),
@@ -51,6 +52,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                             methodName: 'methodName',
                             arguments: new MethodArguments(),
                             mightThrow: false,
+                            type: Type::STRING,
                             parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                         )
                     ),
@@ -84,7 +86,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                 'expression' => new ArrayExpression([
                     new ArrayPair(
                         'key1',
-                        new LiteralExpression('\'value1\'')
+                        new LiteralExpression('\'value1\'', Type::STRING)
                     ),
                 ]),
                 'expectedString' => "[\n"
@@ -95,11 +97,11 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                 'expression' => new ArrayExpression([
                     new ArrayPair(
                         'key1',
-                        new LiteralExpression('\'value1\'')
+                        new LiteralExpression('\'value1\'', Type::STRING)
                     ),
                     new ArrayPair(
                         'key2',
-                        Property::asVariable('variableName')
+                        Property::asVariable('variableName', Type::STRING)
                     ),
                     new ArrayPair(
                         'key3',
@@ -107,6 +109,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                             methodName: 'methodName',
                             arguments: new MethodArguments(),
                             mightThrow: false,
+                            type: Type::STRING,
                             parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                         )
                     ),
@@ -124,7 +127,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         new ArrayExpression([
                             new ArrayPair(
                                 'key1',
-                                new LiteralExpression('\'value1\'')
+                                new LiteralExpression('\'value1\'', Type::STRING)
                             ),
                         ])
                     ),
@@ -142,7 +145,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         new ArrayExpression([
                             new ArrayPair(
                                 'key1',
-                                new LiteralExpression('\'value1\'')
+                                new LiteralExpression('\'value1\'', Type::STRING)
                             ),
                         ])
                     ),
@@ -160,11 +163,11 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         new ArrayExpression([
                             new ArrayPair(
                                 'key1',
-                                new LiteralExpression('\'value1\'')
+                                new LiteralExpression('\'value1\'', Type::STRING)
                             ),
                             new ArrayPair(
                                 'key2',
-                                new LiteralExpression('\'value2\'')
+                                new LiteralExpression('\'value2\'', Type::STRING)
                             ),
                         ])
                     ),
@@ -183,11 +186,11 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         new ArrayExpression([
                             new ArrayPair(
                                 'key1',
-                                new LiteralExpression('\'value1\'')
+                                new LiteralExpression('\'value1\'', Type::STRING)
                             ),
                             new ArrayPair(
                                 'key2',
-                                new LiteralExpression('\'value2\'')
+                                new LiteralExpression('\'value2\'', Type::STRING)
                             ),
                         ])
                     ),
@@ -196,11 +199,11 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         new ArrayExpression([
                             new ArrayPair(
                                 'key1',
-                                new LiteralExpression('\'value3\'')
+                                new LiteralExpression('\'value3\'', Type::STRING)
                             ),
                             new ArrayPair(
                                 'key2',
-                                new LiteralExpression('\'value4\'')
+                                new LiteralExpression('\'value4\'', Type::STRING)
                             ),
                         ])
                     ),
@@ -224,7 +227,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         new ArrayExpression([
                             new ArrayPair(
                                 'key1',
-                                Property::asVariable('variableName')
+                                Property::asVariable('variableName', Type::STRING)
                             ),
                         ])
                     ),
@@ -246,6 +249,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                                     methodName: 'methodName',
                                     arguments: new MethodArguments(),
                                     mightThrow: false,
+                                    type: Type::STRING,
                                     parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                                 )
                             ),
@@ -289,7 +293,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         new ArrayExpression([
                             new ArrayPair(
                                 'key1',
-                                new LiteralExpression('\'value1\'')
+                                new LiteralExpression('\'value1\'', Type::STRING)
                             ),
                         ])
                     ),
@@ -307,7 +311,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         new ArrayExpression([
                             new ArrayPair(
                                 'key1',
-                                new LiteralExpression('\'value1\'')
+                                new LiteralExpression('\'value1\'', Type::STRING)
                             ),
                         ])
                     ),
@@ -326,11 +330,11 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         new ArrayExpression([
                             new ArrayPair(
                                 'key1',
-                                new LiteralExpression('\'value1\'')
+                                new LiteralExpression('\'value1\'', Type::STRING)
                             ),
                             new ArrayPair(
                                 'key2',
-                                new LiteralExpression('\'value2\'')
+                                new LiteralExpression('\'value2\'', Type::STRING)
                             ),
                         ])
                     ),
@@ -353,11 +357,11 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         new ArrayExpression([
                             new ArrayPair(
                                 'key1',
-                                new LiteralExpression('\'value1\'')
+                                new LiteralExpression('\'value1\'', Type::STRING)
                             ),
                             new ArrayPair(
                                 'key2',
-                                new LiteralExpression('\'value2\'')
+                                new LiteralExpression('\'value2\'', Type::STRING)
                             ),
                         ])
                     ),
@@ -366,11 +370,11 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         new ArrayExpression([
                             new ArrayPair(
                                 'key1',
-                                new LiteralExpression('\'value3\'')
+                                new LiteralExpression('\'value3\'', Type::STRING)
                             ),
                             new ArrayPair(
                                 'key2',
-                                new LiteralExpression('\'value4\'')
+                                new LiteralExpression('\'value4\'', Type::STRING)
                             ),
                         ])
                     ),
@@ -379,7 +383,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
             'single data set with VariableName value' => [
                 'expression' => ArrayExpression::fromArray([
                     'data-set-one' => [
-                        'key1' => Property::asVariable('variableName'),
+                        'key1' => Property::asVariable('variableName', Type::STRING),
                     ],
                 ]),
                 'expectedExpression' => new ArrayExpression([
@@ -388,7 +392,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         new ArrayExpression([
                             new ArrayPair(
                                 'key1',
-                                Property::asVariable('variableName')
+                                Property::asVariable('variableName', Type::STRING)
                             ),
                         ])
                     ),
@@ -401,6 +405,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                             methodName: 'methodName',
                             arguments: new MethodArguments(),
                             mightThrow: false,
+                            type: Type::STRING,
                             parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                         ),
                     ],
@@ -415,6 +420,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                                     methodName: 'methodName',
                                     arguments: new MethodArguments(),
                                     mightThrow: false,
+                                    type: Type::STRING,
                                     parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                                 )
                             ),
@@ -445,6 +451,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         methodName: 'dataName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
+                        type: Type::STRING,
                         parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                     ),
                     'data' => [
@@ -459,6 +466,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                             methodName: 'dataName',
                             arguments: new MethodArguments(),
                             mightThrow: false,
+                            type: Type::STRING,
                             parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                         )
                     ),

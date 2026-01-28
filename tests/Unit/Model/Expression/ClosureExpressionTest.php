@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\CatchBlock;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryBlock;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryCatchBlock;
@@ -37,7 +38,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
     #[DataProvider('createDataProvider')]
     public function testCreate(BodyInterface $body, MetadataInterface $expectedMetadata): void
     {
-        $expression = new ClosureExpression($body);
+        $expression = new ClosureExpression($body, Type::STRING);
 
         $this->assertEquals($expectedMetadata, $expression->getMetadata());
     }
@@ -54,8 +55,8 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
             ],
             'non-empty, no metadata' => [
                 'body' => new Body([
-                    new Statement(new LiteralExpression('5')),
-                    new Statement(new LiteralExpression('"string"')),
+                    new Statement(new LiteralExpression('5', Type::INTEGER)),
+                    new Statement(new LiteralExpression('"string"', Type::STRING)),
                 ]),
                 'expectedMetadata' => new Metadata(),
             ],
@@ -63,38 +64,44 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                 'body' => new Body([
                     new Statement(
                         new AssignmentExpression(
-                            Property::asVariable('variable'),
+                            Property::asVariable('variable', Type::STRING),
                             new MethodInvocation(
                                 methodName: 'dependencyMethodName',
                                 arguments: new MethodArguments(),
                                 mightThrow: false,
+                                type: Type::STRING,
                                 parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                             )
                         )
                     ),
                     new Statement(
                         new ReturnExpression(
-                            new CompositeExpression([
-                                new CastExpression(
-                                    new MethodInvocation(
-                                        methodName: 'getWidth',
-                                        arguments: new MethodArguments(),
-                                        mightThrow: false,
-                                        parent: Property::asVariable('variable'),
+                            new CompositeExpression(
+                                [
+                                    new CastExpression(
+                                        new MethodInvocation(
+                                            methodName: 'getWidth',
+                                            arguments: new MethodArguments(),
+                                            mightThrow: false,
+                                            type: Type::INTEGER,
+                                            parent: Property::asVariable('variable', Type::OBJECT),
+                                        ),
+                                        Type::STRING
                                     ),
-                                    'string'
-                                ),
-                                new LiteralExpression(' . \'x\' . '),
-                                new CastExpression(
-                                    new MethodInvocation(
-                                        methodName: 'getHeight',
-                                        arguments: new MethodArguments(),
-                                        mightThrow: false,
-                                        parent: Property::asVariable('variable'),
+                                    new LiteralExpression(' . \'x\' . ', Type::STRING),
+                                    new CastExpression(
+                                        new MethodInvocation(
+                                            methodName: 'getHeight',
+                                            arguments: new MethodArguments(),
+                                            mightThrow: false,
+                                            type: Type::INTEGER,
+                                            parent: Property::asVariable('variable', Type::OBJECT),
+                                        ),
+                                        Type::STRING
                                     ),
-                                    'string'
-                                ),
-                            ])
+                                ],
+                                Type::INTEGER,
+                            )
                         )
                     ),
                 ]),
@@ -120,7 +127,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
     {
         return [
             'empty' => [
-                'expression' => new ClosureExpression(new Body([])),
+                'expression' => new ClosureExpression(new Body([]), Type::STRING),
                 'expectedString' => '(function () {' . "\n"
                     . '' . "\n"
                     . '})()',
@@ -129,9 +136,10 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                 'expression' => new ClosureExpression(
                     new Body([
                         new Statement(
-                            new ReturnExpression(new LiteralExpression('5'))
+                            new ReturnExpression(new LiteralExpression('5', Type::INTEGER))
                         ),
-                    ])
+                    ]),
+                    Type::INTEGER,
                 ),
                 'expectedString' => '(function () {' . "\n"
                     . '    return 5;' . "\n"
@@ -143,12 +151,13 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                         new Statement(
                             new ReturnExpression(
                                 new CastExpression(
-                                    new LiteralExpression('5'),
-                                    'string'
+                                    new LiteralExpression('5', Type::INTEGER),
+                                    Type::STRING
                                 )
                             )
                         ),
-                    ])
+                    ]),
+                    type: Type::INTEGER,
                 ),
                 'expectedString' => '(function () {' . "\n"
                     . '    return (string) 5;' . "\n"
@@ -157,13 +166,14 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
             'multiple literal statements' => [
                 'expression' => new ClosureExpression(
                     new Body([
-                        new Statement(new LiteralExpression('3')),
-                        new Statement(new LiteralExpression('4')),
+                        new Statement(new LiteralExpression('3', Type::INTEGER)),
+                        new Statement(new LiteralExpression('4', Type::STRING)),
                         new EmptyLine(),
                         new Statement(
-                            new ReturnExpression(new LiteralExpression('5'))
+                            new ReturnExpression(new LiteralExpression('5', Type::INTEGER))
                         ),
-                    ])
+                    ]),
+                    Type::INTEGER,
                 ),
                 'expectedString' => '(function () {' . "\n"
                     . '    3;' . "\n"
@@ -177,11 +187,12 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                     new Body([
                         new Statement(
                             new AssignmentExpression(
-                                Property::asVariable('variable'),
+                                Property::asVariable('variable', Type::OBJECT),
                                 new MethodInvocation(
                                     methodName: 'dependencyMethodName',
                                     arguments: new MethodArguments(),
                                     mightThrow: false,
+                                    type: Type::STRING,
                                     parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                                 )
                             )
@@ -189,30 +200,36 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                         new EmptyLine(),
                         new Statement(
                             new ReturnExpression(
-                                new CompositeExpression([
-                                    new EncapsulatingCastExpression(
-                                        new MethodInvocation(
-                                            methodName: 'getWidth',
-                                            arguments: new MethodArguments(),
-                                            mightThrow: false,
-                                            parent: Property::asVariable('variable'),
+                                new CompositeExpression(
+                                    [
+                                        new EncapsulatingCastExpression(
+                                            new MethodInvocation(
+                                                methodName: 'getWidth',
+                                                arguments: new MethodArguments(),
+                                                mightThrow: false,
+                                                type: Type::INTEGER,
+                                                parent: Property::asVariable('variable', Type::OBJECT),
+                                            ),
+                                            Type::STRING,
                                         ),
-                                        'string'
-                                    ),
-                                    new LiteralExpression(' . \'x\' . '),
-                                    new EncapsulatingCastExpression(
-                                        new MethodInvocation(
-                                            methodName: 'getHeight',
-                                            arguments: new MethodArguments(),
-                                            mightThrow: false,
-                                            parent: Property::asVariable('variable'),
+                                        new LiteralExpression(' . \'x\' . ', Type::STRING),
+                                        new EncapsulatingCastExpression(
+                                            new MethodInvocation(
+                                                methodName: 'getHeight',
+                                                arguments: new MethodArguments(),
+                                                mightThrow: false,
+                                                type: Type::INTEGER,
+                                                parent: Property::asVariable('variable', Type::OBJECT),
+                                            ),
+                                            Type::STRING
                                         ),
-                                        'string'
-                                    ),
-                                ])
+                                    ],
+                                    Type::STRING,
+                                )
                             )
                         ),
-                    ])
+                    ]),
+                    Type::STRING,
                 ),
                 '(function () {' . "\n"
                 . '    $variable = {{ CLIENT }}->dependencyMethodName();' . "\n"
@@ -238,7 +255,8 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                                 new SingleLineComment('CatchBlock comment'),
                             ])
                         )
-                    )
+                    ),
+                    Type::STRING,
                 ),
                 'expectedString' => '(function () {' . "\n"
                     . '    try {' . "\n"
@@ -253,17 +271,18 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                     new Body([
                         new Statement(
                             new AssignmentExpression(
-                                Property::asVariable('variableName'),
-                                new LiteralExpression('"literal value"')
+                                Property::asVariable('variableName', Type::STRING),
+                                new LiteralExpression('"literal value"', Type::STRING)
                             )
                         ),
                         new EmptyLine(),
                         new Statement(
                             new ReturnExpression(
-                                Property::asVariable('variableName')
+                                Property::asVariable('variableName', Type::STRING)
                             )
                         ),
-                    ])
+                    ]),
+                    type: Type::STRING,
                 ),
                 'expectedString' => '(function () {' . "\n"
                     . '    $variableName = "literal value";' . "\n"

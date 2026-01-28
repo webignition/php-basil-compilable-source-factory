@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Attribute\DataProviderAttribute;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\ClassBody;
@@ -51,21 +52,22 @@ class ClassBodyTest extends AbstractResolvableTestCase
                         new SingleLineComment('click $"a"'),
                         new Statement(
                             new AssignmentExpression(
-                                Property::asVariable('statement'),
+                                Property::asVariable('statement', Type::STRING),
                                 new MethodInvocation(
                                     methodName: 'createAction',
                                     arguments: new MethodArguments([
-                                        new LiteralExpression('\'$"a" exists\''),
+                                        new LiteralExpression('\'$"a" exists\'', Type::STRING),
                                     ]),
                                     mightThrow: false,
+                                    type: Type::STRING,
                                     parent: new StaticObject('Acme\Statement'),
                                 )
                             )
                         ),
                         new Statement(
                             new AssignmentExpression(
-                                Property::asVariable('currentStatement'),
-                                Property::asVariable('statement')
+                                Property::asVariable('currentStatement', Type::STRING),
+                                Property::asVariable('statement', Type::STRING)
                             )
                         ),
                     ])),
@@ -73,21 +75,22 @@ class ClassBodyTest extends AbstractResolvableTestCase
                         new SingleLineComment('click $"b"'),
                         new Statement(
                             new AssignmentExpression(
-                                Property::asVariable('statement'),
+                                Property::asVariable('statement', Type::STRING),
                                 new MethodInvocation(
                                     methodName: 'createAction',
                                     arguments: new MethodArguments([
-                                        new LiteralExpression('\'$"b" exists\''),
+                                        new LiteralExpression('\'$"b" exists\'', Type::STRING),
                                     ]),
                                     mightThrow: false,
+                                    type: Type::STRING,
                                     parent: new StaticObject('Acme\Statement'),
                                 )
                             )
                         ),
                         new Statement(
                             new AssignmentExpression(
-                                Property::asVariable('currentStatement'),
-                                Property::asVariable('statement')
+                                Property::asVariable('currentStatement', Type::STRING),
+                                Property::asVariable('statement', Type::STRING)
                             )
                         ),
                     ])),
@@ -115,21 +118,22 @@ class ClassBodyTest extends AbstractResolvableTestCase
                                 new SingleLineComment('click $"a"'),
                                 new Statement(
                                     new AssignmentExpression(
-                                        Property::asVariable('statement'),
+                                        Property::asVariable('statement', Type::STRING),
                                         new MethodInvocation(
                                             methodName: 'createAction',
                                             arguments: new MethodArguments([
-                                                new LiteralExpression('\'$"a" exists\''),
+                                                new LiteralExpression('\'$"a" exists\'', Type::STRING),
                                             ]),
                                             mightThrow: false,
+                                            type: Type::STRING,
                                             parent: new StaticObject('Acme\Statement'),
                                         )
                                     )
                                 ),
                                 new Statement(
                                     new AssignmentExpression(
-                                        Property::asVariable('currentStatement'),
-                                        Property::asVariable('statement')
+                                        Property::asVariable('currentStatement', Type::STRING),
+                                        Property::asVariable('statement', Type::STRING)
                                     )
                                 ),
                             ]),
@@ -156,21 +160,22 @@ class ClassBodyTest extends AbstractResolvableTestCase
                         new SingleLineComment('click $"b"'),
                         new Statement(
                             new AssignmentExpression(
-                                Property::asVariable('statement'),
+                                Property::asVariable('statement', Type::STRING),
                                 new MethodInvocation(
                                     methodName: 'createAction',
                                     arguments: new MethodArguments([
-                                        new LiteralExpression('\'$"b" exists\''),
+                                        new LiteralExpression('\'$"b" exists\'', Type::STRING),
                                     ]),
                                     mightThrow: false,
+                                    type: Type::STRING,
                                     parent: new StaticObject('Acme\Statement'),
                                 )
                             )
                         ),
                         new Statement(
                             new AssignmentExpression(
-                                Property::asVariable('currentStatement'),
-                                Property::asVariable('statement')
+                                Property::asVariable('currentStatement', Type::STRING),
+                                Property::asVariable('statement', Type::STRING)
                             )
                         ),
                     ])),

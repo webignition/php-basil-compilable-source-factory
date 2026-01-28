@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 use SmartAssert\DomIdentifier\ElementIdentifier;
 use SmartAssert\DomIdentifier\FactoryInterface;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
@@ -46,7 +47,7 @@ class ValueAccessorFactoryTest extends TestCase
         return [
             'scalar, literal' => [
                 'value' => '"literal"',
-                'expectedExpression' => new LiteralExpression('"literal"'),
+                'expectedExpression' => new LiteralExpression('"literal"', Type::STRING),
             ],
             'scalar, page property' => [
                 'value' => '$page.title',
@@ -89,7 +90,7 @@ class ValueAccessorFactoryTest extends TestCase
         return [
             'scalar, literal' => [
                 'value' => '"literal"',
-                'expectedExpression' => new LiteralExpression('"literal"'),
+                'expectedExpression' => new LiteralExpression('"literal"', Type::STRING),
             ],
             'element identifier' => [
                 'value' => '$".selector"',
