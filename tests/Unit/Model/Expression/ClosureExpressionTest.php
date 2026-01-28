@@ -64,7 +64,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                 'body' => new Body([
                     new Statement(
                         new AssignmentExpression(
-                            Property::asVariable('variable', Type::STRING),
+                            Property::asStringVariable('variable'),
                             new MethodInvocation(
                                 methodName: 'dependencyMethodName',
                                 arguments: new MethodArguments(),
@@ -84,7 +84,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                                             arguments: new MethodArguments(),
                                             mightThrow: false,
                                             type: Type::INTEGER,
-                                            parent: Property::asVariable('variable', Type::OBJECT),
+                                            parent: Property::asObjectVariable('variable'),
                                         ),
                                         Type::STRING
                                     ),
@@ -95,7 +95,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                                             arguments: new MethodArguments(),
                                             mightThrow: false,
                                             type: Type::INTEGER,
-                                            parent: Property::asVariable('variable', Type::OBJECT),
+                                            parent: Property::asObjectVariable('variable'),
                                         ),
                                         Type::STRING
                                     ),
@@ -187,7 +187,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                     new Body([
                         new Statement(
                             new AssignmentExpression(
-                                Property::asVariable('variable', Type::OBJECT),
+                                Property::asObjectVariable('variable'),
                                 new MethodInvocation(
                                     methodName: 'dependencyMethodName',
                                     arguments: new MethodArguments(),
@@ -208,7 +208,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                                                 arguments: new MethodArguments(),
                                                 mightThrow: false,
                                                 type: Type::INTEGER,
-                                                parent: Property::asVariable('variable', Type::OBJECT),
+                                                parent: Property::asObjectVariable('variable'),
                                             ),
                                             Type::STRING,
                                         ),
@@ -219,7 +219,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                                                 arguments: new MethodArguments(),
                                                 mightThrow: false,
                                                 type: Type::INTEGER,
-                                                parent: Property::asVariable('variable', Type::OBJECT),
+                                                parent: Property::asObjectVariable('variable'),
                                             ),
                                             Type::STRING
                                         ),
@@ -271,14 +271,14 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                     new Body([
                         new Statement(
                             new AssignmentExpression(
-                                Property::asVariable('variableName', Type::STRING),
+                                Property::asStringVariable('variableName'),
                                 LiteralExpression::string('"literal value"')
                             )
                         ),
                         new EmptyLine(),
                         new Statement(
                             new ReturnExpression(
-                                Property::asVariable('variableName', Type::STRING)
+                                Property::asStringVariable('variableName')
                             )
                         ),
                     ]),

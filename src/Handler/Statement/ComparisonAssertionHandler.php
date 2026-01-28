@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Statement;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
-use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
@@ -59,8 +58,8 @@ class ComparisonAssertionHandler implements StatementHandlerInterface
         $expectedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull((string) $statement->getValue());
         $expectedAccessor = EncapsulatingCastExpression::forString($expectedAccessor);
 
-        $expectedValueVariable = Property::asVariable(VariableName::EXPECTED_VALUE, Type::STRING);
-        $examinedValueVariable = Property::asVariable(VariableName::EXAMINED_VALUE, Type::STRING);
+        $expectedValueVariable = Property::asStringVariable(VariableName::EXPECTED_VALUE);
+        $examinedValueVariable = Property::asStringVariable(VariableName::EXAMINED_VALUE);
 
         return new StatementHandlerComponents(
             new Statement(

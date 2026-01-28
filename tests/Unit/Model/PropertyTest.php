@@ -30,7 +30,7 @@ class PropertyTest extends AbstractResolvableTestCase
     {
         return [
             'variable name' => [
-                'property' => Property::asVariable('variable', Type::STRING),
+                'property' => Property::asStringVariable('variable'),
                 'expected' => new Metadata(),
             ],
             'variable placeholder' => [
@@ -58,7 +58,7 @@ class PropertyTest extends AbstractResolvableTestCase
     {
         return [
             'variable name' => [
-                'property' => Property::asVariable('variable', Type::STRING),
+                'property' => Property::asStringVariable('variable'),
                 'expected' => '$variable',
             ],
             'variable placeholder' => [

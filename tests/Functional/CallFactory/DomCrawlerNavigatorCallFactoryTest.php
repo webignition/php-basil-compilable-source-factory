@@ -10,7 +10,6 @@ use SmartAssert\DomIdentifier\ElementIdentifier;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
-use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
@@ -41,7 +40,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
     ): void {
         $source = $this->factory->createFindCall($expression);
 
-        $collectionVariable = Property::asVariable('collection', Type::OBJECT);
+        $collectionVariable = Property::asObjectVariable('collection');
 
         $instrumentedSource = new Body([
             new Statement(

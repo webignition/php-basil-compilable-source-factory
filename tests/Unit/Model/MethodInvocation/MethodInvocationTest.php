@@ -81,7 +81,7 @@ class MethodInvocationTest extends AbstractResolvableTestCase
                     arguments: new MethodArguments(),
                     mightThrow: false,
                     type: Type::STRING,
-                    parent: Property::asVariable('parent', Type::STRING)
+                    parent: Property::asObjectVariable('parent')
                 ),
                 'expected' => new Metadata(),
             ],
@@ -287,7 +287,7 @@ class MethodInvocationTest extends AbstractResolvableTestCase
                     arguments: new MethodArguments(),
                     mightThrow: false,
                     type: Type::STRING,
-                    parent: Property::asVariable('object', Type::OBJECT),
+                    parent: Property::asObjectVariable('object'),
                 ),
                 'expected' => '$object->methodName()',
             ],

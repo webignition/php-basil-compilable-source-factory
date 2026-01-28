@@ -27,9 +27,33 @@ class Property implements ExpressionInterface, IsAssigneeInterface
     /**
      * @param non-empty-string $name
      */
-    public static function asVariable(string $name, Type $type): self
+    public static function asObjectVariable(string $name): self
     {
-        return new Property(name: $name, type: $type);
+        return new Property(name: $name, type: Type::OBJECT);
+    }
+
+    /**
+     * @param non-empty-string $name
+     */
+    public static function asStringVariable(string $name): self
+    {
+        return new Property(name: $name, type: Type::STRING);
+    }
+
+    /**
+     * @param non-empty-string $name
+     */
+    public static function asBooleanVariable(string $name): self
+    {
+        return new Property(name: $name, type: Type::BOOLEAN);
+    }
+
+    /**
+     * @param non-empty-string $name
+     */
+    public static function asIntegerVariable(string $name): self
+    {
+        return new Property(name: $name, type: Type::INTEGER);
     }
 
     public static function asDependency(DependencyName $name): self

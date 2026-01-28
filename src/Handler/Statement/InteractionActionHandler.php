@@ -63,7 +63,7 @@ class InteractionActionHandler implements StatementHandlerInterface
             throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }
 
-        $elementVariable = Property::asVariable('element', Type::OBJECT);
+        $elementVariable = Property::asObjectVariable('element');
 
         return new StatementHandlerComponents(
             new Body([
