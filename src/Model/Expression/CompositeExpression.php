@@ -62,6 +62,11 @@ class CompositeExpression implements ExpressionInterface
         return false;
     }
 
+    public function getType(): array
+    {
+        return [$this->type];
+    }
+
     protected function createResolvable(): ResolvableInterface
     {
         if (null === $this->resolvable) {
@@ -69,10 +74,5 @@ class CompositeExpression implements ExpressionInterface
         }
 
         return $this->resolvable;
-    }
-
-    public function getType(): array
-    {
-        return [$this->type];
     }
 }

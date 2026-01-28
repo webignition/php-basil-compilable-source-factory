@@ -93,6 +93,11 @@ class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationIn
         return false;
     }
 
+    public function getType(): array
+    {
+        return [Type::ARRAY];
+    }
+
     protected function createResolvable(): ResolvableInterface
     {
         $resolvablePairs = [];
@@ -153,10 +158,5 @@ class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationIn
         $resolved = implode("\n", $lines);
 
         return self::INDENT . $resolved . "\n";
-    }
-
-    public function getType(): array
-    {
-        return [Type::ARRAY];
     }
 }

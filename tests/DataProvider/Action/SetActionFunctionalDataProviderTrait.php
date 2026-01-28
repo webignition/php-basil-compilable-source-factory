@@ -157,7 +157,7 @@ trait SetActionFunctionalDataProviderTrait
     private static function setActionForTextInputFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
-        $inputVariable = Property::asVariable('input',Type::OBJECT);
+        $inputVariable = Property::asVariable('input', Type::OBJECT);
 
         return [
             'input action, literal value: empty text input, empty value' => [

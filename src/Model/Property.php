@@ -127,6 +127,11 @@ class Property implements ExpressionInterface, IsAssigneeInterface
         return $this->name;
     }
 
+    public function getType(): array
+    {
+        return [$this->type];
+    }
+
     private function getDependencyName(): ?DependencyName
     {
         foreach (DependencyName::cases() as $dependencyName) {
@@ -136,10 +141,5 @@ class Property implements ExpressionInterface, IsAssigneeInterface
         }
 
         return null;
-    }
-
-    public function getType(): array
-    {
-        return [$this->type];
     }
 }

@@ -42,6 +42,11 @@ class UseExpression implements ExpressionInterface
         return new Metadata();
     }
 
+    public function getType(): array
+    {
+        return [Type::VOID];
+    }
+
     private function renderClassName(): string
     {
         $content = $this->className->getClassName();
@@ -52,10 +57,5 @@ class UseExpression implements ExpressionInterface
         }
 
         return $content;
-    }
-
-    public function getType(): array
-    {
-        return [Type::VOID];
     }
 }
