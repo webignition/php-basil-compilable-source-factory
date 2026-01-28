@@ -84,7 +84,9 @@ class ClassDefinitionFactory
                         [
                             new ObjectConstructor(
                                 class: new ClassName(ClientManager::class),
-                                arguments: new MethodArguments($this->argumentFactory->create($test->getBrowser())),
+                                arguments: new MethodArguments([
+                                    $this->argumentFactory->create($test->getBrowser()),
+                                ]),
                                 mightThrow: true,
                             ),
                         ]
@@ -104,9 +106,10 @@ class ClassDefinitionFactory
             new Statement(
                 new MethodInvocation(
                     methodName: 'request',
-                    arguments: new MethodArguments(
-                        $this->argumentFactory->create('GET', $test->getUrl())
-                    ),
+                    arguments: new MethodArguments([
+                        $this->argumentFactory->create('GET'),
+                        $this->argumentFactory->create($test->getUrl()),
+                    ]),
                     mightThrow: true,
                     parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                 )

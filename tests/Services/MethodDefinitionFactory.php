@@ -49,7 +49,7 @@ class MethodDefinitionFactory
                     arguments: new MethodArguments([
                         new ObjectConstructor(
                             class: new ClassName(ClientManager::class),
-                            arguments: new MethodArguments($argumentFactory->create('chrome')),
+                            arguments: new MethodArguments([$argumentFactory->create('chrome')]),
                             mightThrow: false,
                         ),
                     ]),
@@ -62,7 +62,10 @@ class MethodDefinitionFactory
             new Statement(
                 new MethodInvocation(
                     methodName: 'request',
-                    arguments: new MethodArguments($argumentFactory->create('GET', $requestUriExpression)),
+                    arguments: new MethodArguments([
+                        $argumentFactory->create('GET'),
+                        $argumentFactory->create($requestUriExpression)
+                    ]),
                     mightThrow: false,
                     parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                 )

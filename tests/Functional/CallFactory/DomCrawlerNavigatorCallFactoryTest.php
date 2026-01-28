@@ -80,7 +80,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
         return [
             'no parent, has ordinal position' => [
                 'fixture' => '/form.html',
-                'expression' => $argumentFactory->createSingular(
+                'expression' => $argumentFactory->create(
                     $elementIdentifierSerializer->serialize(new ElementIdentifier('input', 1))
                 ),
                 'teardownStatements' => new Body([
@@ -92,7 +92,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
             ],
             'has parent' => [
                 'fixture' => '/form.html',
-                'expression' => $argumentFactory->createSingular(
+                'expression' => $argumentFactory->create(
                     $elementIdentifierSerializer->serialize(
                         (new ElementIdentifier('input'))
                             ->withParentIdentifier(new ElementIdentifier('form[action="/action2"]'))

@@ -27,17 +27,17 @@ trait ReloadActionFunctionalDataProviderTrait
             new Statement(
                 new MethodInvocation(
                     methodName: 'assertCount',
-                    arguments: new MethodArguments(
+                    arguments: new MethodArguments([
+                        $argumentFactory->create(0),
                         $argumentFactory->create(
-                            0,
                             new MethodInvocation(
                                 methodName: 'filter',
-                                arguments: new MethodArguments($argumentFactory->create('#hello')),
+                                arguments: new MethodArguments([$argumentFactory->create('#hello')]),
                                 mightThrow: true,
                                 parent: Property::asDependency(DependencyName::PANTHER_CRAWLER),
                             ),
-                        )
-                    ),
+                        ),
+                    ]),
                     mightThrow: false,
                     parent: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
                 )
@@ -45,24 +45,24 @@ trait ReloadActionFunctionalDataProviderTrait
             new Statement(
                 new MethodInvocation(
                     methodName: 'usleep',
-                    arguments: new MethodArguments($argumentFactory->create(100000)),
+                    arguments: new MethodArguments([$argumentFactory->create(100000)]),
                     mightThrow: false,
                 )
             ),
             new Statement(
                 new MethodInvocation(
                     methodName: 'assertCount',
-                    arguments: new MethodArguments(
+                    arguments: new MethodArguments([
+                        $argumentFactory->create(1),
                         $argumentFactory->create(
-                            1,
                             new MethodInvocation(
                                 methodName: 'filter',
-                                arguments: new MethodArguments($argumentFactory->create('#hello')),
+                                arguments: new MethodArguments([$argumentFactory->create('#hello')]),
                                 mightThrow: true,
                                 parent: Property::asDependency(DependencyName::PANTHER_CRAWLER),
                             )
-                        )
-                    ),
+                        ),
+                    ]),
                     mightThrow: false,
                     parent: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
                 )

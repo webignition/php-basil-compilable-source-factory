@@ -66,11 +66,11 @@ readonly class PhpUnitCallFactory
         $serializedStatement = addcslashes($serializedStatement, "'");
 
         $messageFactoryArgumentExpressions = [
-            $this->argumentFactory->createSingular($serializedStatement),
+            $this->argumentFactory->create($serializedStatement),
         ];
 
         foreach ($messageExpressions as $expression) {
-            $messageFactoryArgumentExpressions[] = $this->argumentFactory->createSingular($expression);
+            $messageFactoryArgumentExpressions[] = $this->argumentFactory->create($expression);
         }
 
         $messageFactoryCall = new MethodInvocation(
@@ -83,10 +83,10 @@ readonly class PhpUnitCallFactory
 
         $assertionCallArgumentExpressions = [];
         foreach ($methodExpressions as $expression) {
-            $assertionCallArgumentExpressions[] = $this->argumentFactory->createSingular($expression);
+            $assertionCallArgumentExpressions[] = $this->argumentFactory->create($expression);
         }
 
-        $assertionCallArgumentExpressions[] = $this->argumentFactory->createSingular($messageFactoryCall);
+        $assertionCallArgumentExpressions[] = $this->argumentFactory->create($messageFactoryCall);
 
         $arguments = new MethodArguments($assertionCallArgumentExpressions)
             ->withFormat(MethodArgumentsInterface::FORMAT_STACKED)
@@ -110,9 +110,9 @@ readonly class PhpUnitCallFactory
         $failureMessageFactoryCall = new MethodInvocation(
             methodName: 'createFailureMessage',
             arguments: new MethodArguments([
-                $this->argumentFactory->createSingular($serializedStatement),
-                $this->argumentFactory->createSingular(Property::asVariable('exception')),
-                $this->argumentFactory->createSingular($statementStageEnum),
+                $this->argumentFactory->create($serializedStatement),
+                $this->argumentFactory->create(Property::asVariable('exception')),
+                $this->argumentFactory->create($statementStageEnum),
             ])->withFormat(MethodArgumentsInterface::FORMAT_STACKED),
             mightThrow: false,
             parent: Property::asDependency(DependencyName::MESSAGE_FACTORY),
