@@ -9,7 +9,6 @@ use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
-use webignition\BasilCompilableSourceFactory\Model\StaticObject;
 
 class ArgumentFactoryTest extends TestCase
 {
@@ -57,10 +56,6 @@ class ArgumentFactoryTest extends TestCase
             'boolean false' => [
                 'argument' => false,
                 'expected' => new LiteralExpression('false'),
-            ],
-            'static object expression' => [
-                'argument' => new StaticObject('self'),
-                'expected' => new StaticObject('self'),
             ],
             'null' => [
                 'argument' => null,

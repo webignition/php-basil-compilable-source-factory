@@ -29,13 +29,11 @@ trait ReloadActionFunctionalDataProviderTrait
                     methodName: 'assertCount',
                     arguments: new MethodArguments([
                         $argumentFactory->create(0),
-                        $argumentFactory->create(
-                            new MethodInvocation(
-                                methodName: 'filter',
-                                arguments: new MethodArguments([$argumentFactory->create('#hello')]),
-                                mightThrow: true,
-                                parent: Property::asDependency(DependencyName::PANTHER_CRAWLER),
-                            ),
+                        new MethodInvocation(
+                            methodName: 'filter',
+                            arguments: new MethodArguments([$argumentFactory->create('#hello')]),
+                            mightThrow: true,
+                            parent: Property::asDependency(DependencyName::PANTHER_CRAWLER),
                         ),
                     ]),
                     mightThrow: false,
@@ -54,13 +52,11 @@ trait ReloadActionFunctionalDataProviderTrait
                     methodName: 'assertCount',
                     arguments: new MethodArguments([
                         $argumentFactory->create(1),
-                        $argumentFactory->create(
-                            new MethodInvocation(
-                                methodName: 'filter',
-                                arguments: new MethodArguments([$argumentFactory->create('#hello')]),
-                                mightThrow: true,
-                                parent: Property::asDependency(DependencyName::PANTHER_CRAWLER),
-                            )
+                        new MethodInvocation(
+                            methodName: 'filter',
+                            arguments: new MethodArguments([$argumentFactory->create('#hello')]),
+                            mightThrow: true,
+                            parent: Property::asDependency(DependencyName::PANTHER_CRAWLER),
                         ),
                     ]),
                     mightThrow: false,

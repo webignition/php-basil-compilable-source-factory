@@ -101,7 +101,7 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
         $pregMatchInvocation = new MethodInvocation(
             methodName: 'preg_match',
             arguments: new MethodArguments([
-                $this->argumentFactory->create($examinedValueVariable),
+                $examinedValueVariable,
                 $this->argumentFactory->create(null)
             ]),
             mightThrow: false

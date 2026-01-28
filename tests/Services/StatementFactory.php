@@ -29,14 +29,12 @@ class StatementFactory
                 methodName: 'assertSame',
                 arguments: new MethodArguments([
                     $argumentFactory->create($expectedTitle),
-                    $argumentFactory->create(
-                        new MethodInvocation(
-                            methodName: 'getTitle',
-                            arguments: new MethodArguments(),
-                            mightThrow: false,
-                            parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
-                        ),
-                    )
+                    new MethodInvocation(
+                        methodName: 'getTitle',
+                        arguments: new MethodArguments(),
+                        mightThrow: false,
+                        parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
+                    ),
                 ]),
                 mightThrow: false,
                 parent: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),

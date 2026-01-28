@@ -37,10 +37,6 @@ class ArgumentFactory
             ));
         }
 
-        if ($argument instanceof ExpressionInterface) {
-            return $argument;
-        }
-
         return new LiteralExpression('null');
     }
 }
