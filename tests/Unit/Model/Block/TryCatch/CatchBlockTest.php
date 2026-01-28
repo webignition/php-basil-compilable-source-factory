@@ -85,7 +85,7 @@ class CatchBlockTest extends AbstractResolvableTestCase
                         ])
                     ),
                     new Statement(
-                        new LiteralExpression('"literal"', Type::STRING)
+                        LiteralExpression::string('"literal"')
                     )
                 ),
                 'expectedString' => 'catch (\Exception $exception) {' . "\n"
@@ -101,7 +101,7 @@ class CatchBlockTest extends AbstractResolvableTestCase
                         ])
                     ),
                     new Statement(
-                        new LiteralExpression('"literal"', Type::STRING)
+                        LiteralExpression::string('"literal"')
                     )
                 ),
                 'expectedString' => 'catch (\LogicException | \RuntimeException $exception) {' . "\n"
@@ -118,7 +118,7 @@ class CatchBlockTest extends AbstractResolvableTestCase
                         ])
                     ),
                     new Statement(
-                        new LiteralExpression('"literal"', Type::STRING)
+                        LiteralExpression::string('"literal"')
                     )
                 ),
                 'expectedString' => 'catch (\LogicException | \RuntimeException | TestCase $exception) {' . "\n"

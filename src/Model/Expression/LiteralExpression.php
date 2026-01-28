@@ -17,7 +17,7 @@ class LiteralExpression implements \Stringable, ExpressionInterface
     use NeverThrowsTrait;
     use IsNotStaticTrait;
 
-    public function __construct(
+    private function __construct(
         private readonly string $content,
         private readonly Type $type
     ) {}
@@ -25,6 +25,31 @@ class LiteralExpression implements \Stringable, ExpressionInterface
     public function __toString(): string
     {
         return $this->content;
+    }
+
+    public static function string(string $content): LiteralExpression
+    {
+        return new LiteralExpression($content, Type::STRING);
+    }
+
+    public static function null(): LiteralExpression
+    {
+        return new LiteralExpression('null', Type::NULL);
+    }
+
+    public static function void(string $content): LiteralExpression
+    {
+        return new LiteralExpression($content, Type::VOID);
+    }
+
+    public static function boolean(bool $value): LiteralExpression
+    {
+        return new LiteralExpression($value ? 'true' : 'false', Type::BOOLEAN);
+    }
+
+    public static function integer(int $value): LiteralExpression
+    {
+        return new LiteralExpression((string) $value, Type::INTEGER);
     }
 
     public function getMetadata(): MetadataInterface

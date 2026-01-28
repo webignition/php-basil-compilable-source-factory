@@ -41,13 +41,13 @@ class AssignmentExpressionTest extends AbstractResolvableTestCase
         return [
             'no metadata' => [
                 'assignee' => Property::asVariable('lhs', Type::STRING),
-                'value' => new LiteralExpression('6', Type::INTEGER),
+                'value' => LiteralExpression::integer(6),
                 'operator' => '===',
                 'expectedMetadata' => new Metadata(),
             ],
             'has metadata' => [
                 'assignee' => Property::asDependency(DependencyName::PANTHER_CLIENT),
-                'value' => new LiteralExpression('literal', Type::STRING),
+                'value' => LiteralExpression::string('"literal"'),
                 'operator' => '!==',
                 'expectedMetadata' => new Metadata(
                     dependencyNames: [
@@ -73,16 +73,16 @@ class AssignmentExpressionTest extends AbstractResolvableTestCase
             'variable name, literal' => [
                 'expression' => new AssignmentExpression(
                     Property::asVariable('lhs', Type::STRING),
-                    new LiteralExpression('rhs', Type::STRING)
+                    LiteralExpression::string('"rhs"')
                 ),
-                'expectedString' => '$lhs = rhs',
+                'expectedString' => '$lhs = "rhs"',
             ],
             'variable dependency, literal' => [
                 'expression' => new AssignmentExpression(
                     Property::asDependency(DependencyName::PANTHER_CRAWLER),
-                    new LiteralExpression('rhs', Type::STRING)
+                    LiteralExpression::string('"rhs"')
                 ),
-                'expectedString' => '{{ CRAWLER }} = rhs',
+                'expectedString' => '{{ CRAWLER }} = "rhs"',
             ],
             'static object property as assignee' => [
                 'expression' => new AssignmentExpression(
@@ -91,9 +91,9 @@ class AssignmentExpressionTest extends AbstractResolvableTestCase
                         Type::STRING,
                         Property::asDependency(DependencyName::DOM_CRAWLER_NAVIGATOR)->setIsStatic(true)
                     ),
-                    new LiteralExpression('rhs', Type::STRING)
+                    LiteralExpression::string('"rhs"')
                 ),
-                'expectedString' => '{{ NAVIGATOR }}::property = rhs',
+                'expectedString' => '{{ NAVIGATOR }}::property = "rhs"',
             ],
         ];
     }

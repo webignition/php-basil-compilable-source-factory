@@ -7,7 +7,6 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\CallFactory;
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
-use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
@@ -112,7 +111,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractResolvableTestCase
     {
         $testCases = [
             'literal expression' => [
-                'elementIdentifierExpression' => new LiteralExpression('"literal expression"', Type::STRING),
+                'elementIdentifierExpression' => LiteralExpression::string('"literal expression"'),
                 'expectedRenderedExpression' => '{{ NAVIGATOR }}->{{ METHOD }}("literal expression")',
                 'expectedMetadata' => new Metadata(
                     dependencyNames: [

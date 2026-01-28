@@ -41,8 +41,8 @@ class ComparisonExpressionTest extends AbstractResolvableTestCase
     {
         return [
             'no metadata' => [
-                'leftHandSide' => new LiteralExpression('5', Type::INTEGER),
-                'rightHandSide' => new LiteralExpression('6', Type::INTEGER),
+                'leftHandSide' => LiteralExpression::integer(5),
+                'rightHandSide' => LiteralExpression::integer(6),
                 'comparison' => '===',
                 'expectedMetadata' => new Metadata(),
             ],
@@ -54,7 +54,7 @@ class ComparisonExpressionTest extends AbstractResolvableTestCase
                     type: Type::STRING,
                     parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                 ),
-                'rightHandSide' => new LiteralExpression('literal', Type::STRING),
+                'rightHandSide' => LiteralExpression::string('"literal"'),
                 'comparison' => '!==',
                 'expectedMetadata' => new Metadata(
                     dependencyNames: [
@@ -79,11 +79,11 @@ class ComparisonExpressionTest extends AbstractResolvableTestCase
         return [
             'literals, exact equals' => [
                 'expression' => new ComparisonExpression(
-                    new LiteralExpression('lhs', Type::STRING),
-                    new LiteralExpression('rhs', Type::STRING),
+                    LiteralExpression::string('"lhs"'),
+                    LiteralExpression::string('"rhs"'),
                     '==='
                 ),
-                'expectedString' => 'lhs === rhs',
+                'expectedString' => '"lhs" === "rhs"',
             ],
             'object method invocation and literal, null coalesce' => [
                 'expression' => new ComparisonExpression(
@@ -94,10 +94,10 @@ class ComparisonExpressionTest extends AbstractResolvableTestCase
                         type: Type::STRING,
                         parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                     ),
-                    new LiteralExpression('value', Type::STRING),
+                    LiteralExpression::string('"value"'),
                     '??'
                 ),
-                'expectedString' => '{{ CLIENT }}->methodName() ?? value',
+                'expectedString' => '{{ CLIENT }}->methodName() ?? "value"',
             ],
         ];
     }

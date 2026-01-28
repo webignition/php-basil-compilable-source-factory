@@ -4,7 +4,6 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory;
 
-use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 
@@ -23,12 +22,9 @@ readonly class ArgumentFactory
 
     public function create(string $argument): ExpressionInterface
     {
-        return new LiteralExpression(
-            sprintf(
-                '\'%s\'',
-                $this->singleQuotedStringEscaper->escape($argument)
-            ),
-            Type::STRING,
-        );
+        return LiteralExpression::string(sprintf(
+            '\'%s\'',
+            $this->singleQuotedStringEscaper->escape($argument)
+        ));
     }
 }

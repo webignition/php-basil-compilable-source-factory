@@ -86,7 +86,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
                 ),
                 'teardownStatements' => new Body([
                     StatementFactory::createAssertCount('1', '$collection'),
-                    new Statement(new LiteralExpression('$element = $collection->get(0)', Type::OBJECT)),
+                    new Statement(LiteralExpression::string('$element = $collection->get(0)')),
                     StatementFactory::createAssertInstanceOf('\'' . WebDriverElement::class . '\'', '$element'),
                     StatementFactory::createAssertSame("'input-without-value'", '$element->getAttribute(\'name\')'),
                 ]),
@@ -95,13 +95,13 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
                 'fixture' => '/form.html',
                 'expression' => $argumentFactory->create(
                     $elementIdentifierSerializer->serialize(
-                        (new ElementIdentifier('input'))
+                        new ElementIdentifier('input')
                             ->withParentIdentifier(new ElementIdentifier('form[action="/action2"]'))
                     )
                 ),
                 'teardownStatements' => new Body([
                     StatementFactory::createAssertCount('1', '$collection'),
-                    new Statement(new LiteralExpression('$element = $collection->get(0)', Type::OBJECT)),
+                    new Statement(LiteralExpression::string('$element = $collection->get(0)')),
                     StatementFactory::createAssertInstanceOf('\'' . WebDriverElement::class . '\'', '$element'),
                     StatementFactory::createAssertSame("'input-2'", '$element->getAttribute(\'name\')'),
                 ]),

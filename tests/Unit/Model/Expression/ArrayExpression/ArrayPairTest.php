@@ -34,7 +34,7 @@ class ArrayPairTest extends AbstractResolvableTestCase
             'no metadata' => [
                 'pair' => new ArrayPair(
                     '',
-                    new LiteralExpression('\'\'', Type::STRING)
+                    LiteralExpression::string('\'\'')
                 ),
                 'expectedMetadata' => new Metadata(),
             ],
@@ -73,28 +73,28 @@ class ArrayPairTest extends AbstractResolvableTestCase
             'empty key, empty string value' => [
                 'pair' => new ArrayPair(
                     '',
-                    new LiteralExpression('\'\'', Type::STRING)
+                    LiteralExpression::string('\'\'')
                 ),
                 'expectedString' => "'' => '',",
             ],
             'empty key, string value' => [
                 'pair' => new ArrayPair(
                     '',
-                    new LiteralExpression('\'value\'', Type::STRING)
+                    LiteralExpression::string('\'value\'')
                 ),
                 'expectedString' => "'' => 'value',",
             ],
             'empty key, integer value' => [
                 'pair' => new ArrayPair(
                     '',
-                    new LiteralExpression('2', Type::INTEGER)
+                    LiteralExpression::integer(2)
                 ),
                 'expectedString' => "'' => 2,",
             ],
             'string value' => [
                 'pair' => new ArrayPair(
                     'key',
-                    new LiteralExpression('\'value\'', Type::STRING)
+                    LiteralExpression::string('\'value\'')
                 ),
                 'expectedString' => "'key' => 'value',",
             ],
@@ -111,15 +111,15 @@ class ArrayPairTest extends AbstractResolvableTestCase
                     new ArrayExpression([
                         new ArrayPair(
                             'sub-key-1',
-                            new LiteralExpression('\'sub value 1\'', Type::STRING)
+                            LiteralExpression::string('\'sub value 1\'')
                         ),
                         new ArrayPair(
                             'sub-key-2',
-                            new LiteralExpression('\'sub value 2\'', Type::STRING)
+                            LiteralExpression::string('\'sub value 2\'')
                         ),
                         new ArrayPair(
                             'sub-key-3',
-                            new LiteralExpression('\'sub value 3\'', Type::STRING)
+                            LiteralExpression::string('\'sub value 3\'')
                         ),
                     ]),
                 ),

@@ -136,12 +136,12 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
                 $serializedAttributeIdentifier,
                 $domIdentifier->getAttributeName()
             ),
-            new LiteralExpression('null', Type::NULL),
+            LiteralExpression::null(),
         );
 
         $attributeAccessor = new ComparisonExpression(
             new EncapsulatedExpression($attributeNullComparisonExpression),
-            new LiteralExpression('null', Type::NULL),
+            LiteralExpression::null(),
             '!=='
         );
 
@@ -154,7 +154,7 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
                 new CompositeExpression(
                     [
                         $elementExistsVariable,
-                        new LiteralExpression(' && ', Type::STRING),
+                        LiteralExpression::void(' && '),
                         $attributeAccessor,
                     ],
                     Type::BOOLEAN,
@@ -207,7 +207,7 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
     ): StatementInterface {
         $assertionArgumentExpressions = [$examinedValuePlaceholder];
         $assertionMessageExpressions = [
-            new LiteralExpression(('exists' === $assertion->getOperator()) ? 'true' : 'false', Type::BOOLEAN),
+            LiteralExpression::boolean('exists' === $assertion->getOperator()),
             $examinedValuePlaceholder,
         ];
 

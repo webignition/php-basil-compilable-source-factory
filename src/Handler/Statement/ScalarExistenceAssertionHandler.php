@@ -45,19 +45,19 @@ class ScalarExistenceAssertionHandler implements StatementHandlerInterface
 
         $nullComparisonExpression = new NullCoalescerExpression(
             $this->scalarValueHandler->handle((string) $statement->getIdentifier()),
-            new LiteralExpression('null', Type::NULL),
+            LiteralExpression::null(),
         );
 
         $examinedValueVariable = Property::asVariable('examinedValue', Type::BOOLEAN);
 
         $examinedAccessor = new ComparisonExpression(
             new EncapsulatedExpression($nullComparisonExpression),
-            new LiteralExpression('null', Type::NULL),
+            LiteralExpression::null(),
             '!=='
         );
         $examinedAccessor = EncapsulatingCastExpression::forBool($examinedAccessor);
 
-        $expected = new LiteralExpression(('exists' === $statement->getOperator()) ? 'true' : 'false', Type::BOOLEAN);
+        $expected = LiteralExpression::boolean('exists' === $statement->getOperator());
 
         return new StatementHandlerComponents(
             new Statement($this->phpUnitCallFactory->createAssertionCall(

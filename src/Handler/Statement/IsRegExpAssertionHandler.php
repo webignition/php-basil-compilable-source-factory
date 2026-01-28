@@ -100,7 +100,7 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
             methodName: 'preg_match',
             arguments: new MethodArguments([
                 $examinedValueVariable,
-                new LiteralExpression('null', Type::NULL),
+                LiteralExpression::null(),
             ]),
             mightThrow: false,
             type: Type::INTEGER,
@@ -108,7 +108,7 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
 
         $identityComparison = new ComparisonExpression(
             $pregMatchInvocation,
-            new LiteralExpression('false', Type::BOOLEAN),
+            LiteralExpression::boolean(false),
             '==='
         );
         $identityComparison = EncapsulatingCastExpression::forBool($identityComparison);

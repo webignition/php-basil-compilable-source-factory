@@ -56,7 +56,7 @@ class ClassBodyTest extends AbstractResolvableTestCase
                                 new MethodInvocation(
                                     methodName: 'createAction',
                                     arguments: new MethodArguments([
-                                        new LiteralExpression('\'$"a" exists\'', Type::STRING),
+                                        LiteralExpression::string('\'$"a" exists\''),
                                     ]),
                                     mightThrow: false,
                                     type: Type::STRING,
@@ -79,7 +79,7 @@ class ClassBodyTest extends AbstractResolvableTestCase
                                 new MethodInvocation(
                                     methodName: 'createAction',
                                     arguments: new MethodArguments([
-                                        new LiteralExpression('\'$"b" exists\'', Type::STRING),
+                                        LiteralExpression::string('\'$"b" exists\''),
                                     ]),
                                     mightThrow: false,
                                     type: Type::STRING,
@@ -122,7 +122,7 @@ class ClassBodyTest extends AbstractResolvableTestCase
                                         new MethodInvocation(
                                             methodName: 'createAction',
                                             arguments: new MethodArguments([
-                                                new LiteralExpression('\'$"a" exists\'', Type::STRING),
+                                                LiteralExpression::string('\'$"a" exists\''),
                                             ]),
                                             mightThrow: false,
                                             type: Type::STRING,
@@ -164,7 +164,7 @@ class ClassBodyTest extends AbstractResolvableTestCase
                                 new MethodInvocation(
                                     methodName: 'createAction',
                                     arguments: new MethodArguments([
-                                        new LiteralExpression('\'$"b" exists\'', Type::STRING),
+                                        LiteralExpression::string('\'$"b" exists\''),
                                     ]),
                                     mightThrow: false,
                                     type: Type::STRING,

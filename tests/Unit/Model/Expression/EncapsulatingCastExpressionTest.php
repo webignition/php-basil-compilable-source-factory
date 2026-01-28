@@ -24,7 +24,7 @@ class EncapsulatingCastExpressionTest extends AbstractResolvableTestCase
 {
     public function testCreate(): void
     {
-        $expression = new LiteralExpression('"literal"', Type::STRING);
+        $expression = LiteralExpression::string('"literal"');
         $castExpression = new EncapsulatingCastExpression($expression, Type::STRING);
 
         $this->assertEquals($expression->getMetadata(), $castExpression->getMetadata());
@@ -44,14 +44,14 @@ class EncapsulatingCastExpressionTest extends AbstractResolvableTestCase
         return [
             'literal int as int' => [
                 'expression' => new EncapsulatingCastExpression(
-                    new LiteralExpression('100', Type::INTEGER),
+                    LiteralExpression::integer(100),
                     Type::INTEGER
                 ),
                 'expectedString' => '(int) (100)',
             ],
             'literal int as string' => [
                 'expression' => new EncapsulatingCastExpression(
-                    new LiteralExpression('100', Type::INTEGER),
+                    LiteralExpression::integer(100),
                     Type::STRING
                 ),
                 'expectedString' => '(string) (100)',
@@ -75,8 +75,8 @@ class EncapsulatingCastExpressionTest extends AbstractResolvableTestCase
             'comparison expression as int' => [
                 'expression' => new EncapsulatingCastExpression(
                     new ComparisonExpression(
-                        new LiteralExpression('"x"', Type::STRING),
-                        new LiteralExpression('"y"', Type::STRING),
+                        LiteralExpression::string('"x"'),
+                        LiteralExpression::string('"y"'),
                         '==='
                     ),
                     Type::INTEGER
@@ -87,8 +87,8 @@ class EncapsulatingCastExpressionTest extends AbstractResolvableTestCase
                 'expression' => new EncapsulatingCastExpression(
                     new CompositeExpression(
                         [
-                            new LiteralExpression('$_ENV', Type::ARRAY),
-                            new LiteralExpression('["secret"]', Type::VOID),
+                            LiteralExpression::void('$_ENV'),
+                            LiteralExpression::void('["secret"]'),
                         ],
                         Type::STRING,
                     ),

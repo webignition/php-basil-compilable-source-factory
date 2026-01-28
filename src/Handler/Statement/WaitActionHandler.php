@@ -25,7 +25,7 @@ use webignition\BasilModels\Model\Statement\StatementInterface;
 
 class WaitActionHandler implements StatementHandlerInterface
 {
-    private const MICROSECONDS_PER_MILLISECOND = 1000;
+    private const int MICROSECONDS_PER_MILLISECOND = 1000;
 
     public function __construct(
         private AccessorDefaultValueFactory $accessorDefaultValueFactory,
@@ -68,8 +68,8 @@ class WaitActionHandler implements StatementHandlerInterface
                     new CompositeExpression(
                         [
                             $durationVariable,
-                            new LiteralExpression(' * ', Type::STRING),
-                            new LiteralExpression((string) self::MICROSECONDS_PER_MILLISECOND, Type::INTEGER)
+                            LiteralExpression::void(' * '),
+                            LiteralExpression::integer(self::MICROSECONDS_PER_MILLISECOND)
                         ],
                         Type::INTEGER,
                     ),
@@ -94,9 +94,8 @@ class WaitActionHandler implements StatementHandlerInterface
                         $durationVariable,
                         new NullCoalescerExpression(
                             $durationVariable,
-                            new LiteralExpression(
-                                (string) ($this->accessorDefaultValueFactory->createInteger($duration) ?? 0),
-                                Type::INTEGER,
+                            LiteralExpression::integer(
+                                $this->accessorDefaultValueFactory->createInteger($duration) ?? 0,
                             )
                         ),
                     )
@@ -116,10 +115,10 @@ class WaitActionHandler implements StatementHandlerInterface
                         new TernaryExpression(
                             new ComparisonExpression(
                                 $durationVariable,
-                                new LiteralExpression('0', Type::INTEGER),
+                                LiteralExpression::integer(0),
                                 '<'
                             ),
-                            new LiteralExpression('0', Type::INTEGER),
+                            LiteralExpression::integer(0),
                             $durationVariable,
                         ),
                     ),
