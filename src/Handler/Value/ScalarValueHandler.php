@@ -51,7 +51,7 @@ class ScalarValueHandler
         if ($this->valueTypeIdentifier->isDataParameter($value)) {
             $property = (string) preg_replace('/^\$data\./', '', $value);
 
-            return new LiteralExpression('$' . $property, Type::STRING);
+            return LiteralExpression::string('$' . $property);
         }
 
         if ($this->valueTypeIdentifier->isEnvironmentValue($value)) {
@@ -63,7 +63,7 @@ class ScalarValueHandler
         }
 
         if ($this->valueTypeIdentifier->isLiteralValue($value)) {
-            return new LiteralExpression($value, Type::STRING);
+            return LiteralExpression::string($value);
         }
 
         throw new UnsupportedContentException(UnsupportedContentException::TYPE_VALUE, $value);
@@ -102,7 +102,7 @@ class ScalarValueHandler
                                     ),
                                     Type::STRING
                                 ),
-                                new LiteralExpression(' . \'x\' . ', Type::STRING),
+                                LiteralExpression::void(' . \'x\' . '),
                                 new EncapsulatingCastExpression(
                                     new MethodInvocation(
                                         methodName: 'getHeight',

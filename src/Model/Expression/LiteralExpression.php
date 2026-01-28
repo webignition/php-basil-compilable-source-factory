@@ -27,6 +27,31 @@ class LiteralExpression implements \Stringable, ExpressionInterface
         return $this->content;
     }
 
+    public static function string(string $content): LiteralExpression
+    {
+        return new LiteralExpression($content, Type::STRING);
+    }
+
+    public static function null(): LiteralExpression
+    {
+        return LiteralExpression::null();
+    }
+
+    public static function void(string $content): LiteralExpression
+    {
+        return new LiteralExpression($content, Type::VOID);
+    }
+
+    public static function boolean(bool $value): LiteralExpression
+    {
+        return new LiteralExpression($value ? 'true' : 'false', Type::BOOLEAN);
+    }
+
+    public static function integer(int $value): LiteralExpression
+    {
+        return new LiteralExpression((string) $value, Type::INTEGER);
+    }
+
     public function getMetadata(): MetadataInterface
     {
         return new Metadata();

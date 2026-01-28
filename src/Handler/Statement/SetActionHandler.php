@@ -110,10 +110,7 @@ class SetActionHandler implements StatementHandlerInterface
         if (null !== $defaultValue) {
             $valueAccessor = new NullCoalescerExpression(
                 $valueAccessor,
-                new LiteralExpression(
-                    (string) $this->accessorDefaultValueFactory->createString($value),
-                    Type::STRING,
-                ),
+                LiteralExpression::string((string) $this->accessorDefaultValueFactory->createString($value)),
             );
         }
 

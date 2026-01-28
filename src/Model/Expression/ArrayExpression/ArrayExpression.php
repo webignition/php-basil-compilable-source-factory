@@ -135,7 +135,7 @@ class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationIn
                 $value = '\'' . $value . '\'';
             }
 
-            return new LiteralExpression((string) $value, Type::STRING);
+            return LiteralExpression::string((string) $value);
         }
 
         if (is_array($value)) {
