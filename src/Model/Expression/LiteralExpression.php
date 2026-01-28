@@ -17,7 +17,7 @@ class LiteralExpression implements \Stringable, ExpressionInterface
     use NeverThrowsTrait;
     use IsNotStaticTrait;
 
-    public function __construct(
+    private function __construct(
         private readonly string $content,
         private readonly Type $type
     ) {}
