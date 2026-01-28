@@ -34,7 +34,7 @@ class LiteralExpression implements \Stringable, ExpressionInterface
 
     public static function null(): LiteralExpression
     {
-        return LiteralExpression::null();
+        return new LiteralExpression('null', Type::NULL);
     }
 
     public static function void(string $content): LiteralExpression
