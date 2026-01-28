@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
@@ -16,12 +17,10 @@ class LiteralExpression implements \Stringable, ExpressionInterface
     use NeverThrowsTrait;
     use IsNotStaticTrait;
 
-    private string $content;
-
-    public function __construct(string $content)
-    {
-        $this->content = $content;
-    }
+    public function __construct(
+        private readonly string $content,
+        private readonly Type $type
+    ) {}
 
     public function __toString(): string
     {
@@ -31,5 +30,10 @@ class LiteralExpression implements \Stringable, ExpressionInterface
     public function getMetadata(): MetadataInterface
     {
         return new Metadata();
+    }
+
+    public function getType(): array
+    {
+        return [$this->type];
     }
 }

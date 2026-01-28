@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\MethodInvocation;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
@@ -49,7 +50,7 @@ class ObjectConstructorTest extends AbstractResolvableTestCase
             'single argument' => [
                 'class' => new ClassName(ObjectConstructor::class),
                 'arguments' => new MethodArguments([
-                    new LiteralExpression('1'),
+                    new LiteralExpression('1', Type::INTEGER),
                 ]),
                 'expectedMetadata' => new Metadata(
                     classNames: [
@@ -94,8 +95,8 @@ class ObjectConstructorTest extends AbstractResolvableTestCase
                 'constructor' => new ObjectConstructor(
                     class: $classDependency,
                     arguments: new MethodArguments([
-                        new LiteralExpression('1'),
-                        new LiteralExpression("\\'single-quoted value\\'"),
+                        new LiteralExpression('1', Type::INTEGER),
+                        new LiteralExpression("\\'single-quoted value\\'", Type::STRING),
                     ]),
                     mightThrow: false,
                 ),
@@ -106,8 +107,8 @@ class ObjectConstructorTest extends AbstractResolvableTestCase
                     class: $classDependency,
                     arguments: new MethodArguments(
                         [
-                            new LiteralExpression('1'),
-                            new LiteralExpression("\\'single-quoted value\\'"),
+                            new LiteralExpression('1', Type::INTEGER),
+                            new LiteralExpression("\\'single-quoted value\\'", Type::STRING),
                         ],
                         MethodArgumentsInterface::FORMAT_STACKED
                     ),

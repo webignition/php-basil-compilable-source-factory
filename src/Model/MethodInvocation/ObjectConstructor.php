@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\MethodInvocation;
 
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
@@ -23,7 +24,7 @@ class ObjectConstructor implements InvocableInterface
         MethodArgumentsInterface $arguments,
         bool $mightThrow,
     ) {
-        $this->invocation = new MethodInvocation($class->renderClassName(), $arguments, $mightThrow);
+        $this->invocation = new MethodInvocation($class->renderClassName(), $arguments, $mightThrow, Type::VOID);
         $this->metadata = $this->invocation->getMetadata()->merge(
             new Metadata(classNames: [$class->getClassName()])
         );
@@ -49,5 +50,10 @@ class ObjectConstructor implements InvocableInterface
     public function mightThrow(): bool
     {
         return $this->invocation->mightThrow();
+    }
+
+    public function getType(): array
+    {
+        return $this->invocation->getType();
     }
 }

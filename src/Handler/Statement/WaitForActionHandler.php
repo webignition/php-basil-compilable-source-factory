@@ -9,6 +9,7 @@ use SmartAssert\DomIdentifier\Factory as DomIdentifierFactory;
 use SmartAssert\DomIdentifier\FactoryInterface as DomIdentifierFactoryInterface;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
@@ -74,6 +75,7 @@ class WaitForActionHandler implements StatementHandlerInterface
                             $this->argumentFactory->create($domIdentifier->getLocator())
                         ]),
                         mightThrow: true,
+                        type: Type::OBJECT,
                         parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                     )
                 )

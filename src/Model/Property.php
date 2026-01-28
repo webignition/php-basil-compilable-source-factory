@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Model;
 
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ClassObject;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
@@ -19,29 +20,31 @@ class Property implements ExpressionInterface, IsAssigneeInterface
      */
     public function __construct(
         private readonly string $name,
+        private readonly Type $type,
         private readonly ?ExpressionInterface $parent = null,
     ) {}
 
     /**
      * @param non-empty-string $name
      */
-    public static function asVariable(string $name): self
+    public static function asVariable(string $name, Type $type): self
     {
-        return new Property($name);
+        return new Property(name: $name, type: $type);
     }
 
     public static function asDependency(DependencyName $name): self
     {
-        return new Property($name->value);
+        return new Property(name: $name->value, type: Type::OBJECT);
     }
 
     /**
      * @param non-empty-string $constant
      */
-    public static function asClassConstant(ClassName $className, string $constant): self
+    public static function asClassConstant(ClassName $className, string $constant, Type $type): self
     {
         return new Property(
             $constant,
+            $type,
             new ClassObject($className, true),
         );
     }
@@ -49,17 +52,17 @@ class Property implements ExpressionInterface, IsAssigneeInterface
     /**
      * @param non-empty-string $caseName
      */
-    public static function asEnum(ClassName $enum, string $caseName): self
+    public static function asEnum(ClassName $enum, string $caseName, Type $type): self
     {
-        return self::asClassConstant($enum, $caseName);
+        return self::asClassConstant($enum, $caseName, $type);
     }
 
     /**
      * @param non-empty-string $name
      */
-    public static function asObjectProperty(Property $parent, string $name): self
+    public static function asObjectProperty(Property $parent, string $name, Type $type): self
     {
-        return new Property($name, $parent);
+        return new Property($name, $type, $parent);
     }
 
     public function mightThrow(): bool
@@ -122,6 +125,11 @@ class Property implements ExpressionInterface, IsAssigneeInterface
     public function getName(): string
     {
         return $this->name;
+    }
+
+    public function getType(): array
+    {
+        return [$this->type];
     }
 
     private function getDependencyName(): ?DependencyName

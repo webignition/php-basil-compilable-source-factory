@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
@@ -40,8 +41,8 @@ class ComparisonExpressionTest extends AbstractResolvableTestCase
     {
         return [
             'no metadata' => [
-                'leftHandSide' => new LiteralExpression('5'),
-                'rightHandSide' => new LiteralExpression('6'),
+                'leftHandSide' => new LiteralExpression('5', Type::INTEGER),
+                'rightHandSide' => new LiteralExpression('6', Type::INTEGER),
                 'comparison' => '===',
                 'expectedMetadata' => new Metadata(),
             ],
@@ -50,9 +51,10 @@ class ComparisonExpressionTest extends AbstractResolvableTestCase
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
+                    type: Type::STRING,
                     parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                 ),
-                'rightHandSide' => new LiteralExpression('literal'),
+                'rightHandSide' => new LiteralExpression('literal', Type::STRING),
                 'comparison' => '!==',
                 'expectedMetadata' => new Metadata(
                     dependencyNames: [
@@ -77,8 +79,8 @@ class ComparisonExpressionTest extends AbstractResolvableTestCase
         return [
             'literals, exact equals' => [
                 'expression' => new ComparisonExpression(
-                    new LiteralExpression('lhs'),
-                    new LiteralExpression('rhs'),
+                    new LiteralExpression('lhs', Type::STRING),
+                    new LiteralExpression('rhs', Type::STRING),
                     '==='
                 ),
                 'expectedString' => 'lhs === rhs',
@@ -89,9 +91,10 @@ class ComparisonExpressionTest extends AbstractResolvableTestCase
                         methodName: 'methodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
+                        type: Type::STRING,
                         parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                     ),
-                    new LiteralExpression('value'),
+                    new LiteralExpression('value', Type::STRING),
                     '??'
                 ),
                 'expectedString' => '{{ CLIENT }}->methodName() ?? value',

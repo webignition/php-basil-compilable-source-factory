@@ -10,6 +10,7 @@ use SmartAssert\DomIdentifier\ElementIdentifier;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
@@ -40,7 +41,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
     ): void {
         $source = $this->factory->createFindCall($expression);
 
-        $collectionVariable = Property::asVariable('collection');
+        $collectionVariable = Property::asVariable('collection', Type::OBJECT);
 
         $instrumentedSource = new Body([
             new Statement(
@@ -85,7 +86,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
                 ),
                 'teardownStatements' => new Body([
                     StatementFactory::createAssertCount('1', '$collection'),
-                    new Statement(new LiteralExpression('$element = $collection->get(0)')),
+                    new Statement(new LiteralExpression('$element = $collection->get(0)', Type::OBJECT)),
                     StatementFactory::createAssertInstanceOf('\'' . WebDriverElement::class . '\'', '$element'),
                     StatementFactory::createAssertSame("'input-without-value'", '$element->getAttribute(\'name\')'),
                 ]),
@@ -100,7 +101,7 @@ class DomCrawlerNavigatorCallFactoryTest extends AbstractBrowserTestCase
                 ),
                 'teardownStatements' => new Body([
                     StatementFactory::createAssertCount('1', '$collection'),
-                    new Statement(new LiteralExpression('$element = $collection->get(0)')),
+                    new Statement(new LiteralExpression('$element = $collection->get(0)', Type::OBJECT)),
                     StatementFactory::createAssertInstanceOf('\'' . WebDriverElement::class . '\'', '$element'),
                     StatementFactory::createAssertSame("'input-2'", '$element->getAttribute(\'name\')'),
                 ]),

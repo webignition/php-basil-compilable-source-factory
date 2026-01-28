@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BaseBasilTestCase\Enum\StatementStage;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
@@ -105,10 +106,12 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                             methodName: 'method',
                                             arguments: new MethodArguments([
                                                 new LiteralExpression(
-                                                    'StatementHandler::handle(click $".selector")::body'
+                                                    'StatementHandler::handle(click $".selector")::body',
+                                                    Type::STRING,
                                                 ),
                                             ]),
                                             mightThrow: true,
+                                            type: Type::STRING
                                         )
                                     ),
                                 ])
@@ -338,10 +341,12 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                         methodName: 'method',
                                         arguments: new MethodArguments([
                                             new LiteralExpression(
-                                                '"StatementHandler::handle(click $\".selector\")::setup"'
+                                                '"StatementHandler::handle(click $\".selector\")::setup"',
+                                                Type::STRING,
                                             ),
                                         ]),
                                         mightThrow: true,
+                                        type: Type::STRING,
                                     )
                                 ),
                             ),

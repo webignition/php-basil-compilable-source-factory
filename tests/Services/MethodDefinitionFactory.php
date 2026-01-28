@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 use webignition\BaseBasilTestCase\ClientManager;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
@@ -32,13 +33,17 @@ class MethodDefinitionFactory
             methodName: 'getBaseUri',
             arguments: new MethodArguments(),
             mightThrow: false,
+            type: Type::STRING,
             parent: new StaticObject(Options::class),
         );
 
-        $requestUriExpression = new CompositeExpression([
-            $requestBaseUri,
-            new LiteralExpression(' . \'' . $fixture . '\''),
-        ]);
+        $requestUriExpression = new CompositeExpression(
+            [
+                $requestBaseUri,
+                new LiteralExpression(' . \'' . $fixture . '\'', Type::STRING),
+            ],
+            Type::STRING,
+        );
 
         $argumentFactory = ArgumentFactory::createFactory();
 
@@ -54,11 +59,12 @@ class MethodDefinitionFactory
                         ),
                     ]),
                     mightThrow: false,
+                    type: Type::VOID,
                     parent: new StaticObject('self'),
                 )
             ),
             new SingleLineComment('Test harness lines'),
-            new Statement(new LiteralExpression('parent::setUpBeforeClass()')),
+            new Statement(new LiteralExpression('parent::setUpBeforeClass()', Type::STRING)),
             new Statement(
                 new MethodInvocation(
                     methodName: 'request',
@@ -67,6 +73,7 @@ class MethodDefinitionFactory
                         $requestUriExpression,
                     ]),
                     mightThrow: false,
+                    type: Type::OBJECT,
                     parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                 )
             ),
@@ -88,7 +95,7 @@ class MethodDefinitionFactory
 
         $body = new Body([
             new SingleLineComment('Test harness lines'),
-            new Statement(new LiteralExpression('parent::setUp()')),
+            new Statement(new LiteralExpression('parent::setUp()', Type::STRING)),
             new EmptyLine(),
             new SingleLineComment('Additional setup statements'),
             $additionalSetupStatements,

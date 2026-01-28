@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
@@ -17,7 +18,7 @@ trait ClickActionFunctionalDataProviderTrait
     public static function clickActionFunctionalDataProvider(): array
     {
         $actionParser = ActionParser::create();
-        $submitButtonVariable = Property::asVariable('submitButton');
+        $submitButtonVariable = Property::asVariable('submitButton', Type::OBJECT);
 
         return [
             'interaction action (click), link' => [

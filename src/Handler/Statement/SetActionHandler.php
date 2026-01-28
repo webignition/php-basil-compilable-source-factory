@@ -11,6 +11,7 @@ use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
@@ -109,12 +110,15 @@ class SetActionHandler implements StatementHandlerInterface
         if (null !== $defaultValue) {
             $valueAccessor = new NullCoalescerExpression(
                 $valueAccessor,
-                new LiteralExpression((string) $this->accessorDefaultValueFactory->createString($value)),
+                new LiteralExpression(
+                    (string) $this->accessorDefaultValueFactory->createString($value),
+                    Type::STRING,
+                ),
             );
         }
 
-        $setValueCollectionVariable = Property::asVariable('setValueCollection');
-        $setValueValueVariable = Property::asVariable('setValueValue');
+        $setValueCollectionVariable = Property::asVariable('setValueCollection', Type::OBJECT);
+        $setValueValueVariable = Property::asVariable('setValueValue', Type::STRING);
 
         $mutationInvocation = new MethodInvocation(
             methodName: 'setValue',
@@ -126,6 +130,7 @@ class SetActionHandler implements StatementHandlerInterface
                 MethodArgumentsInterface::FORMAT_INLINE
             ),
             mightThrow: true,
+            type: Type::VOID,
             parent: Property::asDependency(DependencyName::WEBDRIVER_ELEMENT_MUTATOR),
         );
 

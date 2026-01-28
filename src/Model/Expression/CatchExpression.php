@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
@@ -41,7 +42,12 @@ class CatchExpression implements ExpressionInterface
     {
         return [
             'class_list' => $this->classes,
-            'variable' => Property::asVariable('exception'),
+            'variable' => Property::asVariable('exception', Type::OBJECT),
         ];
+    }
+
+    public function getType(): array
+    {
+        return [Type::VOID];
     }
 }

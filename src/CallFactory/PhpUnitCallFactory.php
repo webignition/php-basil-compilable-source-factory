@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\CallFactory;
 use webignition\BaseBasilTestCase\Enum\StatementStage;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
@@ -34,11 +35,13 @@ readonly class PhpUnitCallFactory
         string $methodName,
         MethodArgumentsInterface $arguments,
         bool $mightThrow,
+        Type $type,
     ): MethodInvocationInterface {
         return new MethodInvocation(
             methodName: $methodName,
             arguments: $arguments,
             mightThrow: $mightThrow,
+            type: $type,
             parent: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
         );
     }
@@ -49,6 +52,7 @@ readonly class PhpUnitCallFactory
             methodName: 'refreshCrawlerAndNavigator',
             arguments: new MethodArguments(),
             mightThrow: false,
+            type: Type::VOID,
         );
     }
 
@@ -78,6 +82,7 @@ readonly class PhpUnitCallFactory
             arguments: new MethodArguments($messageFactoryArgumentExpressions)
                 ->withFormat(MethodArgumentsInterface::FORMAT_STACKED),
             mightThrow: false,
+            type: Type::OBJECT,
             parent: Property::asDependency(DependencyName::MESSAGE_FACTORY),
         );
 
@@ -92,7 +97,7 @@ readonly class PhpUnitCallFactory
             ->withFormat(MethodArgumentsInterface::FORMAT_STACKED)
         ;
 
-        return $this->createCall($methodName, $arguments, false);
+        return $this->createCall($methodName, $arguments, false, Type::VOID);
     }
 
     public function createFailCall(
@@ -104,17 +109,19 @@ readonly class PhpUnitCallFactory
 
         $statementStageEnum = Property::asEnum(
             new ClassName(StatementStage::class),
-            $statementStage->name
+            $statementStage->name,
+            Type::OBJECT,
         );
 
         $failureMessageFactoryCall = new MethodInvocation(
             methodName: 'createFailureMessage',
             arguments: new MethodArguments([
                 $this->argumentFactory->create($serializedStatement),
-                Property::asVariable('exception'),
+                Property::asVariable('exception', Type::OBJECT),
                 $statementStageEnum,
             ])->withFormat(MethodArgumentsInterface::FORMAT_STACKED),
             mightThrow: false,
+            type: Type::OBJECT,
             parent: Property::asDependency(DependencyName::MESSAGE_FACTORY),
         );
 
@@ -124,6 +131,7 @@ readonly class PhpUnitCallFactory
                 $failureMessageFactoryCall,
             ])->withFormat(MethodArgumentsInterface::FORMAT_STACKED),
             mightThrow: false,
+            type: Type::VOID,
         );
     }
 }

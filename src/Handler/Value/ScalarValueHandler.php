@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Value;
 
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\EnvironmentValueFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
@@ -50,7 +51,7 @@ class ScalarValueHandler
         if ($this->valueTypeIdentifier->isDataParameter($value)) {
             $property = (string) preg_replace('/^\$data\./', '', $value);
 
-            return new LiteralExpression('$' . $property);
+            return new LiteralExpression('$' . $property, Type::STRING);
         }
 
         if ($this->valueTypeIdentifier->isEnvironmentValue($value)) {
@@ -62,7 +63,7 @@ class ScalarValueHandler
         }
 
         if ($this->valueTypeIdentifier->isLiteralValue($value)) {
-            return new LiteralExpression($value);
+            return new LiteralExpression($value, Type::STRING);
         }
 
         throw new UnsupportedContentException(UnsupportedContentException::TYPE_VALUE, $value);
@@ -70,47 +71,56 @@ class ScalarValueHandler
 
     private function handleBrowserProperty(): ExpressionInterface
     {
-        $webDriverDimensionVariable = Property::asVariable('webDriverDimension');
+        $webDriverDimensionVariable = Property::asVariable('webDriverDimension', Type::INTEGER);
 
-        return new ClosureExpression(new Body([
-            new Statement(
-                new AssignmentExpression(
-                    $webDriverDimensionVariable,
-                    new MethodInvocation(
-                        methodName: 'getWebDriver()->manage()->window()->getSize',
-                        arguments: new MethodArguments(),
-                        mightThrow: true,
-                        parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
+        return new ClosureExpression(
+            new Body([
+                new Statement(
+                    new AssignmentExpression(
+                        $webDriverDimensionVariable,
+                        new MethodInvocation(
+                            methodName: 'getWebDriver()->manage()->window()->getSize',
+                            arguments: new MethodArguments(),
+                            mightThrow: true,
+                            type: Type::INTEGER,
+                            parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
+                        )
                     )
-                )
-            ),
-            new EmptyLine(),
-            new Statement(
-                new ReturnExpression(
-                    new CompositeExpression([
-                        new EncapsulatingCastExpression(
-                            new MethodInvocation(
-                                methodName: 'getWidth',
-                                arguments: new MethodArguments(),
-                                mightThrow: true,
-                                parent: $webDriverDimensionVariable,
-                            ),
-                            'string'
+                ),
+                new EmptyLine(),
+                new Statement(
+                    new ReturnExpression(
+                        new CompositeExpression(
+                            [
+                                new EncapsulatingCastExpression(
+                                    new MethodInvocation(
+                                        methodName: 'getWidth',
+                                        arguments: new MethodArguments(),
+                                        mightThrow: true,
+                                        type: Type::INTEGER,
+                                        parent: $webDriverDimensionVariable,
+                                    ),
+                                    Type::STRING
+                                ),
+                                new LiteralExpression(' . \'x\' . ', Type::STRING),
+                                new EncapsulatingCastExpression(
+                                    new MethodInvocation(
+                                        methodName: 'getHeight',
+                                        arguments: new MethodArguments(),
+                                        mightThrow: true,
+                                        type: Type::INTEGER,
+                                        parent: $webDriverDimensionVariable,
+                                    ),
+                                    Type::STRING
+                                ),
+                            ],
+                            Type::STRING,
                         ),
-                        new LiteralExpression(' . \'x\' . '),
-                        new EncapsulatingCastExpression(
-                            new MethodInvocation(
-                                methodName: 'getHeight',
-                                arguments: new MethodArguments(),
-                                mightThrow: true,
-                                parent: $webDriverDimensionVariable,
-                            ),
-                            'string'
-                        ),
-                    ])
-                )
-            ),
-        ]));
+                    )
+                ),
+            ]),
+            Type::STRING
+        );
     }
 
     private function handleEnvironmentValue(string $value): ExpressionInterface
@@ -120,7 +130,8 @@ class ScalarValueHandler
 
         return new ArrayAccessExpression(
             Property::asDependency(DependencyName::ENVIRONMENT_VARIABLE_ARRAY),
-            $property
+            $property,
+            Type::STRING,
         );
     }
 
@@ -143,6 +154,7 @@ class ScalarValueHandler
                 methodName: $methodName,
                 arguments: new MethodArguments(),
                 mightThrow: true,
+                type: Type::STRING,
                 parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
             );
         }

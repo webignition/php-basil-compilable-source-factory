@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 
@@ -15,7 +16,7 @@ class CastExpression implements ExpressionInterface
 
     public function __construct(
         private ExpressionInterface $expression,
-        private string $castTo
+        private Type $castTo,
     ) {}
 
     public function getTemplate(): string
@@ -26,7 +27,7 @@ class CastExpression implements ExpressionInterface
     public function getContext(): array
     {
         return [
-            'cast_type' => $this->castTo,
+            'cast_type' => $this->castTo->value,
             'expression' => $this->expression,
         ];
     }
@@ -39,5 +40,10 @@ class CastExpression implements ExpressionInterface
     public function mightThrow(): bool
     {
         return $this->expression->mightThrow();
+    }
+
+    public function getType(): array
+    {
+        return [$this->castTo];
     }
 }

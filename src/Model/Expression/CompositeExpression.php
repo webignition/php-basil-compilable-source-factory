@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\DeferredResolvableCreationTrait;
 use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
@@ -21,10 +22,12 @@ class CompositeExpression implements ExpressionInterface
      */
     private $expressions;
 
+    private Type $type;
+
     /**
      * @param array<mixed> $expressions
      */
-    public function __construct(array $expressions)
+    public function __construct(array $expressions, Type $type)
     {
         $this->expressions = array_filter($expressions, function ($item) {
             return $item instanceof ExpressionInterface;
@@ -34,6 +37,8 @@ class CompositeExpression implements ExpressionInterface
         foreach ($this->expressions as $expression) {
             $metadata = $metadata->merge($expression->getMetadata());
         }
+
+        $this->type = $type;
     }
 
     public function getMetadata(): MetadataInterface
@@ -55,6 +60,11 @@ class CompositeExpression implements ExpressionInterface
         }
 
         return false;
+    }
+
+    public function getType(): array
+    {
+        return [$this->type];
     }
 
     protected function createResolvable(): ResolvableInterface

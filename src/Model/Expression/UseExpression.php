@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
@@ -39,6 +40,11 @@ class UseExpression implements ExpressionInterface
     public function getMetadata(): MetadataInterface
     {
         return new Metadata();
+    }
+
+    public function getType(): array
+    {
+        return [Type::VOID];
     }
 
     private function renderClassName(): string

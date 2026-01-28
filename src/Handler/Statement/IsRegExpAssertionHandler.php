@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Statement;
 
 use SmartAssert\DomIdentifier\Factory as DomIdentifierFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
@@ -92,21 +93,22 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
         ExpressionInterface $examinedAccessor,
         AssertionInterface $assertion,
     ): StatementHandlerComponents {
-        $examinedValueVariable = Property::asVariable(VariableName::EXAMINED_VALUE);
-        $expectedValueVariable = Property::asVariable(VariableName::EXPECTED_VALUE);
+        $examinedValueVariable = Property::asVariable(VariableName::EXAMINED_VALUE, Type::STRING);
+        $expectedValueVariable = Property::asVariable(VariableName::EXPECTED_VALUE, Type::BOOLEAN);
 
         $pregMatchInvocation = new MethodInvocation(
             methodName: 'preg_match',
             arguments: new MethodArguments([
                 $examinedValueVariable,
-                new LiteralExpression('null'),
+                new LiteralExpression('null', Type::NULL),
             ]),
-            mightThrow: false
+            mightThrow: false,
+            type: Type::INTEGER,
         )->setIsErrorSuppressed();
 
         $identityComparison = new ComparisonExpression(
             $pregMatchInvocation,
-            new LiteralExpression('false'),
+            new LiteralExpression('false', Type::BOOLEAN),
             '==='
         );
         $identityComparison = EncapsulatingCastExpression::forBool($identityComparison);

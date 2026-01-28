@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
@@ -68,5 +69,10 @@ class ComparisonExpression implements ExpressionInterface
     public function mightThrow(): bool
     {
         return $this->leftHandSide->mightThrow() || $this->rightHandSide->mightThrow();
+    }
+
+    public function getType(): array
+    {
+        return [Type::BOOLEAN];
     }
 }

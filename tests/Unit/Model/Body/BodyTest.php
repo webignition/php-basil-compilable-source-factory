@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Body;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\CatchBlock;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryBlock;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryCatchBlock;
@@ -60,11 +61,11 @@ class BodyTest extends AbstractResolvableTestCase
                     new EmptyLine(),
                     1,
                     new Statement(
-                        new LiteralExpression('"literal from statement"')
+                        new LiteralExpression('"literal from statement"', Type::STRING)
                     ),
                     new Body([
                         new Statement(
-                            new LiteralExpression('"literal from statement from body"')
+                            new LiteralExpression('"literal from statement from body"', Type::STRING)
                         )
                     ]),
                     new TryCatchBlock(
@@ -92,11 +93,11 @@ class BodyTest extends AbstractResolvableTestCase
                     new SingleLineComment('singe line comment'),
                     new EmptyLine(),
                     new Statement(
-                        new LiteralExpression('"literal from statement"')
+                        new LiteralExpression('"literal from statement"', Type::STRING)
                     ),
                     new Body([
                         new Statement(
-                            new LiteralExpression('"literal from statement from body"')
+                            new LiteralExpression('"literal from statement from body"', Type::STRING)
                         )
                     ]),
                     new TryCatchBlock(
@@ -144,11 +145,11 @@ class BodyTest extends AbstractResolvableTestCase
                     new SingleLineComment('single line comment'),
                     new EmptyLine(),
                     new Statement(
-                        new LiteralExpression('"literal from statement"')
+                        new LiteralExpression('"literal from statement"', Type::STRING)
                     ),
                     new Body([
                         new Statement(
-                            new LiteralExpression('"literal from statement from body"')
+                            new LiteralExpression('"literal from statement from body"', Type::STRING)
                         )
                     ]),
                     new TryCatchBlock(
@@ -216,9 +217,9 @@ class BodyTest extends AbstractResolvableTestCase
         self::expectExceptionObject(new \InvalidArgumentException('Non-expression at index 1'));
 
         Body::createFromExpressions([
-            new LiteralExpression('"literal one"'),
+            new LiteralExpression('"literal one"', Type::STRING),
             true,
-            new LiteralExpression('"literal two"'),
+            new LiteralExpression('"literal two"', Type::STRING),
         ]);
     }
 
@@ -243,15 +244,15 @@ class BodyTest extends AbstractResolvableTestCase
             ],
             'non-empty' => [
                 'expressions' => [
-                    new LiteralExpression('"literal one"'),
-                    new LiteralExpression('"literal two"'),
+                    new LiteralExpression('"literal one"', Type::STRING),
+                    new LiteralExpression('"literal two"', Type::STRING),
                 ],
                 'expectedBody' => new Body([
                     new Statement(
-                        new LiteralExpression('"literal one"')
+                        new LiteralExpression('"literal one"', Type::STRING)
                     ),
                     new Statement(
-                        new LiteralExpression('"literal two"')
+                        new LiteralExpression('"literal two"', Type::STRING)
                     ),
                 ]),
             ],
@@ -261,7 +262,7 @@ class BodyTest extends AbstractResolvableTestCase
     public function testCreateForSingleAssignmentStatement(): void
     {
         $variable = Property::asDependency(DependencyName::PANTHER_CLIENT);
-        $value = new LiteralExpression('"value"');
+        $value = new LiteralExpression('"value"', Type::STRING);
 
         $expectedBody = new Body([
             new Statement(

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ReturnExpression;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
@@ -25,7 +26,7 @@ class ReturnExpressionTest extends AbstractResolvableTestCase
         return [
             'return an expression' => [
                 'expression' => new ReturnExpression(
-                    new LiteralExpression('100')
+                    new LiteralExpression('100', Type::INTEGER)
                 ),
                 'expectedString' => 'return 100',
             ],

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\Value;
 
 use PHPUnit\Framework\Attributes\DataProvider;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
@@ -31,7 +32,7 @@ class ScalarValueHandlerTest extends AbstractBrowserTestCase
     {
         $source = $this->handler->handle($value);
 
-        $valueVariable = Property::asVariable('value');
+        $valueVariable = Property::asVariable('value', Type::STRING);
 
         $instrumentedSource = new Body([
             new Statement(

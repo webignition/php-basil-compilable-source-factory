@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
@@ -33,10 +34,12 @@ trait ReloadActionFunctionalDataProviderTrait
                             methodName: 'filter',
                             arguments: new MethodArguments([$argumentFactory->create('#hello')]),
                             mightThrow: true,
+                            type: Type::OBJECT,
                             parent: Property::asDependency(DependencyName::PANTHER_CRAWLER),
                         ),
                     ]),
                     mightThrow: false,
+                    type: Type::VOID,
                     parent: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
                 )
             ),
@@ -45,6 +48,7 @@ trait ReloadActionFunctionalDataProviderTrait
                     methodName: 'usleep',
                     arguments: new MethodArguments([$argumentFactory->create('100000')]),
                     mightThrow: false,
+                    type: Type::VOID,
                 )
             ),
             new Statement(
@@ -56,10 +60,12 @@ trait ReloadActionFunctionalDataProviderTrait
                             methodName: 'filter',
                             arguments: new MethodArguments([$argumentFactory->create('#hello')]),
                             mightThrow: true,
+                            type: Type::OBJECT,
                             parent: Property::asDependency(DependencyName::PANTHER_CRAWLER),
                         ),
                     ]),
                     mightThrow: false,
+                    type: Type::VOID,
                     parent: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
                 )
             ),

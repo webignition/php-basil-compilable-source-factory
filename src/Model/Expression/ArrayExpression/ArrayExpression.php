@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression;
 
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\DeferredResolvableCreationTrait;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
@@ -92,6 +93,11 @@ class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationIn
         return false;
     }
 
+    public function getType(): array
+    {
+        return [Type::ARRAY];
+    }
+
     protected function createResolvable(): ResolvableInterface
     {
         $resolvablePairs = [];
@@ -129,7 +135,7 @@ class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationIn
                 $value = '\'' . $value . '\'';
             }
 
-            return new LiteralExpression((string) $value);
+            return new LiteralExpression((string) $value, Type::STRING);
         }
 
         if (is_array($value)) {

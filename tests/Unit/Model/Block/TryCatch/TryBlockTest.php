@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Block\TryCat
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryBlock;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
@@ -30,6 +31,7 @@ class TryBlockTest extends AbstractResolvableTestCase
                         methodName: 'staticMethodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
+                        type: Type::STRING,
                         parent: new StaticObject(\RuntimeException::class),
                     )
                 )
@@ -65,7 +67,7 @@ class TryBlockTest extends AbstractResolvableTestCase
             'default' => [
                 'tryBlock' => new TryBlock(
                     new Statement(
-                        new LiteralExpression('"literal expression"')
+                        new LiteralExpression('"literal expression"', Type::STRING)
                     )
                 ),
                 'expectedString' => 'try {' . "\n"

@@ -47,4 +47,9 @@ readonly class TernaryExpression implements ExpressionInterface
             || $this->trueExpression->mightThrow()
             || $this->falseExpression->mightThrow();
     }
+
+    public function getType(): array
+    {
+        return $this->expression->getType();
+    }
 }
