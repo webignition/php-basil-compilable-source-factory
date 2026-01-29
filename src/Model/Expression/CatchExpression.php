@@ -42,7 +42,7 @@ class CatchExpression implements ExpressionInterface
     {
         return [
             'class_list' => $this->classes,
-            'variable' => Property::asVariable('exception', Type::OBJECT),
+            'variable' => Property::asObjectVariable('exception'),
         ];
     }
 

@@ -101,7 +101,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                     ),
                     new ArrayPair(
                         'key2',
-                        Property::asVariable('variableName', Type::STRING)
+                        Property::asStringVariable('variableName')
                     ),
                     new ArrayPair(
                         'key3',
@@ -227,7 +227,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         new ArrayExpression([
                             new ArrayPair(
                                 'key1',
-                                Property::asVariable('variableName', Type::STRING)
+                                Property::asStringVariable('variableName')
                             ),
                         ])
                     ),
@@ -383,7 +383,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
             'single data set with VariableName value' => [
                 'expression' => ArrayExpression::fromArray([
                     'data-set-one' => [
-                        'key1' => Property::asVariable('variableName', Type::STRING),
+                        'key1' => Property::asStringVariable('variableName'),
                     ],
                 ]),
                 'expectedExpression' => new ArrayExpression([
@@ -392,7 +392,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         new ArrayExpression([
                             new ArrayPair(
                                 'key1',
-                                Property::asVariable('variableName', Type::STRING)
+                                Property::asStringVariable('variableName')
                             ),
                         ])
                     ),
