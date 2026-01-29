@@ -29,15 +29,17 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
      * @param string[] $arguments
      */
     #[DataProvider('createDataProvider')]
-    public function testCreate(string $name, BodyInterface $body, array $arguments = []): void
-    {
+    public function testCreate(
+        string $name,
+        BodyInterface $body,
+        array $arguments,
+    ): void {
         $methodDefinition = new MethodDefinition($name, $body, $arguments);
 
         $this->assertSame($name, $methodDefinition->getName());
         $this->assertEquals($body->getMetadata(), $methodDefinition->getMetadata());
         $this->assertSame($arguments, $methodDefinition->getArguments());
         $this->assertsame(MethodDefinition::VISIBILITY_PUBLIC, $methodDefinition->getVisibility());
-        $this->assertNull($methodDefinition->getReturnType());
         $this->assertFalse($methodDefinition->isStatic());
     }
 
@@ -52,6 +54,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
             'no arguments' => [
                 'name' => 'noArguments',
                 'body' => $body,
+                'arguments' => [],
             ],
             'empty arguments' => [
                 'name' => 'emptyArguments',
@@ -65,6 +68,28 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                     'arg1',
                     'arg2',
                 ],
+            ],
+        ];
+    }
+
+    #[DataProvider('getReturnTypeDataProvider')]
+    public function testGetReturnType(MethodDefinition $methodDefinition, TypeCollection $expected): void
+    {
+        self::assertEquals($expected, $methodDefinition->getReturnType());
+    }
+
+    /**
+     * @return array<mixed>
+     */
+    public static function getReturnTypeDataProvider(): array
+    {
+        return [
+            'empty' => [
+                'methodDefinition' => new MethodDefinition(
+                    'methodName',
+                    new Body([]),
+                ),
+                'expected' => TypeCollection::void(),
             ],
         ];
     }
@@ -184,21 +209,6 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
         $this->assertSame(MethodDefinition::VISIBILITY_PUBLIC, $methodDefinition->getVisibility());
     }
 
-    public function testSetReturnType(): void
-    {
-        $methodDefinition = new MethodDefinition('name', new Body([]));
-        $this->assertNull($methodDefinition->getReturnType());
-
-        $methodDefinition->setReturnType('string');
-        $this->assertSame('string', $methodDefinition->getReturnType());
-
-        $methodDefinition->setReturnType('void');
-        $this->assertSame('void', $methodDefinition->getReturnType());
-
-        $methodDefinition->setReturnType(null);
-        $this->assertNull($methodDefinition->getReturnType());
-    }
-
     public function testIsStatic(): void
     {
         $methodDefinition = new MethodDefinition('name', new Body([]));
@@ -225,9 +235,6 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
         $emptyPrivateMethod = new MethodDefinition('emptyPrivateMethod', new Body([]));
         $emptyPrivateMethod->setPrivate();
 
-        $emptyMethodWithReturnType = new MethodDefinition('emptyPublicMethodWithReturnType', new Body([]));
-        $emptyMethodWithReturnType->setReturnType('string');
-
         $emptyPublicStaticMethod = new MethodDefinition('emptyPublicStaticMethod', new Body([]));
         $emptyPublicStaticMethod->setStatic();
 
@@ -235,7 +242,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
             'public, no arguments, no return type, no lines' => [
                 'methodDefinition' => new MethodDefinition('emptyPublicMethod', new Body([])),
                 'expectedString' => <<<'EOD'
-                    public function emptyPublicMethod()
+                    public function emptyPublicMethod(): void
                     {
                     
                     }
@@ -244,7 +251,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
             'protected, no arguments, no return type, no lines' => [
                 'methodDefinition' => $emptyProtectedMethod,
                 'expectedString' => <<<'EOD'
-                    protected function emptyProtectedMethod()
+                    protected function emptyProtectedMethod(): void
                     {
                     
                     }
@@ -253,7 +260,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
             'private, no arguments, no return type, no lines' => [
                 'methodDefinition' => $emptyPrivateMethod,
                 'expectedString' => <<<'EOD'
-                    private function emptyPrivateMethod()
+                    private function emptyPrivateMethod(): void
                     {
 
                     }
@@ -266,16 +273,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                     'arg3',
                 ]),
                 'expectedString' => <<<'EOD'
-                    public function emptyPublicMethod($arg1, $arg2, $arg3)
-                    {
-                    
-                    }
-                    EOD,
-            ],
-            'public, no arguments, has return type, no lines' => [
-                'methodDefinition' => $emptyMethodWithReturnType,
-                'expectedString' => <<<'EOD'
-                    public function emptyPublicMethodWithReturnType(): string
+                    public function emptyPublicMethod($arg1, $arg2, $arg3): void
                     {
                     
                     }
@@ -306,7 +304,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                     ['x', 'y']
                 ),
                 'expectedString' => <<<'EOD'
-                    public function nameOfMethod($x, $y)
+                    public function nameOfMethod($x, $y): void
                     {
                         // Assign object method call to $value
                     
@@ -324,7 +322,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                     ['x', 'y']
                 ),
                 'expectedString' => <<<'EOD'
-                    public function nameOfMethod($x, $y)
+                    public function nameOfMethod($x, $y): void
                     {
                         // comment
                     }
@@ -333,7 +331,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
             'public static, no arguments, no return type, no lines' => [
                 'methodDefinition' => $emptyPublicStaticMethod,
                 'expectedString' => <<<'EOD'
-                    public static function emptyPublicStaticMethod()
+                    public static function emptyPublicStaticMethod(): void
                     {
                     
                     }
@@ -355,7 +353,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                 })(),
                 'expectedString' => <<<'EOD'
                     #[DataProvider('dataProviderMethodName')]
-                    public function nameOfMethod($x, $y)
+                    public function nameOfMethod($x, $y): void
                     {
                         // comment
                     }
@@ -377,7 +375,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                 })(),
                 'expectedString' => <<<'EOD'
                     #[DataProvider('dataProviderMethodName')]
-                    public function nameOfMethod($x, $y)
+                    public function nameOfMethod($x, $y): void
                     {
                         // comment
                     }
@@ -404,7 +402,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                 'expectedString' => <<<'EOD'
                     #[DataProvider('dataProviderMethodName1')]
                     #[DataProvider('dataProviderMethodName2')]
-                    public function nameOfMethod($x, $y)
+                    public function nameOfMethod($x, $y): void
                     {
                         // comment
                     }

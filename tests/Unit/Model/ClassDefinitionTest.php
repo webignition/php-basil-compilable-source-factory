@@ -125,8 +125,10 @@ class ClassDefinitionTest extends AbstractResolvableTestCase
                     new ClassSignature('NameOfClass'),
                     new ClassBody([])
                 ),
-                'expectedString' => 'class NameOfClass' . "\n"
-                    . '{}'
+                'expectedString' => <<<'EOD'
+                    class NameOfClass
+                    {}
+                    EOD,
             ],
             'no methods, base class in root namespace' => [
                 'classDefinition' => new ClassDefinition(
@@ -136,8 +138,10 @@ class ClassDefinitionTest extends AbstractResolvableTestCase
                     ),
                     new ClassBody([])
                 ),
-                'expectedString' => 'class NameOfClass extends \TestCase' . "\n"
-                    . '{}'
+                'expectedString' => <<<'EOD'
+                    class NameOfClass extends \TestCase
+                    {}
+                    EOD,
             ],
             'no methods, base class in non-root namespace' => [
                 'classDefinition' => new ClassDefinition(
@@ -147,10 +151,12 @@ class ClassDefinitionTest extends AbstractResolvableTestCase
                     ),
                     new ClassBody([])
                 ),
-                'expectedString' => 'use PHPUnit\Framework\TestCase;' . "\n"
-                    . "\n"
-                    . 'class NameOfClass extends TestCase' . "\n"
-                    . '{}'
+                'expectedString' => <<<'EOD'
+                    use PHPUnit\Framework\TestCase;
+                    
+                    class NameOfClass extends TestCase
+                    {}
+                    EOD,
             ],
             'has method' => [
                 'classDefinition' => new ClassDefinition(
@@ -162,12 +168,15 @@ class ClassDefinitionTest extends AbstractResolvableTestCase
                         new MethodDefinition('methodName', new Body([])),
                     ])
                 ),
-                'expectedString' => 'class NameOfClass extends \TestCase' . "\n"
-                    . '{' . "\n"
-                    . '    public function methodName()' . "\n"
-                    . '    {' . "\n\n"
-                    . '    }' . "\n"
-                    . '}'
+                'expectedString' => <<<'EOD'
+                    class NameOfClass extends \TestCase
+                    {
+                        public function methodName(): void
+                        {
+
+                        }
+                    }
+                    EOD,
             ],
         ];
     }

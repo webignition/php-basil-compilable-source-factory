@@ -7,14 +7,34 @@ namespace webignition\BasilCompilableSourceFactory\Model;
 use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\Stubble\Resolvable\ResolvableInterface;
 
-readonly class TypeCollection implements ResolvableInterface
+class TypeCollection implements ResolvableInterface, \Stringable
 {
+    use ResolvableStringableTrait;
+
     /**
      * @param non-empty-array<Type> $types
      */
     public function __construct(
-        private array $types,
+        private readonly array $types,
     ) {}
+
+    public function __toString(): string
+    {
+        $values = [];
+        foreach ($this->types as $type) {
+            $values[] = $type->value;
+        }
+
+        sort($values);
+
+        $content = '';
+
+        foreach ($values as $value) {
+            $content .= $value . '|';
+        }
+
+        return rtrim($content, '|');
+    }
 
     public static function object(): TypeCollection
     {
@@ -49,34 +69,6 @@ readonly class TypeCollection implements ResolvableInterface
     public static function array(): TypeCollection
     {
         return new TypeCollection([Type::ARRAY]);
-    }
-
-    public function getTemplate(): string
-    {
-        $template = '';
-
-        foreach ($this->types as $index => $type) {
-            $template .= '{{ type_' . $index . ' }}|';
-        }
-
-        return rtrim($template, '|');
-    }
-
-    public function getContext(): array
-    {
-        $values = [];
-        foreach ($this->types as $type) {
-            $values[] = $type->value;
-        }
-
-        sort($values);
-
-        $context = [];
-        foreach ($values as $index => $value) {
-            $context['type_' . $index] = $value;
-        }
-
-        return $context;
     }
 
     public function merge(TypeCollection $collection): TypeCollection

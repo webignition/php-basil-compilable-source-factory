@@ -59,8 +59,6 @@ class StepMethodFactory
             $parameterNames
         );
 
-        $testMethod->setReturnType('void');
-
         $testMethod = $testMethod->withAttribute(
             new StepNameAttribute($this->singleQuotedStringEscaper->escape($stepName))
         );

@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Model\DataProviderMethodDefinition;
 use webignition\BasilCompilableSourceFactory\Model\DataProviderMethodDefinitionInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinition;
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 
 class DataProviderMethodDefinitionTest extends AbstractResolvableTestCase
 {
@@ -22,7 +23,7 @@ class DataProviderMethodDefinitionTest extends AbstractResolvableTestCase
         $this->assertSame($name, $methodDefinition->getName());
         $this->assertSame([], $methodDefinition->getArguments());
         $this->assertsame(MethodDefinition::VISIBILITY_PUBLIC, $methodDefinition->getVisibility());
-        $this->assertSame('array', $methodDefinition->getReturnType());
+        $this->assertEquals(TypeCollection::array(), $methodDefinition->getReturnType());
         $this->assertSame($data, $methodDefinition->getData());
     }
 
