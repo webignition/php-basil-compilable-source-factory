@@ -6,7 +6,6 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Statement;
 
 use SmartAssert\DomIdentifier\Factory as DomIdentifierFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
-use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
@@ -19,6 +18,7 @@ use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumen
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
@@ -103,7 +103,7 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
                 LiteralExpression::null(),
             ]),
             mightThrow: false,
-            type: Type::INTEGER,
+            type: TypeCollection::integer(),
         )->setIsErrorSuppressed();
 
         $identityComparison = new ComparisonExpression(

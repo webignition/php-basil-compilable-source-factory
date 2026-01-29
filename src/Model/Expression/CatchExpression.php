@@ -4,12 +4,12 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 
-use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\NeverThrowsTrait;
 use webignition\BasilCompilableSourceFactory\Model\Property;
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclarationCollection;
 
 class CatchExpression implements ExpressionInterface
@@ -46,8 +46,8 @@ class CatchExpression implements ExpressionInterface
         ];
     }
 
-    public function getType(): array
+    public function getType(): TypeCollection
     {
-        return [Type::VOID];
+        return TypeCollection::void();
     }
 }

@@ -6,7 +6,6 @@ namespace webignition\BasilCompilableSourceFactory;
 
 use webignition\BaseBasilTestCase\ClientManager;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
-use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\ClassBody;
@@ -22,6 +21,7 @@ use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectConstr
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\BasilModels\Model\Test\NamedTestInterface;
 use webignition\BasilModels\Model\Test\TestInterface;
 
@@ -93,7 +93,7 @@ class ClassDefinitionFactory
                         ]
                     ),
                     mightThrow: false,
-                    type: Type::VOID,
+                    type: TypeCollection::void(),
                     parent: new StaticObject('self'),
                 ),
             ),
@@ -102,7 +102,7 @@ class ClassDefinitionFactory
                     methodName: 'setUpBeforeClass',
                     arguments: new MethodArguments(),
                     mightThrow: true,
-                    type: Type::VOID,
+                    type: TypeCollection::void(),
                     parent: new StaticObject('parent'),
                 )
             ),
@@ -114,7 +114,7 @@ class ClassDefinitionFactory
                         $this->argumentFactory->create($test->getUrl()),
                     ]),
                     mightThrow: true,
-                    type: Type::OBJECT,
+                    type: TypeCollection::object(),
                     parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                 )
             ),

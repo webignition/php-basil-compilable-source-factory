@@ -6,13 +6,13 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Statement;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
-use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\BasilModels\Model\Statement\Action\ActionInterface;
 use webignition\BasilModels\Model\Statement\StatementInterface;
 
@@ -49,7 +49,7 @@ class BrowserOperationActionHandler implements StatementHandlerInterface
                             methodName: $statement->getType(),
                             arguments: new MethodArguments(),
                             mightThrow: false,
-                            type: Type::OBJECT,
+                            type: TypeCollection::object(),
                             parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                         )
                     )

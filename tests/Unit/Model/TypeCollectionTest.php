@@ -24,7 +24,7 @@ class TypeCollectionTest extends AbstractResolvableTestCase
     {
         return [
             'string' => [
-                'types' => new TypeCollection([Type::STRING]),
+                'types' => TypeCollection::string(),
                 'expected' => 'string',
             ],
             'int, string' => [

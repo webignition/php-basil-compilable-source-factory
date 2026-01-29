@@ -16,6 +16,41 @@ readonly class TypeCollection implements ResolvableInterface
         private array $types,
     ) {}
 
+    public static function object(): TypeCollection
+    {
+        return new TypeCollection([Type::OBJECT]);
+    }
+
+    public static function boolean(): TypeCollection
+    {
+        return new TypeCollection([Type::BOOLEAN]);
+    }
+
+    public static function void(): TypeCollection
+    {
+        return new TypeCollection([Type::VOID]);
+    }
+
+    public static function string(): TypeCollection
+    {
+        return new TypeCollection([Type::STRING]);
+    }
+
+    public static function integer(): TypeCollection
+    {
+        return new TypeCollection([Type::INTEGER]);
+    }
+
+    public static function null(): TypeCollection
+    {
+        return new TypeCollection([Type::NULL]);
+    }
+
+    public static function array(): TypeCollection
+    {
+        return new TypeCollection([Type::ARRAY]);
+    }
+
     public function getTemplate(): string
     {
         $template = '';
@@ -42,5 +77,17 @@ readonly class TypeCollection implements ResolvableInterface
         }
 
         return $context;
+    }
+
+    public function merge(TypeCollection $collection): TypeCollection
+    {
+        $types = $this->types;
+        foreach ($collection->types as $type) {
+            if (!in_array($type, $types)) {
+                $types[] = $type;
+            }
+        }
+
+        return new TypeCollection($types);
     }
 }

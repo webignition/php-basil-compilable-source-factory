@@ -5,11 +5,11 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
-use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 
 class DomCrawlerNavigatorCallFactory
 {
@@ -20,28 +20,28 @@ class DomCrawlerNavigatorCallFactory
 
     public function createFindCall(ExpressionInterface $expression): ExpressionInterface
     {
-        return $this->createElementCall('find', $expression, Type::OBJECT);
+        return $this->createElementCall('find', $expression, TypeCollection::object());
     }
 
     public function createFindOneCall(ExpressionInterface $expression): ExpressionInterface
     {
-        return $this->createElementCall('findOne', $expression, Type::OBJECT);
+        return $this->createElementCall('findOne', $expression, TypeCollection::object());
     }
 
     public function createHasCall(ExpressionInterface $expression): ExpressionInterface
     {
-        return $this->createElementCall('has', $expression, Type::BOOLEAN);
+        return $this->createElementCall('has', $expression, TypeCollection::boolean());
     }
 
     public function createHasOneCall(ExpressionInterface $expression): ExpressionInterface
     {
-        return $this->createElementCall('hasOne', $expression, Type::BOOLEAN);
+        return $this->createElementCall('hasOne', $expression, TypeCollection::boolean());
     }
 
     private function createElementCall(
         string $methodName,
         ExpressionInterface $expression,
-        Type $type,
+        TypeCollection $type,
     ): ExpressionInterface {
         return new MethodInvocation(
             methodName: $methodName,

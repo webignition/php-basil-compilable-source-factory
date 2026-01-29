@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 
 class CastExpression implements ExpressionInterface
 {
@@ -42,8 +43,8 @@ class CastExpression implements ExpressionInterface
         return $this->expression->mightThrow();
     }
 
-    public function getType(): array
+    public function getType(): TypeCollection
     {
-        return [$this->castTo];
+        return new TypeCollection([$this->castTo]);
     }
 }

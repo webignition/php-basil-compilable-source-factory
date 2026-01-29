@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Model;
 
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
-use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ClassObject;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
@@ -20,7 +19,7 @@ class Property implements ExpressionInterface, IsAssigneeInterface
      */
     public function __construct(
         private readonly string $name,
-        private readonly Type $type,
+        private readonly TypeCollection $type,
         private readonly ?ExpressionInterface $parent = null,
     ) {}
 
@@ -29,7 +28,7 @@ class Property implements ExpressionInterface, IsAssigneeInterface
      */
     public static function asObjectVariable(string $name): self
     {
-        return new Property(name: $name, type: Type::OBJECT);
+        return new Property(name: $name, type: TypeCollection::object());
     }
 
     /**
@@ -37,7 +36,7 @@ class Property implements ExpressionInterface, IsAssigneeInterface
      */
     public static function asStringVariable(string $name): self
     {
-        return new Property(name: $name, type: Type::STRING);
+        return new Property(name: $name, type: TypeCollection::string());
     }
 
     /**
@@ -45,7 +44,7 @@ class Property implements ExpressionInterface, IsAssigneeInterface
      */
     public static function asBooleanVariable(string $name): self
     {
-        return new Property(name: $name, type: Type::BOOLEAN);
+        return new Property(name: $name, type: TypeCollection::boolean());
     }
 
     /**
@@ -53,18 +52,18 @@ class Property implements ExpressionInterface, IsAssigneeInterface
      */
     public static function asIntegerVariable(string $name): self
     {
-        return new Property(name: $name, type: Type::INTEGER);
+        return new Property(name: $name, type: TypeCollection::integer());
     }
 
     public static function asDependency(DependencyName $name): self
     {
-        return new Property(name: $name->value, type: Type::OBJECT);
+        return new Property(name: $name->value, type: TypeCollection::object());
     }
 
     /**
      * @param non-empty-string $constant
      */
-    public static function asClassConstant(ClassName $className, string $constant, Type $type): self
+    public static function asClassConstant(ClassName $className, string $constant, TypeCollection $type): self
     {
         return new Property(
             $constant,
@@ -76,7 +75,7 @@ class Property implements ExpressionInterface, IsAssigneeInterface
     /**
      * @param non-empty-string $caseName
      */
-    public static function asEnum(ClassName $enum, string $caseName, Type $type): self
+    public static function asEnum(ClassName $enum, string $caseName, TypeCollection $type): self
     {
         return self::asClassConstant($enum, $caseName, $type);
     }
@@ -84,7 +83,7 @@ class Property implements ExpressionInterface, IsAssigneeInterface
     /**
      * @param non-empty-string $name
      */
-    public static function asObjectProperty(Property $parent, string $name, Type $type): self
+    public static function asObjectProperty(Property $parent, string $name, TypeCollection $type): self
     {
         return new Property($name, $type, $parent);
     }
@@ -151,9 +150,9 @@ class Property implements ExpressionInterface, IsAssigneeInterface
         return $this->name;
     }
 
-    public function getType(): array
+    public function getType(): TypeCollection
     {
-        return [$this->type];
+        return $this->type;
     }
 
     private function getDependencyName(): ?DependencyName

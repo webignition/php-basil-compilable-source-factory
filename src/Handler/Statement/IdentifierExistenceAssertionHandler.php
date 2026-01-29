@@ -12,7 +12,6 @@ use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
-use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
@@ -27,6 +26,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\NullCoalescerExpre
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\BasilModels\Model\Statement\Action\ActionInterface;
 use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Statement\Assertion\DerivedValueOperationAssertion;
@@ -157,7 +157,7 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
                         LiteralExpression::void(' && '),
                         $attributeAccessor,
                     ],
-                    Type::BOOLEAN,
+                    TypeCollection::boolean(),
                 )
             )
         );

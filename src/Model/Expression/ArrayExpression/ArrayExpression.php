@@ -4,13 +4,13 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression;
 
-use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\DeferredResolvableCreationTrait;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\Stubble\Resolvable\ResolvableCollection;
 use webignition\Stubble\Resolvable\ResolvableInterface;
 use webignition\Stubble\Resolvable\ResolvedTemplateMutationInterface;
@@ -93,9 +93,9 @@ class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationIn
         return false;
     }
 
-    public function getType(): array
+    public function getType(): TypeCollection
     {
-        return [Type::ARRAY];
+        return TypeCollection::array();
     }
 
     protected function createResolvable(): ResolvableInterface

@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\MethodInvocation;
 
-use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 
 readonly class MethodInvocation implements MethodInvocationInterface
 {
@@ -18,7 +18,7 @@ readonly class MethodInvocation implements MethodInvocationInterface
         private string $methodName,
         private MethodArgumentsInterface $arguments,
         private bool $mightThrow,
-        private Type $type,
+        private TypeCollection $type,
         private ?ExpressionInterface $parent = null,
         private bool $isErrorSuppressed = false,
     ) {}
@@ -81,8 +81,8 @@ readonly class MethodInvocation implements MethodInvocationInterface
         return $this->mightThrow;
     }
 
-    public function getType(): array
+    public function getType(): TypeCollection
     {
-        return [$this->type];
+        return $this->type;
     }
 }

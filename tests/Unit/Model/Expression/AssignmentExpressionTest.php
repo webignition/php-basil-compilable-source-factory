@@ -6,7 +6,6 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
-use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
@@ -14,6 +13,7 @@ use webignition\BasilCompilableSourceFactory\Model\IsAssigneeInterface;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\Property;
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
 class AssignmentExpressionTest extends AbstractResolvableTestCase
@@ -88,7 +88,7 @@ class AssignmentExpressionTest extends AbstractResolvableTestCase
                 'expression' => new AssignmentExpression(
                     new Property(
                         'property',
-                        Type::STRING,
+                        TypeCollection::string(),
                         Property::asDependency(DependencyName::DOM_CRAWLER_NAVIGATOR)->setIsStatic(true)
                     ),
                     LiteralExpression::string('"rhs"')

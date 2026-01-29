@@ -6,12 +6,12 @@ namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
-use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\BasilModels\Parser\ActionParser;
 
 trait ReloadActionFunctionalDataProviderTrait
@@ -34,12 +34,12 @@ trait ReloadActionFunctionalDataProviderTrait
                             methodName: 'filter',
                             arguments: new MethodArguments([$argumentFactory->create('#hello')]),
                             mightThrow: true,
-                            type: Type::OBJECT,
+                            type: TypeCollection::object(),
                             parent: Property::asDependency(DependencyName::PANTHER_CRAWLER),
                         ),
                     ]),
                     mightThrow: false,
-                    type: Type::VOID,
+                    type: TypeCollection::void(),
                     parent: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
                 )
             ),
@@ -48,7 +48,7 @@ trait ReloadActionFunctionalDataProviderTrait
                     methodName: 'usleep',
                     arguments: new MethodArguments([$argumentFactory->create('100000')]),
                     mightThrow: false,
-                    type: Type::VOID,
+                    type: TypeCollection::void(),
                 )
             ),
             new Statement(
@@ -60,12 +60,12 @@ trait ReloadActionFunctionalDataProviderTrait
                             methodName: 'filter',
                             arguments: new MethodArguments([$argumentFactory->create('#hello')]),
                             mightThrow: true,
-                            type: Type::OBJECT,
+                            type: TypeCollection::object(),
                             parent: Property::asDependency(DependencyName::PANTHER_CRAWLER),
                         ),
                     ]),
                     mightThrow: false,
-                    type: Type::VOID,
+                    type: TypeCollection::void(),
                     parent: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
                 )
             ),

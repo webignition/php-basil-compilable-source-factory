@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
+
 class NullCoalescerExpression extends ComparisonExpression
 {
     public function __construct(
@@ -13,22 +15,10 @@ class NullCoalescerExpression extends ComparisonExpression
         parent::__construct($accessor, $default, '??');
     }
 
-    public function getType(): array
+    public function getType(): TypeCollection
     {
-        $types = [];
-
-        foreach ($this->accessor->getType() as $type) {
-            if (!in_array($type, $types)) {
-                $types[] = $type;
-            }
-        }
-
-        foreach ($this->default->getType() as $type) {
-            if (!in_array($type, $types)) {
-                $types[] = $type;
-            }
-        }
-
-        return $types;
+        return $this->accessor->getType()
+            ->merge($this->default->getType())
+        ;
     }
 }

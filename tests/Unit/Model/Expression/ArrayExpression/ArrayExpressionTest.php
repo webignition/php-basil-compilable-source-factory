@@ -6,7 +6,6 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression\A
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
-use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression\ArrayExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression\ArrayPair;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
@@ -15,6 +14,7 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
 class ArrayExpressionTest extends AbstractResolvableTestCase
@@ -52,7 +52,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                             methodName: 'methodName',
                             arguments: new MethodArguments(),
                             mightThrow: false,
-                            type: Type::STRING,
+                            type: TypeCollection::string(),
                             parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                         )
                     ),
@@ -109,7 +109,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                             methodName: 'methodName',
                             arguments: new MethodArguments(),
                             mightThrow: false,
-                            type: Type::STRING,
+                            type: TypeCollection::string(),
                             parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                         )
                     ),
@@ -249,7 +249,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                                     methodName: 'methodName',
                                     arguments: new MethodArguments(),
                                     mightThrow: false,
-                                    type: Type::STRING,
+                                    type: TypeCollection::string(),
                                     parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                                 )
                             ),
@@ -405,7 +405,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                             methodName: 'methodName',
                             arguments: new MethodArguments(),
                             mightThrow: false,
-                            type: Type::STRING,
+                            type: TypeCollection::string(),
                             parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                         ),
                     ],
@@ -420,7 +420,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                                     methodName: 'methodName',
                                     arguments: new MethodArguments(),
                                     mightThrow: false,
-                                    type: Type::STRING,
+                                    type: TypeCollection::string(),
                                     parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                                 )
                             ),
@@ -451,7 +451,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         methodName: 'dataName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
-                        type: Type::STRING,
+                        type: TypeCollection::string(),
                         parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                     ),
                     'data' => [
@@ -466,7 +466,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                             methodName: 'dataName',
                             arguments: new MethodArguments(),
                             mightThrow: false,
-                            type: Type::STRING,
+                            type: TypeCollection::string(),
                             parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                         )
                     ),

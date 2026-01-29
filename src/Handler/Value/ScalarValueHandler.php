@@ -22,6 +22,7 @@ use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumen
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\BasilValueTypeIdentifier\ValueTypeIdentifier;
 
 class ScalarValueHandler
@@ -82,7 +83,7 @@ class ScalarValueHandler
                             methodName: 'getWebDriver()->manage()->window()->getSize',
                             arguments: new MethodArguments(),
                             mightThrow: true,
-                            type: Type::INTEGER,
+                            type: TypeCollection::integer(),
                             parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                         )
                     )
@@ -97,7 +98,7 @@ class ScalarValueHandler
                                         methodName: 'getWidth',
                                         arguments: new MethodArguments(),
                                         mightThrow: true,
-                                        type: Type::INTEGER,
+                                        type: TypeCollection::integer(),
                                         parent: $webDriverDimensionVariable,
                                     ),
                                     Type::STRING
@@ -108,18 +109,18 @@ class ScalarValueHandler
                                         methodName: 'getHeight',
                                         arguments: new MethodArguments(),
                                         mightThrow: true,
-                                        type: Type::INTEGER,
+                                        type: TypeCollection::integer(),
                                         parent: $webDriverDimensionVariable,
                                     ),
                                     Type::STRING
                                 ),
                             ],
-                            Type::STRING,
+                            TypeCollection::string(),
                         ),
                     )
                 ),
             ]),
-            Type::STRING
+            TypeCollection::string(),
         );
     }
 
@@ -131,7 +132,7 @@ class ScalarValueHandler
         return new ArrayAccessExpression(
             Property::asDependency(DependencyName::ENVIRONMENT_VARIABLE_ARRAY),
             $property,
-            Type::STRING,
+            TypeCollection::string(),
         );
     }
 
@@ -154,7 +155,7 @@ class ScalarValueHandler
                 methodName: $methodName,
                 arguments: new MethodArguments(),
                 mightThrow: true,
-                type: Type::STRING,
+                type: TypeCollection::string(),
                 parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
             );
         }

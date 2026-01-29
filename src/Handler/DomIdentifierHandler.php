@@ -7,7 +7,6 @@ namespace webignition\BasilCompilableSourceFactory\Handler;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
-use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
@@ -18,6 +17,7 @@ use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumen
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 
 class DomIdentifierHandler
 {
@@ -69,7 +69,7 @@ class DomIdentifierHandler
                         methodName: 'getAttribute',
                         arguments: new MethodArguments([$this->argumentFactory->create($attributeName)]),
                         mightThrow: true,
-                        type: Type::STRING,
+                        type: TypeCollection::string(),
                         parent: $elementVariable,
                     )
                 )
@@ -78,7 +78,7 @@ class DomIdentifierHandler
 
         return new ClosureExpression(
             new Body($closureExpressionStatements),
-            Type::STRING,
+            TypeCollection::string(),
         );
     }
 
@@ -103,7 +103,7 @@ class DomIdentifierHandler
                             $elementVariable,
                         ]),
                         mightThrow: false,
-                        type: Type::STRING,
+                        type: TypeCollection::string(),
                         parent: Property::asDependency(DependencyName::WEBDRIVER_ELEMENT_INSPECTOR),
                     )
                 )
@@ -112,7 +112,7 @@ class DomIdentifierHandler
 
         return new ClosureExpression(
             new Body($closureExpressionStatements),
-            Type::STRING,
+            TypeCollection::string(),
         );
     }
 }

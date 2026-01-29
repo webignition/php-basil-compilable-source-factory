@@ -6,7 +6,6 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Statement;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
-use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
@@ -15,6 +14,7 @@ use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvoca
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
 class StatementTest extends AbstractResolvableTestCase
@@ -47,7 +47,7 @@ class StatementTest extends AbstractResolvableTestCase
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
-                    type: Type::STRING,
+                    type: TypeCollection::string(),
                 ),
                 'expectedMetadata' => new Metadata(),
             ],
@@ -56,7 +56,7 @@ class StatementTest extends AbstractResolvableTestCase
                     methodName: 'methodName',
                     arguments: new MethodArguments(),
                     mightThrow: false,
-                    type: Type::STRING,
+                    type: TypeCollection::string(),
                     parent: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
                 ),
                 'expectedMetadata' => new Metadata(
@@ -92,7 +92,7 @@ class StatementTest extends AbstractResolvableTestCase
                         methodName: 'methodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
-                        type: Type::STRING,
+                        type: TypeCollection::string(),
                     )
                 ),
                 'expectedString' => 'methodName();',
@@ -103,7 +103,7 @@ class StatementTest extends AbstractResolvableTestCase
                         methodName: 'methodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
-                        type: Type::STRING,
+                        type: TypeCollection::string(),
                         parent: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
                     )
                 ),
