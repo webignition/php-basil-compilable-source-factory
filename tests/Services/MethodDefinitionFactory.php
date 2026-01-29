@@ -7,7 +7,6 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 use webignition\BaseBasilTestCase\ClientManager;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
-use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
@@ -23,6 +22,7 @@ use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\SymfonyPantherWebServerRunner\Options;
 
 class MethodDefinitionFactory
@@ -33,7 +33,7 @@ class MethodDefinitionFactory
             methodName: 'getBaseUri',
             arguments: new MethodArguments(),
             mightThrow: false,
-            type: Type::STRING,
+            type: TypeCollection::string(),
             parent: new StaticObject(Options::class),
         );
 
@@ -42,7 +42,7 @@ class MethodDefinitionFactory
                 $requestBaseUri,
                 LiteralExpression::string(' . \'' . $fixture . '\''),
             ],
-            Type::STRING,
+            TypeCollection::string(),
         );
 
         $argumentFactory = ArgumentFactory::createFactory();
@@ -59,7 +59,7 @@ class MethodDefinitionFactory
                         ),
                     ]),
                     mightThrow: false,
-                    type: Type::VOID,
+                    type: TypeCollection::void(),
                     parent: new StaticObject('self'),
                 )
             ),
@@ -73,7 +73,7 @@ class MethodDefinitionFactory
                         $requestUriExpression,
                     ]),
                     mightThrow: false,
-                    type: Type::OBJECT,
+                    type: TypeCollection::object(),
                     parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                 )
             ),

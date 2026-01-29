@@ -18,6 +18,7 @@ use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumen
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
 class CastExpressionTest extends AbstractResolvableTestCase
@@ -62,7 +63,7 @@ class CastExpressionTest extends AbstractResolvableTestCase
             ],
             'empty closure expression as string' => [
                 'expression' => new CastExpression(
-                    new ClosureExpression(new Body([]), Type::STRING),
+                    new ClosureExpression(new Body([]), TypeCollection::string()),
                     Type::STRING
                 ),
                 'expectedString' => '(string) (function () {' . "\n"
@@ -87,7 +88,7 @@ class CastExpressionTest extends AbstractResolvableTestCase
                             LiteralExpression::void('$_ENV'),
                             LiteralExpression::void('["secret"]'),
                         ],
-                        Type::STRING,
+                        TypeCollection::string(),
                     ),
                     Type::STRING
                 ),
@@ -99,7 +100,7 @@ class CastExpressionTest extends AbstractResolvableTestCase
                         methodName: 'methodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
-                        type: Type::STRING,
+                        type: TypeCollection::string(),
                     ),
                     Type::STRING,
                 ),
@@ -111,7 +112,7 @@ class CastExpressionTest extends AbstractResolvableTestCase
                         methodName: 'methodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
-                        type: Type::STRING,
+                        type: TypeCollection::string(),
                         parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                     ),
                     Type::STRING
@@ -124,7 +125,7 @@ class CastExpressionTest extends AbstractResolvableTestCase
                         methodName: 'methodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
-                        type: Type::STRING,
+                        type: TypeCollection::string(),
                         parent: new StaticObject('Object'),
                     ),
                     Type::STRING
@@ -137,7 +138,7 @@ class CastExpressionTest extends AbstractResolvableTestCase
                         methodName: 'methodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
-                        type: Type::STRING,
+                        type: TypeCollection::string(),
                         parent: new StaticObject('Acme\Object'),
                     ),
                     Type::STRING,

@@ -8,6 +8,7 @@ use webignition\BasilCompilableSourceFactory\Model\IsAssigneeInterface;
 use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 
 class AssignmentExpression implements AssignmentExpressionInterface
 {
@@ -72,7 +73,7 @@ class AssignmentExpression implements AssignmentExpressionInterface
         return $this->assignee->mightThrow() || $this->value->mightThrow();
     }
 
-    public function getType(): array
+    public function getType(): TypeCollection
     {
         return $this->value->getType();
     }

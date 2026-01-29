@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Attribute\DataProviderAttribute;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\ClassBody;
@@ -19,6 +18,7 @@ use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 
 class ClassBodyTest extends AbstractResolvableTestCase
 {
@@ -59,7 +59,7 @@ class ClassBodyTest extends AbstractResolvableTestCase
                                         LiteralExpression::string('\'$"a" exists\''),
                                     ]),
                                     mightThrow: false,
-                                    type: Type::STRING,
+                                    type: TypeCollection::string(),
                                     parent: new StaticObject('Acme\Statement'),
                                 )
                             )
@@ -82,7 +82,7 @@ class ClassBodyTest extends AbstractResolvableTestCase
                                         LiteralExpression::string('\'$"b" exists\''),
                                     ]),
                                     mightThrow: false,
-                                    type: Type::STRING,
+                                    type: TypeCollection::string(),
                                     parent: new StaticObject('Acme\Statement'),
                                 )
                             )
@@ -125,7 +125,7 @@ class ClassBodyTest extends AbstractResolvableTestCase
                                                 LiteralExpression::string('\'$"a" exists\''),
                                             ]),
                                             mightThrow: false,
-                                            type: Type::STRING,
+                                            type: TypeCollection::string(),
                                             parent: new StaticObject('Acme\Statement'),
                                         )
                                     )
@@ -167,7 +167,7 @@ class ClassBodyTest extends AbstractResolvableTestCase
                                         LiteralExpression::string('\'$"b" exists\''),
                                     ]),
                                     mightThrow: false,
-                                    type: Type::STRING,
+                                    type: TypeCollection::string(),
                                     parent: new StaticObject('Acme\Statement'),
                                 )
                             )

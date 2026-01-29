@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 
-use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\DeferredResolvableCreationTrait;
 use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\Stubble\Resolvable\ResolvableCollection;
 use webignition\Stubble\Resolvable\ResolvableInterface;
 
@@ -22,12 +22,12 @@ class CompositeExpression implements ExpressionInterface
      */
     private $expressions;
 
-    private Type $type;
+    private TypeCollection $type;
 
     /**
      * @param array<mixed> $expressions
      */
-    public function __construct(array $expressions, Type $type)
+    public function __construct(array $expressions, TypeCollection $type)
     {
         $this->expressions = array_filter($expressions, function ($item) {
             return $item instanceof ExpressionInterface;
@@ -62,9 +62,9 @@ class CompositeExpression implements ExpressionInterface
         return false;
     }
 
-    public function getType(): array
+    public function getType(): TypeCollection
     {
-        return [$this->type];
+        return $this->type;
     }
 
     protected function createResolvable(): ResolvableInterface

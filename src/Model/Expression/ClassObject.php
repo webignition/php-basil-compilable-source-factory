@@ -4,11 +4,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 
-use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\NeverThrowsTrait;
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 
 readonly class ClassObject implements ExpressionInterface
 {
@@ -43,8 +43,8 @@ readonly class ClassObject implements ExpressionInterface
         return $this->isStatic;
     }
 
-    public function getType(): array
+    public function getType(): TypeCollection
     {
-        return [Type::OBJECT];
+        return TypeCollection::object();
     }
 }

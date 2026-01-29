@@ -6,7 +6,6 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
-use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Attribute\DataProviderAttribute;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
@@ -22,6 +21,7 @@ use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvoca
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 
 class MethodDefinitionTest extends AbstractResolvableTestCase
 {
@@ -112,7 +112,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                             methodName: 'methodName',
                             arguments: new MethodArguments(),
                             mightThrow: false,
-                            type: Type::STRING,
+                            type: TypeCollection::string(),
                             parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                         )
                     ),
@@ -123,7 +123,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                                 methodName: 'methodName',
                                 arguments: new MethodArguments(),
                                 mightThrow: false,
-                                type: Type::STRING,
+                                type: TypeCollection::string(),
                             ),
                         )
                     ),
@@ -141,7 +141,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                             methodName: 'methodName',
                             arguments: new MethodArguments(),
                             mightThrow: false,
-                            type: Type::STRING,
+                            type: TypeCollection::string(),
                             parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                         )
                     ),
@@ -152,7 +152,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                                 methodName: 'methodName',
                                 arguments: new MethodArguments(),
                                 mightThrow: false,
-                                type: Type::STRING,
+                                type: TypeCollection::string(),
                             )
                         )
                     ),
@@ -297,7 +297,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                                         LiteralExpression::string('$y'),
                                     ]),
                                     mightThrow: false,
-                                    type: Type::STRING,
+                                    type: TypeCollection::string(),
                                     parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                                 )
                             )

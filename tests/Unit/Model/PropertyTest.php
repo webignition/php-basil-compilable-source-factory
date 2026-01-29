@@ -7,13 +7,13 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BaseBasilTestCase\Enum\StatementStage;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
-use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 
 class PropertyTest extends AbstractResolvableTestCase
 {
@@ -69,27 +69,27 @@ class PropertyTest extends AbstractResolvableTestCase
                 'property' => Property::asClassConstant(
                     new ClassName(StatementStage::class),
                     'CONSTANT_NAME',
-                    Type::STRING,
+                    TypeCollection::string(),
                 ),
                 'expected' => 'StatementStage::CONSTANT_NAME',
             ],
             'object property access, no alias' => [
                 'property' => Property::asObjectProperty(
-                    new Property('parent', Type::OBJECT),
+                    new Property('parent', TypeCollection::object()),
                     'property',
-                    Type::STRING,
+                    TypeCollection::string(),
                 ),
                 'expected' => '$parent->property',
             ],
             'method invocation object property access, no alias' => [
                 'property' => new Property(
                     'property',
-                    Type::STRING,
+                    TypeCollection::string(),
                     new MethodInvocation(
                         methodName: 'methodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
-                        type: Type::STRING,
+                        type: TypeCollection::string(),
                     ),
                 ),
                 'expected' => 'methodName()->property',

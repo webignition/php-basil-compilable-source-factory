@@ -8,7 +8,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BaseBasilTestCase\Enum\StatementStage;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
-use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
@@ -25,6 +24,7 @@ use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumen
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTestCase;
 use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
 use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
@@ -110,7 +110,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                                 ),
                                             ]),
                                             mightThrow: true,
-                                            type: Type::STRING
+                                            type: TypeCollection::string(),
                                         )
                                     ),
                                 ])
@@ -344,7 +344,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                             ),
                                         ]),
                                         mightThrow: true,
-                                        type: Type::STRING,
+                                        type: TypeCollection::string(),
                                     )
                                 ),
                             ),

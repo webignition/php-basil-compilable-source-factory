@@ -6,7 +6,6 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
-use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ClosureExpression;
@@ -18,6 +17,7 @@ use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvoca
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 
 class StatementFactory
 {
@@ -34,12 +34,12 @@ class StatementFactory
                         methodName: 'getTitle',
                         arguments: new MethodArguments(),
                         mightThrow: false,
-                        type: Type::STRING,
+                        type: TypeCollection::string(),
                         parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                     ),
                 ]),
                 mightThrow: false,
-                type: Type::VOID,
+                type: TypeCollection::void(),
                 parent: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
             )
         );
@@ -64,7 +64,7 @@ class StatementFactory
                                     methodName: 'filter',
                                     arguments: new MethodArguments([$argumentFactory->create($selector)]),
                                     mightThrow: false,
-                                    type: Type::OBJECT,
+                                    type: TypeCollection::object(),
                                     parent: Property::asDependency(DependencyName::PANTHER_CRAWLER),
                                 )
                             )
@@ -75,13 +75,13 @@ class StatementFactory
                                     methodName: 'getElement',
                                     arguments: new MethodArguments([$argumentFactory->create('0')]),
                                     mightThrow: false,
-                                    type: Type::OBJECT,
+                                    type: TypeCollection::object(),
                                     parent: $elementVariable,
                                 )
                             )
                         ),
                     ]),
-                    Type::OBJECT,
+                    TypeCollection::object(),
                 )
             )
         );
@@ -112,7 +112,7 @@ class StatementFactory
                                 methodName: 'filter',
                                 arguments: new MethodArguments([$argumentFactory->create($selector)]),
                                 mightThrow: false,
-                                type: Type::OBJECT,
+                                type: TypeCollection::object(),
                                 parent: Property::asDependency(DependencyName::PANTHER_CRAWLER),
                             )
                         )
@@ -124,7 +124,7 @@ class StatementFactory
                                 methodName: 'getElement',
                                 arguments: new MethodArguments([$argumentFactory->create('0')]),
                                 mightThrow: false,
-                                type: Type::OBJECT,
+                                type: TypeCollection::object(),
                                 parent: $elementVariable,
                             )
                         )
@@ -134,12 +134,12 @@ class StatementFactory
                             methodName: $action,
                             arguments: new MethodArguments(),
                             mightThrow: false,
-                            type: Type::OBJECT,
+                            type: TypeCollection::object(),
                             parent: $elementVariable,
                         )
                     ),
                 ]),
-                Type::OBJECT,
+                TypeCollection::object(),
             )
         );
     }
@@ -151,7 +151,7 @@ class StatementFactory
                 methodName: $action,
                 arguments: new MethodArguments(),
                 mightThrow: false,
-                type: Type::OBJECT,
+                type: TypeCollection::object(),
                 parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
             )
         );
@@ -170,7 +170,7 @@ class StatementFactory
                     methodName: 'filter',
                     arguments: new MethodArguments([$argumentFactory->create($selector)]),
                     mightThrow: false,
-                    type: Type::OBJECT,
+                    type: TypeCollection::object(),
                     parent: Property::asDependency(DependencyName::PANTHER_CRAWLER),
                 )
             )
@@ -186,7 +186,7 @@ class StatementFactory
                     LiteralExpression::string($actual),
                 ]),
                 mightThrow: false,
-                type: Type::VOID,
+                type: TypeCollection::void(),
                 parent: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
             )
         );
@@ -201,7 +201,7 @@ class StatementFactory
                     LiteralExpression::string($actual)
                 ]),
                 mightThrow: false,
-                type: Type::VOID,
+                type: TypeCollection::void(),
                 parent: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
             )
         );
@@ -230,7 +230,7 @@ class StatementFactory
                     LiteralExpression::string($actual),
                 ]),
                 mightThrow: false,
-                type: Type::VOID,
+                type: TypeCollection::void(),
                 parent: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
             )
         );

@@ -13,6 +13,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\Property;
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
 class CompositeExpressionTest extends AbstractResolvableTestCase
@@ -23,7 +24,7 @@ class CompositeExpressionTest extends AbstractResolvableTestCase
     #[DataProvider('createDataProvider')]
     public function testCreate(array $expressions, MetadataInterface $expectedMetadata): void
     {
-        $expression = new CompositeExpression($expressions, Type::STRING);
+        $expression = new CompositeExpression($expressions, TypeCollection::string());
 
         $this->assertEquals($expectedMetadata, $expression->getMetadata());
     }
@@ -75,7 +76,7 @@ class CompositeExpressionTest extends AbstractResolvableTestCase
     {
         return [
             'empty' => [
-                'expression' => new CompositeExpression([], Type::VOID),
+                'expression' => new CompositeExpression([], TypeCollection::void()),
                 'expectedString' => '',
             ],
             'single literal' => [
@@ -83,7 +84,7 @@ class CompositeExpressionTest extends AbstractResolvableTestCase
                     [
                         LiteralExpression::string('"literal1"'),
                     ],
-                    Type::STRING,
+                    TypeCollection::string(),
                 ),
                 'expectedString' => '"literal1"',
             ],
@@ -94,7 +95,7 @@ class CompositeExpressionTest extends AbstractResolvableTestCase
                         LiteralExpression::string('"literal2"'),
                         LiteralExpression::string('"literal3"'),
                     ],
-                    Type::STRING,
+                    TypeCollection::string(),
                 ),
                 'expectedString' => '"literal1""literal2""literal3"',
             ],
@@ -103,7 +104,7 @@ class CompositeExpressionTest extends AbstractResolvableTestCase
                     [
                         Property::asDependency(DependencyName::PANTHER_CLIENT),
                     ],
-                    Type::STRING,
+                    TypeCollection::string(),
                 ),
                 'expectedString' => '{{ CLIENT }}',
             ],
@@ -113,7 +114,7 @@ class CompositeExpressionTest extends AbstractResolvableTestCase
                         Property::asDependency(DependencyName::ENVIRONMENT_VARIABLE_ARRAY),
                         LiteralExpression::void('[\'KEY\']')
                     ],
-                    Type::STRING,
+                    TypeCollection::string(),
                 ),
                 'expectedString' => '{{ ENV }}[\'KEY\']',
             ],
@@ -130,7 +131,7 @@ class CompositeExpressionTest extends AbstractResolvableTestCase
                             Type::STRING,
                         ),
                     ],
-                    Type::STRING,
+                    TypeCollection::string(),
                 ),
                 'expectedString' => '(string) (1) . \'x\' . (string) (2)',
             ],

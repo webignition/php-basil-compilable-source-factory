@@ -19,6 +19,7 @@ use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumen
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
 use webignition\BasilModels\Model\Statement\Action\ActionInterface;
 use webignition\BasilModels\Model\Statement\StatementInterface;
@@ -71,12 +72,12 @@ class WaitActionHandler implements StatementHandlerInterface
                             LiteralExpression::void(' * '),
                             LiteralExpression::integer(self::MICROSECONDS_PER_MILLISECOND)
                         ],
-                        Type::INTEGER,
+                        TypeCollection::integer(),
                     ),
                 ]
             ),
             mightThrow: false,
-            type: Type::VOID,
+            type: TypeCollection::void(),
         );
 
         return new StatementHandlerComponents(

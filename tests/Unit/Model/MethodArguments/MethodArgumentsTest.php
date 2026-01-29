@@ -6,7 +6,6 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\MethodArgume
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
-use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
@@ -24,6 +23,7 @@ use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvoca
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
 class MethodArgumentsTest extends AbstractResolvableTestCase
@@ -82,7 +82,7 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                         methodName: 'staticMethodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
-                        type: Type::STRING,
+                        type: TypeCollection::string(),
                         parent: new StaticObject(ClassName::class),
                     )
                 ],
@@ -154,12 +154,12 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                                         ),
                                     ]),
                                     mightThrow: false,
-                                    type: Type::STRING,
+                                    type: TypeCollection::string(),
                                     parent: new StaticObject(MethodArguments::class),
                                 )
                             ]),
                             mightThrow: false,
-                            type: Type::STRING,
+                            type: TypeCollection::string(),
                             parent: Property::asDependency(DependencyName::DOM_CRAWLER_NAVIGATOR),
                         ),
                         new ClosureExpression(
@@ -177,7 +177,7 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                                     )
                                 ),
                             ]),
-                            Type::STRING,
+                            TypeCollection::string(),
                         ),
                     ],
                     MethodArgumentsInterface::FORMAT_STACKED
@@ -203,7 +203,7 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                                 methodName: 'dataName',
                                 arguments: new MethodArguments(),
                                 mightThrow: false,
-                                type: Type::STRING,
+                                type: TypeCollection::string(),
                                 parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                             ),
                             'data' => [

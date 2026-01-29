@@ -7,7 +7,6 @@ namespace webignition\BasilCompilableSourceFactory\CallFactory;
 use webignition\BaseBasilTestCase\Enum\StatementStage;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
-use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
@@ -15,6 +14,7 @@ use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumen
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocationInterface;
 use webignition\BasilCompilableSourceFactory\Model\Property;
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Statement\StatementInterface;
 
@@ -35,7 +35,7 @@ readonly class PhpUnitCallFactory
         string $methodName,
         MethodArgumentsInterface $arguments,
         bool $mightThrow,
-        Type $type,
+        TypeCollection $type,
     ): MethodInvocationInterface {
         return new MethodInvocation(
             methodName: $methodName,
@@ -52,7 +52,7 @@ readonly class PhpUnitCallFactory
             methodName: 'refreshCrawlerAndNavigator',
             arguments: new MethodArguments(),
             mightThrow: false,
-            type: Type::VOID,
+            type: TypeCollection::void(),
         );
     }
 
@@ -82,7 +82,7 @@ readonly class PhpUnitCallFactory
             arguments: new MethodArguments($messageFactoryArgumentExpressions)
                 ->withFormat(MethodArgumentsInterface::FORMAT_STACKED),
             mightThrow: false,
-            type: Type::OBJECT,
+            type: TypeCollection::object(),
             parent: Property::asDependency(DependencyName::MESSAGE_FACTORY),
         );
 
@@ -97,7 +97,7 @@ readonly class PhpUnitCallFactory
             ->withFormat(MethodArgumentsInterface::FORMAT_STACKED)
         ;
 
-        return $this->createCall($methodName, $arguments, false, Type::VOID);
+        return $this->createCall($methodName, $arguments, false, TypeCollection::void());
     }
 
     public function createFailCall(
@@ -110,7 +110,7 @@ readonly class PhpUnitCallFactory
         $statementStageEnum = Property::asEnum(
             new ClassName(StatementStage::class),
             $statementStage->name,
-            Type::OBJECT,
+            TypeCollection::object(),
         );
 
         $failureMessageFactoryCall = new MethodInvocation(
@@ -121,7 +121,7 @@ readonly class PhpUnitCallFactory
                 $statementStageEnum,
             ])->withFormat(MethodArgumentsInterface::FORMAT_STACKED),
             mightThrow: false,
-            type: Type::OBJECT,
+            type: TypeCollection::object(),
             parent: Property::asDependency(DependencyName::MESSAGE_FACTORY),
         );
 
@@ -131,7 +131,7 @@ readonly class PhpUnitCallFactory
                 $failureMessageFactoryCall,
             ])->withFormat(MethodArgumentsInterface::FORMAT_STACKED),
             mightThrow: false,
-            type: Type::VOID,
+            type: TypeCollection::void(),
         );
     }
 }
