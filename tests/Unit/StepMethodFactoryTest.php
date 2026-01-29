@@ -8,8 +8,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BaseBasilTestCase\Attribute\Statements;
 use webignition\BaseBasilTestCase\Attribute\StepName;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
-use webignition\BasilCompilableSourceFactory\Model\Body\Body;
-use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinitionInterface;
@@ -104,9 +103,8 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                 'factory' => self::createStepMethodFactory([
                     StepHandler::class => self::createStepHandler(
                         $nonEmptyStep,
-                        new Body([
-                            new SingleLineComment('mocked step handler response'),
-                        ])
+                        new BodyContentCollection()
+                            ->append(new SingleLineComment('mocked step handler response'))
                     ),
                 ]),
                 'expectedRenderedTestMethod' => <<<'EOD'
@@ -202,9 +200,8 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                 'factory' => self::createStepMethodFactory([
                     StepHandler::class => self::createStepHandler(
                         $nonEmptyStepWithDataProvider,
-                        new Body([
-                            new SingleLineComment('mocked step handler response'),
-                        ])
+                        new BodyContentCollection()
+                            ->append(new SingleLineComment('mocked step handler response'))
                     ),
                 ]),
                 'expectedRenderedTestMethod' => <<<'EOD'
@@ -279,7 +276,7 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
         );
     }
 
-    private static function createStepHandler(StepInterface $expectedStep, BodyInterface $return): StepHandler
+    private static function createStepHandler(StepInterface $expectedStep, BodyContentCollection $return): StepHandler
     {
         $stepHandler = \Mockery::mock(StepHandler::class);
 

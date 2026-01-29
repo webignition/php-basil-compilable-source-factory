@@ -8,6 +8,7 @@ use webignition\BaseBasilTestCase\ClientManager;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\ClassBody;
 use webignition\BasilCompilableSourceFactory\Model\ClassDefinition;
 use webignition\BasilCompilableSourceFactory\Model\ClassDefinitionInterface;
@@ -19,7 +20,6 @@ use webignition\BasilCompilableSourceFactory\Model\MethodDefinitionInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\ObjectConstructor;
 use webignition\BasilCompilableSourceFactory\Model\Property;
-use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\BasilModels\Model\Test\NamedTestInterface;
@@ -77,50 +77,44 @@ class ClassDefinitionFactory
 
     private function createSetupBeforeClassMethod(TestInterface $test): MethodDefinitionInterface
     {
-        $setupBeforeClassBody = new Body([
-            new Statement(
-                new MethodInvocation(
-                    methodName: 'setClientManager',
-                    arguments: new MethodArguments(
-                        [
-                            new ObjectConstructor(
-                                class: new ClassName(ClientManager::class),
-                                arguments: new MethodArguments([
-                                    $this->argumentFactory->create($test->getBrowser()),
-                                ]),
-                                mightThrow: true,
-                            ),
-                        ]
-                    ),
-                    mightThrow: false,
-                    type: TypeCollection::void(),
-                    parent: new StaticObject('self'),
+        $bodyContent = BodyContentCollection::createFromExpressions([
+            new MethodInvocation(
+                methodName: 'setClientManager',
+                arguments: new MethodArguments(
+                    [
+                        new ObjectConstructor(
+                            class: new ClassName(ClientManager::class),
+                            arguments: new MethodArguments([
+                                $this->argumentFactory->create($test->getBrowser()),
+                            ]),
+                            mightThrow: true,
+                        ),
+                    ]
                 ),
+                mightThrow: false,
+                type: TypeCollection::void(),
+                parent: new StaticObject('self'),
             ),
-            new Statement(
-                new MethodInvocation(
-                    methodName: 'setUpBeforeClass',
-                    arguments: new MethodArguments(),
-                    mightThrow: true,
-                    type: TypeCollection::void(),
-                    parent: new StaticObject('parent'),
-                )
+            new MethodInvocation(
+                methodName: 'setUpBeforeClass',
+                arguments: new MethodArguments(),
+                mightThrow: true,
+                type: TypeCollection::void(),
+                parent: new StaticObject('parent'),
             ),
-            new Statement(
-                new MethodInvocation(
-                    methodName: 'request',
-                    arguments: new MethodArguments([
-                        $this->argumentFactory->create('GET'),
-                        $this->argumentFactory->create($test->getUrl()),
-                    ]),
-                    mightThrow: true,
-                    type: TypeCollection::object(),
-                    parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
-                )
+            new MethodInvocation(
+                methodName: 'request',
+                arguments: new MethodArguments([
+                    $this->argumentFactory->create('GET'),
+                    $this->argumentFactory->create($test->getUrl()),
+                ]),
+                mightThrow: true,
+                type: TypeCollection::object(),
+                parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
             ),
         ]);
 
-        $method = new MethodDefinition('setUpBeforeClass', $setupBeforeClassBody);
+        $method = new MethodDefinition('setUpBeforeClass', new Body($bodyContent));
         $method->setStatic();
 
         return $method;

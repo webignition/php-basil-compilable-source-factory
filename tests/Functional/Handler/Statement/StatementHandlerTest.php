@@ -7,6 +7,7 @@ namespace Functional\Handler\Statement;
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Handler\Statement\StatementHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
@@ -72,15 +73,17 @@ class StatementHandlerTest extends AbstractBrowserTestCase
         ?BodyInterface $additionalSetupStatements = null,
         ?BodyInterface $teardownStatements = null,
     ): void {
-        $components = $this->handler->handle($statement);
+        $contentCollection = new BodyContentCollection();
 
-        $bodyParts = [];
+        $components = $this->handler->handle($statement);
         $setupComponent = $components->getSetup();
-        if ($setupComponent instanceof BodyInterface) {
-            $bodyParts[] = $setupComponent;
+        if ($setupComponent instanceof BodyContentCollection) {
+            $contentCollection = $contentCollection->merge($setupComponent);
         }
-        $bodyParts[] = $components->getBody();
-        $body = new Body($bodyParts);
+
+        $contentCollection = $contentCollection->merge($components->getBody());
+
+        $body = new Body($contentCollection);
 
         $classCode = $this->testCodeGenerator->createBrowserTestForBlock(
             $body,
@@ -109,15 +112,17 @@ class StatementHandlerTest extends AbstractBrowserTestCase
         StatementInterface $statement,
         string $expectedExpectationFailedExceptionMessage
     ): void {
-        $components = $this->handler->handle($statement);
+        $contentCollection = new BodyContentCollection();
 
-        $bodyParts = [];
+        $components = $this->handler->handle($statement);
         $setupComponent = $components->getSetup();
-        if ($setupComponent instanceof BodyInterface) {
-            $bodyParts[] = $setupComponent;
+        if ($setupComponent instanceof BodyContentCollection) {
+            $contentCollection = $contentCollection->merge($setupComponent);
         }
-        $bodyParts[] = $components->getBody();
-        $body = new Body($bodyParts);
+
+        $contentCollection = $contentCollection->merge($components->getBody());
+
+        $body = new Body($contentCollection);
 
         $classCode = $this->testCodeGenerator->createBrowserTestForBlock($body, $fixture);
 

@@ -8,7 +8,7 @@ use SmartAssert\DomIdentifier\Factory as DomIdentifierFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\Model\Body\Body;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastExpression;
@@ -17,7 +17,6 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
-use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
@@ -49,7 +48,7 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
     /**
      * @throws UnsupportedContentException
      */
-    public function handle(StatementInterface $statement): ?StatementHandlerComponents
+    public function handle(StatementInterface $statement): ?StatementHandlerCollections
     {
         if (!$statement instanceof AssertionInterface) {
             return null;
@@ -92,7 +91,7 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
     private function createIsRegExpAssertionBody(
         ExpressionInterface $examinedAccessor,
         AssertionInterface $assertion,
-    ): StatementHandlerComponents {
+    ): StatementHandlerCollections {
         $examinedValueVariable = Property::asStringVariable(VariableName::EXAMINED_VALUE);
         $expectedValueVariable = Property::asBooleanVariable(VariableName::EXPECTED_VALUE);
 
@@ -113,15 +112,17 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
         );
         $identityComparison = EncapsulatingCastExpression::forBool($identityComparison);
 
-        return new StatementHandlerComponents(
-            new Statement($this->phpUnitCallFactory->createAssertionCall(
-                'assertFalse',
-                $assertion,
-                [$expectedValueVariable],
-                [$expectedValueVariable, $examinedValueVariable],
-            ))
+        return new StatementHandlerCollections(
+            BodyContentCollection::createFromExpressions([
+                $this->phpUnitCallFactory->createAssertionCall(
+                    'assertFalse',
+                    $assertion,
+                    [$expectedValueVariable],
+                    [$expectedValueVariable, $examinedValueVariable],
+                )
+            ])
         )->withSetup(
-            Body::createFromExpressions([
+            BodyContentCollection::createFromExpressions([
                 new AssignmentExpression($examinedValueVariable, $examinedAccessor),
                 new AssignmentExpression($expectedValueVariable, $identityComparison),
             ]),

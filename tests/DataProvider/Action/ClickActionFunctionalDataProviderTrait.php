@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilModels\Parser\ActionParser;
@@ -24,32 +25,56 @@ trait ClickActionFunctionalDataProviderTrait
                 'fixture' => '/action-click-submit.html',
                 'statement' => $actionParser->parse('click $"#link-to-index"', 0),
                 'additionalVariableIdentifiers' => [],
-                'additionalSetupStatements' => new Body([
-                    StatementFactory::createAssertBrowserTitle('Click'),
-                ]),
-                'teardownStatements' => new Body([
-                    StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
-                ]),
+                'additionalSetupStatements' => new Body(
+                    new BodyContentCollection()
+                        ->append(
+                            StatementFactory::createAssertBrowserTitle('Click'),
+                        )
+                ),
+                'teardownStatements' => new Body(
+                    new BodyContentCollection()
+                        ->append(
+                            StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
+                        )
+                ),
             ],
             'interaction action (click), submit button' => [
                 'fixture' => '/action-click-submit.html',
                 'statement' => $actionParser->parse('click $"#form input[type=\'submit\']"', 0),
                 'additionalVariableIdentifiers' => [],
-                'additionalSetupStatements' => new Body([
-                    StatementFactory::createAssertBrowserTitle('Click'),
-                    StatementFactory::createCrawlerFilterCallForElement(
-                        '#form input[type="submit"]',
-                        $submitButtonVariable
-                    ),
-                    StatementFactory::createAssertSame('"false"', '$submitButton->getAttribute(\'data-clicked\')'),
-                ]),
-                'teardownStatements' => new Body([
-                    StatementFactory::createCrawlerFilterCallForElement(
-                        '#form input[type="submit"]',
-                        $submitButtonVariable
-                    ),
-                    StatementFactory::createAssertSame('"true"', '$submitButton->getAttribute(\'data-clicked\')'),
-                ]),
+                'additionalSetupStatements' => new Body(
+                    new BodyContentCollection()
+                        ->append(
+                            StatementFactory::createAssertBrowserTitle('Click'),
+                        )
+                        ->append(
+                            StatementFactory::createCrawlerFilterCallForElement(
+                                '#form input[type="submit"]',
+                                $submitButtonVariable
+                            ),
+                        )
+                        ->append(
+                            StatementFactory::createAssertSame(
+                                '"false"',
+                                '$submitButton->getAttribute(\'data-clicked\')'
+                            ),
+                        )
+                ),
+                'teardownStatements' => new Body(
+                    new BodyContentCollection()
+                        ->append(
+                            StatementFactory::createCrawlerFilterCallForElement(
+                                '#form input[type="submit"]',
+                                $submitButtonVariable
+                            ),
+                        )
+                        ->append(
+                            StatementFactory::createAssertSame(
+                                '"true"',
+                                '$submitButton->getAttribute(\'data-clicked\')'
+                            ),
+                        )
+                ),
             ],
         ];
     }

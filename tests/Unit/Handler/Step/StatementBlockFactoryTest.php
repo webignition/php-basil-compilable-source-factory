@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Handler\Step;
 
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StatementBlockFactory;
+use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTestCase;
@@ -33,7 +34,7 @@ class StatementBlockFactoryTest extends AbstractResolvableTestCase
     ): void {
         $body = $this->factory->create($statement);
 
-        $this->assertRenderResolvable($expectedRenderedContent, $body);
+        $this->assertRenderResolvable($expectedRenderedContent, new Body($body));
         $this->assertEquals($expectedMetadata, $body->getMetadata());
     }
 

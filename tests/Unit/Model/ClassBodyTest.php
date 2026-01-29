@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model;
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Model\Attribute\DataProviderAttribute;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\ClassBody;
 use webignition\BasilCompilableSourceFactory\Model\DataProviderMethodDefinition;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
@@ -40,7 +41,7 @@ class ClassBodyTest extends AbstractResolvableTestCase
             ],
             'single empty method' => [
                 'body' => new ClassBody([
-                    new MethodDefinition('methodName', new Body([])),
+                    new MethodDefinition('methodName', new Body()),
                 ]),
                 'expectedString' => <<<'EOD'
                     public function methodName(): void
@@ -51,52 +52,72 @@ class ClassBodyTest extends AbstractResolvableTestCase
             ],
             'many methods' => [
                 'body' => new ClassBody([
-                    new MethodDefinition('stepOne', new Body([
-                        new SingleLineComment('click $"a"'),
-                        new Statement(
-                            new AssignmentExpression(
-                                Property::asStringVariable('statement'),
-                                new MethodInvocation(
-                                    methodName: 'createAction',
-                                    arguments: new MethodArguments([
-                                        LiteralExpression::string('\'$"a" exists\''),
-                                    ]),
-                                    mightThrow: false,
-                                    type: TypeCollection::string(),
-                                    parent: new StaticObject('Acme\Statement'),
+                    new MethodDefinition(
+                        'stepOne',
+                        new Body(
+                            new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment('click $"a"')
                                 )
-                            )
-                        ),
-                        new Statement(
-                            new AssignmentExpression(
-                                Property::asStringVariable('currentStatement'),
-                                Property::asStringVariable('statement')
-                            )
-                        ),
-                    ])),
-                    new MethodDefinition('stepTwo', new Body([
-                        new SingleLineComment('click $"b"'),
-                        new Statement(
-                            new AssignmentExpression(
-                                Property::asStringVariable('statement'),
-                                new MethodInvocation(
-                                    methodName: 'createAction',
-                                    arguments: new MethodArguments([
-                                        LiteralExpression::string('\'$"b" exists\''),
-                                    ]),
-                                    mightThrow: false,
-                                    type: TypeCollection::string(),
-                                    parent: new StaticObject('Acme\Statement'),
+                                ->append(
+                                    new Statement(
+                                        new AssignmentExpression(
+                                            Property::asStringVariable('statement'),
+                                            new MethodInvocation(
+                                                methodName: 'createAction',
+                                                arguments: new MethodArguments([
+                                                    LiteralExpression::string('\'$"a" exists\''),
+                                                ]),
+                                                mightThrow: false,
+                                                type: TypeCollection::string(),
+                                                parent: new StaticObject('Acme\Statement'),
+                                            )
+                                        )
+                                    )
                                 )
-                            )
-                        ),
-                        new Statement(
-                            new AssignmentExpression(
-                                Property::asStringVariable('currentStatement'),
-                                Property::asStringVariable('statement')
-                            )
-                        ),
-                    ])),
+                                ->append(
+                                    new Statement(
+                                        new AssignmentExpression(
+                                            Property::asStringVariable('currentStatement'),
+                                            Property::asStringVariable('statement')
+                                        )
+                                    )
+                                )
+                        )
+                    ),
+                    new MethodDefinition(
+                        'stepTwo',
+                        new Body(
+                            new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment('click $"b"')
+                                )
+                                ->append(
+                                    new Statement(
+                                        new AssignmentExpression(
+                                            Property::asStringVariable('statement'),
+                                            new MethodInvocation(
+                                                methodName: 'createAction',
+                                                arguments: new MethodArguments([
+                                                    LiteralExpression::string('\'$"b" exists\''),
+                                                ]),
+                                                mightThrow: false,
+                                                type: TypeCollection::string(),
+                                                parent: new StaticObject('Acme\Statement'),
+                                            )
+                                        )
+                                    )
+                                )
+                                ->append(
+                                    new Statement(
+                                        new AssignmentExpression(
+                                            Property::asStringVariable('currentStatement'),
+                                            Property::asStringVariable('statement')
+                                        )
+                                    )
+                                )
+                        )
+                    ),
                 ]),
                 'expectedString' => <<<'EOD'
                     public function stepOne(): void
@@ -119,29 +140,36 @@ class ClassBodyTest extends AbstractResolvableTestCase
                     (function () {
                         $methodDefinition = new MethodDefinition(
                             'stepOne',
-                            new Body([
-                                new SingleLineComment('click $"a"'),
-                                new Statement(
-                                    new AssignmentExpression(
-                                        Property::asStringVariable('statement'),
-                                        new MethodInvocation(
-                                            methodName: 'createAction',
-                                            arguments: new MethodArguments([
-                                                LiteralExpression::string('\'$"a" exists\''),
-                                            ]),
-                                            mightThrow: false,
-                                            type: TypeCollection::string(),
-                                            parent: new StaticObject('Acme\Statement'),
+                            new Body(
+                                new BodyContentCollection()
+                                    ->append(
+                                        new SingleLineComment('click $"a"')
+                                    )
+                                    ->append(
+                                        new Statement(
+                                            new AssignmentExpression(
+                                                Property::asStringVariable('statement'),
+                                                new MethodInvocation(
+                                                    methodName: 'createAction',
+                                                    arguments: new MethodArguments([
+                                                        LiteralExpression::string('\'$"a" exists\''),
+                                                    ]),
+                                                    mightThrow: false,
+                                                    type: TypeCollection::string(),
+                                                    parent: new StaticObject('Acme\Statement'),
+                                                )
+                                            )
                                         )
                                     )
-                                ),
-                                new Statement(
-                                    new AssignmentExpression(
-                                        Property::asStringVariable('currentStatement'),
-                                        Property::asStringVariable('statement')
+                                    ->append(
+                                        new Statement(
+                                            new AssignmentExpression(
+                                                Property::asStringVariable('currentStatement'),
+                                                Property::asStringVariable('statement')
+                                            )
+                                        )
                                     )
-                                ),
-                            ]),
+                            ),
                             [
                                 'x', 'y',
                             ]
@@ -161,29 +189,39 @@ class ClassBodyTest extends AbstractResolvableTestCase
                             'y' => '4',
                         ],
                     ]),
-                    new MethodDefinition('stepTwo', new Body([
-                        new SingleLineComment('click $"b"'),
-                        new Statement(
-                            new AssignmentExpression(
-                                Property::asStringVariable('statement'),
-                                new MethodInvocation(
-                                    methodName: 'createAction',
-                                    arguments: new MethodArguments([
-                                        LiteralExpression::string('\'$"b" exists\''),
-                                    ]),
-                                    mightThrow: false,
-                                    type: TypeCollection::string(),
-                                    parent: new StaticObject('Acme\Statement'),
+                    new MethodDefinition(
+                        'stepTwo',
+                        new Body(
+                            new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment('click $"b"')
                                 )
-                            )
+                                ->append(
+                                    new Statement(
+                                        new AssignmentExpression(
+                                            Property::asStringVariable('statement'),
+                                            new MethodInvocation(
+                                                methodName: 'createAction',
+                                                arguments: new MethodArguments([
+                                                    LiteralExpression::string('\'$"b" exists\''),
+                                                ]),
+                                                mightThrow: false,
+                                                type: TypeCollection::string(),
+                                                parent: new StaticObject('Acme\Statement'),
+                                            )
+                                        )
+                                    )
+                                )
+                                ->append(
+                                    new Statement(
+                                        new AssignmentExpression(
+                                            Property::asStringVariable('currentStatement'),
+                                            Property::asStringVariable('statement')
+                                        )
+                                    )
+                                )
                         ),
-                        new Statement(
-                            new AssignmentExpression(
-                                Property::asStringVariable('currentStatement'),
-                                Property::asStringVariable('statement')
-                            )
-                        ),
-                    ])),
+                    ),
                 ]),
                 'expectedString' => <<<'EOD'
                     #[DataProvider('stepOneDataProvider')]

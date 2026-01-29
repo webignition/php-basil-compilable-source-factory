@@ -32,7 +32,7 @@ class ExistenceAssertionHandler implements StatementHandlerInterface
     /**
      * @throws UnsupportedContentException
      */
-    public function handle(StatementInterface $statement): ?StatementHandlerComponents
+    public function handle(StatementInterface $statement): ?StatementHandlerCollections
     {
         if (!$statement instanceof AssertionInterface) {
             return null;

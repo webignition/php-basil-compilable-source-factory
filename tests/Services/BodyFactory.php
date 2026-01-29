@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
@@ -16,15 +17,24 @@ class BodyFactory
         ?BodyInterface $teardownStatements = null
     ): Body {
         if (null === $teardownStatements) {
-            $teardownStatements = new Body([]);
+            $teardownStatements = new Body();
         }
 
-        return new Body([
-            new SingleLineComment('Code under test'),
-            $source,
-            new EmptyLine(),
-            new SingleLineComment('Additional teardown statements'),
-            $teardownStatements,
-        ]);
+        return new Body(
+            new BodyContentCollection()
+                ->append(
+                    new SingleLineComment('Code under test'),
+                )
+                ->append(
+                    $source,
+                )
+                ->append(
+                    new EmptyLine(),
+                )->append(
+                    new SingleLineComment('Additional teardown statements'),
+                )->append(
+                    $teardownStatements,
+                )
+        );
     }
 }

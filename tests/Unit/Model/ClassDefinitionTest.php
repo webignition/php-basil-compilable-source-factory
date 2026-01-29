@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\ClassBody;
 use webignition\BasilCompilableSourceFactory\Model\ClassDefinition;
 use webignition\BasilCompilableSourceFactory\Model\ClassDefinitionInterface;
@@ -22,7 +23,6 @@ use webignition\BasilCompilableSourceFactory\Model\MethodDefinition;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
-use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 
 class ClassDefinitionTest extends AbstractResolvableTestCase
@@ -63,10 +63,18 @@ class ClassDefinitionTest extends AbstractResolvableTestCase
                 'classDefinition' => new ClassDefinition(
                     new ClassSignature('className'),
                     new ClassBody([
-                        new MethodDefinition('name', new Body([
-                            new EmptyLine(),
-                            new SingleLineComment('single line comment'),
-                        ])),
+                        new MethodDefinition(
+                            'name',
+                            new Body(
+                                new BodyContentCollection()
+                                    ->append(
+                                        new EmptyLine(),
+                                    )
+                                    ->append(
+                                        new SingleLineComment('single line comment'),
+                                    )
+                            ),
+                        ),
                     ])
                 ),
                 'expectedMetadata' => new Metadata(),
@@ -75,17 +83,16 @@ class ClassDefinitionTest extends AbstractResolvableTestCase
                 'classDefinition' => new ClassDefinition(
                     new ClassSignature('className'),
                     new ClassBody([
-                        new MethodDefinition('name', new Body([
-                            new Statement(
+                        new MethodDefinition(
+                            'name',
+                            new Body(BodyContentCollection::createFromExpressions([
                                 new MethodInvocation(
                                     methodName: 'methodName',
                                     arguments: new MethodArguments(),
                                     mightThrow: false,
                                     type: TypeCollection::string(),
                                     parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
-                                )
-                            ),
-                            new Statement(
+                                ),
                                 new AssignmentExpression(
                                     Property::asStringVariable('variable'),
                                     new MethodInvocation(
@@ -95,8 +102,8 @@ class ClassDefinitionTest extends AbstractResolvableTestCase
                                         type: TypeCollection::string(),
                                     )
                                 )
-                            )
-                        ])),
+                            ])),
+                        ),
                     ])
                 ),
                 'expectedMetadata' => new Metadata(
@@ -165,7 +172,7 @@ class ClassDefinitionTest extends AbstractResolvableTestCase
                         new ClassName('TestCase')
                     ),
                     new ClassBody([
-                        new MethodDefinition('methodName', new Body([])),
+                        new MethodDefinition('methodName', new Body()),
                     ])
                 ),
                 'expectedString' => <<<'EOD'

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilModels\Parser\ActionParser;
 
@@ -22,14 +23,24 @@ trait BackActionFunctionalDataProviderTrait
                 'fixture' => '/index.html',
                 'statement' => $actionParser->parse('back', 0),
                 'additionalVariableIdentifiers' => [],
-                'additionalSetupStatements' => new Body([
-                    StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
-                    StatementFactory::createCrawlerActionCallForElement('#link-to-assertions', 'click'),
-                    StatementFactory::createAssertBrowserTitle('Assertions fixture'),
-                ]),
-                'teardownStatements' => new Body([
-                    StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
-                ]),
+                'additionalSetupStatements' => new Body(
+                    new BodyContentCollection()
+                        ->append(
+                            StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
+                        )
+                        ->append(
+                            StatementFactory::createCrawlerActionCallForElement('#link-to-assertions', 'click'),
+                        )
+                        ->append(
+                            StatementFactory::createAssertBrowserTitle('Assertions fixture'),
+                        )
+                ),
+                'teardownStatements' => new Body(
+                    new BodyContentCollection()
+                        ->append(
+                            StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
+                        )
+                ),
             ],
         ];
     }

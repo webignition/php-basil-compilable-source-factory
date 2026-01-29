@@ -12,5 +12,5 @@ interface StatementHandlerInterface
     /**
      * @throws UnsupportedContentException
      */
-    public function handle(StatementInterface $statement): ?StatementHandlerComponents;
+    public function handle(StatementInterface $statement): ?StatementHandlerCollections;
 }

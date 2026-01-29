@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Attribute\DataProviderAttribute;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
@@ -48,7 +49,9 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
      */
     public static function createDataProvider(): array
     {
-        $body = new Body([]);
+        $body = new Body(
+            new BodyContentCollection()
+        );
 
         return [
             'no arguments' => [
@@ -87,7 +90,9 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
             'empty' => [
                 'methodDefinition' => new MethodDefinition(
                     'methodName',
-                    new Body([]),
+                    new Body(
+                        new BodyContentCollection()
+                    ),
                 ),
                 'expected' => TypeCollection::void(),
             ],
@@ -109,21 +114,29 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
     {
         return [
             'empty' => [
-                'methodDefinition' => new MethodDefinition('name', new Body([])),
+                'methodDefinition' => new MethodDefinition('name', new Body()),
                 'expectedMetadata' => new Metadata(),
             ],
             'lines without metadata' => [
-                'methodDefinition' => new MethodDefinition('name', new Body([
-                    new EmptyLine(),
-                    new SingleLineComment('single line comment'),
-                ])),
+                'methodDefinition' => new MethodDefinition(
+                    'name',
+                    new Body(
+                        new BodyContentCollection()
+                            ->append(new EmptyLine())
+                            ->append(new SingleLineComment('single line comment')),
+                    )
+                ),
                 'expectedMetadata' => new Metadata(),
             ],
             'lines without metadata with data provider attribute' => [
-                'methodDefinition' => new MethodDefinition('name', new Body([
-                    new EmptyLine(),
-                    new SingleLineComment('single line comment'),
-                ]))->withAttribute(new DataProviderAttribute('dataProviderMethod')),
+                'methodDefinition' => new MethodDefinition(
+                    'name',
+                    new Body(
+                        new BodyContentCollection()
+                            ->append(new EmptyLine())
+                            ->append(new SingleLineComment('single line comment')),
+                    )
+                )->withAttribute(new DataProviderAttribute('dataProviderMethod')),
                 'expectedMetadata' => new Metadata(
                     classNames: [
                         DataProvider::class,
@@ -131,17 +144,16 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                 ),
             ],
             'lines with metadata without data provider attribute' => [
-                'methodDefinition' => new MethodDefinition('name', new Body([
-                    new Statement(
+                'methodDefinition' => new MethodDefinition(
+                    'name',
+                    new Body(BodyContentCollection::createFromExpressions([
                         new MethodInvocation(
                             methodName: 'methodName',
                             arguments: new MethodArguments(),
                             mightThrow: false,
                             type: TypeCollection::string(),
                             parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
-                        )
-                    ),
-                    new Statement(
+                        ),
                         new AssignmentExpression(
                             Property::asStringVariable('variable'),
                             new MethodInvocation(
@@ -151,8 +163,8 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                                 type: TypeCollection::string(),
                             ),
                         )
-                    ),
-                ])),
+                    ])),
+                ),
                 'expectedMetadata' => new Metadata(
                     dependencyNames: [
                         DependencyName::PANTHER_CLIENT,
@@ -160,17 +172,16 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                 ),
             ],
             'lines with metadata with data provider attribute' => [
-                'methodDefinition' => new MethodDefinition('name', new Body([
-                    new Statement(
+                'methodDefinition' => new MethodDefinition(
+                    'name',
+                    new Body(BodyContentCollection::createFromExpressions([
                         new MethodInvocation(
                             methodName: 'methodName',
                             arguments: new MethodArguments(),
                             mightThrow: false,
                             type: TypeCollection::string(),
                             parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
-                        )
-                    ),
-                    new Statement(
+                        ),
                         new AssignmentExpression(
                             Property::asStringVariable('variable'),
                             new MethodInvocation(
@@ -180,8 +191,9 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                                 type: TypeCollection::string(),
                             )
                         )
-                    ),
-                ]))->withAttribute(new DataProviderAttribute('dataProviderMethod')),
+                    ])),
+                )
+                    ->withAttribute(new DataProviderAttribute('dataProviderMethod')),
                 'expectedMetadata' => new Metadata(
                     classNames: [
                         DataProvider::class,
@@ -196,7 +208,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
 
     public function testVisibility(): void
     {
-        $methodDefinition = new MethodDefinition('name', new Body([]));
+        $methodDefinition = new MethodDefinition('name', new Body());
         $this->assertSame(MethodDefinition::VISIBILITY_PUBLIC, $methodDefinition->getVisibility());
 
         $methodDefinition->setProtected();
@@ -211,7 +223,7 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
 
     public function testIsStatic(): void
     {
-        $methodDefinition = new MethodDefinition('name', new Body([]));
+        $methodDefinition = new MethodDefinition('name', new Body());
         $this->assertFalse($methodDefinition->isStatic());
 
         $methodDefinition->setStatic();
@@ -229,18 +241,18 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
      */
     public static function renderDataProvider(): array
     {
-        $emptyProtectedMethod = new MethodDefinition('emptyProtectedMethod', new Body([]));
+        $emptyProtectedMethod = new MethodDefinition('emptyProtectedMethod', new Body());
         $emptyProtectedMethod->setProtected();
 
-        $emptyPrivateMethod = new MethodDefinition('emptyPrivateMethod', new Body([]));
+        $emptyPrivateMethod = new MethodDefinition('emptyPrivateMethod', new Body());
         $emptyPrivateMethod->setPrivate();
 
-        $emptyPublicStaticMethod = new MethodDefinition('emptyPublicStaticMethod', new Body([]));
+        $emptyPublicStaticMethod = new MethodDefinition('emptyPublicStaticMethod', new Body());
         $emptyPublicStaticMethod->setStatic();
 
         return [
             'public, no arguments, no return type, no lines' => [
-                'methodDefinition' => new MethodDefinition('emptyPublicMethod', new Body([])),
+                'methodDefinition' => new MethodDefinition('emptyPublicMethod', new Body()),
                 'expectedString' => <<<'EOD'
                     public function emptyPublicMethod(): void
                     {
@@ -267,11 +279,15 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                     EOD,
             ],
             'public, has arguments, no return type, no lines' => [
-                'methodDefinition' => new MethodDefinition('emptyPublicMethod', new Body([]), [
-                    'arg1',
-                    'arg2',
-                    'arg3',
-                ]),
+                'methodDefinition' => new MethodDefinition(
+                    'emptyPublicMethod',
+                    new Body(),
+                    [
+                        'arg1',
+                        'arg2',
+                        'arg3',
+                    ]
+                ),
                 'expectedString' => <<<'EOD'
                     public function emptyPublicMethod($arg1, $arg2, $arg3): void
                     {
@@ -282,25 +298,32 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
             'public, has arguments, no return type, has lines' => [
                 'methodDefinition' => new MethodDefinition(
                     'nameOfMethod',
-                    new Body([
-                        new SingleLineComment('Assign object method call to $value'),
-                        new EmptyLine(),
-                        new Statement(
-                            new AssignmentExpression(
-                                Property::asStringVariable('value'),
-                                new MethodInvocation(
-                                    methodName: 'methodName',
-                                    arguments: new MethodArguments([
-                                        LiteralExpression::string('$x'),
-                                        LiteralExpression::string('$y'),
-                                    ]),
-                                    mightThrow: false,
-                                    type: TypeCollection::string(),
-                                    parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
+                    new Body(
+                        new BodyContentCollection()
+                            ->append(
+                                new SingleLineComment('Assign object method call to $value')
+                            )
+                            ->append(
+                                new EmptyLine()
+                            )
+                            ->append(
+                                new Statement(
+                                    new AssignmentExpression(
+                                        Property::asStringVariable('value'),
+                                        new MethodInvocation(
+                                            methodName: 'methodName',
+                                            arguments: new MethodArguments([
+                                                LiteralExpression::string('$x'),
+                                                LiteralExpression::string('$y'),
+                                            ]),
+                                            mightThrow: false,
+                                            type: TypeCollection::string(),
+                                            parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
+                                        )
+                                    )
                                 )
                             )
-                        ),
-                    ]),
+                    ),
                     ['x', 'y']
                 ),
                 'expectedString' => <<<'EOD'
@@ -315,10 +338,11 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
             'public, has arguments, no return type, has lines with trailing newline' => [
                 'methodDefinition' => new MethodDefinition(
                     'nameOfMethod',
-                    new Body([
-                        new SingleLineComment('comment'),
-                        new EmptyLine(),
-                    ]),
+                    new Body(
+                        new BodyContentCollection()
+                            ->append(new SingleLineComment('comment'))
+                            ->append(new EmptyLine())
+                    ),
                     ['x', 'y']
                 ),
                 'expectedString' => <<<'EOD'
@@ -341,9 +365,10 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                 'methodDefinition' => (function () {
                     $methodDefinition = new MethodDefinition(
                         'nameOfMethod',
-                        new Body([
-                            new SingleLineComment('comment'),
-                        ]),
+                        new Body(
+                            new BodyContentCollection()
+                                ->append(new SingleLineComment('comment'))
+                        ),
                         ['x', 'y']
                     );
 
@@ -363,9 +388,10 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                 'methodDefinition' => (function () {
                     $methodDefinition = new MethodDefinition(
                         'nameOfMethod',
-                        new Body([
-                            new SingleLineComment('comment'),
-                        ]),
+                        new Body(
+                            new BodyContentCollection()
+                                ->append(new SingleLineComment('comment'))
+                        ),
                         ['x', 'y']
                     );
 
@@ -385,9 +411,10 @@ class MethodDefinitionTest extends AbstractResolvableTestCase
                 'methodDefinition' => (function () {
                     $methodDefinition = new MethodDefinition(
                         'nameOfMethod',
-                        new Body([
-                            new SingleLineComment('comment'),
-                        ]),
+                        new Body(
+                            new BodyContentCollection()
+                                ->append(new SingleLineComment('comment'))
+                        ),
                         ['x', 'y']
                     );
 

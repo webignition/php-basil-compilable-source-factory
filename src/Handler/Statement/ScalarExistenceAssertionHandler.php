@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Statement;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpression;
@@ -14,7 +15,6 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastE
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\NullCoalescerExpression;
 use webignition\BasilCompilableSourceFactory\Model\Property;
-use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Statement\StatementInterface;
 
@@ -36,7 +36,7 @@ class ScalarExistenceAssertionHandler implements StatementHandlerInterface
     /**
      * @throws UnsupportedContentException
      */
-    public function handle(StatementInterface $statement): ?StatementHandlerComponents
+    public function handle(StatementInterface $statement): ?StatementHandlerCollections
     {
         if (!$statement instanceof AssertionInterface) {
             return null;
@@ -58,17 +58,19 @@ class ScalarExistenceAssertionHandler implements StatementHandlerInterface
 
         $expected = LiteralExpression::boolean('exists' === $statement->getOperator());
 
-        return new StatementHandlerComponents(
-            new Statement($this->phpUnitCallFactory->createAssertionCall(
-                'exists' === $statement->getOperator() ? 'assertTrue' : 'assertFalse',
-                $statement,
-                [$examinedValueVariable],
-                [$expected, $examinedValueVariable],
-            ))
+        return new StatementHandlerCollections(
+            BodyContentCollection::createFromExpressions([
+                $this->phpUnitCallFactory->createAssertionCall(
+                    'exists' === $statement->getOperator() ? 'assertTrue' : 'assertFalse',
+                    $statement,
+                    [$examinedValueVariable],
+                    [$expected, $examinedValueVariable],
+                )
+            ])
         )->withSetup(
-            new Statement(
+            BodyContentCollection::createFromExpressions([
                 new AssignmentExpression($examinedValueVariable, $examinedAccessor),
-            )
+            ])
         );
     }
 }

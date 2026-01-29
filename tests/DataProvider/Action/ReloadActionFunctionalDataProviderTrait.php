@@ -7,10 +7,10 @@ namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
-use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\BasilModels\Parser\ActionParser;
 
@@ -24,8 +24,8 @@ trait ReloadActionFunctionalDataProviderTrait
         $actionParser = ActionParser::create();
         $argumentFactory = ArgumentFactory::createFactory();
 
-        $setupTeardownStatements = new Body([
-            new Statement(
+        $setupTeardownStatements = new Body(
+            BodyContentCollection::createFromExpressions([
                 new MethodInvocation(
                     methodName: 'assertCount',
                     arguments: new MethodArguments([
@@ -41,17 +41,13 @@ trait ReloadActionFunctionalDataProviderTrait
                     mightThrow: false,
                     type: TypeCollection::void(),
                     parent: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
-                )
-            ),
-            new Statement(
+                ),
                 new MethodInvocation(
                     methodName: 'usleep',
                     arguments: new MethodArguments([$argumentFactory->create('100000')]),
                     mightThrow: false,
                     type: TypeCollection::void(),
-                )
-            ),
-            new Statement(
+                ),
                 new MethodInvocation(
                     methodName: 'assertCount',
                     arguments: new MethodArguments([
@@ -67,9 +63,9 @@ trait ReloadActionFunctionalDataProviderTrait
                     mightThrow: false,
                     type: TypeCollection::void(),
                     parent: Property::asDependency(DependencyName::PHPUNIT_TEST_CASE),
-                )
-            ),
-        ]);
+                ),
+            ])
+        );
 
         return [
             'reload action' => [

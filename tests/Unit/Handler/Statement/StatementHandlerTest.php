@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Handler\Statement\StatementHandler;
+use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action as ActionDataProvider;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion as AssertionDataProvider;
@@ -64,19 +65,19 @@ class StatementHandlerTest extends AbstractResolvableTestCase
         MetadataInterface $expectedBodyMetadata,
     ): void {
         $handler = StatementHandler::createHandler();
-        $components = $handler->handle($statement);
+        $collections = $handler->handle($statement);
 
-        $setup = $components->getSetup();
+        $setup = $collections->getSetup();
         if (null === $setup) {
             self::assertNull($expectedRenderedSetup);
             self::assertNull($expectedSetupMetadata);
         } else {
-            $this->assertRenderResolvable((string) $expectedRenderedSetup, $setup);
+            $this->assertRenderResolvable((string) $expectedRenderedSetup, new Body($setup));
             $this->assertEquals($expectedSetupMetadata, $setup->getMetadata());
         }
 
-        $this->assertRenderResolvable($expectedRenderedBody, $components->getBody());
-        $this->assertEquals($expectedBodyMetadata, $components->getBody()->getMetadata());
+        $this->assertRenderResolvable($expectedRenderedBody, new Body($collections->getBody()));
+        $this->assertEquals($expectedBodyMetadata, $collections->getBody()->getMetadata());
     }
 
     #[DataProvider('handleThrowsExceptionDataProvider')]

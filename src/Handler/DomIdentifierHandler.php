@@ -8,6 +8,7 @@ use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ClosureExpression;
@@ -15,6 +16,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterfac
 use webignition\BasilCompilableSourceFactory\Model\Expression\ReturnExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
+use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocationInterface;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
@@ -58,26 +60,18 @@ class DomIdentifierHandler
 
         $elementVariable = Property::asObjectVariable('element');
 
-        $closureExpressionStatements = [
-            new Statement(
-                new AssignmentExpression($elementVariable, $findCall)
-            ),
-            new EmptyLine(),
-            new Statement(
-                new ReturnExpression(
-                    new MethodInvocation(
-                        methodName: 'getAttribute',
-                        arguments: new MethodArguments([$this->argumentFactory->create($attributeName)]),
-                        mightThrow: true,
-                        type: TypeCollection::string(),
-                        parent: $elementVariable,
-                    )
-                )
-            ),
-        ];
+        $returnCall = new MethodInvocation(
+            methodName: 'getAttribute',
+            arguments: new MethodArguments([$this->argumentFactory->create($attributeName)]),
+            mightThrow: true,
+            type: TypeCollection::string(),
+            parent: $elementVariable,
+        );
+
+        $bodyContent = $this->createBodyContent($elementVariable, $findCall, $returnCall);
 
         return new ClosureExpression(
-            new Body($closureExpressionStatements),
+            new Body($bodyContent),
             TypeCollection::string(),
         );
     }
@@ -90,29 +84,43 @@ class DomIdentifierHandler
 
         $elementVariable = Property::asObjectVariable('element');
 
-        $closureExpressionStatements = [
-            new Statement(
-                new AssignmentExpression($elementVariable, $findCall)
-            ),
-            new EmptyLine(),
-            new Statement(
-                new ReturnExpression(
-                    new MethodInvocation(
-                        methodName: 'getValue',
-                        arguments: new MethodArguments([
-                            $elementVariable,
-                        ]),
-                        mightThrow: false,
-                        type: TypeCollection::string(),
-                        parent: Property::asDependency(DependencyName::WEBDRIVER_ELEMENT_INSPECTOR),
-                    )
-                )
-            )
-        ];
+        $returnCall = new MethodInvocation(
+            methodName: 'getValue',
+            arguments: new MethodArguments([
+                $elementVariable,
+            ]),
+            mightThrow: false,
+            type: TypeCollection::string(),
+            parent: Property::asDependency(DependencyName::WEBDRIVER_ELEMENT_INSPECTOR),
+        );
+
+        $bodyContent = $this->createBodyContent($elementVariable, $findCall, $returnCall);
 
         return new ClosureExpression(
-            new Body($closureExpressionStatements),
+            new Body($bodyContent),
             TypeCollection::string(),
         );
+    }
+
+    private function createBodyContent(
+        Property $elementVariable,
+        ExpressionInterface $findCall,
+        MethodInvocationInterface $returnCall,
+    ): BodyContentCollection {
+        return new BodyContentCollection()
+            ->append(
+                new Statement(
+                    new AssignmentExpression($elementVariable, $findCall)
+                )
+            )
+            ->append(
+                new EmptyLine()
+            )
+            ->append(
+                new Statement(
+                    new ReturnExpression($returnCall)
+                )
+            )
+        ;
     }
 }

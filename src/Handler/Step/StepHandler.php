@@ -10,8 +10,7 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentExcepti
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\Handler\Statement\StatementHandler;
-use webignition\BasilCompilableSourceFactory\Model\Body\Body;
-use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
 use webignition\BasilModels\Model\Statement\Action\ActionInterface;
@@ -46,10 +45,8 @@ class StepHandler
     /**
      * @throws UnsupportedStepException
      */
-    public function handle(StepInterface $step): BodyInterface
+    public function handle(StepInterface $step): BodyContentCollection
     {
-        $bodySources = [];
-
         $statements = new StatementCollection([])
             ->append($step->getActions())
             ->append($step->getAssertions())
@@ -58,47 +55,57 @@ class StepHandler
         $derivedAssertions = $this->createDerivedAssertionsCollection($step, $statements);
         $statements = $statements->prepend($derivedAssertions);
 
+        $contentCollection = new BodyContentCollection();
+
         try {
             foreach ($statements as $statement) {
-                $bodySources[] = $this->statementBlockFactory->create($statement);
+                $contentCollection = $contentCollection->merge(
+                    $this->statementBlockFactory->create($statement)
+                );
 
                 $handlerComponents = $this->statementHandler->handle($statement);
-                $setupBlock = $handlerComponents->getSetup();
+                $setup = $handlerComponents->getSetup();
 
-                if (null !== $setupBlock) {
-                    $setup = $setupBlock;
-
+                if (null !== $setup) {
                     if ($setup->mightThrow()) {
-                        $setup = $this->tryCatchBlockFactory->createForThrowable(
-                            $setup,
-                            Body::createFromExpressions([
-                                $this->phpUnitCallFactory->createFailCall($statement, StatementStage::SETUP),
-                            ]),
-                        );
+                        $setup = new BodyContentCollection()
+                            ->append(
+                                $this->tryCatchBlockFactory->createForThrowable(
+                                    $setup,
+                                    BodyContentCollection::createFromExpressions([
+                                        $this->phpUnitCallFactory->createFailCall($statement, StatementStage::SETUP),
+                                    ]),
+                                )
+                            )
+                        ;
                     }
 
-                    $bodySources[] = $setup;
-                    $bodySources[] = new EmptyLine();
+                    $contentCollection = $contentCollection->merge($setup);
+                    $contentCollection = $contentCollection->append(new EmptyLine());
                 }
 
                 $body = $handlerComponents->getBody();
                 if ($body->mightThrow()) {
-                    $body = $this->tryCatchBlockFactory->createForThrowable(
-                        $handlerComponents->getBody(),
-                        Body::createFromExpressions([
-                            $this->phpUnitCallFactory->createFailCall($statement, StatementStage::EXECUTE),
-                        ])
-                    );
+                    $body = new BodyContentCollection()
+                        ->append(
+                            $this->tryCatchBlockFactory->createForThrowable(
+                                $body,
+                                BodyContentCollection::createFromExpressions([
+                                    $this->phpUnitCallFactory->createFailCall($statement, StatementStage::EXECUTE),
+                                ])
+                            )
+                        )
+                    ;
                 }
 
-                $bodySources[] = $body;
-                $bodySources[] = new EmptyLine();
+                $contentCollection = $contentCollection->merge($body);
+                $contentCollection = $contentCollection->append(new EmptyLine());
             }
         } catch (UnsupportedStatementException $unsupportedStatementException) {
             throw new UnsupportedStepException($step, $unsupportedStatementException);
         }
 
-        return new Body($bodySources);
+        return $contentCollection;
     }
 
     /**

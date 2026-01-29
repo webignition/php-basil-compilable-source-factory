@@ -7,10 +7,10 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\Valu
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Property;
-use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
@@ -33,11 +33,11 @@ class ScalarValueHandlerTest extends AbstractBrowserTestCase
 
         $valueVariable = Property::asStringVariable('value');
 
-        $instrumentedSource = new Body([
-            new Statement(
+        $instrumentedSource = new Body(
+            BodyContentCollection::createFromExpressions([
                 new AssignmentExpression($valueVariable, $source)
-            ),
-        ]);
+            ])
+        );
 
         $classCode = $this->testCodeGenerator->createBrowserTestForBlock(
             $instrumentedSource,
@@ -68,23 +68,32 @@ class ScalarValueHandlerTest extends AbstractBrowserTestCase
             'browser property: size' => [
                 'fixture' => '/empty.html',
                 'value' => '$browser.size',
-                'teardownStatements' => new Body([
-                    StatementFactory::createAssertSame('"1200x1100"', '$value'),
-                ]),
+                'teardownStatements' => new Body(
+                    new BodyContentCollection()
+                        ->append(
+                            StatementFactory::createAssertSame('"1200x1100"', '$value'),
+                        )
+                ),
             ],
             'page property: title' => [
                 'fixture' => '/index.html',
                 'value' => '$page.title',
-                'teardownStatements' => new Body([
-                    StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
-                ]),
+                'teardownStatements' => new Body(
+                    new BodyContentCollection()
+                        ->append(
+                            StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
+                        )
+                ),
             ],
             'page property: url' => [
                 'fixture' => '/index.html',
                 'value' => '$page.url',
-                'teardownStatements' => new Body([
-                    StatementFactory::createAssertSame('"http://127.0.0.1:9080/index.html"', '$value'),
-                ]),
+                'teardownStatements' => new Body(
+                    new BodyContentCollection()
+                        ->append(
+                            StatementFactory::createAssertSame('"http://127.0.0.1:9080/index.html"', '$value'),
+                        )
+                ),
             ],
         ];
     }

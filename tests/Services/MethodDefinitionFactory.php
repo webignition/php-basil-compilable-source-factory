@@ -8,6 +8,7 @@ use webignition\BaseBasilTestCase\ClientManager;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
@@ -47,37 +48,46 @@ class MethodDefinitionFactory
 
         $argumentFactory = ArgumentFactory::createFactory();
 
-        $body = new Body([
-            new Statement(
-                new MethodInvocation(
-                    methodName: 'setClientManager',
-                    arguments: new MethodArguments([
-                        new ObjectConstructor(
-                            class: new ClassName(ClientManager::class),
-                            arguments: new MethodArguments([$argumentFactory->create('chrome')]),
+        $body = new Body(
+            new BodyContentCollection()
+                ->append(
+                    new Statement(
+                        new MethodInvocation(
+                            methodName: 'setClientManager',
+                            arguments: new MethodArguments([
+                                new ObjectConstructor(
+                                    class: new ClassName(ClientManager::class),
+                                    arguments: new MethodArguments([$argumentFactory->create('chrome')]),
+                                    mightThrow: false,
+                                ),
+                            ]),
                             mightThrow: false,
-                        ),
-                    ]),
-                    mightThrow: false,
-                    type: TypeCollection::void(),
-                    parent: new StaticObject('self'),
+                            type: TypeCollection::void(),
+                            parent: new StaticObject('self'),
+                        )
+                    )
                 )
-            ),
-            new SingleLineComment('Test harness lines'),
-            new Statement(LiteralExpression::string('parent::setUpBeforeClass()')),
-            new Statement(
-                new MethodInvocation(
-                    methodName: 'request',
-                    arguments: new MethodArguments([
-                        $argumentFactory->create('GET'),
-                        $requestUriExpression,
-                    ]),
-                    mightThrow: false,
-                    type: TypeCollection::object(),
-                    parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
+                ->append(
+                    new SingleLineComment('Test harness lines')
                 )
-            ),
-        ]);
+                ->append(
+                    new Statement(LiteralExpression::string('parent::setUpBeforeClass()'))
+                )
+                ->append(
+                    new Statement(
+                        new MethodInvocation(
+                            methodName: 'request',
+                            arguments: new MethodArguments([
+                                $argumentFactory->create('GET'),
+                                $requestUriExpression,
+                            ]),
+                            mightThrow: false,
+                            type: TypeCollection::object(),
+                            parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
+                        )
+                    )
+                )
+        );
 
         $methodDefinition = new MethodDefinition('setUpBeforeClass', $body);
         $methodDefinition->setStatic();
@@ -89,16 +99,27 @@ class MethodDefinitionFactory
         ?BodyInterface $additionalSetupStatements
     ): MethodDefinitionInterface {
         if (null === $additionalSetupStatements) {
-            $additionalSetupStatements = new Body([]);
+            $additionalSetupStatements = new Body();
         }
 
-        $body = new Body([
-            new SingleLineComment('Test harness lines'),
-            new Statement(LiteralExpression::string('parent::setUp()')),
-            new EmptyLine(),
-            new SingleLineComment('Additional setup statements'),
-            $additionalSetupStatements,
-        ]);
+        $body = new Body(
+            new BodyContentCollection()
+                ->append(
+                    new SingleLineComment('Test harness lines'),
+                )
+                ->append(
+                    new Statement(LiteralExpression::string('parent::setUp()')),
+                )
+                ->append(
+                    new EmptyLine(),
+                )
+                ->append(
+                    new SingleLineComment('Additional setup statements'),
+                )
+                ->append(
+                    $additionalSetupStatements,
+                )
+        );
 
         $methodDefinition = new MethodDefinition('setUp', $body);
         $methodDefinition->setProtected();

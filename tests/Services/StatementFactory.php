@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Services;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ClosureExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
@@ -56,8 +57,8 @@ class StatementFactory
             new AssignmentExpression(
                 $placeholder,
                 new ClosureExpression(
-                    new Body([
-                        new Statement(
+                    new Body(
+                        BodyContentCollection::createFromExpressions([
                             new AssignmentExpression(
                                 $elementVariable,
                                 new MethodInvocation(
@@ -67,9 +68,7 @@ class StatementFactory
                                     type: TypeCollection::object(),
                                     parent: Property::asDependency(DependencyName::PANTHER_CRAWLER),
                                 )
-                            )
-                        ),
-                        new Statement(
+                            ),
                             new ReturnExpression(
                                 new MethodInvocation(
                                     methodName: 'getElement',
@@ -79,8 +78,8 @@ class StatementFactory
                                     parent: $elementVariable,
                                 )
                             )
-                        ),
-                    ]),
+                        ])
+                    ),
                     TypeCollection::object(),
                 )
             )
@@ -104,8 +103,8 @@ class StatementFactory
 
         return new Statement(
             new ClosureExpression(
-                new Body([
-                    new Statement(
+                new Body(
+                    BodyContentCollection::createFromExpressions([
                         new AssignmentExpression(
                             $elementVariable,
                             new MethodInvocation(
@@ -115,9 +114,7 @@ class StatementFactory
                                 type: TypeCollection::object(),
                                 parent: Property::asDependency(DependencyName::PANTHER_CRAWLER),
                             )
-                        )
-                    ),
-                    new Statement(
+                        ),
                         new AssignmentExpression(
                             $elementVariable,
                             new MethodInvocation(
@@ -127,9 +124,7 @@ class StatementFactory
                                 type: TypeCollection::object(),
                                 parent: $elementVariable,
                             )
-                        )
-                    ),
-                    new Statement(
+                        ),
                         new MethodInvocation(
                             methodName: $action,
                             arguments: new MethodArguments(),
@@ -137,8 +132,8 @@ class StatementFactory
                             type: TypeCollection::object(),
                             parent: $elementVariable,
                         )
-                    ),
-                ]),
+                    ])
+                ),
                 TypeCollection::object(),
             )
         );

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilModels\Parser\ActionParser;
 
@@ -19,13 +20,19 @@ trait SubmitActionFunctionalDataProviderTrait
 
         $fixture = '/action-click-submit.html';
 
-        $setupStatements = new Body([
-            StatementFactory::createAssertBrowserTitle('Click'),
-        ]);
+        $setupStatements = new Body(
+            new BodyContentCollection()
+                ->append(
+                    StatementFactory::createAssertBrowserTitle('Click'),
+                )
+        );
 
-        $teardownStatements = new Body([
-            StatementFactory::createAssertBrowserTitle('Form'),
-        ]);
+        $teardownStatements = new Body(
+            new BodyContentCollection()
+                ->append(
+                    StatementFactory::createAssertBrowserTitle('Form'),
+                )
+        );
 
         return [
             'interaction action (submit), form submit button' => [

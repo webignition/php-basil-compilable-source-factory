@@ -9,6 +9,7 @@ use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\CatchBlock;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryBlock;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryCatchBlock;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CatchExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
@@ -51,9 +52,10 @@ class TryCatchBlockTest extends AbstractResolvableTestCase
                                 new ObjectTypeDeclaration(new ClassName(\RuntimeException::class)),
                             ])
                         ),
-                        new Body([
-                            new SingleLineComment('handle LogicException and RuntimeException')
-                        ]),
+                        new Body(
+                            new BodyContentCollection()
+                                ->append(new SingleLineComment('handle LogicException and RuntimeException'))
+                        ),
                     ),
                     new CatchBlock(
                         new CatchExpression(
@@ -61,9 +63,10 @@ class TryCatchBlockTest extends AbstractResolvableTestCase
                                 new ObjectTypeDeclaration(new ClassName(\LengthException::class)),
                             ])
                         ),
-                        new Body([
-                            new SingleLineComment('handle LengthException')
-                        ])
+                        new Body(
+                            new BodyContentCollection()
+                                ->append(new SingleLineComment('handle LengthException'))
+                        ),
                     )
                 ),
                 'expectedString' => 'try {' . "\n"

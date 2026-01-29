@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Step;
 
-use webignition\BasilCompilableSourceFactory\Model\Body\Body;
-use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilModels\Model\Statement\EncapsulatingStatementInterface;
 use webignition\BasilModels\Model\Statement\StatementInterface as StatementModelInterface;
@@ -17,7 +16,7 @@ class StatementBlockFactory
         return new StatementBlockFactory();
     }
 
-    public function create(StatementModelInterface $statement): BodyInterface
+    public function create(StatementModelInterface $statement): BodyContentCollection
     {
         $statementCommentContent = $statement->getSource();
 
@@ -25,8 +24,8 @@ class StatementBlockFactory
             $statementCommentContent .= ' <- ' . $statement->getSourceStatement()->getSource();
         }
 
-        return new Body([
-            new SingleLineComment($statementCommentContent),
-        ]);
+        return new BodyContentCollection()
+            ->append(new SingleLineComment($statementCommentContent))
+        ;
     }
 }
