@@ -4,15 +4,16 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Block\TryCatch;
 
-use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentInterface;
 use webignition\BasilCompilableSourceFactory\Model\DeferredResolvableCreationTrait;
+use webignition\BasilCompilableSourceFactory\Model\HasMetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\Stubble\Resolvable\ResolvableCollection;
 use webignition\Stubble\Resolvable\ResolvableInterface;
 use webignition\Stubble\Resolvable\ResolvedTemplateMutatorResolvable;
 
-class TryCatchBlock implements BodyInterface
+class TryCatchBlock implements BodyContentInterface, HasMetadataInterface
 {
     use DeferredResolvableCreationTrait;
 
