@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Model;
 use webignition\BasilCompilableSourceFactory\Model\Attribute\AttributeInterface;
 use webignition\Stubble\Resolvable\ResolvableInterface;
 
-interface MethodDefinitionInterface extends HasMetadataInterface, ResolvableInterface
+interface MethodDefinitionInterface extends HasMetadataInterface, ResolvableInterface, CanReturnInterface
 {
     /**
      * @return string[]
@@ -15,8 +15,6 @@ interface MethodDefinitionInterface extends HasMetadataInterface, ResolvableInte
     public function getArguments(): array;
 
     public function getName(): string;
-
-    public function getReturnType(): ?string;
 
     public function getVisibility(): string;
 

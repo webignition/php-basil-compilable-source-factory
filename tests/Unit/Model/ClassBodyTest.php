@@ -42,9 +42,12 @@ class ClassBodyTest extends AbstractResolvableTestCase
                 'body' => new ClassBody([
                     new MethodDefinition('methodName', new Body([])),
                 ]),
-                'expectedString' => 'public function methodName()' . "\n"
-                    . '{' . "\n\n"
-                    . '}'
+                'expectedString' => <<<'EOD'
+                    public function methodName(): void
+                    {
+                    
+                    }
+                    EOD,
             ],
             'many methods' => [
                 'body' => new ClassBody([
@@ -95,19 +98,21 @@ class ClassBodyTest extends AbstractResolvableTestCase
                         ),
                     ])),
                 ]),
-                'expectedString' => 'public function stepOne()' . "\n"
-                    . '{' . "\n"
-                    . '    // click $"a"' . "\n"
-                    . '    $statement = Statement::createAction(\'$"a" exists\');' . "\n"
-                    . '    $currentStatement = $statement;' . "\n"
-                    . '}' . "\n"
-                    . "\n"
-                    . 'public function stepTwo()' . "\n"
-                    . '{' . "\n"
-                    . '    // click $"b"' . "\n"
-                    . '    $statement = Statement::createAction(\'$"b" exists\');' . "\n"
-                    . '    $currentStatement = $statement;' . "\n"
-                    . '}'
+                'expectedString' => <<<'EOD'
+                    public function stepOne(): void
+                    {
+                        // click $"a"
+                        $statement = Statement::createAction('$"a" exists');
+                        $currentStatement = $statement;
+                    }
+                    
+                    public function stepTwo(): void
+                    {
+                        // click $"b"
+                        $statement = Statement::createAction('$"b" exists');
+                        $currentStatement = $statement;
+                    }
+                    EOD,
             ],
             'many methods, with data provider' => [
                 'body' => new ClassBody([
@@ -182,7 +187,7 @@ class ClassBodyTest extends AbstractResolvableTestCase
                 ]),
                 'expectedString' => <<<'EOD'
                     #[DataProvider('stepOneDataProvider')]
-                    public function stepOne($x, $y)
+                    public function stepOne($x, $y): void
                     {
                         // click $"a"
                         $statement = Statement::createAction('$"a" exists');
@@ -203,7 +208,7 @@ class ClassBodyTest extends AbstractResolvableTestCase
                         ];
                     }
                     
-                    public function stepTwo()
+                    public function stepTwo(): void
                     {
                         // click $"b"
                         $statement = Statement::createAction('$"b" exists');

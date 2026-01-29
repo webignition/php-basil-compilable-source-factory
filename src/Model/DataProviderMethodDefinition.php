@@ -48,9 +48,9 @@ class DataProviderMethodDefinition extends MethodDefinition implements DataProvi
         return [];
     }
 
-    public function getReturnType(): ?string
+    public function getReturnType(): TypeCollection
     {
-        return 'array';
+        return TypeCollection::array();
     }
 
     public function getVisibility(): string

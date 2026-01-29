@@ -28,7 +28,7 @@ class MethodDefinition implements MethodDefinitionInterface
 
     private string $visibility;
 
-    private ?string $returnType;
+    private TypeCollection $returnType;
     private string $name;
     private BodyInterface $body;
 
@@ -47,7 +47,7 @@ class MethodDefinition implements MethodDefinitionInterface
     public function __construct(string $name, BodyInterface $body, array $arguments = [])
     {
         $this->visibility = self::VISIBILITY_PUBLIC;
-        $this->returnType = null;
+        $this->returnType = TypeCollection::void();
         $this->name = $name;
         $this->body = $body;
         $this->arguments = $arguments;
@@ -88,14 +88,9 @@ class MethodDefinition implements MethodDefinitionInterface
         $this->visibility = self::VISIBILITY_PRIVATE;
     }
 
-    public function getReturnType(): ?string
+    public function getReturnType(): TypeCollection
     {
         return $this->returnType;
-    }
-
-    public function setReturnType(?string $returnType): void
-    {
-        $this->returnType = $returnType;
     }
 
     public function setStatic(): void
@@ -157,11 +152,7 @@ class MethodDefinition implements MethodDefinitionInterface
         $arguments = $this->createSignatureArguments($this->getArguments());
         $signature .= 'function ' . $this->getName() . '(' . $arguments . ')';
 
-        $returnType = $this->getReturnType();
-
-        if (null !== $returnType) {
-            $signature .= ': ' . $returnType;
-        }
+        $signature .= ': ' . $this->getReturnType();
 
         return $signature;
     }

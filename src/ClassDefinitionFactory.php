@@ -121,9 +121,7 @@ class ClassDefinitionFactory
         ]);
 
         $method = new MethodDefinition('setUpBeforeClass', $setupBeforeClassBody);
-
         $method->setStatic();
-        $method->setReturnType('void');
 
         return $method;
     }

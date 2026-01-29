@@ -81,7 +81,6 @@ class MethodDefinitionFactory
 
         $methodDefinition = new MethodDefinition('setUpBeforeClass', $body);
         $methodDefinition->setStatic();
-        $methodDefinition->setReturnType('void');
 
         return $methodDefinition;
     }
@@ -103,7 +102,6 @@ class MethodDefinitionFactory
 
         $methodDefinition = new MethodDefinition('setUp', $body);
         $methodDefinition->setProtected();
-        $methodDefinition->setReturnType('void');
 
         return $methodDefinition;
     }

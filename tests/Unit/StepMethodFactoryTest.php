@@ -14,6 +14,7 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodDefinitionInterface;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
 use webignition\BasilCompilableSourceFactory\StatementsAttributeValuePrinter;
 use webignition\BasilCompilableSourceFactory\StepMethodFactory;
@@ -302,7 +303,7 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
     ): void {
         $this->assertRenderResolvable($expectedRendered, $testMethod);
 
-        $this->assertSame('void', $testMethod->getReturnType());
+        $this->assertEquals(TypeCollection::void(), $testMethod->getReturnType());
         $this->assertFalse($testMethod->isStatic());
         $this->assertSame('public', $testMethod->getVisibility());
         $this->assertEquals($expectedMetadata, $testMethod->getMetadata());
@@ -314,7 +315,7 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
     ): void {
         $this->assertRenderResolvable($expectedRendered, $testMethod);
 
-        $this->assertSame('array', $testMethod->getReturnType());
+        $this->assertEquals(TypeCollection::array(), $testMethod->getReturnType());
         $this->assertFalse($testMethod->isStatic());
         $this->assertSame('public', $testMethod->getVisibility());
         $this->assertEquals(new Metadata(), $testMethod->getMetadata());
