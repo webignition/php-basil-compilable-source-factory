@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\MethodArgume
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression\ArrayExpression;
@@ -163,20 +164,27 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                             parent: Property::asDependency(DependencyName::DOM_CRAWLER_NAVIGATOR),
                         ),
                         new ClosureExpression(
-                            new Body([
-                                new Statement(
-                                    new AssignmentExpression(
-                                        Property::asStringVariable('variable'),
-                                        LiteralExpression::integer(100)
+                            new Body(
+                                new BodyContentCollection()
+                                    ->append(
+                                        new Statement(
+                                            new AssignmentExpression(
+                                                Property::asStringVariable('variable'),
+                                                LiteralExpression::integer(100)
+                                            )
+                                        )
                                     )
-                                ),
-                                new EmptyLine(),
-                                new Statement(
-                                    new ReturnExpression(
-                                        Property::asStringVariable('variable'),
+                                    ->append(
+                                        new EmptyLine()
                                     )
-                                ),
-                            ]),
+                                    ->append(
+                                        new Statement(
+                                            new ReturnExpression(
+                                                Property::asStringVariable('variable'),
+                                            )
+                                        )
+                                    )
+                            ),
                             TypeCollection::string(),
                         ),
                     ],

@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Statement;
 use webignition\BasilCompilableSourceFactory\AccessorDefaultValueFactory;
 use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\Model\Body\Body;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
@@ -18,7 +18,6 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\TernaryExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
-use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
 use webignition\BasilModels\Model\Statement\Action\ActionInterface;
@@ -44,7 +43,7 @@ class WaitActionHandler implements StatementHandlerInterface
     /**
      * @throws UnsupportedContentException
      */
-    public function handle(StatementInterface $statement): ?StatementHandlerComponents
+    public function handle(StatementInterface $statement): ?StatementHandlerCollections
     {
         if (!$statement instanceof ActionInterface) {
             return null;
@@ -80,48 +79,42 @@ class WaitActionHandler implements StatementHandlerInterface
             type: TypeCollection::void(),
         );
 
-        return new StatementHandlerComponents(
-            new Statement($sleepInvocation)
+        return new StatementHandlerCollections(
+            BodyContentCollection::createFromExpressions([
+                $sleepInvocation,
+            ])
         )->withSetup(
-            new Body([
-                'duration = accessor' => new Statement(
-                    new AssignmentExpression(
-                        $durationVariable,
-                        $durationAccessor,
-                    )
+            BodyContentCollection::createFromExpressions([
+                'duration = accessor' => new AssignmentExpression(
+                    $durationVariable,
+                    $durationAccessor,
                 ),
-                'duration = duration ?? default' => new Statement(
-                    new AssignmentExpression(
+                'duration = duration ?? default' => new AssignmentExpression(
+                    $durationVariable,
+                    new NullCoalescerExpression(
                         $durationVariable,
-                        new NullCoalescerExpression(
-                            $durationVariable,
-                            LiteralExpression::integer(
-                                $this->accessorDefaultValueFactory->createInteger($duration) ?? 0,
-                            )
-                        ),
-                    )
-                ),
-                'duration = (int) duration' => new Statement(
-                    new AssignmentExpression(
-                        $durationVariable,
-                        new CastExpression(
-                            $durationVariable,
-                            Type::INTEGER,
+                        LiteralExpression::integer(
+                            $this->accessorDefaultValueFactory->createInteger($duration) ?? 0,
                         )
+                    ),
+                ),
+                'duration = (int) duration' => new AssignmentExpression(
+                    $durationVariable,
+                    new CastExpression(
+                        $durationVariable,
+                        Type::INTEGER,
                     )
                 ),
-                'duration = duration < 0 ? 0 : duration' => new Statement(
-                    new AssignmentExpression(
-                        $durationVariable,
-                        new TernaryExpression(
-                            new ComparisonExpression(
-                                $durationVariable,
-                                LiteralExpression::integer(0),
-                                '<'
-                            ),
-                            LiteralExpression::integer(0),
+                'duration = duration < 0 ? 0 : duration' => new AssignmentExpression(
+                    $durationVariable,
+                    new TernaryExpression(
+                        new ComparisonExpression(
                             $durationVariable,
+                            LiteralExpression::integer(0),
+                            '<'
                         ),
+                        LiteralExpression::integer(0),
+                        $durationVariable,
                     ),
                 ),
             ]),

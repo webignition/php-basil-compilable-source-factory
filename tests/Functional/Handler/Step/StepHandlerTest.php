@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Functional\Handler\Step
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
@@ -31,10 +32,10 @@ class StepHandlerTest extends AbstractBrowserTestCase
         StepInterface $step,
         ?BodyInterface $teardownStatements = null
     ): void {
-        $source = $this->handler->handle($step);
+        $contentCollection = $this->handler->handle($step);
 
         $classCode = $this->testCodeGenerator->createBrowserTestForBlock(
-            $source,
+            new Body($contentCollection),
             $fixture,
             null,
             $teardownStatements
@@ -68,9 +69,12 @@ class StepHandlerTest extends AbstractBrowserTestCase
                         'click $"#link-to-index"',
                     ],
                 ]),
-                'teardownStatements' => new Body([
-                    StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
-                ]),
+                'teardownStatements' => new Body(
+                    new BodyContentCollection()
+                        ->append(
+                            StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
+                        )
+                ),
             ],
             'single is assertion' => [
                 'fixture' => '/assertions.html',
@@ -138,7 +142,7 @@ class StepHandlerTest extends AbstractBrowserTestCase
         $source = $this->handler->handle($step);
 
         $classCode = $this->testCodeGenerator->createBrowserTestForBlock(
-            $source,
+            new Body($source),
             $fixture,
             $additionalSetupStatements,
             $teardownStatements

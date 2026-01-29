@@ -9,6 +9,7 @@ use PHPUnit\Framework\TestCase;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\CatchBlock;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CatchExpression;
@@ -28,8 +29,8 @@ class CatchBlockTest extends AbstractResolvableTestCase
 {
     public function testGetMetadata(): void
     {
-        $body = new Body([
-            new Statement(
+        $body = new Body(
+            BodyContentCollection::createFromExpressions([
                 new AssignmentExpression(
                     Property::asDependency(DependencyName::PANTHER_CLIENT),
                     new MethodInvocation(
@@ -40,8 +41,8 @@ class CatchBlockTest extends AbstractResolvableTestCase
                         parent: new StaticObject(\RuntimeException::class),
                     )
                 )
-            )
-        ]);
+            ])
+        );
 
         $catchBlock = new CatchBlock(
             new CatchExpression(

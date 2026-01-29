@@ -10,11 +10,11 @@ use SmartAssert\DomIdentifier\FactoryInterface as DomIdentifierFactoryInterface;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
-use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Model\Statement\Action\ActionInterface;
@@ -40,7 +40,7 @@ class WaitForActionHandler implements StatementHandlerInterface
     /**
      * @throws UnsupportedContentException
      */
-    public function handle(StatementInterface $statement): ?StatementHandlerComponents
+    public function handle(StatementInterface $statement): ?StatementHandlerCollections
     {
         if (!$statement instanceof ActionInterface) {
             return null;
@@ -65,8 +65,8 @@ class WaitForActionHandler implements StatementHandlerInterface
             throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }
 
-        return new StatementHandlerComponents(
-            new Statement(
+        return new StatementHandlerCollections(
+            BodyContentCollection::createFromExpressions([
                 new AssignmentExpression(
                     Property::asDependency(DependencyName::PANTHER_CRAWLER),
                     new MethodInvocation(
@@ -79,7 +79,7 @@ class WaitForActionHandler implements StatementHandlerInterface
                         parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                     )
                 )
-            )
+            ])
         );
     }
 }

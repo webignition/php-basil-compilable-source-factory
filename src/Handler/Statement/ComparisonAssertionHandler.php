@@ -7,11 +7,10 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Statement;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\Model\Body\Body;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Property;
-use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
 use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Statement\StatementInterface;
@@ -42,7 +41,7 @@ class ComparisonAssertionHandler implements StatementHandlerInterface
     /**
      * @throws UnsupportedContentException
      */
-    public function handle(StatementInterface $statement): ?StatementHandlerComponents
+    public function handle(StatementInterface $statement): ?StatementHandlerCollections
     {
         if (!$statement instanceof AssertionInterface) {
             return null;
@@ -61,17 +60,17 @@ class ComparisonAssertionHandler implements StatementHandlerInterface
         $expectedValueVariable = Property::asStringVariable(VariableName::EXPECTED_VALUE);
         $examinedValueVariable = Property::asStringVariable(VariableName::EXAMINED_VALUE);
 
-        return new StatementHandlerComponents(
-            new Statement(
+        return new StatementHandlerCollections(
+            BodyContentCollection::createFromExpressions([
                 $this->phpUnitCallFactory->createAssertionCall(
                     self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP[$statement->getOperator()],
                     $statement,
                     [$expectedValueVariable, $examinedValueVariable],
                     [$expectedValueVariable, $examinedValueVariable],
                 )
-            ),
+            ])
         )->withSetup(
-            Body::createFromExpressions([
+            BodyContentCollection::createFromExpressions([
                 new AssignmentExpression($expectedValueVariable, $expectedAccessor),
                 new AssignmentExpression($examinedValueVariable, $examinedAccessor),
             ]),

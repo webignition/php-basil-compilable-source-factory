@@ -10,6 +10,7 @@ use SmartAssert\DomIdentifier\ElementIdentifier;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
@@ -55,19 +56,25 @@ class DomIdentifierHandlerTest extends AbstractBrowserTestCase
                 'serializedElementIdentifier' => $elementIdentifierSerializer->serialize(
                     new ElementIdentifier('input', 1)
                 ),
-                'teardownStatements' => new Body([
-                    StatementFactory::createAssertSame('""', '$value'),
-                ]),
+                'teardownStatements' => new Body(
+                    new BodyContentCollection()
+                        ->append(
+                            StatementFactory::createAssertSame('""', '$value')
+                        )
+                ),
             ],
             'element value, has parent' => [
                 'fixture' => '/form.html',
                 'serializedElementIdentifier' => $elementIdentifierSerializer->serialize(
-                    (new ElementIdentifier('input', 1))
+                    new ElementIdentifier('input', 1)
                         ->withParentIdentifier(new ElementIdentifier('form[action="/action2"]'))
                 ),
-                'teardownStatements' => new Body([
-                    StatementFactory::createAssertSame('"test"', '$value'),
-                ]),
+                'teardownStatements' => new Body(
+                    new BodyContentCollection()
+                        ->append(
+                            StatementFactory::createAssertSame('"test"', '$value')
+                        )
+                ),
             ],
         ];
     }
@@ -98,20 +105,26 @@ class DomIdentifierHandlerTest extends AbstractBrowserTestCase
                     new AttributeIdentifier('input', 'name', 1)
                 ),
                 'attributeName' => 'name',
-                'teardownStatements' => new Body([
-                    StatementFactory::createAssertSame('"input-without-value"', '$value'),
-                ]),
+                'teardownStatements' => new Body(
+                    new BodyContentCollection()
+                        ->append(
+                            StatementFactory::createAssertSame('"input-without-value"', '$value'),
+                        )
+                ),
             ],
             'attribute value, has parent' => [
                 'fixture' => '/form.html',
                 'serializedElementIdentifier' => $elementIdentifierSerializer->serialize(
-                    (new AttributeIdentifier('input', 'name', 1))
+                    new AttributeIdentifier('input', 'name', 1)
                         ->withParentIdentifier(new ElementIdentifier('form[action="/action2"]'))
                 ),
                 'attributeName' => 'name',
-                'teardownStatements' => new Body([
-                    StatementFactory::createAssertSame('"input-2"', '$value'),
-                ]),
+                'teardownStatements' => new Body(
+                    new BodyContentCollection()
+                        ->append(
+                            StatementFactory::createAssertSame('"input-2"', '$value'),
+                        )
+                ),
             ],
         ];
     }
@@ -140,11 +153,18 @@ class DomIdentifierHandlerTest extends AbstractBrowserTestCase
                 'serializedElementIdentifier' => $elementIdentifierSerializer->serialize(
                     new ElementIdentifier('input', 1)
                 ),
-                'teardownStatements' => new Body([
-                    StatementFactory::createAssertCount('1', '$value'),
-                    new Statement(LiteralExpression::string('$element = $value->current()')),
-                    StatementFactory::createAssertSame('""', '$element->getAttribute(\'value\')'),
-                ]),
+                'teardownStatements' => new Body(
+                    new BodyContentCollection()
+                        ->append(
+                            StatementFactory::createAssertCount('1', '$value'),
+                        )
+                        ->append(
+                            new Statement(LiteralExpression::string('$element = $value->current()')),
+                        )
+                        ->append(
+                            StatementFactory::createAssertSame('""', '$element->getAttribute(\'value\')'),
+                        )
+                ),
             ],
             'element, has parent' => [
                 'fixture' => '/form.html',
@@ -152,11 +172,18 @@ class DomIdentifierHandlerTest extends AbstractBrowserTestCase
                     new ElementIdentifier('input', 1)
                         ->withParentIdentifier(new ElementIdentifier('form[action="/action2"]'))
                 ),
-                'teardownStatements' => new Body([
-                    StatementFactory::createAssertCount('1', '$value'),
-                    new Statement(LiteralExpression::string('$element = $value->current()')),
-                    StatementFactory::createAssertSame('null', '$element->getAttribute(\'test\')'),
-                ]),
+                'teardownStatements' => new Body(
+                    new BodyContentCollection()
+                        ->append(
+                            StatementFactory::createAssertCount('1', '$value'),
+                        )
+                        ->append(
+                            new Statement(LiteralExpression::string('$element = $value->current()')),
+                        )
+                        ->append(
+                            StatementFactory::createAssertSame('null', '$element->getAttribute(\'test\')'),
+                        )
+                ),
             ],
         ];
     }
@@ -171,9 +198,10 @@ class DomIdentifierHandlerTest extends AbstractBrowserTestCase
         );
 
         $classCode = $this->testCodeGenerator->createBrowserTestForBlock(
-            new Body([
-                $instrumentedSource,
-            ]),
+            new Body(
+                new BodyContentCollection()
+                    ->append($instrumentedSource)
+            ),
             $fixture,
             null,
             $teardownStatements

@@ -52,10 +52,8 @@ class StepMethodFactory
         $parameterNames = $dataSetCollection->getParameterNames();
 
         $testMethod = new MethodDefinition(
-            'test' . (string) $index,
-            new Body([
-                $this->stepHandler->handle($step),
-            ]),
+            'test' . $index,
+            new Body($this->stepHandler->handle($step)),
             $parameterNames
         );
 

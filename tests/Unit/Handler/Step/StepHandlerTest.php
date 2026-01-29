@@ -12,11 +12,12 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentExcepti
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStatementException;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\Handler\Statement\StatementHandler;
-use webignition\BasilCompilableSourceFactory\Handler\Statement\StatementHandlerComponents;
+use webignition\BasilCompilableSourceFactory\Handler\Statement\StatementHandlerCollections;
 use webignition\BasilCompilableSourceFactory\Handler\Step\DerivedAssertionFactory;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StatementBlockFactory;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
@@ -34,7 +35,6 @@ use webignition\BasilModels\Model\Step\StepInterface;
 use webignition\BasilModels\Parser\ActionParser;
 use webignition\BasilModels\Parser\AssertionParser;
 use webignition\BasilModels\Parser\StepParser;
-use webignition\Stubble\Resolvable\ResolvableInterface;
 
 class StepHandlerTest extends AbstractResolvableTestCase
 {
@@ -45,10 +45,10 @@ class StepHandlerTest extends AbstractResolvableTestCase
         string $expectedRenderedContent,
         MetadataInterface $expectedMetadata
     ): void {
-        $source = $handler->handle($step);
+        $contentCollection = $handler->handle($step);
 
-        $this->assertRenderResolvable($expectedRenderedContent, $source);
-        self::assertEquals($expectedMetadata, $source->getMetadata());
+        $this->assertRenderResolvable($expectedRenderedContent, new Body($contentCollection));
+        self::assertEquals($expectedMetadata, $contentCollection->getMetadata());
     }
 
     /**
@@ -81,38 +81,34 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                 '$".selector"',
                                 'exists'
                             ),
-                            'return' => new Body([
-                                new SingleLineComment(
+                            'return' => new BodyContentCollection()
+                                ->append(new SingleLineComment(
                                     'StatementBlockFactory::create($".selector" exists)'
-                                ),
-                            ]),
+                                )),
                         ],
                         'click $".selector"' => [
                             'statement' => $actionParser->parse('click $".selector"', 0),
-                            'return' => new Body([
-                                new SingleLineComment(
+                            'return' => new BodyContentCollection()
+                                ->append(new SingleLineComment(
                                     'StatementBlockFactory::create(click $".selector")'
-                                ),
-                            ]),
+                                )),
                         ],
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
                         'click $".selector"' => [
                             'statement' => $actionParser->parse('click $".selector"', 0),
-                            'return' => new StatementHandlerComponents(
-                                new Body([
-                                    new Statement(
-                                        new MethodInvocation(
-                                            methodName: 'method',
-                                            arguments: new MethodArguments([
-                                                LiteralExpression::string(
-                                                    'StatementHandler::handle(click $".selector")::body',
-                                                ),
-                                            ]),
-                                            mightThrow: true,
-                                            type: TypeCollection::string(),
-                                        )
-                                    ),
+                            'return' => new StatementHandlerCollections(
+                                BodyContentCollection::createFromExpressions([
+                                    new MethodInvocation(
+                                        methodName: 'method',
+                                        arguments: new MethodArguments([
+                                            LiteralExpression::string(
+                                                'StatementHandler::handle(click $".selector")::body',
+                                            ),
+                                        ]),
+                                        mightThrow: true,
+                                        type: TypeCollection::string(),
+                                    )
                                 ])
                             )
                         ],
@@ -122,10 +118,11 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                 '$".selector"',
                                 'exists'
                             ),
-                            'return' => new StatementHandlerComponents(
-                                new Body([
-                                    new SingleLineComment('StatementHandler::handle($".selector" exists)::body'),
-                                ])
+                            'return' => new StatementHandlerCollections(
+                                new BodyContentCollection()
+                                    ->append(
+                                        new SingleLineComment('StatementHandler::handle($".selector" exists)::body'),
+                                    )
                             ),
                         ],
                     ]),
@@ -180,28 +177,31 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                 '$".selector"',
                                 'exists'
                             ),
-                            'return' => new Body([
-                                new SingleLineComment(
-                                    'StatementBlockFactory::create($".selector" exists)'
+                            'return' => new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment(
+                                        'StatementBlockFactory::create($".selector" exists)'
+                                    ),
                                 ),
-                            ]),
                         ],
                         'click $".selector"' => [
                             'statement' => $actionParser->parse('click $".selector"', 0),
-                            'return' => new Body([
-                                new SingleLineComment(
-                                    'StatementBlockFactory::create(click $".selector")'
+                            'return' => new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment(
+                                        'StatementBlockFactory::create(click $".selector")'
+                                    ),
                                 ),
-                            ]),
                         ],
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
                         'click $".selector"' => [
                             'statement' => $actionParser->parse('click $".selector"', 0),
-                            'return' => new StatementHandlerComponents(
-                                new Body([
-                                    new SingleLineComment('StatementHandler::handle(click $".selector")::body'),
-                                ])
+                            'return' => new StatementHandlerCollections(
+                                new BodyContentCollection()
+                                    ->append(
+                                        new SingleLineComment('StatementHandler::handle(click $".selector")::body')
+                                    ),
                             )
                         ],
                         '$".selector" exists' => [
@@ -210,10 +210,11 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                 '$".selector"',
                                 'exists'
                             ),
-                            'return' => new StatementHandlerComponents(
-                                new Body([
-                                    new SingleLineComment('StatementHandler::handle($".selector" exists)::body'),
-                                ])
+                            'return' => new StatementHandlerCollections(
+                                new BodyContentCollection()
+                                    ->append(
+                                        new SingleLineComment('StatementHandler::handle($".selector" exists)::body')
+                                    ),
                             ),
                         ],
                     ]),
@@ -242,32 +243,36 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                 '$".selector"',
                                 'exists'
                             ),
-                            'return' => new Body([
-                                new SingleLineComment(
-                                    'StatementBlockFactory::create($".selector" exists)'
+                            'return' => new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment(
+                                        'StatementBlockFactory::create($".selector" exists)'
+                                    ),
                                 ),
-                            ]),
                         ],
                         'click $".selector"' => [
                             'statement' => $actionParser->parse('click $".selector"', 0),
-                            'return' => new Body([
-                                new SingleLineComment(
-                                    'StatementBlockFactory::create(click $".selector")'
+                            'return' => new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment(
+                                        'StatementBlockFactory::create(click $".selector")'
+                                    ),
                                 ),
-                            ]),
                         ],
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
                         'click $".selector"' => [
                             'statement' => $actionParser->parse('click $".selector"', 0),
-                            'return' => new StatementHandlerComponents(
-                                new Body([
-                                    new SingleLineComment('StatementHandler::handle(click $".selector")::body'),
-                                ])
+                            'return' => new StatementHandlerCollections(
+                                new BodyContentCollection()
+                                    ->append(
+                                        new SingleLineComment('StatementHandler::handle(click $".selector")::body'),
+                                    )
                             )->withSetup(
-                                new Body([
-                                    new SingleLineComment('StatementHandler::handle(click $".selector")::setup'),
-                                ])
+                                new BodyContentCollection()
+                                    ->append(
+                                        new SingleLineComment('StatementHandler::handle(click $".selector")::setup'),
+                                    )
                             ),
                         ],
                         '$".selector" exists' => [
@@ -276,10 +281,11 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                 '$".selector"',
                                 'exists'
                             ),
-                            'return' => new StatementHandlerComponents(
-                                new Body([
-                                    new SingleLineComment('StatementHandler::handle($".selector" exists)'),
-                                ])
+                            'return' => new StatementHandlerCollections(
+                                new BodyContentCollection()
+                                    ->append(
+                                        new SingleLineComment('StatementHandler::handle($".selector" exists)'),
+                                    )
                             ),
                         ],
                     ]),
@@ -310,43 +316,47 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                 '$".selector"',
                                 'exists'
                             ),
-                            'return' => new Body([
-                                new SingleLineComment(
-                                    'StatementBlockFactory::create($".selector" exists)'
+                            'return' => new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment(
+                                        'StatementBlockFactory::create($".selector" exists)'
+                                    ),
                                 ),
-                            ]),
                         ],
                         'click $".selector"' => [
                             'statement' => $actionParser->parse('click $".selector"', 0),
-                            'return' => new Body([
-                                new SingleLineComment(
-                                    'StatementBlockFactory::create(click $".selector")'
+                            'return' => new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment(
+                                        'StatementBlockFactory::create(click $".selector")'
+                                    ),
                                 ),
-                            ]),
                         ],
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
                         'click $".selector"' => [
                             'statement' => $actionParser->parse('click $".selector"', 0),
-                            'return' => new StatementHandlerComponents(
-                                new Body([
-                                    new Body([
+                            'return' => new StatementHandlerCollections(
+                                new BodyContentCollection()
+                                    ->append(
                                         new SingleLineComment('StatementHandler::handle(click $".selector")::body'),
-                                    ]),
-                                ])
-                            )->withSetup(
-                                new Statement(
-                                    new MethodInvocation(
-                                        methodName: 'method',
-                                        arguments: new MethodArguments([
-                                            LiteralExpression::string(
-                                                '"StatementHandler::handle(click $\".selector\")::setup"',
-                                            ),
-                                        ]),
-                                        mightThrow: true,
-                                        type: TypeCollection::string(),
                                     )
-                                ),
+                            )->withSetup(
+                                new BodyContentCollection()
+                                    ->append(
+                                        new Statement(
+                                            new MethodInvocation(
+                                                methodName: 'method',
+                                                arguments: new MethodArguments([
+                                                    LiteralExpression::string(
+                                                        '"StatementHandler::handle(click $\".selector\")::setup"',
+                                                    ),
+                                                ]),
+                                                mightThrow: true,
+                                                type: TypeCollection::string(),
+                                            )
+                                        ),
+                                    )
                             ),
                         ],
                         '$".selector" exists' => [
@@ -355,10 +365,11 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                 '$".selector"',
                                 'exists'
                             ),
-                            'return' => new StatementHandlerComponents(
-                                new Body([
-                                    new SingleLineComment('StatementHandler::handle($".selector" exists)'),
-                                ])
+                            'return' => new StatementHandlerCollections(
+                                new BodyContentCollection()
+                                    ->append(
+                                        new SingleLineComment('StatementHandler::handle($".selector" exists)'),
+                                    )
                             ),
                         ],
                     ]),
@@ -416,19 +427,21 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                 '$".selector1"',
                                 'exists'
                             ),
-                            'return' => new Body([
-                                new SingleLineComment(
-                                    'StatementBlockFactory::create($".selector1" exists)'
+                            'return' => new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment(
+                                        'StatementBlockFactory::create($".selector1" exists)'
+                                    ),
                                 ),
-                            ]),
                         ],
                         'click $".selector1"' => [
                             'statement' => $actionParser->parse('click $".selector1"', 0),
-                            'return' => new Body([
-                                new SingleLineComment(
-                                    'StatementBlockFactory::create(click $".selector1")'
+                            'return' => new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment(
+                                        'StatementBlockFactory::create(click $".selector1")'
+                                    ),
                                 ),
-                            ]),
                         ],
                         '$".selector2" exists' => [
                             'statement' => new DerivedValueOperationAssertion(
@@ -436,36 +449,40 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                 '$".selector2"',
                                 'exists'
                             ),
-                            'return' => new Body([
-                                new SingleLineComment(
-                                    'StatementBlockFactory::create($".selector2" exists)'
+                            'return' => new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment(
+                                        'StatementBlockFactory::create($".selector2" exists)'
+                                    ),
                                 ),
-                            ]),
                         ],
                         'click $".selector2"' => [
                             'statement' => $actionParser->parse('click $".selector2"', 1),
-                            'return' => new Body([
-                                new SingleLineComment(
-                                    'StatementBlockFactory::create(click $".selector2")'
+                            'return' => new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment(
+                                        'StatementBlockFactory::create(click $".selector2")'
+                                    ),
                                 ),
-                            ]),
                         ],
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
                         'click $".selector1"' => [
                             'statement' => $actionParser->parse('click $".selector1"', 0),
-                            'return' => new StatementHandlerComponents(
-                                new Body([
-                                    new SingleLineComment('StatementHandler::handle(click $".selector1")::body'),
-                                ]),
-                            )
+                            'return' => new StatementHandlerCollections(
+                                new BodyContentCollection()
+                                    ->append(
+                                        new SingleLineComment('StatementHandler::handle(click $".selector1")::body'),
+                                    )
+                            ),
                         ],
                         'click $".selector2"' => [
                             'statement' => $actionParser->parse('click $".selector2"', 1),
-                            'return' => new StatementHandlerComponents(
-                                new Body([
-                                    new SingleLineComment('StatementHandler::handle(click $".selector2")::body'),
-                                ]),
+                            'return' => new StatementHandlerCollections(
+                                new BodyContentCollection()
+                                    ->append(
+                                        new SingleLineComment('StatementHandler::handle(click $".selector2")::body'),
+                                    )
                             ),
                         ],
                         '$".selector1" exists' => [
@@ -474,10 +491,11 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                 '$".selector1"',
                                 'exists'
                             ),
-                            'return' => new StatementHandlerComponents(
-                                new Body([
-                                    new SingleLineComment('StatementHandler::handle($".selector1" exists)::body'),
-                                ]),
+                            'return' => new StatementHandlerCollections(
+                                new BodyContentCollection()
+                                    ->append(
+                                        new SingleLineComment('StatementHandler::handle($".selector1" exists)::body'),
+                                    )
                             ),
                         ],
                         '$".selector2" exists' => [
@@ -486,10 +504,11 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                 '$".selector2"',
                                 'exists'
                             ),
-                            'return' => new StatementHandlerComponents(
-                                new Body([
-                                    new SingleLineComment('StatementHandler::handle($".selector2" exists)::body'),
-                                ]),
+                            'return' => new StatementHandlerCollections(
+                                new BodyContentCollection()
+                                    ->append(
+                                        new SingleLineComment('StatementHandler::handle($".selector2" exists)::body'),
+                                    )
                             ),
                         ],
                     ]),
@@ -520,20 +539,22 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     StatementBlockFactory::class => self::createMockStatementBlockFactory([
                         '$".selector" exists' => [
                             'statement' => $assertionParser->parse('$".selector" exists', 0),
-                            'return' => new Body([
-                                new SingleLineComment(
-                                    'StatementBlockFactory::create($".selector" exists)'
+                            'return' => new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment(
+                                        'StatementBlockFactory::create($".selector" exists)'
+                                    ),
                                 ),
-                            ]),
                         ],
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
                         '$".selector" exists' => [
                             'statement' => $assertionParser->parse('$".selector" exists', 0),
-                            'return' => new StatementHandlerComponents(
-                                new Body([
-                                    new SingleLineComment('StatementHandler::handle($".selector" exists)::body'),
-                                ]),
+                            'return' => new StatementHandlerCollections(
+                                new BodyContentCollection()
+                                    ->append(
+                                        new SingleLineComment('StatementHandler::handle($".selector" exists)::body'),
+                                    )
                             ),
                         ],
                     ]),
@@ -555,24 +576,27 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     StatementBlockFactory::class => self::createMockStatementBlockFactory([
                         '$".selector" exists' => [
                             'statement' => $assertionParser->parse('$".selector" exists', 0),
-                            'return' => new Body([
-                                new SingleLineComment(
-                                    'StatementBlockFactory::create($".selector" exists)'
+                            'return' => new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment(
+                                        'StatementBlockFactory::create($".selector" exists)'
+                                    ),
                                 ),
-                            ]),
                         ],
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
                         '$".selector" exists' => [
                             'statement' => $assertionParser->parse('$".selector" exists', 0),
-                            'return' => new StatementHandlerComponents(
-                                new Body([
-                                    new SingleLineComment('StatementHandler::handle($".selector" exists)::body'),
-                                ]),
+                            'return' => new StatementHandlerCollections(
+                                new BodyContentCollection()
+                                    ->append(
+                                        new SingleLineComment('StatementHandler::handle($".selector" exists)::body'),
+                                    )
                             )->withSetup(
-                                new Body([
-                                    new SingleLineComment('StatementHandler::handle($".selector" exists)::setup'),
-                                ])
+                                new BodyContentCollection()
+                                    ->append(
+                                        new SingleLineComment('StatementHandler::handle($".selector" exists)::setup'),
+                                    )
                             ),
                         ],
                     ]),
@@ -600,19 +624,21 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                 '$".parent"',
                                 'exists'
                             ),
-                            'return' => new Body([
-                                new SingleLineComment(
-                                    'StatementBlockFactory::create($".parent" exists)'
+                            'return' => new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment(
+                                        'StatementBlockFactory::create($".parent" exists)'
+                                    ),
                                 ),
-                            ]),
                         ],
                         '$".parent" >> $".child" exists' => [
                             'statement' => $assertionParser->parse('$".parent" >> $".child" exists', 0),
-                            'return' => new Body([
-                                new SingleLineComment(
-                                    'StatementBlockFactory::create($".parent" >> $".child" exists)'
+                            'return' => new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment(
+                                        'StatementBlockFactory::create($".parent" >> $".child" exists)'
+                                    ),
                                 ),
-                            ]),
                         ],
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
@@ -622,20 +648,22 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                 '$".parent"',
                                 'exists'
                             ),
-                            'return' => new StatementHandlerComponents(
-                                new Body([
-                                    new SingleLineComment('StatementHandler::handle($".parent" exists)::body'),
-                                ]),
+                            'return' => new StatementHandlerCollections(
+                                new BodyContentCollection()
+                                    ->append(
+                                        new SingleLineComment('StatementHandler::handle($".parent" exists)::body'),
+                                    )
                             ),
                         ],
                         '$".parent" >> $".child" exists' => [
                             'statement' => $assertionParser->parse('$".parent" >> $".child" exists', 0),
-                            'return' => new StatementHandlerComponents(
-                                new Body([
-                                    new SingleLineComment(
-                                        'StatementHandler::handle($".parent" >> $".child" exists)::body'
-                                    ),
-                                ]),
+                            'return' => new StatementHandlerCollections(
+                                new BodyContentCollection()
+                                    ->append(
+                                        new SingleLineComment(
+                                            'StatementHandler::handle($".parent" >> $".child" exists)::body'
+                                        ),
+                                    )
                             ),
                         ],
                     ]),
@@ -661,36 +689,40 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     StatementBlockFactory::class => self::createMockStatementBlockFactory([
                         '$".selector1" exists' => [
                             'statement' => $assertionParser->parse('$".selector1" exists', 0),
-                            'return' => new Body([
-                                new SingleLineComment(
-                                    'StatementBlockFactory::create($".selector1" exists)'
+                            'return' => new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment(
+                                        'StatementBlockFactory::create($".selector1" exists)'
+                                    ),
                                 ),
-                            ]),
                         ],
                         '$".selector2" exists' => [
                             'statement' => $assertionParser->parse('$".selector2" exists', 1),
-                            'return' => new Body([
-                                new SingleLineComment(
-                                    'StatementBlockFactory::create($".selector2" exists)'
+                            'return' => new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment(
+                                        'StatementBlockFactory::create($".selector2" exists)'
+                                    ),
                                 ),
-                            ]),
                         ],
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
                         '$".selector1" exists' => [
                             'statement' => $assertionParser->parse('$".selector1" exists', 0),
-                            'return' => new StatementHandlerComponents(
-                                new Body([
-                                    new SingleLineComment('StatementHandler::handle($".selector1" exists)::body'),
-                                ]),
+                            'return' => new StatementHandlerCollections(
+                                new BodyContentCollection()
+                                    ->append(
+                                        new SingleLineComment('StatementHandler::handle($".selector1" exists)::body'),
+                                    )
                             ),
                         ],
                         '$".selector2" exists' => [
                             'statement' => $assertionParser->parse('$".selector2" exists', 1),
-                            'return' => new StatementHandlerComponents(
-                                new Body([
-                                    new SingleLineComment('StatementHandler::handle($".selector2" exists)::body'),
-                                ]),
+                            'return' => new StatementHandlerCollections(
+                                new BodyContentCollection()
+                                    ->append(
+                                        new SingleLineComment('StatementHandler::handle($".selector2" exists)::body'),
+                                    )
                             ),
                         ],
                     ]),
@@ -722,36 +754,40 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                 '$".selector1"',
                                 'exists'
                             ),
-                            'return' => new Body([
-                                new SingleLineComment(
-                                    'StatementBlockFactory::create($".selector1" exists)'
+                            'return' => new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment(
+                                        'StatementBlockFactory::create($".selector1" exists)'
+                                    ),
                                 ),
-                            ]),
                         ],
                         'click $".selector1"' => [
                             'statement' => $actionParser->parse('click $".selector1"', 0),
-                            'return' => new Body([
-                                new SingleLineComment(
-                                    'StatementBlockFactory::create(click $".selector1")'
+                            'return' => new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment(
+                                        'StatementBlockFactory::create(click $".selector1")'
+                                    ),
                                 ),
-                            ]),
                         ],
                         '$".selector2" exists' => [
                             'statement' => $assertionParser->parse('$".selector2" exists', 1),
-                            'return' => new Body([
-                                new SingleLineComment(
-                                    'StatementBlockFactory::create($".selector2" exists)'
+                            'return' => new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment(
+                                        'StatementBlockFactory::create($".selector2" exists)'
+                                    ),
                                 ),
-                            ]),
                         ],
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
                         'click $".selector1"' => [
                             'statement' => $actionParser->parse('click $".selector1"', 0),
-                            'return' => new StatementHandlerComponents(
-                                new Body([
-                                    new SingleLineComment('StatementHandler::handle(click $".selector1")::body'),
-                                ]),
+                            'return' => new StatementHandlerCollections(
+                                new BodyContentCollection()
+                                    ->append(
+                                        new SingleLineComment('StatementHandler::handle(click $".selector1")::body'),
+                                    )
                             ),
                         ],
                         '$".selector1" exists' => [
@@ -760,18 +796,20 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                 '$".selector1"',
                                 'exists'
                             ),
-                            'return' => new StatementHandlerComponents(
-                                new Body([
-                                    new SingleLineComment('StatementHandler::handle($".selector1" exists)::body'),
-                                ]),
+                            'return' => new StatementHandlerCollections(
+                                new BodyContentCollection()
+                                    ->append(
+                                        new SingleLineComment('StatementHandler::handle($".selector1" exists)::body'),
+                                    )
                             ),
                         ],
                         '$".selector2" exists' => [
                             'statement' => $assertionParser->parse('$".selector2" exists', 1),
-                            'return' => new StatementHandlerComponents(
-                                new Body([
-                                    new SingleLineComment('StatementHandler::handle($".selector2" exists)::body'),
-                                ]),
+                            'return' => new StatementHandlerCollections(
+                                new BodyContentCollection()
+                                    ->append(
+                                        new SingleLineComment('StatementHandler::handle($".selector2" exists)::body'),
+                                    )
                             ),
                         ],
                     ]),
@@ -804,27 +842,30 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                 '$".parent"',
                                 'exists'
                             ),
-                            'return' => new Body([
-                                new SingleLineComment(
-                                    'StatementBlockFactory::create($".parent" exists)'
+                            'return' => new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment(
+                                        'StatementBlockFactory::create($".parent" exists)'
+                                    ),
                                 ),
-                            ]),
                         ],
                         '$".parent" >> $".child1" exists' => [
                             'statement' => $assertionParser->parse('$".parent" >> $".child1" exists', 0),
-                            'return' => new Body([
-                                new SingleLineComment(
-                                    'StatementBlockFactory::create($".parent" >> $".child1" exists)'
+                            'return' => new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment(
+                                        'StatementBlockFactory::create($".parent" >> $".child1" exists)'
+                                    ),
                                 ),
-                            ]),
                         ],
                         '$".parent" >> $".child2" exists' => [
                             'statement' => $assertionParser->parse('$".parent" >> $".child2" exists', 1),
-                            'return' => new Body([
-                                new SingleLineComment(
-                                    'StatementBlockFactory::create($".parent" >> $".child2" exists)'
+                            'return' => new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment(
+                                        'StatementBlockFactory::create($".parent" >> $".child2" exists)'
+                                    ),
                                 ),
-                            ]),
                         ],
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
@@ -834,30 +875,33 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                 '$".parent"',
                                 'exists'
                             ),
-                            'return' => new StatementHandlerComponents(
-                                new Body([
-                                    new SingleLineComment('StatementHandler::handle($".parent" exists)::body'),
-                                ]),
+                            'return' => new StatementHandlerCollections(
+                                new BodyContentCollection()
+                                    ->append(
+                                        new SingleLineComment('StatementHandler::handle($".parent" exists)::body'),
+                                    )
                             ),
                         ],
                         '$".parent" >> $".child1" exists' => [
                             'statement' => $assertionParser->parse('$".parent" >> $".child1" exists', 0),
-                            'return' => new StatementHandlerComponents(
-                                new Body([
-                                    new SingleLineComment(
-                                        'StatementHandler::handle($".parent" >> $".child1" exists)::body'
-                                    ),
-                                ]),
+                            'return' => new StatementHandlerCollections(
+                                new BodyContentCollection()
+                                    ->append(
+                                        new SingleLineComment(
+                                            'StatementHandler::handle($".parent" >> $".child1" exists)::body'
+                                        ),
+                                    )
                             ),
                         ],
                         '$".parent" >> $".child2" exists' => [
                             'statement' => $assertionParser->parse('$".parent" >> $".child2" exists', 1),
-                            'return' => new StatementHandlerComponents(
-                                new Body([
-                                    new SingleLineComment(
-                                        'StatementHandler::handle($".parent" >> $".child2" exists)::body'
-                                    ),
-                                ]),
+                            'return' => new StatementHandlerCollections(
+                                new BodyContentCollection()
+                                    ->append(
+                                        new SingleLineComment(
+                                            'StatementHandler::handle($".parent" >> $".child2" exists)::body'
+                                        ),
+                                    )
                             ),
                         ],
                     ]),
@@ -889,19 +933,21 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                 '"/pattern/"',
                                 'is-regexp'
                             ),
-                            'return' => new Body([
-                                new SingleLineComment(
-                                    'StatementBlockFactory::create("/pattern/" is-regexp)'
+                            'return' => new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment(
+                                        'StatementBlockFactory::create("/pattern/" is-regexp)'
+                                    ),
                                 ),
-                            ]),
                         ],
                         '$page.title matches "/pattern/"' => [
                             'statement' => $assertionParser->parse('$page.title matches "/pattern/"', 0),
-                            'return' => new Body([
-                                new SingleLineComment(
-                                    'StatementBlockFactory::create($page.title matches "/pattern/")'
+                            'return' => new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment(
+                                        'StatementBlockFactory::create($page.title matches "/pattern/")'
+                                    ),
                                 ),
-                            ]),
                         ],
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
@@ -911,22 +957,24 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                 '"/pattern/"',
                                 'is-regexp'
                             ),
-                            'return' => new StatementHandlerComponents(
-                                new Body([
-                                    new SingleLineComment(
-                                        'StatementHandler::handle("/pattern/" is-regexp)::body'
-                                    ),
-                                ]),
+                            'return' => new StatementHandlerCollections(
+                                new BodyContentCollection()
+                                    ->append(
+                                        new SingleLineComment(
+                                            'StatementHandler::handle("/pattern/" is-regexp)::body'
+                                        ),
+                                    )
                             ),
                         ],
                         '$page.title matches "/pattern/"' => [
                             'statement' => $assertionParser->parse('$page.title matches "/pattern/"', 0),
-                            'return' => new StatementHandlerComponents(
-                                new Body([
-                                    new SingleLineComment(
-                                        'StatementHandler::handle($page.title matches "/pattern/")::body'
-                                    ),
-                                ]),
+                            'return' => new StatementHandlerCollections(
+                                new BodyContentCollection()
+                                    ->append(
+                                        new SingleLineComment(
+                                            'StatementHandler::handle($page.title matches "/pattern/")::body'
+                                        ),
+                                    )
                             ),
                         ],
                     ]),
@@ -1028,7 +1076,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
     }
 
     /**
-     * @param array<string, array{"statement": StatementInterface, "return": ResolvableInterface}> $createCalls
+     * @param array<string, array{"statement": StatementInterface, "return": BodyContentCollection}> $createCalls
      */
     private static function createMockStatementBlockFactory(array $createCalls): StatementBlockFactory
     {
@@ -1052,7 +1100,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
     }
 
     /**
-     * @param array<string, array{"statement": StatementInterface, "return": StatementHandlerComponents}> $handleCalls
+     * @param array<string, array{"statement": StatementInterface, "return": StatementHandlerCollections}> $handleCalls
      */
     private static function createMockStatementHandler(array $handleCalls): StatementHandler
     {

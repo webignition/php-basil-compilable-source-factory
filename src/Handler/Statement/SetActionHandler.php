@@ -14,7 +14,7 @@ use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
-use webignition\BasilCompilableSourceFactory\Model\Body\Body;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\NullCoalescerExpression;
@@ -22,7 +22,6 @@ use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumen
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
-use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Model\Statement\Action\ActionInterface;
@@ -56,7 +55,7 @@ class SetActionHandler implements StatementHandlerInterface
     /**
      * @throws UnsupportedContentException
      */
-    public function handle(StatementInterface $statement): ?StatementHandlerComponents
+    public function handle(StatementInterface $statement): ?StatementHandlerCollections
     {
         if (!$statement instanceof ActionInterface) {
             return null;
@@ -131,15 +130,13 @@ class SetActionHandler implements StatementHandlerInterface
             parent: Property::asDependency(DependencyName::WEBDRIVER_ELEMENT_MUTATOR),
         );
 
-        return new StatementHandlerComponents(
-            new Body([
-                new Statement($mutationInvocation),
-                new Statement(
-                    $this->phpUnitCallFactory->createRefreshCrawlerAndNavigatorCall(),
-                ),
+        return new StatementHandlerCollections(
+            BodyContentCollection::createFromExpressions([
+                $mutationInvocation,
+                $this->phpUnitCallFactory->createRefreshCrawlerAndNavigatorCall(),
             ])
         )->withSetup(
-            Body::createFromExpressions([
+            BodyContentCollection::createFromExpressions([
                 new AssignmentExpression($setValueCollectionVariable, $collectionAccessor),
                 new AssignmentExpression($setValueValueVariable, $valueAccessor),
             ]),

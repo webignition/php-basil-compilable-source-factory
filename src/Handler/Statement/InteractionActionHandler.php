@@ -10,12 +10,11 @@ use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
-use webignition\BasilCompilableSourceFactory\Model\Body\Body;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
-use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\BasilModels\Model\Statement\Action\ActionInterface;
 use webignition\BasilModels\Model\Statement\StatementInterface;
@@ -42,7 +41,7 @@ class InteractionActionHandler implements StatementHandlerInterface
     /**
      * @throws UnsupportedContentException
      */
-    public function handle(StatementInterface $statement): ?StatementHandlerComponents
+    public function handle(StatementInterface $statement): ?StatementHandlerCollections
     {
         if (!$statement instanceof ActionInterface) {
             return null;
@@ -65,30 +64,37 @@ class InteractionActionHandler implements StatementHandlerInterface
 
         $elementVariable = Property::asObjectVariable('element');
 
-        return new StatementHandlerComponents(
-            new Body([
-                new Statement(
-                    new MethodInvocation(
-                        methodName: $statement->getType(),
-                        arguments: new MethodArguments(),
-                        mightThrow: true,
-                        type: TypeCollection::void(),
-                        parent: $elementVariable,
-                    )
+        BodyContentCollection::createFromExpressions([
+            new MethodInvocation(
+                methodName: $statement->getType(),
+                arguments: new MethodArguments(),
+                mightThrow: true,
+                type: TypeCollection::void(),
+                parent: $elementVariable,
+            ),
+            $this->phpUnitCallFactory->createRefreshCrawlerAndNavigatorCall(),
+        ]);
+
+        return new StatementHandlerCollections(
+            BodyContentCollection::createFromExpressions([
+                new MethodInvocation(
+                    methodName: $statement->getType(),
+                    arguments: new MethodArguments(),
+                    mightThrow: true,
+                    type: TypeCollection::void(),
+                    parent: $elementVariable,
                 ),
-                new Statement(
-                    $this->phpUnitCallFactory->createRefreshCrawlerAndNavigatorCall(),
-                ),
+                $this->phpUnitCallFactory->createRefreshCrawlerAndNavigatorCall(),
             ])
         )->withSetup(
-            new Statement(
+            BodyContentCollection::createFromExpressions([
                 new AssignmentExpression(
                     $elementVariable,
                     $this->domIdentifierHandler->handleElement(
                         $this->elementIdentifierSerializer->serialize($domIdentifier)
                     )
                 )
-            )
+            ])
         );
     }
 }

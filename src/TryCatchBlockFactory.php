@@ -7,7 +7,8 @@ namespace webignition\BasilCompilableSourceFactory;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\CatchBlock;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryBlock;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryCatchBlock;
-use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
+use webignition\BasilCompilableSourceFactory\Model\Body\Body;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CatchExpression;
 use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclaration;
@@ -20,17 +21,19 @@ class TryCatchBlockFactory
         return new TryCatchBlockFactory();
     }
 
-    public function createForThrowable(BodyInterface $tryBody, BodyInterface $catchBody): TryCatchBlock
-    {
+    public function createForThrowable(
+        BodyContentCollection $tryContent,
+        BodyContentCollection $catchContent
+    ): TryCatchBlock {
         return new TryCatchBlock(
-            new TryBlock($tryBody),
+            new TryBlock(new Body($tryContent)),
             new CatchBlock(
                 new CatchExpression(
                     new ObjectTypeDeclarationCollection([
                         new ObjectTypeDeclaration(new ClassName(\Throwable::class))
                     ])
                 ),
-                $catchBody
+                new Body($catchContent)
             ),
         );
     }

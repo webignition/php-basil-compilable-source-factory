@@ -9,6 +9,7 @@ use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\EnvironmentValueFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayAccessExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
@@ -74,8 +75,8 @@ class ScalarValueHandler
     {
         $webDriverDimensionVariable = Property::asIntegerVariable('webDriverDimension');
 
-        return new ClosureExpression(
-            new Body([
+        $bodyContent = new BodyContentCollection()
+            ->append(
                 new Statement(
                     new AssignmentExpression(
                         $webDriverDimensionVariable,
@@ -87,8 +88,12 @@ class ScalarValueHandler
                             parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
                         )
                     )
-                ),
-                new EmptyLine(),
+                )
+            )
+            ->append(
+                new EmptyLine()
+            )
+            ->append(
                 new Statement(
                     new ReturnExpression(
                         new CompositeExpression(
@@ -118,10 +123,11 @@ class ScalarValueHandler
                             TypeCollection::string(),
                         ),
                     )
-                ),
-            ]),
-            TypeCollection::string(),
-        );
+                )
+            )
+        ;
+
+        return new ClosureExpression(new Body($bodyContent), TypeCollection::string());
     }
 
     private function handleEnvironmentValue(string $value): ExpressionInterface

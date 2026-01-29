@@ -14,7 +14,7 @@ use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
-use webignition\BasilCompilableSourceFactory\Model\Body\Body;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CompositeExpression;
@@ -24,8 +24,6 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterfac
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\NullCoalescerExpression;
 use webignition\BasilCompilableSourceFactory\Model\Property;
-use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
-use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\BasilModels\Model\Statement\Action\ActionInterface;
 use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
@@ -58,7 +56,7 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
     /**
      * @throws UnsupportedContentException
      */
-    public function handle(StatementModelInterface $statement): ?StatementHandlerComponents
+    public function handle(StatementModelInterface $statement): ?StatementHandlerCollections
     {
         if (!$statement instanceof AssertionInterface) {
             return null;
@@ -81,7 +79,7 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
     private function handleElementExistence(
         AssertionInterface $elementExistenceAssertion,
         ElementIdentifierInterface $domIdentifier
-    ): StatementHandlerComponents {
+    ): StatementHandlerCollections {
         $serializedElementIdentifier = $this->elementIdentifierSerializer->serialize($domIdentifier);
 
         $examinedAccessor = $this->createDomCrawlerNavigatorCall(
@@ -93,24 +91,25 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
         $examinedAccessor = EncapsulatingCastExpression::forBool($examinedAccessor);
 
         $elementExistsVariable = Property::asBooleanVariable('elementExists');
-        $elementAssignment = new Statement(
-            new AssignmentExpression($elementExistsVariable, $examinedAccessor),
-        );
 
-        return new StatementHandlerComponents(
-            $this->createAssertionStatement(
-                $elementExistenceAssertion,
-                $elementExistsVariable,
-            )
+        return new StatementHandlerCollections(
+            BodyContentCollection::createFromExpressions([
+                $this->createAssertionExpression(
+                    $elementExistenceAssertion,
+                    $elementExistsVariable,
+                )
+            ])
         )->withSetup(
-            $elementAssignment,
+            BodyContentCollection::createFromExpressions([
+                new AssignmentExpression($elementExistsVariable, $examinedAccessor),
+            ])
         );
     }
 
     private function handleAttributeExistence(
         AssertionInterface $attributeExistenceAssertion,
         AttributeIdentifierInterface $domIdentifier,
-    ): StatementHandlerComponents {
+    ): StatementHandlerCollections {
         $elementExistsAssertion = new DerivedValueOperationAssertion(
             $attributeExistenceAssertion,
             (string) ElementIdentifier::fromAttributeIdentifier($domIdentifier),
@@ -127,9 +126,7 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
         $elementAccessor = EncapsulatingCastExpression::forBool($elementAccessor);
 
         $elementExistsVariable = Property::asBooleanVariable('elementExists');
-        $elementAssignment = new Statement(
-            new AssignmentExpression($elementExistsVariable, $elementAccessor),
-        );
+        $elementAssignment = new AssignmentExpression($elementExistsVariable, $elementAccessor);
 
         $attributeNullComparisonExpression = new NullCoalescerExpression(
             $this->domIdentifierHandler->handleAttributeValue(
@@ -148,35 +145,33 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
         $attributeAccessor = EncapsulatingCastExpression::forBool($attributeAccessor);
 
         $attributeExistsVariable = Property::asBooleanVariable('attributeExists');
-        $attributeAssignment = new Statement(
-            new AssignmentExpression(
-                $attributeExistsVariable,
-                new CompositeExpression(
-                    [
-                        $elementExistsVariable,
-                        LiteralExpression::void(' && '),
-                        $attributeAccessor,
-                    ],
-                    TypeCollection::boolean(),
-                )
+        $attributeAssignment = new AssignmentExpression(
+            $attributeExistsVariable,
+            new CompositeExpression(
+                [
+                    $elementExistsVariable,
+                    LiteralExpression::void(' && '),
+                    $attributeAccessor,
+                ],
+                TypeCollection::boolean(),
             )
         );
 
-        return new StatementHandlerComponents(
-            new Body([
-                'element existence assertion' => $this->createAssertionStatement(
+        return new StatementHandlerCollections(
+            BodyContentCollection::createFromExpressions([
+                'element existence assertion' => $this->createAssertionExpression(
                     $elementExistsAssertion,
                     $elementExistsVariable,
                 ),
-                'attribute existence assertion' => $this->createAssertionStatement(
+                'attribute existence assertion' => $this->createAssertionExpression(
                     $attributeExistenceAssertion,
                     $attributeExistsVariable,
                 ),
             ])
         )->withSetup(
-            new Body([
+            BodyContentCollection::createFromExpressions([
                 $elementAssignment,
-                $attributeAssignment
+                $attributeAssignment,
             ]),
         );
     }
@@ -201,21 +196,21 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
                 : $this->domCrawlerNavigatorCallFactory->createHasCall($expression);
     }
 
-    private function createAssertionStatement(
+    private function createAssertionExpression(
         AssertionInterface $assertion,
         ExpressionInterface $examinedValuePlaceholder,
-    ): StatementInterface {
+    ): ExpressionInterface {
         $assertionArgumentExpressions = [$examinedValuePlaceholder];
         $assertionMessageExpressions = [
             LiteralExpression::boolean('exists' === $assertion->getOperator()),
             $examinedValuePlaceholder,
         ];
 
-        return new Statement($this->phpUnitCallFactory->createAssertionCall(
+        return $this->phpUnitCallFactory->createAssertionCall(
             'exists' === $assertion->getOperator() ? 'assertTrue' : 'assertFalse',
             $assertion,
             $assertionArgumentExpressions,
             $assertionMessageExpressions,
-        ));
+        );
     }
 }

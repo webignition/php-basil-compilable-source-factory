@@ -5,13 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Model\Body;
 
 use webignition\BasilCompilableSourceFactory\Model\DeferredResolvableCollectionTrait;
-use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
-use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
-use webignition\BasilCompilableSourceFactory\Model\HasMetadataInterface;
-use webignition\BasilCompilableSourceFactory\Model\IsAssigneeInterface;
-use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
-use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\Stubble\CollectionItemContext;
 use webignition\Stubble\Resolvable\ResolvableCollection;
 use webignition\Stubble\Resolvable\ResolvableCollectionInterface;
@@ -22,75 +16,21 @@ class Body implements BodyInterface, ResolvableCollectionInterface
 {
     use DeferredResolvableCollectionTrait;
 
-    /**
-     * @var BodyContentInterface[]
-     */
-    private array $content;
+    private BodyContentCollection $content;
 
-    private MetadataInterface $metadata;
-
-    /**
-     * @param BodyContentInterface[] $content
-     */
-    public function __construct(array $content)
+    public function __construct(?BodyContentCollection $content = null)
     {
-        $this->content = $this->filterContent($content);
-        $this->metadata = $this->buildMetadata();
-    }
-
-    /**
-     * @param array<mixed> $expressions
-     *
-     * @throws \InvalidArgumentException
-     */
-    public static function createFromExpressions(array $expressions): self
-    {
-        $statements = [];
-
-        foreach ($expressions as $index => $expression) {
-            if ($expression instanceof ExpressionInterface) {
-                $statements[] = new Statement($expression);
-            } else {
-                throw new \InvalidArgumentException('Non-expression at index ' . (string) $index);
-            }
-        }
-
-        return new Body($statements);
-    }
-
-    public static function createForSingleAssignmentStatement(
-        IsAssigneeInterface $assignee,
-        ExpressionInterface $value
-    ): self {
-        return new Body([
-            new Statement(
-                new AssignmentExpression($assignee, $value)
-            )
-        ]);
-    }
-
-    /**
-     * @param BodyContentInterface[] $content
-     */
-    public function withContent(array $content): self
-    {
-        return new Body(array_merge($this->content, $content));
+        $this->content = $content ?? new BodyContentCollection();
     }
 
     public function getMetadata(): MetadataInterface
     {
-        return $this->metadata;
+        return $this->content->getMetadata();
     }
 
     public function mightThrow(): bool
     {
-        foreach ($this->content as $content) {
-            if ($content->mightThrow()) {
-                return true;
-            }
-        }
-
-        return false;
+        return $this->content->mightThrow();
     }
 
     protected function createResolvable(): ResolvableInterface
@@ -117,52 +57,5 @@ class Body implements BodyInterface, ResolvableCollectionInterface
         }
 
         return $resolvedTemplate;
-    }
-
-    /**
-     * @param BodyContentInterface[] $content
-     *
-     * @return BodyContentInterface[]
-     */
-    private function filterContent(array $content): array
-    {
-        $filteredContent = [];
-
-        foreach ($content as $item) {
-            if ($this->includeContent($item)) {
-                $filteredContent[] = clone $item;
-            }
-        }
-
-        return $filteredContent;
-    }
-
-    /**
-     * @param mixed $item
-     */
-    private function includeContent($item): bool
-    {
-        if (!$item instanceof BodyContentInterface) {
-            return false;
-        }
-
-        if ($item instanceof self && 0 === count($item->content)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private function buildMetadata(): MetadataInterface
-    {
-        $metadata = new Metadata();
-
-        foreach ($this->content as $item) {
-            if ($item instanceof HasMetadataInterface) {
-                $metadata = $metadata->merge($item->getMetadata());
-            }
-        }
-
-        return $metadata;
     }
 }

@@ -8,6 +8,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryBlock;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
@@ -23,8 +24,8 @@ class TryBlockTest extends AbstractResolvableTestCase
 {
     public function testGetMetadata(): void
     {
-        $body = new Body([
-            new Statement(
+        $body = new Body(
+            BodyContentCollection::createFromExpressions([
                 new AssignmentExpression(
                     Property::asDependency(DependencyName::PANTHER_CLIENT),
                     new MethodInvocation(
@@ -35,8 +36,8 @@ class TryBlockTest extends AbstractResolvableTestCase
                         parent: new StaticObject(\RuntimeException::class),
                     )
                 )
-            ),
-        ]);
+            ])
+        );
 
         $tryBlock = new TryBlock($body);
 

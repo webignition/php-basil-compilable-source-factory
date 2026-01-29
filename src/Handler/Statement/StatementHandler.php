@@ -34,7 +34,7 @@ class StatementHandler implements StatementHandlerInterface
     /**
      * @throws UnsupportedStatementException
      */
-    public function handle(StatementInterface $statement): StatementHandlerComponents
+    public function handle(StatementInterface $statement): StatementHandlerCollections
     {
         $components = null;
 
