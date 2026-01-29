@@ -240,23 +240,25 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
             ],
             'try/catch block' => [
                 'expression' => new ClosureExpression(
-                    body: new TryCatchBlock(
-                        new TryBlock(
-                            new Body([
-                                new SingleLineComment('TryBlock comment'),
-                            ])
-                        ),
-                        new CatchBlock(
-                            new CatchExpression(
-                                new ObjectTypeDeclarationCollection([
-                                    new ObjectTypeDeclaration(new ClassName(\RuntimeException::class))
+                    body: new Body([
+                        new TryCatchBlock(
+                            new TryBlock(
+                                new Body([
+                                    new SingleLineComment('TryBlock comment'),
                                 ])
                             ),
-                            new Body([
-                                new SingleLineComment('CatchBlock comment'),
-                            ])
-                        )
-                    ),
+                            new CatchBlock(
+                                new CatchExpression(
+                                    new ObjectTypeDeclarationCollection([
+                                        new ObjectTypeDeclaration(new ClassName(\RuntimeException::class))
+                                    ])
+                                ),
+                                new Body([
+                                    new SingleLineComment('CatchBlock comment'),
+                                ])
+                            )
+                        ),
+                    ]),
                     type: TypeCollection::string(),
                 ),
                 'expectedString' => '(function () {' . "\n"
