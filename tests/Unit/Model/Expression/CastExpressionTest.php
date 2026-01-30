@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression;
 
 use PHPUnit\Framework\Attributes\DataProvider;
-use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression\ArrayExpression;
@@ -16,7 +15,6 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\CompositeExpressio
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
-use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
@@ -43,25 +41,25 @@ class CastExpressionTest extends AbstractResolvableTestCase
     public static function renderDataProvider(): array
     {
         return [
-            'literal int as int' => [
+            'literal int as int, is not cast' => [
                 'expression' => new CastExpression(
                     LiteralExpression::integer(100),
                     Type::INTEGER
                 ),
-                'expectedString' => '(int) 100',
+                'expectedString' => '100',
             ],
-            'literal int as string' => [
+            'literal int as string, is cast' => [
                 'expression' => new CastExpression(
                     LiteralExpression::integer(100),
                     Type::STRING
                 ),
                 'expectedString' => '(string) 100',
             ],
-            'empty array expression as object' => [
+            'empty array expression as object, is cast' => [
                 'expression' => new CastExpression(new ArrayExpression([]), Type::OBJECT),
                 'expectedString' => '(object) []',
             ],
-            'empty closure expression as string' => [
+            'empty closure expression as string, is cast' => [
                 'expression' => new CastExpression(
                     new ClosureExpression(new Body()),
                     Type::STRING
@@ -72,7 +70,7 @@ class CastExpressionTest extends AbstractResolvableTestCase
                     })()
                     EOD,
             ],
-            'comparison expression as int' => [
+            'comparison expression as int, is encapsulated and cast' => [
                 'expression' => new CastExpression(
                     new ComparisonExpression(
                         LiteralExpression::string('"x"'),
@@ -81,9 +79,9 @@ class CastExpressionTest extends AbstractResolvableTestCase
                     ),
                     Type::INTEGER
                 ),
-                'expectedString' => '(int) "x" === "y"',
+                'expectedString' => '(int) ("x" === "y")',
             ],
-            'composite expression as string' => [
+            'composite string expression as string, is not cast' => [
                 'expression' => new CastExpression(
                     new CompositeExpression(
                         [
@@ -94,9 +92,9 @@ class CastExpressionTest extends AbstractResolvableTestCase
                     ),
                     Type::STRING
                 ),
-                'expectedString' => '(string) $_ENV["secret"]',
+                'expectedString' => '$_ENV["secret"]',
             ],
-            'method invocation as string' => [
+            'string method invocation as string, is not cast' => [
                 'expression' => new CastExpression(
                     new MethodInvocation(
                         methodName: 'methodName',
@@ -106,20 +104,19 @@ class CastExpressionTest extends AbstractResolvableTestCase
                     ),
                     Type::STRING,
                 ),
-                'expectedString' => '(string) methodName()',
+                'expectedString' => 'methodName()',
             ],
-            'object method invocation as string' => [
+            'integre method invocation as string, is not cast' => [
                 'expression' => new CastExpression(
                     new MethodInvocation(
                         methodName: 'methodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
-                        type: TypeCollection::string(),
-                        parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
+                        type: TypeCollection::integer(),
                     ),
-                    Type::STRING
+                    Type::STRING,
                 ),
-                'expectedString' => '(string) {{ CLIENT }}->methodName()',
+                'expectedString' => '(string) methodName()',
             ],
             'static object method invocation as string, class in root namespace' => [
                 'expression' => new CastExpression(
@@ -127,7 +124,7 @@ class CastExpressionTest extends AbstractResolvableTestCase
                         methodName: 'methodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
-                        type: TypeCollection::string(),
+                        type: TypeCollection::integer(),
                         parent: new StaticObject('Object'),
                     ),
                     Type::STRING
@@ -140,7 +137,7 @@ class CastExpressionTest extends AbstractResolvableTestCase
                         methodName: 'methodName',
                         arguments: new MethodArguments(),
                         mightThrow: false,
-                        type: TypeCollection::string(),
+                        type: TypeCollection::integer(),
                         parent: new StaticObject('Acme\Object'),
                     ),
                     Type::STRING,
