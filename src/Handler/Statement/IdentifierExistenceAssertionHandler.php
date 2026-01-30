@@ -12,10 +12,12 @@ use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\CastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CompositeExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpression;
@@ -89,7 +91,11 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
         );
 
         if (false === TypeCollection::boolean()->equals($examinedAccessor->getType())) {
-            $examinedAccessor = EncapsulatingCastExpression::forBool($examinedAccessor);
+            if ($examinedAccessor->encapsulateWhenCasting()) {
+                $examinedAccessor = EncapsulatingCastExpression::forBool($examinedAccessor);
+            } else {
+                $examinedAccessor = new CastExpression($examinedAccessor, Type::BOOLEAN);
+            }
         }
 
         $elementExistsVariable = Property::asBooleanVariable('elementExists');
@@ -125,8 +131,13 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
             $attributeExistenceAssertion,
             $this->argumentFactory->create($serializedAttributeIdentifier)
         );
+
         if (false === TypeCollection::boolean()->equals($elementAccessor->getType())) {
-            $elementAccessor = EncapsulatingCastExpression::forBool($elementAccessor);
+            if ($elementAccessor->encapsulateWhenCasting()) {
+                $elementAccessor = EncapsulatingCastExpression::forBool($elementAccessor);
+            } else {
+                $elementAccessor = new CastExpression($elementAccessor, Type::BOOLEAN);
+            }
         }
 
         $elementExistsVariable = Property::asBooleanVariable('elementExists');
@@ -146,7 +157,11 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
             '!=='
         );
         if (false === TypeCollection::boolean()->equals($attributeAccessor->getType())) {
-            $attributeAccessor = EncapsulatingCastExpression::forBool($attributeAccessor);
+            if ($attributeAccessor->encapsulateWhenCasting()) {
+                $attributeAccessor = EncapsulatingCastExpression::forBool($attributeAccessor);
+            } else {
+                $attributeAccessor = new CastExpression($attributeAccessor, Type::BOOLEAN);
+            }
         }
 
         $attributeExistsVariable = Property::asBooleanVariable('attributeExists');

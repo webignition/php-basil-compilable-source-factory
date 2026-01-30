@@ -108,13 +108,13 @@ trait CreateFromExcludesAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$".selector".attribute_name excludes "value"', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
                     $expectedValue = "value";
-                    $examinedValue = (string) ((function (): null|string {
+                    $examinedValue = (string) (function (): null|string {
                         $element = {{ NAVIGATOR }}->findOne('{
                             "locator": ".selector"
                         }');
 
                         return $element->getAttribute('attribute_name');
-                    })());
+                    })();
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertStringNotContainsString(

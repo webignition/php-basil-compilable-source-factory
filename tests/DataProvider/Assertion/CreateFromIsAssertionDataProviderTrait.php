@@ -111,13 +111,13 @@ trait CreateFromIsAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$".selector".attribute_name is "value"', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
                     $expectedValue = "value";
-                    $examinedValue = (string) ((function (): null|string {
+                    $examinedValue = (string) (function (): null|string {
                         $element = {{ NAVIGATOR }}->findOne('{
                             "locator": ".selector"
                         }');
 
                         return $element->getAttribute('attribute_name');
-                    })());
+                    })();
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertEquals(
@@ -435,13 +435,13 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, browser object examined value, attribute identifier expected value' => [
                 'statement' => $assertionParser->parse('$browser.size is $".selector".attribute_name', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
-            $expectedValue = (string) ((function (): null|string {
+            $expectedValue = (string) (function (): null|string {
                 $element = {{ NAVIGATOR }}->findOne('{
                     "locator": ".selector"
                 }');
 
                 return $element->getAttribute('attribute_name');
-            })());
+            })();
             $examinedValue = (function (): string {
                 $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
 

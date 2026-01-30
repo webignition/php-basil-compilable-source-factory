@@ -121,13 +121,13 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     'is-regexp'
                 ),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    $examinedValue = (string) ((function (): null|string {
+                    $examinedValue = (string) (function (): null|string {
                         $element = {{ NAVIGATOR }}->findOne('{
                             "locator": ".pattern-container"
                         }');
                     
                         return $element->getAttribute('attribute_name');
-                    })());
+                    })();
                     $expectedValue = @preg_match($examinedValue, null) === false;
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'

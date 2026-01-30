@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Statement;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\CastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
@@ -55,13 +57,21 @@ class ComparisonAssertionHandler implements StatementHandlerInterface
         $examinedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull((string) $statement->getIdentifier());
         $examinedAccessorType = $examinedAccessor->getType();
         if (false === $examinedAccessorType->equals(TypeCollection::string())) {
-            $examinedAccessor = EncapsulatingCastExpression::forString($examinedAccessor);
+            if ($examinedAccessor->encapsulateWhenCasting()) {
+                $examinedAccessor = EncapsulatingCastExpression::forString($examinedAccessor);
+            } else {
+                $examinedAccessor = new CastExpression($examinedAccessor, Type::STRING);
+            }
         }
 
         $expectedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull((string) $statement->getValue());
         $expectedAccessorType = $expectedAccessor->getType();
         if (false === $expectedAccessorType->equals(TypeCollection::string())) {
-            $expectedAccessor = EncapsulatingCastExpression::forString($expectedAccessor);
+            if ($expectedAccessor->encapsulateWhenCasting()) {
+                $expectedAccessor = EncapsulatingCastExpression::forString($expectedAccessor);
+            } else {
+                $expectedAccessor = new CastExpression($expectedAccessor, Type::STRING);
+            }
         }
 
         $expectedValueVariable = Property::asStringVariable(VariableName::EXPECTED_VALUE);

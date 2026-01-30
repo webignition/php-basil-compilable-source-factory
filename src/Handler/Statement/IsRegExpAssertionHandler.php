@@ -6,10 +6,12 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Statement;
 
 use SmartAssert\DomIdentifier\Factory as DomIdentifierFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\CastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
@@ -80,7 +82,11 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
         $examinedAccessorType = $examinedAccessor->getType();
 
         if (false === $examinedAccessorType->equals(TypeCollection::string())) {
-            $examinedAccessor = EncapsulatingCastExpression::forString($examinedAccessor);
+            if ($examinedAccessor->encapsulateWhenCasting()) {
+                $examinedAccessor = EncapsulatingCastExpression::forString($examinedAccessor);
+            } else {
+                $examinedAccessor = new CastExpression($examinedAccessor, Type::STRING);
+            }
         }
 
         if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
@@ -115,7 +121,11 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
             '==='
         );
         if (false === TypeCollection::boolean()->equals($identityComparison->getType())) {
-            $identityComparison = EncapsulatingCastExpression::forBool($identityComparison);
+            if ($identityComparison->encapsulateWhenCasting()) {
+                $identityComparison = EncapsulatingCastExpression::forBool($identityComparison);
+            } else {
+                $identityComparison = new CastExpression($identityComparison, Type::BOOLEAN);
+            }
         }
 
         return new StatementHandlerCollections(

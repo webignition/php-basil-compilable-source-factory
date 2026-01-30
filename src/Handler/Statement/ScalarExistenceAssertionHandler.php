@@ -5,10 +5,12 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Statement;
 
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\CastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastExpression;
@@ -56,7 +58,11 @@ class ScalarExistenceAssertionHandler implements StatementHandlerInterface
             '!=='
         );
         if (false === TypeCollection::boolean()->equals($examinedAccessor->getType())) {
-            $examinedAccessor = EncapsulatingCastExpression::forBool($examinedAccessor);
+            if ($examinedAccessor->encapsulateWhenCasting()) {
+                $examinedAccessor = EncapsulatingCastExpression::forBool($examinedAccessor);
+            } else {
+                $examinedAccessor = new CastExpression($examinedAccessor, Type::BOOLEAN);
+            }
         }
 
         $expected = LiteralExpression::boolean('exists' === $statement->getOperator());
