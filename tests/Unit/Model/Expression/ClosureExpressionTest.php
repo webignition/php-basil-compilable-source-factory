@@ -22,13 +22,13 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ClosureExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CompositeExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
-use webignition\BasilCompilableSourceFactory\Model\Expression\ReturnExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
+use webignition\BasilCompilableSourceFactory\Model\Statement\ReturnStatement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclaration;
@@ -63,46 +63,53 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                 'expectedMetadata' => new Metadata(),
             ],
             'non-empty, has metadata' => [
-                'body' => new Body(BodyContentCollection::createFromExpressions([
-                    new AssignmentExpression(
-                        Property::asStringVariable('variable'),
-                        new MethodInvocation(
-                            methodName: 'dependencyMethodName',
-                            arguments: new MethodArguments(),
-                            mightThrow: false,
-                            type: TypeCollection::string(),
-                            parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
-                        )
-                    ),
-                    new ReturnExpression(
-                        new CompositeExpression(
-                            [
-                                new CastExpression(
+                'body' => new Body(
+                    new BodyContentCollection()
+                        ->append(
+                            new Statement(
+                                new AssignmentExpression(
+                                    Property::asStringVariable('variable'),
                                     new MethodInvocation(
-                                        methodName: 'getWidth',
+                                        methodName: 'dependencyMethodName',
                                         arguments: new MethodArguments(),
                                         mightThrow: false,
-                                        type: TypeCollection::integer(),
-                                        parent: Property::asObjectVariable('variable'),
-                                    ),
-                                    Type::STRING
-                                ),
-                                LiteralExpression::void(' . \'x\' . '),
-                                new CastExpression(
-                                    new MethodInvocation(
-                                        methodName: 'getHeight',
-                                        arguments: new MethodArguments(),
-                                        mightThrow: false,
-                                        type: TypeCollection::integer(),
-                                        parent: Property::asObjectVariable('variable'),
-                                    ),
-                                    Type::STRING
-                                ),
-                            ],
-                            TypeCollection::integer(),
+                                        type: TypeCollection::string(),
+                                        parent: Property::asDependency(DependencyName::PANTHER_CLIENT),
+                                    )
+                                )
+                            )
                         )
-                    )
-                ])),
+                        ->append(
+                            new ReturnStatement(
+                                new CompositeExpression(
+                                    [
+                                        new CastExpression(
+                                            new MethodInvocation(
+                                                methodName: 'getWidth',
+                                                arguments: new MethodArguments(),
+                                                mightThrow: false,
+                                                type: TypeCollection::integer(),
+                                                parent: Property::asObjectVariable('variable'),
+                                            ),
+                                            Type::STRING
+                                        ),
+                                        LiteralExpression::void(' . \'x\' . '),
+                                        new CastExpression(
+                                            new MethodInvocation(
+                                                methodName: 'getHeight',
+                                                arguments: new MethodArguments(),
+                                                mightThrow: false,
+                                                type: TypeCollection::integer(),
+                                                parent: Property::asObjectVariable('variable'),
+                                            ),
+                                            Type::STRING
+                                        ),
+                                    ],
+                                    TypeCollection::integer(),
+                                )
+                            )
+                        )
+                ),
                 'expectedMetadata' => new Metadata(
                     dependencyNames: [
                         DependencyName::PANTHER_CLIENT,
@@ -135,9 +142,10 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
             'single literal statement' => [
                 'expression' => new ClosureExpression(
                     new Body(
-                        BodyContentCollection::createFromExpressions([
-                            new ReturnExpression(LiteralExpression::integer(5))
-                        ])
+                        new BodyContentCollection()
+                            ->append(
+                                new ReturnStatement(LiteralExpression::integer(5))
+                            ),
                     ),
                 ),
                 'expectedString' => <<<'EOD'
@@ -149,14 +157,15 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
             'single literal statement, with return statement expression cast to string' => [
                 'expression' => new ClosureExpression(
                     new Body(
-                        BodyContentCollection::createFromExpressions([
-                            new ReturnExpression(
-                                new CastExpression(
-                                    LiteralExpression::integer(5),
-                                    Type::STRING
+                        new BodyContentCollection()
+                            ->append(
+                                new ReturnStatement(
+                                    new CastExpression(
+                                        LiteralExpression::integer(5),
+                                        Type::STRING
+                                    )
                                 )
-                            )
-                        ])
+                            ),
                     ),
                 ),
                 'expectedString' => <<<'EOD'
@@ -179,9 +188,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                                 new EmptyLine()
                             )
                             ->append(
-                                new Statement(
-                                    new ReturnExpression(LiteralExpression::integer(5))
-                                )
+                                new ReturnStatement(LiteralExpression::integer(5))
                             )
                     ),
                 ),
@@ -216,34 +223,32 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                                 new EmptyLine()
                             )
                             ->append(
-                                new Statement(
-                                    new ReturnExpression(
-                                        new CompositeExpression(
-                                            [
-                                                new EncapsulatingCastExpression(
-                                                    new MethodInvocation(
-                                                        methodName: 'getWidth',
-                                                        arguments: new MethodArguments(),
-                                                        mightThrow: false,
-                                                        type: TypeCollection::integer(),
-                                                        parent: Property::asObjectVariable('variable'),
-                                                    ),
-                                                    Type::STRING,
+                                new ReturnStatement(
+                                    new CompositeExpression(
+                                        [
+                                            new EncapsulatingCastExpression(
+                                                new MethodInvocation(
+                                                    methodName: 'getWidth',
+                                                    arguments: new MethodArguments(),
+                                                    mightThrow: false,
+                                                    type: TypeCollection::integer(),
+                                                    parent: Property::asObjectVariable('variable'),
                                                 ),
-                                                LiteralExpression::void(' . \'x\' . '),
-                                                new EncapsulatingCastExpression(
-                                                    new MethodInvocation(
-                                                        methodName: 'getHeight',
-                                                        arguments: new MethodArguments(),
-                                                        mightThrow: false,
-                                                        type: TypeCollection::integer(),
-                                                        parent: Property::asObjectVariable('variable'),
-                                                    ),
-                                                    Type::STRING
+                                                Type::STRING,
+                                            ),
+                                            LiteralExpression::void(' . \'x\' . '),
+                                            new EncapsulatingCastExpression(
+                                                new MethodInvocation(
+                                                    methodName: 'getHeight',
+                                                    arguments: new MethodArguments(),
+                                                    mightThrow: false,
+                                                    type: TypeCollection::integer(),
+                                                    parent: Property::asObjectVariable('variable'),
                                                 ),
-                                            ],
-                                            TypeCollection::string(),
-                                        )
+                                                Type::STRING
+                                            ),
+                                        ],
+                                        TypeCollection::string(),
                                     )
                                 )
                             )
@@ -310,10 +315,8 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                                 new EmptyLine()
                             )
                             ->append(
-                                new Statement(
-                                    new ReturnExpression(
-                                        Property::asStringVariable('variableName')
-                                    )
+                                new ReturnStatement(
+                                    Property::asStringVariable('variableName')
                                 )
                             )
                     ),

@@ -7,8 +7,8 @@ namespace webignition\BasilCompilableSourceFactory\Model;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression\ArrayExpression;
-use webignition\BasilCompilableSourceFactory\Model\Expression\ReturnExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
+use webignition\BasilCompilableSourceFactory\Model\Statement\ReturnStatement;
 
 class DataProviderMethodDefinition extends MethodDefinition implements DataProviderMethodDefinitionInterface
 {
@@ -29,11 +29,14 @@ class DataProviderMethodDefinition extends MethodDefinition implements DataProvi
 
         parent::__construct(
             $name,
-            new Body(BodyContentCollection::createFromExpressions([
-                new ReturnExpression(
-                    ArrayExpression::fromArray($data)
-                )
-            ]))
+            new Body(
+                new BodyContentCollection()
+                    ->append(
+                        new ReturnStatement(
+                            ArrayExpression::fromArray($data)
+                        )
+                    )
+            ),
         );
 
         $this->metadata = new Metadata();

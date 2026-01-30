@@ -11,11 +11,11 @@ use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ClosureExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
-use webignition\BasilCompilableSourceFactory\Model\Expression\ReturnExpression;
 use webignition\BasilCompilableSourceFactory\Model\IsAssigneeInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
+use webignition\BasilCompilableSourceFactory\Model\Statement\ReturnStatement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\StatementInterface;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
@@ -58,27 +58,32 @@ class StatementFactory
                 $placeholder,
                 new ClosureExpression(
                     new Body(
-                        BodyContentCollection::createFromExpressions([
-                            new AssignmentExpression(
-                                $elementVariable,
-                                new MethodInvocation(
-                                    methodName: 'filter',
-                                    arguments: new MethodArguments([$argumentFactory->create($selector)]),
-                                    mightThrow: false,
-                                    type: TypeCollection::object(),
-                                    parent: Property::asDependency(DependencyName::PANTHER_CRAWLER),
-                                )
-                            ),
-                            new ReturnExpression(
-                                new MethodInvocation(
-                                    methodName: 'getElement',
-                                    arguments: new MethodArguments([$argumentFactory->create('0')]),
-                                    mightThrow: false,
-                                    type: TypeCollection::object(),
-                                    parent: $elementVariable,
+                        new BodyContentCollection()
+                            ->append(
+                                new Statement(
+                                    new AssignmentExpression(
+                                        $elementVariable,
+                                        new MethodInvocation(
+                                            methodName: 'filter',
+                                            arguments: new MethodArguments([$argumentFactory->create($selector)]),
+                                            mightThrow: false,
+                                            type: TypeCollection::object(),
+                                            parent: Property::asDependency(DependencyName::PANTHER_CRAWLER),
+                                        )
+                                    ),
+                                ),
+                            )
+                            ->append(
+                                new ReturnStatement(
+                                    new MethodInvocation(
+                                        methodName: 'getElement',
+                                        arguments: new MethodArguments([$argumentFactory->create('0')]),
+                                        mightThrow: false,
+                                        type: TypeCollection::object(),
+                                        parent: $elementVariable,
+                                    )
                                 )
                             )
-                        ])
                     ),
                 )
             )
