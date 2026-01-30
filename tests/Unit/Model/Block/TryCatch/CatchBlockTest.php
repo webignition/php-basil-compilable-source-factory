@@ -12,7 +12,6 @@ use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
-use webignition\BasilCompilableSourceFactory\Model\Expression\CatchExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
@@ -45,11 +44,9 @@ class CatchBlockTest extends AbstractResolvableTestCase
         );
 
         $catchBlock = new CatchBlock(
-            new CatchExpression(
-                new ObjectTypeDeclarationCollection([
-                    new ObjectTypeDeclaration(new ClassName(\Exception::class)),
-                ])
-            ),
+            new ObjectTypeDeclarationCollection([
+                new ObjectTypeDeclaration(new ClassName(\Exception::class)),
+            ]),
             $body
         );
 
@@ -80,11 +77,9 @@ class CatchBlockTest extends AbstractResolvableTestCase
         return [
             'single-class expression, all in root namespace' => [
                 'tryBlock' => new CatchBlock(
-                    new CatchExpression(
-                        new ObjectTypeDeclarationCollection([
-                            new ObjectTypeDeclaration(new ClassName(\Exception::class)),
-                        ])
-                    ),
+                    new ObjectTypeDeclarationCollection([
+                        new ObjectTypeDeclaration(new ClassName(\Exception::class)),
+                    ]),
                     new Body(
                         new BodyContentCollection()
                             ->append(
@@ -100,12 +95,10 @@ class CatchBlockTest extends AbstractResolvableTestCase
             ],
             'multi-class expression, all in root namespace' => [
                 'tryBlock' => new CatchBlock(
-                    new CatchExpression(
-                        new ObjectTypeDeclarationCollection([
-                            new ObjectTypeDeclaration(new ClassName(\LogicException::class)),
-                            new ObjectTypeDeclaration(new ClassName(\RuntimeException::class)),
-                        ])
-                    ),
+                    new ObjectTypeDeclarationCollection([
+                        new ObjectTypeDeclaration(new ClassName(\LogicException::class)),
+                        new ObjectTypeDeclaration(new ClassName(\RuntimeException::class)),
+                    ]),
                     new Body(
                         new BodyContentCollection()
                             ->append(
@@ -121,13 +114,11 @@ class CatchBlockTest extends AbstractResolvableTestCase
             ],
             'multi-class expression, not all in root namespace' => [
                 'tryBlock' => new CatchBlock(
-                    new CatchExpression(
-                        new ObjectTypeDeclarationCollection([
-                            new ObjectTypeDeclaration(new ClassName(\LogicException::class)),
-                            new ObjectTypeDeclaration(new ClassName(\RuntimeException::class)),
-                            new ObjectTypeDeclaration(new ClassName(TestCase::class)),
-                        ])
-                    ),
+                    new ObjectTypeDeclarationCollection([
+                        new ObjectTypeDeclaration(new ClassName(\LogicException::class)),
+                        new ObjectTypeDeclaration(new ClassName(\RuntimeException::class)),
+                        new ObjectTypeDeclaration(new ClassName(TestCase::class)),
+                    ]),
                     new Body(
                         new BodyContentCollection()
                             ->append(

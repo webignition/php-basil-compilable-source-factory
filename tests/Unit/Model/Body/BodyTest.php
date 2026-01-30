@@ -13,7 +13,6 @@ use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
-use webignition\BasilCompilableSourceFactory\Model\Expression\CatchExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ClosureExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
@@ -76,13 +75,11 @@ class BodyTest extends AbstractResolvableTestCase
                                     ),
                                 ),
                                 new CatchBlock(
-                                    new CatchExpression(
-                                        new ObjectTypeDeclarationCollection([
-                                            new ObjectTypeDeclaration(
-                                                new ClassName(\LogicException::class)
-                                            )
-                                        ])
-                                    ),
+                                    new ObjectTypeDeclarationCollection([
+                                        new ObjectTypeDeclaration(
+                                            new ClassName(\LogicException::class)
+                                        )
+                                    ]),
                                     new Body(
                                         new BodyContentCollection()
                                             ->append(new SingleLineComment('CatchBlock comment'))
@@ -294,13 +291,11 @@ class BodyTest extends AbstractResolvableTestCase
                                     )
                                 ),
                                 new CatchBlock(
-                                    new CatchExpression(
-                                        new ObjectTypeDeclarationCollection([
-                                            new ObjectTypeDeclaration(
-                                                new ClassName(\Throwable::class)
-                                            )
-                                        ])
-                                    ),
+                                    new ObjectTypeDeclarationCollection([
+                                        new ObjectTypeDeclaration(
+                                            new ClassName(\Throwable::class)
+                                        )
+                                    ]),
                                     new Body()
                                 ),
                             ),
@@ -324,13 +319,11 @@ class BodyTest extends AbstractResolvableTestCase
                                     )
                                 ),
                                 new CatchBlock(
-                                    new CatchExpression(
-                                        new ObjectTypeDeclarationCollection([
-                                            new ObjectTypeDeclaration(
-                                                new ClassName(\Throwable::class)
-                                            )
-                                        ])
-                                    ),
+                                    new ObjectTypeDeclarationCollection([
+                                        new ObjectTypeDeclaration(
+                                            new ClassName(\Throwable::class)
+                                        )
+                                    ]),
                                     new Body()
                                 ),
                             ),
@@ -354,13 +347,11 @@ class BodyTest extends AbstractResolvableTestCase
                                     )
                                 ),
                                 new CatchBlock(
-                                    new CatchExpression(
-                                        new ObjectTypeDeclarationCollection([
-                                            new ObjectTypeDeclaration(
-                                                new ClassName(\Throwable::class)
-                                            )
-                                        ])
-                                    ),
+                                    new ObjectTypeDeclarationCollection([
+                                        new ObjectTypeDeclaration(
+                                            new ClassName(\Throwable::class)
+                                        )
+                                    ]),
                                     new Body(
                                         new BodyContentCollection()
                                             ->append(
@@ -371,13 +362,11 @@ class BodyTest extends AbstractResolvableTestCase
                                     )
                                 ),
                                 new CatchBlock(
-                                    new CatchExpression(
-                                        new ObjectTypeDeclarationCollection([
-                                            new ObjectTypeDeclaration(
-                                                new ClassName(\Throwable::class)
-                                            )
-                                        ])
-                                    ),
+                                    new ObjectTypeDeclarationCollection([
+                                        new ObjectTypeDeclaration(
+                                            new ClassName(\Throwable::class)
+                                        )
+                                    ]),
                                     new Body(
                                         new BodyContentCollection()
                                             ->append(

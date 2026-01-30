@@ -17,7 +17,6 @@ use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CastExpression;
-use webignition\BasilCompilableSourceFactory\Model\Expression\CatchExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ClosureExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CompositeExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastExpression;
@@ -275,11 +274,9 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                                         ),
                                     ),
                                     new CatchBlock(
-                                        new CatchExpression(
-                                            new ObjectTypeDeclarationCollection([
-                                                new ObjectTypeDeclaration(new ClassName(\RuntimeException::class))
-                                            ])
-                                        ),
+                                        new ObjectTypeDeclarationCollection([
+                                            new ObjectTypeDeclaration(new ClassName(\RuntimeException::class))
+                                        ]),
                                         new Body(
                                             new BodyContentCollection()
                                                 ->append(new SingleLineComment('CatchBlock comment'))
