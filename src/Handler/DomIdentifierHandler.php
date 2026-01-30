@@ -88,7 +88,7 @@ class DomIdentifierHandler
                 $elementVariable,
             ]),
             mightThrow: false,
-            type: TypeCollection::string(),
+            type: new TypeCollection([Type::STRING, Type::NULL]),
             parent: Property::asDependency(DependencyName::WEBDRIVER_ELEMENT_INSPECTOR),
         );
 
