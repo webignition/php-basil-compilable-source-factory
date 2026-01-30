@@ -12,6 +12,7 @@ class StaticObject implements \Stringable, ExpressionInterface
 {
     use ResolvableStringableTrait;
     use NeverThrowsTrait;
+    use NeverEncapsulateWhenCastingTrait;
 
     /**
      * @param non-empty-string $object

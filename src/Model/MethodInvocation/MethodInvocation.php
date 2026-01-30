@@ -8,11 +8,13 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterfac
 use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
+use webignition\BasilCompilableSourceFactory\Model\NeverEncapsulateWhenCastingTrait;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 
 readonly class MethodInvocation implements MethodInvocationInterface
 {
     use IsNotStaticTrait;
+    use NeverEncapsulateWhenCastingTrait;
 
     public function __construct(
         private string $methodName,

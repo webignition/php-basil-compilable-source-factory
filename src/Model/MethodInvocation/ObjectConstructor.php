@@ -9,11 +9,13 @@ use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
+use webignition\BasilCompilableSourceFactory\Model\NeverEncapsulateWhenCastingTrait;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 
 class ObjectConstructor implements InvocableInterface
 {
     use IsNotStaticTrait;
+    use NeverEncapsulateWhenCastingTrait;
 
     private MethodInvocation $invocation;
 

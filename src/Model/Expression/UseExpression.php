@@ -8,6 +8,7 @@ use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
+use webignition\BasilCompilableSourceFactory\Model\NeverEncapsulateWhenCastingTrait;
 use webignition\BasilCompilableSourceFactory\Model\NeverThrowsTrait;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 
@@ -15,6 +16,7 @@ class UseExpression implements ExpressionInterface
 {
     use NeverThrowsTrait;
     use IsNotStaticTrait;
+    use NeverEncapsulateWhenCastingTrait;
 
     private const RENDER_TEMPLATE = 'use {{ class_name }}';
 

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Model\Expression\ArrayExpression;
 
 use webignition\BasilCompilableSourceFactory\Model\DeferredResolvableCreationTrait;
+use webignition\BasilCompilableSourceFactory\Model\EncapsulateWhenCastingTrait;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
@@ -20,6 +21,7 @@ class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationIn
 {
     use DeferredResolvableCreationTrait;
     use IsNotStaticTrait;
+    use EncapsulateWhenCastingTrait;
 
     private const INDENT = '    ';
 

@@ -13,6 +13,7 @@ use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 class Property implements ExpressionInterface, IsAssigneeInterface
 {
     use IsMutableStaticTrait;
+    use NeverEncapsulateWhenCastingTrait;
 
     /**
      * @param non-empty-string $name

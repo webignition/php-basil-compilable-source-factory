@@ -6,11 +6,13 @@ namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 
 use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
+use webignition\BasilCompilableSourceFactory\Model\NeverEncapsulateWhenCastingTrait;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 
 class EncapsulatedExpression implements ExpressionInterface
 {
     use IsNotStaticTrait;
+    use NeverEncapsulateWhenCastingTrait;
 
     private const RENDER_TEMPLATE = '({{ expression }})';
 

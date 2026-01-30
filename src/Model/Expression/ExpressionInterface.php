@@ -10,4 +10,7 @@ use webignition\BasilCompilableSourceFactory\Model\IsStaticInterface as IsStatic
 use webignition\BasilCompilableSourceFactory\Model\MightThrowInterface as MightThrow;
 use webignition\Stubble\Resolvable\ResolvableInterface;
 
-interface ExpressionInterface extends HasMetadata, ResolvableInterface, MightThrow, IsStatic, HasType {}
+interface ExpressionInterface extends HasMetadata, ResolvableInterface, MightThrow, IsStatic, HasType
+{
+    public function encapsulateWhenCasting(): bool;
+}
