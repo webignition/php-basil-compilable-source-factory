@@ -11,7 +11,6 @@ use webignition\BasilCompilableSourceFactory\Model\Block\TryCatch\TryCatchBlock;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
-use webignition\BasilCompilableSourceFactory\Model\Expression\CatchExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
@@ -51,23 +50,19 @@ class TryCatchBlockTest extends AbstractResolvableTestCase
                         )
                     ),
                     new CatchBlock(
-                        new CatchExpression(
-                            new ObjectTypeDeclarationCollection([
-                                new ObjectTypeDeclaration(new ClassName(\LogicException::class)),
-                                new ObjectTypeDeclaration(new ClassName(\RuntimeException::class)),
-                            ])
-                        ),
+                        new ObjectTypeDeclarationCollection([
+                            new ObjectTypeDeclaration(new ClassName(\LogicException::class)),
+                            new ObjectTypeDeclaration(new ClassName(\RuntimeException::class)),
+                        ]),
                         new Body(
                             new BodyContentCollection()
                                 ->append(new SingleLineComment('handle LogicException and RuntimeException'))
                         ),
                     ),
                     new CatchBlock(
-                        new CatchExpression(
-                            new ObjectTypeDeclarationCollection([
-                                new ObjectTypeDeclaration(new ClassName(\LengthException::class)),
-                            ])
-                        ),
+                        new ObjectTypeDeclarationCollection([
+                            new ObjectTypeDeclaration(new ClassName(\LengthException::class)),
+                        ]),
                         new Body(
                             new BodyContentCollection()
                                 ->append(new SingleLineComment('handle LengthException'))

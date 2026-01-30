@@ -2,21 +2,17 @@
 
 declare(strict_types=1);
 
-namespace webignition\BasilCompilableSourceFactory\Model\Expression;
+namespace webignition\BasilCompilableSourceFactory\Model\Block\TryCatch;
 
-use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
+use webignition\BasilCompilableSourceFactory\Model\HasMetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
-use webignition\BasilCompilableSourceFactory\Model\NeverThrowsTrait;
 use webignition\BasilCompilableSourceFactory\Model\Property;
-use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclarationCollection;
+use webignition\Stubble\Resolvable\ResolvableInterface;
 
-class CatchExpression implements ExpressionInterface
+class CatchExpression implements ResolvableInterface, HasMetadataInterface
 {
-    use NeverThrowsTrait;
-    use IsNotStaticTrait;
-
     private const RENDER_TEMPLATE = '{{ class_list }} {{ variable }}';
 
     private ObjectTypeDeclarationCollection $classes;
@@ -44,10 +40,5 @@ class CatchExpression implements ExpressionInterface
             'class_list' => $this->classes,
             'variable' => Property::asObjectVariable('exception'),
         ];
-    }
-
-    public function getType(): TypeCollection
-    {
-        return TypeCollection::void();
     }
 }

@@ -5,24 +5,27 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Model\Block\TryCatch;
 
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
-use webignition\BasilCompilableSourceFactory\Model\Expression\CatchExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
+use webignition\BasilCompilableSourceFactory\Model\Property;
+use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclarationCollection;
 
 class CatchBlock extends AbstractBlock
 {
     private const RENDER_TEMPLATE = <<<'EOD'
-catch ({{ catch_expression }}) {
+catch ({{ class_list }} {{ variable }}) {
 {{ body }}
 }
 EOD;
 
-    private CatchExpression $catchExpression;
+    private ObjectTypeDeclarationCollection $caughtClasses;
 
-    public function __construct(CatchExpression $catchExpression, BodyInterface $body)
-    {
+    public function __construct(
+        ObjectTypeDeclarationCollection $caughtClasses,
+        BodyInterface $body
+    ) {
         parent::__construct($body);
 
-        $this->catchExpression = $catchExpression;
+        $this->caughtClasses = $caughtClasses;
     }
 
     public function getTemplate(): string
@@ -33,7 +36,8 @@ EOD;
     public function getContext(): array
     {
         return [
-            'catch_expression' => $this->catchExpression,
+            'class_list' => $this->caughtClasses,
+            'variable' => Property::asObjectVariable('exception'),
             'body' => $this->createResolvableBody(),
         ];
     }
@@ -42,6 +46,6 @@ EOD;
     {
         $metadata = parent::getMetadata();
 
-        return $metadata->merge($this->catchExpression->getMetadata());
+        return $metadata->merge($this->caughtClasses->getMetadata());
     }
 }
