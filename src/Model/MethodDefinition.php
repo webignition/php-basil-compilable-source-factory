@@ -27,8 +27,6 @@ class MethodDefinition implements MethodDefinitionInterface
         EOD;
 
     private string $visibility;
-
-    private TypeCollection $returnType;
     private string $name;
     private BodyInterface $body;
 
@@ -47,7 +45,6 @@ class MethodDefinition implements MethodDefinitionInterface
     public function __construct(string $name, BodyInterface $body, array $arguments = [])
     {
         $this->visibility = self::VISIBILITY_PUBLIC;
-        $this->returnType = TypeCollection::void();
         $this->name = $name;
         $this->body = $body;
         $this->arguments = $arguments;
@@ -90,7 +87,9 @@ class MethodDefinition implements MethodDefinitionInterface
 
     public function getReturnType(): TypeCollection
     {
-        return $this->returnType;
+        $returnType = $this->body->getReturnType();
+
+        return null === $returnType ? TypeCollection::void() : $returnType;
     }
 
     public function setStatic(): void

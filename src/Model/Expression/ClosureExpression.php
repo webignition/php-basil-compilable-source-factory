@@ -5,13 +5,15 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
+use webignition\BasilCompilableSourceFactory\Model\HasReturnTypeInterface;
 use webignition\BasilCompilableSourceFactory\Model\IndentTrait;
 use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
+use webignition\BasilCompilableSourceFactory\Model\ReturnableInterface;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\Stubble\Resolvable\ResolvedTemplateMutatorResolvable;
 
-readonly class ClosureExpression implements ExpressionInterface
+readonly class ClosureExpression implements ExpressionInterface, HasReturnTypeInterface, ReturnableInterface
 {
     use IndentTrait;
     use IsNotStaticTrait;
@@ -24,7 +26,6 @@ EOD;
 
     public function __construct(
         private BodyInterface $body,
-        private TypeCollection $type,
     ) {}
 
     public function getMetadata(): MetadataInterface
@@ -56,6 +57,18 @@ EOD;
 
     public function getType(): TypeCollection
     {
-        return $this->type;
+        $returnType = $this->getReturnType();
+
+        return null === $returnType ? TypeCollection::void() : $returnType;
+    }
+
+    public function hasReturnType(): bool
+    {
+        return null !== $this->getReturnType();
+    }
+
+    public function getReturnType(): ?TypeCollection
+    {
+        return $this->body->getReturnType();
     }
 }

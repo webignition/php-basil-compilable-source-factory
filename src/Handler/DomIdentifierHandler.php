@@ -70,10 +70,7 @@ class DomIdentifierHandler
 
         $bodyContent = $this->createBodyContent($elementVariable, $findCall, $returnCall);
 
-        return new ClosureExpression(
-            new Body($bodyContent),
-            TypeCollection::string(),
-        );
+        return new ClosureExpression(new Body($bodyContent));
     }
 
     public function handleElementValue(string $serializedElementIdentifier): ExpressionInterface
@@ -96,10 +93,7 @@ class DomIdentifierHandler
 
         $bodyContent = $this->createBodyContent($elementVariable, $findCall, $returnCall);
 
-        return new ClosureExpression(
-            new Body($bodyContent),
-            TypeCollection::string(),
-        );
+        return new ClosureExpression(new Body($bodyContent));
     }
 
     private function createBodyContent(

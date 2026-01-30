@@ -80,7 +80,6 @@ class StatementFactory
                             )
                         ])
                     ),
-                    TypeCollection::object(),
                 )
             )
         );
@@ -134,7 +133,6 @@ class StatementFactory
                         )
                     ])
                 ),
-                TypeCollection::object(),
             )
         );
     }

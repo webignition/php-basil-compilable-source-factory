@@ -5,11 +5,13 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 
 use webignition\BasilCompilableSourceFactory\Model\Construct\ReturnConstruct;
+use webignition\BasilCompilableSourceFactory\Model\HasReturnTypeInterface;
 use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
+use webignition\BasilCompilableSourceFactory\Model\ReturnableInterface;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 
-class ReturnExpression implements ExpressionInterface
+class ReturnExpression implements ExpressionInterface, HasReturnTypeInterface, ReturnableInterface
 {
     use IsNotStaticTrait;
 
@@ -48,5 +50,10 @@ class ReturnExpression implements ExpressionInterface
     public function getType(): TypeCollection
     {
         return $this->expression->getType();
+    }
+
+    public function getReturnType(): TypeCollection
+    {
+        return $this->getType();
     }
 }

@@ -7,13 +7,15 @@ namespace webignition\BasilCompilableSourceFactory\Model\Block\TryCatch;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentInterface;
 use webignition\BasilCompilableSourceFactory\Model\DeferredResolvableCreationTrait;
 use webignition\BasilCompilableSourceFactory\Model\HasMetadataInterface;
+use webignition\BasilCompilableSourceFactory\Model\HasReturnTypeInterface;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\Stubble\Resolvable\ResolvableCollection;
 use webignition\Stubble\Resolvable\ResolvableInterface;
 use webignition\Stubble\Resolvable\ResolvedTemplateMutatorResolvable;
 
-class TryCatchBlock implements BodyContentInterface, HasMetadataInterface
+class TryCatchBlock implements BodyContentInterface, HasMetadataInterface, HasReturnTypeInterface
 {
     use DeferredResolvableCreationTrait;
 
@@ -51,6 +53,22 @@ class TryCatchBlock implements BodyContentInterface, HasMetadataInterface
         }
 
         return false;
+    }
+
+    public function getReturnType(): ?TypeCollection
+    {
+        $type = $this->tryBlock->getBody()->getReturnType();
+
+        foreach ($this->catchBlocks as $catchBlock) {
+            $returnType = $catchBlock->getBody()->getReturnType();
+            if (null === $returnType) {
+                continue;
+            }
+
+            $type = null === $type ? $returnType : $type->merge($returnType);
+        }
+
+        return $type;
     }
 
     protected function createResolvable(): ResolvableInterface

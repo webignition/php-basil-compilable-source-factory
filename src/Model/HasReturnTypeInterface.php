@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model;
 
-interface CanReturnInterface
+interface HasReturnTypeInterface
 {
-    public function getReturnType(): TypeCollection;
+    public function getReturnType(): ?TypeCollection;
 }
