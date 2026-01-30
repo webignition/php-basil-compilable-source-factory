@@ -85,8 +85,13 @@ class CatchBlockTest extends AbstractResolvableTestCase
                             new ObjectTypeDeclaration(new ClassName(\Exception::class)),
                         ])
                     ),
-                    new Statement(
-                        LiteralExpression::string('"literal"')
+                    new Body(
+                        new BodyContentCollection()
+                            ->append(
+                                new Statement(
+                                    LiteralExpression::string('"literal"')
+                                )
+                            )
                     )
                 ),
                 'expectedString' => 'catch (\Exception $exception) {' . "\n"
@@ -101,8 +106,13 @@ class CatchBlockTest extends AbstractResolvableTestCase
                             new ObjectTypeDeclaration(new ClassName(\RuntimeException::class)),
                         ])
                     ),
-                    new Statement(
-                        LiteralExpression::string('"literal"')
+                    new Body(
+                        new BodyContentCollection()
+                            ->append(
+                                new Statement(
+                                    LiteralExpression::string('"literal"')
+                                )
+                            )
                     )
                 ),
                 'expectedString' => 'catch (\LogicException | \RuntimeException $exception) {' . "\n"
@@ -118,8 +128,13 @@ class CatchBlockTest extends AbstractResolvableTestCase
                             new ObjectTypeDeclaration(new ClassName(TestCase::class)),
                         ])
                     ),
-                    new Statement(
-                        LiteralExpression::string('"literal"')
+                    new Body(
+                        new BodyContentCollection()
+                            ->append(
+                                new Statement(
+                                    LiteralExpression::string('"literal"')
+                                )
+                            )
                     )
                 ),
                 'expectedString' => 'catch (\LogicException | \RuntimeException | TestCase $exception) {' . "\n"

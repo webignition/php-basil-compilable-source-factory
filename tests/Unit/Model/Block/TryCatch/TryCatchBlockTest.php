@@ -38,12 +38,17 @@ class TryCatchBlockTest extends AbstractResolvableTestCase
             'default' => [
                 'tryCatch' => new TryCatchBlock(
                     new TryBlock(
-                        new Statement(new MethodInvocation(
-                            methodName: 'methodName',
-                            arguments: new MethodArguments(),
-                            mightThrow: false,
-                            type: TypeCollection::string(),
-                        )),
+                        new Body(
+                            new BodyContentCollection()
+                                ->append(
+                                    new Statement(new MethodInvocation(
+                                        methodName: 'methodName',
+                                        arguments: new MethodArguments(),
+                                        mightThrow: false,
+                                        type: TypeCollection::string(),
+                                    )),
+                                )
+                        )
                     ),
                     new CatchBlock(
                         new CatchExpression(
