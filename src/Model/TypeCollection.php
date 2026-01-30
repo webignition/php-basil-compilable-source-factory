@@ -82,4 +82,19 @@ class TypeCollection implements ResolvableInterface, \Stringable
 
         return new TypeCollection($types);
     }
+
+    public function equals(TypeCollection $collection): bool
+    {
+        if (count($this->types) !== count($collection->types)) {
+            return false;
+        }
+
+        foreach ($this->types as $type) {
+            if (!in_array($type, $collection->types)) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }
