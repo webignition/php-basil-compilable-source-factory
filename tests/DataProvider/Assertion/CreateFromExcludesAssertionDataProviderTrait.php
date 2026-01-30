@@ -22,12 +22,12 @@ trait CreateFromExcludesAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$".selector" excludes "value"', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
                     $expectedValue = (string) ("value");
-                    $examinedValue = (string) ((function () {
+                    $examinedValue = (string) ((function (): string {
                         $element = {{ NAVIGATOR }}->find('{
                             "locator": ".selector"
                         }');
 
-                        return {{ INSPECTOR }}->getValue($element);
+                        return (string) {{ INSPECTOR }}->getValue($element);
                     })());
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
@@ -65,12 +65,12 @@ trait CreateFromExcludesAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$".selector" excludes "\'value\'"', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
                     $expectedValue = (string) ("'value'");
-                    $examinedValue = (string) ((function () {
+                    $examinedValue = (string) ((function (): string {
                         $element = {{ NAVIGATOR }}->find('{
                             "locator": ".selector"
                         }');
 
-                        return {{ INSPECTOR }}->getValue($element);
+                        return (string) {{ INSPECTOR }}->getValue($element);
                     })());
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
@@ -108,7 +108,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$".selector".attribute_name excludes "value"', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
                     $expectedValue = (string) ("value");
-                    $examinedValue = (string) ((function () {
+                    $examinedValue = (string) ((function (): null|string {
                         $element = {{ NAVIGATOR }}->findOne('{
                             "locator": ".selector"
                         }');

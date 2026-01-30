@@ -48,12 +48,12 @@ trait CreateFromSetActionDataProviderTrait
                     $setValueCollection = {{ NAVIGATOR }}->find('{
                         "locator": ".selector"
                     }');
-                    $setValueValue = (function () {
+                    $setValueValue = (function (): string {
                         $element = {{ NAVIGATOR }}->find('{
                             "locator": ".source"
                         }');
 
-                        return {{ INSPECTOR }}->getValue($element);
+                        return (string) {{ INSPECTOR }}->getValue($element);
                     })();
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
@@ -79,7 +79,7 @@ trait CreateFromSetActionDataProviderTrait
                     $setValueCollection = {{ NAVIGATOR }}->find('{
                         "locator": ".selector"
                     }');
-                    $setValueValue = (function () {
+                    $setValueValue = (function (): null|string {
                         $element = {{ NAVIGATOR }}->findOne('{
                             "locator": ".source"
                         }');
@@ -109,7 +109,7 @@ trait CreateFromSetActionDataProviderTrait
             $setValueCollection = {{ NAVIGATOR }}->find('{
                 "locator": ".selector"
             }');
-            $setValueValue = (function () {
+            $setValueValue = (function (): string {
                 $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
 
                 return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());

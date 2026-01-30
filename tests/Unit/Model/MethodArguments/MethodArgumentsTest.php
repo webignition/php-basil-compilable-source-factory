@@ -180,7 +180,7 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                                     ->append(
                                         new Statement(
                                             new ReturnExpression(
-                                                Property::asStringVariable('variable'),
+                                                Property::asIntegerVariable('variable'),
                                             )
                                         )
                                     )
@@ -194,7 +194,7 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                         {{ NAVIGATOR }}->find(MethodArguments::fromJson({
                             "locator": ".selector"
                         })),
-                        (function () {
+                        (function (): int {
                             $variable = 100;
                     
                             return $variable;

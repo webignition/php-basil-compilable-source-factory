@@ -66,9 +66,11 @@ class CastExpressionTest extends AbstractResolvableTestCase
                     new ClosureExpression(new Body()),
                     Type::STRING
                 ),
-                'expectedString' => '(string) (function () {' . "\n"
-                    . "\n"
-                    . '})()',
+                'expectedString' => <<<'EOD'
+                    (string) (function (): void {
+                    
+                    })()
+                    EOD,
             ],
             'comparison expression as int' => [
                 'expression' => new CastExpression(
