@@ -377,7 +377,7 @@ class BodyTest extends AbstractResolvableTestCase
                         )
                     ])
                 ),
-                'expected' => TypeCollection::string(),
+                'expected' => null,
             ],
             'containing encapsulated expression with no return expression' => [
                 'body' => new Body(
