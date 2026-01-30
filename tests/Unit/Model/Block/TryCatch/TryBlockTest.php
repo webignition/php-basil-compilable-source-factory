@@ -67,8 +67,13 @@ class TryBlockTest extends AbstractResolvableTestCase
         return [
             'default' => [
                 'tryBlock' => new TryBlock(
-                    new Statement(
-                        LiteralExpression::string('"literal expression"')
+                    new Body(
+                        new BodyContentCollection()
+                            ->append(
+                                new Statement(
+                                    LiteralExpression::string('"literal expression"')
+                                )
+                            )
                     )
                 ),
                 'expectedString' => 'try {' . "\n"
