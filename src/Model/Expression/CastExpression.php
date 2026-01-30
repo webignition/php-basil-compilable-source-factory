@@ -15,8 +15,6 @@ class CastExpression implements ExpressionInterface
     use IsNotStaticTrait;
     use EncapsulateWhenCastingTrait;
 
-    private const string RENDER_TEMPLATE = '({{ cast_type }}) {{ expression }}';
-
     public function __construct(
         private ExpressionInterface $expression,
         private Type $castTo,
@@ -24,15 +22,30 @@ class CastExpression implements ExpressionInterface
 
     public function getTemplate(): string
     {
-        return self::RENDER_TEMPLATE;
+        $template = '{{ expression }}';
+
+        if ($this->expression->getType()->equals(new TypeCollection([$this->castTo]))) {
+            return $template;
+        }
+
+        if ($this->expression->encapsulateWhenCasting()) {
+            $template = '(' . $template . ')';
+        }
+
+        return '({{ cast_type }}) ' . $template;
     }
 
     public function getContext(): array
     {
-        return [
-            'cast_type' => $this->castTo->value,
+        $context = [
             'expression' => $this->expression,
         ];
+
+        if (false === $this->expression->getType()->equals(new TypeCollection([$this->castTo]))) {
+            $context['cast_type'] = $this->castTo->value;
+        }
+
+        return $context;
     }
 
     public function getMetadata(): MetadataInterface

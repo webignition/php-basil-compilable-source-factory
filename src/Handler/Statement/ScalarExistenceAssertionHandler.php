@@ -7,10 +7,10 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Statement;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\ExpressionCaster;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\CastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
@@ -24,7 +24,6 @@ class ScalarExistenceAssertionHandler implements StatementHandlerInterface
     public function __construct(
         private ScalarValueHandler $scalarValueHandler,
         private PhpUnitCallFactory $phpUnitCallFactory,
-        private ExpressionCaster $expressionCaster,
     ) {}
 
     public static function createHandler(): self
@@ -32,7 +31,6 @@ class ScalarExistenceAssertionHandler implements StatementHandlerInterface
         return new ScalarExistenceAssertionHandler(
             ScalarValueHandler::createHandler(),
             PhpUnitCallFactory::createFactory(),
-            new ExpressionCaster(),
         );
     }
 
@@ -57,7 +55,7 @@ class ScalarExistenceAssertionHandler implements StatementHandlerInterface
             LiteralExpression::null(),
             '!=='
         );
-        $examinedAccessor = $this->expressionCaster->cast($examinedAccessor, Type::BOOLEAN);
+        $examinedAccessor = new CastExpression($examinedAccessor, Type::BOOLEAN);
 
         $expected = LiteralExpression::boolean('exists' === $statement->getOperator());
 

@@ -14,10 +14,10 @@ use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\ElementIdentifierSerializer;
 use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\ExpressionCaster;
 use webignition\BasilCompilableSourceFactory\Handler\DomIdentifierHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\CastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CompositeExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpression;
@@ -40,7 +40,6 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
         private DomIdentifierHandler $domIdentifierHandler,
         private ElementIdentifierSerializer $elementIdentifierSerializer,
         private PhpUnitCallFactory $phpUnitCallFactory,
-        private ExpressionCaster $expressionCaster,
     ) {}
 
     public static function createHandler(): self
@@ -52,7 +51,6 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
             DomIdentifierHandler::createHandler(),
             ElementIdentifierSerializer::createSerializer(),
             PhpUnitCallFactory::createFactory(),
-            new ExpressionCaster(),
         );
     }
 
@@ -91,7 +89,7 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
             $this->argumentFactory->create($serializedElementIdentifier)
         );
 
-        $examinedAccessor = $this->expressionCaster->cast($examinedAccessor, Type::BOOLEAN);
+        $examinedAccessor = new CastExpression($examinedAccessor, Type::BOOLEAN);
         $elementExistsVariable = Property::asBooleanVariable('elementExists');
 
         return new StatementHandlerCollections(
@@ -126,7 +124,7 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
             $this->argumentFactory->create($serializedAttributeIdentifier)
         );
 
-        $elementAccessor = $this->expressionCaster->cast($elementAccessor, Type::BOOLEAN);
+        $elementAccessor = new CastExpression($elementAccessor, Type::BOOLEAN);
         $elementExistsVariable = Property::asBooleanVariable('elementExists');
         $elementAssignment = new AssignmentExpression($elementExistsVariable, $elementAccessor);
 
@@ -144,7 +142,7 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
             '!=='
         );
 
-        $attributeAccessor = $this->expressionCaster->cast($attributeAccessor, Type::BOOLEAN);
+        $attributeAccessor = new CastExpression($attributeAccessor, Type::BOOLEAN);
 
         $attributeExistsVariable = Property::asBooleanVariable('attributeExists');
         $attributeAssignment = new AssignmentExpression(

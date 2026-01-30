@@ -9,9 +9,9 @@ use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
-use webignition\BasilCompilableSourceFactory\ExpressionCaster;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\CastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
@@ -33,7 +33,6 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
         private ValueTypeIdentifier $valueTypeIdentifier,
         private ValueAccessorFactory $valueAccessorFactory,
         private PhpUnitCallFactory $phpUnitCallFactory,
-        private ExpressionCaster $expressionCaster,
     ) {}
 
     public static function createHandler(): self
@@ -44,7 +43,6 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
             new ValueTypeIdentifier(),
             ValueAccessorFactory::createFactory(),
             PhpUnitCallFactory::createFactory(),
-            new ExpressionCaster(),
         );
     }
 
@@ -80,7 +78,7 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
         }
 
         $examinedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull($identifier);
-        $examinedAccessor = $this->expressionCaster->cast($examinedAccessor, Type::STRING);
+        $examinedAccessor = new CastExpression($examinedAccessor, Type::STRING);
 
         if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
             if (null === $this->domIdentifierFactory->createFromIdentifierString($identifier)) {
@@ -113,7 +111,7 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
             LiteralExpression::boolean(false),
             '==='
         );
-        $identityComparison = $this->expressionCaster->cast($identityComparison, Type::BOOLEAN);
+        $identityComparison = new CastExpression($identityComparison, Type::BOOLEAN);
 
         return new StatementHandlerCollections(
             BodyContentCollection::createFromExpressions([
