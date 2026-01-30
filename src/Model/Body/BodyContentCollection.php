@@ -4,19 +4,19 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Body;
 
-use webignition\BasilCompilableSourceFactory\Model\CanReturnInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
-use webignition\BasilCompilableSourceFactory\Model\HasMetadataInterface;
+use webignition\BasilCompilableSourceFactory\Model\HasMetadataInterface as HasMetadata;
+use webignition\BasilCompilableSourceFactory\Model\HasReturnTypeInterface as HasReturnType;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
-use webignition\BasilCompilableSourceFactory\Model\MightThrowInterface;
+use webignition\BasilCompilableSourceFactory\Model\MightThrowInterface as MightThrow;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 
 /**
  * @implements \IteratorAggregate<BodyContentInterface>
  */
-class BodyContentCollection implements \IteratorAggregate, MightThrowInterface, CanReturnInterface, HasMetadataInterface
+class BodyContentCollection implements \IteratorAggregate, MightThrow, HasReturnType, HasMetadata
 {
     /**
      * @var BodyContentInterface[]
@@ -63,22 +63,19 @@ class BodyContentCollection implements \IteratorAggregate, MightThrowInterface, 
         return new \ArrayIterator($this->items);
     }
 
-    public function getReturnType(): TypeCollection
+    public function getReturnType(): ?TypeCollection
     {
         $type = null;
 
         foreach ($this->items as $item) {
-            if ($item instanceof CanReturnInterface) {
-                if (null === $type) {
-                    $type = $item->getReturnType();
-                } else {
-                    $type = $type->merge($item->getReturnType());
+            if ($item instanceof HasReturnType) {
+                $returnType = $item->getReturnType();
+                if (null === $returnType) {
+                    continue;
                 }
-            }
-        }
 
-        if (null === $type) {
-            $type = TypeCollection::void();
+                $type = null === $type ? $returnType : $type->merge($returnType);
+            }
         }
 
         return $type;
@@ -89,7 +86,7 @@ class BodyContentCollection implements \IteratorAggregate, MightThrowInterface, 
         $metadata = new Metadata();
 
         foreach ($this->items as $item) {
-            if ($item instanceof HasMetadataInterface) {
+            if ($item instanceof HasMetadata) {
                 $metadata = $metadata->merge($item->getMetadata());
             }
         }

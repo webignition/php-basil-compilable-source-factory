@@ -63,7 +63,7 @@ class CastExpressionTest extends AbstractResolvableTestCase
             ],
             'empty closure expression as string' => [
                 'expression' => new CastExpression(
-                    new ClosureExpression(new Body(), TypeCollection::string()),
+                    new ClosureExpression(new Body()),
                     Type::STRING
                 ),
                 'expectedString' => '(string) (function () {' . "\n"

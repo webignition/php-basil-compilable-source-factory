@@ -185,7 +185,6 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                                         )
                                     )
                             ),
-                            TypeCollection::string(),
                         ),
                     ],
                     MethodArgumentsInterface::FORMAT_STACKED

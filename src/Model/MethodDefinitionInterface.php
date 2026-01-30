@@ -7,7 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Model;
 use webignition\BasilCompilableSourceFactory\Model\Attribute\AttributeInterface;
 use webignition\Stubble\Resolvable\ResolvableInterface;
 
-interface MethodDefinitionInterface extends HasMetadataInterface, ResolvableInterface, CanReturnInterface
+interface MethodDefinitionInterface extends HasMetadataInterface, ResolvableInterface, HasReturnTypeInterface
 {
     /**
      * @return string[]
@@ -21,4 +21,6 @@ interface MethodDefinitionInterface extends HasMetadataInterface, ResolvableInte
     public function isStatic(): bool;
 
     public function withAttribute(AttributeInterface $attribute): static;
+
+    public function getReturnType(): TypeCollection;
 }

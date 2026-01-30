@@ -5,7 +5,10 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Model\Statement;
 
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
+use webignition\BasilCompilableSourceFactory\Model\HasReturnTypeInterface;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
+use webignition\BasilCompilableSourceFactory\Model\ReturnableInterface;
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\Stubble\Resolvable\ResolvableInterface;
 
 class Statement implements ResolvableInterface, StatementInterface
@@ -44,5 +47,14 @@ class Statement implements ResolvableInterface, StatementInterface
     public function mightThrow(): bool
     {
         return $this->expression->mightThrow();
+    }
+
+    public function getReturnType(): ?TypeCollection
+    {
+        if ($this->expression instanceof ReturnableInterface && $this->expression instanceof HasReturnTypeInterface) {
+            return $this->expression->getReturnType();
+        }
+
+        return null;
     }
 }

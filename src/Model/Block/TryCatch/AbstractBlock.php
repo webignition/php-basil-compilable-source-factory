@@ -33,6 +33,11 @@ abstract class AbstractBlock implements HasMetadataInterface, ResolvableInterfac
         return $this->body->mightThrow();
     }
 
+    public function getBody(): BodyInterface
+    {
+        return $this->body;
+    }
+
     protected function createResolvableBody(): ResolvableInterface
     {
         return new ResolvedTemplateMutatorResolvable(

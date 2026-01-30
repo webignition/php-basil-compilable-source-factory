@@ -4,11 +4,13 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 
+use webignition\BasilCompilableSourceFactory\Model\HasReturnTypeInterface;
 use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
+use webignition\BasilCompilableSourceFactory\Model\ReturnableInterface;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 
-class EncapsulatedExpression implements ExpressionInterface
+class EncapsulatedExpression implements ExpressionInterface, HasReturnTypeInterface, ReturnableInterface
 {
     use IsNotStaticTrait;
 
@@ -46,5 +48,14 @@ class EncapsulatedExpression implements ExpressionInterface
     public function getType(): TypeCollection
     {
         return $this->expression->getType();
+    }
+
+    public function getReturnType(): ?TypeCollection
+    {
+        if ($this->expression instanceof ReturnableInterface && $this->expression instanceof HasReturnTypeInterface) {
+            return $this->expression->getReturnType();
+        }
+
+        return null;
     }
 }

@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Model\Body;
 
 use webignition\BasilCompilableSourceFactory\Model\DeferredResolvableCollectionTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\Stubble\CollectionItemContext;
 use webignition\Stubble\Resolvable\ResolvableCollection;
 use webignition\Stubble\Resolvable\ResolvableCollectionInterface;
@@ -31,6 +32,11 @@ class Body implements BodyInterface, ResolvableCollectionInterface
     public function mightThrow(): bool
     {
         return $this->content->mightThrow();
+    }
+
+    public function getReturnType(): ?TypeCollection
+    {
+        return $this->content->getReturnType();
     }
 
     protected function createResolvable(): ResolvableInterface

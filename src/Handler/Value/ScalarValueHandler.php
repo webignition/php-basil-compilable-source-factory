@@ -127,7 +127,7 @@ class ScalarValueHandler
             )
         ;
 
-        return new ClosureExpression(new Body($bodyContent), TypeCollection::string());
+        return new ClosureExpression(new Body($bodyContent));
     }
 
     private function handleEnvironmentValue(string $value): ExpressionInterface

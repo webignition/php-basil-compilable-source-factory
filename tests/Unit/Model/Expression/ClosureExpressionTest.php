@@ -40,7 +40,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
     #[DataProvider('createDataProvider')]
     public function testCreate(BodyInterface $body, MetadataInterface $expectedMetadata): void
     {
-        $expression = new ClosureExpression($body, TypeCollection::string());
+        $expression = new ClosureExpression($body);
 
         $this->assertEquals($expectedMetadata, $expression->getMetadata());
     }
@@ -125,7 +125,7 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
     {
         return [
             'empty' => [
-                'expression' => new ClosureExpression(new Body(), TypeCollection::string()),
+                'expression' => new ClosureExpression(new Body()),
                 'expectedString' => '(function () {' . "\n"
                     . '' . "\n"
                     . '})()',
@@ -137,7 +137,6 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                             new ReturnExpression(LiteralExpression::integer(5))
                         ])
                     ),
-                    TypeCollection::integer(),
                 ),
                 'expectedString' => '(function () {' . "\n"
                     . '    return 5;' . "\n"
@@ -155,7 +154,6 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                             )
                         ])
                     ),
-                    TypeCollection::integer(),
                 ),
                 'expectedString' => '(function () {' . "\n"
                     . '    return (string) 5;' . "\n"
@@ -180,7 +178,6 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                                 )
                             )
                     ),
-                    TypeCollection::integer(),
                 ),
                 'expectedString' => '(function () {' . "\n"
                     . '    3;' . "\n"
@@ -243,7 +240,6 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                                 )
                             )
                     ),
-                    TypeCollection::string(),
                 ),
                 '(function () {' . "\n"
                 . '    $variable = {{ CLIENT }}->dependencyMethodName();' . "\n"
@@ -277,7 +273,6 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                                 )
                             )
                     ),
-                    TypeCollection::string(),
                 ),
                 'expectedString' => '(function () {' . "\n"
                     . '    try {' . "\n"
@@ -310,7 +305,6 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                                 )
                             )
                     ),
-                    TypeCollection::string(),
                 ),
                 'expectedString' => '(function () {' . "\n"
                     . '    $variableName = "literal value";' . "\n"

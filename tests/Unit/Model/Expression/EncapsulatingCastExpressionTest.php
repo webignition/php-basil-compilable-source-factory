@@ -65,7 +65,6 @@ class EncapsulatingCastExpressionTest extends AbstractResolvableTestCase
                 'expression' => new EncapsulatingCastExpression(
                     new ClosureExpression(
                         new Body(),
-                        TypeCollection::string(),
                     ),
                     Type::STRING
                 ),
