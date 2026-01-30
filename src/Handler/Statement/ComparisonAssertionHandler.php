@@ -11,6 +11,7 @@ use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Property;
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
 use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Statement\StatementInterface;
@@ -52,10 +53,16 @@ class ComparisonAssertionHandler implements StatementHandlerInterface
         }
 
         $examinedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull((string) $statement->getIdentifier());
-        $examinedAccessor = EncapsulatingCastExpression::forString($examinedAccessor);
+        $examinedAccessorType = $examinedAccessor->getType();
+        if (false === $examinedAccessorType->equals(TypeCollection::string())) {
+            $examinedAccessor = EncapsulatingCastExpression::forString($examinedAccessor);
+        }
 
         $expectedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull((string) $statement->getValue());
-        $expectedAccessor = EncapsulatingCastExpression::forString($expectedAccessor);
+        $expectedAccessorType = $expectedAccessor->getType();
+        if (false === $expectedAccessorType->equals(TypeCollection::string())) {
+            $expectedAccessor = EncapsulatingCastExpression::forString($expectedAccessor);
+        }
 
         $expectedValueVariable = Property::asStringVariable(VariableName::EXPECTED_VALUE);
         $examinedValueVariable = Property::asStringVariable(VariableName::EXAMINED_VALUE);

@@ -77,14 +77,17 @@ class ValueAccessorFactory
         }
 
         $defaultValue = $this->accessorDefaultValueFactory->createString($value);
-        if (null === $defaultValue && $accessor instanceof NullableExpressionInterface) {
-            $defaultValue = 'null';
-        }
-
         if (null !== $defaultValue) {
-            $accessor = new NullCoalescerExpression(
+            return new NullCoalescerExpression(
                 $accessor,
                 LiteralExpression::string($defaultValue)
+            );
+        }
+
+        if ($accessor instanceof NullableExpressionInterface) {
+            return new NullCoalescerExpression(
+                $accessor,
+                LiteralExpression::null()
             );
         }
 

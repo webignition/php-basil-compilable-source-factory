@@ -88,7 +88,9 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
             $this->argumentFactory->create($serializedElementIdentifier)
         );
 
-        $examinedAccessor = EncapsulatingCastExpression::forBool($examinedAccessor);
+        if (false === TypeCollection::boolean()->equals($examinedAccessor->getType())) {
+            $examinedAccessor = EncapsulatingCastExpression::forBool($examinedAccessor);
+        }
 
         $elementExistsVariable = Property::asBooleanVariable('elementExists');
 
@@ -123,7 +125,9 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
             $attributeExistenceAssertion,
             $this->argumentFactory->create($serializedAttributeIdentifier)
         );
-        $elementAccessor = EncapsulatingCastExpression::forBool($elementAccessor);
+        if (false === TypeCollection::boolean()->equals($elementAccessor->getType())) {
+            $elementAccessor = EncapsulatingCastExpression::forBool($elementAccessor);
+        }
 
         $elementExistsVariable = Property::asBooleanVariable('elementExists');
         $elementAssignment = new AssignmentExpression($elementExistsVariable, $elementAccessor);
@@ -141,8 +145,9 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
             LiteralExpression::null(),
             '!=='
         );
-
-        $attributeAccessor = EncapsulatingCastExpression::forBool($attributeAccessor);
+        if (false === TypeCollection::boolean()->equals($attributeAccessor->getType())) {
+            $attributeAccessor = EncapsulatingCastExpression::forBool($attributeAccessor);
+        }
 
         $attributeExistsVariable = Property::asBooleanVariable('attributeExists');
         $attributeAssignment = new AssignmentExpression(

@@ -24,9 +24,9 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
             'exists comparison, element identifier examined value' => [
                 'statement' => $assertionParser->parse('$".selector" exists', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    $elementExists = (bool) ({{ NAVIGATOR }}->has('{
+                    $elementExists = {{ NAVIGATOR }}->has('{
                         "locator": ".selector"
-                    }'));
+                    }');
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
@@ -59,16 +59,16 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
             'exists comparison, attribute identifier examined value' => [
                 'statement' => $assertionParser->parse('$".selector".attribute_name exists', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    $elementExists = (bool) ({{ NAVIGATOR }}->hasOne('{
+                    $elementExists = {{ NAVIGATOR }}->hasOne('{
                         "locator": ".selector"
-                    }'));
-                    $attributeExists = $elementExists && (bool) (((function (): null|string {
+                    }');
+                    $attributeExists = $elementExists && ((function (): null|string {
                         $element = {{ NAVIGATOR }}->findOne('{
                             "locator": ".selector"
                         }');
 
                         return $element->getAttribute('attribute_name');
-                    })() ?? null) !== null);
+                    })() ?? null) !== null;
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
@@ -122,9 +122,9 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
             'exists comparison, css attribute selector containing dot' => [
                 'statement' => $assertionParser->parse('$"a[href=foo.html]" exists', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    $elementExists = (bool) ({{ NAVIGATOR }}->has('{
+                    $elementExists = {{ NAVIGATOR }}->has('{
                         "locator": "a[href=foo.html]"
-                    }'));
+                    }');
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
@@ -157,9 +157,9 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
             'exists comparison, css attribute selector containing single quotes' => [
                 'statement' => $assertionParser->parse('$"[data-value=\"' . "'single quoted'" . '\"]" exists', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    $elementExists = (bool) ({{ NAVIGATOR }}->has('{
+                    $elementExists = {{ NAVIGATOR }}->has('{
                         "locator": "[data-value=\\"\'single quoted\'\\"]"
-                    }'));
+                    }');
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
@@ -192,16 +192,16 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
             'exists comparison, css attribute selector containing dot with attribute name' => [
                 'statement' => $assertionParser->parse('$"a[href=foo.html]".attribute_name exists', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    $elementExists = (bool) ({{ NAVIGATOR }}->hasOne('{
+                    $elementExists = {{ NAVIGATOR }}->hasOne('{
                         "locator": "a[href=foo.html]"
-                    }'));
-                    $attributeExists = $elementExists && (bool) (((function (): null|string {
+                    }');
+                    $attributeExists = $elementExists && ((function (): null|string {
                         $element = {{ NAVIGATOR }}->findOne('{
                             "locator": "a[href=foo.html]"
                         }');
 
                         return $element->getAttribute('attribute_name');
-                    })() ?? null) !== null);
+                    })() ?? null) !== null;
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
@@ -259,9 +259,9 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     'exists'
                 ),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    $elementExists = (bool) ({{ NAVIGATOR }}->hasOne('{
+                    $elementExists = {{ NAVIGATOR }}->hasOne('{
                         "locator": ".selector"
-                    }'));
+                    }');
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
@@ -306,9 +306,9 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     'exists'
                 ),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    $elementExists = (bool) ({{ NAVIGATOR }}->hasOne('{
+                    $elementExists = {{ NAVIGATOR }}->hasOne('{
                         "locator": ".selector"
-                    }'));
+                    }');
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
@@ -353,9 +353,9 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     'exists'
                 ),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    $elementExists = (bool) ({{ NAVIGATOR }}->has('{
+                    $elementExists = {{ NAVIGATOR }}->has('{
                         "locator": ".selector"
-                    }'));
+                    }');
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
@@ -401,9 +401,9 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     'exists'
                 ),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    $elementExists = (bool) ({{ NAVIGATOR }}->has('{
+                    $elementExists = {{ NAVIGATOR }}->has('{
                         "locator": ".duration"
-                    }'));
+                    }');
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(

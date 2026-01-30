@@ -77,7 +77,11 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
         }
 
         $examinedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull($identifier);
-        $examinedAccessor = EncapsulatingCastExpression::forString($examinedAccessor);
+        $examinedAccessorType = $examinedAccessor->getType();
+
+        if (false === $examinedAccessorType->equals(TypeCollection::string())) {
+            $examinedAccessor = EncapsulatingCastExpression::forString($examinedAccessor);
+        }
 
         if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
             if (null === $this->domIdentifierFactory->createFromIdentifierString($identifier)) {
@@ -110,7 +114,9 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
             LiteralExpression::boolean(false),
             '==='
         );
-        $identityComparison = EncapsulatingCastExpression::forBool($identityComparison);
+        if (false === TypeCollection::boolean()->equals($identityComparison->getType())) {
+            $identityComparison = EncapsulatingCastExpression::forBool($identityComparison);
+        }
 
         return new StatementHandlerCollections(
             BodyContentCollection::createFromExpressions([

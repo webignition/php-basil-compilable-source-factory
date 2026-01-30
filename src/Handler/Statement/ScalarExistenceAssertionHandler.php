@@ -15,6 +15,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastE
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\NullCoalescerExpression;
 use webignition\BasilCompilableSourceFactory\Model\Property;
+use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Statement\StatementInterface;
 
@@ -54,7 +55,9 @@ class ScalarExistenceAssertionHandler implements StatementHandlerInterface
             LiteralExpression::null(),
             '!=='
         );
-        $examinedAccessor = EncapsulatingCastExpression::forBool($examinedAccessor);
+        if (false === TypeCollection::boolean()->equals($examinedAccessor->getType())) {
+            $examinedAccessor = EncapsulatingCastExpression::forBool($examinedAccessor);
+        }
 
         $expected = LiteralExpression::boolean('exists' === $statement->getOperator());
 

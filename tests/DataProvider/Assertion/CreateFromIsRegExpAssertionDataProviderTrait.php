@@ -26,8 +26,8 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     'is-regexp'
                 ),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    $examinedValue = (string) ("/^value/");
-                    $expectedValue = (bool) (@preg_match($examinedValue, null) === false);
+                    $examinedValue = "/^value/";
+                    $expectedValue = @preg_match($examinedValue, null) === false;
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertFalse(
@@ -68,14 +68,14 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     'is-regexp'
                 ),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    $examinedValue = (string) ((function (): string {
+                    $examinedValue = (function (): string {
                         $element = {{ NAVIGATOR }}->find('{
                             "locator": ".pattern-container"
                         }');
 
                         return (string) {{ INSPECTOR }}->getValue($element);
-                    })());
-                    $expectedValue = (bool) (@preg_match($examinedValue, null) === false);
+                    })();
+                    $expectedValue = @preg_match($examinedValue, null) === false;
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertFalse(
@@ -128,7 +128,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     
                         return $element->getAttribute('attribute_name');
                     })());
-                    $expectedValue = (bool) (@preg_match($examinedValue, null) === false);
+                    $expectedValue = @preg_match($examinedValue, null) === false;
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertFalse(
@@ -173,8 +173,8 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     'is-regexp'
                 ),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    $examinedValue = (string) ($pattern);
-                    $expectedValue = (bool) (@preg_match($examinedValue, null) === false);
+                    $examinedValue = $pattern;
+                    $expectedValue = @preg_match($examinedValue, null) === false;
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertFalse(
