@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 
+use webignition\BasilCompilableSourceFactory\Model\EncapsulateWhenCastingTrait;
 use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
@@ -12,6 +13,7 @@ use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 readonly class TernaryExpression implements ExpressionInterface
 {
     use IsNotStaticTrait;
+    use EncapsulateWhenCastingTrait;
 
     public function __construct(
         private ExpressionInterface $expression,

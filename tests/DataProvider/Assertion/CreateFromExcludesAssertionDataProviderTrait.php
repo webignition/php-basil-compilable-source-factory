@@ -21,14 +21,14 @@ trait CreateFromExcludesAssertionDataProviderTrait
             'excludes comparison, element identifier examined value, literal string expected value' => [
                 'statement' => $assertionParser->parse('$".selector" excludes "value"', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    $expectedValue = (string) ("value");
-                    $examinedValue = (string) ((function (): string {
+                    $expectedValue = "value";
+                    $examinedValue = (function (): string {
                         $element = {{ NAVIGATOR }}->find('{
                             "locator": ".selector"
                         }');
 
                         return (string) {{ INSPECTOR }}->getValue($element);
-                    })());
+                    })();
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertStringNotContainsString(
@@ -64,14 +64,14 @@ trait CreateFromExcludesAssertionDataProviderTrait
             'excludes comparison, element identifier examined value, literal string expected w/ single quotes' => [
                 'statement' => $assertionParser->parse('$".selector" excludes "\'value\'"', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    $expectedValue = (string) ("'value'");
-                    $examinedValue = (string) ((function (): string {
+                    $expectedValue = "'value'";
+                    $examinedValue = (function (): string {
                         $element = {{ NAVIGATOR }}->find('{
                             "locator": ".selector"
                         }');
 
                         return (string) {{ INSPECTOR }}->getValue($element);
-                    })());
+                    })();
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertStringNotContainsString(
@@ -107,14 +107,14 @@ trait CreateFromExcludesAssertionDataProviderTrait
             'excludes comparison, attribute identifier examined value, literal string expected value' => [
                 'statement' => $assertionParser->parse('$".selector".attribute_name excludes "value"', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    $expectedValue = (string) ("value");
-                    $examinedValue = (string) ((function (): null|string {
+                    $expectedValue = "value";
+                    $examinedValue = (string) (function (): null|string {
                         $element = {{ NAVIGATOR }}->findOne('{
                             "locator": ".selector"
                         }');
 
                         return $element->getAttribute('attribute_name');
-                    })());
+                    })();
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertStringNotContainsString(

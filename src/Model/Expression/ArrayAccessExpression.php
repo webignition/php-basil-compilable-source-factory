@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 
 use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
+use webignition\BasilCompilableSourceFactory\Model\NeverEncapsulateWhenCastingTrait;
 use webignition\BasilCompilableSourceFactory\Model\NeverThrowsTrait;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
@@ -14,6 +15,7 @@ readonly class ArrayAccessExpression implements NullableExpressionInterface
 {
     use NeverThrowsTrait;
     use IsNotStaticTrait;
+    use NeverEncapsulateWhenCastingTrait;
 
     public function __construct(
         private Property $variable,

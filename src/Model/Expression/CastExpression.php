@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 
 use webignition\BasilCompilableSourceFactory\Enum\Type;
+use webignition\BasilCompilableSourceFactory\Model\EncapsulateWhenCastingTrait;
 use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
@@ -12,6 +13,7 @@ use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 class CastExpression implements ExpressionInterface
 {
     use IsNotStaticTrait;
+    use EncapsulateWhenCastingTrait;
 
     private const string RENDER_TEMPLATE = '({{ cast_type }}) {{ expression }}';
 

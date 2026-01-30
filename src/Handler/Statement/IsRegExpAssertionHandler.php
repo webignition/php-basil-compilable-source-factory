@@ -6,12 +6,13 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Statement;
 
 use SmartAssert\DomIdentifier\Factory as DomIdentifierFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
+use webignition\BasilCompilableSourceFactory\ExpressionCaster;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
-use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
@@ -32,6 +33,7 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
         private ValueTypeIdentifier $valueTypeIdentifier,
         private ValueAccessorFactory $valueAccessorFactory,
         private PhpUnitCallFactory $phpUnitCallFactory,
+        private ExpressionCaster $expressionCaster,
     ) {}
 
     public static function createHandler(): self
@@ -42,6 +44,7 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
             new ValueTypeIdentifier(),
             ValueAccessorFactory::createFactory(),
             PhpUnitCallFactory::createFactory(),
+            new ExpressionCaster(),
         );
     }
 
@@ -77,7 +80,7 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
         }
 
         $examinedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull($identifier);
-        $examinedAccessor = EncapsulatingCastExpression::forString($examinedAccessor);
+        $examinedAccessor = $this->expressionCaster->cast($examinedAccessor, Type::STRING);
 
         if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
             if (null === $this->domIdentifierFactory->createFromIdentifierString($identifier)) {
@@ -110,7 +113,7 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
             LiteralExpression::boolean(false),
             '==='
         );
-        $identityComparison = EncapsulatingCastExpression::forBool($identityComparison);
+        $identityComparison = $this->expressionCaster->cast($identityComparison, Type::BOOLEAN);
 
         return new StatementHandlerCollections(
             BodyContentCollection::createFromExpressions([

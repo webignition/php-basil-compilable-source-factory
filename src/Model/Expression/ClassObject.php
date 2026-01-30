@@ -7,12 +7,14 @@ namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
+use webignition\BasilCompilableSourceFactory\Model\NeverEncapsulateWhenCastingTrait;
 use webignition\BasilCompilableSourceFactory\Model\NeverThrowsTrait;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 
 readonly class ClassObject implements ExpressionInterface
 {
     use NeverThrowsTrait;
+    use NeverEncapsulateWhenCastingTrait;
 
     public function __construct(
         private ClassName $className,

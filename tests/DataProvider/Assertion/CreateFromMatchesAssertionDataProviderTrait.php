@@ -21,14 +21,14 @@ trait CreateFromMatchesAssertionDataProviderTrait
             'matches comparison, element identifier examined value, literal string expected value' => [
                 'statement' => $assertionParser->parse('$".selector" matches "/^value/"', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    $expectedValue = (string) ("/^value/");
-                    $examinedValue = (string) ((function (): string {
+                    $expectedValue = "/^value/";
+                    $examinedValue = (function (): string {
                         $element = {{ NAVIGATOR }}->find('{
                             "locator": ".selector"
                         }');
 
                         return (string) {{ INSPECTOR }}->getValue($element);
-                    })());
+                    })();
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertMatchesRegularExpression(
@@ -64,14 +64,14 @@ trait CreateFromMatchesAssertionDataProviderTrait
             'matches comparison, attribute identifier examined value, literal string expected value' => [
                 'statement' => $assertionParser->parse('$".selector".attribute_name matches "/^value/"', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    $expectedValue = (string) ("/^value/");
-                    $examinedValue = (string) ((function (): null|string {
+                    $expectedValue = "/^value/";
+                    $examinedValue = (string) (function (): null|string {
                         $element = {{ NAVIGATOR }}->findOne('{
                             "locator": ".selector"
                         }');
 
                         return $element->getAttribute('attribute_name');
-                    })());
+                    })();
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertMatchesRegularExpression(

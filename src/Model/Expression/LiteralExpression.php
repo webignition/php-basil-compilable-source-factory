@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
+use webignition\BasilCompilableSourceFactory\Model\NeverEncapsulateWhenCastingTrait;
 use webignition\BasilCompilableSourceFactory\Model\NeverThrowsTrait;
 use webignition\BasilCompilableSourceFactory\Model\ResolvableStringableTrait;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
@@ -16,6 +17,7 @@ class LiteralExpression implements \Stringable, ExpressionInterface
     use ResolvableStringableTrait;
     use NeverThrowsTrait;
     use IsNotStaticTrait;
+    use NeverEncapsulateWhenCastingTrait;
 
     private function __construct(
         private readonly string $content,

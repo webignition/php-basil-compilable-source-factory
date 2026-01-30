@@ -19,7 +19,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpressi
 use webignition\BasilCompilableSourceFactory\Model\Expression\CastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ClosureExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CompositeExpression;
-use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
@@ -225,24 +225,28 @@ class ClosureExpressionTest extends AbstractResolvableTestCase
                                 new ReturnStatement(
                                     new CompositeExpression(
                                         [
-                                            new EncapsulatingCastExpression(
-                                                new MethodInvocation(
-                                                    methodName: 'getWidth',
-                                                    arguments: new MethodArguments(),
-                                                    mightThrow: false,
-                                                    type: TypeCollection::integer(),
-                                                    parent: Property::asObjectVariable('variable'),
+                                            new CastExpression(
+                                                new EncapsulatedExpression(
+                                                    new MethodInvocation(
+                                                        methodName: 'getWidth',
+                                                        arguments: new MethodArguments(),
+                                                        mightThrow: false,
+                                                        type: TypeCollection::integer(),
+                                                        parent: Property::asObjectVariable('variable'),
+                                                    ),
                                                 ),
                                                 Type::STRING,
                                             ),
                                             LiteralExpression::void(' . \'x\' . '),
-                                            new EncapsulatingCastExpression(
-                                                new MethodInvocation(
-                                                    methodName: 'getHeight',
-                                                    arguments: new MethodArguments(),
-                                                    mightThrow: false,
-                                                    type: TypeCollection::integer(),
-                                                    parent: Property::asObjectVariable('variable'),
+                                            new CastExpression(
+                                                new EncapsulatedExpression(
+                                                    new MethodInvocation(
+                                                        methodName: 'getHeight',
+                                                        arguments: new MethodArguments(),
+                                                        mightThrow: false,
+                                                        type: TypeCollection::integer(),
+                                                        parent: Property::asObjectVariable('variable'),
+                                                    ),
                                                 ),
                                                 Type::STRING
                                             ),

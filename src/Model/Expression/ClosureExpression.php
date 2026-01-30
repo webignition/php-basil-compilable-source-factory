@@ -8,6 +8,7 @@ use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Model\IndentTrait;
 use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
+use webignition\BasilCompilableSourceFactory\Model\NeverEncapsulateWhenCastingTrait;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\Stubble\Resolvable\ResolvedTemplateMutatorResolvable;
 
@@ -15,6 +16,7 @@ readonly class ClosureExpression implements ExpressionInterface
 {
     use IndentTrait;
     use IsNotStaticTrait;
+    use NeverEncapsulateWhenCastingTrait;
 
     private const RENDER_TEMPLATE = <<<'EOD'
         (function (): {{ type }} {

@@ -7,8 +7,9 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Expression;
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Enum\Type;
+use webignition\BasilCompilableSourceFactory\Model\Expression\CastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CompositeExpression;
-use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
@@ -121,13 +122,17 @@ class CompositeExpressionTest extends AbstractResolvableTestCase
             'resolvable expression, stringable expression, resolvable expression' => [
                 'expression' => new CompositeExpression(
                     [
-                        new EncapsulatingCastExpression(
-                            LiteralExpression::integer(1),
+                        new CastExpression(
+                            new EncapsulatedExpression(
+                                LiteralExpression::integer(1),
+                            ),
                             Type::STRING,
                         ),
                         LiteralExpression::void(' . \'x\' . '),
-                        new EncapsulatingCastExpression(
-                            LiteralExpression::integer(2),
+                        new CastExpression(
+                            new EncapsulatedExpression(
+                                LiteralExpression::integer(2),
+                            ),
                             Type::STRING,
                         ),
                     ],

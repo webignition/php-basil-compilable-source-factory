@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Model\Expression;
 
 use webignition\BasilCompilableSourceFactory\Model\DeferredResolvableCreationTrait;
+use webignition\BasilCompilableSourceFactory\Model\EncapsulateWhenCastingTrait;
 use webignition\BasilCompilableSourceFactory\Model\IsNotStaticTrait;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
@@ -16,6 +17,7 @@ class CompositeExpression implements ExpressionInterface
 {
     use DeferredResolvableCreationTrait;
     use IsNotStaticTrait;
+    use EncapsulateWhenCastingTrait;
 
     /**
      * @var ExpressionInterface[]
