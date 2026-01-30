@@ -116,7 +116,7 @@ trait CreateFromIsAssertionDataProviderTrait
                             "locator": ".selector"
                         }');
 
-                        return $element->getAttribute('attribute_name');
+                        return (string) $element->getAttribute('attribute_name');
                     })());
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
@@ -440,7 +440,7 @@ trait CreateFromIsAssertionDataProviderTrait
                     "locator": ".selector"
                 }');
 
-                return $element->getAttribute('attribute_name');
+                return (string) $element->getAttribute('attribute_name');
             })());
             $examinedValue = (string) ((function () {
                 $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();

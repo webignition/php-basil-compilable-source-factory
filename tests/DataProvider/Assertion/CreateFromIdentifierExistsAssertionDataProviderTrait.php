@@ -67,7 +67,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "locator": ".selector"
                         }');
 
-                        return $element->getAttribute('attribute_name');
+                        return (string) $element->getAttribute('attribute_name');
                     })() ?? null) !== null);
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
@@ -200,7 +200,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                             "locator": "a[href=foo.html]"
                         }');
 
-                        return $element->getAttribute('attribute_name');
+                        return (string) $element->getAttribute('attribute_name');
                     })() ?? null) !== null);
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'

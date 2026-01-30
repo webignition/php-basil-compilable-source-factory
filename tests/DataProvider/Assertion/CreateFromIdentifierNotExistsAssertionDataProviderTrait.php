@@ -64,7 +64,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                             "locator": ".selector"
                         }');
 
-                        return $element->getAttribute('attribute_name');
+                        return (string) $element->getAttribute('attribute_name');
                     })() ?? null) !== null);
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'

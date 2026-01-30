@@ -70,7 +70,7 @@ trait CreateFromIsNotAssertionDataProviderTrait
                             "locator": ".selector"
                         }');
 
-                        return $element->getAttribute('attribute_name');
+                        return (string) $element->getAttribute('attribute_name');
                     })());
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'

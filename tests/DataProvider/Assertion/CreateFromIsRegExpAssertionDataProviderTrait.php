@@ -126,7 +126,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                             "locator": ".pattern-container"
                         }');
                     
-                        return $element->getAttribute('attribute_name');
+                        return (string) $element->getAttribute('attribute_name');
                     })());
                     $expectedValue = (bool) (@preg_match($examinedValue, null) === false);
                     EOD,

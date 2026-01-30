@@ -171,7 +171,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                             "locator": ".selector"
                         }');
                     
-                        return $element->getAttribute('attribute_name');
+                        return (string) $element->getAttribute('attribute_name');
                     })()
                     EOD,
                 'expectedMetadata' => new Metadata(
@@ -195,7 +195,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                             }
                         }');
                     
-                        return $element->getAttribute('attribute_name');
+                        return (string) $element->getAttribute('attribute_name');
                     })()
                     EOD,
                 'expectedMetadata' => new Metadata(

@@ -118,7 +118,7 @@ trait CreateFromWaitActionDataProviderTrait
                             "locator": ".duration-selector"
                         }');
 
-                        return $element->getAttribute('attribute_name');
+                        return (string) $element->getAttribute('attribute_name');
                     })();
                     $duration = $duration ?? 0;
                     $duration = (int) $duration;

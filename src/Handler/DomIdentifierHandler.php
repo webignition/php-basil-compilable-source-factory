@@ -7,16 +7,17 @@ namespace webignition\BasilCompilableSourceFactory\Handler;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\CallFactory\DomCrawlerNavigatorCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
+use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\CastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ClosureExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ReturnExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
-use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocationInterface;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
@@ -60,13 +61,15 @@ class DomIdentifierHandler
 
         $elementVariable = Property::asObjectVariable('element');
 
-        $returnCall = new MethodInvocation(
+        $methodCall = new MethodInvocation(
             methodName: 'getAttribute',
             arguments: new MethodArguments([$this->argumentFactory->create($attributeName)]),
             mightThrow: true,
             type: TypeCollection::string(),
             parent: $elementVariable,
         );
+
+        $returnCall = new CastExpression($methodCall, Type::STRING);
 
         $bodyContent = $this->createBodyContent($elementVariable, $findCall, $returnCall);
 
@@ -99,7 +102,7 @@ class DomIdentifierHandler
     private function createBodyContent(
         Property $elementVariable,
         ExpressionInterface $findCall,
-        MethodInvocationInterface $returnCall,
+        ExpressionInterface $returnCall,
     ): BodyContentCollection {
         return new BodyContentCollection()
             ->append(
