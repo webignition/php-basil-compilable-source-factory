@@ -19,10 +19,10 @@ readonly class ClosureExpression implements ExpressionInterface, HasReturnTypeIn
     use IsNotStaticTrait;
 
     private const RENDER_TEMPLATE = <<<'EOD'
-(function () {
-{{ body }}
-})()
-EOD;
+        (function (): {{ type }} {
+        {{ body }}
+        })()
+        EOD;
 
     public function __construct(
         private BodyInterface $body,
@@ -47,6 +47,7 @@ EOD;
                     return rtrim($this->indent($resolvedTemplate));
                 }
             ),
+            'type' => $this->getType(),
         ];
     }
 
@@ -60,11 +61,6 @@ EOD;
         $returnType = $this->getReturnType();
 
         return null === $returnType ? TypeCollection::void() : $returnType;
-    }
-
-    public function hasReturnType(): bool
-    {
-        return null !== $this->getReturnType();
     }
 
     public function getReturnType(): ?TypeCollection

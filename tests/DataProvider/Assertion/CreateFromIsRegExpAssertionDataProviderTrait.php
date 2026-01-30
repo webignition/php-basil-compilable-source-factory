@@ -68,12 +68,12 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     'is-regexp'
                 ),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    $examinedValue = (string) ((function () {
+                    $examinedValue = (string) ((function (): string {
                         $element = {{ NAVIGATOR }}->find('{
                             "locator": ".pattern-container"
                         }');
 
-                        return {{ INSPECTOR }}->getValue($element);
+                        return (string) {{ INSPECTOR }}->getValue($element);
                     })());
                     $expectedValue = (bool) (@preg_match($examinedValue, null) === false);
                     EOD,
@@ -121,7 +121,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                     'is-regexp'
                 ),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    $examinedValue = (string) ((function () {
+                    $examinedValue = (string) ((function (): null|string {
                         $element = {{ NAVIGATOR }}->findOne('{
                             "locator": ".pattern-container"
                         }');

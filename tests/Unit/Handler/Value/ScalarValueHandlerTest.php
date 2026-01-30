@@ -62,12 +62,13 @@ class ScalarValueHandlerTest extends AbstractResolvableTestCase
             ],
             'browser property, size' => [
                 'value' => '$browser.size',
-                'expectedRenderedSource' => '(function () {' . "\n"
-                    . '    $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();' . "\n"
-                    . "\n"
-                    . '    return (string) ($webDriverDimension->getWidth()) . \'x\' . '
-                    . '(string) ($webDriverDimension->getHeight());' . "\n"
-                    . '})()',
+                'expectedRenderedSource' => <<<'EOD'
+            (function (): string {
+                $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
+            
+                return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
+            })()
+            EOD,
                 'expectedMetadata' => new Metadata(
                     dependencyNames: [
                         DependencyName::PANTHER_CLIENT,

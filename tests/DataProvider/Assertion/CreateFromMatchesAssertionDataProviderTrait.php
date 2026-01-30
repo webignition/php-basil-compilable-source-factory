@@ -22,12 +22,12 @@ trait CreateFromMatchesAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$".selector" matches "/^value/"', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
                     $expectedValue = (string) ("/^value/");
-                    $examinedValue = (string) ((function () {
+                    $examinedValue = (string) ((function (): string {
                         $element = {{ NAVIGATOR }}->find('{
                             "locator": ".selector"
                         }');
 
-                        return {{ INSPECTOR }}->getValue($element);
+                        return (string) {{ INSPECTOR }}->getValue($element);
                     })());
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
@@ -65,7 +65,7 @@ trait CreateFromMatchesAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$".selector".attribute_name matches "/^value/"', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
                     $expectedValue = (string) ("/^value/");
-                    $examinedValue = (string) ((function () {
+                    $examinedValue = (string) ((function (): null|string {
                         $element = {{ NAVIGATOR }}->findOne('{
                             "locator": ".selector"
                         }');

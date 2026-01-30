@@ -35,12 +35,12 @@ trait CreateFromWaitActionDataProviderTrait
             'wait action, element value' => [
                 'statement' => $actionParser->parse('wait $".duration-selector"', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    $duration = (function () {
+                    $duration = (function (): string {
                         $element = {{ NAVIGATOR }}->find('{
                             "locator": ".duration-selector"
                         }');
 
-                        return {{ INSPECTOR }}->getValue($element);
+                        return (string) {{ INSPECTOR }}->getValue($element);
                     })();
                     $duration = $duration ?? 0;
                     $duration = (int) $duration;
@@ -60,7 +60,7 @@ trait CreateFromWaitActionDataProviderTrait
             'wait action, descendant element value' => [
                 'statement' => $actionParser->parse('wait $".parent" >> $".child"', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    $duration = (function () {
+                    $duration = (function (): string {
                         $element = {{ NAVIGATOR }}->find('{
                             "locator": ".child",
                             "parent": {
@@ -68,7 +68,7 @@ trait CreateFromWaitActionDataProviderTrait
                             }
                         }');
 
-                        return {{ INSPECTOR }}->getValue($element);
+                        return (string) {{ INSPECTOR }}->getValue($element);
                     })();
                     $duration = $duration ?? 0;
                     $duration = (int) $duration;
@@ -88,12 +88,12 @@ trait CreateFromWaitActionDataProviderTrait
             'wait action, single-character CSS selector element value' => [
                 'statement' => $actionParser->parse('wait $"a"', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    $duration = (function () {
+                    $duration = (function (): string {
                         $element = {{ NAVIGATOR }}->find('{
                             "locator": "a"
                         }');
 
-                        return {{ INSPECTOR }}->getValue($element);
+                        return (string) {{ INSPECTOR }}->getValue($element);
                     })();
                     $duration = $duration ?? 0;
                     $duration = (int) $duration;
@@ -113,7 +113,7 @@ trait CreateFromWaitActionDataProviderTrait
             'wait action, attribute value' => [
                 'statement' => $actionParser->parse('wait $".duration-selector".attribute_name', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
-                    $duration = (function () {
+                    $duration = (function (): null|string {
                         $element = {{ NAVIGATOR }}->findOne('{
                             "locator": ".duration-selector"
                         }');
@@ -137,7 +137,7 @@ trait CreateFromWaitActionDataProviderTrait
             'wait action, browser property' => [
                 'statement' => $actionParser->parse('wait $browser.size', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
-            $duration = (function () {
+            $duration = (function (): string {
                 $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
 
                 return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());

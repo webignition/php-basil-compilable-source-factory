@@ -22,12 +22,12 @@ trait CreateFromIsAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$".selector" is "value"', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
                     $expectedValue = (string) ("value");
-                    $examinedValue = (string) ((function () {
+                    $examinedValue = (string) ((function (): string {
                         $element = {{ NAVIGATOR }}->find('{
                             "locator": ".selector"
                         }');
 
-                        return {{ INSPECTOR }}->getValue($element);
+                        return (string) {{ INSPECTOR }}->getValue($element);
                     })());
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
@@ -65,7 +65,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$".parent" >> $".child" is "value"', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
                     $expectedValue = (string) ("value");
-                    $examinedValue = (string) ((function () {
+                    $examinedValue = (string) ((function (): string {
                         $element = {{ NAVIGATOR }}->find('{
                             "locator": ".child",
                             "parent": {
@@ -73,7 +73,7 @@ trait CreateFromIsAssertionDataProviderTrait
                             }
                         }');
 
-                        return {{ INSPECTOR }}->getValue($element);
+                        return (string) {{ INSPECTOR }}->getValue($element);
                     })());
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
@@ -111,7 +111,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$".selector".attribute_name is "value"', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
                     $expectedValue = (string) ("value");
-                    $examinedValue = (string) ((function () {
+                    $examinedValue = (string) ((function (): null|string {
                         $element = {{ NAVIGATOR }}->findOne('{
                             "locator": ".selector"
                         }');
@@ -153,7 +153,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$browser.size is "value"', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
             $expectedValue = (string) ("value");
-            $examinedValue = (string) ((function () {
+            $examinedValue = (string) ((function (): string {
                 $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
 
                 return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
@@ -336,7 +336,7 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, browser object examined value, descendant identifier expected value' => [
                 'statement' => $assertionParser->parse('$browser.size is $".parent" >> $".child"', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
-            $expectedValue = (string) ((function () {
+            $expectedValue = (string) ((function (): string {
                 $element = {{ NAVIGATOR }}->find('{
                     "locator": ".child",
                     "parent": {
@@ -344,9 +344,9 @@ trait CreateFromIsAssertionDataProviderTrait
                     }
                 }');
 
-                return {{ INSPECTOR }}->getValue($element);
+                return (string) {{ INSPECTOR }}->getValue($element);
             })());
-            $examinedValue = (string) ((function () {
+            $examinedValue = (string) ((function (): string {
                 $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
 
                 return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
@@ -387,14 +387,14 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, browser object examined value, element identifier expected value' => [
                 'statement' => $assertionParser->parse('$browser.size is $".selector"', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
-            $expectedValue = (string) ((function () {
+            $expectedValue = (string) ((function (): string {
                 $element = {{ NAVIGATOR }}->find('{
                     "locator": ".selector"
                 }');
 
-                return {{ INSPECTOR }}->getValue($element);
+                return (string) {{ INSPECTOR }}->getValue($element);
             })());
-            $examinedValue = (string) ((function () {
+            $examinedValue = (string) ((function (): string {
                 $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
 
                 return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
@@ -435,14 +435,14 @@ trait CreateFromIsAssertionDataProviderTrait
             'is comparison, browser object examined value, attribute identifier expected value' => [
                 'statement' => $assertionParser->parse('$browser.size is $".selector".attribute_name', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
-            $expectedValue = (string) ((function () {
+            $expectedValue = (string) ((function (): null|string {
                 $element = {{ NAVIGATOR }}->findOne('{
                     "locator": ".selector"
                 }');
 
                 return $element->getAttribute('attribute_name');
             })());
-            $examinedValue = (string) ((function () {
+            $examinedValue = (string) ((function (): string {
                 $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
 
                 return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
@@ -483,7 +483,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$browser.size is $env.KEY', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
             $expectedValue = (string) ({{ ENV }}['KEY'] ?? null);
-            $examinedValue = (string) ((function () {
+            $examinedValue = (string) ((function (): string {
                 $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
 
                 return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
@@ -524,7 +524,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$browser.size is $env.KEY|"default value"', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
             $expectedValue = (string) ({{ ENV }}['KEY'] ?? 'default value');
-            $examinedValue = (string) ((function () {
+            $examinedValue = (string) ((function (): string {
                 $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
 
                 return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());
@@ -565,7 +565,7 @@ trait CreateFromIsAssertionDataProviderTrait
                 'statement' => $assertionParser->parse('$browser.size is $page.url', 0),
                 'expectedRenderedSetup' => <<< 'EOD'
             $expectedValue = (string) ({{ CLIENT }}->getCurrentURL());
-            $examinedValue = (string) ((function () {
+            $examinedValue = (string) ((function (): string {
                 $webDriverDimension = {{ CLIENT }}->getWebDriver()->manage()->window()->getSize();
 
                 return (string) ($webDriverDimension->getWidth()) . 'x' . (string) ($webDriverDimension->getHeight());

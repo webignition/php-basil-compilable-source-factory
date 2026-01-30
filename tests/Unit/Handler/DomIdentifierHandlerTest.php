@@ -166,7 +166,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                 ),
                 'attributeName' => 'attribute_name',
                 'expectedRenderedSource' => <<< 'EOD'
-                    (function () {
+                    (function (): null|string {
                         $element = {{ NAVIGATOR }}->findOne('{
                             "locator": ".selector"
                         }');
@@ -187,7 +187,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                 ),
                 'attributeName' => 'attribute_name',
                 'expectedRenderedSource' => <<< 'EOD'
-                    (function () {
+                    (function (): null|string {
                         $element = {{ NAVIGATOR }}->findOne('{
                             "locator": ".selector",
                             "parent": {
@@ -232,12 +232,12 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                     new ElementIdentifier('.selector')
                 ),
                 'expectedRenderedSource' => <<< 'EOD'
-                    (function () {
+                    (function (): string {
                         $element = {{ NAVIGATOR }}->find('{
                             "locator": ".selector"
                         }');
                     
-                        return {{ INSPECTOR }}->getValue($element);
+                        return (string) {{ INSPECTOR }}->getValue($element);
                     })()
                     EOD,
                 'expectedMetadata' => new Metadata(
@@ -253,7 +253,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                         ->withParentIdentifier(new ElementIdentifier('.parent'))
                 ),
                 'expectedRenderedSource' => <<< 'EOD'
-                    (function () {
+                    (function (): string {
                         $element = {{ NAVIGATOR }}->find('{
                             "locator": ".selector",
                             "parent": {
@@ -261,7 +261,7 @@ class DomIdentifierHandlerTest extends AbstractResolvableTestCase
                             }
                         }');
                     
-                        return {{ INSPECTOR }}->getValue($element);
+                        return (string) {{ INSPECTOR }}->getValue($element);
                     })()
                     EOD,
                 'expectedMetadata' => new Metadata(
