@@ -10,6 +10,7 @@ use webignition\BasilCompilableSourceFactory\Model\HasReturnTypeInterface as Has
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MightThrowInterface as MightThrow;
+use webignition\BasilCompilableSourceFactory\Model\ReturnableInterface;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 
@@ -68,7 +69,7 @@ class BodyContentCollection implements \IteratorAggregate, MightThrow, HasReturn
         $type = null;
 
         foreach ($this->items as $item) {
-            if ($item instanceof HasReturnType) {
+            if ($item instanceof ReturnableInterface) {
                 $returnType = $item->getReturnType();
                 if (null === $returnType) {
                     continue;

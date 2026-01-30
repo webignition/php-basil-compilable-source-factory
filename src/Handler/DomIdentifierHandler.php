@@ -15,10 +15,10 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpressi
 use webignition\BasilCompilableSourceFactory\Model\Expression\CastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ClosureExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
-use webignition\BasilCompilableSourceFactory\Model\Expression\ReturnExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
+use webignition\BasilCompilableSourceFactory\Model\Statement\ReturnStatement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 
@@ -114,9 +114,7 @@ class DomIdentifierHandler
                 new EmptyLine()
             )
             ->append(
-                new Statement(
-                    new ReturnExpression($returnCall)
-                )
+                new ReturnStatement($returnCall)
             )
         ;
     }

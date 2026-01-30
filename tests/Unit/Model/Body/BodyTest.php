@@ -17,11 +17,11 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\CatchExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ClosureExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
-use webignition\BasilCompilableSourceFactory\Model\Expression\ReturnExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
+use webignition\BasilCompilableSourceFactory\Model\Statement\ReturnStatement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\BasilCompilableSourceFactory\Model\TypeDeclaration\ObjectTypeDeclaration;
@@ -168,64 +168,81 @@ class BodyTest extends AbstractResolvableTestCase
             ],
             'single string return expression' => [
                 'body' => new Body(
-                    BodyContentCollection::createFromExpressions([
-                        new ReturnExpression(
-                            Property::asStringVariable('variable'),
+                    new BodyContentCollection()
+                        ->append(
+                            new ReturnStatement(
+                                Property::asStringVariable('variable'),
+                            )
                         )
-                    ])
                 ),
                 'expected' => TypeCollection::string(),
             ],
             'multiple string return expressions' => [
                 'body' => new Body(
-                    BodyContentCollection::createFromExpressions([
-                        new ReturnExpression(
-                            Property::asStringVariable('variable1'),
-                        ),
-                        new ReturnExpression(
-                            Property::asStringVariable('variable2'),
-                        ),
-                    ])
+                    new BodyContentCollection()
+                        ->append(
+                            new ReturnStatement(
+                                Property::asStringVariable('variable1'),
+                            ),
+                        )
+                        ->append(
+                            new ReturnStatement(
+                                Property::asStringVariable('variable2'),
+                            ),
+                        )
                 ),
                 'expected' => TypeCollection::string(),
             ],
             'multiple mixed-type return expressions' => [
                 'body' => new Body(
-                    BodyContentCollection::createFromExpressions([
-                        new ReturnExpression(
-                            Property::asObjectVariable('object'),
-                        ),
-                        new ReturnExpression(
-                            Property::asStringVariable('string'),
-                        ),
-                        new ReturnExpression(
-                            Property::asBooleanVariable('boolean'),
-                        ),
-                        new ReturnExpression(
-                            Property::asIntegerVariable('integer'),
-                        ),
-                        new ReturnExpression(
-                            Property::asObjectProperty(
-                                Property::asObjectVariable('parent'),
-                                'array_typed_property',
-                                TypeCollection::array()
-                            )
-                        ),
-                        new ReturnExpression(
-                            Property::asObjectProperty(
-                                Property::asObjectVariable('parent'),
-                                'null_typed_property',
-                                TypeCollection::null()
-                            )
-                        ),
-                        new ReturnExpression(
-                            Property::asObjectProperty(
-                                Property::asObjectVariable('parent'),
-                                'void_typed_property',
-                                TypeCollection::void()
-                            )
-                        ),
-                    ])
+                    new BodyContentCollection()
+                        ->append(
+                            new ReturnStatement(
+                                Property::asObjectVariable('object'),
+                            ),
+                        )
+                        ->append(
+                            new ReturnStatement(
+                                Property::asStringVariable('string'),
+                            ),
+                        )
+                        ->append(
+                            new ReturnStatement(
+                                Property::asBooleanVariable('boolean'),
+                            ),
+                        )
+                        ->append(
+                            new ReturnStatement(
+                                Property::asIntegerVariable('integer'),
+                            ),
+                        )
+                        ->append(
+                            new ReturnStatement(
+                                Property::asObjectProperty(
+                                    Property::asObjectVariable('parent'),
+                                    'array_typed_property',
+                                    TypeCollection::array()
+                                )
+                            ),
+                        )
+                        ->append(
+                            new ReturnStatement(
+                                Property::asObjectProperty(
+                                    Property::asObjectVariable('parent'),
+                                    'null_typed_property',
+                                    TypeCollection::null()
+                                )
+                            ),
+                        )
+                        ->append(
+                            new ReturnStatement(
+                                Property::asObjectProperty(
+                                    Property::asObjectVariable('parent'),
+                                    'void_typed_property',
+                                    TypeCollection::void()
+                                )
+                            ),
+                        )
                 ),
                 'expected' => new TypeCollection([
                     Type::OBJECT,
@@ -252,18 +269,44 @@ class BodyTest extends AbstractResolvableTestCase
             ],
             'single string returning method with return expression' => [
                 'body' => new Body(
-                    BodyContentCollection::createFromExpressions([
-                        new ReturnExpression(
-                            new MethodInvocation(
-                                'methodName',
-                                new MethodArguments([]),
-                                false,
-                                TypeCollection::string(),
-                            ),
+                    new BodyContentCollection()
+                        ->append(
+                            new ReturnStatement(
+                                new MethodInvocation(
+                                    'methodName',
+                                    new MethodArguments([]),
+                                    false,
+                                    TypeCollection::string(),
+                                ),
+                            )
                         )
-                    ])
                 ),
                 'expected' => TypeCollection::string(),
+            ],
+            'containing try/catch block with no return statements' => [
+                'body' => new Body(
+                    new BodyContentCollection()
+                        ->append(
+                            new TryCatchBlock(
+                                new TryBlock(
+                                    new Body(
+                                        new BodyContentCollection()
+                                    )
+                                ),
+                                new CatchBlock(
+                                    new CatchExpression(
+                                        new ObjectTypeDeclarationCollection([
+                                            new ObjectTypeDeclaration(
+                                                new ClassName(\Throwable::class)
+                                            )
+                                        ])
+                                    ),
+                                    new Body()
+                                ),
+                            ),
+                        )
+                ),
+                'expected' => null,
             ],
             'containing try/catch block with returning try block' => [
                 'body' => new Body(
@@ -272,11 +315,12 @@ class BodyTest extends AbstractResolvableTestCase
                             new TryCatchBlock(
                                 new TryBlock(
                                     new Body(
-                                        BodyContentCollection::createFromExpressions([
-                                            new ReturnExpression(
-                                                Property::asStringVariable('string'),
-                                            ),
-                                        ])
+                                        new BodyContentCollection()
+                                            ->append(
+                                                new ReturnStatement(
+                                                    Property::asStringVariable('string'),
+                                                ),
+                                            )
                                     )
                                 ),
                                 new CatchBlock(
@@ -301,11 +345,12 @@ class BodyTest extends AbstractResolvableTestCase
                             new TryCatchBlock(
                                 new TryBlock(
                                     new Body(
-                                        BodyContentCollection::createFromExpressions([
-                                            new ReturnExpression(
-                                                Property::asStringVariable('string'),
-                                            ),
-                                        ])
+                                        new BodyContentCollection()
+                                            ->append(
+                                                new ReturnStatement(
+                                                    Property::asStringVariable('string'),
+                                                ),
+                                            )
                                     )
                                 ),
                                 new CatchBlock(
@@ -317,11 +362,12 @@ class BodyTest extends AbstractResolvableTestCase
                                         ])
                                     ),
                                     new Body(
-                                        BodyContentCollection::createFromExpressions([
-                                            new ReturnExpression(
-                                                Property::asIntegerVariable('integer'),
-                                            ),
-                                        ])
+                                        new BodyContentCollection()
+                                            ->append(
+                                                new ReturnStatement(
+                                                    Property::asIntegerVariable('integer'),
+                                                ),
+                                            )
                                     )
                                 ),
                                 new CatchBlock(
@@ -333,11 +379,12 @@ class BodyTest extends AbstractResolvableTestCase
                                         ])
                                     ),
                                     new Body(
-                                        BodyContentCollection::createFromExpressions([
-                                            new ReturnExpression(
-                                                Property::asBooleanVariable('boolean'),
-                                            ),
-                                        ])
+                                        new BodyContentCollection()
+                                            ->append(
+                                                new ReturnStatement(
+                                                    Property::asBooleanVariable('boolean'),
+                                                ),
+                                            )
                                     )
                                 ),
                             ),
@@ -368,11 +415,12 @@ class BodyTest extends AbstractResolvableTestCase
                     BodyContentCollection::createFromExpressions([
                         new ClosureExpression(
                             new Body(
-                                BodyContentCollection::createFromExpressions([
-                                    new ReturnExpression(
-                                        Property::asStringVariable('string'),
+                                new BodyContentCollection()
+                                    ->append(
+                                        new ReturnStatement(
+                                            Property::asStringVariable('string'),
+                                        )
                                     )
-                                ])
                             ),
                         )
                     ])
@@ -389,18 +437,16 @@ class BodyTest extends AbstractResolvableTestCase
                 ),
                 'expected' => null,
             ],
-            'containing encapsulated expression with return expression' => [
-                'body' => new Body(
-                    BodyContentCollection::createFromExpressions([
-                        new EncapsulatedExpression(
-                            new ReturnExpression(
-                                Property::asStringVariable('string')
-                            ),
-                        ),
-                    ])
-                ),
-                'expected' => TypeCollection::string(),
-            ],
         ];
+    }
+
+    public function foo(): void
+    {
+        // return statement inside try/catch does return
+        //        try {
+        //            return 'foo';
+        //        } catch (\Throwable $exception) {
+        //            //
+        //        }
     }
 }

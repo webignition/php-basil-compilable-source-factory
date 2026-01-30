@@ -10,12 +10,13 @@ use webignition\BasilCompilableSourceFactory\Model\HasMetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\HasReturnTypeInterface;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
+use webignition\BasilCompilableSourceFactory\Model\ReturnableInterface;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\Stubble\Resolvable\ResolvableCollection;
 use webignition\Stubble\Resolvable\ResolvableInterface;
 use webignition\Stubble\Resolvable\ResolvedTemplateMutatorResolvable;
 
-class TryCatchBlock implements BodyContentInterface, HasMetadataInterface, HasReturnTypeInterface
+class TryCatchBlock implements BodyContentInterface, HasMetadataInterface, HasReturnTypeInterface, ReturnableInterface
 {
     use DeferredResolvableCreationTrait;
 

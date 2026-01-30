@@ -7,12 +7,13 @@ namespace webignition\BasilCompilableSourceFactory\Model\Statement;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\HasReturnTypeInterface;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
+use webignition\BasilCompilableSourceFactory\Model\ReturnableInterface;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\Stubble\Resolvable\ResolvableInterface;
 
-class Statement implements ResolvableInterface, StatementInterface
+class ReturnStatement implements ResolvableInterface, StatementInterface, ReturnableInterface
 {
-    private const RENDER_TEMPLATE = '{{ expression }};';
+    private const RENDER_TEMPLATE = 'return {{ expression }};';
 
     private ExpressionInterface $expression;
 
@@ -48,12 +49,23 @@ class Statement implements ResolvableInterface, StatementInterface
         return $this->expression->mightThrow();
     }
 
-    public function getReturnType(): ?TypeCollection
+    public function getReturnType(): TypeCollection
     {
-        if ($this->expression instanceof HasReturnTypeInterface) {
-            return $this->expression->getReturnType();
-        }
-
-        return null;
+        return $this->expression->getType();
+        //        return $expressionType instanceof TypeCollection
+        //            ? $expressionType
+        //            : TypeCollection::void();
+        //
+        //        var_dump($this->expression::class);
+        //        var_dump($this->expression instanceof HasReturnTypeInterface);
+        //
+        //        if ($this->expression instanceof HasReturnTypeInterface) {
+        //            $returnType = $this->expression->getReturnType();
+        //        }
+        //
+        //
+        //
+        //        $returnType = TypeCollection::void();
+        //        return $returnType;
     }
 }

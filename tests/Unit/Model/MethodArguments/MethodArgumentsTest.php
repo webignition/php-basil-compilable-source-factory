@@ -15,13 +15,13 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpressi
 use webignition\BasilCompilableSourceFactory\Model\Expression\ClosureExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
-use webignition\BasilCompilableSourceFactory\Model\Expression\ReturnExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
+use webignition\BasilCompilableSourceFactory\Model\Statement\ReturnStatement;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\StaticObject;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
@@ -178,10 +178,8 @@ class MethodArgumentsTest extends AbstractResolvableTestCase
                                         new EmptyLine()
                                     )
                                     ->append(
-                                        new Statement(
-                                            new ReturnExpression(
-                                                Property::asIntegerVariable('variable'),
-                                            )
+                                        new ReturnStatement(
+                                            Property::asIntegerVariable('variable'),
                                         )
                                     )
                             ),
