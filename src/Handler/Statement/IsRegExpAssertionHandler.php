@@ -13,7 +13,7 @@ use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
-use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
@@ -83,10 +83,10 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
 
         if (false === $examinedAccessorType->equals(TypeCollection::string())) {
             if ($examinedAccessor->encapsulateWhenCasting()) {
-                $examinedAccessor = EncapsulatingCastExpression::forString($examinedAccessor);
-            } else {
-                $examinedAccessor = new CastExpression($examinedAccessor, Type::STRING);
+                $examinedAccessor = new EncapsulatedExpression($examinedAccessor);
             }
+
+            $examinedAccessor = new CastExpression($examinedAccessor, Type::STRING);
         }
 
         if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
@@ -122,10 +122,10 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
         );
         if (false === TypeCollection::boolean()->equals($identityComparison->getType())) {
             if ($identityComparison->encapsulateWhenCasting()) {
-                $identityComparison = EncapsulatingCastExpression::forBool($identityComparison);
-            } else {
-                $identityComparison = new CastExpression($identityComparison, Type::BOOLEAN);
+                $identityComparison = new EncapsulatedExpression($identityComparison);
             }
+
+            $identityComparison = new CastExpression($identityComparison, Type::BOOLEAN);
         }
 
         return new StatementHandlerCollections(

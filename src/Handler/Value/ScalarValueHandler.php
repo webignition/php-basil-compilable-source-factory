@@ -13,9 +13,10 @@ use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ArrayAccessExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\CastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ClosureExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CompositeExpression;
-use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatingCastExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
@@ -97,24 +98,28 @@ class ScalarValueHandler
                 new ReturnStatement(
                     new CompositeExpression(
                         [
-                            new EncapsulatingCastExpression(
-                                new MethodInvocation(
-                                    methodName: 'getWidth',
-                                    arguments: new MethodArguments(),
-                                    mightThrow: true,
-                                    type: TypeCollection::integer(),
-                                    parent: $webDriverDimensionVariable,
+                            new CastExpression(
+                                new EncapsulatedExpression(
+                                    new MethodInvocation(
+                                        methodName: 'getWidth',
+                                        arguments: new MethodArguments(),
+                                        mightThrow: true,
+                                        type: TypeCollection::integer(),
+                                        parent: $webDriverDimensionVariable,
+                                    ),
                                 ),
                                 Type::STRING
                             ),
                             LiteralExpression::void(' . \'x\' . '),
-                            new EncapsulatingCastExpression(
-                                new MethodInvocation(
-                                    methodName: 'getHeight',
-                                    arguments: new MethodArguments(),
-                                    mightThrow: true,
-                                    type: TypeCollection::integer(),
-                                    parent: $webDriverDimensionVariable,
+                            new CastExpression(
+                                new EncapsulatedExpression(
+                                    new MethodInvocation(
+                                        methodName: 'getHeight',
+                                        arguments: new MethodArguments(),
+                                        mightThrow: true,
+                                        type: TypeCollection::integer(),
+                                        parent: $webDriverDimensionVariable,
+                                    ),
                                 ),
                                 Type::STRING
                             ),
