@@ -8,12 +8,10 @@ use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Enum\VariableName;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
+use webignition\BasilCompilableSourceFactory\ExpressionCaster;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
-use webignition\BasilCompilableSourceFactory\Model\Expression\CastExpression;
-use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpression;
 use webignition\BasilCompilableSourceFactory\Model\Property;
-use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
 use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Statement\StatementInterface;
@@ -31,6 +29,7 @@ class ComparisonAssertionHandler implements StatementHandlerInterface
     public function __construct(
         private ValueAccessorFactory $valueAccessorFactory,
         private PhpUnitCallFactory $phpUnitCallFactory,
+        private ExpressionCaster $expressionCaster,
     ) {}
 
     public static function createHandler(): self
@@ -38,6 +37,7 @@ class ComparisonAssertionHandler implements StatementHandlerInterface
         return new ComparisonAssertionHandler(
             ValueAccessorFactory::createFactory(),
             PhpUnitCallFactory::createFactory(),
+            new ExpressionCaster(),
         );
     }
 
@@ -55,24 +55,10 @@ class ComparisonAssertionHandler implements StatementHandlerInterface
         }
 
         $examinedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull((string) $statement->getIdentifier());
-        $examinedAccessorType = $examinedAccessor->getType();
-        if (false === $examinedAccessorType->equals(TypeCollection::string())) {
-            if ($examinedAccessor->encapsulateWhenCasting()) {
-                $examinedAccessor = new EncapsulatedExpression($examinedAccessor);
-            }
-
-            $examinedAccessor = new CastExpression($examinedAccessor, Type::STRING);
-        }
+        $examinedAccessor = $this->expressionCaster->cast($examinedAccessor, Type::STRING);
 
         $expectedAccessor = $this->valueAccessorFactory->createWithDefaultIfNull((string) $statement->getValue());
-        $expectedAccessorType = $expectedAccessor->getType();
-        if (false === $expectedAccessorType->equals(TypeCollection::string())) {
-            if ($expectedAccessor->encapsulateWhenCasting()) {
-                $expectedAccessor = new EncapsulatedExpression($expectedAccessor);
-            }
-
-            $expectedAccessor = new CastExpression($expectedAccessor, Type::STRING);
-        }
+        $expectedAccessor = $this->expressionCaster->cast($expectedAccessor, Type::STRING);
 
         $expectedValueVariable = Property::asStringVariable(VariableName::EXPECTED_VALUE);
         $examinedValueVariable = Property::asStringVariable(VariableName::EXAMINED_VALUE);

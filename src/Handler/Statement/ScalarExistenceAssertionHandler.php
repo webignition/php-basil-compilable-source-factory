@@ -7,16 +7,15 @@ namespace webignition\BasilCompilableSourceFactory\Handler\Statement;
 use webignition\BasilCompilableSourceFactory\CallFactory\PhpUnitCallFactory;
 use webignition\BasilCompilableSourceFactory\Enum\Type;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
+use webignition\BasilCompilableSourceFactory\ExpressionCaster;
 use webignition\BasilCompilableSourceFactory\Handler\Value\ScalarValueHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
-use webignition\BasilCompilableSourceFactory\Model\Expression\CastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ComparisonExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\NullCoalescerExpression;
 use webignition\BasilCompilableSourceFactory\Model\Property;
-use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Statement\StatementInterface;
 
@@ -25,6 +24,7 @@ class ScalarExistenceAssertionHandler implements StatementHandlerInterface
     public function __construct(
         private ScalarValueHandler $scalarValueHandler,
         private PhpUnitCallFactory $phpUnitCallFactory,
+        private ExpressionCaster $expressionCaster,
     ) {}
 
     public static function createHandler(): self
@@ -32,6 +32,7 @@ class ScalarExistenceAssertionHandler implements StatementHandlerInterface
         return new ScalarExistenceAssertionHandler(
             ScalarValueHandler::createHandler(),
             PhpUnitCallFactory::createFactory(),
+            new ExpressionCaster(),
         );
     }
 
@@ -56,13 +57,7 @@ class ScalarExistenceAssertionHandler implements StatementHandlerInterface
             LiteralExpression::null(),
             '!=='
         );
-        if (false === TypeCollection::boolean()->equals($examinedAccessor->getType())) {
-            if ($examinedAccessor->encapsulateWhenCasting()) {
-                $examinedAccessor = new EncapsulatedExpression($examinedAccessor);
-            }
-
-            $examinedAccessor = new CastExpression($examinedAccessor, Type::BOOLEAN);
-        }
+        $examinedAccessor = $this->expressionCaster->cast($examinedAccessor, Type::BOOLEAN);
 
         $expected = LiteralExpression::boolean('exists' === $statement->getOperator());
 
