@@ -74,18 +74,14 @@ class StepHandlerTest extends AbstractResolvableTestCase
                 ]),
                 'handler' => self::createStepHandler([
                     StatementBlockFactory::class => self::createMockStatementBlockFactory([
-                        '$".selector" exists' => [
-                            'return' => new BodyContentCollection()
-                                ->append(new SingleLineComment(
-                                    'StatementBlockFactory::create($".selector" exists)'
-                                )),
-                        ],
-                        'click $".selector"' => [
-                            'return' => new BodyContentCollection()
-                                ->append(new SingleLineComment(
-                                    'StatementBlockFactory::create(click $".selector")'
-                                )),
-                        ],
+                        '$".selector" exists' => new BodyContentCollection()
+                            ->append(new SingleLineComment(
+                                'StatementBlockFactory::create($".selector" exists)'
+                            )),
+                        'click $".selector"' => new BodyContentCollection()
+                            ->append(new SingleLineComment(
+                                'StatementBlockFactory::create(click $".selector")'
+                            )),
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
                         'click $".selector"' => [
@@ -101,7 +97,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                         mightThrow: true,
                                         type: TypeCollection::string(),
                                     )
-                                ])
+                                ]),
                             )
                         ],
                         '$".selector" exists' => [
@@ -158,22 +154,18 @@ class StepHandlerTest extends AbstractResolvableTestCase
                 ]),
                 'handler' => self::createStepHandler([
                     StatementBlockFactory::class => self::createMockStatementBlockFactory([
-                        '$".selector" exists' => [
-                            'return' => new BodyContentCollection()
-                                ->append(
-                                    new SingleLineComment(
-                                        'StatementBlockFactory::create($".selector" exists)'
-                                    ),
+                        '$".selector" exists' => new BodyContentCollection()
+                            ->append(
+                                new SingleLineComment(
+                                    'StatementBlockFactory::create($".selector" exists)'
                                 ),
-                        ],
-                        'click $".selector"' => [
-                            'return' => new BodyContentCollection()
-                                ->append(
-                                    new SingleLineComment(
-                                        'StatementBlockFactory::create(click $".selector")'
-                                    ),
+                            ),
+                        'click $".selector"' => new BodyContentCollection()
+                            ->append(
+                                new SingleLineComment(
+                                    'StatementBlockFactory::create(click $".selector")'
                                 ),
-                        ],
+                            ),
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
                         'click $".selector"' => [
@@ -212,22 +204,18 @@ class StepHandlerTest extends AbstractResolvableTestCase
                 ]),
                 'handler' => self::createStepHandler([
                     StatementBlockFactory::class => self::createMockStatementBlockFactory([
-                        '$".selector" exists' => [
-                            'return' => new BodyContentCollection()
-                                ->append(
-                                    new SingleLineComment(
-                                        'StatementBlockFactory::create($".selector" exists)'
-                                    ),
+                        '$".selector" exists' => new BodyContentCollection()
+                            ->append(
+                                new SingleLineComment(
+                                    'StatementBlockFactory::create($".selector" exists)'
                                 ),
-                        ],
-                        'click $".selector"' => [
-                            'return' => new BodyContentCollection()
-                                ->append(
-                                    new SingleLineComment(
-                                        'StatementBlockFactory::create(click $".selector")'
-                                    ),
+                            ),
+                        'click $".selector"' => new BodyContentCollection()
+                            ->append(
+                                new SingleLineComment(
+                                    'StatementBlockFactory::create(click $".selector")'
                                 ),
-                        ],
+                            ),
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
                         'click $".selector"' => [
@@ -273,22 +261,18 @@ class StepHandlerTest extends AbstractResolvableTestCase
                 ]),
                 'handler' => self::createStepHandler([
                     StatementBlockFactory::class => self::createMockStatementBlockFactory([
-                        '$".selector" exists' => [
-                            'return' => new BodyContentCollection()
-                                ->append(
-                                    new SingleLineComment(
-                                        'StatementBlockFactory::create($".selector" exists)'
-                                    ),
+                        '$".selector" exists' => new BodyContentCollection()
+                            ->append(
+                                new SingleLineComment(
+                                    'StatementBlockFactory::create($".selector" exists)'
                                 ),
-                        ],
-                        'click $".selector"' => [
-                            'return' => new BodyContentCollection()
-                                ->append(
-                                    new SingleLineComment(
-                                        'StatementBlockFactory::create(click $".selector")'
-                                    ),
+                            ),
+                        'click $".selector"' => new BodyContentCollection()
+                            ->append(
+                                new SingleLineComment(
+                                    'StatementBlockFactory::create(click $".selector")'
                                 ),
-                        ],
+                            ),
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
                         'click $".selector"' => [
@@ -372,38 +356,30 @@ class StepHandlerTest extends AbstractResolvableTestCase
                 ]),
                 'handler' => self::createStepHandler([
                     StatementBlockFactory::class => self::createMockStatementBlockFactory([
-                        '$".selector1" exists' => [
-                            'return' => new BodyContentCollection()
-                                ->append(
-                                    new SingleLineComment(
-                                        'StatementBlockFactory::create($".selector1" exists)'
-                                    ),
+                        '$".selector1" exists' => new BodyContentCollection()
+                            ->append(
+                                new SingleLineComment(
+                                    'StatementBlockFactory::create($".selector1" exists)'
                                 ),
-                        ],
-                        'click $".selector1"' => [
-                            'return' => new BodyContentCollection()
-                                ->append(
-                                    new SingleLineComment(
-                                        'StatementBlockFactory::create(click $".selector1")'
-                                    ),
+                            ),
+                        'click $".selector1"' => new BodyContentCollection()
+                            ->append(
+                                new SingleLineComment(
+                                    'StatementBlockFactory::create(click $".selector1")'
                                 ),
-                        ],
-                        '$".selector2" exists' => [
-                            'return' => new BodyContentCollection()
-                                ->append(
-                                    new SingleLineComment(
-                                        'StatementBlockFactory::create($".selector2" exists)'
-                                    ),
+                            ),
+                        '$".selector2" exists' => new BodyContentCollection()
+                            ->append(
+                                new SingleLineComment(
+                                    'StatementBlockFactory::create($".selector2" exists)'
                                 ),
-                        ],
-                        'click $".selector2"' => [
-                            'return' => new BodyContentCollection()
-                                ->append(
-                                    new SingleLineComment(
-                                        'StatementBlockFactory::create(click $".selector2")'
-                                    ),
+                            ),
+                        'click $".selector2"' => new BodyContentCollection()
+                            ->append(
+                                new SingleLineComment(
+                                    'StatementBlockFactory::create(click $".selector2")'
                                 ),
-                        ],
+                            ),
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
                         'click $".selector1"' => [
@@ -464,14 +440,12 @@ class StepHandlerTest extends AbstractResolvableTestCase
                 ]),
                 'handler' => self::createStepHandler([
                     StatementBlockFactory::class => self::createMockStatementBlockFactory([
-                        '$".selector" exists' => [
-                            'return' => new BodyContentCollection()
-                                ->append(
-                                    new SingleLineComment(
-                                        'StatementBlockFactory::create($".selector" exists)'
-                                    ),
+                        '$".selector" exists' => new BodyContentCollection()
+                            ->append(
+                                new SingleLineComment(
+                                    'StatementBlockFactory::create($".selector" exists)'
                                 ),
-                        ],
+                            ),
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
                         '$".selector" exists' => [
@@ -499,22 +473,18 @@ class StepHandlerTest extends AbstractResolvableTestCase
                 ]),
                 'handler' => self::createStepHandler([
                     StatementBlockFactory::class => self::createMockStatementBlockFactory([
-                        '$".selector" exists' => [
-                            'return' => new BodyContentCollection()
-                                ->append(
-                                    new SingleLineComment(
-                                        'StatementBlockFactory::create($".selector" exists)'
-                                    ),
+                        '$".selector" exists' => new BodyContentCollection()
+                            ->append(
+                                new SingleLineComment(
+                                    'StatementBlockFactory::create($".selector" exists)'
                                 ),
-                        ],
-                        '$".selector".attribute_name exists' => [
-                            'return' => new BodyContentCollection()
-                                ->append(
-                                    new SingleLineComment(
-                                        'StatementBlockFactory::create($".selector".attribute_name exists)'
-                                    ),
+                            ),
+                        '$".selector".attribute_name exists' => new BodyContentCollection()
+                            ->append(
+                                new SingleLineComment(
+                                    'StatementBlockFactory::create($".selector".attribute_name exists)'
                                 ),
-                        ],
+                            ),
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
                         '$".selector" exists' => [
@@ -557,14 +527,12 @@ class StepHandlerTest extends AbstractResolvableTestCase
                 ]),
                 'handler' => self::createStepHandler([
                     StatementBlockFactory::class => self::createMockStatementBlockFactory([
-                        '$".selector" exists' => [
-                            'return' => new BodyContentCollection()
-                                ->append(
-                                    new SingleLineComment(
-                                        'StatementBlockFactory::create($".selector" exists)'
-                                    ),
+                        '$".selector" exists' => new BodyContentCollection()
+                            ->append(
+                                new SingleLineComment(
+                                    'StatementBlockFactory::create($".selector" exists)'
                                 ),
-                        ],
+                            ),
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
                         '$".selector" exists' => [
@@ -599,22 +567,18 @@ class StepHandlerTest extends AbstractResolvableTestCase
                 ]),
                 'handler' => self::createStepHandler([
                     StatementBlockFactory::class => self::createMockStatementBlockFactory([
-                        '$".parent" exists' => [
-                            'return' => new BodyContentCollection()
-                                ->append(
-                                    new SingleLineComment(
-                                        'StatementBlockFactory::create($".parent" exists)'
-                                    ),
+                        '$".parent" exists' => new BodyContentCollection()
+                            ->append(
+                                new SingleLineComment(
+                                    'StatementBlockFactory::create($".parent" exists)'
                                 ),
-                        ],
-                        '$".parent" >> $".child" exists' => [
-                            'return' => new BodyContentCollection()
-                                ->append(
-                                    new SingleLineComment(
-                                        'StatementBlockFactory::create($".parent" >> $".child" exists)'
-                                    ),
+                            ),
+                        '$".parent" >> $".child" exists' => new BodyContentCollection()
+                            ->append(
+                                new SingleLineComment(
+                                    'StatementBlockFactory::create($".parent" >> $".child" exists)'
                                 ),
-                        ],
+                            ),
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
                         '$".parent" exists' => [
@@ -656,22 +620,18 @@ class StepHandlerTest extends AbstractResolvableTestCase
                 ]),
                 'handler' => self::createStepHandler([
                     StatementBlockFactory::class => self::createMockStatementBlockFactory([
-                        '$".selector1" exists' => [
-                            'return' => new BodyContentCollection()
-                                ->append(
-                                    new SingleLineComment(
-                                        'StatementBlockFactory::create($".selector1" exists)'
-                                    ),
+                        '$".selector1" exists' => new BodyContentCollection()
+                            ->append(
+                                new SingleLineComment(
+                                    'StatementBlockFactory::create($".selector1" exists)'
                                 ),
-                        ],
-                        '$".selector2" exists' => [
-                            'return' => new BodyContentCollection()
-                                ->append(
-                                    new SingleLineComment(
-                                        'StatementBlockFactory::create($".selector2" exists)'
-                                    ),
+                            ),
+                        '$".selector2" exists' => new BodyContentCollection()
+                            ->append(
+                                new SingleLineComment(
+                                    'StatementBlockFactory::create($".selector2" exists)'
                                 ),
-                        ],
+                            ),
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
                         '$".selector1" exists' => [
@@ -713,30 +673,24 @@ class StepHandlerTest extends AbstractResolvableTestCase
                 ]),
                 'handler' => self::createStepHandler([
                     StatementBlockFactory::class => self::createMockStatementBlockFactory([
-                        '$".selector1" exists' => [
-                            'return' => new BodyContentCollection()
-                                ->append(
-                                    new SingleLineComment(
-                                        'StatementBlockFactory::create($".selector1" exists)'
-                                    ),
+                        '$".selector1" exists' => new BodyContentCollection()
+                            ->append(
+                                new SingleLineComment(
+                                    'StatementBlockFactory::create($".selector1" exists)'
                                 ),
-                        ],
-                        'click $".selector1"' => [
-                            'return' => new BodyContentCollection()
-                                ->append(
-                                    new SingleLineComment(
-                                        'StatementBlockFactory::create(click $".selector1")'
-                                    ),
+                            ),
+                        'click $".selector1"' => new BodyContentCollection()
+                            ->append(
+                                new SingleLineComment(
+                                    'StatementBlockFactory::create(click $".selector1")'
                                 ),
-                        ],
-                        '$".selector2" exists' => [
-                            'return' => new BodyContentCollection()
-                                ->append(
-                                    new SingleLineComment(
-                                        'StatementBlockFactory::create($".selector2" exists)'
-                                    ),
+                            ),
+                        '$".selector2" exists' => new BodyContentCollection()
+                            ->append(
+                                new SingleLineComment(
+                                    'StatementBlockFactory::create($".selector2" exists)'
                                 ),
-                        ],
+                            ),
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
                         'click $".selector1"' => [
@@ -787,30 +741,24 @@ class StepHandlerTest extends AbstractResolvableTestCase
                 ]),
                 'handler' => self::createStepHandler([
                     StatementBlockFactory::class => self::createMockStatementBlockFactory([
-                        '$".parent" exists' => [
-                            'return' => new BodyContentCollection()
-                                ->append(
-                                    new SingleLineComment(
-                                        'StatementBlockFactory::create($".parent" exists)'
-                                    ),
+                        '$".parent" exists' => new BodyContentCollection()
+                            ->append(
+                                new SingleLineComment(
+                                    'StatementBlockFactory::create($".parent" exists)'
                                 ),
-                        ],
-                        '$".parent" >> $".child1" exists' => [
-                            'return' => new BodyContentCollection()
-                                ->append(
-                                    new SingleLineComment(
-                                        'StatementBlockFactory::create($".parent" >> $".child1" exists)'
-                                    ),
+                            ),
+                        '$".parent" >> $".child1" exists' => new BodyContentCollection()
+                            ->append(
+                                new SingleLineComment(
+                                    'StatementBlockFactory::create($".parent" >> $".child1" exists)'
                                 ),
-                        ],
-                        '$".parent" >> $".child2" exists' => [
-                            'return' => new BodyContentCollection()
-                                ->append(
-                                    new SingleLineComment(
-                                        'StatementBlockFactory::create($".parent" >> $".child2" exists)'
-                                    ),
+                            ),
+                        '$".parent" >> $".child2" exists' => new BodyContentCollection()
+                            ->append(
+                                new SingleLineComment(
+                                    'StatementBlockFactory::create($".parent" >> $".child2" exists)'
                                 ),
-                        ],
+                            ),
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
                         '$".parent" exists' => [
@@ -864,22 +812,18 @@ class StepHandlerTest extends AbstractResolvableTestCase
                 ]),
                 'handler' => self::createStepHandler([
                     StatementBlockFactory::class => self::createMockStatementBlockFactory([
-                        '"/pattern/" is-regexp' => [
-                            'return' => new BodyContentCollection()
-                                ->append(
-                                    new SingleLineComment(
-                                        'StatementBlockFactory::create("/pattern/" is-regexp)'
-                                    ),
+                        '"/pattern/" is-regexp' => new BodyContentCollection()
+                            ->append(
+                                new SingleLineComment(
+                                    'StatementBlockFactory::create("/pattern/" is-regexp)'
                                 ),
-                        ],
-                        '$page.title matches "/pattern/"' => [
-                            'return' => new BodyContentCollection()
-                                ->append(
-                                    new SingleLineComment(
-                                        'StatementBlockFactory::create($page.title matches "/pattern/")'
-                                    ),
+                            ),
+                        '$page.title matches "/pattern/"' => new BodyContentCollection()
+                            ->append(
+                                new SingleLineComment(
+                                    'StatementBlockFactory::create($page.title matches "/pattern/")'
                                 ),
-                        ],
+                            ),
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
                         '"/pattern/" is-regexp' => [
@@ -1001,7 +945,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
     }
 
     /**
-     * @param array<string, null|array{"return": BodyContentCollection}> $createCalls
+     * @param array<string,?BodyContentCollection> $createCalls
      */
     private static function createMockStatementBlockFactory(array $createCalls): StatementBlockFactory
     {
@@ -1022,7 +966,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         );
                     }
 
-                    return $data['return'];
+                    return $data;
                 })
             ;
         }
