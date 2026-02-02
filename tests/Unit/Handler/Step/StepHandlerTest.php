@@ -56,8 +56,6 @@ class StepHandlerTest extends AbstractResolvableTestCase
     public static function handleSuccessDataProvider(): array
     {
         $stepParser = StepParser::create();
-        $actionParser = ActionParser::create();
-        $assertionParser = AssertionParser::create();
 
         return [
             'empty step' => [
