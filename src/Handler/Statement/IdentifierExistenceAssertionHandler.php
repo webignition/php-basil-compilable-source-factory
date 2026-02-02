@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\Handler\Statement;
 
 use SmartAssert\DomIdentifier\AttributeIdentifierInterface;
-use SmartAssert\DomIdentifier\ElementIdentifier;
 use SmartAssert\DomIdentifier\ElementIdentifierInterface;
 use SmartAssert\DomIdentifier\Factory as DomIdentifierFactory;
 use webignition\BasilCompilableSourceFactory\ArgumentFactory;
@@ -25,6 +24,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterfac
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\NullCoalescerExpression;
 use webignition\BasilCompilableSourceFactory\Model\Property;
+use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\BasilModels\Model\Statement\Action\ActionInterface;
 use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
@@ -70,11 +70,13 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
             throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }
 
+        $elementCollections = $this->handleElementExistence($statement, $domIdentifier);
+
         if ($domIdentifier instanceof AttributeIdentifierInterface) {
-            return $this->handleAttributeExistence($statement, $domIdentifier);
+            return $this->handleAttributeExistence($statement, $domIdentifier, $elementCollections);
         }
 
-        return $this->handleElementExistence($statement, $domIdentifier);
+        return $elementCollections;
     }
 
     private function handleElementExistence(
@@ -109,24 +111,11 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
     private function handleAttributeExistence(
         AssertionInterface $attributeExistenceAssertion,
         AttributeIdentifierInterface $domIdentifier,
+        StatementHandlerCollections $elementCollections,
     ): StatementHandlerCollections {
-        $elementExistsAssertion = new DerivedValueOperationAssertion(
-            $attributeExistenceAssertion,
-            (string) ElementIdentifier::fromAttributeIdentifier($domIdentifier),
-            'exists',
-        );
-
         $serializedAttributeIdentifier = $this->elementIdentifierSerializer->serialize($domIdentifier);
 
-        $elementAccessor = $this->createDomCrawlerNavigatorCall(
-            $domIdentifier,
-            $attributeExistenceAssertion,
-            $this->argumentFactory->create($serializedAttributeIdentifier)
-        );
-
-        $elementAccessor = new CastExpression($elementAccessor, Type::BOOLEAN);
         $elementExistsVariable = Property::asBooleanVariable('elementExists');
-        $elementAssignment = new AssignmentExpression($elementExistsVariable, $elementAccessor);
 
         $attributeNullComparisonExpression = new NullCoalescerExpression(
             $this->domIdentifierHandler->handleAttributeValue(
@@ -157,23 +146,25 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
             )
         );
 
-        return new StatementHandlerCollections(
+        $collections = new StatementHandlerCollections(
             BodyContentCollection::createFromExpressions([
-                'element existence assertion' => $this->createAssertionExpression(
-                    $elementExistsAssertion,
-                    $elementExistsVariable,
-                ),
                 'attribute existence assertion' => $this->createAssertionExpression(
                     $attributeExistenceAssertion,
                     $attributeExistsVariable,
                 ),
             ])
-        )->withSetup(
-            BodyContentCollection::createFromExpressions([
-                $elementAssignment,
-                $attributeAssignment,
-            ]),
         );
+
+        $elementSetup = $elementCollections->getSetup();
+        if ($elementSetup instanceof BodyContentCollection) {
+            $collections = $collections->withSetup(
+                $elementSetup->append(
+                    new Statement($attributeAssignment),
+                ),
+            );
+        }
+
+        return $collections;
     }
 
     private function createDomCrawlerNavigatorCall(

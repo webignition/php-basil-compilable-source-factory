@@ -68,27 +68,6 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                     })() ?? null) !== null;
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
-                    {{ PHPUNIT }}->assertTrue(
-                        $elementExists,
-                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
-                            '{
-                                "container": {
-                                    "value": "$\\".selector\\"",
-                                    "operator": "exists",
-                                    "type": "derived-value-operation-assertion"
-                                },
-                                "statement": {
-                                    "statement-type": "assertion",
-                                    "source": "$\\".selector\\".attribute_name not-exists",
-                                    "index": 0,
-                                    "identifier": "$\\".selector\\".attribute_name",
-                                    "operator": "not-exists"
-                                }
-                            }',
-                            true,
-                            $elementExists,
-                        ),
-                    );
                     {{ PHPUNIT }}->assertFalse(
                         $attributeExists,
                         {{ MESSAGE_FACTORY }}->createAssertionMessage(

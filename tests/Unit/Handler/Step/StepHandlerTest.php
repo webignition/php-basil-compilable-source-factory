@@ -1146,7 +1146,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
     }
 
     /**
-     * @param array<string, array{"statement": StatementInterface, "return": BodyContentCollection}|null> $createCalls
+     * @param array<string, null|array{"statement": StatementInterface, "return": BodyContentCollection}> $createCalls
      */
     private static function createMockStatementBlockFactory(array $createCalls): StatementBlockFactory
     {
