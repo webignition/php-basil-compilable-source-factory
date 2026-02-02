@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Handler\Step;
 
+use SmartAssert\DomIdentifier\ElementIdentifier;
 use SmartAssert\DomIdentifier\ElementIdentifierInterface;
 use SmartAssert\DomIdentifier\Factory as DomIdentifierFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedContentException;
@@ -37,30 +38,20 @@ class DerivedAssertionFactory
     {
         $assertions = new AssertionCollection([]);
 
-        if ($action->isInteraction()) {
+        if ($action->isInteraction() || $action->isInput()) {
             $assertions = $assertions->append($this->createForStatementAndAncestors(
-                (string) $action->getIdentifier(),
-                $action
+                $this->createDomIdentifier((string) $action->getIdentifier()),
+                $action,
             ));
         }
 
-        if ($action->isInput()) {
-            $assertions = $assertions->append(
-                $this->createForStatementAndAncestors((string) $action->getIdentifier(), $action)
-            );
-
+        if ($action->isInput() || $action->isWait()) {
             $value = (string) $action->getValue();
-
             if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($value)) {
-                $assertions = $assertions->append($this->createForStatementAndAncestors($value, $action));
-            }
-        }
-
-        if ($action->isWait()) {
-            $duration = (string) $action->getValue();
-
-            if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($duration)) {
-                $assertions = $assertions->append($this->createForStatementAndAncestors($duration, $action));
+                $assertions = $assertions->append($this->createForStatementAndAncestors(
+                    $this->createDomIdentifier($value),
+                    $action,
+                ));
             }
         }
 
@@ -95,11 +86,33 @@ class DerivedAssertionFactory
 
         if ($isExistenceAssertion) {
             if (is_string($identifier) && $this->identifierTypeAnalyser->isDescendantDomIdentifier($identifier)) {
-                $assertions = $assertions->append($this->createForStatementAncestorsOnly($identifier, $assertion));
+                $assertions = $assertions->append($this->createForStatementAncestorsOnly(
+                    $this->createDomIdentifier($identifier),
+                    $assertion,
+                ));
+            }
+
+            if (is_string($identifier) && $this->identifierTypeAnalyser->isAttributeIdentifier($identifier)) {
+                $attributeDomIdentifier = $this->createDomIdentifier($identifier);
+                $elementDomIdentifier = ElementIdentifier::fromAttributeIdentifier($attributeDomIdentifier);
+
+                $assertions = $assertions->append(
+                    $this->createForCollection(
+                        $assertion,
+                        [
+                            $elementDomIdentifier,
+                        ]
+                    ),
+                );
             }
         } else {
             if (is_string($identifier) && $this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
-                $assertions = $assertions->append($this->createForStatementAndAncestors($identifier, $assertion));
+                $domIdentifier = $this->domIdentifierFactory->createFromIdentifierString($identifier);
+                if (null === $domIdentifier) {
+                    throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
+                }
+
+                $assertions = $assertions->append($this->createForStatementAndAncestors($domIdentifier, $assertion));
             }
         }
 
@@ -107,7 +120,15 @@ class DerivedAssertionFactory
             $value = (string) $assertion->getValue();
 
             if ($this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($value)) {
-                $assertions = $assertions->append($this->createForStatementAndAncestors($value, $assertion));
+                $valueDomIdentifier = $this->domIdentifierFactory->createFromIdentifierString($value);
+                if (null === $valueDomIdentifier) {
+                    throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $value);
+                }
+
+                $assertions = $assertions->append($this->createForStatementAndAncestors(
+                    $valueDomIdentifier,
+                    $assertion
+                ));
             }
         }
 
@@ -127,63 +148,54 @@ class DerivedAssertionFactory
         );
     }
 
-    /**
-     * @throws UnsupportedContentException
-     */
     private function createForStatementAndAncestors(
-        string $identifier,
+        ElementIdentifierInterface $domIdentifier,
         StatementModelInterface $statement
     ): AssertionCollectionInterface {
-        return $this->createForCollection(
-            $identifier,
-            $statement,
-            function (ElementIdentifierInterface $domIdentifier): array {
-                $elementHierarchy = $domIdentifier->getScope();
-                $elementHierarchy[] = $domIdentifier;
+        $newAssertionIdentifiers = $domIdentifier->getScope();
+        $newAssertionIdentifiers[] = $domIdentifier;
 
-                return $elementHierarchy;
-            }
+        return $this->createForCollection(
+            $statement,
+            $newAssertionIdentifiers,
         );
     }
 
-    /**
-     * @throws UnsupportedContentException
-     */
     private function createForStatementAncestorsOnly(
-        string $identifier,
+        ElementIdentifierInterface $domIdentifier,
         StatementModelInterface $statement
     ): AssertionCollectionInterface {
-        return $this->createForCollection(
-            $identifier,
-            $statement,
-            function (ElementIdentifierInterface $domIdentifier): array {
-                return $domIdentifier->getScope();
-            }
-        );
+        $newAssertionIdentifiers = $domIdentifier->getScope();
+
+        return $this->createForCollection($statement, $newAssertionIdentifiers);
     }
 
     /**
-     * @param callable(ElementIdentifierInterface): ElementIdentifierInterface[] $elementHierarchyCreator
-     *
-     * @throws UnsupportedContentException
+     * @param ElementIdentifierInterface[] $elementIdentifiers
      */
     private function createForCollection(
-        string $identifier,
-        StatementModelInterface $action,
-        callable $elementHierarchyCreator
+        StatementModelInterface $statement,
+        array $elementIdentifiers,
     ): AssertionCollectionInterface {
+        $assertions = [];
+
+        foreach ($elementIdentifiers as $elementIdentifier) {
+            $assertions[] = new DerivedValueOperationAssertion($statement, (string) $elementIdentifier, 'exists');
+        }
+
+        return new AssertionCollection($assertions);
+    }
+
+    /**
+     * @throws UnsupportedContentException
+     */
+    private function createDomIdentifier(string $identifier): ElementIdentifierInterface
+    {
         $domIdentifier = $this->domIdentifierFactory->createFromIdentifierString($identifier);
         if (null === $domIdentifier) {
             throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }
 
-        $assertions = [];
-
-        $elementHierarchy = $elementHierarchyCreator($domIdentifier);
-        foreach ($elementHierarchy as $elementIdentifier) {
-            $assertions[] = new DerivedValueOperationAssertion($action, (string) $elementIdentifier, 'exists');
-        }
-
-        return new AssertionCollection($assertions);
+        return $domIdentifier;
     }
 }

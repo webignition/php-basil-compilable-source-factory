@@ -72,27 +72,6 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
-                        $elementExists,
-                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
-                            '{
-                                "container": {
-                                    "value": "$\\".selector\\"",
-                                    "operator": "exists",
-                                    "type": "derived-value-operation-assertion"
-                                },
-                                "statement": {
-                                    "statement-type": "assertion",
-                                    "source": "$\\".selector\\".attribute_name exists",
-                                    "index": 0,
-                                    "identifier": "$\\".selector\\".attribute_name",
-                                    "operator": "exists"
-                                }
-                            }',
-                            true,
-                            $elementExists,
-                        ),
-                    );
-                    {{ PHPUNIT }}->assertTrue(
                         $attributeExists,
                         {{ MESSAGE_FACTORY }}->createAssertionMessage(
                             '{
@@ -204,27 +183,6 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                     })() ?? null) !== null;
                     EOD,
                 'expectedRenderedBody' => <<< 'EOD'
-                    {{ PHPUNIT }}->assertTrue(
-                        $elementExists,
-                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
-                            '{
-                                "container": {
-                                    "value": "$\\"a[href=foo.html]\\"",
-                                    "operator": "exists",
-                                    "type": "derived-value-operation-assertion"
-                                },
-                                "statement": {
-                                    "statement-type": "assertion",
-                                    "source": "$\\"a[href=foo.html]\\".attribute_name exists",
-                                    "index": 0,
-                                    "identifier": "$\\"a[href=foo.html]\\".attribute_name",
-                                    "operator": "exists"
-                                }
-                            }',
-                            true,
-                            $elementExists,
-                        ),
-                    );
                     {{ PHPUNIT }}->assertTrue(
                         $attributeExists,
                         {{ MESSAGE_FACTORY }}->createAssertionMessage(

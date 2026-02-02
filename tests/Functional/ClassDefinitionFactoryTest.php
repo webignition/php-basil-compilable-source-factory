@@ -74,6 +74,11 @@ class ClassDefinitionFactoryTest extends AbstractBrowserTestCase
                             'browser' => 'chrome',
                             'url' => Options::getBaseUri() . '/index.html',
                         ],
+                        'foo' => [
+                            'assertions' => [
+                                '$"#link-to-form".href exists',
+                            ],
+                        ],
                         'verify starting page is open' => [
                             'assertions' => [
                                 '$page.url is "' . Options::getBaseUri() . '/index.html"',
