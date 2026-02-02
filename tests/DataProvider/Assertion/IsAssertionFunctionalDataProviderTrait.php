@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
+use webignition\BasilCompilableSourceFactory\Model\Body\Body;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
+use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
+use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Tests\Model\StatementHandlerTestData;
 use webignition\BasilModels\Parser\AssertionParser;
 
@@ -15,6 +20,15 @@ trait IsAssertionFunctionalDataProviderTrait
     public static function isAssertionFunctionalDataProvider(): array
     {
         $assertionParser = AssertionParser::create();
+
+        $defineStatementVariableBody = new Body(
+            BodyContentCollection::createFromExpressions([
+                new AssignmentExpression(
+                    Property::asStringVariable('statement_0'),
+                    LiteralExpression::string('"{}"')
+                ),
+            ]),
+        );
 
         $assertions = [
             'element identifier examined value, scalar expected value' => [
@@ -71,6 +85,7 @@ trait IsAssertionFunctionalDataProviderTrait
 
         foreach (self::equalityAssertionFunctionalDataProvider() as $testName => $testData) {
             $testDataModel = new StatementHandlerTestData($testData['fixture'], $assertions[$testName]['statement']);
+            $testDataModel = $testDataModel->withBeforeTest($defineStatementVariableBody);
 
             $testCases['is comparison, ' . $testName] = [
                 'data' => $testDataModel,

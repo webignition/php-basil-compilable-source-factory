@@ -5,7 +5,6 @@ declare(strict_types=1);
 namespace webignition\BasilCompilableSourceFactory\CallFactory;
 
 use webignition\BaseBasilTestCase\Enum\StatementStage;
-use webignition\BasilCompilableSourceFactory\ArgumentFactory;
 use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\Expression\ExpressionInterface;
@@ -15,23 +14,12 @@ use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvoca
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocationInterface;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
-use webignition\BasilCompilableSourceFactory\StatementSerializer;
-use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
-use webignition\BasilModels\Model\Statement\StatementInterface;
 
 readonly class PhpUnitCallFactory
 {
-    public function __construct(
-        private ArgumentFactory $argumentFactory,
-        private StatementSerializer $statementSerializer,
-    ) {}
-
     public static function createFactory(): self
     {
-        return new PhpUnitCallFactory(
-            ArgumentFactory::createFactory(),
-            StatementSerializer::createFactory(),
-        );
+        return new PhpUnitCallFactory();
     }
 
     public function createCall(
@@ -65,12 +53,12 @@ readonly class PhpUnitCallFactory
      */
     public function createAssertionCall(
         string $methodName,
-        AssertionInterface $statement,
+        Property $statementVariable,
         array $methodExpressions,
         array $messageExpressions,
     ): MethodInvocationInterface {
         $messageFactoryArgumentExpressions = [
-            $this->argumentFactory->create($this->statementSerializer->serialize($statement)),
+            $statementVariable,
         ];
 
         foreach ($messageExpressions as $expression) {
@@ -79,8 +67,7 @@ readonly class PhpUnitCallFactory
 
         $messageFactoryCall = new MethodInvocation(
             methodName: 'createAssertionMessage',
-            arguments: new MethodArguments($messageFactoryArgumentExpressions)
-                ->withFormat(MethodArgumentsInterface::FORMAT_STACKED),
+            arguments: new MethodArguments($messageFactoryArgumentExpressions),
             mightThrow: false,
             type: TypeCollection::object(),
             parent: Property::asDependency(DependencyName::MESSAGE_FACTORY),
@@ -101,7 +88,7 @@ readonly class PhpUnitCallFactory
     }
 
     public function createFailCall(
-        StatementInterface $statement,
+        Property $statementVariable,
         StatementStage $statementStage,
     ): MethodInvocationInterface {
         $statementStageEnum = Property::asEnum(
@@ -113,10 +100,10 @@ readonly class PhpUnitCallFactory
         $failureMessageFactoryCall = new MethodInvocation(
             methodName: 'createFailureMessage',
             arguments: new MethodArguments([
-                $this->argumentFactory->create($this->statementSerializer->serialize($statement)),
+                $statementVariable,
                 Property::asObjectVariable('exception'),
                 $statementStageEnum,
-            ])->withFormat(MethodArgumentsInterface::FORMAT_STACKED),
+            ]),
             mightThrow: false,
             type: TypeCollection::object(),
             parent: Property::asDependency(DependencyName::MESSAGE_FACTORY),

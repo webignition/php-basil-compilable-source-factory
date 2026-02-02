@@ -26,6 +26,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\NullCoalescerExpre
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
+use webignition\BasilCompilableSourceFactory\StatementVariableFactory;
 use webignition\BasilModels\Model\Statement\Action\ActionInterface;
 use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Statement\Assertion\DerivedValueOperationAssertion;
@@ -40,6 +41,7 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
         private DomIdentifierHandler $domIdentifierHandler,
         private ElementIdentifierSerializer $elementIdentifierSerializer,
         private PhpUnitCallFactory $phpUnitCallFactory,
+        private StatementVariableFactory $statementVariableFactory,
     ) {}
 
     public static function createHandler(): self
@@ -51,13 +53,14 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
             DomIdentifierHandler::createHandler(),
             ElementIdentifierSerializer::createSerializer(),
             PhpUnitCallFactory::createFactory(),
+            StatementVariableFactory::createFactory(),
         );
     }
 
     /**
      * @throws UnsupportedContentException
      */
-    public function handle(StatementModelInterface $statement): ?StatementHandlerCollections
+    public function handle(StatementModelInterface $statement, int $sequenceNumber): ?StatementHandlerCollections
     {
         if (!$statement instanceof AssertionInterface) {
             return null;
@@ -70,10 +73,10 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
             throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);
         }
 
-        $elementCollections = $this->handleElementExistence($statement, $domIdentifier);
+        $elementCollections = $this->handleElementExistence($statement, $domIdentifier, $sequenceNumber);
 
         if ($domIdentifier instanceof AttributeIdentifierInterface) {
-            return $this->handleAttributeExistence($statement, $domIdentifier, $elementCollections);
+            return $this->handleAttributeExistence($statement, $domIdentifier, $elementCollections, $sequenceNumber);
         }
 
         return $elementCollections;
@@ -81,7 +84,8 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
 
     private function handleElementExistence(
         AssertionInterface $elementExistenceAssertion,
-        ElementIdentifierInterface $domIdentifier
+        ElementIdentifierInterface $domIdentifier,
+        int $sequenceNumber,
     ): StatementHandlerCollections {
         $serializedElementIdentifier = $this->elementIdentifierSerializer->serialize($domIdentifier);
 
@@ -99,6 +103,7 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
                 $this->createAssertionExpression(
                     $elementExistenceAssertion,
                     $elementExistsVariable,
+                    $sequenceNumber,
                 )
             ])
         )->withSetup(
@@ -112,6 +117,7 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
         AssertionInterface $attributeExistenceAssertion,
         AttributeIdentifierInterface $domIdentifier,
         StatementHandlerCollections $elementCollections,
+        int $sequenceNumber,
     ): StatementHandlerCollections {
         $serializedAttributeIdentifier = $this->elementIdentifierSerializer->serialize($domIdentifier);
 
@@ -151,6 +157,7 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
                 'attribute existence assertion' => $this->createAssertionExpression(
                     $attributeExistenceAssertion,
                     $attributeExistsVariable,
+                    $sequenceNumber,
                 ),
             ])
         );
@@ -190,6 +197,7 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
     private function createAssertionExpression(
         AssertionInterface $assertion,
         ExpressionInterface $examinedValuePlaceholder,
+        int $sequenceNumber,
     ): ExpressionInterface {
         $assertionArgumentExpressions = [$examinedValuePlaceholder];
         $assertionMessageExpressions = [
@@ -199,7 +207,7 @@ class IdentifierExistenceAssertionHandler implements StatementHandlerInterface
 
         return $this->phpUnitCallFactory->createAssertionCall(
             'exists' === $assertion->getOperator() ? 'assertTrue' : 'assertFalse',
-            $assertion,
+            $this->statementVariableFactory->create($sequenceNumber),
             $assertionArgumentExpressions,
             $assertionMessageExpressions,
         );

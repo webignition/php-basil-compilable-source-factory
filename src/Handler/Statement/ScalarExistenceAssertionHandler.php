@@ -16,6 +16,7 @@ use webignition\BasilCompilableSourceFactory\Model\Expression\EncapsulatedExpres
 use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\NullCoalescerExpression;
 use webignition\BasilCompilableSourceFactory\Model\Property;
+use webignition\BasilCompilableSourceFactory\StatementVariableFactory;
 use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Statement\StatementInterface;
 
@@ -24,6 +25,7 @@ class ScalarExistenceAssertionHandler implements StatementHandlerInterface
     public function __construct(
         private ScalarValueHandler $scalarValueHandler,
         private PhpUnitCallFactory $phpUnitCallFactory,
+        private StatementVariableFactory $statementVariableFactory,
     ) {}
 
     public static function createHandler(): self
@@ -31,13 +33,14 @@ class ScalarExistenceAssertionHandler implements StatementHandlerInterface
         return new ScalarExistenceAssertionHandler(
             ScalarValueHandler::createHandler(),
             PhpUnitCallFactory::createFactory(),
+            StatementVariableFactory::createFactory(),
         );
     }
 
     /**
      * @throws UnsupportedContentException
      */
-    public function handle(StatementInterface $statement): ?StatementHandlerCollections
+    public function handle(StatementInterface $statement, int $sequenceNumber): ?StatementHandlerCollections
     {
         if (!$statement instanceof AssertionInterface) {
             return null;
@@ -63,7 +66,7 @@ class ScalarExistenceAssertionHandler implements StatementHandlerInterface
             BodyContentCollection::createFromExpressions([
                 $this->phpUnitCallFactory->createAssertionCall(
                     'exists' === $statement->getOperator() ? 'assertTrue' : 'assertFalse',
-                    $statement,
+                    $this->statementVariableFactory->create($sequenceNumber),
                     [$examinedValueVariable],
                     [$expected, $examinedValueVariable],
                 )

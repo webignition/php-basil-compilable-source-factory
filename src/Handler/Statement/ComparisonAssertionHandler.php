@@ -12,6 +12,7 @@ use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
 use webignition\BasilCompilableSourceFactory\Model\Expression\CastExpression;
 use webignition\BasilCompilableSourceFactory\Model\Property;
+use webignition\BasilCompilableSourceFactory\StatementVariableFactory;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
 use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Statement\StatementInterface;
@@ -29,6 +30,7 @@ class ComparisonAssertionHandler implements StatementHandlerInterface
     public function __construct(
         private ValueAccessorFactory $valueAccessorFactory,
         private PhpUnitCallFactory $phpUnitCallFactory,
+        private StatementVariableFactory $statementVariableFactory,
     ) {}
 
     public static function createHandler(): self
@@ -36,13 +38,14 @@ class ComparisonAssertionHandler implements StatementHandlerInterface
         return new ComparisonAssertionHandler(
             ValueAccessorFactory::createFactory(),
             PhpUnitCallFactory::createFactory(),
+            StatementVariableFactory::createFactory(),
         );
     }
 
     /**
      * @throws UnsupportedContentException
      */
-    public function handle(StatementInterface $statement): ?StatementHandlerCollections
+    public function handle(StatementInterface $statement, int $sequenceNumber): ?StatementHandlerCollections
     {
         if (!$statement instanceof AssertionInterface) {
             return null;
@@ -65,7 +68,7 @@ class ComparisonAssertionHandler implements StatementHandlerInterface
             BodyContentCollection::createFromExpressions([
                 $this->phpUnitCallFactory->createAssertionCall(
                     self::OPERATOR_TO_ASSERTION_TEMPLATE_MAP[$statement->getOperator()],
-                    $statement,
+                    $this->statementVariableFactory->create($sequenceNumber),
                     [$expectedValueVariable, $examinedValueVariable],
                     [$expectedValueVariable, $examinedValueVariable],
                 )

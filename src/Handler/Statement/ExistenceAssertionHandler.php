@@ -32,7 +32,7 @@ class ExistenceAssertionHandler implements StatementHandlerInterface
     /**
      * @throws UnsupportedContentException
      */
-    public function handle(StatementInterface $statement): ?StatementHandlerCollections
+    public function handle(StatementInterface $statement, int $sequenceNumber): ?StatementHandlerCollections
     {
         if (!$statement instanceof AssertionInterface) {
             return null;
@@ -45,11 +45,11 @@ class ExistenceAssertionHandler implements StatementHandlerInterface
         $identifier = $statement->getIdentifier();
 
         if (is_string($identifier) && $this->valueTypeIdentifier->isScalarValue($identifier)) {
-            return $this->scalarExistenceAssertionHandler->handle($statement);
+            return $this->scalarExistenceAssertionHandler->handle($statement, $sequenceNumber);
         }
 
         if (is_string($identifier) && $this->identifierTypeAnalyser->isDomOrDescendantDomIdentifier($identifier)) {
-            return $this->identifierExistenceAssertionHandler->handle($statement);
+            return $this->identifierExistenceAssertionHandler->handle($statement, $sequenceNumber);
         }
 
         throw new UnsupportedContentException(UnsupportedContentException::TYPE_IDENTIFIER, $identifier);

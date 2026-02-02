@@ -28,17 +28,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertFalse(
                         $elementExists,
-                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
-                            '{
-                                "statement-type": "assertion",
-                                "source": "$\\".selector\\" not-exists",
-                                "index": 0,
-                                "identifier": "$\\".selector\\"",
-                                "operator": "not-exists"
-                            }',
-                            false,
-                            $elementExists,
-                        ),
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage($statement_0, false, $elementExists),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -70,17 +60,7 @@ trait CreateFromIdentifierNotExistsAssertionDataProviderTrait
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertFalse(
                         $attributeExists,
-                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
-                            '{
-                                "statement-type": "assertion",
-                                "source": "$\\".selector\\".attribute_name not-exists",
-                                "index": 0,
-                                "identifier": "$\\".selector\\".attribute_name",
-                                "operator": "not-exists"
-                            }',
-                            false,
-                            $attributeExists,
-                        ),
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage($statement_0, false, $attributeExists),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(

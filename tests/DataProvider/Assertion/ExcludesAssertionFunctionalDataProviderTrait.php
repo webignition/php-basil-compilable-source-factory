@@ -4,6 +4,11 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
+use webignition\BasilCompilableSourceFactory\Model\Body\Body;
+use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
+use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
+use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Tests\Model\StatementHandlerTestData;
 use webignition\BasilModels\Parser\AssertionParser;
 
@@ -17,6 +22,15 @@ trait ExcludesAssertionFunctionalDataProviderTrait
         $assertionParser = AssertionParser::create();
 
         $fixture = '/assertions.html';
+
+        $defineStatementVariableBody = new Body(
+            BodyContentCollection::createFromExpressions([
+                new AssignmentExpression(
+                    Property::asStringVariable('statement_0'),
+                    LiteralExpression::string('"{}"')
+                ),
+            ]),
+        );
 
         $assertions = [
             'element identifier examined value, scalar expected value' => [
@@ -57,8 +71,11 @@ trait ExcludesAssertionFunctionalDataProviderTrait
         $testCases = [];
 
         foreach (self::inclusionAssertionFunctionalDataProvider() as $testName => $testData) {
+            $testDataModel = new StatementHandlerTestData($fixture, $assertions[$testName]['statement']);
+            $testDataModel = $testDataModel->withBeforeTest($defineStatementVariableBody);
+
             $testCases['excludes comparison, ' . $testName] = [
-                'data' => new StatementHandlerTestData($fixture, $assertions[$testName]['statement']),
+                'data' => $testDataModel,
             ];
         }
 

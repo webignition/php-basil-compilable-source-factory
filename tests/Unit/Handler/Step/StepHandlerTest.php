@@ -26,6 +26,8 @@ use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvoca
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
+use webignition\BasilCompilableSourceFactory\StatementSerializer;
+use webignition\BasilCompilableSourceFactory\StatementVariableFactory;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTestCase;
 use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
 use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
@@ -100,30 +102,44 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     ]),
                 ]),
                 'expectedRenderedContent' => <<< 'EOD'
-                    // StatementBlockFactory::create($".selector" exists)
-                    // StatementHandler::handle($".selector" exists)::body
-
-                    // StatementBlockFactory::create(click $".selector")
-                    try {
-                        method(StatementHandler::handle(click $".selector")::body);
-                    } catch (\Throwable $exception) {
-                        {{ PHPUNIT }}->fail(
-                            {{ MESSAGE_FACTORY }}->createFailureMessage(
-                                '{
-                                    "statement-type": "action",
-                                    "source": "click $\\".selector\\"",
-                                    "index": 0,
-                                    "identifier": "$\\".selector\\"",
-                                    "type": "click",
-                                    "arguments": "$\\".selector\\""
-                                }',
-                                $exception,
-                                StatementStage::EXECUTE,
-                            ),
-                        );
+                // StatementBlockFactory::create($".selector" exists)
+                $statement_0 = '{
+                    "container": {
+                        "value": "$\".selector\"",
+                        "operator": "exists",
+                        "type": "derived-value-operation-assertion"
+                    },
+                    "statement": {
+                        "statement-type": "action",
+                        "source": "click $\".selector\"",
+                        "index": 0,
+                        "identifier": "$\".selector\"",
+                        "type": "click",
+                        "arguments": "$\".selector\""
                     }
+                }';
 
-                    EOD,
+                // StatementHandler::handle($".selector" exists)::body
+
+                // StatementBlockFactory::create(click $".selector")
+                $statement_1 = '{
+                    "statement-type": "action",
+                    "source": "click $\".selector\"",
+                    "index": 0,
+                    "identifier": "$\".selector\"",
+                    "type": "click",
+                    "arguments": "$\".selector\""
+                }';
+
+                try {
+                    method(StatementHandler::handle(click $".selector")::body);
+                } catch (\Throwable $exception) {
+                    {{ PHPUNIT }}->fail(
+                        {{ MESSAGE_FACTORY }}->createFailureMessage($statement_1, $exception, StatementStage::EXECUTE),
+                    );
+                }
+
+                EOD,
                 'expectedMetadata' => new Metadata(
                     classNames: [
                         StatementStage::class,
@@ -150,9 +166,34 @@ class StepHandlerTest extends AbstractResolvableTestCase
                 ]),
                 'expectedRenderedContent' => <<< 'EOD'
                     // StatementBlockFactory::create($".selector" exists)
+                    $statement_0 = '{
+                        "container": {
+                            "value": "$\".selector\"",
+                            "operator": "exists",
+                            "type": "derived-value-operation-assertion"
+                        },
+                        "statement": {
+                            "statement-type": "action",
+                            "source": "click $\".selector\"",
+                            "index": 0,
+                            "identifier": "$\".selector\"",
+                            "type": "click",
+                            "arguments": "$\".selector\""
+                        }
+                    }';
+
                     // StatementHandler::handle($".selector" exists)::body
 
                     // StatementBlockFactory::create(click $".selector")
+                    $statement_1 = '{
+                        "statement-type": "action",
+                        "source": "click $\".selector\"",
+                        "index": 0,
+                        "identifier": "$\".selector\"",
+                        "type": "click",
+                        "arguments": "$\".selector\""
+                    }';
+
                     // StatementHandler::handle(click $".selector")::body
 
                     EOD,
@@ -183,9 +224,34 @@ class StepHandlerTest extends AbstractResolvableTestCase
                 ]),
                 'expectedRenderedContent' => <<< 'EOD'
                     // StatementBlockFactory::create($".selector" exists)
+                    $statement_0 = '{
+                        "container": {
+                            "value": "$\".selector\"",
+                            "operator": "exists",
+                            "type": "derived-value-operation-assertion"
+                        },
+                        "statement": {
+                            "statement-type": "action",
+                            "source": "click $\".selector\"",
+                            "index": 0,
+                            "identifier": "$\".selector\"",
+                            "type": "click",
+                            "arguments": "$\".selector\""
+                        }
+                    }';
+
                     // StatementHandler::handle($".selector" exists)::body
 
                     // StatementBlockFactory::create(click $".selector")
+                    $statement_1 = '{
+                        "statement-type": "action",
+                        "source": "click $\".selector\"",
+                        "index": 0,
+                        "identifier": "$\".selector\"",
+                        "type": "click",
+                        "arguments": "$\".selector\""
+                    }';
+
                     // StatementHandler::handle(click $".selector")::setup
 
                     // StatementHandler::handle(click $".selector")::body
@@ -228,32 +294,46 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     ]),
                 ]),
                 'expectedRenderedContent' => <<< 'EOD'
-                    // StatementBlockFactory::create($".selector" exists)
-                    // StatementHandler::handle($".selector" exists)::body
-
-                    // StatementBlockFactory::create(click $".selector")
-                    try {
-                        method("StatementHandler::handle(click $\".selector\")::setup");
-                    } catch (\Throwable $exception) {
-                        {{ PHPUNIT }}->fail(
-                            {{ MESSAGE_FACTORY }}->createFailureMessage(
-                                '{
-                                    "statement-type": "action",
-                                    "source": "click $\\".selector\\"",
-                                    "index": 0,
-                                    "identifier": "$\\".selector\\"",
-                                    "type": "click",
-                                    "arguments": "$\\".selector\\""
-                                }',
-                                $exception,
-                                StatementStage::SETUP,
-                            ),
-                        );
+                // StatementBlockFactory::create($".selector" exists)
+                $statement_0 = '{
+                    "container": {
+                        "value": "$\".selector\"",
+                        "operator": "exists",
+                        "type": "derived-value-operation-assertion"
+                    },
+                    "statement": {
+                        "statement-type": "action",
+                        "source": "click $\".selector\"",
+                        "index": 0,
+                        "identifier": "$\".selector\"",
+                        "type": "click",
+                        "arguments": "$\".selector\""
                     }
+                }';
 
-                    // StatementHandler::handle(click $".selector")::body
+                // StatementHandler::handle($".selector" exists)::body
 
-                    EOD,
+                // StatementBlockFactory::create(click $".selector")
+                $statement_1 = '{
+                    "statement-type": "action",
+                    "source": "click $\".selector\"",
+                    "index": 0,
+                    "identifier": "$\".selector\"",
+                    "type": "click",
+                    "arguments": "$\".selector\""
+                }';
+
+                try {
+                    method("StatementHandler::handle(click $\".selector\")::setup");
+                } catch (\Throwable $exception) {
+                    {{ PHPUNIT }}->fail(
+                        {{ MESSAGE_FACTORY }}->createFailureMessage($statement_1, $exception, StatementStage::SETUP),
+                    );
+                }
+
+                // StatementHandler::handle(click $".selector")::body
+
+                EOD,
                 'expectedMetadata' => new Metadata(
                     classNames: [
                         StatementStage::class,
@@ -283,15 +363,65 @@ class StepHandlerTest extends AbstractResolvableTestCase
                 ]),
                 'expectedRenderedContent' => <<< 'EOD'
                     // StatementBlockFactory::create($".selector1" exists)
+                    $statement_0 = '{
+                        "container": {
+                            "value": "$\".selector1\"",
+                            "operator": "exists",
+                            "type": "derived-value-operation-assertion"
+                        },
+                        "statement": {
+                            "statement-type": "action",
+                            "source": "click $\".selector1\"",
+                            "index": 0,
+                            "identifier": "$\".selector1\"",
+                            "type": "click",
+                            "arguments": "$\".selector1\""
+                        }
+                    }';
+
                     // StatementHandler::handle($".selector1" exists)::body
 
                     // StatementBlockFactory::create($".selector2" exists)
+                    $statement_1 = '{
+                        "container": {
+                            "value": "$\".selector2\"",
+                            "operator": "exists",
+                            "type": "derived-value-operation-assertion"
+                        },
+                        "statement": {
+                            "statement-type": "action",
+                            "source": "click $\".selector2\"",
+                            "index": 1,
+                            "identifier": "$\".selector2\"",
+                            "type": "click",
+                            "arguments": "$\".selector2\""
+                        }
+                    }';
+
                     // StatementHandler::handle($".selector2" exists)::body
 
                     // StatementBlockFactory::create(click $".selector1")
+                    $statement_2 = '{
+                        "statement-type": "action",
+                        "source": "click $\".selector1\"",
+                        "index": 0,
+                        "identifier": "$\".selector1\"",
+                        "type": "click",
+                        "arguments": "$\".selector1\""
+                    }';
+
                     // StatementHandler::handle(click $".selector1")::body
 
                     // StatementBlockFactory::create(click $".selector2")
+                    $statement_3 = '{
+                        "statement-type": "action",
+                        "source": "click $\".selector2\"",
+                        "index": 1,
+                        "identifier": "$\".selector2\"",
+                        "type": "click",
+                        "arguments": "$\".selector2\""
+                    }';
+
                     // StatementHandler::handle(click $".selector2")::body
 
                     EOD,
@@ -316,6 +446,14 @@ class StepHandlerTest extends AbstractResolvableTestCase
                 ]),
                 'expectedRenderedContent' => <<< 'EOD'
                     // StatementBlockFactory::create($".selector" exists)
+                    $statement_0 = '{
+                        "statement-type": "assertion",
+                        "source": "$\".selector\" exists",
+                        "index": 0,
+                        "identifier": "$\".selector\"",
+                        "operator": "exists"
+                    }';
+
                     // StatementHandler::handle($".selector" exists)::body
 
                     EOD,
@@ -336,9 +474,32 @@ class StepHandlerTest extends AbstractResolvableTestCase
                 ]),
                 'expectedRenderedContent' => <<< 'EOD'
                     // StatementBlockFactory::create($".selector" exists)
+                    $statement_0 = '{
+                        "container": {
+                            "value": "$\".selector\"",
+                            "operator": "exists",
+                            "type": "derived-value-operation-assertion"
+                        },
+                        "statement": {
+                            "statement-type": "assertion",
+                            "source": "$\".selector\".attribute_name exists",
+                            "index": 0,
+                            "identifier": "$\".selector\".attribute_name",
+                            "operator": "exists"
+                        }
+                    }';
+
                     // StatementHandler::handle($".selector" exists)::body
                     
                     // StatementBlockFactory::create($".selector".attribute_name exists)
+                    $statement_1 = '{
+                        "statement-type": "assertion",
+                        "source": "$\".selector\".attribute_name exists",
+                        "index": 0,
+                        "identifier": "$\".selector\".attribute_name",
+                        "operator": "exists"
+                    }';
+
                     // StatementHandler::handle($".selector".attribute_name exists)::body
 
                     EOD,
@@ -368,6 +529,14 @@ class StepHandlerTest extends AbstractResolvableTestCase
                 ]),
                 'expectedRenderedContent' => <<< 'EOD'
                     // StatementBlockFactory::create($".selector" exists)
+                    $statement_0 = '{
+                        "statement-type": "assertion",
+                        "source": "$\".selector\" exists",
+                        "index": 0,
+                        "identifier": "$\".selector\"",
+                        "operator": "exists"
+                    }';
+
                     // StatementHandler::handle($".selector" exists)::setup
                     
                     // StatementHandler::handle($".selector" exists)::body
@@ -390,9 +559,32 @@ class StepHandlerTest extends AbstractResolvableTestCase
                 ]),
                 'expectedRenderedContent' => <<< 'EOD'
                     // StatementBlockFactory::create($".parent" exists)
+                    $statement_0 = '{
+                        "container": {
+                            "value": "$\".parent\"",
+                            "operator": "exists",
+                            "type": "derived-value-operation-assertion"
+                        },
+                        "statement": {
+                            "statement-type": "assertion",
+                            "source": "$\".parent\" >> $\".child\" exists",
+                            "index": 0,
+                            "identifier": "$\".parent\" >> $\".child\"",
+                            "operator": "exists"
+                        }
+                    }';
+
                     // StatementHandler::handle($".parent" exists)::body
 
                     // StatementBlockFactory::create($".parent" >> $".child" exists)
+                    $statement_1 = '{
+                        "statement-type": "assertion",
+                        "source": "$\".parent\" >> $\".child\" exists",
+                        "index": 0,
+                        "identifier": "$\".parent\" >> $\".child\"",
+                        "operator": "exists"
+                    }';
+
                     // StatementHandler::handle($".parent" >> $".child" exists)::body
 
                     EOD,
@@ -414,9 +606,25 @@ class StepHandlerTest extends AbstractResolvableTestCase
                 ]),
                 'expectedRenderedContent' => <<< 'EOD'
                     // StatementBlockFactory::create($".selector1" exists)
+                    $statement_0 = '{
+                        "statement-type": "assertion",
+                        "source": "$\".selector1\" exists",
+                        "index": 0,
+                        "identifier": "$\".selector1\"",
+                        "operator": "exists"
+                    }';
+                    
                     // StatementHandler::handle($".selector1" exists)::body
 
                     // StatementBlockFactory::create($".selector2" exists)
+                    $statement_1 = '{
+                        "statement-type": "assertion",
+                        "source": "$\".selector2\" exists",
+                        "index": 1,
+                        "identifier": "$\".selector2\"",
+                        "operator": "exists"
+                    }';
+
                     // StatementHandler::handle($".selector2" exists)::body
 
                     EOD,
@@ -441,12 +649,45 @@ class StepHandlerTest extends AbstractResolvableTestCase
                 ]),
                 'expectedRenderedContent' => <<< 'EOD'
                     // StatementBlockFactory::create($".selector1" exists)
+                    $statement_0 = '{
+                        "container": {
+                            "value": "$\".selector1\"",
+                            "operator": "exists",
+                            "type": "derived-value-operation-assertion"
+                        },
+                        "statement": {
+                            "statement-type": "action",
+                            "source": "click $\".selector1\"",
+                            "index": 0,
+                            "identifier": "$\".selector1\"",
+                            "type": "click",
+                            "arguments": "$\".selector1\""
+                        }
+                    }';
+
                     // StatementHandler::handle($".selector1" exists)::body
 
                     // StatementBlockFactory::create(click $".selector1")
+                    $statement_1 = '{
+                        "statement-type": "action",
+                        "source": "click $\".selector1\"",
+                        "index": 0,
+                        "identifier": "$\".selector1\"",
+                        "type": "click",
+                        "arguments": "$\".selector1\""
+                    }';
+
                     // StatementHandler::handle(click $".selector1")::body
 
                     // StatementBlockFactory::create($".selector2" exists)
+                    $statement_2 = '{
+                        "statement-type": "assertion",
+                        "source": "$\".selector2\" exists",
+                        "index": 1,
+                        "identifier": "$\".selector2\"",
+                        "operator": "exists"
+                    }';
+                    
                     // StatementHandler::handle($".selector2" exists)::body
 
                     EOD,
@@ -469,12 +710,43 @@ class StepHandlerTest extends AbstractResolvableTestCase
                 ]),
                 'expectedRenderedContent' => <<< 'EOD'
                     // StatementBlockFactory::create($".parent" exists)
+                    $statement_0 = '{
+                        "container": {
+                            "value": "$\".parent\"",
+                            "operator": "exists",
+                            "type": "derived-value-operation-assertion"
+                        },
+                        "statement": {
+                            "statement-type": "assertion",
+                            "source": "$\".parent\" >> $\".child1\" exists",
+                            "index": 0,
+                            "identifier": "$\".parent\" >> $\".child1\"",
+                            "operator": "exists"
+                        }
+                    }';
+
                     // StatementHandler::handle($".parent" exists)::body
 
                     // StatementBlockFactory::create($".parent" >> $".child1" exists)
+                    $statement_1 = '{
+                        "statement-type": "assertion",
+                        "source": "$\".parent\" >> $\".child1\" exists",
+                        "index": 0,
+                        "identifier": "$\".parent\" >> $\".child1\"",
+                        "operator": "exists"
+                    }';
+                    
                     // StatementHandler::handle($".parent" >> $".child1" exists)::body
 
                     // StatementBlockFactory::create($".parent" >> $".child2" exists)
+                    $statement_2 = '{
+                        "statement-type": "assertion",
+                        "source": "$\".parent\" >> $\".child2\" exists",
+                        "index": 1,
+                        "identifier": "$\".parent\" >> $\".child2\"",
+                        "operator": "exists"
+                    }';
+
                     // StatementHandler::handle($".parent" >> $".child2" exists)::body
 
                     EOD,
@@ -495,9 +767,34 @@ class StepHandlerTest extends AbstractResolvableTestCase
                 ]),
                 'expectedRenderedContent' => <<< 'EOD'
                     // StatementBlockFactory::create("/pattern/" is-regexp)
+                    $statement_0 = '{
+                        "container": {
+                            "value": "\"\/pattern\/\"",
+                            "operator": "is-regexp",
+                            "type": "derived-value-operation-assertion"
+                        },
+                        "statement": {
+                            "statement-type": "assertion",
+                            "source": "$page.title matches \"\/pattern\/\"",
+                            "index": 0,
+                            "identifier": "$page.title",
+                            "value": "\"\/pattern\/\"",
+                            "operator": "matches"
+                        }
+                    }';
+
                     // StatementHandler::handle("/pattern/" is-regexp)::body
 
                     // StatementBlockFactory::create($page.title matches "/pattern/")
+                    $statement_1 = '{
+                        "statement-type": "assertion",
+                        "source": "$page.title matches \"\/pattern\/\"",
+                        "index": 0,
+                        "identifier": "$page.title",
+                        "value": "\"\/pattern\/\"",
+                        "operator": "matches"
+                    }';
+
                     // StatementHandler::handle($page.title matches "/pattern/")::body
 
                     EOD,
@@ -663,6 +960,8 @@ class StepHandlerTest extends AbstractResolvableTestCase
             $derivedAssertionFactory,
             TryCatchBlockFactory::createFactory(),
             PhpUnitCallFactory::createFactory(),
+            StatementSerializer::createFactory(),
+            StatementVariableFactory::createFactory(),
         );
     }
 }
