@@ -29,7 +29,6 @@ use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\AbstractResolvableTestCase;
 use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
 use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
-use webignition\BasilModels\Model\Statement\Assertion\DerivedValueOperationAssertion;
 use webignition\BasilModels\Model\Statement\StatementInterface;
 use webignition\BasilModels\Model\Step\StepInterface;
 use webignition\BasilModels\Parser\ActionParser;
@@ -90,7 +89,6 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
                         'click $".selector"' => [
-                            'statement' => $actionParser->parse('click $".selector"', 0),
                             'return' => new StatementHandlerCollections(
                                 BodyContentCollection::createFromExpressions([
                                     new MethodInvocation(
@@ -107,11 +105,6 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             )
                         ],
                         '$".selector" exists' => [
-                            'statement' => new DerivedValueOperationAssertion(
-                                $actionParser->parse('click $".selector"', 0),
-                                '$".selector"',
-                                'exists'
-                            ),
                             'return' => new StatementHandlerCollections(
                                 new BodyContentCollection()
                                     ->append(
@@ -184,7 +177,6 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
                         'click $".selector"' => [
-                            'statement' => $actionParser->parse('click $".selector"', 0),
                             'return' => new StatementHandlerCollections(
                                 new BodyContentCollection()
                                     ->append(
@@ -193,11 +185,6 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             )
                         ],
                         '$".selector" exists' => [
-                            'statement' => new DerivedValueOperationAssertion(
-                                $actionParser->parse('click $".selector"', 0),
-                                '$".selector"',
-                                'exists'
-                            ),
                             'return' => new StatementHandlerCollections(
                                 new BodyContentCollection()
                                     ->append(
@@ -244,7 +231,6 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
                         'click $".selector"' => [
-                            'statement' => $actionParser->parse('click $".selector"', 0),
                             'return' => new StatementHandlerCollections(
                                 new BodyContentCollection()
                                     ->append(
@@ -258,11 +244,6 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             ),
                         ],
                         '$".selector" exists' => [
-                            'statement' => new DerivedValueOperationAssertion(
-                                $actionParser->parse('click $".selector"', 0),
-                                '$".selector"',
-                                'exists'
-                            ),
                             'return' => new StatementHandlerCollections(
                                 new BodyContentCollection()
                                     ->append(
@@ -311,7 +292,6 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
                         'click $".selector"' => [
-                            'statement' => $actionParser->parse('click $".selector"', 0),
                             'return' => new StatementHandlerCollections(
                                 new BodyContentCollection()
                                     ->append(
@@ -336,11 +316,6 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             ),
                         ],
                         '$".selector" exists' => [
-                            'statement' => new DerivedValueOperationAssertion(
-                                $actionParser->parse('click $".selector"', 0),
-                                '$".selector"',
-                                'exists'
-                            ),
                             'return' => new StatementHandlerCollections(
                                 new BodyContentCollection()
                                     ->append(
@@ -414,11 +389,6 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                 ),
                         ],
                         '$".selector2" exists' => [
-                            'statement' => new DerivedValueOperationAssertion(
-                                $actionParser->parse('click $".selector2"', 1),
-                                '$".selector2"',
-                                'exists'
-                            ),
                             'return' => new BodyContentCollection()
                                 ->append(
                                     new SingleLineComment(
@@ -427,7 +397,6 @@ class StepHandlerTest extends AbstractResolvableTestCase
                                 ),
                         ],
                         'click $".selector2"' => [
-                            'statement' => $actionParser->parse('click $".selector2"', 1),
                             'return' => new BodyContentCollection()
                                 ->append(
                                     new SingleLineComment(
@@ -438,7 +407,6 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
                         'click $".selector1"' => [
-                            'statement' => $actionParser->parse('click $".selector1"', 0),
                             'return' => new StatementHandlerCollections(
                                 new BodyContentCollection()
                                     ->append(
@@ -447,7 +415,6 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             ),
                         ],
                         'click $".selector2"' => [
-                            'statement' => $actionParser->parse('click $".selector2"', 1),
                             'return' => new StatementHandlerCollections(
                                 new BodyContentCollection()
                                     ->append(
@@ -456,11 +423,6 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             ),
                         ],
                         '$".selector1" exists' => [
-                            'statement' => new DerivedValueOperationAssertion(
-                                $actionParser->parse('click $".selector1"', 0),
-                                '$".selector1"',
-                                'exists'
-                            ),
                             'return' => new StatementHandlerCollections(
                                 new BodyContentCollection()
                                     ->append(
@@ -469,11 +431,6 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             ),
                         ],
                         '$".selector2" exists' => [
-                            'statement' => new DerivedValueOperationAssertion(
-                                $actionParser->parse('click $".selector2"', 1),
-                                '$".selector2"',
-                                'exists'
-                            ),
                             'return' => new StatementHandlerCollections(
                                 new BodyContentCollection()
                                     ->append(
@@ -518,7 +475,6 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
                         '$".selector" exists' => [
-                            'statement' => $assertionParser->parse('$".selector" exists', 0),
                             'return' => new StatementHandlerCollections(
                                 new BodyContentCollection()
                                     ->append(
@@ -562,11 +518,6 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
                         '$".selector" exists' => [
-                            'statement' => new DerivedValueOperationAssertion(
-                                $assertionParser->parse('$".selector".attribute_name exists', 0),
-                                '$".selector"',
-                                'exists',
-                            ),
                             'return' => new StatementHandlerCollections(
                                 new BodyContentCollection()
                                     ->append(
@@ -577,7 +528,6 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             ),
                         ],
                         '$".selector".attribute_name exists' => [
-                            'statement' => $assertionParser->parse('$".selector".attribute_name exists', 0),
                             'return' => new StatementHandlerCollections(
                                 new BodyContentCollection()
                                     ->append(
@@ -618,7 +568,6 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
                         '$".selector" exists' => [
-                            'statement' => $assertionParser->parse('$".selector" exists', 0),
                             'return' => new StatementHandlerCollections(
                                 new BodyContentCollection()
                                     ->append(
@@ -669,11 +618,6 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
                         '$".parent" exists' => [
-                            'statement' => new DerivedValueOperationAssertion(
-                                $assertionParser->parse('$".parent" >> $".child" exists', 0),
-                                '$".parent"',
-                                'exists'
-                            ),
                             'return' => new StatementHandlerCollections(
                                 new BodyContentCollection()
                                     ->append(
@@ -682,7 +626,6 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             ),
                         ],
                         '$".parent" >> $".child" exists' => [
-                            'statement' => $assertionParser->parse('$".parent" >> $".child" exists', 0),
                             'return' => new StatementHandlerCollections(
                                 new BodyContentCollection()
                                     ->append(
@@ -732,7 +675,6 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
                         '$".selector1" exists' => [
-                            'statement' => $assertionParser->parse('$".selector1" exists', 0),
                             'return' => new StatementHandlerCollections(
                                 new BodyContentCollection()
                                     ->append(
@@ -741,7 +683,6 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             ),
                         ],
                         '$".selector2" exists' => [
-                            'statement' => $assertionParser->parse('$".selector2" exists', 1),
                             'return' => new StatementHandlerCollections(
                                 new BodyContentCollection()
                                     ->append(
@@ -799,7 +740,6 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
                         'click $".selector1"' => [
-                            'statement' => $actionParser->parse('click $".selector1"', 0),
                             'return' => new StatementHandlerCollections(
                                 new BodyContentCollection()
                                     ->append(
@@ -808,11 +748,6 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             ),
                         ],
                         '$".selector1" exists' => [
-                            'statement' => new DerivedValueOperationAssertion(
-                                $actionParser->parse('click $".selector1"', 0),
-                                '$".selector1"',
-                                'exists'
-                            ),
                             'return' => new StatementHandlerCollections(
                                 new BodyContentCollection()
                                     ->append(
@@ -821,7 +756,6 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             ),
                         ],
                         '$".selector2" exists' => [
-                            'statement' => $assertionParser->parse('$".selector2" exists', 1),
                             'return' => new StatementHandlerCollections(
                                 new BodyContentCollection()
                                     ->append(
@@ -880,11 +814,6 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
                         '$".parent" exists' => [
-                            'statement' => new DerivedValueOperationAssertion(
-                                $assertionParser->parse('$".parent" >> $".child1" exists', 0),
-                                '$".parent"',
-                                'exists'
-                            ),
                             'return' => new StatementHandlerCollections(
                                 new BodyContentCollection()
                                     ->append(
@@ -893,7 +822,6 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             ),
                         ],
                         '$".parent" >> $".child1" exists' => [
-                            'statement' => $assertionParser->parse('$".parent" >> $".child1" exists', 0),
                             'return' => new StatementHandlerCollections(
                                 new BodyContentCollection()
                                     ->append(
@@ -904,7 +832,6 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             ),
                         ],
                         '$".parent" >> $".child2" exists' => [
-                            'statement' => $assertionParser->parse('$".parent" >> $".child2" exists', 1),
                             'return' => new StatementHandlerCollections(
                                 new BodyContentCollection()
                                     ->append(
@@ -956,11 +883,6 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
                         '"/pattern/" is-regexp' => [
-                            'statement' => new DerivedValueOperationAssertion(
-                                $assertionParser->parse('$page.title matches "/pattern/"', 0),
-                                '"/pattern/"',
-                                'is-regexp'
-                            ),
                             'return' => new StatementHandlerCollections(
                                 new BodyContentCollection()
                                     ->append(
@@ -971,7 +893,6 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             ),
                         ],
                         '$page.title matches "/pattern/"' => [
-                            'statement' => $assertionParser->parse('$page.title matches "/pattern/"', 0),
                             'return' => new StatementHandlerCollections(
                                 new BodyContentCollection()
                                     ->append(
@@ -1110,7 +1031,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
     }
 
     /**
-     * @param array<string, array{"statement": StatementInterface, "return": StatementHandlerCollections}> $handleCalls
+     * @param array<string, null|array{"return": StatementHandlerCollections}> $handleCalls
      */
     private static function createMockStatementHandler(array $handleCalls): StatementHandler
     {
@@ -1122,8 +1043,14 @@ class StepHandlerTest extends AbstractResolvableTestCase
                 ->times(count($handleCalls))
                 ->andReturnUsing(function (StatementInterface $statement) use ($handleCalls) {
                     $data = $handleCalls[$statement->getSource()];
-
-                    self::assertEquals($data['statement'], $statement);
+                    if (null === $data) {
+                        throw new \RuntimeException(
+                            sprintf(
+                                'Mock StatementHandler::create() call missing for "%s"',
+                                $statement->getSource()
+                            )
+                        );
+                    }
 
                     return $data['return'];
                 })
