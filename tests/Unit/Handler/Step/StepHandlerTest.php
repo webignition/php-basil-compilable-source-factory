@@ -529,7 +529,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                     EOD,
                 'expectedMetadata' => new Metadata(),
             ],
-            'single exists assertion, no setup' => [
+            'single element exists assertion, no setup' => [
                 'step' => $stepParser->parse([
                     'assertions' => [
                         '$".selector" exists',
@@ -562,6 +562,76 @@ class StepHandlerTest extends AbstractResolvableTestCase
                 'expectedRenderedContent' => <<< 'EOD'
                     // StatementBlockFactory::create($".selector" exists)
                     // StatementHandler::handle($".selector" exists)::body
+
+                    EOD,
+                'expectedMetadata' => new Metadata(),
+            ],
+            'single attribute exists assertion, no setup' => [
+                'step' => $stepParser->parse([
+                    'assertions' => [
+                        '$".selector".attribute_name exists',
+                    ],
+                ]),
+                'handler' => self::createStepHandler([
+                    StatementBlockFactory::class => self::createMockStatementBlockFactory([
+                        '$".selector" exists' => [
+                            'statement' => new DerivedValueOperationAssertion(
+                                $assertionParser->parse('$".selector".attribute_name exists', 0),
+                                '$".selector"',
+                                'exists',
+                            ),
+                            'return' => new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment(
+                                        'StatementBlockFactory::create($".selector" exists)'
+                                    ),
+                                ),
+                        ],
+                        '$".selector".attribute_name exists' => [
+                            'statement' => $assertionParser->parse('$".selector".attribute_name exists', 0),
+                            'return' => new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment(
+                                        'StatementBlockFactory::create($".selector".attribute_name exists)'
+                                    ),
+                                ),
+                        ],
+                    ]),
+                    StatementHandler::class => self::createMockStatementHandler([
+                        '$".selector" exists' => [
+                            'statement' => new DerivedValueOperationAssertion(
+                                $assertionParser->parse('$".selector".attribute_name exists', 0),
+                                '$".selector"',
+                                'exists',
+                            ),
+                            'return' => new StatementHandlerCollections(
+                                new BodyContentCollection()
+                                    ->append(
+                                        new SingleLineComment(
+                                            'StatementHandler::handle($".selector" exists)::body'
+                                        ),
+                                    )
+                            ),
+                        ],
+                        '$".selector".attribute_name exists' => [
+                            'statement' => $assertionParser->parse('$".selector".attribute_name exists', 0),
+                            'return' => new StatementHandlerCollections(
+                                new BodyContentCollection()
+                                    ->append(
+                                        new SingleLineComment(
+                                            'StatementHandler::handle($".selector".attribute_name exists)::body'
+                                        ),
+                                    )
+                            ),
+                        ],
+                    ]),
+                ]),
+                'expectedRenderedContent' => <<< 'EOD'
+                    // StatementBlockFactory::create($".selector" exists)
+                    // StatementHandler::handle($".selector" exists)::body
+                    
+                    // StatementBlockFactory::create($".selector".attribute_name exists)
+                    // StatementHandler::handle($".selector".attribute_name exists)::body
 
                     EOD,
                 'expectedMetadata' => new Metadata(),
@@ -1076,7 +1146,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
     }
 
     /**
-     * @param array<string, array{"statement": StatementInterface, "return": BodyContentCollection}> $createCalls
+     * @param array<string, array{"statement": StatementInterface, "return": BodyContentCollection}|null> $createCalls
      */
     private static function createMockStatementBlockFactory(array $createCalls): StatementBlockFactory
     {
@@ -1088,6 +1158,14 @@ class StepHandlerTest extends AbstractResolvableTestCase
                 ->times(count($createCalls))
                 ->andReturnUsing(function (StatementInterface $statement) use ($createCalls) {
                     $data = $createCalls[$statement->getSource()];
+                    if (null === $data) {
+                        throw new \RuntimeException(
+                            sprintf(
+                                'Mock StatementBlockFactory::create() call missing for "%s"',
+                                $statement->getSource()
+                            )
+                        );
+                    }
 
                     self::assertEquals($data['statement'], $statement);
 

@@ -157,15 +157,25 @@ class DerivedAssertionFactoryTest extends TestCase
         $assertionParser = AssertionParser::create();
 
         return [
-            'exists assertion' => [
+            'element exists assertion' => [
                 'assertion' => $assertionParser->parse('$".selector" exists', 0),
                 'expectedAssertions' => new AssertionCollection([]),
             ],
-            'not-exists assertion' => [
+            'attribute exists assertion' => [
+                'assertion' => $assertionParser->parse('$".selector".attribute_name exists', 0),
+                'expectedAssertions' => new AssertionCollection([
+                    new DerivedValueOperationAssertion(
+                        $assertionParser->parse('$".selector".attribute_name exists', 0),
+                        '$".selector"',
+                        'exists'
+                    ),
+                ]),
+            ],
+            'element not-exists assertion' => [
                 'assertion' => $assertionParser->parse('$".selector" not-exists', 0),
                 'expectedAssertions' => new AssertionCollection([]),
             ],
-            'exists assertion, descendant identifier' => [
+            'element exists assertion, descendant identifier' => [
                 'assertion' => $assertionParser->parse('$".parent" >> $".child" exists', 0),
                 'expectedAssertions' => new AssertionCollection([
                     new DerivedValueOperationAssertion(
