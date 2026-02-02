@@ -84,30 +84,26 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             )),
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
-                        'click $".selector"' => [
-                            'return' => new StatementHandlerCollections(
-                                BodyContentCollection::createFromExpressions([
-                                    new MethodInvocation(
-                                        methodName: 'method',
-                                        arguments: new MethodArguments([
-                                            LiteralExpression::string(
-                                                'StatementHandler::handle(click $".selector")::body',
-                                            ),
-                                        ]),
-                                        mightThrow: true,
-                                        type: TypeCollection::string(),
-                                    )
-                                ]),
-                            )
-                        ],
-                        '$".selector" exists' => [
-                            'return' => new StatementHandlerCollections(
-                                new BodyContentCollection()
-                                    ->append(
-                                        new SingleLineComment('StatementHandler::handle($".selector" exists)::body'),
-                                    )
-                            ),
-                        ],
+                        'click $".selector"' => new StatementHandlerCollections(
+                            BodyContentCollection::createFromExpressions([
+                                new MethodInvocation(
+                                    methodName: 'method',
+                                    arguments: new MethodArguments([
+                                        LiteralExpression::string(
+                                            'StatementHandler::handle(click $".selector")::body',
+                                        ),
+                                    ]),
+                                    mightThrow: true,
+                                    type: TypeCollection::string(),
+                                )
+                            ]),
+                        ),
+                        '$".selector" exists' => new StatementHandlerCollections(
+                            new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment('StatementHandler::handle($".selector" exists)::body'),
+                                )
+                        ),
                     ]),
                 ]),
                 'expectedRenderedContent' => <<< 'EOD'
@@ -168,22 +164,18 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             ),
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
-                        'click $".selector"' => [
-                            'return' => new StatementHandlerCollections(
-                                new BodyContentCollection()
-                                    ->append(
-                                        new SingleLineComment('StatementHandler::handle(click $".selector")::body')
-                                    ),
-                            )
-                        ],
-                        '$".selector" exists' => [
-                            'return' => new StatementHandlerCollections(
-                                new BodyContentCollection()
-                                    ->append(
-                                        new SingleLineComment('StatementHandler::handle($".selector" exists)::body')
-                                    ),
-                            ),
-                        ],
+                        'click $".selector"' => new StatementHandlerCollections(
+                            new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment('StatementHandler::handle(click $".selector")::body')
+                                ),
+                        ),
+                        '$".selector" exists' => new StatementHandlerCollections(
+                            new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment('StatementHandler::handle($".selector" exists)::body')
+                                ),
+                        ),
                     ]),
                 ]),
                 'expectedRenderedContent' => <<< 'EOD'
@@ -218,27 +210,23 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             ),
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
-                        'click $".selector"' => [
-                            'return' => new StatementHandlerCollections(
-                                new BodyContentCollection()
-                                    ->append(
-                                        new SingleLineComment('StatementHandler::handle(click $".selector")::body'),
-                                    )
-                            )->withSetup(
-                                new BodyContentCollection()
-                                    ->append(
-                                        new SingleLineComment('StatementHandler::handle(click $".selector")::setup'),
-                                    )
-                            ),
-                        ],
-                        '$".selector" exists' => [
-                            'return' => new StatementHandlerCollections(
-                                new BodyContentCollection()
-                                    ->append(
-                                        new SingleLineComment('StatementHandler::handle($".selector" exists)'),
-                                    )
-                            ),
-                        ],
+                        'click $".selector"' => new StatementHandlerCollections(
+                            new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment('StatementHandler::handle(click $".selector")::body'),
+                                )
+                        )->withSetup(
+                            new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment('StatementHandler::handle(click $".selector")::setup'),
+                                )
+                        ),
+                        '$".selector" exists' => new StatementHandlerCollections(
+                            new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment('StatementHandler::handle($".selector" exists)'),
+                                )
+                        ),
                     ]),
                 ]),
                 'expectedRenderedContent' => <<< 'EOD'
@@ -275,38 +263,34 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             ),
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
-                        'click $".selector"' => [
-                            'return' => new StatementHandlerCollections(
-                                new BodyContentCollection()
-                                    ->append(
-                                        new SingleLineComment('StatementHandler::handle(click $".selector")::body'),
-                                    )
-                            )->withSetup(
-                                new BodyContentCollection()
-                                    ->append(
-                                        new Statement(
-                                            new MethodInvocation(
-                                                methodName: 'method',
-                                                arguments: new MethodArguments([
-                                                    LiteralExpression::string(
-                                                        '"StatementHandler::handle(click $\".selector\")::setup"',
-                                                    ),
-                                                ]),
-                                                mightThrow: true,
-                                                type: TypeCollection::string(),
-                                            )
-                                        ),
-                                    )
-                            ),
-                        ],
-                        '$".selector" exists' => [
-                            'return' => new StatementHandlerCollections(
-                                new BodyContentCollection()
-                                    ->append(
-                                        new SingleLineComment('StatementHandler::handle($".selector" exists)'),
-                                    )
-                            ),
-                        ],
+                        'click $".selector"' => new StatementHandlerCollections(
+                            new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment('StatementHandler::handle(click $".selector")::body'),
+                                )
+                        )->withSetup(
+                            new BodyContentCollection()
+                                ->append(
+                                    new Statement(
+                                        new MethodInvocation(
+                                            methodName: 'method',
+                                            arguments: new MethodArguments([
+                                                LiteralExpression::string(
+                                                    '"StatementHandler::handle(click $\".selector\")::setup"',
+                                                ),
+                                            ]),
+                                            mightThrow: true,
+                                            type: TypeCollection::string(),
+                                        )
+                                    ),
+                                )
+                        ),
+                        '$".selector" exists' => new StatementHandlerCollections(
+                            new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment('StatementHandler::handle($".selector" exists)'),
+                                )
+                        ),
                     ]),
                 ]),
                 'expectedRenderedContent' => <<< 'EOD'
@@ -382,38 +366,30 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             ),
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
-                        'click $".selector1"' => [
-                            'return' => new StatementHandlerCollections(
-                                new BodyContentCollection()
-                                    ->append(
-                                        new SingleLineComment('StatementHandler::handle(click $".selector1")::body'),
-                                    )
-                            ),
-                        ],
-                        'click $".selector2"' => [
-                            'return' => new StatementHandlerCollections(
-                                new BodyContentCollection()
-                                    ->append(
-                                        new SingleLineComment('StatementHandler::handle(click $".selector2")::body'),
-                                    )
-                            ),
-                        ],
-                        '$".selector1" exists' => [
-                            'return' => new StatementHandlerCollections(
-                                new BodyContentCollection()
-                                    ->append(
-                                        new SingleLineComment('StatementHandler::handle($".selector1" exists)::body'),
-                                    )
-                            ),
-                        ],
-                        '$".selector2" exists' => [
-                            'return' => new StatementHandlerCollections(
-                                new BodyContentCollection()
-                                    ->append(
-                                        new SingleLineComment('StatementHandler::handle($".selector2" exists)::body'),
-                                    )
-                            ),
-                        ],
+                        'click $".selector1"' => new StatementHandlerCollections(
+                            new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment('StatementHandler::handle(click $".selector1")::body'),
+                                )
+                        ),
+                        'click $".selector2"' => new StatementHandlerCollections(
+                            new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment('StatementHandler::handle(click $".selector2")::body'),
+                                )
+                        ),
+                        '$".selector1" exists' => new StatementHandlerCollections(
+                            new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment('StatementHandler::handle($".selector1" exists)::body'),
+                                )
+                        ),
+                        '$".selector2" exists' => new StatementHandlerCollections(
+                            new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment('StatementHandler::handle($".selector2" exists)::body'),
+                                )
+                        ),
                     ]),
                 ]),
                 'expectedRenderedContent' => <<< 'EOD'
@@ -448,14 +424,12 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             ),
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
-                        '$".selector" exists' => [
-                            'return' => new StatementHandlerCollections(
-                                new BodyContentCollection()
-                                    ->append(
-                                        new SingleLineComment('StatementHandler::handle($".selector" exists)::body'),
-                                    )
-                            ),
-                        ],
+                        '$".selector" exists' => new StatementHandlerCollections(
+                            new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment('StatementHandler::handle($".selector" exists)::body'),
+                                )
+                        ),
                     ]),
                 ]),
                 'expectedRenderedContent' => <<< 'EOD'
@@ -487,26 +461,22 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             ),
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
-                        '$".selector" exists' => [
-                            'return' => new StatementHandlerCollections(
-                                new BodyContentCollection()
-                                    ->append(
-                                        new SingleLineComment(
-                                            'StatementHandler::handle($".selector" exists)::body'
-                                        ),
-                                    )
-                            ),
-                        ],
-                        '$".selector".attribute_name exists' => [
-                            'return' => new StatementHandlerCollections(
-                                new BodyContentCollection()
-                                    ->append(
-                                        new SingleLineComment(
-                                            'StatementHandler::handle($".selector".attribute_name exists)::body'
-                                        ),
-                                    )
-                            ),
-                        ],
+                        '$".selector" exists' => new StatementHandlerCollections(
+                            new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment(
+                                        'StatementHandler::handle($".selector" exists)::body'
+                                    ),
+                                )
+                        ),
+                        '$".selector".attribute_name exists' => new StatementHandlerCollections(
+                            new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment(
+                                        'StatementHandler::handle($".selector".attribute_name exists)::body'
+                                    ),
+                                )
+                        ),
                     ]),
                 ]),
                 'expectedRenderedContent' => <<< 'EOD'
@@ -535,19 +505,17 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             ),
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
-                        '$".selector" exists' => [
-                            'return' => new StatementHandlerCollections(
-                                new BodyContentCollection()
-                                    ->append(
-                                        new SingleLineComment('StatementHandler::handle($".selector" exists)::body'),
-                                    )
-                            )->withSetup(
-                                new BodyContentCollection()
-                                    ->append(
-                                        new SingleLineComment('StatementHandler::handle($".selector" exists)::setup'),
-                                    )
-                            ),
-                        ],
+                        '$".selector" exists' => new StatementHandlerCollections(
+                            new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment('StatementHandler::handle($".selector" exists)::body'),
+                                )
+                        )->withSetup(
+                            new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment('StatementHandler::handle($".selector" exists)::setup'),
+                                )
+                        ),
                     ]),
                 ]),
                 'expectedRenderedContent' => <<< 'EOD'
@@ -581,24 +549,20 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             ),
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
-                        '$".parent" exists' => [
-                            'return' => new StatementHandlerCollections(
-                                new BodyContentCollection()
-                                    ->append(
-                                        new SingleLineComment('StatementHandler::handle($".parent" exists)::body'),
-                                    )
-                            ),
-                        ],
-                        '$".parent" >> $".child" exists' => [
-                            'return' => new StatementHandlerCollections(
-                                new BodyContentCollection()
-                                    ->append(
-                                        new SingleLineComment(
-                                            'StatementHandler::handle($".parent" >> $".child" exists)::body'
-                                        ),
-                                    )
-                            ),
-                        ],
+                        '$".parent" exists' => new StatementHandlerCollections(
+                            new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment('StatementHandler::handle($".parent" exists)::body'),
+                                )
+                        ),
+                        '$".parent" >> $".child" exists' => new StatementHandlerCollections(
+                            new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment(
+                                        'StatementHandler::handle($".parent" >> $".child" exists)::body'
+                                    ),
+                                )
+                        ),
                     ]),
                 ]),
                 'expectedRenderedContent' => <<< 'EOD'
@@ -634,22 +598,18 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             ),
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
-                        '$".selector1" exists' => [
-                            'return' => new StatementHandlerCollections(
-                                new BodyContentCollection()
-                                    ->append(
-                                        new SingleLineComment('StatementHandler::handle($".selector1" exists)::body'),
-                                    )
-                            ),
-                        ],
-                        '$".selector2" exists' => [
-                            'return' => new StatementHandlerCollections(
-                                new BodyContentCollection()
-                                    ->append(
-                                        new SingleLineComment('StatementHandler::handle($".selector2" exists)::body'),
-                                    )
-                            ),
-                        ],
+                        '$".selector1" exists' => new StatementHandlerCollections(
+                            new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment('StatementHandler::handle($".selector1" exists)::body'),
+                                )
+                        ),
+                        '$".selector2" exists' => new StatementHandlerCollections(
+                            new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment('StatementHandler::handle($".selector2" exists)::body'),
+                                )
+                        ),
                     ]),
                 ]),
                 'expectedRenderedContent' => <<< 'EOD'
@@ -693,30 +653,24 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             ),
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
-                        'click $".selector1"' => [
-                            'return' => new StatementHandlerCollections(
-                                new BodyContentCollection()
-                                    ->append(
-                                        new SingleLineComment('StatementHandler::handle(click $".selector1")::body'),
-                                    )
-                            ),
-                        ],
-                        '$".selector1" exists' => [
-                            'return' => new StatementHandlerCollections(
-                                new BodyContentCollection()
-                                    ->append(
-                                        new SingleLineComment('StatementHandler::handle($".selector1" exists)::body'),
-                                    )
-                            ),
-                        ],
-                        '$".selector2" exists' => [
-                            'return' => new StatementHandlerCollections(
-                                new BodyContentCollection()
-                                    ->append(
-                                        new SingleLineComment('StatementHandler::handle($".selector2" exists)::body'),
-                                    )
-                            ),
-                        ],
+                        'click $".selector1"' => new StatementHandlerCollections(
+                            new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment('StatementHandler::handle(click $".selector1")::body'),
+                                )
+                        ),
+                        '$".selector1" exists' => new StatementHandlerCollections(
+                            new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment('StatementHandler::handle($".selector1" exists)::body'),
+                                )
+                        ),
+                        '$".selector2" exists' => new StatementHandlerCollections(
+                            new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment('StatementHandler::handle($".selector2" exists)::body'),
+                                )
+                        ),
                     ]),
                 ]),
                 'expectedRenderedContent' => <<< 'EOD'
@@ -761,34 +715,28 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             ),
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
-                        '$".parent" exists' => [
-                            'return' => new StatementHandlerCollections(
-                                new BodyContentCollection()
-                                    ->append(
-                                        new SingleLineComment('StatementHandler::handle($".parent" exists)::body'),
-                                    )
-                            ),
-                        ],
-                        '$".parent" >> $".child1" exists' => [
-                            'return' => new StatementHandlerCollections(
-                                new BodyContentCollection()
-                                    ->append(
-                                        new SingleLineComment(
-                                            'StatementHandler::handle($".parent" >> $".child1" exists)::body'
-                                        ),
-                                    )
-                            ),
-                        ],
-                        '$".parent" >> $".child2" exists' => [
-                            'return' => new StatementHandlerCollections(
-                                new BodyContentCollection()
-                                    ->append(
-                                        new SingleLineComment(
-                                            'StatementHandler::handle($".parent" >> $".child2" exists)::body'
-                                        ),
-                                    )
-                            ),
-                        ],
+                        '$".parent" exists' => new StatementHandlerCollections(
+                            new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment('StatementHandler::handle($".parent" exists)::body'),
+                                )
+                        ),
+                        '$".parent" >> $".child1" exists' => new StatementHandlerCollections(
+                            new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment(
+                                        'StatementHandler::handle($".parent" >> $".child1" exists)::body'
+                                    ),
+                                )
+                        ),
+                        '$".parent" >> $".child2" exists' => new StatementHandlerCollections(
+                            new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment(
+                                        'StatementHandler::handle($".parent" >> $".child2" exists)::body'
+                                    ),
+                                )
+                        ),
                     ]),
                 ]),
                 'expectedRenderedContent' => <<< 'EOD'
@@ -826,26 +774,22 @@ class StepHandlerTest extends AbstractResolvableTestCase
                             ),
                     ]),
                     StatementHandler::class => self::createMockStatementHandler([
-                        '"/pattern/" is-regexp' => [
-                            'return' => new StatementHandlerCollections(
-                                new BodyContentCollection()
-                                    ->append(
-                                        new SingleLineComment(
-                                            'StatementHandler::handle("/pattern/" is-regexp)::body'
-                                        ),
-                                    )
-                            ),
-                        ],
-                        '$page.title matches "/pattern/"' => [
-                            'return' => new StatementHandlerCollections(
-                                new BodyContentCollection()
-                                    ->append(
-                                        new SingleLineComment(
-                                            'StatementHandler::handle($page.title matches "/pattern/")::body'
-                                        ),
-                                    )
-                            ),
-                        ],
+                        '"/pattern/" is-regexp' => new StatementHandlerCollections(
+                            new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment(
+                                        'StatementHandler::handle("/pattern/" is-regexp)::body'
+                                    ),
+                                )
+                        ),
+                        '$page.title matches "/pattern/"' => new StatementHandlerCollections(
+                            new BodyContentCollection()
+                                ->append(
+                                    new SingleLineComment(
+                                        'StatementHandler::handle($page.title matches "/pattern/")::body'
+                                    ),
+                                )
+                        ),
                     ]),
                 ]),
                 'expectedRenderedContent' => <<< 'EOD'
@@ -975,7 +919,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
     }
 
     /**
-     * @param array<string, null|array{"return": StatementHandlerCollections}> $handleCalls
+     * @param array<string, ?StatementHandlerCollections> $handleCalls
      */
     private static function createMockStatementHandler(array $handleCalls): StatementHandler
     {
@@ -996,7 +940,7 @@ class StepHandlerTest extends AbstractResolvableTestCase
                         );
                     }
 
-                    return $data['return'];
+                    return $data;
                 })
             ;
         }
