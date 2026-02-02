@@ -9,9 +9,15 @@ use webignition\BasilModels\Model\Statement\StatementInterface;
 
 readonly class StatementsAttributeValuePrinter
 {
+    public function __construct(
+        private StatementSerializer $statementSerializer,
+    ) {}
+
     public static function create(): self
     {
-        return new StatementsAttributeValuePrinter();
+        return new StatementsAttributeValuePrinter(
+            StatementSerializer::createFactory(),
+        );
     }
 
     /**
@@ -35,12 +41,10 @@ readonly class StatementsAttributeValuePrinter
 
         $renderedStatements = [];
 
-        foreach ($statements as $index => $statement) {
-            $serializedStatement = $this->serializeStatement($statement, $index);
-
+        foreach ($statements as $statement) {
             $renderedStatements[] = sprintf(
                 $statementTemplate,
-                addcslashes($serializedStatement, "'"),
+                $this->serializeStatement($statement),
             );
         }
 
@@ -49,12 +53,10 @@ readonly class StatementsAttributeValuePrinter
         return sprintf($statementsTemplate, trim($renderedStatementsContent));
     }
 
-    private function serializeStatement(StatementInterface $statement, int $index): string
+    private function serializeStatement(StatementInterface $statement): string
     {
-        $data = $statement->jsonSerialize();
-        $data['index'] = $index;
+        $content = $this->statementSerializer->serialize($statement);
 
-        $content = (string) json_encode($data, JSON_PRETTY_PRINT);
         $lines = explode("\n", $content);
 
         foreach ($lines as $index => $line) {

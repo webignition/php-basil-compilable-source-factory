@@ -15,6 +15,7 @@ use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvoca
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocationInterface;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
+use webignition\BasilCompilableSourceFactory\StatementSerializer;
 use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
 use webignition\BasilModels\Model\Statement\StatementInterface;
 
@@ -22,12 +23,14 @@ readonly class PhpUnitCallFactory
 {
     public function __construct(
         private ArgumentFactory $argumentFactory,
+        private StatementSerializer $statementSerializer,
     ) {}
 
     public static function createFactory(): self
     {
         return new PhpUnitCallFactory(
             ArgumentFactory::createFactory(),
+            StatementSerializer::createFactory(),
         );
     }
 
@@ -66,11 +69,8 @@ readonly class PhpUnitCallFactory
         array $methodExpressions,
         array $messageExpressions,
     ): MethodInvocationInterface {
-        $serializedStatement = (string) json_encode($statement, JSON_PRETTY_PRINT);
-        $serializedStatement = addcslashes($serializedStatement, "'");
-
         $messageFactoryArgumentExpressions = [
-            $this->argumentFactory->create($serializedStatement),
+            $this->argumentFactory->create($this->statementSerializer->serialize($statement)),
         ];
 
         foreach ($messageExpressions as $expression) {
@@ -104,9 +104,6 @@ readonly class PhpUnitCallFactory
         StatementInterface $statement,
         StatementStage $statementStage,
     ): MethodInvocationInterface {
-        $serializedStatement = (string) json_encode($statement, JSON_PRETTY_PRINT);
-        $serializedStatement = addcslashes($serializedStatement, "'");
-
         $statementStageEnum = Property::asEnum(
             new ClassName(StatementStage::class),
             $statementStage->name,
@@ -116,7 +113,7 @@ readonly class PhpUnitCallFactory
         $failureMessageFactoryCall = new MethodInvocation(
             methodName: 'createFailureMessage',
             arguments: new MethodArguments([
-                $this->argumentFactory->create($serializedStatement),
+                $this->argumentFactory->create($this->statementSerializer->serialize($statement)),
                 Property::asObjectVariable('exception'),
                 $statementStageEnum,
             ])->withFormat(MethodArgumentsInterface::FORMAT_STACKED),
