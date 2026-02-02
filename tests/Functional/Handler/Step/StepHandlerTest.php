@@ -229,22 +229,15 @@ class StepHandlerTest extends AbstractBrowserTestCase
                             "container": {
                                 "operator": "exists",
                                 "type": "derived-value-operation-assertion",
-                                "value": "$\".non-existent\""
+                                "value": "$\".non-existent\".attribute_name"
                             },
                             "statement": {
-                                "container": {
-                                    "operator": "exists",
-                                    "type": "derived-value-operation-assertion",
-                                    "value": "$\".non-existent\".attribute_name"
-                                },
-                                "statement": {
-                                    "arguments": "$\".non-existent\".attribute_name",
-                                    "index": 0,
-                                    "source": "wait $\".non-existent\".attribute_name",
-                                    "statement-type": "action",
-                                    "type": "wait",
-                                    "value": "$\".non-existent\".attribute_name"
-                                }
+                                "arguments": "$\".non-existent\".attribute_name",
+                                "index": 0,
+                                "source": "wait $\".non-existent\".attribute_name",
+                                "statement-type": "action",
+                                "type": "wait",
+                                "value": "$\".non-existent\".attribute_name"
                             }
                         }
                     }
@@ -303,11 +296,18 @@ class StepHandlerTest extends AbstractBrowserTestCase
                         },
                         "stage": "setup",
                         "statement": {
-                            "identifier": "$\"2\".attribute_name",
-                            "index": 0,
-                            "operator": "exists",
-                            "source": "$\"2\".attribute_name exists",
-                            "statement-type": "assertion"
+                            "container": {
+                                "operator": "exists",
+                                "type": "derived-value-operation-assertion",
+                                "value": "$\"2\""
+                            },
+                            "statement": {
+                                "identifier": "$\"2\".attribute_name",
+                                "index": 0,
+                                "operator": "exists",
+                                "source": "$\"2\".attribute_name exists",
+                                "statement-type": "assertion"
+                            }
                         }
                     }
                     EOD,

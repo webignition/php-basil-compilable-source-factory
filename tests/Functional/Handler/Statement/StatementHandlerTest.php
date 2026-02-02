@@ -183,18 +183,11 @@ class StatementHandlerTest extends AbstractBrowserTestCase
                 'expectedExpectationFailedExceptionMessage' => <<<'EOD'
                     {
                         "statement": {
-                            "container": {
-                                "value": "$\".selector\"",
-                                "operator": "exists",
-                                "type": "derived-value-operation-assertion"
-                            },
-                            "statement": {
-                                "statement-type": "assertion",
-                                "source": "$\".selector\".attribute_name exists",
-                                "index": 0,
-                                "identifier": "$\".selector\".attribute_name",
-                                "operator": "exists"
-                            }
+                            "statement-type": "assertion",
+                            "source": "$\".selector\".attribute_name exists",
+                            "index": 0,
+                            "identifier": "$\".selector\".attribute_name",
+                            "operator": "exists"
                         },
                         "stage": "execute",
                         "expected": true,
