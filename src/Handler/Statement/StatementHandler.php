@@ -34,14 +34,14 @@ class StatementHandler implements StatementHandlerInterface
     /**
      * @throws UnsupportedStatementException
      */
-    public function handle(StatementInterface $statement): StatementHandlerCollections
+    public function handle(StatementInterface $statement, int $sequenceNumber): StatementHandlerCollections
     {
         $components = null;
 
         foreach ($this->handlers as $handler) {
             if (null === $components) {
                 try {
-                    $components = $handler->handle($statement);
+                    $components = $handler->handle($statement, $sequenceNumber);
                 } catch (UnsupportedContentException $unsupportedContentException) {
                     throw new UnsupportedStatementException($statement, $unsupportedContentException);
                 }

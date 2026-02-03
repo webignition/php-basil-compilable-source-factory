@@ -34,18 +34,7 @@ trait CreateFromIsNotAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertNotEquals(
                         $expectedValue,
                         $examinedValue,
-                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
-                            '{
-                                "statement-type": "assertion",
-                                "source": "$\\".selector\\" is-not \\"value\\"",
-                                "index": 0,
-                                "identifier": "$\\".selector\\"",
-                                "value": "\\"value\\"",
-                                "operator": "is-not"
-                            }',
-                            $expectedValue,
-                            $examinedValue,
-                        ),
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage($statement_0, $expectedValue, $examinedValue),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -77,18 +66,7 @@ trait CreateFromIsNotAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertNotEquals(
                         $expectedValue,
                         $examinedValue,
-                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
-                            '{
-                                "statement-type": "assertion",
-                                "source": "$\\".selector\\".attribute_name is-not \\"value\\"",
-                                "index": 0,
-                                "identifier": "$\\".selector\\".attribute_name",
-                                "value": "\\"value\\"",
-                                "operator": "is-not"
-                            }',
-                            $expectedValue,
-                            $examinedValue,
-                        ),
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage($statement_0, $expectedValue, $examinedValue),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(

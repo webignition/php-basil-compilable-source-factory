@@ -34,18 +34,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertStringNotContainsString(
                         $expectedValue,
                         $examinedValue,
-                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
-                            '{
-                                "statement-type": "assertion",
-                                "source": "$\\".selector\\" excludes \\"value\\"",
-                                "index": 0,
-                                "identifier": "$\\".selector\\"",
-                                "value": "\\"value\\"",
-                                "operator": "excludes"
-                            }',
-                            $expectedValue,
-                            $examinedValue,
-                        ),
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage($statement_0, $expectedValue, $examinedValue),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -77,18 +66,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertStringNotContainsString(
                         $expectedValue,
                         $examinedValue,
-                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
-                            '{
-                                "statement-type": "assertion",
-                                "source": "$\\".selector\\" excludes \\"\\\'value\\\'\\"",
-                                "index": 0,
-                                "identifier": "$\\".selector\\"",
-                                "value": "\\"\\\'value\\\'\\"",
-                                "operator": "excludes"
-                            }',
-                            $expectedValue,
-                            $examinedValue,
-                        ),
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage($statement_0, $expectedValue, $examinedValue),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -120,18 +98,7 @@ trait CreateFromExcludesAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertStringNotContainsString(
                         $expectedValue,
                         $examinedValue,
-                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
-                            '{
-                                "statement-type": "assertion",
-                                "source": "$\\".selector\\".attribute_name excludes \\"value\\"",
-                                "index": 0,
-                                "identifier": "$\\".selector\\".attribute_name",
-                                "value": "\\"value\\"",
-                                "operator": "excludes"
-                            }',
-                            $expectedValue,
-                            $examinedValue,
-                        ),
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage($statement_0, $expectedValue, $examinedValue),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(

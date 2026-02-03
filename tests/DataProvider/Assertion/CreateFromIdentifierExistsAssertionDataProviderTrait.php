@@ -31,17 +31,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
                         $elementExists,
-                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
-                            '{
-                                "statement-type": "assertion",
-                                "source": "$\\".selector\\" exists",
-                                "index": 0,
-                                "identifier": "$\\".selector\\"",
-                                "operator": "exists"
-                            }',
-                            true,
-                            $elementExists,
-                        ),
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage($statement_0, true, $elementExists),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -73,17 +63,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
                         $attributeExists,
-                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
-                            '{
-                                "statement-type": "assertion",
-                                "source": "$\\".selector\\".attribute_name exists",
-                                "index": 0,
-                                "identifier": "$\\".selector\\".attribute_name",
-                                "operator": "exists"
-                            }',
-                            true,
-                            $attributeExists,
-                        ),
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage($statement_0, true, $attributeExists),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -108,17 +88,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
                         $elementExists,
-                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
-                            '{
-                                "statement-type": "assertion",
-                                "source": "$\\"a[href=foo.html]\\" exists",
-                                "index": 0,
-                                "identifier": "$\\"a[href=foo.html]\\"",
-                                "operator": "exists"
-                            }',
-                            true,
-                            $elementExists,
-                        ),
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage($statement_0, true, $elementExists),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -143,17 +113,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
                         $elementExists,
-                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
-                            '{
-                                "statement-type": "assertion",
-                                "source": "$\\"[data-value=\\\\\\"\\\'single quoted\\\'\\\\\\"]\\" exists",
-                                "index": 0,
-                                "identifier": "$\\"[data-value=\\\\\\"\\\'single quoted\\\'\\\\\\"]\\"",
-                                "operator": "exists"
-                            }',
-                            true,
-                            $elementExists,
-                        ),
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage($statement_0, true, $elementExists),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -185,17 +145,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
                         $attributeExists,
-                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
-                            '{
-                                "statement-type": "assertion",
-                                "source": "$\\"a[href=foo.html]\\".attribute_name exists",
-                                "index": 0,
-                                "identifier": "$\\"a[href=foo.html]\\".attribute_name",
-                                "operator": "exists"
-                            }',
-                            true,
-                            $attributeExists,
-                        ),
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage($statement_0, true, $attributeExists),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -224,25 +174,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
                         $elementExists,
-                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
-                            '{
-                                "container": {
-                                    "value": "$\\".selector\\"",
-                                    "operator": "exists",
-                                    "type": "derived-value-operation-assertion"
-                                },
-                                "statement": {
-                                    "statement-type": "action",
-                                    "source": "click $\\".selector\\"",
-                                    "index": 0,
-                                    "identifier": "$\\".selector\\"",
-                                    "type": "click",
-                                    "arguments": "$\\".selector\\""
-                                }
-                            }',
-                            true,
-                            $elementExists,
-                        ),
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage($statement_0, true, $elementExists),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -271,25 +203,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
                         $elementExists,
-                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
-                            '{
-                                "container": {
-                                    "value": "$\\".selector\\"",
-                                    "operator": "exists",
-                                    "type": "derived-value-operation-assertion"
-                                },
-                                "statement": {
-                                    "statement-type": "action",
-                                    "source": "submit $\\".selector\\"",
-                                    "index": 0,
-                                    "identifier": "$\\".selector\\"",
-                                    "type": "submit",
-                                    "arguments": "$\\".selector\\""
-                                }
-                            }',
-                            true,
-                            $elementExists,
-                        ),
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage($statement_0, true, $elementExists),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -318,26 +232,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
                         $elementExists,
-                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
-                            '{
-                                "container": {
-                                    "value": "$\\".selector\\"",
-                                    "operator": "exists",
-                                    "type": "derived-value-operation-assertion"
-                                },
-                                "statement": {
-                                    "statement-type": "action",
-                                    "source": "set $\\".selector\\" to \\"value\\"",
-                                    "index": 0,
-                                    "identifier": "$\\".selector\\"",
-                                    "value": "\\"value\\"",
-                                    "type": "set",
-                                    "arguments": "$\\".selector\\" to \\"value\\""
-                                }
-                            }',
-                            true,
-                            $elementExists,
-                        ),
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage($statement_0, true, $elementExists),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -366,25 +261,7 @@ trait CreateFromIdentifierExistsAssertionDataProviderTrait
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertTrue(
                         $elementExists,
-                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
-                            '{
-                                "container": {
-                                    "value": "$\\".duration\\"",
-                                    "operator": "exists",
-                                    "type": "derived-value-operation-assertion"
-                                },
-                                "statement": {
-                                    "statement-type": "action",
-                                    "source": "wait $\\".duration\\"",
-                                    "index": 0,
-                                    "value": "$\\".duration\\"",
-                                    "type": "wait",
-                                    "arguments": "$\\".duration\\""
-                                }
-                            }',
-                            true,
-                            $elementExists,
-                        ),
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage($statement_0, true, $elementExists),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(

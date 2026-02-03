@@ -26,17 +26,7 @@ trait CreateFromScalarNotExistsAssertionDataProviderTrait
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertFalse(
                         $examinedValue,
-                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
-                            '{
-                                "statement-type": "assertion",
-                                "source": "$page.url not-exists",
-                                "index": 0,
-                                "identifier": "$page.url",
-                                "operator": "not-exists"
-                            }',
-                            false,
-                            $examinedValue,
-                        ),
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage($statement_0, false, $examinedValue),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -59,17 +49,7 @@ trait CreateFromScalarNotExistsAssertionDataProviderTrait
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertFalse(
                         $examinedValue,
-                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
-                            '{
-                                "statement-type": "assertion",
-                                "source": "$data.key not-exists",
-                                "index": 0,
-                                "identifier": "$data.key",
-                                "operator": "not-exists"
-                            }',
-                            false,
-                            $examinedValue,
-                        ),
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage($statement_0, false, $examinedValue),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(),

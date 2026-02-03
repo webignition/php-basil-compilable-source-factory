@@ -40,7 +40,7 @@ class WaitForActionHandler implements StatementHandlerInterface
     /**
      * @throws UnsupportedContentException
      */
-    public function handle(StatementInterface $statement): ?StatementHandlerCollections
+    public function handle(StatementInterface $statement, int $sequenceNumber): ?StatementHandlerCollections
     {
         if (!$statement instanceof ActionInterface) {
             return null;

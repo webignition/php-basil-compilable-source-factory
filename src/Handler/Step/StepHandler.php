@@ -12,6 +12,11 @@ use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\Handler\Statement\StatementHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\EmptyLine;
+use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
+use webignition\BasilCompilableSourceFactory\Model\Statement\Statement;
+use webignition\BasilCompilableSourceFactory\StatementSerializer;
+use webignition\BasilCompilableSourceFactory\StatementVariableFactory;
 use webignition\BasilCompilableSourceFactory\TryCatchBlockFactory;
 use webignition\BasilModels\Model\Statement\Action\ActionInterface;
 use webignition\BasilModels\Model\Statement\Assertion\AssertionCollectionInterface;
@@ -29,6 +34,8 @@ class StepHandler
         private DerivedAssertionFactory $derivedAssertionFactory,
         private TryCatchBlockFactory $tryCatchBlockFactory,
         private PhpUnitCallFactory $phpUnitCallFactory,
+        private StatementSerializer $statementSerializer,
+        private StatementVariableFactory $statementVariableFactory,
     ) {}
 
     public static function createHandler(): StepHandler
@@ -39,6 +46,8 @@ class StepHandler
             DerivedAssertionFactory::createFactory(),
             TryCatchBlockFactory::createFactory(),
             PhpUnitCallFactory::createFactory(),
+            StatementSerializer::createFactory(),
+            StatementVariableFactory::createFactory(),
         );
     }
 
@@ -58,12 +67,26 @@ class StepHandler
         $contentCollection = new BodyContentCollection();
 
         try {
-            foreach ($statements as $statement) {
+            foreach ($statements as $sequenceNumber => $statement) {
                 $contentCollection = $contentCollection->merge(
                     $this->statementBlockFactory->create($statement)
                 );
 
-                $handlerComponents = $this->statementHandler->handle($statement);
+                $statementVariable = $this->statementVariableFactory->create($sequenceNumber);
+                $statementAssignment = new AssignmentExpression(
+                    $statementVariable,
+                    LiteralExpression::string("'" . $this->statementSerializer->serialize($statement) . "'"),
+                );
+
+                $contentCollection = $contentCollection
+                    ->append(
+                        new Statement($statementAssignment),
+                    )->append(
+                        new EmptyLine(),
+                    )
+                ;
+
+                $handlerComponents = $this->statementHandler->handle($statement, $sequenceNumber);
                 $setup = $handlerComponents->getSetup();
 
                 if (null !== $setup) {
@@ -73,7 +96,10 @@ class StepHandler
                                 $this->tryCatchBlockFactory->createForThrowable(
                                     $setup,
                                     BodyContentCollection::createFromExpressions([
-                                        $this->phpUnitCallFactory->createFailCall($statement, StatementStage::SETUP),
+                                        $this->phpUnitCallFactory->createFailCall(
+                                            $statementVariable,
+                                            StatementStage::SETUP
+                                        ),
                                     ]),
                                 )
                             )
@@ -91,7 +117,10 @@ class StepHandler
                             $this->tryCatchBlockFactory->createForThrowable(
                                 $body,
                                 BodyContentCollection::createFromExpressions([
-                                    $this->phpUnitCallFactory->createFailCall($statement, StatementStage::EXECUTE),
+                                    $this->phpUnitCallFactory->createFailCall(
+                                        $statementVariable,
+                                        StatementStage::EXECUTE
+                                    ),
                                 ])
                             )
                         )

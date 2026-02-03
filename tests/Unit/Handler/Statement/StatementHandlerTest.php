@@ -65,7 +65,7 @@ class StatementHandlerTest extends AbstractResolvableTestCase
         MetadataInterface $expectedBodyMetadata,
     ): void {
         $handler = StatementHandler::createHandler();
-        $collections = $handler->handle($statement);
+        $collections = $handler->handle($statement, 0);
 
         $setup = $collections->getSetup();
         if (null === $setup) {
@@ -88,7 +88,7 @@ class StatementHandlerTest extends AbstractResolvableTestCase
         $handler = StatementHandler::createHandler();
         $this->expectExceptionObject($expectedException);
 
-        $handler->handle($statement);
+        $handler->handle($statement, 0);
     }
 
     /**
@@ -126,7 +126,7 @@ class StatementHandlerTest extends AbstractResolvableTestCase
         $handler = StatementHandler::createHandler();
 
         try {
-            $handler->handle($statement);
+            $handler->handle($statement, 0);
         } catch (UnsupportedStatementException $exception) {
             self::assertSame((string) $expected->getStatement(), (string) $exception->getStatement());
             self::assertSame($expected->getCode(), $exception->getCode());

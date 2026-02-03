@@ -19,6 +19,7 @@ use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumen
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
+use webignition\BasilCompilableSourceFactory\StatementVariableFactory;
 use webignition\BasilCompilableSourceFactory\ValueAccessorFactory;
 use webignition\BasilIdentifierAnalyser\IdentifierTypeAnalyser;
 use webignition\BasilModels\Model\Statement\Assertion\AssertionInterface;
@@ -33,6 +34,7 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
         private ValueTypeIdentifier $valueTypeIdentifier,
         private ValueAccessorFactory $valueAccessorFactory,
         private PhpUnitCallFactory $phpUnitCallFactory,
+        private StatementVariableFactory $statementVariableFactory,
     ) {}
 
     public static function createHandler(): self
@@ -43,13 +45,14 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
             new ValueTypeIdentifier(),
             ValueAccessorFactory::createFactory(),
             PhpUnitCallFactory::createFactory(),
+            StatementVariableFactory::createFactory(),
         );
     }
 
     /**
      * @throws UnsupportedContentException
      */
-    public function handle(StatementInterface $statement): ?StatementHandlerCollections
+    public function handle(StatementInterface $statement, int $sequenceNumber): ?StatementHandlerCollections
     {
         if (!$statement instanceof AssertionInterface) {
             return null;
@@ -86,12 +89,12 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
             }
         }
 
-        return $this->createIsRegExpAssertionBody($examinedAccessor, $statement);
+        return $this->createIsRegExpAssertionBody($examinedAccessor, $sequenceNumber);
     }
 
     private function createIsRegExpAssertionBody(
         ExpressionInterface $examinedAccessor,
-        AssertionInterface $assertion,
+        int $sequenceNumber,
     ): StatementHandlerCollections {
         $examinedValueVariable = Property::asStringVariable(VariableName::EXAMINED_VALUE);
         $expectedValueVariable = Property::asBooleanVariable(VariableName::EXPECTED_VALUE);
@@ -117,7 +120,7 @@ class IsRegExpAssertionHandler implements StatementHandlerInterface
             BodyContentCollection::createFromExpressions([
                 $this->phpUnitCallFactory->createAssertionCall(
                     'assertFalse',
-                    $assertion,
+                    $this->statementVariableFactory->create($sequenceNumber),
                     [$expectedValueVariable],
                     [$expectedValueVariable, $examinedValueVariable],
                 )

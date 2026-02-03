@@ -8,6 +8,10 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Handler\Statement\StatementHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
+use webignition\BasilCompilableSourceFactory\Model\Expression\AssignmentExpression;
+use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
+use webignition\BasilCompilableSourceFactory\Model\Property;
+use webignition\BasilCompilableSourceFactory\StatementSerializer;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
@@ -67,7 +71,7 @@ class StatementHandlerTest extends AbstractBrowserTestCase
     {
         $contentCollection = new BodyContentCollection();
 
-        $components = $this->handler->handle($data->getStatement());
+        $components = $this->handler->handle($data->getStatement(), 0);
         $setupComponent = $components->getSetup();
         if ($setupComponent instanceof BodyContentCollection) {
             $contentCollection = $contentCollection->merge($setupComponent);
@@ -105,7 +109,7 @@ class StatementHandlerTest extends AbstractBrowserTestCase
     ): void {
         $contentCollection = new BodyContentCollection();
 
-        $components = $this->handler->handle($statement);
+        $components = $this->handler->handle($statement, 0);
         $setupComponent = $components->getSetup();
         if ($setupComponent instanceof BodyContentCollection) {
             $contentCollection = $contentCollection->merge($setupComponent);
@@ -115,7 +119,19 @@ class StatementHandlerTest extends AbstractBrowserTestCase
 
         $body = new Body($contentCollection);
 
-        $classCode = $this->testCodeGenerator->createBrowserTestForBlock($body, $fixture);
+        $statementSerializer = StatementSerializer::createFactory();
+        $classCode = $this->testCodeGenerator->createBrowserTestForBlock(
+            $body,
+            $fixture,
+            new Body(
+                BodyContentCollection::createFromExpressions([
+                    new AssignmentExpression(
+                        Property::asStringVariable('statement_0'),
+                        LiteralExpression::string("'" . $statementSerializer->serialize($statement) . "'")
+                    ),
+                ]),
+            )
+        );
 
         $testRunJob = $this->testRunner->createTestRunJob($classCode, 1);
 

@@ -34,18 +34,7 @@ trait CreateFromMatchesAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertMatchesRegularExpression(
                         $expectedValue,
                         $examinedValue,
-                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
-                            '{
-                                "statement-type": "assertion",
-                                "source": "$\\".selector\\" matches \\"\\/^value\\/\\"",
-                                "index": 0,
-                                "identifier": "$\\".selector\\"",
-                                "value": "\\"\\/^value\\/\\"",
-                                "operator": "matches"
-                            }',
-                            $expectedValue,
-                            $examinedValue,
-                        ),
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage($statement_0, $expectedValue, $examinedValue),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -77,18 +66,7 @@ trait CreateFromMatchesAssertionDataProviderTrait
                     {{ PHPUNIT }}->assertMatchesRegularExpression(
                         $expectedValue,
                         $examinedValue,
-                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
-                            '{
-                                "statement-type": "assertion",
-                                "source": "$\\".selector\\".attribute_name matches \\"\\/^value\\/\\"",
-                                "index": 0,
-                                "identifier": "$\\".selector\\".attribute_name",
-                                "value": "\\"\\/^value\\/\\"",
-                                "operator": "matches"
-                            }',
-                            $expectedValue,
-                            $examinedValue,
-                        ),
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage($statement_0, $expectedValue, $examinedValue),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(

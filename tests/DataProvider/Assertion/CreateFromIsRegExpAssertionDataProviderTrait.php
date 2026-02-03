@@ -32,25 +32,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
-                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
-                            '{
-                                "container": {
-                                    "value": "\\"\\/^value\\/\\"",
-                                    "operator": "is-regexp",
-                                    "type": "derived-value-operation-assertion"
-                                },
-                                "statement": {
-                                    "statement-type": "assertion",
-                                    "source": "$\\".selector\\" matches \\"\\/^value\\/\\"",
-                                    "index": 0,
-                                    "identifier": "$\\".selector\\"",
-                                    "value": "\\"\\/^value\\/\\"",
-                                    "operator": "matches"
-                                }
-                            }',
-                            $expectedValue,
-                            $examinedValue,
-                        ),
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage($statement_0, $expectedValue, $examinedValue),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(),
@@ -80,25 +62,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
-                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
-                            '{
-                                "container": {
-                                    "value": "$\\".pattern-container\\"",
-                                    "operator": "is-regexp",
-                                    "type": "derived-value-operation-assertion"
-                                },
-                                "statement": {
-                                    "statement-type": "assertion",
-                                    "source": "$\\".selector\\" matches $\\".pattern-container\\"",
-                                    "index": 0,
-                                    "identifier": "$\\".selector\\"",
-                                    "value": "$\\".pattern-container\\"",
-                                    "operator": "matches"
-                                }
-                            }',
-                            $expectedValue,
-                            $examinedValue,
-                        ),
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage($statement_0, $expectedValue, $examinedValue),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -133,25 +97,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
-                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
-                            '{
-                                "container": {
-                                    "value": "$\\".pattern-container\\".attribute_name",
-                                    "operator": "is-regexp",
-                                    "type": "derived-value-operation-assertion"
-                                },
-                                "statement": {
-                                    "statement-type": "assertion",
-                                    "source": "$\\".selector\\" matches $\\".pattern-container\\".attribute_name",
-                                    "index": 0,
-                                    "identifier": "$\\".selector\\"",
-                                    "value": "$\\".pattern-container\\".attribute_name",
-                                    "operator": "matches"
-                                }
-                            }',
-                            $expectedValue,
-                            $examinedValue,
-                        ),
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage($statement_0, $expectedValue, $examinedValue),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(
@@ -179,25 +125,7 @@ trait CreateFromIsRegExpAssertionDataProviderTrait
                 'expectedRenderedBody' => <<< 'EOD'
                     {{ PHPUNIT }}->assertFalse(
                         $expectedValue,
-                        {{ MESSAGE_FACTORY }}->createAssertionMessage(
-                            '{
-                                "container": {
-                                    "value": "$data.pattern",
-                                    "operator": "is-regexp",
-                                    "type": "derived-value-operation-assertion"
-                                },
-                                "statement": {
-                                    "statement-type": "assertion",
-                                    "source": "$page.title matches $data.pattern",
-                                    "index": 0,
-                                    "identifier": "$page.title",
-                                    "value": "$data.pattern",
-                                    "operator": "matches"
-                                }
-                            }',
-                            $expectedValue,
-                            $examinedValue,
-                        ),
+                        {{ MESSAGE_FACTORY }}->createAssertionMessage($statement_0, $expectedValue, $examinedValue),
                     );
                     EOD,
                 'expectedSetupMetadata' => new Metadata(),

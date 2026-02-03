@@ -29,7 +29,7 @@ class WaitForActionHandlerTest extends TestCase
 
         $this->expectExceptionObject($expectedException);
 
-        $handler->handle($action);
+        $handler->handle($action, 0);
     }
 
     /**
