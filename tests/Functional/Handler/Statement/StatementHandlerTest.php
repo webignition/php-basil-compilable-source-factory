@@ -8,10 +8,10 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Handler\Statement\StatementHandler;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
-use webignition\BasilCompilableSourceFactory\Model\Body\BodyInterface;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 use webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractBrowserTestCase;
+use webignition\BasilCompilableSourceFactory\Tests\Model\StatementHandlerTestData;
 use webignition\BasilCompilableSourceFactory\Tests\Services\TestRunJob;
 use webignition\BasilModels\Model\Statement\Assertion\DerivedValueOperationAssertion;
 use webignition\BasilModels\Model\Statement\StatementInterface;
@@ -47,9 +47,6 @@ class StatementHandlerTest extends AbstractBrowserTestCase
         $this->handler = StatementHandler::createHandler();
     }
 
-    /**
-     * @param array<string, string> $additionalVariableIdentifiers
-     */
     #[DataProvider('backActionFunctionalDataProvider')]
     #[DataProvider('clickActionFunctionalDataProvider')]
     #[DataProvider('forwardActionFunctionalDataProvider')]
@@ -66,16 +63,11 @@ class StatementHandlerTest extends AbstractBrowserTestCase
     #[DataProvider('matchesAssertionFunctionalDataProvider')]
     #[DataProvider('notExistsAssertionFunctionalDataProvider')]
     #[DataProvider('isRegExpAssertionFunctionalDataProvider')]
-    public function testHandleForPassingStatements(
-        string $fixture,
-        StatementInterface $statement,
-        array $additionalVariableIdentifiers = [],
-        ?BodyInterface $additionalSetupStatements = null,
-        ?BodyInterface $teardownStatements = null,
-    ): void {
+    public function testHandleForPassingStatements(StatementHandlerTestData $data): void
+    {
         $contentCollection = new BodyContentCollection();
 
-        $components = $this->handler->handle($statement);
+        $components = $this->handler->handle($data->getStatement());
         $setupComponent = $components->getSetup();
         if ($setupComponent instanceof BodyContentCollection) {
             $contentCollection = $contentCollection->merge($setupComponent);
@@ -87,10 +79,9 @@ class StatementHandlerTest extends AbstractBrowserTestCase
 
         $classCode = $this->testCodeGenerator->createBrowserTestForBlock(
             $body,
-            $fixture,
-            $additionalSetupStatements,
-            $teardownStatements,
-            $additionalVariableIdentifiers
+            $data->getFixture(),
+            $data->getBeforeTest(),
+            $data->getAfterTest(),
         );
 
         $testRunJob = $this->testRunner->createTestRunJob($classCode);

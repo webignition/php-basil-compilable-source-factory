@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
+use webignition\BasilCompilableSourceFactory\Tests\Model\StatementHandlerTestData;
 use webignition\BasilModels\Parser\AssertionParser;
 
 trait IsAssertionFunctionalDataProviderTrait
@@ -69,8 +70,11 @@ trait IsAssertionFunctionalDataProviderTrait
         $testCases = [];
 
         foreach (self::equalityAssertionFunctionalDataProvider() as $testName => $testData) {
-            $testData['statement'] = $assertions[$testName]['statement'];
-            $testCases['is comparison, ' . $testName] = $testData;
+            $testDataModel = new StatementHandlerTestData($testData['fixture'], $assertions[$testName]['statement']);
+
+            $testCases['is comparison, ' . $testName] = [
+                'data' => $testDataModel,
+            ];
         }
 
         return $testCases;

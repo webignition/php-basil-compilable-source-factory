@@ -4,66 +4,24 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
-use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
-use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
-
 trait InclusionAssertionFunctionalDataProviderTrait
 {
     /**
-     * @return array<
-     *     string,
-     *     array{"fixture": string, "statement": null, "additionalVariableIdentifiers"?: array<string, string>}
-     * >
+     * @return array<string, array<mixed>>
      */
     public static function inclusionAssertionFunctionalDataProvider(): array
     {
         return [
-            'element identifier examined value, scalar expected value' => [
-                'fixture' => '/assertions.html',
-                'statement' => null,
-            ],
-            'attribute identifier examined value, scalar expected value' => [
-                'fixture' => '/assertions.html',
-                'statement' => null,
-            ],
-            'environment examined value, scalar expected value' => [
-                'fixture' => '/empty.html',
-                'statement' => null,
-                'additionalVariableIdentifiers' => [
-                    DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
-                ],
-            ],
-            'browser object examined value, scalar expected value' => [
-                'fixture' => '/empty.html',
-                'statement' => null,
-            ],
-            'page object examined value, scalar expected value' => [
-                'fixture' => '/assertions.html',
-                'statement' => null,
-            ],
-            'element identifier examined value, element identifier expected value' => [
-                'fixture' => '/assertions.html',
-                'statement' => null,
-            ],
-            'element identifier examined value, attribute identifier expected value' => [
-                'fixture' => '/assertions.html',
-                'statement' => null,
-            ],
-            'attribute identifier examined value, environment expected value' => [
-                'fixture' => '/assertions.html',
-                'statement' => null,
-                'additionalVariableIdentifiers' => [
-                    DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
-                ],
-            ],
-            'attribute identifier examined value, browser object expected value' => [
-                'fixture' => '/assertions.html',
-                'statement' => null,
-            ],
-            'attribute identifier examined value, page object expected value' => [
-                'fixture' => '/assertions.html',
-                'statement' => null,
-            ],
+            'element identifier examined value, scalar expected value' => [],
+            'attribute identifier examined value, scalar expected value' => [],
+            'environment examined value, scalar expected value' => [],
+            'browser object examined value, scalar expected value' => [],
+            'page object examined value, scalar expected value' => [],
+            'element identifier examined value, element identifier expected value' => [],
+            'element identifier examined value, attribute identifier expected value' => [],
+            'attribute identifier examined value, environment expected value' => [],
+            'attribute identifier examined value, browser object expected value' => [],
+            'attribute identifier examined value, page object expected value' => [],
         ];
     }
 }

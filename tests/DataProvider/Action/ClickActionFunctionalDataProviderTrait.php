@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
 use webignition\BasilCompilableSourceFactory\Model\Property;
+use webignition\BasilCompilableSourceFactory\Tests\Model\StatementHandlerTestData;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilModels\Parser\ActionParser;
 
@@ -20,29 +21,30 @@ trait ClickActionFunctionalDataProviderTrait
         $actionParser = ActionParser::create();
         $submitButtonVariable = Property::asObjectVariable('submitButton');
 
+        $fixture = '/action-click-submit.html';
+
         return [
             'interaction action (click), link' => [
-                'fixture' => '/action-click-submit.html',
-                'statement' => $actionParser->parse('click $"#link-to-index"', 0),
-                'additionalVariableIdentifiers' => [],
-                'additionalSetupStatements' => new Body(
+                'data' => new StatementHandlerTestData(
+                    $fixture,
+                    $actionParser->parse('click $"#link-to-index"', 0),
+                )->withBeforeTest(new Body(
                     new BodyContentCollection()
                         ->append(
                             StatementFactory::createAssertBrowserTitle('Click'),
                         )
-                ),
-                'teardownStatements' => new Body(
+                ))->withAfterTest(new Body(
                     new BodyContentCollection()
                         ->append(
                             StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
                         )
-                ),
+                )),
             ],
             'interaction action (click), submit button' => [
-                'fixture' => '/action-click-submit.html',
-                'statement' => $actionParser->parse('click $"#form input[type=\'submit\']"', 0),
-                'additionalVariableIdentifiers' => [],
-                'additionalSetupStatements' => new Body(
+                'data' => new StatementHandlerTestData(
+                    $fixture,
+                    $actionParser->parse('click $"#form input[type=\'submit\']"', 0),
+                )->withBeforeTest(new Body(
                     new BodyContentCollection()
                         ->append(
                             StatementFactory::createAssertBrowserTitle('Click'),
@@ -59,8 +61,7 @@ trait ClickActionFunctionalDataProviderTrait
                                 '$submitButton->getAttribute(\'data-clicked\')'
                             ),
                         )
-                ),
-                'teardownStatements' => new Body(
+                ))->withAfterTest(new Body(
                     new BodyContentCollection()
                         ->append(
                             StatementFactory::createCrawlerFilterCallForElement(
@@ -74,8 +75,8 @@ trait ClickActionFunctionalDataProviderTrait
                                 '$submitButton->getAttribute(\'data-clicked\')'
                             ),
                         )
-                ),
-            ],
+                )),
+            ]
         ];
     }
 }

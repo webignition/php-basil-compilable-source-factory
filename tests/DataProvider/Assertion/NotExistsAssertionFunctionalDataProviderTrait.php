@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
-use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
-use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
+use webignition\BasilCompilableSourceFactory\Tests\Model\StatementHandlerTestData;
 use webignition\BasilModels\Parser\AssertionParser;
 
 trait NotExistsAssertionFunctionalDataProviderTrait
@@ -19,19 +18,22 @@ trait NotExistsAssertionFunctionalDataProviderTrait
 
         return [
             'not-exists comparison, element identifier examined value' => [
-                'fixture' => '/empty.html',
-                'statement' => $assertionParser->parse('$".selector" not-exists', 0),
+                'data' => new StatementHandlerTestData(
+                    '/empty.html',
+                    $assertionParser->parse('$".selector" not-exists', 0),
+                ),
             ],
             'not-exists comparison, attribute identifier examined value' => [
-                'fixture' => '/assertions.html',
-                'statement' => $assertionParser->parse('$".selector".data-non-existent-attribute not-exists', 0),
+                'data' => new StatementHandlerTestData(
+                    '/assertions.html',
+                    $assertionParser->parse('$".selector".data-non-existent-attribute not-exists', 0),
+                ),
             ],
             'not-exists comparison, environment examined value' => [
-                'fixture' => '/empty.html',
-                'statement' => $assertionParser->parse('$env.NON-EXISTENT not-exists', 0),
-                'additionalVariableIdentifiers' => [
-                    DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
-                ],
+                'data' => new StatementHandlerTestData(
+                    '/empty.html',
+                    $assertionParser->parse('$env.NON-EXISTENT not-exists', 0),
+                ),
             ],
         ];
     }

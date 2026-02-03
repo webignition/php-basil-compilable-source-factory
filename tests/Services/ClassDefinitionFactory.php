@@ -15,10 +15,9 @@ use webignition\BasilCompilableSourceFactory\Tests\Functional\AbstractGeneratedT
 
 class ClassDefinitionFactory
 {
-    public static function createGeneratedBrowserTestForBlock(
+    public static function createGeneratedBrowserTestForBody(
         string $fixture,
         BodyInterface $body,
-        ?BodyInterface $additionalSetupStatements
     ): ClassDefinitionInterface {
         $methodName = 'test' . md5((string) rand());
         $methodDefinition = new MethodDefinition($methodName, $body);
@@ -32,7 +31,6 @@ class ClassDefinitionFactory
             ),
             new ClassBody([
                 MethodDefinitionFactory::createSetUpBeforeClassMethodDefinition($fixture),
-                MethodDefinitionFactory::createSetUpMethodDefinition($additionalSetupStatements),
                 $methodDefinition
             ])
         );
