@@ -14,14 +14,24 @@ class BodyFactory
 {
     public static function createForSourceBlock(
         BodyInterface $source,
+        ?BodyInterface $setupStatements,
         ?BodyInterface $teardownStatements = null
     ): Body {
+        if (null === $setupStatements) {
+            $setupStatements = new Body();
+        }
+
         if (null === $teardownStatements) {
             $teardownStatements = new Body();
         }
 
         return new Body(
             new BodyContentCollection()
+                ->append(
+                    new SingleLineComment('Additional setup statements'),
+                )
+                ->append($setupStatements)
+                ->append(new EmptyLine())
                 ->append(
                     new SingleLineComment('Code under test'),
                 )

@@ -4,8 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
-use webignition\BasilCompilableSourceFactory\Enum\DependencyName;
-use webignition\BasilCompilableSourceFactory\Tests\Services\ResolvedVariableNames;
+use webignition\BasilCompilableSourceFactory\Tests\Model\StatementHandlerTestData;
 use webignition\BasilModels\Parser\AssertionParser;
 
 trait ExistsAssertionFunctionalDataProviderTrait
@@ -19,40 +18,51 @@ trait ExistsAssertionFunctionalDataProviderTrait
 
         return [
             'exists comparison, element identifier examined value' => [
-                'fixture' => '/assertions.html',
-                'statement' => $assertionParser->parse('$".selector" exists', 0),
+                'data' => new StatementHandlerTestData(
+                    '/assertions.html',
+                    $assertionParser->parse('$".selector" exists', 0),
+                ),
             ],
             'exists comparison, attribute identifier examined value' => [
-                'fixture' => '/assertions.html',
-                'statement' => $assertionParser->parse('$".selector".data-test-attribute exists', 0),
+                'data' => new StatementHandlerTestData(
+                    '/assertions.html',
+                    $assertionParser->parse('$".selector".data-test-attribute exists', 0),
+                ),
             ],
             'exists comparison, environment examined value' => [
-                'fixture' => '/empty.html',
-                'statement' => $assertionParser->parse('$env.TEST1 exists', 0),
-                'additionalVariableIdentifiers' => [
-                    DependencyName::ENVIRONMENT_VARIABLE_ARRAY->value => ResolvedVariableNames::ENV_ARRAY_VARIABLE_NAME,
-                ],
+                'data' => new StatementHandlerTestData(
+                    '/empty.html',
+                    $assertionParser->parse('$env.TEST1 exists', 0),
+                ),
             ],
             'exists comparison, browser object value' => [
-                'fixture' => '/empty.html',
-                'statement' => $assertionParser->parse('$browser.size exists', 0),
+                'data' => new StatementHandlerTestData(
+                    '/empty.html',
+                    $assertionParser->parse('$browser.size exists', 0),
+                ),
             ],
             'exists comparison, page object value' => [
-                'fixture' => '/empty.html',
-                'statement' => $assertionParser->parse('$page.title exists', 0),
+                'data' => new StatementHandlerTestData(
+                    '/empty.html',
+                    $assertionParser->parse('$page.title exists', 0),
+                ),
             ],
             'exists comparison, element identifier examined value, selector contains single quotes (1)' => [
-                'fixture' => '/assertions.html',
-                'statement' => $assertionParser->parse(
-                    '$"[data-value=\"\'data attribute within single quotes\'\"]" exists',
-                    0,
+                'data' => new StatementHandlerTestData(
+                    '/assertions.html',
+                    $assertionParser->parse(
+                        '$"[data-value=\"\'data attribute within single quotes\'\"]" exists',
+                        0,
+                    ),
                 ),
             ],
             'exists comparison, element identifier examined value, selector contains single quotes (2)' => [
-                'fixture' => '/assertions.html',
-                'statement' => $assertionParser->parse(
-                    '$"[data-value=\"data attribute \'containing\' single quotes\"]" exists',
-                    0,
+                'data' => new StatementHandlerTestData(
+                    '/assertions.html',
+                    $assertionParser->parse(
+                        '$"[data-value=\"data attribute \'containing\' single quotes\"]" exists',
+                        0,
+                    ),
                 ),
             ],
         ];

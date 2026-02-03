@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
+use webignition\BasilCompilableSourceFactory\Tests\Model\StatementHandlerTestData;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilModels\Parser\ActionParser;
 
@@ -36,18 +37,20 @@ trait SubmitActionFunctionalDataProviderTrait
 
         return [
             'interaction action (submit), form submit button' => [
-                'fixture' => $fixture,
-                'statement' => $actionParser->parse('submit $"#form input[type=\'submit\']"', 0),
-                'additionalVariableIdentifiers' => [],
-                'additionalSetupStatements' => $setupStatements,
-                'teardownStatements' => $teardownStatements,
+                'data' => new StatementHandlerTestData(
+                    $fixture,
+                    $actionParser->parse('submit $"#form input[type=\'submit\']"', 0),
+                )
+                    ->withBeforeTest($setupStatements)
+                    ->withAfterTest($teardownStatements),
             ],
             'interaction action (submit), form' => [
-                'fixture' => $fixture,
-                'statement' => $actionParser->parse('submit $"#form"', 0),
-                'additionalVariableIdentifiers' => [],
-                'additionalSetupStatements' => $setupStatements,
-                'teardownStatements' => $teardownStatements,
+                'data' => new StatementHandlerTestData(
+                    $fixture,
+                    $actionParser->parse('submit $"#form"', 0),
+                )
+                    ->withBeforeTest($setupStatements)
+                    ->withAfterTest($teardownStatements),
             ],
         ];
     }

@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Assertion;
 
+use webignition\BasilCompilableSourceFactory\Tests\Model\StatementHandlerTestData;
 use webignition\BasilModels\Parser\AssertionParser;
 
 trait IncludesAssertionFunctionalDataProviderTrait
@@ -14,6 +15,8 @@ trait IncludesAssertionFunctionalDataProviderTrait
     public static function includesAssertionFunctionalDataProvider(): array
     {
         $assertionParser = AssertionParser::create();
+
+        $fixture = '/assertions.html';
 
         $assertions = [
             'element identifier examined value, scalar expected value' => [
@@ -60,8 +63,9 @@ trait IncludesAssertionFunctionalDataProviderTrait
         $testCases = [];
 
         foreach (self::inclusionAssertionFunctionalDataProvider() as $testName => $testData) {
-            $testData['statement'] = $assertions[$testName]['statement'];
-            $testCases['includes comparison, ' . $testName] = $testData;
+            $testCases['includes comparison, ' . $testName] = [
+                'data' => new StatementHandlerTestData($fixture, $assertions[$testName]['statement']),
+            ];
         }
 
         return $testCases;

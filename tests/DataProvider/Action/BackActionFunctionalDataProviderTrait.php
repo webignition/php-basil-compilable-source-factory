@@ -6,6 +6,7 @@ namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\Body\BodyContentCollection;
+use webignition\BasilCompilableSourceFactory\Tests\Model\StatementHandlerTestData;
 use webignition\BasilCompilableSourceFactory\Tests\Services\StatementFactory;
 use webignition\BasilModels\Parser\ActionParser;
 
@@ -20,10 +21,10 @@ trait BackActionFunctionalDataProviderTrait
 
         return [
             'back action' => [
-                'fixture' => '/index.html',
-                'statement' => $actionParser->parse('back', 0),
-                'additionalVariableIdentifiers' => [],
-                'additionalSetupStatements' => new Body(
+                'data' => new StatementHandlerTestData(
+                    '/index.html',
+                    $actionParser->parse('back', 0),
+                )->withBeforeTest(new Body(
                     new BodyContentCollection()
                         ->append(
                             StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
@@ -34,13 +35,12 @@ trait BackActionFunctionalDataProviderTrait
                         ->append(
                             StatementFactory::createAssertBrowserTitle('Assertions fixture'),
                         )
-                ),
-                'teardownStatements' => new Body(
+                ))->withAfterTest(new Body(
                     new BodyContentCollection()
                         ->append(
                             StatementFactory::createAssertBrowserTitle('Test fixture web server default document'),
                         )
-                ),
+                )),
             ],
         ];
     }

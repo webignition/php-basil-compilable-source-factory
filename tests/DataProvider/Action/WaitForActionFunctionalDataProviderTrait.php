@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace webignition\BasilCompilableSourceFactory\Tests\DataProvider\Action;
 
+use webignition\BasilCompilableSourceFactory\Tests\Model\StatementHandlerTestData;
 use webignition\BasilModels\Parser\ActionParser;
 
 trait WaitForActionFunctionalDataProviderTrait
@@ -15,14 +16,20 @@ trait WaitForActionFunctionalDataProviderTrait
     {
         $actionParser = ActionParser::create();
 
+        $fixture = '/action-wait-for.html';
+
         return [
             'wait-for action, css selector' => [
-                'fixture' => '/action-wait-for.html',
-                'statement' => $actionParser->parse('wait-for $"#hello"', 0),
+                'data' => new StatementHandlerTestData(
+                    $fixture,
+                    $actionParser->parse('wait-for $"#hello"', 0),
+                ),
             ],
             'wait-for action, xpath expression' => [
-                'fixture' => '/action-wait-for.html',
-                'statement' => $actionParser->parse('wait-for $"//*[@id=\'hello\']"', 0),
+                'data' => new StatementHandlerTestData(
+                    $fixture,
+                    $actionParser->parse('wait-for $"//*[@id=\'hello\']"', 0),
+                ),
             ],
         ];
     }

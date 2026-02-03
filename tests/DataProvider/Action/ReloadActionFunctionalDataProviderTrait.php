@@ -12,6 +12,7 @@ use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumen
 use webignition\BasilCompilableSourceFactory\Model\MethodInvocation\MethodInvocation;
 use webignition\BasilCompilableSourceFactory\Model\Property;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
+use webignition\BasilCompilableSourceFactory\Tests\Model\StatementHandlerTestData;
 use webignition\BasilModels\Parser\ActionParser;
 
 trait ReloadActionFunctionalDataProviderTrait
@@ -69,11 +70,12 @@ trait ReloadActionFunctionalDataProviderTrait
 
         return [
             'reload action' => [
-                'fixture' => '/action-wait-for.html',
-                'statement' => $actionParser->parse('reload', 0),
-                'additionalVariableIdentifiers' => [],
-                'additionalSetupStatements' => $setupTeardownStatements,
-                'teardownStatements' => $setupTeardownStatements,
+                'data' => new StatementHandlerTestData(
+                    '/action-wait-for.html',
+                    $actionParser->parse('reload', 0),
+                )
+                    ->withBeforeTest($setupTeardownStatements)
+                    ->withAfterTest($setupTeardownStatements),
             ],
         ];
     }

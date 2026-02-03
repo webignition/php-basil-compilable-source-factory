@@ -26,23 +26,15 @@ class TestCodeGenerator
         return new TestCodeGenerator();
     }
 
-    /**
-     * @param array<string, string> $additionalVariableIdentifiers
-     */
     public function createBrowserTestForBlock(
         BodyInterface $body,
         string $fixture,
         ?BodyInterface $additionalSetupStatements = null,
         ?BodyInterface $teardownStatements = null,
-        array $additionalVariableIdentifiers = []
     ): string {
-        $codeSource = BodyFactory::createForSourceBlock($body, $teardownStatements);
+        $codeSource = BodyFactory::createForSourceBlock($body, $additionalSetupStatements, $teardownStatements);
 
-        $classDefinition = ClassDefinitionFactory::createGeneratedBrowserTestForBlock(
-            $fixture,
-            $codeSource,
-            $additionalSetupStatements
-        );
+        $classDefinition = ClassDefinitionFactory::createGeneratedBrowserTestForBody($fixture, $codeSource);
 
         $variableDependencyIdentifiers = $this->createVariableIdentifiersForVariableDependencies(
             $classDefinition->getMetadata()->getVariableDependencies()
@@ -50,13 +42,7 @@ class TestCodeGenerator
 
         $resolvedClassDefinition = ResolvableRenderer::resolve($classDefinition);
 
-        return ResolvableRenderer::resolve(new Resolvable(
-            $resolvedClassDefinition,
-            array_merge(
-                $variableDependencyIdentifiers,
-                $additionalVariableIdentifiers
-            )
-        ));
+        return ResolvableRenderer::resolve(new Resolvable($resolvedClassDefinition, $variableDependencyIdentifiers));
     }
 
     /**
