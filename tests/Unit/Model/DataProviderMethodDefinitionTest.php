@@ -67,7 +67,7 @@ class DataProviderMethodDefinitionTest extends AbstractResolvableTestCase
         return [
             'empty data' => [
                 'methodDefinition' => new DataProviderMethodDefinition('emptyDataDataProvider', []),
-                'expectedString' => 'public function emptyDataDataProvider(): array' . "\n"
+                'expectedString' => 'public static function emptyDataDataProvider(): array' . "\n"
                     . '{' . "\n"
                     . '    return [];' . "\n"
                     . '}'
@@ -83,7 +83,7 @@ class DataProviderMethodDefinitionTest extends AbstractResolvableTestCase
                         'y' => "\\'string2\\'",
                     ],
                 ]),
-                'expectedString' => "public function emptyDataDataProvider(): array\n"
+                'expectedString' => "public static function emptyDataDataProvider(): array\n"
                     . "{\n"
                     . "    return [\n"
                     . "        '0' => [\n"
