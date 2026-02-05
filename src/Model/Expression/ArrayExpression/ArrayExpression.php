@@ -33,15 +33,24 @@ class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationIn
     /**
      * @param ArrayPair[] $pairs
      */
-    public function __construct(array $pairs)
+    public function __construct(array $pairs, bool $renderKeys = true)
     {
-        $this->pairs = $pairs;
+        $mutatedPairs = [];
+        foreach ($pairs as $pair) {
+            if (false === $renderKeys) {
+                $mutatedPairs[] = $pair->withoutRenderKey();
+            } else {
+                $mutatedPairs[] = $pair;
+            }
+        }
+
+        $this->pairs = $mutatedPairs;
     }
 
     /**
      * @param array<mixed> $array
      */
-    public static function fromArray(array $array): self
+    public static function fromArray(array $array, bool $renderKeys = true): self
     {
         $arrayPairs = [];
 
@@ -52,7 +61,7 @@ class ArrayExpression implements ExpressionInterface, ResolvedTemplateMutationIn
             }
         }
 
-        return new ArrayExpression($arrayPairs);
+        return new ArrayExpression($arrayPairs, $renderKeys);
     }
 
     public function getMetadata(): MetadataInterface

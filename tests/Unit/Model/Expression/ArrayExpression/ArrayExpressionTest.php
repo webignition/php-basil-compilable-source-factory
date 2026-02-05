@@ -95,7 +95,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                     ]
                     EOD,
             ],
-            'multiple pairs' => [
+            'multiple pairs, render with keys' => [
                 'expression' => new ArrayExpression([
                     new ArrayPair(
                         'key1',
@@ -121,6 +121,27 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         'key1' => 'value1',
                         'key2' => $variableName,
                         'key3' => {{ CLIENT }}->methodName(),
+                    ]
+                    EOD,
+            ],
+            'multiple pairs, render without keys' => [
+                'expression' => new ArrayExpression(
+                    pairs: [
+                        new ArrayPair(
+                            '0',
+                            LiteralExpression::string('\'value0\'')
+                        ),
+                        new ArrayPair(
+                            '1',
+                            LiteralExpression::string('\'value1\'')
+                        ),
+                    ],
+                    renderKeys: false,
+                ),
+                'expected' => <<<'EOD'
+                    [
+                        'value0',
+                        'value1',
                     ]
                     EOD,
             ],
