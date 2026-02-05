@@ -67,9 +67,9 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
     }
 
     #[DataProvider('renderDataProvider')]
-    public function testRender(ArrayExpression $expression, string $expectedString): void
+    public function testRender(ArrayExpression $expression, string $expected): void
     {
-        $this->assertRenderResolvable($expectedString, $expression);
+        $this->assertRenderResolvable($expected, $expression);
     }
 
     /**
@@ -80,7 +80,7 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
         return [
             'empty' => [
                 'expression' => new ArrayExpression([]),
-                'expectedString' => '[]',
+                'expected' => '[]',
             ],
             'single pair' => [
                 'expression' => new ArrayExpression([
@@ -89,9 +89,11 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         LiteralExpression::string('\'value1\'')
                     ),
                 ]),
-                'expectedString' => "[\n"
-                    . "    'key1' => 'value1',\n"
-                    . ']',
+                'expected' => <<<'EOD'
+                    [
+                        'key1' => 'value1',
+                    ]
+                    EOD,
             ],
             'multiple pairs' => [
                 'expression' => new ArrayExpression([
@@ -114,11 +116,13 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         )
                     ),
                 ]),
-                'expectedString' => "[\n"
-                    . "    'key1' => 'value1',\n"
-                    . "    'key2' => \$variableName,\n"
-                    . "    'key3' => {{ CLIENT }}->methodName(),\n"
-                    . ']',
+                'expected' => <<<'EOD'
+                    [
+                        'key1' => 'value1',
+                        'key2' => $variableName,
+                        'key3' => {{ CLIENT }}->methodName(),
+                    ]
+                    EOD,
             ],
             'single data set with single key:value numerical name' => [
                 'expression' => new ArrayExpression([
@@ -132,11 +136,13 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         ])
                     ),
                 ]),
-                'expectedString' => "[\n"
-                    . "    '0' => [\n"
-                    . "        'key1' => 'value1',\n"
-                    . "    ],\n"
-                    . ']',
+                'expected' => <<<'EOD'
+                    [
+                        '0' => [
+                            'key1' => 'value1',
+                        ],
+                    ]
+                    EOD,
             ],
             'single data set with single key:value string name' => [
                 'expression' => new ArrayExpression([
@@ -150,11 +156,13 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         ])
                     ),
                 ]),
-                'expectedString' => "[\n"
-                    . "    'data-set-one' => [\n"
-                    . "        'key1' => 'value1',\n"
-                    . "    ],\n"
-                    . ']',
+                'expected' => <<<'EOD'
+                    [
+                        'data-set-one' => [
+                            'key1' => 'value1',
+                        ],
+                    ]
+                    EOD,
             ],
             'single data set with multiple key:value numerical name' => [
                 'expression' => new ArrayExpression([
@@ -172,12 +180,14 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         ])
                     ),
                 ]),
-                'expectedString' => "[\n"
-                    . "    '0' => [\n"
-                    . "        'key1' => 'value1',\n"
-                    . "        'key2' => 'value2',\n"
-                    . "    ],\n"
-                    . ']',
+                'expected' => <<<'EOD'
+                    [
+                        '0' => [
+                            'key1' => 'value1',
+                            'key2' => 'value2',
+                        ],
+                    ]
+                    EOD,
             ],
             'multiple data sets with multiple key:value numerical name' => [
                 'expression' => new ArrayExpression([
@@ -208,16 +218,18 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         ])
                     ),
                 ]),
-                'expectedString' => "[\n"
-                    . "    '0' => [\n"
-                    . "        'key1' => 'value1',\n"
-                    . "        'key2' => 'value2',\n"
-                    . "    ],\n"
-                    . "    '1' => [\n"
-                    . "        'key1' => 'value3',\n"
-                    . "        'key2' => 'value4',\n"
-                    . "    ],\n"
-                    . ']',
+                'expected' => <<<'EOD'
+                    [
+                        '0' => [
+                            'key1' => 'value1',
+                            'key2' => 'value2',
+                        ],
+                        '1' => [
+                            'key1' => 'value3',
+                            'key2' => 'value4',
+                        ],
+                    ]
+                    EOD,
             ],
 
             'single data set with VariableName value' => [
@@ -232,11 +244,13 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         ])
                     ),
                 ]),
-                'expectedString' => "[\n"
-                    . "    'data-set-one' => [\n"
-                    . "        'key1' => \$variableName,\n"
-                    . "    ],\n"
-                    . ']',
+                'expected' => <<<'EOD'
+                    [
+                        'data-set-one' => [
+                            'key1' => $variableName,
+                        ],
+                    ]
+                    EOD,
             ],
             'single data set with ObjectMethodInvocation value' => [
                 'expression' => new ArrayExpression([
@@ -256,11 +270,13 @@ class ArrayExpressionTest extends AbstractResolvableTestCase
                         ])
                     ),
                 ]),
-                'expectedString' => "[\n"
-                    . "    'data-set-one' => [\n"
-                    . "        'key1' => {{ CLIENT }}->methodName(),\n"
-                    . "    ],\n"
-                    . ']',
+                'expected' => <<<'EOD'
+                    [
+                        'data-set-one' => [
+                            'key1' => {{ CLIENT }}->methodName(),
+                        ],
+                    ]
+                    EOD,
             ],
         ];
     }
