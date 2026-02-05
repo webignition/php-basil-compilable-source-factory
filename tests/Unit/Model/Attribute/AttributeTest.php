@@ -7,7 +7,9 @@ namespace webignition\BasilCompilableSourceFactory\Tests\Unit\Model\Attribute;
 use PHPUnit\Framework\Attributes\DataProvider;
 use webignition\BasilCompilableSourceFactory\Model\Attribute\Attribute;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
+use webignition\BasilCompilableSourceFactory\Model\Expression\LiteralExpression;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
+use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArguments;
 use webignition\BasilCompilableSourceFactory\Tests\Unit\Model\AbstractResolvableTestCase;
 
 class AttributeTest extends AbstractResolvableTestCase
@@ -64,11 +66,25 @@ class AttributeTest extends AbstractResolvableTestCase
                 'expectedRenderedAttribute' => '#[AttributeTest]',
             ],
             'root attribute, has arguments' => [
-                'attribute' => new Attribute(new ClassName('Attribute'), ['\'one\'', '\'two\'', '\'three\'']),
+                'attribute' => new Attribute(
+                    new ClassName('Attribute'),
+                    new MethodArguments([
+                        LiteralExpression::string("'one'"),
+                        LiteralExpression::string("'two'"),
+                        LiteralExpression::string("'three'"),
+                    ]),
+                ),
                 'expectedRenderedAttribute' => "#[Attribute('one', 'two', 'three')]",
             ],
             'non-root attribute, has arguments' => [
-                'attribute' => new Attribute(new ClassName('Attribute'), ['\'one\'', '\'two\'', '\'three\'']),
+                'attribute' => new Attribute(
+                    new ClassName('Attribute'),
+                    new MethodArguments([
+                        LiteralExpression::string("'one'"),
+                        LiteralExpression::string("'two'"),
+                        LiteralExpression::string("'three'"),
+                    ]),
+                ),
                 'expectedRenderedAttribute' => "#[Attribute('one', 'two', 'three')]",
             ],
         ];

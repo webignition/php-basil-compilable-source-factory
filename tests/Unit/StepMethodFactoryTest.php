@@ -15,7 +15,7 @@ use webignition\BasilCompilableSourceFactory\Model\MethodDefinitionInterface;
 use webignition\BasilCompilableSourceFactory\Model\SingleLineComment;
 use webignition\BasilCompilableSourceFactory\Model\TypeCollection;
 use webignition\BasilCompilableSourceFactory\SingleQuotedStringEscaper;
-use webignition\BasilCompilableSourceFactory\StatementsAttributeValuePrinter;
+use webignition\BasilCompilableSourceFactory\StatementsAttributeFactory;
 use webignition\BasilCompilableSourceFactory\StepMethodFactory;
 use webignition\BasilModels\Model\Step\StepInterface;
 use webignition\BasilModels\Parser\StepParser;
@@ -272,7 +272,7 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
         return new StepMethodFactory(
             $stepHandler,
             SingleQuotedStringEscaper::create(),
-            StatementsAttributeValuePrinter::create()
+            StatementsAttributeFactory::createFactory(),
         );
     }
 

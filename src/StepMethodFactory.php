@@ -7,7 +7,6 @@ namespace webignition\BasilCompilableSourceFactory;
 use webignition\BasilCompilableSourceFactory\Exception\UnsupportedStepException;
 use webignition\BasilCompilableSourceFactory\Handler\Step\StepHandler;
 use webignition\BasilCompilableSourceFactory\Model\Attribute\DataProviderAttribute;
-use webignition\BasilCompilableSourceFactory\Model\Attribute\StatementsAttribute;
 use webignition\BasilCompilableSourceFactory\Model\Attribute\StepNameAttribute;
 use webignition\BasilCompilableSourceFactory\Model\Body\Body;
 use webignition\BasilCompilableSourceFactory\Model\DataProviderMethodDefinition;
@@ -29,7 +28,7 @@ class StepMethodFactory
     public function __construct(
         private StepHandler $stepHandler,
         private SingleQuotedStringEscaper $singleQuotedStringEscaper,
-        private StatementsAttributeValuePrinter $statementsAttributeValuePrinter,
+        private StatementsAttributeFactory $statementsAttributeFactory,
     ) {}
 
     public static function createFactory(): self
@@ -37,7 +36,7 @@ class StepMethodFactory
         return new StepMethodFactory(
             StepHandler::createHandler(),
             SingleQuotedStringEscaper::create(),
-            StatementsAttributeValuePrinter::create(),
+            StatementsAttributeFactory::createFactory(),
         );
     }
 
@@ -67,9 +66,7 @@ class StepMethodFactory
         ;
 
         $testMethod = $testMethod->withAttribute(
-            new StatementsAttribute(
-                $this->statementsAttributeValuePrinter->print($statements)
-            )
+            $this->statementsAttributeFactory->create($statements)
         );
 
         $hasDataProvider = count($parameterNames) > 0;
