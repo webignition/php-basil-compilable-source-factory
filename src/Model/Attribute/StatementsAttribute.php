@@ -6,14 +6,15 @@ namespace webignition\BasilCompilableSourceFactory\Model\Attribute;
 
 use webignition\BaseBasilTestCase\Attribute\Statements;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
+use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 
 class StatementsAttribute extends Attribute implements AttributeInterface
 {
-    /**
-     * @param non-empty-string $serializedStatements
-     */
-    public function __construct(string $serializedStatements)
+    public function __construct(MethodArgumentsInterface $arguments)
     {
-        parent::__construct(new ClassName(Statements::class), [$serializedStatements]);
+        parent::__construct(
+            new ClassName(Statements::class),
+            $arguments,
+        );
     }
 }

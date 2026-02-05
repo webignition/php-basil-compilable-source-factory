@@ -7,6 +7,7 @@ namespace webignition\BasilCompilableSourceFactory\Model\Attribute;
 use webignition\BasilCompilableSourceFactory\Model\ClassName;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\Metadata;
 use webignition\BasilCompilableSourceFactory\Model\Metadata\MetadataInterface;
+use webignition\BasilCompilableSourceFactory\Model\MethodArguments\MethodArgumentsInterface;
 
 class Attribute implements AttributeInterface
 {
@@ -15,17 +16,11 @@ class Attribute implements AttributeInterface
 
     private ClassName $className;
 
-    /**
-     * @var string[]
-     */
-    private array $arguments;
+    private ?MethodArgumentsInterface $arguments;
 
     private MetadataInterface $metadata;
 
-    /**
-     * @param string[] $arguments
-     */
-    public function __construct(ClassName $className, array $arguments = [])
+    public function __construct(ClassName $className, ?MethodArgumentsInterface $arguments = null)
     {
         $this->className = $className;
         $this->arguments = $arguments;
@@ -35,15 +30,22 @@ class Attribute implements AttributeInterface
 
     public function getTemplate(): string
     {
-        return [] === $this->arguments ? self::RENDER_TEMPLATE_WITHOUT_ARGUMENTS : self::RENDER_TEMPLATE_WITH_ARGUMENTS;
+        return null === $this->arguments
+            ? self::RENDER_TEMPLATE_WITHOUT_ARGUMENTS
+            : self::RENDER_TEMPLATE_WITH_ARGUMENTS;
     }
 
     public function getContext(): array
     {
-        return [
-            'name' => $this->className->getClass(),
-            'arguments' => implode(', ', $this->arguments)
+        $context = [
+            'name' => (string) $this->className,
         ];
+
+        if ($this->arguments instanceof MethodArgumentsInterface) {
+            $context['arguments'] = $this->arguments;
+        }
+
+        return $context;
     }
 
     public function getMetadata(): MetadataInterface
