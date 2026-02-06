@@ -232,7 +232,7 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
                     }
                     EOD,
                 'expectedRenderedDataProvider' => <<<'EOD'
-                    public function dataProvider4(): array
+                    public static function dataProvider4(): array
                     {
                         return [
                             '0' => [
@@ -313,7 +313,7 @@ class StepMethodFactoryTest extends AbstractResolvableTestCase
         $this->assertRenderResolvable($expectedRendered, $testMethod);
 
         $this->assertEquals(TypeCollection::array(), $testMethod->getReturnType());
-        $this->assertFalse($testMethod->isStatic());
+        $this->assertTrue($testMethod->isStatic());
         $this->assertSame('public', $testMethod->getVisibility());
         $this->assertEquals(new Metadata(), $testMethod->getMetadata());
     }

@@ -232,7 +232,7 @@ class ClassBodyTest extends AbstractResolvableTestCase
                         $currentStatement = $statement;
                     }
                     
-                    public function stepOneDataProvider(): array
+                    public static function stepOneDataProvider(): array
                     {
                         return [
                             '0' => [
